@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--SplashVC-->
+        <scene sceneID="fhQ-9S-g0b">
+            <objects>
+                <viewController storyboardIdentifier="kSplashVC" id="UBg-5w-Ipw" customClass="JCSplashVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="A3s-Y5-Yu3"/>
+                        <viewControllerLayoutGuide type="bottom" id="YLB-qM-KAf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="V4Y-nf-Vbb">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinema-SplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="gnq-sp-Jd0">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="gnq-sp-Jd0" secondAttribute="trailing" id="LVc-uQ-ZGh"/>
+                            <constraint firstItem="gnq-sp-Jd0" firstAttribute="top" secondItem="A3s-Y5-Yu3" secondAttribute="bottom" id="O8F-jK-I6K"/>
+                            <constraint firstItem="YLB-qM-KAf" firstAttribute="top" secondItem="gnq-sp-Jd0" secondAttribute="bottom" id="kQY-5I-hoN"/>
+                            <constraint firstItem="gnq-sp-Jd0" firstAttribute="leading" secondItem="V4Y-nf-Vbb" secondAttribute="leading" id="zDe-u0-up8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="pRX-Lx-T2z"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8pm-Bi-xop" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3321" y="-19"/>
+        </scene>
+        <!--LoginVC-->
+        <scene sceneID="nU4-p1-NfS">
+            <objects>
+                <viewController storyboardIdentifier="kLoginVC" id="z9d-cP-8gO" customClass="JCLoginVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8Mb-bs-Oj9"/>
+                        <viewControllerLayoutGuide type="bottom" id="A1e-0o-NZu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5aR-rg-pSc">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBg" translatesAutoresizingMaskIntoConstraints="NO" id="A91-oh-S7x" userLabel="BackgroundImage">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gm-mc-G4v" userLabel="SignIn Options Container">
+                                <rect key="frame" x="322" y="380" width="1276" height="679"/>
+                                <subviews>
+                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxH-Nz-KET" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="398" y="243" width="480" height="68"/>
+                                        <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="68" id="ntB-ms-Zwr"/>
+                                            <constraint firstAttribute="width" constant="480" id="sTL-ns-UFL"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Sign In via OTP"/>
+                                        <connections>
+                                            <action selector="didClickOnOTPSignIn:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="pYm-5r-utO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vR2-ya-wId" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="398" y="347" width="480" height="68"/>
+                                        <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="68" id="egL-gL-2p6"/>
+                                            <constraint firstAttribute="width" constant="480" id="g7K-M1-G4o"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Sign In via Jio ID"/>
+                                        <connections>
+                                            <action selector="didClickOnJioIdSignIn:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="NJa-az-R7j"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NGB-JE-29z">
+                                        <rect key="frame" x="315" y="0.0" width="646" height="87"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Please login to watch this video"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1276" id="0OX-36-Q5S"/>
+                                    <constraint firstItem="NGB-JE-29z" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="4Ua-xB-Nvo"/>
+                                    <constraint firstItem="GxH-Nz-KET" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="DLU-U5-1wr"/>
+                                    <constraint firstItem="NGB-JE-29z" firstAttribute="top" secondItem="5Gm-mc-G4v" secondAttribute="top" id="VxB-mJ-brq"/>
+                                    <constraint firstItem="GxH-Nz-KET" firstAttribute="top" secondItem="NGB-JE-29z" secondAttribute="bottom" constant="156" id="hhg-Zv-cE6"/>
+                                    <constraint firstItem="vR2-ya-wId" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="pMa-kd-zMx"/>
+                                    <constraint firstAttribute="height" constant="679" id="sLM-Ye-MQG"/>
+                                    <constraint firstItem="vR2-ya-wId" firstAttribute="top" secondItem="GxH-Nz-KET" secondAttribute="bottom" constant="36" id="xtT-6G-9wW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="A1e-0o-NZu" firstAttribute="top" secondItem="A91-oh-S7x" secondAttribute="bottom" id="9Wo-aH-QQe"/>
+                            <constraint firstItem="A91-oh-S7x" firstAttribute="leading" secondItem="5aR-rg-pSc" secondAttribute="leading" id="FRV-Or-CqR"/>
+                            <constraint firstAttribute="trailing" secondItem="A91-oh-S7x" secondAttribute="trailing" id="Ks6-rD-rjy"/>
+                            <constraint firstItem="A91-oh-S7x" firstAttribute="top" secondItem="8Mb-bs-Oj9" secondAttribute="bottom" id="M2w-8f-iL2"/>
+                            <constraint firstItem="5Gm-mc-G4v" firstAttribute="top" secondItem="8Mb-bs-Oj9" secondAttribute="bottom" constant="380" id="VHp-K6-9AW"/>
+                            <constraint firstItem="5Gm-mc-G4v" firstAttribute="centerX" secondItem="5aR-rg-pSc" secondAttribute="centerX" id="fu6-ap-p0t"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="A91-oh-S7x" id="jWC-r0-gX8"/>
+                        <outlet property="pleaseLoginMessageButton" destination="NGB-JE-29z" id="BhE-K7-p4Q"/>
+                        <outlet property="signInJioIDButton" destination="vR2-ya-wId" id="jFR-ld-y0q"/>
+                        <outlet property="signInOTPButton" destination="GxH-Nz-KET" id="taO-Df-szl"/>
+                        <outlet property="signInOptionsContainer" destination="5Gm-mc-G4v" id="PsB-aO-VTl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4TR-G4-NbC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3579" y="1495"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="FPJ-C5-E7U">
+            <objects>
+                <tabBarController storyboardIdentifier="kTabBarController" id="IVy-sS-KEV" customClass="JCTabBarController" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" alpha="0.69999999999999996" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Mrk-WF-368">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="0.0"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0dM-7G-s2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6053" y="1495"/>
+        </scene>
+        <!--PlayerVC-->
+        <scene sceneID="ZfD-qr-amZ">
+            <objects>
+                <viewController storyboardIdentifier="kPlayerVC" id="XTY-lV-J6s" customClass="JCPlayerVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zyd-cn-lgC"/>
+                        <viewControllerLayoutGuide type="bottom" id="d3Q-X8-goK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qDA-Z1-tmP">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2IR-za-JQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6810" y="2878"/>
+        </scene>
+        <!--MetadataVC-->
+        <scene sceneID="bjo-sh-lAw">
+            <objects>
+                <viewController storyboardIdentifier="kMetadataVC" id="1hA-3Y-GlB" customClass="JCMetadataVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ale-3h-JlR"/>
+                        <viewControllerLayoutGuide type="bottom" id="Kta-mR-7sz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W1H-6v-pVq">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDC-Ef-wXK">
+                                <rect key="frame" x="960" y="540" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="48"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="fDC-Ef-wXK" firstAttribute="centerY" secondItem="W1H-6v-pVq" secondAttribute="centerY" id="UMh-Jn-Ya1"/>
+                            <constraint firstItem="fDC-Ef-wXK" firstAttribute="centerX" secondItem="W1H-6v-pVq" secondAttribute="centerX" id="u2j-ox-Go6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="titleLabel" destination="fDC-Ef-wXK" id="Knh-Si-Rjf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cpb-qF-gZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8295" y="1495"/>
+        </scene>
+        <!--JCOTPVC-->
+        <scene sceneID="3AO-BA-Ur3">
+            <objects>
+                <viewController storyboardIdentifier="kOTPVC" id="9dd-sk-a51" customClass="JCOTPVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="O2k-6m-pYf"/>
+                        <viewControllerLayoutGuide type="bottom" id="C1h-IB-wD6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bb0-nK-NIq">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-hQ-Xg3" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                <rect key="frame" x="848" y="20" width="224" height="86"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Get OTP"/>
+                                <connections>
+                                    <action selector="didClickOnGetOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="NjB-El-wGa"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw5-58-ffi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                <rect key="frame" x="808" y="109" width="305" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Resend OTP"/>
+                                <connections>
+                                    <action selector="didClickOnResendOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="wVa-Pg-SUq"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAj-KC-VnA" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                <rect key="frame" x="808" y="20" width="305" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Sign In"/>
+                                <connections>
+                                    <action selector="didClickOnSignInButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="Tfq-A8-qZV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="getOTPButton" destination="w4K-hQ-Xg3" id="LZa-dh-WoK"/>
+                        <outlet property="resendOTPButton" destination="gw5-58-ffi" id="c0S-TH-HNJ"/>
+                        <outlet property="signInButton" destination="MAj-KC-VnA" id="0xl-gZ-hZJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cFr-JQ-FFc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4532" y="2896"/>
+        </scene>
+        <!--Sign In OptionsVC-->
+        <scene sceneID="KkZ-kC-aVn">
+            <objects>
+                <viewController storyboardIdentifier="kSignInOptionsVC" id="l1U-WD-QGu" customClass="JCSignInOptionsVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YA5-Br-8aN"/>
+                        <viewControllerLayoutGuide type="bottom" id="sRt-Ca-1fF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3pQ-gF-vcW">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBg" translatesAutoresizingMaskIntoConstraints="NO" id="TMZ-XE-kko">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dss-Jh-kZK" userLabel="signInJioID Container">
+                                <rect key="frame" x="201" y="427" width="1573" height="653"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in using your Jio ID and Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQP-b1-5By">
+                                        <rect key="frame" x="447" y="-33" width="678" height="46"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPY-dB-t1A">
+                                        <rect key="frame" x="57" y="471" width="1459" height="126"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Don't have a Jio ID? Visit www.jio.com and click 'login/SignUp' to create your Jio ID. if still facing trouble logging-in, kindly write to us jiocinema@jio.com</string>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-Bd-PVP" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="536" y="325" width="500" height="62"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Sign In"/>
+                                        <connections>
+                                            <action selector="didClickOnJioIDSignInButton:" destination="l1U-WD-QGu" eventType="primaryActionTriggered" id="bWJ-iZ-tq2"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Jio ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fT6-VL-Yg6" customClass="JCTextField" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="536" y="136" width="500" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="l1U-WD-QGu" id="gfk-Dx-RDq"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="juj-aF-iXE" customClass="JCPasswordField" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="536" y="220" width="500" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.19728724630996311" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="l1U-WD-QGu" id="p0I-r7-aGx"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="TMZ-XE-kko" firstAttribute="top" secondItem="YA5-Br-8aN" secondAttribute="bottom" id="KRS-Hc-Ozc"/>
+                            <constraint firstItem="TMZ-XE-kko" firstAttribute="leading" secondItem="3pQ-gF-vcW" secondAttribute="leading" id="MOt-l2-98O"/>
+                            <constraint firstItem="sRt-Ca-1fF" firstAttribute="top" secondItem="TMZ-XE-kko" secondAttribute="bottom" id="kIz-mv-kaC"/>
+                            <constraint firstAttribute="trailing" secondItem="TMZ-XE-kko" secondAttribute="trailing" id="xsF-8O-YMx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="TMZ-XE-kko" id="4BN-ie-taj"/>
+                        <outlet property="jioIdTextField" destination="fT6-VL-Yg6" id="z0w-EJ-Ybv"/>
+                        <outlet property="passwordTextField" destination="juj-aF-iXE" id="Hpa-ws-AeO"/>
+                        <outlet property="signInButton" destination="NOr-Bd-PVP" id="w7J-fk-cDP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xB8-uB-Wk0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2310" y="2896"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
+        <image name="loginBg" width="3840" height="2160"/>
+    </resources>
+</document>

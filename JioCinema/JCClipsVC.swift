@@ -1,0 +1,190 @@
+//
+//  JCClipsVC.swift
+//  JioCinema
+//
+//  Created by Pallav Trivedi on 01/08/17.
+//  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
+//
+
+import UIKit
+
+class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
+{
+    
+    var loadedPage = 0
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        callWebServiceForClipsData(page: loadedPage)
+        
+        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
+        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
+        self.baseTableView.delegate = self
+        self.baseTableView.dataSource = self
+        
+        // Do any additional setup after loading the view.
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 320
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        if (JCDataStore.sharedDataStore.clipsData?.data) != nil
+        {
+            if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
+            {
+                return (JCDataStore.sharedDataStore.clipsData?.data?.count)! - 1
+            }
+            else
+            {
+                return (JCDataStore.sharedDataStore.clipsData?.data?.count)!
+            }
+        }
+        else
+        {
+            return 0
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
+        
+        
+        if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
+        {
+            cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].items
+            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].title
+        }
+        else
+        {
+            cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].items
+            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title
+        }
+        
+        DispatchQueue.main.async {
+            cell.tableCellCollectionView.reloadData()
+        }
+        if(indexPath.row == (JCDataStore.sharedDataStore.clipsData?.data?.count)! - 2)
+        {
+            if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
+            {
+                callWebServiceForClipsData(page: loadedPage + 1)
+                loadedPage += 1
+            }
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
+        {
+            let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
+            headerCell.carousalData = JCDataStore.sharedDataStore.clipsData?.data?[0].items
+            return headerCell
+        }
+        else
+        {
+            return UIView.init()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
+        {
+            return CGFloat(heightOfCarouselSection)
+        }
+        else
+        {
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if (JCDataStore.sharedDataStore.clipsData?.totalPages) == nil
+        {
+            return UIView.init()
+        }
+        else
+        {
+            if(loadedPage == (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
+            {
+                return UIView.init()
+            }
+            else
+            {
+                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
+                return footerCell
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 600
+    }
+    
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    
+    func callWebServiceForClipsData(page:Int)
+    {
+        let url = clipsDataUrl.appending(String(page))
+        let clipsDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: clipsDataRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateClipsData(dictionaryResponseData: responseData)
+                return
+            }
+        }
+    }
+    
+    func evaluateClipsData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        
+        if(loadedPage == 0)
+        {
+            JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                weakSelf?.baseTableView.reloadData()
+            }
+        }
+        else
+        {
+            JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                weakSelf?.baseTableView.reloadData()
+            }
+        }
+    }
+    
+    
+}
