@@ -94,7 +94,6 @@ class JCSplashVC: UIViewController {
         DispatchQueue.main.async {
             
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-            
             let navController = UINavigationController.init(rootViewController: tabBarController)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController

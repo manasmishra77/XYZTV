@@ -172,6 +172,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Movies)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }

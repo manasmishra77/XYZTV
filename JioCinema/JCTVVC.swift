@@ -173,6 +173,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }

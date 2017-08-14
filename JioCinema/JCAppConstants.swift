@@ -42,6 +42,7 @@ let musicDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/33/")
 let tvDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/9/")
 let clipsDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/35/")
 let playbackRightsURL = basePathForProd.appending("playbackrights/get/")
+let metadataUrl = basePathForProd.appending("metamore/get/")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -69,12 +70,15 @@ let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"
 let baseCollectionViewCellReuseIdentifier = "kBaseCollectionViewCell"
 let baseHeaderTableViewCellIdentifier = "kBaseTableViewHeaderCell"
 let baseFooterTableViewCellIdentifier = "kBaseTableViewFooterCell"
+let metadataHeaderTableViewCellIdentifier = "kMetadataHeaderViewCell"
 
 //Constant Values
 let heightOfCarouselSection = 600
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
 let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
+let watchNowNotificationName = Notification.Name("didClickOnWatchNowNotification")
+let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell")
 let loginSuccessNotificationName = Notification.Name("loginSuccessful")
 let readyToPlayNotificationName = Notification.Name("readyToPlay")
 
