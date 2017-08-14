@@ -18,6 +18,7 @@ class JCTabBarController: UITabBarController {
         case Clip = 6
     }
     
+    var settingsVC:JCSettingsVC?
     var currentPlayableItem:Item?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +41,11 @@ class JCTabBarController: UITabBarController {
         let clipsVC = JCClipsVC.init(nibName: "JCBaseVC", bundle: nil)
         clipsVC.tabBarItem = UITabBarItem.init(title: "Clips", image: nil, tag: 4)
         
-        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC]
-        self.setViewControllers(viewControllersArray, animated: false)
+        settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
+        settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 5)
+        
+        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,settingsVC!] as [Any]
+        self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
         self.tabBar.alpha = 0.7
         
@@ -57,12 +61,20 @@ class JCTabBarController: UITabBarController {
     
     func didReceiveNotificationForCellTap(notification:Notification) -> Void
     {
+        weak var weakSelf = self
         guard let item = notification.userInfo?["item"] as? Item
             else {
+                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                    if(isOnJioNetwork == false)
+                    {
+                        print("Not on jio network")
+                        weakSelf?.presentLoginVC()
+                        
+                    }
+                }
                 return
         }
         currentPlayableItem = item
-        weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
@@ -92,25 +104,35 @@ class JCTabBarController: UITabBarController {
     
     func prepareToPlay()
     {
-        if(currentPlayableItem?.app?.type == VideoType.Movie.rawValue || currentPlayableItem?.app?.type == VideoType.TVShow.rawValue)
+        if currentPlayableItem != nil
         {
-            print("show metadata")
-            let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = currentPlayableItem
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
-            
-            self.present(metadataVC, animated: true, completion: nil)
+            if(currentPlayableItem?.app?.type == VideoType.Movie.rawValue || currentPlayableItem?.app?.type == VideoType.TVShow.rawValue)
+            {
+                print("show metadata")
+                let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
+                metadataVC.item = currentPlayableItem
+                metadataVC.modalPresentationStyle = .overFullScreen
+                metadataVC.modalTransitionStyle = .coverVertical
+                
+                self.present(metadataVC, animated: true, completion: nil)
+            }
+            else
+            {
+                print("play video")
+                
+                let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+                playerVC.callWebServiceForPlaybackRights(item: currentPlayableItem!)
+                playerVC.modalPresentationStyle = .overFullScreen
+                playerVC.modalTransitionStyle = .coverVertical
+                self.present(playerVC, animated: true, completion: nil)
+            }
+
         }
         else
         {
-            print("play video")
-            
-            let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-            playerVC.callWebServiceForPlaybackRights(item: currentPlayableItem!)
-            playerVC.modalPresentationStyle = .overFullScreen
-            playerVC.modalTransitionStyle = .coverVertical
-            self.present(playerVC, animated: true, completion: nil)
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            settingsVC?.settingsTableView.reloadData()
+            return
         }
     }
     

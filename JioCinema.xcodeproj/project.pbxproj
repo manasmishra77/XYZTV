@@ -8,6 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
+		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
+		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
+		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
+		2025F44D1F3AEE3C00C3B609 /* JCSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */; };
+		2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */; };
+		2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */; };
+		2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */; };
+		2025F4551F3B513100C3B609 /* Autoplay.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4541F3B513100C3B609 /* Autoplay.png */; };
+		2025F4571F3B513A00C3B609 /* FAQ.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4561F3B513A00C3B609 /* FAQ.png */; };
+		2025F4591F3B51B700C3B609 /* Feedback.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4581F3B51B700C3B609 /* Feedback.png */; };
+		2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45A1F3B51BF00C3B609 /* Logout.png */; };
+		2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45C1F3B51C700C3B609 /* MyAccount.png */; };
+		2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */; };
+		2025F4631F3B51D800C3B609 /* Version.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4621F3B51D800C3B609 /* Version.png */; };
+		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
 		7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */; };
 		7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */; };
 		7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */; };
@@ -55,6 +70,21 @@
 
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
+		2024C4861F3C38A8003A08C3 /* Terms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terms.png; sourceTree = "<group>"; };
+		2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowGrey.png; sourceTree = "<group>"; };
+		2024C48A1F3C9C34003A08C3 /* ArrowPink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowPink.png; sourceTree = "<group>"; };
+		2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSettingsVC.swift; sourceTree = "<group>"; };
+		2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSettingsTableViewCell.swift; sourceTree = "<group>"; };
+		2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCSettingsTableViewCell.xib; sourceTree = "<group>"; };
+		2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSettingsDetailVC.swift; sourceTree = "<group>"; };
+		2025F4541F3B513100C3B609 /* Autoplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Autoplay.png; sourceTree = "<group>"; };
+		2025F4561F3B513A00C3B609 /* FAQ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FAQ.png; sourceTree = "<group>"; };
+		2025F4581F3B51B700C3B609 /* Feedback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Feedback.png; sourceTree = "<group>"; };
+		2025F45A1F3B51BF00C3B609 /* Logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logout.png; sourceTree = "<group>"; };
+		2025F45C1F3B51C700C3B609 /* MyAccount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyAccount.png; sourceTree = "<group>"; };
+		2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrivacyPolicy.png; sourceTree = "<group>"; };
+		2025F4621F3B51D800C3B609 /* Version.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Version.png; sourceTree = "<group>"; };
+		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMusicVC.swift; sourceTree = "<group>"; };
@@ -203,6 +233,8 @@
 				7BFE51411F29F47100C901C7 /* JCItemCell.xib */,
 				7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */,
 				7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */,
+				2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */,
+				2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -224,6 +256,8 @@
 				7BE0EA4E1F30694100151D23 /* JCTVVC.swift */,
 				7BE0EA501F30695700151D23 /* JCClipsVC.swift */,
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
+				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
+				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -235,6 +269,17 @@
 				7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */,
 				7BFE51471F2A0EB300C901C7 /* itemCellPlaceholder.png */,
 				7BFEC4CC1F178CB4001DFE6D /* loginBg.jpg */,
+				2025F4541F3B513100C3B609 /* Autoplay.png */,
+				2025F4561F3B513A00C3B609 /* FAQ.png */,
+				2025F4581F3B51B700C3B609 /* Feedback.png */,
+				2025F45A1F3B51BF00C3B609 /* Logout.png */,
+				2025F45C1F3B51C700C3B609 /* MyAccount.png */,
+				2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */,
+				2024C4861F3C38A8003A08C3 /* Terms.png */,
+				2025F4621F3B51D800C3B609 /* Version.png */,
+				2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */,
+				2024C48A1F3C9C34003A08C3 /* ArrowPink.png */,
+				205C0E5E1F3DCEE1004965A9 /* Settings.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -334,17 +379,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */,
+				2025F4571F3B513A00C3B609 /* FAQ.png in Resources */,
 				7BB0E20F1F1DFF8E00A1DB0B /* JCCarouselCell.xib in Resources */,
+				2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */,
 				7BFE51481F2A0EB300C901C7 /* carousel_placeholder-min.png in Resources */,
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
+				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
 				7BFE51431F29F47100C901C7 /* JCItemCell.xib in Resources */,
+				205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */,
 				7BC1E7161F33044700D08E83 /* JioCinema-SplashScreen.png in Resources */,
 				7BFE51391F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib in Resources */,
+				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
 				7BFEC4CD1F178CB4001DFE6D /* loginBg.jpg in Resources */,
 				7BFE51491F2A0EB300C901C7 /* itemCellPlaceholder.png in Resources */,
+				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
+				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
+				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
 				7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */,
+				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
+				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
+				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,9 +462,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B78D7D71F13BE7800F319BF /* JCAppConstants.swift in Sources */,
+				2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
+				2025F44D1F3AEE3C00C3B609 /* JCSettingsVC.swift in Sources */,
 				7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */,
 				7BB0E2111F1E283B00A1DB0B /* JCBaseDataModel.swift in Sources */,
 				7B78D7D41F13B92900F319BF /* RJILPendingTask.swift in Sources */,
@@ -433,6 +492,7 @@
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
+				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,
 			);

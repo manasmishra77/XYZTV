@@ -63,6 +63,8 @@ let otpVCStoryBoardId = "kOTPVC"
 let tabBarStoryBoardId = "kTabBarController"
 let playerVCStoryBoardId = "kPlayerVC"
 let metadataVCStoryBoardId = "kMetadataVC"
+let settingsVCStoryBoardId = "kSettingsVC"
+let settingsDetailVCStoryBoardId = "kSettingsDetailVC"
 
 //Nib Identifiers
 let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"
@@ -77,6 +79,7 @@ let isUserLoggedInKey = "isUserLoggedIn"
 let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
 let loginSuccessNotificationName = Notification.Name("loginSuccessful")
 let readyToPlayNotificationName = Notification.Name("readyToPlay")
+let isAutoPlayOnKey = "isAutoPlayOn"
 
 
 //OTP verification constants

@@ -159,6 +159,13 @@ class JCLoginManager:UIViewController
         JCAppUser.shared.unique = data["uniqueId"] as! String
     }
     
+    func logoutUser()
+    {
+        UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
+        UserDefaults.standard.set(encodedData, forKey: savedUserKey)
+
+    }
     
     
     
