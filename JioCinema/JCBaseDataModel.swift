@@ -28,6 +28,24 @@ class BaseDataModel:Mappable
     }
 }
 
+class WatchListDataModel:Mappable
+{
+    var code:Int?
+    var message:String?
+    var data:DataContainer?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+    }
+}
+
+
 class DataContainer:Mappable
 {
     var items:[Item]?

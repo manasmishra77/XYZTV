@@ -39,7 +39,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
         
-        (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: (item?.id)!)
+        (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
         
         
         // Do any additional setup after loading the view.
@@ -96,8 +96,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         {
             if indexPath.row == 0
             {
-                cell.categoryTitleLabel.text = metadata?.displayText
-                cell.moreLikeData = metadata?.more
+                cell.categoryTitleLabel.text = "Latest Episodes"
+                cell.episodes = metadata?.episodes
             }
         }
         return cell

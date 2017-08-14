@@ -43,6 +43,8 @@ let tvDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/9/")
 let clipsDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/35/")
 let playbackRightsURL = basePathForProd.appending("playbackrights/get/")
 let metadataUrl = basePathForProd.appending("metamore/get/")
+let moviesWatchListUrl = basePathForProd.appending("metalist/get/12")
+let tvWatchListUrl = basePathForProd.appending("metalist/get/13")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

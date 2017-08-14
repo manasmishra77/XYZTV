@@ -14,6 +14,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     @IBOutlet weak var tableCellCollectionView: UICollectionView!
     var data:[Item]?
     var moreLikeData:[More]?
+    var episodes:[Episode]?
     var artistImages:[String:String]?
     let itemCellIdentifier = "kJCItemCell"
     
@@ -40,6 +41,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if let moreLikeDataCount = moreLikeData?.count
         {
             return moreLikeDataCount
+        }
+        else if let episodesCount = episodes?.count
+        {
+            return episodesCount
         }
         else if let artistsCount = artistImages?.count
         {
@@ -87,6 +92,22 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
             }
         }
+        else if(episodes?[indexPath.row].banner != nil)
+        {
+            cell.titleLabel.text = episodes?[indexPath.row].name!
+            let imageUrl = episodes?[indexPath.row].banner!
+            
+            if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            {
+                cell.titleLabel.text = ""
+                cell.itemImageView.image = image;
+            }
+            else
+            {
+                self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
+            }
+        }
+            
         else if(artistImages != nil)
         {
             let keys = Array(artistImages!.keys)

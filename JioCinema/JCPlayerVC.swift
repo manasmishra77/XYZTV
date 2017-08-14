@@ -64,7 +64,6 @@ class JCPlayerVC: UIViewController {
         self.view.addSubview((playerController?.view)!)
         playerController?.view.frame = self.view.frame
         
-//        NotificationCenter.default.addObserver(self, selector: Selector(("playerDidFinishPlaying:")),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         player?.play()
     }
     

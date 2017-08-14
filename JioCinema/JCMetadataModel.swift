@@ -102,6 +102,7 @@ class MetadataModel:Mappable
     var code:Int?
     var displayText:String?
     var more:[More]?
+    var episodes:[Episode]?
     
 
     required init(map:Map) {
@@ -201,6 +202,8 @@ class MetadataModel:Mappable
         code <- map["code"]
         displayText <- map["displayText"]
         more <- map["more"]
+        episodes <- map["episodes"]
+        
     }
 }
 
@@ -303,5 +306,38 @@ class More:Mappable
     }
 }
 
-
+class Episode:Mappable
+{
+    var id:String?
+    var name:String?
+    var image:String?
+    var banner:String?
+    var showdate:String?
+    var subtitle:String?
+    var totalDuration:Int?
+    var epochShowDate:String?
+    var episodeNo:Int?
+    var legal:Bool?
+    var approved:Bool?
+    
+    
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        id <- map["id"]
+        name <- map["name"]
+        subtitle <- map["subtitle"]
+        banner <- map["banner"]
+        showdate <- map["showdate"]
+        epochShowDate <- map["epochShowDate"]
+        episodeNo <- map["episodeNo"]
+        legal <- map["legal"]
+        approved <- map["approved"]
+        totalDuration <- map["totalDuration"]
+        image <- map["image"]
+    }
+}
 
