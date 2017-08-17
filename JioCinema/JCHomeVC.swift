@@ -11,7 +11,7 @@ import UIKit
 class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
     var loadedPage = 0
- 
+    var isResumeWatchDataAvailable = false
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
@@ -31,6 +31,14 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if JCDataStore.sharedDataStore.resumeWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            callWebServiceForResumeWatchData()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -48,11 +56,21 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        cell.data = JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
-        cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
-        DispatchQueue.main.async {
-            cell.tableCellCollectionView.reloadData()
+        
+        if isResumeWatchDataAvailable,indexPath.row == 0
+        {
+            cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
+            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
         }
+        else
+        {
+            cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
+            cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
+            DispatchQueue.main.async {
+                cell.tableCellCollectionView.reloadData()
+            }
+        }
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
@@ -121,6 +139,37 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
     }
     
+    func callWebServiceForResumeWatchData()
+    {
+        let url = resumeWatchGetUrl
+        let params = ["uniqueId":JCAppUser.shared.unique]
+        let resumeWatchDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: resumeWatchDataRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateResumeWatchData(dictionaryResponseData: responseData)
+                return
+            }
+        }
+    }
+    
+    func evaluateResumeWatchData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
+        weak var weakSelf = self
+        isResumeWatchDataAvailable = true
+        DispatchQueue.main.async {
+            weakSelf?.baseTableView.reloadData()
+        }
+    }
 }
 
 

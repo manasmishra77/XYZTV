@@ -47,6 +47,7 @@ let moviesWatchListUrl = basePathForProd.appending("metalist/get/12")
 let tvWatchListUrl = basePathForProd.appending("metalist/get/13")
 let addToWatchListUrl = basePathForProd.appending("list/add")
 let removeFromWatchListUrl = basePathForProd.appending("list/deletecontent")
+let resumeWatchGetUrl = base.appending("06758e99be484fca56fb/v3/resumewatch/get")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

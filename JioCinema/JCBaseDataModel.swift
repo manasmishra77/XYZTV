@@ -45,6 +45,30 @@ class WatchListDataModel:Mappable
     }
 }
 
+class ResumeWatchListDataModel:Mappable
+{
+    var code:Int?
+    var message:String?
+    var data:DataContainer?
+    var title:String?
+    var pageCount:Int?
+    var seeMore:Bool?
+    var layout:Int?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+        title <- map["title"]
+        pageCount <- map["pageCount"]
+        seeMore <- map["seeMore"]
+        layout <- map["layout"]
+    }
+}
 
 class DataContainer:Mappable
 {

@@ -20,6 +20,7 @@ class JCDataStore
     var clipsData:BaseDataModel?
     var tvWatchList:WatchListDataModel?
     var moviesWatchList:WatchListDataModel?
+    var resumeWatchList:ResumeWatchListDataModel?
     
     enum Category
     {
@@ -30,6 +31,7 @@ class JCDataStore
         case Clips
         case TVWatchList
         case MoviesWatchList
+        case ResumeWatchList
     }
     
     
@@ -65,6 +67,8 @@ class JCDataStore
                 self.tvWatchList = WatchListDataModel(JSONString: responseString)
             case .MoviesWatchList:
                 self.moviesWatchList = WatchListDataModel(JSONString: responseString)
+            case .ResumeWatchList:
+                self.resumeWatchList = ResumeWatchListDataModel(JSONString: responseString)
             }
             
         }
@@ -89,6 +93,7 @@ class JCDataStore
                     self.clipsData?.data?.append(data)
                 case .TVWatchList: break                    
                 case .MoviesWatchList: break
+                case .ResumeWatchList: break
                 }
             }
         }
