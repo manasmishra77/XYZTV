@@ -74,7 +74,9 @@ class JCSplashVC: UIViewController {
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                DispatchQueue.main.async {
+                    weakSelf?.showAlert(alertString: "Unable to Connect")
+                }
                 return
             }
             if let responseData = data
@@ -104,6 +106,21 @@ class JCSplashVC: UIViewController {
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
         }
+    }
+    
+    fileprivate func showAlert(alertString:String)
+    {
+        weak var weakSelf = self
+        let alert = UIAlertController(title: "Connection Error",
+                                      message: alertString,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
+            weakSelf?.callWebServiceForHomeData(page: 0)
+        }
+        
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
     
 }
