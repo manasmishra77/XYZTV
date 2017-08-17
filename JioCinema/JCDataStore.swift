@@ -18,6 +18,8 @@ class JCDataStore
     var musicData:BaseDataModel?
     var tvData:BaseDataModel?
     var clipsData:BaseDataModel?
+    var tvWatchList:WatchListDataModel?
+    var moviesWatchList:WatchListDataModel?
     
     enum Category
     {
@@ -26,6 +28,8 @@ class JCDataStore
         case Music
         case TV
         case Clips
+        case TVWatchList
+        case MoviesWatchList
     }
     
     
@@ -57,6 +61,10 @@ class JCDataStore
                 self.clipsData = BaseDataModel(JSONString: responseString)
             case .TV:
                 self.tvData = BaseDataModel(JSONString: responseString)
+            case .TVWatchList:
+                self.tvWatchList = WatchListDataModel(JSONString: responseString)
+            case .MoviesWatchList:
+                self.moviesWatchList = WatchListDataModel(JSONString: responseString)
             }
             
         }
@@ -79,6 +87,8 @@ class JCDataStore
                     self.tvData?.data?.append(data)
                 case .Clips:
                     self.clipsData?.data?.append(data)
+                case .TVWatchList: break                    
+                case .MoviesWatchList: break
                 }
             }
         }
