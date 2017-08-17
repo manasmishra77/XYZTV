@@ -15,8 +15,14 @@ class JCSplashVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //Call config service
         callWebServiceForConfigData()
+        
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+        }
         
        callWebServiceForHomeData(page: 0)
         

@@ -40,7 +40,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             self.callWebServiceForTVWatchlist()
         }
-        self.baseTableView.reloadData()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +80,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
-        
         if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
         {
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
@@ -94,9 +93,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
         else
         {
-            let rowCount = indexPath.row - 1
-            cell.data = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[rowCount].items : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[rowCount].title : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
+            let dataRow = indexPath.row - 1
+            cell.data = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].items : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
+            cell.categoryTitleLabel.text = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].title : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
         }
         
         DispatchQueue.main.async {
@@ -226,7 +225,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             
             if let responseData = data
             {
-                weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
+                }
                 return
             }
         }
@@ -234,7 +235,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
-        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)        
         baseTableView.reloadData()
     }
 }
