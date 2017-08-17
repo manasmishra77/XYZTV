@@ -87,7 +87,6 @@ class RJILApiManager {
         }
     }
     
-    
     var otpHeaders:[String:String]{
         get{
             var _otpHeaders = [String:String]()

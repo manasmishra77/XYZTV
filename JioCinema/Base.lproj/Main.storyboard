@@ -89,15 +89,27 @@
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Please login to watch this video"/>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ld1-x1-w91">
+                                        <rect key="frame" x="-91" y="553" width="1459" height="126"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1459" id="1tl-pT-YxO"/>
+                                            <constraint firstAttribute="height" constant="126" id="idc-05-jjc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1276" id="0OX-36-Q5S"/>
                                     <constraint firstItem="NGB-JE-29z" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="4Ua-xB-Nvo"/>
                                     <constraint firstItem="GxH-Nz-KET" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="DLU-U5-1wr"/>
+                                    <constraint firstItem="ld1-x1-w91" firstAttribute="centerX" secondItem="vR2-ya-wId" secondAttribute="centerX" id="VD7-Ge-ihQ"/>
                                     <constraint firstItem="NGB-JE-29z" firstAttribute="top" secondItem="5Gm-mc-G4v" secondAttribute="top" id="VxB-mJ-brq"/>
                                     <constraint firstItem="GxH-Nz-KET" firstAttribute="top" secondItem="NGB-JE-29z" secondAttribute="bottom" constant="156" id="hhg-Zv-cE6"/>
                                     <constraint firstItem="vR2-ya-wId" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="pMa-kd-zMx"/>
+                                    <constraint firstAttribute="bottom" secondItem="ld1-x1-w91" secondAttribute="bottom" id="rJh-uo-wO2"/>
                                     <constraint firstAttribute="height" constant="679" id="sLM-Ye-MQG"/>
                                     <constraint firstItem="vR2-ya-wId" firstAttribute="top" secondItem="GxH-Nz-KET" secondAttribute="bottom" constant="36" id="xtT-6G-9wW"/>
                                 </constraints>

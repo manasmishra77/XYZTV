@@ -151,11 +151,10 @@
                         <color key="textColor" red="0.9907407407407407" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36Z-y4-rFe">
-                        <rect key="frame" x="323" y="553" width="193" height="34"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to watchlist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36Z-y4-rFe">
+                        <rect key="frame" x="322" y="553" width="160" height="34"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="34" id="bVs-Sg-plQ"/>
-                            <constraint firstAttribute="width" constant="193" id="oAP-qk-sLP"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                         <color key="textColor" red="0.9907407407407407" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -185,9 +184,9 @@
                     <constraint firstItem="cRz-ni-HWY" firstAttribute="leading" secondItem="dac-EE-lbE" secondAttribute="trailing" constant="49" id="n7n-h6-Xot"/>
                     <constraint firstAttribute="trailing" secondItem="D6a-U7-ppJ" secondAttribute="trailing" constant="50" id="nHv-JE-Q11"/>
                     <constraint firstItem="cRz-ni-HWY" firstAttribute="top" secondItem="nQT-yw-kLt" secondAttribute="bottom" constant="90" id="nbZ-ha-Aq9"/>
-                    <constraint firstItem="36Z-y4-rFe" firstAttribute="leading" secondItem="ZjH-P3-8XQ" secondAttribute="trailing" constant="75" id="oab-7B-qP8"/>
                     <constraint firstItem="dac-EE-lbE" firstAttribute="top" secondItem="EDs-zs-uEF" secondAttribute="bottom" constant="92" id="tnn-9V-Svi"/>
                     <constraint firstItem="L71-wL-lsO" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leadingMargin" constant="52" id="vWL-nJ-ABs"/>
+                    <constraint firstItem="36Z-y4-rFe" firstAttribute="centerX" secondItem="cRz-ni-HWY" secondAttribute="centerX" id="waT-9g-pyf"/>
                     <constraint firstItem="ZjH-P3-8XQ" firstAttribute="top" secondItem="dac-EE-lbE" secondAttribute="bottom" constant="8" id="z2J-4d-hYU"/>
                     <constraint firstItem="L71-wL-lsO" firstAttribute="top" secondItem="D6a-U7-ppJ" secondAttribute="bottom" constant="42" id="zYX-KT-pVr"/>
                     <constraint firstItem="EDs-zs-uEF" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leadingMargin" constant="52" id="zcE-xa-S9L"/>
@@ -203,6 +202,7 @@
                 <outlet property="subtitleLabel" destination="R4v-Qq-LSm" id="3nh-S7-Gt6"/>
                 <outlet property="titleLabel" destination="D6a-U7-ppJ" id="TVs-aM-tSF"/>
                 <outlet property="tvShowSubtitleLabel" destination="oul-zh-oH9" id="gwp-dB-QG1"/>
+                <outlet property="watchlistLabel" destination="36Z-y4-rFe" id="Zki-yh-aPG"/>
             </connections>
             <point key="canvasLocation" x="-433" y="192"/>
         </tableViewCell>

@@ -103,6 +103,7 @@ class MetadataModel:Mappable
     var displayText:String?
     var more:[More]?
     var episodes:[Episode]?
+    var inQueue:Bool?
     
 
     required init(map:Map) {
@@ -203,6 +204,7 @@ class MetadataModel:Mappable
         displayText <- map["displayText"]
         more <- map["more"]
         episodes <- map["episodes"]
+        inQueue <- map["inQueue"]
         
     }
 }

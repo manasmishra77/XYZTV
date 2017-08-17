@@ -77,10 +77,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
         }
             //For Metadata Controller More Like Data
-        else if(moreLikeData?[indexPath.row].banner != nil)
+        else if(episodes?[indexPath.row].banner != nil)
         {
-            cell.titleLabel.text = moreLikeData?[indexPath.row].name!
-            let imageUrl = moreLikeData?[indexPath.row].banner!
+            cell.titleLabel.text = episodes?[indexPath.row].name!
+            let imageUrl = episodes?[indexPath.row].banner!
             
             if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
             {
@@ -92,10 +92,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
             }
         }
-        else if(episodes?[indexPath.row].banner != nil)
+            
+        else if(moreLikeData?[indexPath.row].banner != nil)
         {
-            cell.titleLabel.text = episodes?[indexPath.row].name!
-            let imageUrl = episodes?[indexPath.row].banner!
+            cell.titleLabel.text = moreLikeData?[indexPath.row].name!
+            let imageUrl = moreLikeData?[indexPath.row].banner!
             
             if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
             {

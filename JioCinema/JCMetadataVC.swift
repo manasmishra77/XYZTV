@@ -56,9 +56,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if metadata != nil
+        if metadata != nil, metadata?.app?.type == VideoType.Movie.rawValue
         {
             return 2
+        }
+        else if metadata?.episodes != nil , metadata?.app?.type == VideoType.TVShow.rawValue
+        {
+            return 3
         }
         else
         {
@@ -91,13 +95,27 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             }
         }
             
-        // Metadata for TV
+            // Metadata for TV
         else if item?.app?.type == VideoType.TVShow.rawValue
         {
             if indexPath.row == 0
             {
                 cell.categoryTitleLabel.text = "Latest Episodes"
                 cell.episodes = metadata?.episodes
+                cell.tableCellCollectionView.reloadData()
+            }
+            if indexPath.row == 1
+            {
+                cell.moreLikeData = metadata?.more
+                cell.categoryTitleLabel.text = (metadata?.more?.count != nil) ? metadata?.displayText : ""
+                cell.tableCellCollectionView.reloadData()
+            }
+            if indexPath.row == 2
+            {
+                let dict = getStarCastImagesUrl(artists: (metadata?.artist)!)
+                cell.categoryTitleLabel.text = (dict.count != 0) ? "Cast & Crew" : ""
+                cell.artistImages = dict
+                cell.tableCellCollectionView.reloadData()
             }
         }
         return cell
@@ -140,11 +158,91 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if let responseData = data
             {
                 weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
-                DispatchQueue.main.async {
-                    weakSelf?.prepareMetadataScreen()
+                if JCLoginManager.sharedInstance.isUserLoggedIn()
+                {
+                    weakSelf?.callWebserviceForWatchListStatus(id: id)
+                }
+                else
+                {
+                    weakSelf?.callWebServiceForMoreLikeData(id: id)
+                }
+                
+                return
+            }
+        }
+    }
+    
+    
+    func callWebServiceForMoreLikeData(id:String)
+    {
+        let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
+        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                    DispatchQueue.main.async {
+                        weakSelf?.prepareMetadataScreen()
+                    }
+                
+                return
+            }
+        }
+        
+    }
+    
+    func callWebserviceForWatchListStatus(id:String)
+    {
+        let url = playbackRightsURL.appending(id.replacingOccurrences(of: "/0/0", with: ""))
+        let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                if let responseString = String(data: responseData, encoding: .utf8)
+                {
+                    let playbackRightsData = PlaybackRightsModel(JSONString: responseString)
+                    weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
+                    if(id.contains("/0/0"))
+                    {
+                        weakSelf?.callWebServiceForMoreLikeData(id: id)
+                    }
+                    else
+                    {
+                        DispatchQueue.main.async {
+                            weakSelf?.prepareMetadataScreen()
+                        }
+                    }
                 }
                 return
             }
+        }
+    }
+    
+    func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        if let responseString = String(data: responseData, encoding: .utf8)
+        {
+            let tempMetadata = MetadataModel(JSONString: responseString)
+            self.metadata?.more = tempMetadata?.more
+            self.metadata?.displayText = tempMetadata?.displayText
+            
         }
     }
     
@@ -209,7 +307,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func didReceiveNotificationForWatchNow(notification:Notification)
     {
-     //here perform the check for login. Accordingly present login or player
+        //here perform the check for login. Accordingly present login or player
         weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
@@ -246,13 +344,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         let id = (item?.app?.type == VideoType.Movie.rawValue) ? item?.id! : metadata?.latestEpisodeId!
         playerVC.callWebServiceForPlaybackRights(id: id!)
-
+        
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         self.present(playerVC, animated: false, completion: nil)
         
     }
-
+    
     func presentLoginVC()
     {
         let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)

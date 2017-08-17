@@ -30,6 +30,8 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var subtitleLabel: UILabel! 
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var watchlistLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -41,6 +43,11 @@ class MetadataHeaderViewCell: UIView {
         self.subtitleLabel.text = metadata?.newSubtitle
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")
         self.starringLabel.text = metadata?.artist?.joined(separator: ",")
+        
+//        if metadata != nil
+//        {
+//            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
+//        }
         
         if item?.app?.type == VideoType.Movie.rawValue, metadata != nil
         {
@@ -85,6 +92,42 @@ class MetadataHeaderViewCell: UIView {
     }
  
 
-    @IBAction func didClickOnAddToWatchListButton(_ sender: Any) {
+    @IBAction func didClickOnAddToWatchListButton(_ sender: Any)
+    {
+        var params = [String:Any]()
+        var url = ""
+        weak var weakSelf = self
+        if item?.app?.type == VideoType.TVShow.rawValue
+        {
+             params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
+        }
+        else if item?.app?.type == VideoType.Movie.rawValue
+        {
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
+        }
+        
+        url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
+        
+            let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+            RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+                if let responseError = error
+                {
+                    //TODO: handle error
+                    print(responseError)
+                    return
+                }
+                if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+                {
+                    let code = parsedResponse["code"] as? Int
+                    if(code == 200)
+                    {
+
+                        DispatchQueue.main.async {
+                            weakSelf?.watchlistLabel.text = (weakSelf?.metadata?.inQueue)! ? "Add to watchlist" : "Remove from watchlist"
+                        }
+                    }
+                    return
+                }
+            }
     }
 }
