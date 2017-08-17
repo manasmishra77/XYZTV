@@ -11,6 +11,7 @@ import UIKit
 class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
 {
     var loadedPage = 0
+    var isMoviesWatchlistAvailable = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -38,7 +39,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         {
             self.callWebServiceForMoviesWatchlist()
         }
-        self.baseTableView.reloadData()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,11 +89,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         {
             cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
+            isMoviesWatchlistAvailable = true
         }
         else
         {
-            cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
+            let dataRow = indexPath.row - 1
+            cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
+            cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
         }
         
         DispatchQueue.main.async {
@@ -222,7 +225,9 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             
             if let responseData = data
             {
-                weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
+                }
                 return
             }
         }
