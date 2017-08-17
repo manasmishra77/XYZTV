@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCSettingsVC.swift"
-            timestampString = "524391186.356548"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647588.182871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "didUpdateFocus(in:with:)"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCSettingsVC.swift"
-            timestampString = "524391186.356548"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647782.883959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
-            landmarkName = "didUpdateFocus(in:with:)"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "callWebServiceForTVWatchlist()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCSettingsVC.swift"
-            timestampString = "524391186.356548"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647782.883959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "didUpdateFocus(in:with:)"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "callWebServiceForTVWatchlist()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCSettingsVC.swift"
-            timestampString = "524391186.356548"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647782.883959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "didUpdateFocus(in:with:)"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "evaluateTVWatchlistData(dictionaryResponseData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647588.182871"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTVVC.swift"
+            timestampString = "524647588.182871"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

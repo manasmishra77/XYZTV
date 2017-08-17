@@ -146,9 +146,6 @@ class JCLoginManager:UIViewController
         }
     }
     
-    
-    
-    
     fileprivate func setUserData(data: [String:Any])
     {
         JCAppUser.shared.lbCookie = data["lbCookie"] as! String
@@ -164,9 +161,7 @@ class JCLoginManager:UIViewController
         UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
-
     }
-    
     
     
 }

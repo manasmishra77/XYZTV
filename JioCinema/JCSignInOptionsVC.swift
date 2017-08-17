@@ -63,6 +63,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     {
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
+                        
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                                 NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
@@ -125,10 +126,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     func navigateToHomeVC()
     {
-        DispatchQueue.main.async {
-            
+        DispatchQueue.main.async {            
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-            
             let navController = UINavigationController.init(rootViewController: tabBarController)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController

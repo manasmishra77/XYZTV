@@ -12,6 +12,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
 
     var loadedPage = 0
+    var isTVWatchlistAvailable = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -33,6 +34,15 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if JCDataStore.sharedDataStore.tvWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            self.callWebServiceForTVWatchlist()
+        }
+        self.baseTableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -50,6 +60,10 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! - 1
+            }
+            else if JCDataStore.sharedDataStore.tvWatchList != nil
+            {
+                return (JCDataStore.sharedDataStore.tvData?.data?.count)! + 1
             }
             else
             {
@@ -72,10 +86,17 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
         }
+        else if JCDataStore.sharedDataStore.tvWatchList != nil, indexPath.row == 0
+        {
+            cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
+            cell.categoryTitleLabel.text = "WatchList"
+            isTVWatchlistAvailable = true
+        }
         else
         {
-            cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
+            let rowCount = indexPath.row - 1
+            cell.data = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[rowCount].items : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
+            cell.categoryTitleLabel.text = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[rowCount].title : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
         }
         
         DispatchQueue.main.async {
@@ -187,5 +208,33 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
     }
 
-
+    func callWebServiceForTVWatchlist()
+    {
+        let url = tvWatchListUrl
+        let uniqueID = JCAppUser.shared.unique
+        var params: Dictionary<String, Any> = [:]
+        params["uniqueId"] = uniqueID
+        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                print(responseError)
+                return
+            }
+            
+            if let responseData = data
+            {
+                weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
+                return
+            }
+        }
+    }
+    
+    func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
+    {
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
+        baseTableView.reloadData()
+    }
 }
