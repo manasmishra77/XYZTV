@@ -120,7 +120,7 @@ class JCTabBarController: UITabBarController {
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")
-                    weakSelf?.presentLoginVC()
+                    NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
                     
                 }
                 else
@@ -150,10 +150,21 @@ class JCTabBarController: UITabBarController {
         print("play video")
         
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
+            
+            if isCurrentItemEpisode
+            {
+                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Episode).id!))
+            }
+            else
+            {
+                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
+            }
+        
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
-        self.present(playerVC, animated: false, completion: nil)
+        let playerItem = ["player":playerVC]
+        NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+            
         }
         else
         {
