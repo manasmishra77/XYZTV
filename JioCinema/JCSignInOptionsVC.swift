@@ -35,8 +35,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // let jioID = jioIdTextField.text
         //let password = passwordTextField.text
         
-        let jioID = "pallav.trivedi"
-        let password = "trivedi@1010"
+        let jioID = "priyankadoshi-474"
+        let password = "priyanka30"
         if(jioID.characters.count == 0 || password.characters.count == 0)
         {
             self.showAlert(alertString: "Jio ID/Password cannot be empty")

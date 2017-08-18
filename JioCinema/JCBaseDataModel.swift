@@ -115,6 +115,7 @@ class Item:Mappable
     var latestId:String?
     var layout:Int?
     
+    
     required init(map:Map) {
         
     }

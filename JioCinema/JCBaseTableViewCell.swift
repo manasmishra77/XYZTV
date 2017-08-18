@@ -63,28 +63,28 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         //For Home, Movies, Music etc
         if(data?[indexPath.row].banner != nil)
         {
-            cell.titleLabel.text = data?[indexPath.row].name!
-            let imageUrl = data?[indexPath.row].banner!
+            if let imageUrl = data?[indexPath.row].banner!
+            {
+                cell.nameLabel.text = data?[indexPath.row].name!
+                if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                {
+                    cell.itemImageView.image = image;
+                }
+                else
+                {
+                    self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
+                }
+            }
             
-            if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-            {
-                cell.titleLabel.text = ""
-                cell.itemImageView.image = image;
-            }
-            else
-            {
-                self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
-            }
         }
             //For Metadata Controller More Like Data
         else if(episodes?[indexPath.row].banner != nil)
         {
-            cell.titleLabel.text = episodes?[indexPath.row].name!
+            cell.nameLabel.text = episodes?[indexPath.row].name
             let imageUrl = episodes?[indexPath.row].banner!
             
             if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
             {
-                cell.titleLabel.text = ""
                 cell.itemImageView.image = image;
             }
             else
@@ -95,12 +95,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(moreLikeData?[indexPath.row].banner != nil)
         {
-            cell.titleLabel.text = moreLikeData?[indexPath.row].name!
+            cell.nameLabel.text = moreLikeData?[indexPath.row].name
             let imageUrl = moreLikeData?[indexPath.row].banner!
             
             if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
             {
-                cell.titleLabel.text = ""
                 cell.itemImageView.image = image;
             }
             else
@@ -115,10 +114,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let key = keys[indexPath.row]
             let imageUrl = artistImages?[key]
             
-            cell.titleLabel.text = key
             if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
             {
-                cell.titleLabel.text = ""
                 cell.itemImageView.image = image;
             }
             else
@@ -126,6 +123,20 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
             }
         }
+        
+//        let finalCellFrame = cell.frame
+//        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
+//        if translation.x > 0
+//        {
+//            cell.frame = CGRect.init(x: finalCellFrame.origin.x - 500, y: -500.0, width: 0, height: 0)
+//        }
+//        else
+//        {
+//            cell.frame = CGRect.init(x: finalCellFrame.origin.x + 500, y: -500.0, width: 0, height: 0)
+//        }
+//        UIView.animate(withDuration: 0.5) {
+//            cell.frame = finalCellFrame
+//        }
         
         return cell
     }
@@ -137,10 +148,19 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let itemToPlay = ["item":(data?[indexPath.row])!]
             NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
         }
-        else
+        else if moreLikeData != nil
         {
             let itemToPlay = ["item":(moreLikeData?[indexPath.row])!]
             NotificationCenter.default.post(name: metadataCellTapNotificationName, object: nil, userInfo: itemToPlay)
+        }
+        else if episodes != nil
+        {
+            let itemToPlay = ["item":(episodes?[indexPath.row])!]
+            NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
+        }
+            else if artistImages != nil
+        {
+        
         }
         
     }
@@ -163,7 +183,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                         
                         let itemCell = cell as! JCItemCell
                         itemCell.itemImageView.image = img
-                        itemCell.titleLabel.text = ""
                     }
                 }
             }

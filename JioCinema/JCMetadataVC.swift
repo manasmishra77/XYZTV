@@ -144,7 +144,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func callWebServiceForMetadata(id:String)
     {
-        let url = metadataUrl.appending(id)
+        let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -175,7 +175,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func callWebServiceForMoreLikeData(id:String)
     {
-        let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
+        let url = item?.app?.type == VideoType.Movie.rawValue ? metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: "")) :metadataUrl.appending(id)
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -240,7 +240,16 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
-            self.metadata?.more = tempMetadata?.more
+            if item?.app?.type == VideoType.Movie.rawValue
+            {
+                self.metadata?.more = tempMetadata?.more
+            }
+            else
+            {
+                self.metadata?.episodes = tempMetadata?.episodes
+                self.metadata?.artist = tempMetadata?.artist
+            }
+            
             self.metadata?.displayText = tempMetadata?.displayText
             
         }

@@ -33,7 +33,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
-        if JCDataStore.sharedDataStore.resumeWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             callWebServiceForResumeWatchData()
         }
@@ -61,6 +61,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
+            cell.tableCellCollectionView.reloadData()
         }
         else
         {

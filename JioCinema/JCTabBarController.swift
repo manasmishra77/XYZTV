@@ -19,7 +19,8 @@ class JCTabBarController: UITabBarController {
     }
     
     var settingsVC:JCSettingsVC?
-    var currentPlayableItem:Item?
+    var currentPlayableItem:Any?
+    var isCurrentItemEpisode = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,7 +64,16 @@ class JCTabBarController: UITabBarController {
     func didReceiveNotificationForCellTap(notification:Notification) -> Void
     {
         weak var weakSelf = self
-        guard let item = notification.userInfo?["item"] as? Item
+        if let item = notification.userInfo?["item"] as? Item
+        {
+        currentPlayableItem = item
+            isCurrentItemEpisode = false
+        }
+            else if let item = notification.userInfo?["item"] as? Episode
+        {
+            currentPlayableItem = item
+            isCurrentItemEpisode = true
+        }
             else {
                 JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                     if(isOnJioNetwork == false)
@@ -75,47 +85,59 @@ class JCTabBarController: UITabBarController {
                 }
                 return
         }
-        currentPlayableItem = item
-
         
+
         //if metadata is to be shown, show it here, else, proceed with the below flow
-        if(currentPlayableItem?.app?.type == VideoType.Movie.rawValue || currentPlayableItem?.app?.type == VideoType.TVShow.rawValue)
+        
+        if !isCurrentItemEpisode
         {
-            showMetadata()
-        }
-        else
-        {
-            if(JCLoginManager.sharedInstance.isUserLoggedIn())
+            if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
-                JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-                weakSelf?.prepareToPlay()
+                showMetadata()
             }
             else
             {
-                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
-                    if(isOnJioNetwork == false)
-                    {
-                        print("Not on jio network")
-                        weakSelf?.presentLoginVC()
-                        
-                    }
-                    else
-                    {
-                        //proceed without checking any login
-                        weakSelf?.prepareToPlay()
-                        print("Is on jio network")
-                    }
+                weakSelf?.checkLoginAndPlay()
+            }
+        }
+        else
+        {
+            weakSelf?.checkLoginAndPlay()
+        }
+    }
+    
+    func checkLoginAndPlay()
+    {
+        weak var weakSelf = self
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            prepareToPlay()
+        }
+        else
+        {
+            JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                if(isOnJioNetwork == false)
+                {
+                    print("Not on jio network")
+                    weakSelf?.presentLoginVC()
+                    
+                }
+                else
+                {
+                    //proceed without checking any login
+                    weakSelf?.prepareToPlay()
+                    print("Is on jio network")
                 }
             }
         }
     }
     
-    
     func showMetadata()
     {
         print("show metadata")
         let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-        metadataVC.item = currentPlayableItem
+        metadataVC.item = currentPlayableItem as? Item
         metadataVC.modalPresentationStyle = .overFullScreen
         metadataVC.modalTransitionStyle = .coverVertical
         self.present(metadataVC, animated: false, completion: nil)
@@ -128,7 +150,7 @@ class JCTabBarController: UITabBarController {
         print("play video")
         
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.callWebServiceForPlaybackRights(id: (currentPlayableItem?.id!)!)
+        playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         self.present(playerVC, animated: false, completion: nil)

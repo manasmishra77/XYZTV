@@ -12,6 +12,7 @@ class JCItemCell: UICollectionViewCell {
     
     @IBOutlet weak var itemImageView: UIImageView!
     
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     override func prepareForReuse() {
         self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
