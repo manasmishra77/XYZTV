@@ -145,7 +145,7 @@ class JCTabBarController: UITabBarController {
     
     func prepareToPlay()
     {
-        if currentPlayableItem != nil
+        if currentPlayableItem != nil, JCLoginManager.sharedInstance.isLoginFromSettingsScreen == false
         {
         print("play video")
         
@@ -154,22 +154,26 @@ class JCTabBarController: UITabBarController {
             if isCurrentItemEpisode
             {
                 playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Episode).id!))
+                playerVC.modalPresentationStyle = .overFullScreen
+                playerVC.modalTransitionStyle = .coverVertical
+                let playerItem = ["player":playerVC]
+                NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
             }
             else
             {
                 playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
+                playerVC.modalPresentationStyle = .overFullScreen
+                playerVC.modalTransitionStyle = .coverVertical
+                self.present(playerVC, animated: false, completion: nil)
+                
             }
         
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
-        let playerItem = ["player":playerVC]
-        NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
-            
         }
         else
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             settingsVC?.settingsTableView.reloadData()
+            JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
             return
         }
     }

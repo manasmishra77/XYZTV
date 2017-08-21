@@ -39,7 +39,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         {
             self.callWebServiceForMoviesWatchlist()
         }
-        
+        baseTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,20 +87,23 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         }
         else if JCDataStore.sharedDataStore.moviesWatchList != nil, indexPath.row == 0
         {
+            if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
+            {
             cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
+                cell.tableCellCollectionView.reloadData()
             isMoviesWatchlistAvailable = true
+            }
         }
         else
         {
             let dataRow = indexPath.row - 1
             cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
             cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
-        }
-        
-        DispatchQueue.main.async {
             cell.tableCellCollectionView.reloadData()
         }
+        
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
@@ -237,7 +240,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
-        baseTableView.reloadData()
+        weak var weakSelf = self
+        DispatchQueue.main.async {
+            weakSelf?.baseTableView.reloadData()
+        }
     }
     
 }

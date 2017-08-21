@@ -37,6 +37,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             callWebServiceForResumeWatchData()
         }
+        baseTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -67,9 +68,8 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
-            DispatchQueue.main.async {
                 cell.tableCellCollectionView.reloadData()
-            }
+            
         }
         
         if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)

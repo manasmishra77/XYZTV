@@ -13,7 +13,7 @@ class JCLoginManager:UIViewController
     static let sharedInstance = JCLoginManager()
     
     var loggingInViaSubId = false
-    
+    var isLoginFromSettingsScreen = false
     func isUserLoggedIn() -> Bool
     {
         if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)

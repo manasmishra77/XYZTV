@@ -110,6 +110,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
+            
             let keys = Array(artistImages!.keys)
             let key = keys[indexPath.row]
             let imageUrl = artistImages?[key]

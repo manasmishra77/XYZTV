@@ -76,6 +76,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
         
+        cell.moreLikeData = nil
+        cell.episodes = nil
+        cell.data = nil
+        cell.artistImages = nil
         //Metadata for Movies
         
         if item?.app?.type == VideoType.Movie.rawValue
@@ -107,7 +111,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if indexPath.row == 1
             {
                 cell.moreLikeData = metadata?.more
-                cell.categoryTitleLabel.text = (metadata?.more?.count != nil) ? metadata?.displayText : ""
+                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item?.name))" : ""
                 cell.tableCellCollectionView.reloadData()
             }
             if indexPath.row == 2
@@ -210,6 +214,16 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             {
                 //TODO: handle error
                 print(responseError)
+                if(id.contains("/0/0"))
+                {
+                    weakSelf?.callWebServiceForMoreLikeData(id: id)
+                }
+                else
+                {
+                    DispatchQueue.main.async {
+                        weakSelf?.prepareMetadataScreen()
+                    }
+                }
                 return
             }
             if let responseData = data
@@ -244,12 +258,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             {
                 self.metadata?.more = tempMetadata?.more
             }
-            else
+            else if item?.app?.type == VideoType.TVShow.rawValue
             {
                 self.metadata?.episodes = tempMetadata?.episodes
                 self.metadata?.artist = tempMetadata?.artist
             }
-            
             self.metadata?.displayText = tempMetadata?.displayText
             
         }
@@ -394,7 +407,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         metadataContainerView.isHidden = true
         headerView?.isHidden = true
         loaderContainerView.isHidden = false
-        (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: (item?.id)!)
+        (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
         
     }
     

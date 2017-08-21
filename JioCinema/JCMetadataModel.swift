@@ -144,7 +144,16 @@ class MetadataModel:Mappable
         isLegal <- map["isLegal"]
         updatedAt <- map["updatedAt"]
         censorCertificate <- map["censorCertificate"]
+        
+        var tempStore: Double?
+        tempStore <- map["id"]
+        
         id <- map["id"]
+        
+        if id == nil, tempStore != nil {
+            id = "\(String(describing: Int(tempStore!)))"
+        }
+        
         intCensorCertificate <- map["intCensorCertificate"]
         costStructure <- map["costStructure"]
         vendor <- map["vendor"]
@@ -290,7 +299,15 @@ class More:Mappable
     
     func mapping(map:Map)
     {
+        var tempStore: Double?
+        tempStore <- map["id"]
+        
         id <- map["id"]
+        
+        if id == nil, tempStore != nil {
+            id = "\(String(describing: Int(tempStore!)))"
+        }
+        
         name <- map["name"]
         subtitle <- map["subtitle"]
         banner <- map["banner"]

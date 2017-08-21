@@ -204,9 +204,11 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             {
                 JCLoginManager.sharedInstance.logoutUser()
                 settingsTableView.reloadData()
+                JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
             }
             else
             {
+                JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
                 NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
             }
         }

@@ -114,7 +114,8 @@ class Item:Mappable
     var app:App?
     var latestId:String?
     var layout:Int?
-    
+    var duration:Int?
+    var totalDuration:Int?
     
     required init(map:Map) {
         
@@ -148,6 +149,8 @@ class Item:Mappable
             latestId = "\(String(describing: Int(tempStore!)))"
         }
         layout <- map["layout"]
+        duration <- map["duration"]
+        totalDuration <- map["totalDuration"]
     }
 }
 

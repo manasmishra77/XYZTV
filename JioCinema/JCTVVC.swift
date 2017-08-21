@@ -40,6 +40,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             self.callWebServiceForTVWatchlist()
         }
+        baseTableView.reloadData()
         
     }
     
@@ -84,23 +85,26 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
+            
         }
         else if JCDataStore.sharedDataStore.tvWatchList != nil, indexPath.row == 0
         {
+            if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
+            {
             cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
+                cell.tableCellCollectionView.reloadData()
             isTVWatchlistAvailable = true
+            }
         }
         else
         {
             let dataRow = indexPath.row - 1
             cell.data = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].items : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
             cell.categoryTitleLabel.text = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].title : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
-        }
-        
-        DispatchQueue.main.async {
             cell.tableCellCollectionView.reloadData()
         }
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
@@ -236,6 +240,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)        
-        baseTableView.reloadData()
+        weak var weakSelf = self
+        DispatchQueue.main.async {
+            weakSelf?.baseTableView.reloadData()
+        }
     }
 }
