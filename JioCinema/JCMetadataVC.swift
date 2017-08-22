@@ -8,7 +8,8 @@
 
 import UIKit
 
-class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
+{
     
     
     enum VideoType:Int
@@ -21,6 +22,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     var item:Item?
     var metadata:MetadataModel?
+    var selectedYearIndex = 0
     let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
     
     @IBOutlet weak var metadataTableView: UITableView!
@@ -35,6 +37,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         NotificationCenter.default.addObserver(forName: watchNowNotificationName, object: nil, queue: nil, using: didReceiveNotificationForWatchNow(notification:))
         NotificationCenter.default.addObserver(forName: metadataCellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForMetadataCellTap(notification:))
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
+        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
+        headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
         self.metadataTableView.tableFooterView = UIView.init()
         
         loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
@@ -111,7 +116,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if indexPath.row == 1
             {
                 cell.moreLikeData = metadata?.more
-                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item?.name))" : ""
+                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item!.name!))" : ""
                 cell.tableCellCollectionView.reloadData()
             }
             if indexPath.row == 2
@@ -133,6 +138,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     {
         headerCell.item = item
         headerCell.metadata = metadata
+        headerCell.seasonCollectionView.delegate = self
+        headerCell.seasonCollectionView.dataSource = self
+        headerCell.monthsCollectionView.delegate = self
+        headerCell.monthsCollectionView.dataSource = self
         return headerCell.prepareView()
     }
     
@@ -193,9 +202,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if let responseData = data
             {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                    DispatchQueue.main.async {
-                        weakSelf?.prepareMetadataScreen()
-                    }
+                DispatchQueue.main.async {
+                    weakSelf?.prepareMetadataScreen()
+                }
                 
                 return
             }
@@ -304,6 +313,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             headerView = resetHeaderView()
         }
         headerView = prepareHeaderView()
+        headerCell.seasonCollectionView.reloadData()
+        headerCell.monthsCollectionView.reloadData()
         headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 680)
         self.view.addSubview(headerView!)
         headerView?.isHidden = false
@@ -456,5 +467,167 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
 extension Data {
     func hexEncodedString() -> String {
         return map { String(format: "%02hhx", $0) }.joined()
+    }
+}
+
+extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        {
+            return (metadata?.filter?.count)!
+        }
+        else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
+        {
+            return (metadata?.filter?.count)!
+        }
+        else if collectionView == headerCell.monthsCollectionView   //months, in case of episodes
+        {
+            if let count = (metadata?.filter![selectedYearIndex].month?.count)
+            {
+                return count
+            }
+            else
+            {
+                return 0
+            }
+        }
+        else
+        {
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
+            cell.seasonNumberLabel.text = String(describing: metadata!.filter![indexPath.row].season!)
+            return cell
+        }
+        else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
+        {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
+            if let text = metadata!.filter![indexPath.row].filter
+            {
+                cell.yearLabel.text = text
+            }
+            else
+            {
+                cell.yearLabel.text = ""
+            }
+            return cell
+        }
+        else if collectionView == headerCell.monthsCollectionView
+        {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: monthCellIdentifier, for: indexPath) as! JCMonthCell
+            var text = ""
+            switch metadata!.filter![selectedYearIndex].month![indexPath.row]
+            {
+            case "01":
+                text = "Jan"
+            case "02":
+                text = "Feb"
+            case "03":
+                text = "Mar"
+            case "04":
+                text = "Apr"
+            case "05":
+                text = "May"
+            case "06":
+                text = "Jun"
+            case "07":
+                text = "Jul"
+            case "08":
+                text = "Aug"
+            case "09":
+                text = "Sep"
+            case "10":
+                text = "Oct"
+            case "11":
+                text = "Nov"
+            case "12":
+                text = "Dec"
+            default:
+                break
+                
+            }
+            
+            cell.monthLabel.text = text
+            return cell
+        }
+        else
+        {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
+            return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        {
+            let filter = String(metadata!.filter![indexPath.row].season!)
+            callWebServiceForSelectedFilter(filter: filter)
+        }
+        else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
+        {
+            selectedYearIndex = indexPath.row
+            headerCell.monthsCollectionView.reloadData()
+        }
+        else    //months
+        {
+            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![indexPath.row]))")
+            callWebServiceForSelectedFilter(filter: filter)
+        }
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
+        if collectionView == headerCell.seasonCollectionView
+        {
+            return true
+        }
+        else
+        {
+            return true
+        }
+    }
+    
+    func callWebServiceForSelectedFilter(filter:String)
+    {
+        let url = metadataUrl.appending((metadata?.id)!).appending("/\(filter)")
+        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                let indexPath = IndexPath.init(row: 0, section: 0)
+                DispatchQueue.main.async {
+                    weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                }
+                
+                return
+            }
+        }
+    }
+    
+    func evaluateFilteredData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        if let responseString = String(data: responseData, encoding: .utf8)
+        {
+            let tempMetadata = MetadataModel(JSONString: responseString)
+            self.metadata?.episodes = tempMetadata?.episodes
+        }
     }
 }

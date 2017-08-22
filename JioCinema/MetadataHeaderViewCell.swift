@@ -32,6 +32,9 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     
+    @IBOutlet weak var monthsCollectionView: UICollectionView!
+    @IBOutlet weak var seasonCollectionView: UICollectionView!
+    @IBOutlet weak var seasonsLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -62,6 +65,23 @@ class MetadataHeaderViewCell: UIView {
             self.subtitleLabel.isHidden = true
             self.tvShowSubtitleLabel.isHidden = false
             self.tvShowSubtitleLabel.text = metadata?.newSubtitle
+            
+            if (metadata?.isSeason)!
+            {
+                seasonsLabel.isHidden = false
+                seasonCollectionView.isHidden = false
+               monthsCollectionView.isHidden = true
+            }
+            else
+            {
+                seasonsLabel.isHidden = false
+                seasonsLabel.text = "Previous Episodes"
+                seasonCollectionView.isHidden = false
+                monthsCollectionView.isHidden = false
+            }
+            
+            
+            
             return self
         }
         else

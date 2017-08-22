@@ -78,6 +78,9 @@ let baseCollectionViewCellReuseIdentifier = "kBaseCollectionViewCell"
 let baseHeaderTableViewCellIdentifier = "kBaseTableViewHeaderCell"
 let baseFooterTableViewCellIdentifier = "kBaseTableViewFooterCell"
 let metadataHeaderTableViewCellIdentifier = "kMetadataHeaderViewCell"
+let seasonCollectionViewCellIdentifier = "kSeasonCollectionViewCell"
+let yearCellIdentifier = "kYearCell"
+let monthCellIdentifier = "kMonthCell"
 
 //Constant Values
 let heightOfCarouselSection = 600
