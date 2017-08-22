@@ -357,7 +357,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")
-                    weakSelf?.presentLoginVC()
+                    DispatchQueue.main.async {
+                        weakSelf?.presentLoginVC()
+                    }
+                    
                     
                 }
                 else
@@ -473,30 +476,33 @@ extension Data {
 extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        if metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            return (metadata?.filter?.count)!
-        }
-        else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
-        {
-            return (metadata?.filter?.count)!
-        }
-        else if collectionView == headerCell.monthsCollectionView   //months, in case of episodes
-        {
-            if let count = (metadata?.filter![selectedYearIndex].month?.count)
+            if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
             {
-                return count
+                return (metadata?.filter?.count)!
+            }
+            else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
+            {
+                return (metadata?.filter?.count)!
+            }
+            else if collectionView == headerCell.monthsCollectionView   //months, in case of episodes
+            {
+                if let count = (metadata?.filter![selectedYearIndex].month?.count)
+                {
+                    return count
+                }
+                else
+                {
+                    return 0
+                }
             }
             else
             {
                 return 0
             }
         }
-        else
-        {
-            return 0
-        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
@@ -576,6 +582,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
         {
             selectedYearIndex = indexPath.row
             headerCell.monthsCollectionView.reloadData()
+            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![0]))")
+            callWebServiceForSelectedFilter(filter: filter)
         }
         else    //months
         {

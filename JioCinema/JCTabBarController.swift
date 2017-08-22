@@ -16,6 +16,7 @@ class JCTabBarController: UITabBarController {
         case Music = 2
         case TVShow = 1
         case Clip = 6
+        case Trailer = 3
     }
     
     var settingsVC:JCSettingsVC?
@@ -79,7 +80,10 @@ class JCTabBarController: UITabBarController {
                     if(isOnJioNetwork == false)
                     {
                         print("Not on jio network")
-                        weakSelf?.presentLoginVC()
+                        DispatchQueue.main.async {
+                            weakSelf?.presentLoginVC()
+                        }
+                        
                         
                     }
                 }
@@ -120,7 +124,19 @@ class JCTabBarController: UITabBarController {
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")
+                    if let item = weakSelf?.currentPlayableItem as? Item
+                    {
+                        if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue)
+                        {
+                            DispatchQueue.main.async {
+                                weakSelf?.presentLoginVC()
+                            }
+                        }
+                    }
+                    else
+                    {
                     NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
+                    }
                     
                 }
                 else

@@ -66,21 +66,22 @@ class MetadataHeaderViewCell: UIView {
             self.tvShowSubtitleLabel.isHidden = false
             self.tvShowSubtitleLabel.text = metadata?.newSubtitle
             
-            if (metadata?.isSeason)!
+            if (metadata?.isSeason) != nil
             {
-                seasonsLabel.isHidden = false
-                seasonCollectionView.isHidden = false
-               monthsCollectionView.isHidden = true
+                if (metadata?.isSeason)!
+                {
+                    seasonsLabel.isHidden = false
+                    seasonCollectionView.isHidden = false
+                    monthsCollectionView.isHidden = true
+                }
+                else
+                {
+                    seasonsLabel.isHidden = false
+                    seasonsLabel.text = "Previous Episodes"
+                    seasonCollectionView.isHidden = false
+                    monthsCollectionView.isHidden = false
+                }
             }
-            else
-            {
-                seasonsLabel.isHidden = false
-                seasonsLabel.text = "Previous Episodes"
-                seasonCollectionView.isHidden = false
-                monthsCollectionView.isHidden = false
-            }
-            
-            
             
             return self
         }
