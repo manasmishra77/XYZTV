@@ -49,6 +49,7 @@ let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
 let addToWatchListUrl = basePath.appending("common/v3/list/add")
 let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
 let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
+let preditiveSearchURL = basePath.appending("common/v3/search/search")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

@@ -23,6 +23,8 @@
 		2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */; };
 		2025F4631F3B51D800C3B609 /* Version.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4621F3B51D800C3B609 /* Version.png */; };
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
+		797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchVC.swift */; };
+		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
 		7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */; };
 		7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */; };
 		7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */; };
@@ -100,6 +102,8 @@
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
+		797880F81F4ECB390032943E /* JCSearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchVC.swift; sourceTree = "<group>"; };
+		797880FA1F4ECB810032943E /* SearchDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataStore.swift; sourceTree = "<group>"; };
 		7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMusicVC.swift; sourceTree = "<group>"; };
 		7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RJILImageDownloader.swift; sourceTree = "<group>"; };
 		7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCOTPVC.swift; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 		7BFEC4A71F154BDC001DFE6D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
+				797880F81F4ECB390032943E /* JCSearchVC.swift */,
 				7BFEC4AA1F154C42001DFE6D /* JCSplashVC.swift */,
 				7BFEC4B91F15C01A001DFE6D /* JCLoginVC.swift */,
 				7BFEC4BB1F15C647001DFE6D /* JCHomeVC.swift */,
@@ -528,6 +534,7 @@
 				7B78D7D41F13B92900F319BF /* RJILPendingTask.swift in Sources */,
 				7BE0EA4F1F30694100151D23 /* JCTVVC.swift in Sources */,
 				7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */,
+				797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */,
 				7BFEC4BC1F15C647001DFE6D /* JCHomeVC.swift in Sources */,
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
@@ -554,6 +561,7 @@
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
+				797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,
 				7BB86E7B1F4C1FAD00610436 /* JCMonthCell.swift in Sources */,
