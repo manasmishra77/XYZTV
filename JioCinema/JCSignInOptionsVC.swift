@@ -32,18 +32,18 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-        // let jioID = jioIdTextField.text
-        //let password = passwordTextField.text
+        let jioID = jioIdTextField.text
+        let password = passwordTextField.text
         
-        let jioID = "pallav.trivedi"
-        let password = "trivedi@1010"
-        if(jioID.characters.count == 0 || password.characters.count == 0)
+        //let jioID = "pallavtrivedi-4"
+        //let password = "pallav@1010"
+        if(jioID?.characters.count == 0 || password?.characters.count == 0)
         {
             self.showAlert(alertString: "Jio ID/Password cannot be empty")
         }
         else
         {
-            let params:[String:String]? = ["os":"Android","username":jioID,"password":password,"deviceId":"12345"]
+            let params:[String:String]? = ["os":"Android","username":jioID!,"password":password!,"deviceId":"12345"]
             let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
             weak var weakSelf = self
             
@@ -63,6 +63,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     {
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
+                        
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                                 NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
@@ -125,10 +126,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     func navigateToHomeVC()
     {
-        DispatchQueue.main.async {
-            
+        DispatchQueue.main.async {            
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-            
             let navController = UINavigationController.init(rootViewController: tabBarController)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController

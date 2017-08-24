@@ -11,6 +11,7 @@ import WillowTreeOuroboros
 
 class JCBaseVC: UIViewController {
 
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var baseTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()

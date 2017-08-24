@@ -11,6 +11,7 @@ import UIKit
 class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
 {
     var loadedPage = 0
+    var isMoviesWatchlistAvailable = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -32,6 +33,15 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if JCDataStore.sharedDataStore.moviesWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            self.callWebServiceForMoviesWatchlist()
+        }
+        baseTableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,6 +59,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
+            }
+            else if JCDataStore.sharedDataStore.moviesWatchList != nil
+            {
+                return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
             }
             else
             {
@@ -71,16 +85,26 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
         }
+        else if JCDataStore.sharedDataStore.moviesWatchList != nil, indexPath.row == 0
+        {
+            if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
+            {
+            cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
+            cell.categoryTitleLabel.text = "WatchList"
+                cell.tableCellCollectionView.reloadData()
+            isMoviesWatchlistAvailable = true
+            }
+        }
         else
         {
-            cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
-        }
-        
-        DispatchQueue.main.async {
+            let dataRow = indexPath.row - 1
+            cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
+            cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
             cell.tableCellCollectionView.reloadData()
         }
-        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2)
+        
+        
+        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
             {
@@ -172,6 +196,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Movies)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }
@@ -182,6 +207,42 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             DispatchQueue.main.async {
                 weakSelf?.baseTableView.reloadData()
             }
+        }
+    }
+    
+    func callWebServiceForMoviesWatchlist()
+    {
+        let url = moviesWatchListUrl
+        let uniqueID = JCAppUser.shared.unique
+        var params: Dictionary<String, Any> = [:]
+        params["uniqueId"] = uniqueID
+        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                print(responseError)
+                return
+            }
+            
+            if let responseData = data
+            {
+                DispatchQueue.main.async {
+                    weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
+                }
+                return
+            }
+        }
+
+    }
+    
+    func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
+    {
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
+        weak var weakSelf = self
+        DispatchQueue.main.async {
+            weakSelf?.baseTableView.reloadData()
         }
     }
     

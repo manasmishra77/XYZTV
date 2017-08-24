@@ -13,7 +13,7 @@ class JCLoginManager:UIViewController
     static let sharedInstance = JCLoginManager()
     
     var loggingInViaSubId = false
-    
+    var isLoginFromSettingsScreen = false
     func isUserLoggedIn() -> Bool
     {
         if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)
@@ -116,7 +116,7 @@ class JCLoginManager:UIViewController
         
         let params = [subscriberIdKey:subId]
         
-        let url = basePathForProd.appending(loginViaSubIdUrl)
+        let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
@@ -146,9 +146,6 @@ class JCLoginManager:UIViewController
         }
     }
     
-    
-    
-    
     fileprivate func setUserData(data: [String:Any])
     {
         JCAppUser.shared.lbCookie = data["lbCookie"] as! String
@@ -159,7 +156,12 @@ class JCLoginManager:UIViewController
         JCAppUser.shared.unique = data["uniqueId"] as! String
     }
     
-    
+    func logoutUser()
+    {
+        UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
+        UserDefaults.standard.set(encodedData, forKey: savedUserKey)
+    }
     
     
 }

@@ -16,9 +16,12 @@ class JCTabBarController: UITabBarController {
         case Music = 2
         case TVShow = 1
         case Clip = 6
+        case Trailer = 3
     }
     
-    var currentPlayableItem:Item?
+    var settingsVC:JCSettingsVC?
+    var currentPlayableItem:Any?
+    var isCurrentItemEpisode = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,33 +43,17 @@ class JCTabBarController: UITabBarController {
         let clipsVC = JCClipsVC.init(nibName: "JCBaseVC", bundle: nil)
         clipsVC.tabBarItem = UITabBarItem.init(title: "Clips", image: nil, tag: 4)
         
-        let searchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
-        searchVC.view.backgroundColor = .black
-        let searchViewController = UISearchController.init(searchResultsController: searchVC)
-        searchViewController.view.backgroundColor = .black
-        searchViewController.searchBar.placeholder = "Search..."
-        searchViewController.searchBar.tintColor = UIColor.white
-//        searchViewController.searchBar.barTintColor = UIColor.black
-        searchViewController.searchBar.tintColor = UIColor.gray
-        searchViewController.hidesNavigationBarDuringPresentation = false
-        searchViewController.obscuresBackgroundDuringPresentation = false
-        searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        searchViewController.searchBar.delegate = searchVC
-        searchViewController.searchBar.searchBarStyle = .default
-        searchViewController.extendedLayoutIncludesOpaqueBars = true
-        searchVC.searchViewController = searchViewController
-        //https://www.raywenderlich.com/157864/uisearchcontroller-tutorial-getting-started
-        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
-        searchContainerController.view.backgroundColor = UIColor.black
+        settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
+        settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 5)
         
-        searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
-        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,searchContainerController]
-        self.setViewControllers(viewControllersArray, animated: false)
+        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,settingsVC!] as [Any]
+        self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
         self.tabBar.alpha = 0.7
         
         // Do any additional setup after loading the view.
     }
+   
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -77,16 +64,59 @@ class JCTabBarController: UITabBarController {
     
     func didReceiveNotificationForCellTap(notification:Notification) -> Void
     {
-        guard let item = notification.userInfo?["item"] as? Item
+        weak var weakSelf = self
+        if let item = notification.userInfo?["item"] as? Item
+        {
+        currentPlayableItem = item
+            isCurrentItemEpisode = false
+        }
+            else if let item = notification.userInfo?["item"] as? Episode
+        {
+            currentPlayableItem = item
+            isCurrentItemEpisode = true
+        }
             else {
+                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                    if(isOnJioNetwork == false)
+                    {
+                        print("Not on jio network")
+                        DispatchQueue.main.async {
+                            weakSelf?.presentLoginVC()
+                        }
+                        
+                        
+                    }
+                }
                 return
         }
-        currentPlayableItem = item
+        
+
+        //if metadata is to be shown, show it here, else, proceed with the below flow
+        
+        if !isCurrentItemEpisode
+        {
+            if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
+            {
+                showMetadata()
+            }
+            else
+            {
+                weakSelf?.checkLoginAndPlay()
+            }
+        }
+        else
+        {
+            weakSelf?.checkLoginAndPlay()
+        }
+    }
+    
+    func checkLoginAndPlay()
+    {
         weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-            weakSelf?.prepareToPlay()
+            prepareToPlay()
         }
         else
         {
@@ -94,7 +124,19 @@ class JCTabBarController: UITabBarController {
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")
-                    weakSelf?.presentLoginVC()
+                    if let item = weakSelf?.currentPlayableItem as? Item
+                    {
+                        if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue)
+                        {
+                            DispatchQueue.main.async {
+                                weakSelf?.presentLoginVC()
+                            }
+                        }
+                    }
+                    else
+                    {
+                    NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
+                    }
                     
                 }
                 else
@@ -105,32 +147,50 @@ class JCTabBarController: UITabBarController {
                 }
             }
         }
-        
-        
     }
     
+    func showMetadata()
+    {
+        print("show metadata")
+        let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
+        metadataVC.item = currentPlayableItem as? Item
+        metadataVC.modalPresentationStyle = .overFullScreen
+        metadataVC.modalTransitionStyle = .coverVertical
+        self.present(metadataVC, animated: false, completion: nil)
+    }
     
     func prepareToPlay()
     {
-        if(currentPlayableItem?.app?.type == VideoType.Movie.rawValue || currentPlayableItem?.app?.type == VideoType.TVShow.rawValue)
+        if currentPlayableItem != nil, JCLoginManager.sharedInstance.isLoginFromSettingsScreen == false
         {
-            print("show metadata")
-            let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = currentPlayableItem
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
+        print("play video")
+        
+        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
             
-            self.present(metadataVC, animated: true, completion: nil)
+            if isCurrentItemEpisode
+            {
+                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Episode).id!))
+                playerVC.modalPresentationStyle = .overFullScreen
+                playerVC.modalTransitionStyle = .coverVertical
+                let playerItem = ["player":playerVC]
+                NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+            }
+            else
+            {
+                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
+                playerVC.modalPresentationStyle = .overFullScreen
+                playerVC.modalTransitionStyle = .coverVertical
+                self.present(playerVC, animated: false, completion: nil)
+                
+            }
+        
         }
         else
         {
-            print("play video")
-            
-            let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-            playerVC.callWebServiceForPlaybackRights(item: currentPlayableItem!)
-            playerVC.modalPresentationStyle = .overFullScreen
-            playerVC.modalTransitionStyle = .coverVertical
-            self.present(playerVC, animated: true, completion: nil)
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            settingsVC?.settingsTableView.reloadData()
+            JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
+            return
         }
     }
     
@@ -144,5 +204,8 @@ class JCTabBarController: UITabBarController {
         self.present(loginVC, animated: true, completion: nil)
     }
     
-    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
+

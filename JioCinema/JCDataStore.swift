@@ -18,7 +18,9 @@ class JCDataStore
     var musicData:BaseDataModel?
     var tvData:BaseDataModel?
     var clipsData:BaseDataModel?
-    var searchMovies:BaseDataModel?
+    var tvWatchList:WatchListDataModel?
+    var moviesWatchList:WatchListDataModel?
+    var resumeWatchList:ResumeWatchListDataModel?
     
     enum Category
     {
@@ -27,16 +29,9 @@ class JCDataStore
         case Music
         case TV
         case Clips
-    }
-    
-    enum SearchResultType:String
-    {
-        case Movies = "Movies"
-        case MusicVideos = "Music Videos"
-        case Episodes = "Episodes"
-        case ShortMovies = "Short Movies"
-        case Brand = "Eros Now"
-        case Trailer = "Trailers"
+        case TVWatchList
+        case MoviesWatchList
+        case ResumeWatchList
     }
     
     
@@ -53,8 +48,6 @@ class JCDataStore
         }
     }
     
-
-    
     public func setData(withResponseData responseData:Data, category:Category)
     {
         if let responseString = String(data: responseData, encoding: .utf8)
@@ -70,6 +63,12 @@ class JCDataStore
                 self.clipsData = BaseDataModel(JSONString: responseString)
             case .TV:
                 self.tvData = BaseDataModel(JSONString: responseString)
+            case .TVWatchList:
+                self.tvWatchList = WatchListDataModel(JSONString: responseString)
+            case .MoviesWatchList:
+                self.moviesWatchList = WatchListDataModel(JSONString: responseString)
+            case .ResumeWatchList:
+                self.resumeWatchList = ResumeWatchListDataModel(JSONString: responseString)
             }
             
         }
@@ -92,6 +91,9 @@ class JCDataStore
                     self.tvData?.data?.append(data)
                 case .Clips:
                     self.clipsData?.data?.append(data)
+                case .TVWatchList: break                    
+                case .MoviesWatchList: break
+                case .ResumeWatchList: break
                 }
             }
         }

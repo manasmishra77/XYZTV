@@ -173,6 +173,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }

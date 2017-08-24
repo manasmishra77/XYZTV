@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JCBaseVC" customModule="JioCinema" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="68x-KJ-ko0" id="IbI-YK-Dkf"/>
                 <outlet property="baseTableView" destination="7je-qu-qFq" id="sTP-fe-1UO"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Eym-vH-oyN"/>
             </connections>
@@ -24,12 +25,17 @@
                     <rect key="frame" x="20" y="16" width="1880" height="1064"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="68x-KJ-ko0">
+                    <rect key="frame" x="928" y="508" width="64" height="64"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="7je-qu-qFq" secondAttribute="trailing" constant="20" id="DTQ-a7-zgM"/>
                 <constraint firstItem="7je-qu-qFq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="HVJ-1d-6uO"/>
+                <constraint firstItem="68x-KJ-ko0" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="QP5-AU-690"/>
                 <constraint firstAttribute="bottom" secondItem="7je-qu-qFq" secondAttribute="bottom" id="cjZ-vD-mkR"/>
+                <constraint firstItem="68x-KJ-ko0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="nfl-ci-O0r"/>
                 <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="xFh-Mc-gwa"/>
             </constraints>
             <point key="canvasLocation" x="329" y="25"/>

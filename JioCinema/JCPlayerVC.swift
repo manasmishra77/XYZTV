@@ -11,13 +11,12 @@ import ObjectMapper
 import AVKit
 
 class JCPlayerVC: UIViewController {
-    
+ 
     var player:AVPlayer?
     var playerController:AVPlayerViewController?
     var playbackRightsData:PlaybackRightsModel?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Do any additional setup after loading the view.
     }
@@ -27,10 +26,10 @@ class JCPlayerVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func callWebServiceForPlaybackRights(item:Item)
+    func callWebServiceForPlaybackRights(id:String)
     {
-        let url = playbackRightsURL.appending(item.id!)
-        let params = ["id":item.id!,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
+        let url = playbackRightsURL.appending(id)
+        let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
@@ -78,8 +77,15 @@ class JCPlayerVC: UIViewController {
             }
         }
     }
+    
+    func playerDidFinishPlaying(note: NSNotification) {
+        print("Video Finished")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
-
 
 class PlaybackRightsModel:Mappable
 {
@@ -87,7 +93,7 @@ class PlaybackRightsModel:Mappable
     var message:String?
     var duration:Float?
     var inqueue:Bool?
-    var totalDuration:Int?
+    var totalDuration:String?
     var isSubscribed:Bool?
     var subscription:Subscription?
     var aesUrl:String?
@@ -107,6 +113,7 @@ class PlaybackRightsModel:Mappable
         message <- map["message"]
         duration <- map["duration"]
         inqueue <- map["inqueue"]
+        totalDuration <- map["totalDuration"]
         totalDuration <- map["totalDuration"]
         isSubscribed <- map["isSubscribed"]
         subscription <- map["subscription"]

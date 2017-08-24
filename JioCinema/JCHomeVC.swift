@@ -11,7 +11,7 @@ import UIKit
 class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
     var loadedPage = 0
- 
+    var isResumeWatchDataAvailable = false
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
@@ -20,7 +20,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+        super.activityIndicator.isHidden = true
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
@@ -29,6 +29,15 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         // Do any additional setup after loading the view.
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            callWebServiceForResumeWatchData()
+        }
+        baseTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -43,16 +52,34 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
+        if JCDataStore.sharedDataStore.homeData?.data != nil
+        {
+            return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
+        }
+        else
+        {
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        cell.data = JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
-        cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
-        DispatchQueue.main.async {
+        
+        if isResumeWatchDataAvailable,indexPath.row == 0
+        {
+            cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
+            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
             cell.tableCellCollectionView.reloadData()
         }
+        else
+        {
+            cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
+            cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
+                cell.tableCellCollectionView.reloadData()
+            
+        }
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
@@ -121,6 +148,37 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
     }
     
+    func callWebServiceForResumeWatchData()
+    {
+        let url = resumeWatchGetUrl
+        let params = ["uniqueId":JCAppUser.shared.unique]
+        let resumeWatchDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: resumeWatchDataRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateResumeWatchData(dictionaryResponseData: responseData)
+                return
+            }
+        }
+    }
+    
+    func evaluateResumeWatchData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
+        weak var weakSelf = self
+        isResumeWatchDataAvailable = true
+        DispatchQueue.main.async {
+            weakSelf?.baseTableView.reloadData()
+        }
+    }
 }
 
 

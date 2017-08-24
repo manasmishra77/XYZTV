@@ -87,6 +87,31 @@ class RJILApiManager {
         }
     }
     
+//    var commonHeaders:[String:String]{
+//        get{
+//            var _commonHeaders = [String:String]()
+//            _commonHeaders["os"] = "ios"
+//            _commonHeaders["deviceType"] = "stb"
+//            _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+//            
+//            if JCLoginManager.sharedInstance.isUserLoggedIn()
+//            {
+//                _commonHeaders[kAppKey] = kAppKeyValue
+//                _commonHeaders["uniqueid"] = JCAppUser.shared.unique
+//                _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
+//                _commonHeaders["accesstoken"] = JCAppUser.shared.ssoToken
+//                _commonHeaders["lbcookie"] = JCAppUser.shared.lbCookie
+//                
+//                //_commonHeaders["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhoneOS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C89"
+//                if JCAppUser.shared.userGroup != "" {
+//                    _commonHeaders["usergroup"] = JCAppUser.shared.userGroup
+//                }
+//                
+//            }
+//            
+//            return _commonHeaders
+//        }
+//    }
     
     var otpHeaders:[String:String]{
         get{
@@ -131,7 +156,7 @@ class RJILApiManager {
         //make macros here for prod/preprod etc
         
         //TODO:
-        urlString = path.contains("http") ? path : basePathForProd + path
+        urlString = path.contains("http") ? path : basePath.appending("common/v3/") + path
         
         return URLRequest(url: URL(string: urlString!)!)
     }

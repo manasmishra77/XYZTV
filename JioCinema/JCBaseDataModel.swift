@@ -15,7 +15,6 @@ class BaseDataModel:Mappable
     var message:String?
     var totalPages:Int?
     var data:[DataContainer]?
-    
     required init(map:Map) {
         
     }
@@ -26,6 +25,48 @@ class BaseDataModel:Mappable
         message <- map["message"]
         totalPages <- map["totalPages"]
         data <- map["data"]
+    }
+}
+
+class WatchListDataModel:Mappable
+{
+    var code:Int?
+    var message:String?
+    var data:DataContainer?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+    }
+}
+
+class ResumeWatchListDataModel:Mappable
+{
+    var code:Int?
+    var message:String?
+    var data:DataContainer?
+    var title:String?
+    var pageCount:Int?
+    var seeMore:Bool?
+    var layout:Int?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+        title <- map["title"]
+        pageCount <- map["pageCount"]
+        seeMore <- map["seeMore"]
+        layout <- map["layout"]
     }
 }
 
@@ -73,6 +114,8 @@ class Item:Mappable
     var app:App?
     var latestId:String?
     var layout:Int?
+    var duration:Int?
+    var totalDuration:Int?
     
     required init(map:Map) {
         
@@ -80,7 +123,14 @@ class Item:Mappable
     
     func mapping(map:Map)
     {
+        var tempStore: Double?
+        tempStore <- map["id"]
+       
         id <- map["id"]
+        
+        if id == nil, tempStore != nil {
+            id = "\(String(describing: Int(tempStore!)))"
+        }
         name <- map["name"]
         showname <- map["showname"]
         subtitle <- map["subtitle"]
@@ -92,8 +142,15 @@ class Item:Mappable
         language <- map["language"]
         vendor <- map["vendor"]
         app <- map["app"]
+        
+        tempStore <- map["latestId"]
         latestId <- map["latestId"]
+        if latestId == nil, tempStore != nil {
+            latestId = "\(String(describing: Int(tempStore!)))"
+        }
         layout <- map["layout"]
+        duration <- map["duration"]
+        totalDuration <- map["totalDuration"]
     }
 }
 
