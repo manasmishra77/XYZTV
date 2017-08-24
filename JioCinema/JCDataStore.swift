@@ -18,6 +18,7 @@ class JCDataStore
     var musicData:BaseDataModel?
     var tvData:BaseDataModel?
     var clipsData:BaseDataModel?
+    var searchMovies:BaseDataModel?
     
     enum Category
     {
@@ -26,6 +27,16 @@ class JCDataStore
         case Music
         case TV
         case Clips
+    }
+    
+    enum SearchResultType:String
+    {
+        case Movies = "Movies"
+        case MusicVideos = "Music Videos"
+        case Episodes = "Episodes"
+        case ShortMovies = "Short Movies"
+        case Brand = "Eros Now"
+        case Trailer = "Trailers"
     }
     
     
@@ -41,6 +52,8 @@ class JCDataStore
             self.configData = ConfigData(JSONString: responseString)
         }
     }
+    
+
     
     public func setData(withResponseData responseData:Data, category:Category)
     {

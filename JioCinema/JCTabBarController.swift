@@ -40,7 +40,27 @@ class JCTabBarController: UITabBarController {
         let clipsVC = JCClipsVC.init(nibName: "JCBaseVC", bundle: nil)
         clipsVC.tabBarItem = UITabBarItem.init(title: "Clips", image: nil, tag: 4)
         
-        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC]
+        let searchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
+        searchVC.view.backgroundColor = .black
+        let searchViewController = UISearchController.init(searchResultsController: searchVC)
+        searchViewController.view.backgroundColor = .black
+        searchViewController.searchBar.placeholder = "Search..."
+        searchViewController.searchBar.tintColor = UIColor.white
+//        searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.tintColor = UIColor.gray
+        searchViewController.hidesNavigationBarDuringPresentation = false
+        searchViewController.obscuresBackgroundDuringPresentation = false
+        searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
+        searchViewController.searchBar.delegate = searchVC
+        searchViewController.searchBar.searchBarStyle = .default
+        searchViewController.extendedLayoutIncludesOpaqueBars = true
+        searchVC.searchViewController = searchViewController
+        //https://www.raywenderlich.com/157864/uisearchcontroller-tutorial-getting-started
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
+        
+        searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,searchContainerController]
         self.setViewControllers(viewControllersArray, animated: false)
         
         self.tabBar.alpha = 0.7

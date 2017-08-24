@@ -42,6 +42,7 @@ let musicDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/33/")
 let tvDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/9/")
 let clipsDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/35/")
 let playbackRightsURL = basePathForProd.appending("playbackrights/get/")
+let preditiveSearchURL = basePathForProd.appending("search/search")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
