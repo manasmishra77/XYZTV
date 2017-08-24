@@ -43,10 +43,30 @@ class JCTabBarController: UITabBarController {
         let clipsVC = JCClipsVC.init(nibName: "JCBaseVC", bundle: nil)
         clipsVC.tabBarItem = UITabBarItem.init(title: "Clips", image: nil, tag: 4)
         
-        settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
-        settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 5)
+        let searchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
+        searchVC.view.backgroundColor = .black
+        let searchViewController = UISearchController.init(searchResultsController: searchVC)
+        searchViewController.view.backgroundColor = .black
+        searchViewController.searchBar.placeholder = "Search..."
+        searchViewController.searchBar.tintColor = UIColor.white
+        //searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.tintColor = UIColor.gray
+        searchViewController.hidesNavigationBarDuringPresentation = false
+        searchViewController.obscuresBackgroundDuringPresentation = false
+        searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
+        searchViewController.searchBar.delegate = searchVC
+        searchViewController.searchBar.searchBarStyle = .minimal
+        searchViewController.extendedLayoutIncludesOpaqueBars = true
+        searchVC.searchViewController = searchViewController
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
         
-        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,settingsVC!] as [Any]
+        searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+        
+        settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
+        settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 6)
+        
+        let viewControllersArray = [homeVC,moviesVC,tvVC,musicVC,clipsVC,searchContainerController,settingsVC!] as [Any]
         self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
         self.tabBar.alpha = 0.7

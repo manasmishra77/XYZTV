@@ -13,6 +13,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource  ,UISearc
     var searchViewController:UISearchController? = nil
     var searchModel:SearchDataModel?
     var searchResultArray:[SearchedCategoryItem]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -20,6 +21,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource  ,UISearc
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         baseTableView.delegate = self
         baseTableView.dataSource = self
+        activityIndicator.isHidden = true
         // Do any additional setup after loading the view.
     }
     

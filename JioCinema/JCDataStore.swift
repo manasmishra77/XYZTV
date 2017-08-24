@@ -21,6 +21,7 @@ class JCDataStore
     var tvWatchList:WatchListDataModel?
     var moviesWatchList:WatchListDataModel?
     var resumeWatchList:ResumeWatchListDataModel?
+    var searchMovies:BaseDataModel?
     
     enum Category
     {
