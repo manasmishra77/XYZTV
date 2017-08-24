@@ -118,16 +118,16 @@ class MetadataHeaderViewCell: UIView {
         var params = [String:Any]()
         var url = ""
         weak var weakSelf = self
-        if item?.app?.type == VideoType.TVShow.rawValue
+        if item?.app?.type == VideoType.TVShow.rawValue,metadata?.contentId != nil
         {
              params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
         }
-        else if item?.app?.type == VideoType.Movie.rawValue
+        else if item?.app?.type == VideoType.Movie.rawValue,metadata?.contentId != nil
         {
             params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
         }
         
-        if metadata?.inQueue != nil
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
         url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
         
@@ -155,7 +155,7 @@ class MetadataHeaderViewCell: UIView {
         }
         else
         {
-            //show login screen
+            NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
     }
 }

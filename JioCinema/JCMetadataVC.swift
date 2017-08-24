@@ -36,6 +36,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: watchNowNotificationName, object: nil, queue: nil, using: didReceiveNotificationForWatchNow(notification:))
         NotificationCenter.default.addObserver(forName: metadataCellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForMetadataCellTap(notification:))
+        NotificationCenter.default.addObserver(self, selector: #selector(presentLoginVC), name: showLoginFromMetadataNotificationName, object: nil)
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)

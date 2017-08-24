@@ -90,6 +90,7 @@ let isUserLoggedInKey = "isUserLoggedIn"
 let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
 let watchNowNotificationName = Notification.Name("didClickOnWatchNowNotification")
 let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell")
+let showLoginFromMetadataNotificationName = Notification.Name("showLoginFromMetadata")
 let loginSuccessNotificationName = Notification.Name("loginSuccessful")
 let readyToPlayNotificationName = Notification.Name("readyToPlay")
 let isAutoPlayOnKey = "isAutoPlayOn"
