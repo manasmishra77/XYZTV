@@ -32,6 +32,9 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     
+    @IBOutlet weak var monthsCollectionView: UICollectionView!
+    @IBOutlet weak var seasonCollectionView: UICollectionView!
+    @IBOutlet weak var seasonsLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -62,6 +65,24 @@ class MetadataHeaderViewCell: UIView {
             self.subtitleLabel.isHidden = true
             self.tvShowSubtitleLabel.isHidden = false
             self.tvShowSubtitleLabel.text = metadata?.newSubtitle
+            
+            if (metadata?.isSeason) != nil
+            {
+                if (metadata?.isSeason)!
+                {
+                    seasonsLabel.isHidden = false
+                    seasonCollectionView.isHidden = false
+                    monthsCollectionView.isHidden = true
+                }
+                else
+                {
+                    seasonsLabel.isHidden = false
+                    seasonsLabel.text = "Previous Episodes"
+                    seasonCollectionView.isHidden = false
+                    monthsCollectionView.isHidden = false
+                }
+            }
+            
             return self
         }
         else
@@ -97,15 +118,17 @@ class MetadataHeaderViewCell: UIView {
         var params = [String:Any]()
         var url = ""
         weak var weakSelf = self
-        if item?.app?.type == VideoType.TVShow.rawValue
+        if item?.app?.type == VideoType.TVShow.rawValue,metadata?.contentId != nil
         {
              params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
         }
-        else if item?.app?.type == VideoType.Movie.rawValue
+        else if item?.app?.type == VideoType.Movie.rawValue,metadata?.contentId != nil
         {
             params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
         }
         
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
         url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
         
             let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -129,5 +152,10 @@ class MetadataHeaderViewCell: UIView {
                     return
                 }
             }
+        }
+        else
+        {
+            NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
+        }
     }
 }

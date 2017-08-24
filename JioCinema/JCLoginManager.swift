@@ -116,7 +116,7 @@ class JCLoginManager:UIViewController
         
         let params = [subscriberIdKey:subId]
         
-        let url = basePathForProd.appending(loginViaSubIdUrl)
+        let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in

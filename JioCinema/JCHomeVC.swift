@@ -52,7 +52,15 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
+        if JCDataStore.sharedDataStore.homeData?.data != nil
+        {
+            return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
+        }
+        else
+        {
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

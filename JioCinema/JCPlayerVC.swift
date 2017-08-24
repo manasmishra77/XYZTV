@@ -156,6 +156,7 @@ class PlaybackRightsModel:Mappable
         duration <- map["duration"]
         inqueue <- map["inqueue"]
         totalDuration <- map["totalDuration"]
+        totalDuration <- map["totalDuration"]
         isSubscribed <- map["isSubscribed"]
         subscription <- map["subscription"]
         aesUrl <- map["aesUrl"]

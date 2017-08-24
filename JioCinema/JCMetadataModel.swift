@@ -41,6 +41,7 @@ class MetadataModel:Mappable
     var approved:Bool?
     var isHD:Bool?
     var isLegal:Bool?
+    var isSeason:Bool?
     var updatedAt:String?
     var censorCertificate:String?
     var id:String?
@@ -104,6 +105,7 @@ class MetadataModel:Mappable
     var more:[More]?
     var episodes:[Episode]?
     var inQueue:Bool?
+    var filter:[Filter]?
     
 
     required init(map:Map) {
@@ -214,6 +216,8 @@ class MetadataModel:Mappable
         more <- map["more"]
         episodes <- map["episodes"]
         inQueue <- map["inQueue"]
+        isSeason <- map["isSeason"]
+        filter <- map["filter"]
         
     }
 }
@@ -318,6 +322,8 @@ class More:Mappable
         description <- map["description"]
         year <- map["year"]
         genres <- map["genres"]
+        
+       
         totalDuration <- map["totalDuration"]
         srt <- map["srt"]
         totalDurationString <- map["totalDurationString"]
@@ -361,4 +367,23 @@ class Episode:Mappable
         duration <- map["duration"]
     }
 }
+
+class Filter:Mappable
+{
+    var filter:String?
+    var season:Int?
+    var month:[String]?
+    
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        filter <- map["filter"]
+        season <- map["season"]
+        month <- map["month"]
+    }
+}
+
 
