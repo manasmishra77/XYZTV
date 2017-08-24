@@ -339,6 +339,7 @@ class Episode:Mappable
     var banner:String?
     var showdate:String?
     var subtitle:String?
+    var duration:Int?
     var totalDuration:Int?
     var epochShowDate:String?
     var episodeNo:Int?
@@ -363,6 +364,7 @@ class Episode:Mappable
         approved <- map["approved"]
         totalDuration <- map["totalDuration"]
         image <- map["image"]
+        duration <- map["duration"]
     }
 }
 

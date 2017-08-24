@@ -50,6 +50,8 @@ let addToWatchListUrl = basePath.appending("common/v3/list/add")
 let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
 let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
 let preditiveSearchURL = basePath.appending("common/v3/search/search")
+let addToResumeWatchlistUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/add")
+let removeFromResumeWatchlistUrl = basePath.appending("common/v3/list/deletecontent")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -73,6 +75,7 @@ let playerVCStoryBoardId = "kPlayerVC"
 let metadataVCStoryBoardId = "kMetadataVC"
 let settingsVCStoryBoardId = "kSettingsVC"
 let settingsDetailVCStoryBoardId = "kSettingsDetailVC"
+let resumeWatchingVCStoryBoardId = "kResumeWatchingVC"
 
 //Nib Identifiers
 let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"

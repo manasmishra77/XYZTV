@@ -22,6 +22,7 @@
 		2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45C1F3B51C700C3B609 /* MyAccount.png */; };
 		2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */; };
 		2025F4631F3B51D800C3B609 /* Version.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4621F3B51D800C3B609 /* Version.png */; };
+		203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */; };
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
 		797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchVC.swift */; };
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
@@ -99,6 +100,7 @@
 		2025F45C1F3B51C700C3B609 /* MyAccount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyAccount.png; sourceTree = "<group>"; };
 		2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrivacyPolicy.png; sourceTree = "<group>"; };
 		2025F4621F3B51D800C3B609 /* Version.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Version.png; sourceTree = "<group>"; };
+		203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCResumeWatchingVC.swift; sourceTree = "<group>"; };
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
+				203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 			files = (
 				7B78D7D71F13BE7800F319BF /* JCAppConstants.swift in Sources */,
 				2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */,
+				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
