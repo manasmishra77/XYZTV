@@ -48,6 +48,8 @@ let tvWatchListUrl = basePathForProd.appending("metalist/get/13")
 let addToWatchListUrl = basePathForProd.appending("list/add")
 let removeFromWatchListUrl = basePathForProd.appending("list/deletecontent")
 let resumeWatchGetUrl = base.appending("06758e99be484fca56fb/v3/resumewatch/get")
+let addToResumeWatchlistUrl = base.appending("06758e99be484fca56fb/v3/resumewatch/add")
+let removeFromResumeWatchlistUrl = basePathForProd.appending("list/deletecontent")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -71,6 +73,7 @@ let playerVCStoryBoardId = "kPlayerVC"
 let metadataVCStoryBoardId = "kMetadataVC"
 let settingsVCStoryBoardId = "kSettingsVC"
 let settingsDetailVCStoryBoardId = "kSettingsDetailVC"
+let resumeWatchingVCStoryBoardId = "kResumeWatchingVC"
 
 //Nib Identifiers
 let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"

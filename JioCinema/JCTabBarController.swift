@@ -85,13 +85,26 @@ class JCTabBarController: UITabBarController {
                 }
                 return
         }
-        
 
         //if metadata is to be shown, show it here, else, proceed with the below flow
         
         if !isCurrentItemEpisode
         {
-            if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
+            if let duration = (currentPlayableItem as? Item)?.duration, duration != 0
+            {
+                let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                resumeWatchingVC.playableItemDuration = duration
+                resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
+                self.present(resumeWatchingVC, animated: false, completion: nil)
+            }
+            else if let duration = (currentPlayableItem as? Episode)?.duration, duration != 0
+            {
+                let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                resumeWatchingVC.playableItemDuration = duration
+                resumeWatchingVC.playerId = (currentPlayableItem as! Episode).id
+                self.present(resumeWatchingVC, animated: false, completion: nil)
+            }
+            else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
                 showMetadata()
             }
@@ -156,6 +169,7 @@ class JCTabBarController: UITabBarController {
                 playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Episode).id!))
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
+                playerVC.playerId = (currentPlayableItem as! Episode).id!
                 let playerItem = ["player":playerVC]
                 NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
             }
@@ -164,8 +178,8 @@ class JCTabBarController: UITabBarController {
                 playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
-                self.present(playerVC, animated: false, completion: nil)
-                
+                playerVC.playerId = (currentPlayableItem as! Item).id!
+                self.present(playerVC, animated: false, completion: nil)                
             }
         
         }

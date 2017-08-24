@@ -10,11 +10,16 @@ import UIKit
 import ObjectMapper
 import AVKit
 
-class JCPlayerVC: UIViewController {
+class JCPlayerVC: UIViewController
+{
  
     var player:AVPlayer?
     var playerController:AVPlayerViewController?
     var playbackRightsData:PlaybackRightsModel?
+    var isResumed = false
+    var duration:Double = 0
+    var playerId:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +33,7 @@ class JCPlayerVC: UIViewController {
     
     func callWebServiceForPlaybackRights(id:String)
     {
+        playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -58,7 +64,10 @@ class JCPlayerVC: UIViewController {
         let videoUrl = URL(string: url)
         player = AVPlayer(url: videoUrl!)
         playerController = AVPlayerViewController()
-        
+        if isResumed
+        {
+            player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
+        }
         playerController?.player = player
         self.addChildViewController(playerController!)
         self.view.addSubview((playerController?.view)!)
@@ -72,11 +81,44 @@ class JCPlayerVC: UIViewController {
         for press in presses {
             if(press.type == .menu)
             {
+                self.callWebServiceForAddToResumeWatchlist()
                 player?.pause()
                 player = nil
             }
         }
     }
+    
+    func callWebServiceForAddToResumeWatchlist()
+    {
+        let url = addToResumeWatchlistUrl
+        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": (playbackRightsData?.totalDuration)!]
+        var params: Dictionary<String, Any> = [:]
+        params["uniqueId"] = JCAppUser.shared.unique
+        params["listId"] = "10"
+        params["json"] = json
+        params["id"] = playerId
+        params["duration"] = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
+        params["totalduration"] = playbackRightsData?.totalDuration
+        
+        let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                print(responseError)
+                return
+            }
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                let code = parsedResponse["code"] as? Int
+                print("Added to Resume Watchlist")
+                return
+            }
+        }
+
+        
+        
+    }
+    
     
     func playerDidFinishPlaying(note: NSNotification) {
         print("Video Finished")
@@ -93,7 +135,7 @@ class PlaybackRightsModel:Mappable
     var message:String?
     var duration:Float?
     var inqueue:Bool?
-    var totalDuration:Int?
+    var totalDuration:String?
     var isSubscribed:Bool?
     var subscription:Subscription?
     var aesUrl:String?

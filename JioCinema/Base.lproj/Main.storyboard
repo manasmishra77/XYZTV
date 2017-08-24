@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -166,6 +166,95 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2IR-za-JQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6810" y="2878"/>
+        </scene>
+        <!--Resume WatchingVC-->
+        <scene sceneID="o3a-6Y-f9a">
+            <objects>
+                <viewController storyboardIdentifier="kResumeWatchingVC" id="9q6-MI-LmJ" customClass="JCResumeWatchingVC" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KeO-GD-9nd"/>
+                        <viewControllerLayoutGuide type="bottom" id="de2-Z3-oEO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ICd-XO-quP">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select playback option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPs-kG-dzI">
+                                <rect key="frame" x="580" y="300" width="761" height="84"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="70"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIi-ZC-PyW">
+                                <rect key="frame" x="765" y="434" width="390" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PMf-sE-Mkp"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Resume Watching">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="focused">
+                                    <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didClickOnResumeWatching:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="5il-qg-0eq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRX-Jc-hjK">
+                                <rect key="frame" x="744" y="534" width="433" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="jl4-i8-SGh"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Start from beginning">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="focused">
+                                    <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didClickOnBeginningButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="bU3-ID-OBr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YeZ-Wh-y1J">
+                                <rect key="frame" x="644" y="634" width="633" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="N1r-tO-Uzd"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Remove From Resume Watching">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="focused">
+                                    <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didClickOnRemoveButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="xUP-v5-kpi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="YeZ-Wh-y1J" firstAttribute="top" secondItem="zRX-Jc-hjK" secondAttribute="bottom" constant="50" id="1dk-q1-ss6"/>
+                            <constraint firstItem="YeZ-Wh-y1J" firstAttribute="centerX" secondItem="ICd-XO-quP" secondAttribute="centerX" id="5hu-OG-N7X"/>
+                            <constraint firstItem="cIi-ZC-PyW" firstAttribute="top" secondItem="PPs-kG-dzI" secondAttribute="bottom" constant="50" id="Ej8-gq-zU0"/>
+                            <constraint firstItem="zRX-Jc-hjK" firstAttribute="top" secondItem="cIi-ZC-PyW" secondAttribute="bottom" constant="50" id="GeY-Bo-0oR"/>
+                            <constraint firstItem="PPs-kG-dzI" firstAttribute="centerX" secondItem="ICd-XO-quP" secondAttribute="centerX" id="Guf-cp-zYF"/>
+                            <constraint firstItem="PPs-kG-dzI" firstAttribute="top" secondItem="KeO-GD-9nd" secondAttribute="bottom" constant="300" id="JSf-ap-1S7"/>
+                            <constraint firstItem="zRX-Jc-hjK" firstAttribute="centerX" secondItem="ICd-XO-quP" secondAttribute="centerX" id="WEU-z7-Bsr"/>
+                            <constraint firstItem="cIi-ZC-PyW" firstAttribute="centerX" secondItem="ICd-XO-quP" secondAttribute="centerX" id="gYk-Px-7ga"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="resumeWatchingButton" destination="cIi-ZC-PyW" id="9mJ-Q6-SFG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x4e-jz-WOm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6810" y="4129"/>
         </scene>
         <!--MetadataVC-->
         <scene sceneID="bjo-sh-lAw">
