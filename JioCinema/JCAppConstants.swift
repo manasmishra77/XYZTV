@@ -16,16 +16,17 @@ public enum JCParameterEncoding
 }
 
 //BasePath
-let base = "https://prod.media.jio.com/apis/"
-let basePathForProd = "https://prod.media.jio.com/apis/common/v3/"
-let basePathForQA = "https://qa.media.jio.com/mdp_qa/apis/common/v3/"
+let prodBase = "https://prod.media.jio.com/apis/"
+let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
+
+let basePath = prodBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
 
 //Login
 let loginUrl = "login/login"
-let loginViaSubIdUrl = "login/loginviasubid"
+let loginViaSubIdUrl = "common/v3/login/loginviasubid"
 
 //NetworkCheckURl (ZLA)
 let networkCheckUrl = "http://api.media.jio.com/apis/jionetwork/v2/testip/"
@@ -36,18 +37,18 @@ let getOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/send"
 let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 
 //HomeDataUrls
-let homeDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/1/")
-let moviesDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/6/")
-let musicDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/33/")
-let tvDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/9/")
-let clipsDataUrl = (base.appending(kAppKeyValue)).appending("/v3/home/get/35/")
-let playbackRightsURL = basePathForProd.appending("playbackrights/get/")
-let metadataUrl = basePathForProd.appending("metamore/get/")
-let moviesWatchListUrl = basePathForProd.appending("metalist/get/12")
-let tvWatchListUrl = basePathForProd.appending("metalist/get/13")
-let addToWatchListUrl = basePathForProd.appending("list/add")
-let removeFromWatchListUrl = basePathForProd.appending("list/deletecontent")
-let resumeWatchGetUrl = base.appending("06758e99be484fca56fb/v3/resumewatch/get")
+let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/1/")
+let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/6/")
+let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/33/")
+let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/9/")
+let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/35/")
+let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
+let metadataUrl = basePath.appending("common/v3/metamore/get/")
+let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
+let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
+let addToWatchListUrl = basePath.appending("common/v3/list/add")
+let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
+let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

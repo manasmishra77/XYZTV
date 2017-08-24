@@ -93,7 +93,7 @@ class PlaybackRightsModel:Mappable
     var message:String?
     var duration:Float?
     var inqueue:Bool?
-    var totalDuration:Int?
+    var totalDuration:String?
     var isSubscribed:Bool?
     var subscription:Subscription?
     var aesUrl:String?
@@ -113,6 +113,7 @@ class PlaybackRightsModel:Mappable
         message <- map["message"]
         duration <- map["duration"]
         inqueue <- map["inqueue"]
+        totalDuration <- map["totalDuration"]
         totalDuration <- map["totalDuration"]
         isSubscribed <- map["isSubscribed"]
         subscription <- map["subscription"]

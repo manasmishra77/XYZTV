@@ -592,6 +592,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
         }
         
     }
+    
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         if collectionView == headerCell.seasonCollectionView
         {

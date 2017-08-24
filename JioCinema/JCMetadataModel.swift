@@ -322,6 +322,8 @@ class More:Mappable
         description <- map["description"]
         year <- map["year"]
         genres <- map["genres"]
+        
+       
         totalDuration <- map["totalDuration"]
         srt <- map["srt"]
         totalDurationString <- map["totalDurationString"]

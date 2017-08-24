@@ -127,6 +127,8 @@ class MetadataHeaderViewCell: UIView {
             params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
         }
         
+        if metadata?.inQueue != nil
+        {
         url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
         
             let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -150,5 +152,10 @@ class MetadataHeaderViewCell: UIView {
                     return
                 }
             }
+        }
+        else
+        {
+            //show login screen
+        }
     }
 }

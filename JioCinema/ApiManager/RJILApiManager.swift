@@ -156,7 +156,7 @@ class RJILApiManager {
         //make macros here for prod/preprod etc
         
         //TODO:
-        urlString = path.contains("http") ? path : basePathForProd + path
+        urlString = path.contains("http") ? path : basePath.appending("common/v3/") + path
         
         return URLRequest(url: URL(string: urlString!)!)
     }
