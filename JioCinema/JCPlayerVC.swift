@@ -91,14 +91,16 @@ class JCPlayerVC: UIViewController
     func callWebServiceForAddToResumeWatchlist()
     {
         let url = addToResumeWatchlistUrl
-        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": (playbackRightsData?.totalDuration)!]
+        if let totalDuration = playbackRightsData?.totalDuration
+        {
+        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = "10"
         params["json"] = json
         params["id"] = playerId
         params["duration"] = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
-        params["totalduration"] = playbackRightsData?.totalDuration
+        params["totalduration"] = totalDuration
         
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
@@ -109,13 +111,13 @@ class JCPlayerVC: UIViewController
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                let code = parsedResponse["code"] as? Int
+                _ = parsedResponse["code"] as? Int
                 print("Added to Resume Watchlist")
                 return
             }
         }
 
-        
+        }
         
     }
     
@@ -155,7 +157,6 @@ class PlaybackRightsModel:Mappable
         message <- map["message"]
         duration <- map["duration"]
         inqueue <- map["inqueue"]
-        totalDuration <- map["totalDuration"]
         totalDuration <- map["totalDuration"]
         isSubscribed <- map["isSubscribed"]
         subscription <- map["subscription"]

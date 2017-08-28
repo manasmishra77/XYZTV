@@ -161,7 +161,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
             else if artistImages != nil
         {
-        
+            //open search screen
         }
         
     }
