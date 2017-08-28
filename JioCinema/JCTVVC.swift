@@ -81,6 +81,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
+        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            isTVWatchlistAvailable = false
+        }
+        
         if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
         {
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items

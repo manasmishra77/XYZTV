@@ -79,6 +79,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
+        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            isMoviesWatchlistAvailable = false
+        }
         
         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
         {
