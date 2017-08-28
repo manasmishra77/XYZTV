@@ -60,7 +60,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
             }
-            else if JCDataStore.sharedDataStore.moviesWatchList != nil
+            else if isMoviesWatchlistAvailable 
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
             }
@@ -89,14 +89,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
         }
-        else if JCDataStore.sharedDataStore.moviesWatchList != nil, indexPath.row == 0
+        else if isMoviesWatchlistAvailable, indexPath.row == 0
         {
             if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
                 cell.tableCellCollectionView.reloadData()
-            isMoviesWatchlistAvailable = true
             }
         }
         else
@@ -232,6 +231,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             
             if let responseData = data
             {
+                self.isMoviesWatchlistAvailable = true
                 DispatchQueue.main.async {
                     weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
                 }
