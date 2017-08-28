@@ -62,7 +62,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! - 1
             }
-            else if JCDataStore.sharedDataStore.tvWatchList != nil
+            else if isTVWatchlistAvailable
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! + 1
             }
@@ -92,14 +92,13 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
             
         }
-        else if JCDataStore.sharedDataStore.tvWatchList != nil, indexPath.row == 0
+        else if isTVWatchlistAvailable, indexPath.row == 0
         {
             if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
                 cell.tableCellCollectionView.reloadData()
-            isTVWatchlistAvailable = true
             }
         }
         else
@@ -234,6 +233,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             
             if let responseData = data
             {
+                self.isTVWatchlistAvailable = true
                 DispatchQueue.main.async {
                     weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
                 }
