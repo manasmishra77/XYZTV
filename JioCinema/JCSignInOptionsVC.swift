@@ -23,6 +23,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         backgroundImageView.image = #imageLiteral(resourceName: "loginBg.jpg")
         signInButton.layer.cornerRadius = 8
         // Do any additional setup after loading the view.
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,18 +33,18 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-        let jioID = jioIdTextField.text
-        let password = passwordTextField.text
+       // let jioID = jioIdTextField.text
+        //let password = passwordTextField.text
         
-        //let jioID = "pallavtrivedi-4"
-        //let password = "pallav@1010"
-        if(jioID?.characters.count == 0 || password?.characters.count == 0)
+        let jioID = "pallavtrivedi-4"
+        let password = "pallav@1010"
+        if(jioID.characters.count == 0 || password.characters.count == 0)
         {
             self.showAlert(alertString: "Jio ID/Password cannot be empty")
         }
         else
         {
-            let params:[String:String]? = ["os":"Android","username":jioID!,"password":password!,"deviceId":"12345"]
+            let params:[String:String]? = ["os":"Android","username":jioID,"password":password,"deviceId":"12345"]
             let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
             weak var weakSelf = self
             

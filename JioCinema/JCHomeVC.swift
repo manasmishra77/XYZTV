@@ -70,7 +70,13 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
-        if isResumeWatchDataAvailable,indexPath.row == 0
+        
+        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            isResumeWatchDataAvailable = false
+        }
+        
+        if isResumeWatchDataAvailable,indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
@@ -81,7 +87,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
                 cell.tableCellCollectionView.reloadData()
-            
         }
         
         if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
