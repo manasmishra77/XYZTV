@@ -91,14 +91,14 @@ class JCPlayerVC: UIViewController
     func callWebServiceForAddToResumeWatchlist()
     {
         let url = addToResumeWatchlistUrl
-        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": (playbackRightsData?.totalDuration)!]
+        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = "10"
         params["json"] = json
         params["id"] = playerId
         params["duration"] = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
-        params["totalduration"] = playbackRightsData?.totalDuration
+        params["totalduration"] = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
         
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
@@ -109,7 +109,7 @@ class JCPlayerVC: UIViewController
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                let code = parsedResponse["code"] as? Int
+//                let code = parsedResponse["code"] as? Int
                 print("Added to Resume Watchlist")
                 return
             }

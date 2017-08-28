@@ -54,6 +54,10 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     {
         if JCDataStore.sharedDataStore.homeData?.data != nil
         {
+            if isResumeWatchDataAvailable, JCLoginManager.sharedInstance.isUserLoggedIn()
+            {
+                return (JCDataStore.sharedDataStore.homeData?.data?.count)!
+            }
             return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
         }
         else
