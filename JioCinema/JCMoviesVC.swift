@@ -35,7 +35,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     override func viewDidAppear(_ animated: Bool)
     {
-        if JCDataStore.sharedDataStore.moviesWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForMoviesWatchlist()
         }
@@ -60,7 +60,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
             }
-            else if isMoviesWatchlistAvailable 
+            else if isMoviesWatchlistAvailable,JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
             }
@@ -89,7 +89,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
         }
-        else if isMoviesWatchlistAvailable, indexPath.row == 0
+        else if isMoviesWatchlistAvailable, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
             {

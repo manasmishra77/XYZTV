@@ -36,7 +36,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
-        if JCDataStore.sharedDataStore.tvWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForTVWatchlist()
         }
@@ -62,7 +62,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! - 1
             }
-            else if isTVWatchlistAvailable
+            else if isTVWatchlistAvailable, JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! + 1
             }
@@ -92,7 +92,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
             
         }
-        else if isTVWatchlistAvailable, indexPath.row == 0
+        else if isTVWatchlistAvailable, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
             {
