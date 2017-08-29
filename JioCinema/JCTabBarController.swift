@@ -22,17 +22,10 @@ class JCTabBarController: UITabBarController {
     var settingsVC:JCSettingsVC?
     var currentPlayableItem:Any?
     var isCurrentItemEpisode = false
-    var viewLabel:UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let tabView = UIView.init(frame: CGRect(x: 0.0, y: 0.0, width: 120.0, height: 100.0))
-//        viewLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 200.0, height: 140.0))
-////        viewLabel.backgroundColor = UIColor.blue
-//        viewLabel?.text = "JioCinema"
-//        viewLabel?.font = UIFont.init(name: "Helvetica Nueue", size: 20.0)
-//        viewLabel?.textColor = UIColor.white
-//        self.view.addSubview(viewLabel!)
+        setTabBarTitle()
         
         NotificationCenter.default.addObserver(forName: cellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForCellTap(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
@@ -83,6 +76,15 @@ class JCTabBarController: UITabBarController {
         // Do any additional setup after loading the view.
     }
    
+    
+    func setTabBarTitle()
+    {
+        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 210.0, height: 135.0))
+        tabBarTitleLabel.text = "JioCinema"
+        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 40.0)
+        tabBarTitleLabel.textColor = UIColor.white
+        self.tabBar.addSubview(tabBarTitleLabel)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -235,6 +235,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="N1r-tO-Uzd"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Remove From Resume Watching">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
