@@ -62,7 +62,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! - 1
             }
-            else if isTVWatchlistAvailable, JCLoginManager.sharedInstance.isUserLoggedIn()
+            else if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil,JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0, JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! + 1
             }
@@ -92,13 +92,17 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
             
         }
-        else if isTVWatchlistAvailable, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
+        else if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
-                cell.tableCellCollectionView.reloadData()
+            cell.tableCellCollectionView.reloadData()
+            }
+            else
+            {
+                isTVWatchlistAvailable = false
             }
         }
         else

@@ -60,7 +60,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
             }
-            else if isMoviesWatchlistAvailable,JCLoginManager.sharedInstance.isUserLoggedIn()
+            else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil,JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0,JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
             }
@@ -89,13 +89,17 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
         }
-        else if isMoviesWatchlistAvailable, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
+        else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
                 cell.tableCellCollectionView.reloadData()
+            }
+            else
+            {
+                isMoviesWatchlistAvailable = false
             }
         }
         else
