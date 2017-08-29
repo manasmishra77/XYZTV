@@ -115,7 +115,7 @@ class Item:Mappable
     var latestId:String?
     var layout:Int?
     var duration:Int?
-    var totalDuration:Int?
+    var totalDuration:String?
     
     required init(map:Map) {
         

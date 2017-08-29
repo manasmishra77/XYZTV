@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="kResumeWatchCell" id="Rz2-K0-ksD" customClass="JCResumeWatchCell" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="itemCellPlaceholder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ri-7F-RAA" userLabel="Item Image View">
+                        <rect key="frame" x="0.0" y="0.0" width="392" height="205"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="205" id="56g-s9-BlR"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSf-xZ-DEC" userLabel="titleLabel">
+                        <rect key="frame" x="0.0" y="215" width="392" height="35"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                        <color key="textColor" red="0.80087509379999999" green="0.80087509379999999" blue="0.80087509379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oVx-Z5-1dR">
+                        <rect key="frame" x="0.0" y="189" width="392" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="hL8-qL-zJw"/>
+                        </constraints>
+                        <color key="progressTintColor" red="0.90588235289999997" green="0.17254901959999999" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="trackTintColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </progressView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="0wb-Jr-aSk"/>
+                <constraint firstAttribute="trailing" secondItem="oVx-Z5-1dR" secondAttribute="trailing" id="7x5-Ew-JB9"/>
+                <constraint firstItem="oVx-Z5-1dR" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="92r-eZ-H5n"/>
+                <constraint firstAttribute="trailing" secondItem="8ri-7F-RAA" secondAttribute="trailing" id="Bni-PI-tCA"/>
+                <constraint firstItem="8ri-7F-RAA" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="HLB-7H-qxB"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="16" id="Ma4-7i-jT9"/>
+                <constraint firstItem="8ri-7F-RAA" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="Yyu-qU-hmD"/>
+                <constraint firstAttribute="trailing" secondItem="nSf-xZ-DEC" secondAttribute="trailing" id="eaw-Sx-ZJg"/>
+                <constraint firstAttribute="bottom" secondItem="nSf-xZ-DEC" secondAttribute="bottom" id="fIg-lX-vWC"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="10" id="zCL-Te-mSK"/>
+            </constraints>
+            <connections>
+                <outlet property="itemImageView" destination="8ri-7F-RAA" id="gZ9-zI-ebj"/>
+                <outlet property="nameLabel" destination="nSf-xZ-DEC" id="L7K-2a-rZo"/>
+                <outlet property="progressBar" destination="oVx-Z5-1dR" id="9gF-Hs-1uw"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="itemCellPlaceholder" width="448" height="252"/>
+    </resources>
+</document>

@@ -28,6 +28,8 @@
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
 		7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */; };
 		7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */; };
+		7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */; };
+		7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */; };
 		7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */; };
 		7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */; };
 		7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */; };
@@ -108,6 +110,8 @@
 		797880FA1F4ECB810032943E /* SearchDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataStore.swift; sourceTree = "<group>"; };
 		7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMusicVC.swift; sourceTree = "<group>"; };
 		7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RJILImageDownloader.swift; sourceTree = "<group>"; };
+		7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCResumeWatchCell.swift; sourceTree = "<group>"; };
+		7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCResumeWatchCell.xib; sourceTree = "<group>"; };
 		7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCOTPVC.swift; sourceTree = "<group>"; };
 		7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewFooterCell.swift; sourceTree = "<group>"; };
 		7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseTableViewFooterCell.xib; sourceTree = "<group>"; };
@@ -278,6 +282,8 @@
 				7BB86E761F4C1C4700610436 /* JCYearCell.xib */,
 				7BB86E791F4C1FAD00610436 /* JCMonthCell.swift */,
 				7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */,
+				7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */,
+				7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -464,6 +470,7 @@
 				7BD39C921F419CE90014255C /* MetadataHeaderViewCell.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
+				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
@@ -565,6 +572,7 @@
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
+				7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */,
 				797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,

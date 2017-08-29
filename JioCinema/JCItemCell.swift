@@ -16,4 +16,5 @@ class JCItemCell: UICollectionViewCell {
     override func prepareForReuse() {
         self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
     }
+    
 }

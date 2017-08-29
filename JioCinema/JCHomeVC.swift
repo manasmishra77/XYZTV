@@ -24,6 +24,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
+        
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
@@ -78,12 +79,14 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         if isResumeWatchDataAvailable,indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
+            cell.isResumeWatchCell = true
             cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
             cell.tableCellCollectionView.reloadData()
         }
         else
         {
+            cell.isResumeWatchCell = false
             cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
                 cell.tableCellCollectionView.reloadData()

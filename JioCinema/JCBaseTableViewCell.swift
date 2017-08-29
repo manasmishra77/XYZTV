@@ -16,13 +16,14 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     var moreLikeData:[More]?
     var episodes:[Episode]?
     var artistImages:[String:String]?
-    let itemCellIdentifier = "kJCItemCell"
+    var isResumeWatchCell = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
         tableCellCollectionView.delegate = self
         tableCellCollectionView.dataSource = self
         self.tableCellCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
     }
     
@@ -57,23 +58,56 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-        
         //For Home, Movies, Music etc
         if(data?[indexPath.row].banner != nil)
         {
-            if let imageUrl = data?[indexPath.row].banner!
+            if isResumeWatchCell
             {
-                cell.nameLabel.text = data?[indexPath.row].name!
-                if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
+                if let imageUrl = data?[indexPath.row].banner!
                 {
-                    cell.itemImageView.image = image;
+                    resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
+                    
+                    let progress:Float?
+                    if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
+                        {
+                            progress = Float(duration) / Float(totalDuration)!
+                            resumeWatchCell.progressBar.setProgress(progress!, animated: false)
+                    }
+                    else
+                    {
+                        resumeWatchCell.progressBar.setProgress(0, animated: false)
+                    }
+                    
+                    if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                    {
+                        resumeWatchCell.itemImageView.image = image;
+                    }
+                    else
+                    {
+                        self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
+                    }
                 }
-                else
+                return resumeWatchCell
+            }
+            else
+            {
+                if let imageUrl = data?[indexPath.row].banner!
                 {
-                    self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
+                    cell.nameLabel.text = data?[indexPath.row].name!
+                    if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                    {
+                        cell.itemImageView.image = image;
+                    }
+                    else
+                    {
+                        self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
+                    }
                 }
+                return cell
             }
             
         }
@@ -125,19 +159,19 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
         }
         
-//        let finalCellFrame = cell.frame
-//        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
-//        if translation.x > 0
-//        {
-//            cell.frame = CGRect.init(x: finalCellFrame.origin.x - 500, y: -500.0, width: 0, height: 0)
-//        }
-//        else
-//        {
-//            cell.frame = CGRect.init(x: finalCellFrame.origin.x + 500, y: -500.0, width: 0, height: 0)
-//        }
-//        UIView.animate(withDuration: 0.5) {
-//            cell.frame = finalCellFrame
-//        }
+        //        let finalCellFrame = cell.frame
+        //        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
+        //        if translation.x > 0
+        //        {
+        //            cell.frame = CGRect.init(x: finalCellFrame.origin.x - 500, y: -500.0, width: 0, height: 0)
+        //        }
+        //        else
+        //        {
+        //            cell.frame = CGRect.init(x: finalCellFrame.origin.x + 500, y: -500.0, width: 0, height: 0)
+        //        }
+        //        UIView.animate(withDuration: 0.5) {
+        //            cell.frame = finalCellFrame
+        //        }
         
         return cell
     }
@@ -159,7 +193,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let itemToPlay = ["item":(episodes?[indexPath.row])!]
             NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
         }
-            else if artistImages != nil
+        else if artistImages != nil
         {
             //open search screen
         }
@@ -182,8 +216,16 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     
                     if let cell = weakSelf?.tableCellCollectionView?.cellForItem(at: indexPath){
                         
-                        let itemCell = cell as! JCItemCell
+                        if (weakSelf?.isResumeWatchCell)!
+                        {
+                        let itemCell = cell as! JCResumeWatchCell
                         itemCell.itemImageView.image = img
+                        }
+                        else
+                        {
+                            let itemCell = cell as! JCItemCell
+                            itemCell.itemImageView.image = img
+                        }
                     }
                 }
             }

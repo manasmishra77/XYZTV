@@ -10,7 +10,6 @@ import UIKit
 
 class JCOTPVC: UIViewController
 {
-    
     @IBOutlet weak var resendOTPButton: JCButton!
     @IBOutlet weak var signInButton: JCButton!
     @IBOutlet weak var getOTPButton: JCButton!
@@ -47,7 +46,7 @@ class JCOTPVC: UIViewController
         let enteredOTP = searchController?.searchBar.text!
         if(enteredOTP?.characters.count == 0)
         {
-            self.showAlert(alertString: "Please Enter OTP")
+            self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter OTP")
         }
         else
         {
@@ -67,26 +66,20 @@ class JCOTPVC: UIViewController
         let enteredNumber = searchController?.searchBar.text!
         if(enteredNumber?.characters.count == 0)
         {
-            self.showAlert(alertString: "Please Enter Jio Number")
+            self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
         }
         else
         {
             self.callWebServiceToGetOTP(number: enteredNumber!)
-            searchController?.searchBar.text = ""
-            searchController?.searchBar.placeholder = "Enter OTP"
-            searchController?.searchBar.isSecureTextEntry = true
-            getOTPButton.isHidden = true
-            resendOTPButton.isHidden = false
-            signInButton.isHidden = false
         }
     }
     
     
     
-    fileprivate func showAlert(alertString:String)
+    fileprivate func showAlert(alertTitle:String,alertMessage:String)
     {
-        let alert = UIAlertController(title: "Alert",
-                                      message: alertString,
+        let alert = UIAlertController(title: alertTitle,
+                                      message: alertMessage,
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
@@ -101,18 +94,40 @@ class JCOTPVC: UIViewController
     {
         enteredNumber = "+91".appending(number)
         let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
-        
+        weak var weakSelf = self
         let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: otpRequest) { (data, response, error) in
             
-            if let responseError = error
+            if let responseError = error as NSError?
             {
-                //TODO: handle error
-                print(responseError)
+                if responseError.code == 204
+                {
+                    DispatchQueue.main.async {
+                        weakSelf?.searchController?.searchBar.text = ""
+                        weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
+                        weakSelf?.searchController?.searchBar.isSecureTextEntry = true
+                        weakSelf?.getOTPButton.isHidden = true
+                        weakSelf?.resendOTPButton.isHidden = false
+                        weakSelf?.signInButton.isHidden = false
+                    }
+                }
+                else
+                {
+                    let errorString = responseError.userInfo["NSLocalizedDescription"]! as! String
+                    let data = errorString.data(using: .utf8)
+                    let json = try? JSONSerialization.jsonObject(with: data!)
+                    
+                    
+                    DispatchQueue.main.async {
+                        weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
+                        weakSelf?.searchController?.searchBar.text = ""
+                    }
+                }
                 return
             }
-            if let responseData = data
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
+                print(parsedResponse["code"]!)
                 print(responseData)
                 return
             }
