@@ -16,7 +16,7 @@ class JCPlayerVC: UIViewController
     var player:AVPlayer?
     var playerController:AVPlayerViewController?
     var playbackRightsData:PlaybackRightsModel?
-    var isResumed = false
+    var isResumed:Bool?
     var duration:Double = 0
     var playerId:String?
     
@@ -64,7 +64,7 @@ class JCPlayerVC: UIViewController
         let videoUrl = URL(string: url)
         player = AVPlayer(url: videoUrl!)
         playerController = AVPlayerViewController()
-        if isResumed
+        if isResumed != nil, isResumed!
         {
             player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
         }
@@ -82,6 +82,10 @@ class JCPlayerVC: UIViewController
             if(press.type == .menu)
             {
                 self.callWebServiceForAddToResumeWatchlist()
+                if isResumed != nil
+                {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
+                }
                 player?.pause()
                 player = nil
             }

@@ -23,7 +23,7 @@ class JCResumeWatchingVC: UIViewController
         let hoursRem = playableItemDuration % 3600
         let minutes = hoursRem/60
         let seconds = hoursRem % 60
-        resumeWatchingButton.setTitle(String.init(format: "Resume Watching (0%d:%d:%d)", hour, minutes, seconds), for: .normal)
+        resumeWatchingButton.setTitle(String.init(format: "Resume Watching (%0.2d:%0.2d:%0.2d)", hour, minutes, seconds), for: .normal)
 
         // Do any additional setup after loading the view.
     }
@@ -32,6 +32,10 @@ class JCResumeWatchingVC: UIViewController
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     @IBAction func didClickOnResumeWatching(_ sender: Any)
@@ -45,9 +49,7 @@ class JCResumeWatchingVC: UIViewController
     {
         isVideoResumed = false
         self.playVideo()
-//        self.dismiss(animated: false) { 
-//            self.playVideo()
-//        }
+
     }
     
     
