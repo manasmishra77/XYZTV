@@ -198,6 +198,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnResumeWatching:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="5il-qg-0eq"/>
                                 </connections>
@@ -215,6 +220,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnBeginningButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="bU3-ID-OBr"/>
                                 </connections>
@@ -232,6 +242,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnRemoveButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="xUP-v5-kpi"/>
                                 </connections>
