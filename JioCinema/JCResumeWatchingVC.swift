@@ -85,9 +85,10 @@ class JCResumeWatchingVC: UIViewController
                 return
             }
             
-            if let responseData = data
-            {                
-                print("Removed from Resume Watchlist")
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                let code = parsedResponse["code"]
+                print("Removed from Resume Watchlist \(String(describing: code))")
                 DispatchQueue.main.async {
                     weakSelf?.dismiss(animated: false, completion: nil)
                 }

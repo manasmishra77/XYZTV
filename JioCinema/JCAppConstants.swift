@@ -86,6 +86,8 @@ let metadataHeaderTableViewCellIdentifier = "kMetadataHeaderViewCell"
 let seasonCollectionViewCellIdentifier = "kSeasonCollectionViewCell"
 let yearCellIdentifier = "kYearCell"
 let monthCellIdentifier = "kMonthCell"
+let resumeWatchCellIdentifier = "kResumeWatchCell"
+let itemCellIdentifier = "kJCItemCell"
 
 //Constant Values
 let heightOfCarouselSection = 600

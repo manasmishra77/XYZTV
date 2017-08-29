@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
@@ -371,20 +371,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-hQ-Xg3" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-hQ-Xg3" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                 <rect key="frame" x="848" y="20" width="224" height="86"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="86" id="ik4-AO-abq"/>
+                                    <constraint firstAttribute="width" constant="224" id="zqL-ae-VT4"/>
+                                </constraints>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Get OTP"/>
                                 <connections>
                                     <action selector="didClickOnGetOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="NjB-El-wGa"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw5-58-ffi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw5-58-ffi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                 <rect key="frame" x="808" y="109" width="305" height="65"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="305" id="nY1-Oh-AIh"/>
+                                    <constraint firstAttribute="height" constant="65" id="wXy-xU-7cp"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Resend OTP"/>
@@ -403,6 +409,12 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="gw5-58-ffi" firstAttribute="top" secondItem="w4K-hQ-Xg3" secondAttribute="bottom" constant="3" id="PFC-xL-qiP"/>
+                            <constraint firstItem="w4K-hQ-Xg3" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="Weo-lG-OU5"/>
+                            <constraint firstItem="gw5-58-ffi" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="gbA-ev-E0M"/>
+                            <constraint firstItem="w4K-hQ-Xg3" firstAttribute="top" secondItem="O2k-6m-pYf" secondAttribute="bottom" constant="20" id="wqs-Rf-5Gc"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="getOTPButton" destination="w4K-hQ-Xg3" id="LZa-dh-WoK"/>
