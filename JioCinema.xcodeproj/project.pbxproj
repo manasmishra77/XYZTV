@@ -82,6 +82,7 @@
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
 		7BFEC4CD1F178CB4001DFE6D /* loginBg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CC1F178CB4001DFE6D /* loginBg.jpg */; };
+		B811ED421F56BC4600E55FAD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B811ED411F56BC4600E55FAD /* Log.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,6 +166,7 @@
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
 		7BFEC4CC1F178CB4001DFE6D /* loginBg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = loginBg.jpg; sourceTree = "<group>"; };
+		B811ED411F56BC4600E55FAD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */,
+				B811ED411F56BC4600E55FAD /* Log.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -516,7 +519,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -528,6 +531,7 @@
 			files = (
 				7B78D7D71F13BE7800F319BF /* JCAppConstants.swift in Sources */,
 				2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */,
+				B811ED421F56BC4600E55FAD /* Log.swift in Sources */,
 				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
@@ -685,16 +689,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9eeca810-cdaa-459d-82de-5c79cf63e710";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
+				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -706,15 +710,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9eeca810-cdaa-459d-82de-5c79cf63e710";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
+				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

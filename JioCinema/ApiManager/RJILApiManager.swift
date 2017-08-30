@@ -66,11 +66,11 @@ class RJILApiManager {
             var _commonHeaders = [String:String]()
             _commonHeaders["os"] = "ios"
             _commonHeaders["deviceType"] = "stb"
+            _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
             
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
-                _commonHeaders[kAppKey] = kAppKeyValue
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
                 _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
                 _commonHeaders["accesstoken"] = JCAppUser.shared.ssoToken

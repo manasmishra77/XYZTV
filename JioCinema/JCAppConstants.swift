@@ -43,6 +43,7 @@ let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/33
 let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/9/")
 let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/35/")
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
+let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
 let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
 let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")

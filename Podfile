@@ -9,6 +9,6 @@ target 'JioCinema' do
 
   # Pods for JioCinema
   pod 'ObjectMapper', '~> 2.2.8'
-  pod 'WillowTreeOuroboros', '~> 0.2.1'
-  
+
+
 end

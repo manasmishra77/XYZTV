@@ -116,7 +116,10 @@ class Item:Mappable
     var layout:Int?
     var duration:Int?
     var totalDuration:Int?
-    
+   
+    var isPlaylist:Bool?
+    var playlistId:String?
+
     required init(map:Map) {
         
     }
@@ -138,6 +141,8 @@ class Item:Mappable
         tvImage <- map["tvImage"]
         description <- map["description"]
         banner <- map["banner"]
+        isPlaylist <- map["isPlaylist"]
+        playlistId <- map["playlistId"]
         format <- map["format"]
         language <- map["language"]
         vendor <- map["vendor"]

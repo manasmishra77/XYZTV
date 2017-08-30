@@ -211,7 +211,21 @@ class JCTabBarController: UITabBarController {
             }
             else
             {
-                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Item).id!))
+                let item = (currentPlayableItem as! Item)
+                if (item.id?.characters.count)! > 0
+                {
+                    playerVC.callWebServiceForPlaybackRights(id: item.id!)
+                }
+                else
+                {
+                    if item.isPlaylist!
+                    {
+                        
+                        playerVC.callWebServiceForPlayListData(id: item.playlistId!)
+                    }
+                }
+                
+                
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
                 playerVC.playerId = (currentPlayableItem as! Item).id!

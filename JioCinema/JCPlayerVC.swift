@@ -19,6 +19,9 @@ class JCPlayerVC: UIViewController
     var isResumed = false
     var duration:Double = 0
     var playerId:String?
+    var playlistData:PlaylistDataModel?
+    
+    var playlistIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +32,104 @@ class JCPlayerVC: UIViewController
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //MARK:- AVPlayerViewController Methods
+    
+    func instantiatePlayer(with url:String)
+    {
+        let videoUrl = URL(string: url)
+        player = AVPlayer(url: videoUrl!)
+        
+        if playerController == nil {
+        
+        playerController = AVPlayerViewController()
+        if isResumed
+        {
+            player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
+        }
+        self.addChildViewController(playerController!)
+        self.view.addSubview((playerController?.view)!)
+        playerController?.view.frame = self.view.frame
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        
+        playerController?.player = player
+        player?.play()
+    }
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
+    {
+        for press in presses {
+            if(press.type == .menu)
+            {
+                self.callWebServiceForAddToResumeWatchlist()
+                player?.pause()
+                player = nil
+            }
+        }
+    }
+    
+    
+    
+    func playerDidFinishPlaying(note: NSNotification) {
+        Log.DLog(message: self.playlistData?.more?.count as AnyObject )
+        Log.DLog(message: self.playlistIndex as AnyObject )
+
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
+        {
+            self.playlistIndex = self.playlistIndex + 1
+
+            if self.playlistIndex != self.playlistData?.more?.count
+            {
+                let moreId = self.playlistData?.more?[self.playlistIndex].id
+                self.callWebServiceForPlaybackRights(id: moreId!)
+            }
+            else
+            {
+                self.dismiss(animated: true, completion: nil)
+            }
+            
+        }
+        
+       
+    }
+    
+    
+    //MARK:- Webservice Methods
+    func callWebServiceForPlayListData(id:String)
+    {
+        playerId = id
+        let url = String(format:"%@%@/%@",playbackDataURL,JCAppUser.shared.userGroup,id)
+        let params = ["id":id,"contentId":""]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                if let responseString = String(data: responseData, encoding: .utf8)
+                {
+                    self.playlistData = PlaylistDataModel(JSONString: responseString)
+                    if (self.playlistData?.more?.count)! > 0
+                    {
+                        let moreId = self.playlistData?.more?[self.playlistIndex].id
+                        self.callWebServiceForPlaybackRights(id: moreId!)
+                    }
+              }
+                return
+            }
+        }
     }
     
     func callWebServiceForPlaybackRights(id:String)
@@ -59,35 +160,6 @@ class JCPlayerVC: UIViewController
         }
     }
     
-    func instantiatePlayer(with url:String)
-    {
-        let videoUrl = URL(string: url)
-        player = AVPlayer(url: videoUrl!)
-        playerController = AVPlayerViewController()
-        if isResumed
-        {
-            player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
-        }
-        playerController?.player = player
-        self.addChildViewController(playerController!)
-        self.view.addSubview((playerController?.view)!)
-        playerController?.view.frame = self.view.frame
-        
-        player?.play()
-    }
-    
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
-    {
-        for press in presses {
-            if(press.type == .menu)
-            {
-                self.callWebServiceForAddToResumeWatchlist()
-                player?.pause()
-                player = nil
-            }
-        }
-    }
-    
     func callWebServiceForAddToResumeWatchlist()
     {
         let url = addToResumeWatchlistUrl
@@ -109,24 +181,16 @@ class JCPlayerVC: UIViewController
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-//                let code = parsedResponse["code"] as? Int
+                //                let code = parsedResponse["code"] as? Int
                 print("Added to Resume Watchlist")
                 return
             }
         }
+        
+        
+        
+    }
 
-        
-        
-    }
-    
-    
-    func playerDidFinishPlaying(note: NSNotification) {
-        print("Video Finished")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 
 class PlaybackRightsModel:Mappable
@@ -183,3 +247,17 @@ class Subscription:Mappable
     }
 }
 
+class PlaylistDataModel: Mappable {
+    
+    var more: [More]?
+    
+    required init(map:Map) {
+    }
+    
+    func mapping(map:Map)
+    {
+        
+        more <- map["more"]
+    }
+    
+}
