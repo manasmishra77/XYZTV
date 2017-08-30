@@ -8,13 +8,16 @@
 
 import UIKit
 
-class JCOTPVC: UIViewController
+class JCOTPVC: UIViewController,UISearchBarDelegate
 {
     @IBOutlet weak var resendOTPButton: JCButton!
     @IBOutlet weak var signInButton: JCButton!
     @IBOutlet weak var getOTPButton: JCButton!
+    var isRequestMadeForResend = false
    var searchController:UISearchController? = nil
+    var enteredJioNumber:String?
     var enteredNumber:String? = nil
+    var timerCount = 0
     let containerView = UIView.init(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
      
     override func viewDidLoad()
@@ -23,6 +26,7 @@ class JCOTPVC: UIViewController
         getOTPButton.layer.cornerRadius = 8
         signInButton.layer.cornerRadius = 8
         resendOTPButton.layer.cornerRadius = 8
+        searchController?.searchBar.delegate = self
         
     }
     
@@ -58,19 +62,21 @@ class JCOTPVC: UIViewController
     
     @IBAction func didClickOnResendOTPButton(_ sender: Any)
     {
-        
+        resendOTPButton.isEnabled = false
+        self.isRequestMadeForResend = false
+        self.callWebServiceToGetOTP(number: enteredJioNumber!)
     }
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        let enteredNumber = searchController?.searchBar.text!
-        if(enteredNumber?.characters.count == 0)
+        enteredJioNumber = searchController?.searchBar.text!
+        if(enteredJioNumber?.characters.count == 0)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
         }
         else
         {
-            self.callWebServiceToGetOTP(number: enteredNumber!)
+            self.callWebServiceToGetOTP(number: enteredJioNumber!)
         }
     }
     
@@ -108,7 +114,10 @@ class JCOTPVC: UIViewController
                         weakSelf?.searchController?.searchBar.isSecureTextEntry = true
                         weakSelf?.getOTPButton.isHidden = true
                         weakSelf?.resendOTPButton.isHidden = false
+                        weakSelf?.resendOTPButton.isEnabled = false
                         weakSelf?.signInButton.isHidden = false
+                        _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+                        
                     }
                 }
                 else
@@ -119,8 +128,18 @@ class JCOTPVC: UIViewController
                     
                     
                     DispatchQueue.main.async {
-                        weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
-                        weakSelf?.searchController?.searchBar.text = ""
+                        if (weakSelf?.isRequestMadeForResend)!
+                        {
+                            weakSelf?.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
+                            weakSelf?.searchController?.searchBar.text = ""
+                        }
+                        else
+                        {
+                            weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
+                            weakSelf?.searchController?.searchBar.text = ""
+                        }
+                        
+                        weakSelf?.isRequestMadeForResend = false
                     }
                 }
                 return
@@ -132,6 +151,11 @@ class JCOTPVC: UIViewController
                 return
             }
         }
+    }
+
+    func enableResendButton()
+    {
+        resendOTPButton.isEnabled = true
     }
     
     fileprivate func callWebServiceToVerifyOTP(otp:String)
@@ -211,6 +235,47 @@ class JCOTPVC: UIViewController
         JCAppUser.shared.userGroup = data["userGrp"] as! String
         JCAppUser.shared.subscriberId = data["subscriberId"] as! String
         JCAppUser.shared.unique = data["uniqueId"] as! String
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        var maxLength:Int?
+        if resendOTPButton.isHidden == true
+        {
+            maxLength = 10
+        }
+        else
+        {
+            maxLength = 6
+        }
+        let currentString: NSString = searchBar.text! as NSString
+            let newString: NSString =
+                currentString.replacingCharacters(in: range, with: text) as NSString
+            return newString.length <= maxLength!
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if resendOTPButton.isHidden == true {
+            if (searchBar.text?.characters.count)! < 10 {
+                getOTPButton.isUserInteractionEnabled = false
+            }
+            else
+            {
+                getOTPButton.isUserInteractionEnabled = true
+            }
+        }
+        else
+        {
+            if (searchBar.text?.characters.count)! < 6 {
+                signInButton.isUserInteractionEnabled = false
+            }
+            else
+            {
+                signInButton.isUserInteractionEnabled = true
+            }
+        }
+        
     }
     
 }

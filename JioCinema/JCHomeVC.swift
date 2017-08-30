@@ -125,7 +125,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         return 600
     }
     
-    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
+    {
+       
         return false
     }
     

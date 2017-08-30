@@ -117,7 +117,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if indexPath.row == 1
             {
                 cell.moreLikeData = metadata?.more
+                if metadata?.more != nil
+                {
                 cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item!.name!))" : ""
+                }
                 cell.tableCellCollectionView.reloadData()
             }
             if indexPath.row == 2
@@ -479,9 +482,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+            if let season = metadata?.isSeason,collectionView == headerCell.seasonCollectionView     //seasons
             {
+                if season
+                {
                 return (metadata?.filter?.count)!
+                }
             }
             else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
             {
@@ -508,11 +514,18 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        if let season = metadata?.isSeason,collectionView == headerCell.seasonCollectionView     //seasons
         {
+            if season
+            {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = String(describing: metadata!.filter![indexPath.row].season!)
             return cell
+            }
+            else
+            {
+                return UICollectionViewCell()
+            }
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {

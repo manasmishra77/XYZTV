@@ -104,12 +104,30 @@ class MetadataHeaderViewCell: UIView {
     @IBAction func didClickOnWatchNowButton(_ sender: Any)
     {
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        let id = (item?.app?.type == VideoType.Movie.rawValue) ? item?.id! : metadata?.latestEpisodeId!
+        var id:String?
+        
+        if item?.app?.type == VideoType.Movie.rawValue
+        {
+            if let itemId = item?.id
+            {
+                id = itemId
+            }
+        }
+        else
+        {
+            if let latestId = metadata?.latestEpisodeId
+            {
+                id = latestId
+            }
+        }
+        if id != nil
+        {
         playerVC.callWebServiceForPlaybackRights(id: id!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         let playerItem = ["player":playerVC]
         NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+        }
     }
  
 
