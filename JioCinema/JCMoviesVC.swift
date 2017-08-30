@@ -35,7 +35,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     override func viewDidAppear(_ animated: Bool)
     {
-        if JCDataStore.sharedDataStore.moviesWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForMoviesWatchlist()
         }
@@ -60,7 +60,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
             }
-            else if JCDataStore.sharedDataStore.moviesWatchList != nil
+            else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil,JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0,JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
             }
@@ -79,20 +79,27 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
+        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            isMoviesWatchlistAvailable = false
+        }
         
         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
         {
             cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
         }
-        else if JCDataStore.sharedDataStore.moviesWatchList != nil, indexPath.row == 0
+        else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
                 cell.tableCellCollectionView.reloadData()
-            isMoviesWatchlistAvailable = true
+            }
+            else
+            {
+                isMoviesWatchlistAvailable = false
             }
         }
         else
@@ -228,6 +235,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             
             if let responseData = data
             {
+                self.isMoviesWatchlistAvailable = true
                 DispatchQueue.main.async {
                     weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
                 }

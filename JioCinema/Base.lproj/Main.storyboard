@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -198,6 +198,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnResumeWatching:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="5il-qg-0eq"/>
                                 </connections>
@@ -215,6 +220,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnBeginningButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="bU3-ID-OBr"/>
                                 </connections>
@@ -225,6 +235,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="N1r-tO-Uzd"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Remove From Resume Watching">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -232,6 +243,11 @@
                                 <state key="focused">
                                     <color key="titleColor" red="0.86743920760000004" green="0.1197302635" blue="0.37596274280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didClickOnRemoveButton:" destination="9q6-MI-LmJ" eventType="primaryActionTriggered" id="xUP-v5-kpi"/>
                                 </connections>
@@ -280,11 +296,13 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.078431372549019607" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="0.0" y="703" width="1920" height="377"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
+                                        <rect key="frame" x="40" y="703" width="1880" height="377"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="377" id="yMr-eS-obS"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="1hA-3Y-GlB" id="GjC-CG-mV3"/>
                                             <outlet property="delegate" destination="1hA-3Y-GlB" id="9EG-KA-hvZ"/>
@@ -292,6 +310,11 @@
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" id="25n-KU-LvP"/>
+                                    <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" id="DrJ-7h-hfh"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="40" id="V6t-Wp-lqm"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVl-t3-UwF" userLabel="Loader View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
@@ -355,20 +378,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-hQ-Xg3" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-hQ-Xg3" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                 <rect key="frame" x="848" y="20" width="224" height="86"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="86" id="ik4-AO-abq"/>
+                                    <constraint firstAttribute="width" constant="224" id="zqL-ae-VT4"/>
+                                </constraints>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Get OTP"/>
                                 <connections>
                                     <action selector="didClickOnGetOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="NjB-El-wGa"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw5-58-ffi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw5-58-ffi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                 <rect key="frame" x="808" y="109" width="305" height="65"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="305" id="nY1-Oh-AIh"/>
+                                    <constraint firstAttribute="height" constant="65" id="wXy-xU-7cp"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Resend OTP"/>
@@ -387,6 +416,12 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="gw5-58-ffi" firstAttribute="top" secondItem="w4K-hQ-Xg3" secondAttribute="bottom" constant="3" id="PFC-xL-qiP"/>
+                            <constraint firstItem="w4K-hQ-Xg3" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="Weo-lG-OU5"/>
+                            <constraint firstItem="gw5-58-ffi" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="gbA-ev-E0M"/>
+                            <constraint firstItem="w4K-hQ-Xg3" firstAttribute="top" secondItem="O2k-6m-pYf" secondAttribute="bottom" constant="20" id="wqs-Rf-5Gc"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="getOTPButton" destination="w4K-hQ-Xg3" id="LZa-dh-WoK"/>

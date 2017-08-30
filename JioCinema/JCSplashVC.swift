@@ -23,6 +23,12 @@ class JCSplashVC: UIViewController {
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
         }
+        else
+        {
+            JCLoginManager.sharedInstance.performNetworkCheck(completion: { (isOnJioNetwork) in
+                //user has been set in user defaults
+            })
+        }
         
        callWebServiceForHomeData(page: 0)
         

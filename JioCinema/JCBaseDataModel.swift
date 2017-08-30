@@ -115,11 +115,10 @@ class Item:Mappable
     var latestId:String?
     var layout:Int?
     var duration:Int?
-    var totalDuration:Int?
-   
     var isPlaylist:Bool?
     var playlistId:String?
-
+    var totalDuration:String?
+    
     required init(map:Map) {
         
     }

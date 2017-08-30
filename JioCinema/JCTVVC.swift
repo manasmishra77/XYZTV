@@ -36,7 +36,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
-        if JCDataStore.sharedDataStore.tvWatchList == nil, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForTVWatchlist()
         }
@@ -62,7 +62,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! - 1
             }
-            else if JCDataStore.sharedDataStore.tvWatchList != nil
+            else if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil,JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0, JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 return (JCDataStore.sharedDataStore.tvData?.data?.count)! + 1
             }
@@ -81,20 +81,28 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
+        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        {
+            isTVWatchlistAvailable = false
+        }
+        
         if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
         {
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
             
         }
-        else if JCDataStore.sharedDataStore.tvWatchList != nil, indexPath.row == 0
+        else if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
             {
             cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
             cell.categoryTitleLabel.text = "WatchList"
-                cell.tableCellCollectionView.reloadData()
-            isTVWatchlistAvailable = true
+            cell.tableCellCollectionView.reloadData()
+            }
+            else
+            {
+                isTVWatchlistAvailable = false
             }
         }
         else
@@ -229,6 +237,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             
             if let responseData = data
             {
+                self.isTVWatchlistAvailable = true
                 DispatchQueue.main.async {
                     weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
                 }

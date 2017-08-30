@@ -25,6 +25,8 @@ class JCTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setTabBarTitle()
+        
         NotificationCenter.default.addObserver(forName: cellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForCellTap(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
         
@@ -74,6 +76,15 @@ class JCTabBarController: UITabBarController {
         // Do any additional setup after loading the view.
     }
    
+    
+    func setTabBarTitle()
+    {
+        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 210.0, height: 135.0))
+        tabBarTitleLabel.text = "JioCinema"
+        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 40.0)
+        tabBarTitleLabel.textColor = UIColor.white
+        self.tabBar.addSubview(tabBarTitleLabel)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

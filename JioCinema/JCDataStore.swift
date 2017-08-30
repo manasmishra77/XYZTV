@@ -12,16 +12,18 @@ class JCDataStore
 {
     static let sharedDataStore: JCDataStore = JCDataStore()
     
-    var configData:ConfigData?
     var homeData:BaseDataModel?
     var moviesData:BaseDataModel?
     var musicData:BaseDataModel?
     var tvData:BaseDataModel?
     var clipsData:BaseDataModel?
+    var searchMovies:BaseDataModel?
+
+    
+    var configData:ConfigData?
     var tvWatchList:WatchListDataModel?
     var moviesWatchList:WatchListDataModel?
     var resumeWatchList:ResumeWatchListDataModel?
-    var searchMovies:BaseDataModel?
     
     enum Category
     {
