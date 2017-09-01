@@ -9,11 +9,16 @@
 import UIKit
 import ObjectMapper
 import AVKit
+import AVFoundation
+
+private var playerViewControllerKVOContext = 0
 
 class JCPlayerVC: UIViewController
 {
- 
+    @IBOutlet var lbl_NextVideoPlayingTime : UILabel!
+    
     var player:AVPlayer?
+    var playerTimeObserverToken: Any?
     var playerController:AVPlayerViewController?
     var playbackRightsData:PlaybackRightsModel?
     var isResumed:Bool?
@@ -29,6 +34,10 @@ class JCPlayerVC: UIViewController
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        self.removePlayerObserver()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -41,9 +50,13 @@ class JCPlayerVC: UIViewController
     
     func instantiatePlayer(with url:String)
     {
+        if((self.player) != nil) {
+            self.removePlayerObserver()
+        }
+        
+        
         let videoUrl = URL(string: url)
         player = AVPlayer(url: videoUrl!)
-        
         if playerController == nil {
         
         playerController = AVPlayerViewController()
@@ -55,14 +68,16 @@ class JCPlayerVC: UIViewController
         self.view.addSubview((playerController?.view)!)
         playerController?.view.frame = self.view.frame
         }
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        
-        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        addPlayerNotificationObserver()
         
         playerController?.player = player
         player?.play()
+        
+        self.view.bringSubview(toFront: self.lbl_NextVideoPlayingTime)
+        self.lbl_NextVideoPlayingTime.isHidden = true
+
     }
+    
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
     {
@@ -79,6 +94,128 @@ class JCPlayerVC: UIViewController
             }
         }
     }
+    
+    
+    //MARK:- Add Player Observer
+    
+    func addPlayerNotificationObserver () {
+         NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
+    }
+    
+    func addPlayerPeriodicTimeObserver() {
+        let interval = CMTime(seconds: 1,
+                              preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let mainQueue = DispatchQueue.main
+        
+        // Add time observer
+        playerTimeObserverToken =
+            self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
+                [weak self] time in
+                
+                Log.DLog(message: "#####" as AnyObject)
+                Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
+                Log.DLog(message: time as AnyObject)
+                
+                let currentPlayerTime = Double(CMTimeGetSeconds(time))
+                let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
+                
+                if remainingTime <= 5
+                {
+                    self?.lbl_NextVideoPlayingTime.isHidden = false
+                    self?.lbl_NextVideoPlayingTime.text = "Next video will  play in " + "\(Int(remainingTime))" + " Seconds"
+                }
+         }
+    }
+    func getPlayerDuration() -> Double {
+        guard let currentItem = self.player?.currentItem else { return 0.0 }
+        return CMTimeGetSeconds(currentItem.duration)
+    }
+    
+    //MARK:- Remove Player Observer
+    func removePlayerObserver() {
+        self.player?.pause()
+        if let timeObserverToken = playerTimeObserverToken {
+            self.player?.removeTimeObserver(timeObserverToken)
+        }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+        
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
+        self.playerTimeObserverToken = nil
+       // self.currentItem = nil
+    }
+    
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        
+        guard context == &playerViewControllerKVOContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        
+        if keyPath == #keyPath(JCPlayerVC.player.currentItem.duration) {
+            // Update timeSlider and enable/disable controls when duration > 0.0
+            
+            /*
+             Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
+             `player.currentItem` is nil.
+             */
+            let newDuration: CMTime
+            if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
+                newDuration = newDurationAsValue.timeValue
+            }
+            else {
+                newDuration = kCMTimeZero
+            }
+            Log.DLog(message: newDuration as AnyObject)
+        }
+        else if keyPath == #keyPath(JCPlayerVC.player.rate) {
+            let newRate = (change?[NSKeyValueChangeKey.newKey] as! NSNumber).doubleValue
+          //  self.playerDelegate?.didILinkPlayerStatusRate(rate: newRate)
+        }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
+        {
+           // self.playerDelegate?.didILinkPlayerStatusBufferEmpty()
+        }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
+        {
+          //  self.playerDelegate?.didILinkPlayerStatusPlaybackLikelyToKeepUp()
+        }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
+            let newStatus: AVPlayerItemStatus
+            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
+                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue)!
+            }
+            else {
+                newStatus = .unknown
+            }
+            switch newStatus {
+            case .readyToPlay:
+                self.addPlayerPeriodicTimeObserver()
+               // self.playerDelegate?.didILinkPlayerStatusReadyToPlay()
+                break
+            case .failed:
+                Log.DLog(message: "Failed" as AnyObject)
+               // self.playerDelegate?.didILinkPlayerStatusFailed(player?.currentItem?.error?.localizedDescription, error: player?.currentItem?.error)
+            default:
+                print("unknown")
+            }
+            
+            if newStatus == .failed {
+            }
+        }
+    }
+    
+
     
     
     
