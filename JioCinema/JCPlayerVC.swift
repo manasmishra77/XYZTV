@@ -126,11 +126,29 @@ class JCPlayerVC: UIViewController
                 //Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
                 Log.DLog(message: remainingTime as AnyObject)
                 
-                if remainingTime <= 5
+                if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
                 {
-                    self?.lbl_NextVideoPlayingTime.isHidden = false
-                    self?.lbl_NextVideoPlayingTime.text = "Next video will  play in " + "\(Int(remainingTime))" + " Seconds"
+                    let index = (self?.playlistIndex)! + 1
+                    
+                    if index != self?.playlistData?.more?.count
+                    {
+                    if remainingTime <= 5
+                    {
+                        self?.lbl_NextVideoPlayingTime.isHidden = false
+                        self?.lbl_NextVideoPlayingTime.text = "Next video will  play in " + "\(Int(remainingTime))" + " Seconds"
+                    }
+                    }
+                    else
+                    {
+                        self?.lbl_NextVideoPlayingTime.isHidden = true
+                    }
                 }
+                else
+                {
+                    self?.lbl_NextVideoPlayingTime.isHidden = true
+                }
+                
+                
          }
     }
     func getPlayerDuration() -> Double {
