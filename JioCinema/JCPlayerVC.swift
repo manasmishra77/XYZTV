@@ -42,9 +42,7 @@ class JCPlayerVC: UIViewController
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    
     
     //MARK:- AVPlayerViewController Methods
     

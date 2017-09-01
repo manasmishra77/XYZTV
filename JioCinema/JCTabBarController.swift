@@ -102,7 +102,7 @@ class JCTabBarController: UITabBarController {
         {
             if item.app?.type == VideoType.Language.rawValue || item.app?.type == VideoType.Genre.rawValue
             {
-                presentLanguageGenreController()
+                presentLanguageGenreController(item: item)
                 return
             }
             else
@@ -164,9 +164,10 @@ class JCTabBarController: UITabBarController {
         }
     }
     
-    func presentLanguageGenreController()
+    func presentLanguageGenreController(item:Item)
     {
-        let languageGenreVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId)
+        let languageGenreVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        languageGenreVC.item = item
         languageGenreVC.modalPresentationStyle = .overFullScreen
         languageGenreVC.modalTransitionStyle = .coverVertical
         languageGenreVC.view.layer.speed = 0.7

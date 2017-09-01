@@ -178,6 +178,9 @@
                             <constraint firstAttribute="trailing" secondItem="oku-Fb-Wqg" secondAttribute="trailing" id="xYS-f6-uHT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="lbl_NextVideoPlayingTime" destination="oku-Fb-Wqg" id="AjF-bU-5kh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2IR-za-JQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
