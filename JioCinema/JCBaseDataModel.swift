@@ -15,6 +15,7 @@ class BaseDataModel:Mappable
     var message:String?
     var totalPages:Int?
     var data:[DataContainer]?
+    
     required init(map:Map) {
         
     }
@@ -25,6 +26,13 @@ class BaseDataModel:Mappable
         message <- map["message"]
         totalPages <- map["totalPages"]
         data <- map["data"]
+        if (data == nil)
+        {
+            var temp:DataContainer?
+            temp <- map["data"]
+            data = [temp!]
+            //data = temp["items"]
+        }
     }
 }
 
@@ -44,6 +52,31 @@ class WatchListDataModel:Mappable
         data <- map["data"]
     }
 }
+
+class LanguageGenreDataModel:Mappable
+{
+    var code:Int?
+    var message:String?
+    var data:DataContainer?
+    var name:String?
+    var `default`:String?
+    var label:String?
+    
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+        name <- map["name"]
+        `default` <- map["`default`"]
+        label <- map["label"]
+    }
+}
+
 
 class ResumeWatchListDataModel:Mappable
 {
@@ -118,6 +151,7 @@ class Item:Mappable
     var isPlaylist:Bool?
     var playlistId:String?
     var totalDuration:String?
+    var list:[List]?
     
     required init(map:Map) {
         
@@ -155,8 +189,27 @@ class Item:Mappable
         layout <- map["layout"]
         duration <- map["duration"]
         totalDuration <- map["totalDuration"]
+        list <- map["list"]
     }
 }
+
+class List:Mappable
+{
+    var id:Int?
+    var name:String?
+    
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        id <- map["id"]
+        name <- map["name"]
+    }
+    
+}
+
 
 class App:Mappable
 {

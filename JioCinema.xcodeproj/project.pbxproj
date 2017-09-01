@@ -46,6 +46,7 @@
 		7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */; };
 		7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */; };
 		7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */; };
+		7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */; };
 		7BB0E2011F1DECE600A1DB0B /* JCBaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0E1FF1F1DECE600A1DB0B /* JCBaseVC.swift */; };
 		7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BB0E2001F1DECE600A1DB0B /* JCBaseVC.xib */; };
 		7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0E2041F1DEE9800A1DB0B /* JCBaseTableViewCell.swift */; };
@@ -131,6 +132,7 @@
 		7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLoginManager.swift; sourceTree = "<group>"; };
 		7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSeasonCollectionViewCell.swift; sourceTree = "<group>"; };
 		7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCSeasonCollectionViewCell.xib; sourceTree = "<group>"; };
+		7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLanguageGenreVC.swift; sourceTree = "<group>"; };
 		7BB0E1FF1F1DECE600A1DB0B /* JCBaseVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseVC.swift; sourceTree = "<group>"; };
 		7BB0E2001F1DECE600A1DB0B /* JCBaseVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseVC.xib; sourceTree = "<group>"; };
 		7BB0E2041F1DEE9800A1DB0B /* JCBaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewCell.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */,
+				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -555,6 +558,7 @@
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
+				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
 				7BFEC4BA1F15C01A001DFE6D /* JCLoginVC.swift in Sources */,
 				7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */,

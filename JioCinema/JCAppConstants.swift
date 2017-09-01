@@ -53,6 +53,8 @@ let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/
 let preditiveSearchURL = basePath.appending("common/v3/search/search")
 let addToResumeWatchlistUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/add")
 let removeFromResumeWatchlistUrl = basePath.appending("common/v3/list/deletecontent")
+let languageListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/25")
+let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/29")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -77,6 +79,7 @@ let metadataVCStoryBoardId = "kMetadataVC"
 let settingsVCStoryBoardId = "kSettingsVC"
 let settingsDetailVCStoryBoardId = "kSettingsDetailVC"
 let resumeWatchingVCStoryBoardId = "kResumeWatchingVC"
+let languageGenreStoryBoardId = "kLanguageGenreVC"
 
 //Nib Identifiers
 let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"

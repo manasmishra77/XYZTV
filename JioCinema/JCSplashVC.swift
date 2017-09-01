@@ -9,9 +9,10 @@
 import UIKit
 
 class JCSplashVC: UIViewController {
-
+    
     @IBOutlet weak var splashImage: UIImageView!
     
+    let dispatchGroup = DispatchGroup()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,17 +31,45 @@ class JCSplashVC: UIViewController {
             })
         }
         
-       callWebServiceForHomeData(page: 0)
+        callWebservicesForHomeData()
         
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    func callWebservicesForHomeData()
+    {
+        callWebServiceForHomeData(page: 0)
+        callWebServiceForLanguageList()
+        callWebServiceForGenreList()
+        weak var weakSelf = self
+        dispatchGroup.notify(queue: DispatchQueue.main)
+        {
+            weakSelf?.mergeDataArray()
+            weakSelf?.navigateToHomeVC()
+        }
+    }
+    
+    func mergeDataArray()
+    {
+        var tempArray = JCDataStore.sharedDataStore.homeData?.data
+        if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0]
+        {
+        tempArray?.insert(languageData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)!)
+        }
+        
+        if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0]
+        {
+        tempArray?.insert(genreData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)!)
+        }
+    
+        JCDataStore.sharedDataStore.mergedHomeData = tempArray
+    }
+    
     func callWebServiceForConfigData()
     {
         let params = [kAppKey:kAppKeyValue]
@@ -69,25 +98,26 @@ class JCSplashVC: UIViewController {
         JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
     }
     
- 
-    
-    func callWebServiceForHomeData(page:Int)
+        func callWebServiceForHomeData(page:Int)
     {
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
+        dispatchGroup.enter()
         RJILApiManager.defaultManager.post(request: homeDataRequest) { (data, response, error) in
-            if let responseError = error
+            if error != nil
             {
                 //TODO: handle error
                 DispatchQueue.main.async {
                     weakSelf?.showAlert(alertString: "Unable to Connect")
+                    weakSelf?.dispatchGroup.leave()
                 }
                 return
             }
             if let responseData = data
             {
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
+                weakSelf?.dispatchGroup.leave()
                 return
             }
         }
@@ -100,11 +130,71 @@ class JCSplashVC: UIViewController {
         
         self.navigateToHomeVC()
     }
-
+    
+    
+    func callWebServiceForLanguageList()
+    {
+        let url = languageListUrl
+        let languageListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        dispatchGroup.enter()
+        RJILApiManager.defaultManager.post(request: languageListRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                weakSelf?.dispatchGroup.leave()
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateLanguageList(dictionaryResponseData: responseData)
+                weakSelf?.dispatchGroup.leave()
+                return
+            }
+        }
+    }
+    
+    func evaluateLanguageList(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Language)
+        
+    }
+    
+    func callWebServiceForGenreList()
+    {
+        let url = genreListUrl
+        let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        dispatchGroup.enter()
+        RJILApiManager.defaultManager.post(request: genreListRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                weakSelf?.dispatchGroup.leave()
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateGenreList(dictionaryResponseData: responseData)
+                weakSelf?.dispatchGroup.leave()
+                return
+            }
+        }
+    }
+    
+    func evaluateGenreList(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Genre)
+    }
+    
+    
     
     func navigateToHomeVC()
     {
-        
         DispatchQueue.main.async {
             
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)

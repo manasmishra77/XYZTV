@@ -17,6 +17,8 @@ class JCTabBarController: UITabBarController {
         case TVShow = 1
         case Clip = 6
         case Trailer = 3
+        case Language = 9
+        case Genre = 10
     }
     
     var settingsVC:JCSettingsVC?
@@ -98,8 +100,16 @@ class JCTabBarController: UITabBarController {
         weak var weakSelf = self
         if let item = notification.userInfo?["item"] as? Item
         {
-        currentPlayableItem = item
-            isCurrentItemEpisode = false
+            if item.app?.type == VideoType.Language.rawValue || item.app?.type == VideoType.Genre.rawValue
+            {
+                presentLanguageGenreController()
+                return
+            }
+            else
+            {
+                currentPlayableItem = item
+                isCurrentItemEpisode = false
+            }
         }
             else if let item = notification.userInfo?["item"] as? Episode
         {
@@ -152,6 +162,16 @@ class JCTabBarController: UITabBarController {
         {
             weakSelf?.checkLoginAndPlay()
         }
+    }
+    
+    func presentLanguageGenreController()
+    {
+        let languageGenreVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId)
+        languageGenreVC.modalPresentationStyle = .overFullScreen
+        languageGenreVC.modalTransitionStyle = .coverVertical
+        languageGenreVC.view.layer.speed = 0.7
+        
+        self.present(languageGenreVC, animated: false, completion: nil)
     }
     
     func checkLoginAndPlay()

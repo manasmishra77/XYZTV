@@ -57,9 +57,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             if isResumeWatchDataAvailable, JCLoginManager.sharedInstance.isUserLoggedIn()
             {
-                return (JCDataStore.sharedDataStore.homeData?.data?.count)!
+                return (JCDataStore.sharedDataStore.mergedHomeData?.count)!
             }
-            return (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1
+            return (JCDataStore.sharedDataStore.mergedHomeData?.count)! - 1
         }
         else
         {
@@ -87,12 +87,12 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         else
         {
             cell.isResumeWatchCell = false
-            cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].items : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.homeData?.data?[indexPath.row].title : JCDataStore.sharedDataStore.homeData?.data?[indexPath.row + 1].title
+            cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].items : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].items
+            cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].title : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].title
                 cell.tableCellCollectionView.reloadData()
         }
         
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
+        if(indexPath.row == (JCDataStore.sharedDataStore.mergedHomeData?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
             {

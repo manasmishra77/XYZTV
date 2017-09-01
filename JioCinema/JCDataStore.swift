@@ -18,7 +18,9 @@ class JCDataStore
     var tvData:BaseDataModel?
     var clipsData:BaseDataModel?
     var searchMovies:BaseDataModel?
-
+    var languageData:BaseDataModel?
+    var genreData:BaseDataModel?
+    var mergedHomeData:[DataContainer]?
     
     var configData:ConfigData?
     var tvWatchList:WatchListDataModel?
@@ -35,6 +37,8 @@ class JCDataStore
         case TVWatchList
         case MoviesWatchList
         case ResumeWatchList
+        case Language
+        case Genre
     }
     
     
@@ -72,6 +76,10 @@ class JCDataStore
                 self.moviesWatchList = WatchListDataModel(JSONString: responseString)
             case .ResumeWatchList:
                 self.resumeWatchList = ResumeWatchListDataModel(JSONString: responseString)
+            case .Language:
+                self.languageData = BaseDataModel(JSONString: responseString)
+            case .Genre:
+                self.genreData = BaseDataModel(JSONString: responseString)
             }
             
         }
@@ -86,6 +94,7 @@ class JCDataStore
                 switch category {
                 case .Home:
                     self.homeData?.data?.append(data)
+                    self.mergedHomeData?.append(data)
                 case .Movies:
                     self.moviesData?.data?.append(data)
                 case .Music:
@@ -97,6 +106,8 @@ class JCDataStore
                 case .TVWatchList: break                    
                 case .MoviesWatchList: break
                 case .ResumeWatchList: break
+                case .Language: break
+                case .Genre: break
                 }
             }
         }
