@@ -240,17 +240,20 @@ class JCPlayerVC: UIViewController
             }
             else
             {
-                self.dismiss(animated: true, completion: nil)
+                    dismissPlayerVC()
             }
         }
         else
         {
-            self.dismiss(animated: true, completion: nil)
+            dismissPlayerVC()
         }
-        
-       
     }
     
+    func dismissPlayerVC()
+    {
+        removePlayerObserver()
+        self.dismiss(animated: true, completion: nil)
+    }
     
     //MARK:- Webservice Methods
     func callWebServiceForPlayListData(id:String)
