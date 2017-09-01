@@ -35,7 +35,7 @@ class JCPlayerVC: UIViewController
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        self.removePlayerObserver()
+        //self.removePlayerObserver()
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,13 +82,14 @@ class JCPlayerVC: UIViewController
         for press in presses {
             if(press.type == .menu)
             {
-                self.callWebServiceForAddToResumeWatchlist()
+                let currentTimeduration = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
+                let totalDuration = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
+                removePlayerObserver()
+                self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeduration, totalDuration: totalDuration)
                 if isResumed != nil
                 {
                     self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
                 }
-                player?.pause()
-                player = nil
             }
         }
     }
@@ -116,12 +117,14 @@ class JCPlayerVC: UIViewController
             self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
                 [weak self] time in
                 
-                Log.DLog(message: "#####" as AnyObject)
-                Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
-                Log.DLog(message: time as AnyObject)
+                Log.DLog(message: "Remaining Time" as AnyObject)
                 
                 let currentPlayerTime = Double(CMTimeGetSeconds(time))
                 let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
+                
+                
+                //Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
+                Log.DLog(message: remainingTime as AnyObject)
                 
                 if remainingTime <= 5
                 {
@@ -131,6 +134,10 @@ class JCPlayerVC: UIViewController
          }
     }
     func getPlayerDuration() -> Double {
+        Log.DLog(message: "$$$$$$$$" as AnyObject)
+
+        Log.DLog(message: self.player?.currentItem as AnyObject)
+        
         guard let currentItem = self.player?.currentItem else { return 0.0 }
         return CMTimeGetSeconds(currentItem.duration)
     }
@@ -149,6 +156,7 @@ class JCPlayerVC: UIViewController
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         self.playerTimeObserverToken = nil
+        self.player = nil
        // self.currentItem = nil
     }
     
@@ -302,17 +310,17 @@ class JCPlayerVC: UIViewController
         }
     }
     
-    func callWebServiceForAddToResumeWatchlist()
+    func callWebServiceForAddToResumeWatchlist(currentTimeDuration:String,totalDuration:String)
     {
         let url = addToResumeWatchlistUrl
-        let json: Dictionary<String, String> = ["id":playerId!, "duration":"\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))", "totalduration": "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"]
+        let json: Dictionary<String, String> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = "10"
         params["json"] = json
         params["id"] = playerId
-        params["duration"] = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
-        params["totalduration"] = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
+        params["duration"] = currentTimeDuration
+        params["totalduration"] = totalDuration
         
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in

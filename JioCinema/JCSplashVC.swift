@@ -127,8 +127,6 @@ class JCSplashVC: UIViewController {
     {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
-        
-        self.navigateToHomeVC()
     }
     
     
