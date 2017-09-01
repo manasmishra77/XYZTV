@@ -35,6 +35,7 @@
 		7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */; };
 		7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B3A43F81F4424F900EE3824 /* imdb_logo.png */; };
 		7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */; };
+		7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */; };
 		7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7C11F13A91900F319BF /* AppDelegate.swift */; };
 		7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B78D7C51F13A91900F319BF /* Main.storyboard */; };
 		7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B78D7C81F13A91A00F319BF /* Assets.xcassets */; };
@@ -119,6 +120,7 @@
 		7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseTableViewFooterCell.xib; sourceTree = "<group>"; };
 		7B3A43F81F4424F900EE3824 /* imdb_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imdb_logo.png; sourceTree = "<group>"; };
 		7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataVC.swift; sourceTree = "<group>"; };
+		7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLanguageGenreDetailModel.swift; sourceTree = "<group>"; };
 		7B78D7BE1F13A91900F319BF /* JioCinema.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JioCinema.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B78D7C11F13A91900F319BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B78D7C61F13A91900F319BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				7B78D7DB1F14752400F319BF /* JCDataStore.swift */,
 				7BFEC4A51F154223001DFE6D /* JCAppUser.swift */,
 				7BB0E2101F1E283B00A1DB0B /* JCBaseDataModel.swift */,
+				7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
+				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */,

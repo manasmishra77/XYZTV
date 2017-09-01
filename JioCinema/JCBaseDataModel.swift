@@ -143,6 +143,7 @@ class Item:Mappable
     var banner:String?
     var format:Int?
     var language:String?
+    var genre:String?
     var vendor:String?
     var app:App?
     var latestId:String?
@@ -178,6 +179,7 @@ class Item:Mappable
         playlistId <- map["playlistId"]
         format <- map["format"]
         language <- map["language"]
+        genre <- map["genre"]
         vendor <- map["vendor"]
         app <- map["app"]
         

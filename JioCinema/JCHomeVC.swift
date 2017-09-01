@@ -188,7 +188,10 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
         weak var weakSelf = self
-        isResumeWatchDataAvailable = true
+        if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
+        {
+            isResumeWatchDataAvailable = true
+        }
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
         }
