@@ -44,6 +44,7 @@
 		7B78D7D71F13BE7800F319BF /* JCAppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7D61F13BE7800F319BF /* JCAppConstants.swift */; };
 		7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7D91F140DA100F319BF /* JCConfigData.swift */; };
 		7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7DB1F14752400F319BF /* JCDataStore.swift */; };
+		7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */; };
 		7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */; };
 		7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */; };
 		7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */; };
@@ -131,6 +132,7 @@
 		7B78D7D61F13BE7800F319BF /* JCAppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCAppConstants.swift; sourceTree = "<group>"; };
 		7B78D7D91F140DA100F319BF /* JCConfigData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCConfigData.swift; sourceTree = "<group>"; };
 		7B78D7DB1F14752400F319BF /* JCDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCDataStore.swift; sourceTree = "<group>"; };
+		7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLanguageGenreSelectionVC.swift; sourceTree = "<group>"; };
 		7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLoginManager.swift; sourceTree = "<group>"; };
 		7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSeasonCollectionViewCell.swift; sourceTree = "<group>"; };
 		7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCSeasonCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
+				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				7BFEC4BA1F15C01A001DFE6D /* JCLoginVC.swift in Sources */,
 				7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */,
 				7BB0E2011F1DECE600A1DB0B /* JCBaseVC.swift in Sources */,
+				7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */,
 				7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,

@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
             endingLineNumber = "147"
-            landmarkName = "removePlayerObserver()"
+            landmarkName = "addPlayerPeriodicTimeObserver()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "525955711.949442"
+            timestampString = "526127796.970715"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "callWebServiceForLanguageGenreData(isLanguage:pageNo:paramString:type:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,28 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "525955714.09304"
+            timestampString = "526127940.878952"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "525955844.399398"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "callWebServiceForLanguageGenreData(isLanguage:pageNo:)"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "selectedFilter(filter:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

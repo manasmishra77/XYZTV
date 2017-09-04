@@ -168,11 +168,10 @@ class JCTabBarController: UITabBarController {
     {
         let languageGenreVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
-        languageGenreVC.modalPresentationStyle = .overFullScreen
-        languageGenreVC.modalTransitionStyle = .coverVertical
-        languageGenreVC.view.layer.speed = 0.7
+        DispatchQueue.main.async {
+            self.present(languageGenreVC, animated: false, completion: nil)
+        }
         
-        self.present(languageGenreVC, animated: false, completion: nil)
     }
     
     func checkLoginAndPlay()

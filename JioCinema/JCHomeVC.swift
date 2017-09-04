@@ -89,7 +89,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             cell.isResumeWatchCell = false
             cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].items : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].title : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].title
-                cell.tableCellCollectionView.reloadData()
+            cell.tableCellCollectionView.reloadData()
         }
         
         if(indexPath.row == (JCDataStore.sharedDataStore.mergedHomeData?.count)! - 2)
@@ -110,14 +110,21 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if(loadedPage == (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
+        if (JCDataStore.sharedDataStore.homeData?.totalPages) != nil
         {
-            return UIView.init()
+            if(loadedPage == (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
+            {
+                return UIView.init()
+            }
+            else
+            {
+                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
+                return footerCell
+            }
         }
         else
         {
-            let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-            return footerCell
+            return UIView.init()
         }
     }
     
@@ -127,7 +134,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
     {
-       
+        
         return false
     }
     
@@ -156,7 +163,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     {
         //Success
         JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Home)
-         weak var weakSelf = self
+        weak var weakSelf = self
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
         }

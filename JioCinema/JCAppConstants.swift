@@ -81,6 +81,7 @@ let settingsVCStoryBoardId = "kSettingsVC"
 let settingsDetailVCStoryBoardId = "kSettingsDetailVC"
 let resumeWatchingVCStoryBoardId = "kResumeWatchingVC"
 let languageGenreStoryBoardId = "kLanguageGenreVC"
+let languageGenreSelectionStoryBoardId = "kLanguageGenreSelectionVC"
 
 //Nib Identifiers
 let baseTableViewCellReuseIdentifier = "kBaseTableViewCell"
@@ -93,6 +94,7 @@ let yearCellIdentifier = "kYearCell"
 let monthCellIdentifier = "kMonthCell"
 let resumeWatchCellIdentifier = "kResumeWatchCell"
 let itemCellIdentifier = "kJCItemCell"
+let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell"
 
 //Constant Values
 let heightOfCarouselSection = 600
