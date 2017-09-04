@@ -13,6 +13,7 @@ class JCSplashVC: UIViewController {
     @IBOutlet weak var splashImage: UIImageView!
     
     let dispatchGroup = DispatchGroup()
+    var isHomeDataAvailable:Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +32,6 @@ class JCSplashVC: UIViewController {
             })
         }
         
-        callWebservicesForHomeData()
         
         // Do any additional setup after loading the view.
     }
@@ -50,7 +50,14 @@ class JCSplashVC: UIViewController {
         dispatchGroup.notify(queue: DispatchQueue.main)
         {
             weakSelf?.mergeDataArray()
-            weakSelf?.navigateToHomeVC()
+            if (weakSelf?.isHomeDataAvailable)!
+            {
+                weakSelf?.navigateToHomeVC()
+            }
+            else
+            {
+                weakSelf?.showAlert(alertString: "No Network Available")
+            }
         }
     }
     
@@ -59,14 +66,14 @@ class JCSplashVC: UIViewController {
         var tempArray = JCDataStore.sharedDataStore.homeData?.data
         if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0]
         {
-        tempArray?.insert(languageData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)!)
+            tempArray?.insert(languageData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)!)
         }
         
         if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0]
         {
-        tempArray?.insert(genreData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)!)
+            tempArray?.insert(genreData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)!)
         }
-    
+        
         JCDataStore.sharedDataStore.mergedHomeData = tempArray
     }
     
@@ -82,11 +89,13 @@ class JCSplashVC: UIViewController {
             {
                 //TODO: handle error
                 print(responseError)
+                weakSelf?.showAlert(alertString: "No Network Available")
                 return
             }
             if let responseData = data
             {
                 weakSelf?.evaluateConfigData(dictionaryResponseData: responseData)
+                weakSelf?.callWebservicesForHomeData()
                 return
             }
         }
@@ -98,7 +107,7 @@ class JCSplashVC: UIViewController {
         JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
     }
     
-        func callWebServiceForHomeData(page:Int)
+    func callWebServiceForHomeData(page:Int)
     {
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
@@ -108,15 +117,15 @@ class JCSplashVC: UIViewController {
             if error != nil
             {
                 //TODO: handle error
-                DispatchQueue.main.async {
-                    weakSelf?.showAlert(alertString: "Unable to Connect")
-                    weakSelf?.dispatchGroup.leave()
-                }
+                weakSelf?.isHomeDataAvailable = false
+                weakSelf?.dispatchGroup.leave()
+                
                 return
             }
             if let responseData = data
             {
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
+                weakSelf?.isHomeDataAvailable = true
                 weakSelf?.dispatchGroup.leave()
                 return
             }
@@ -210,11 +219,14 @@ class JCSplashVC: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
-            weakSelf?.callWebServiceForHomeData(page: 0)
+            weakSelf?.callWebServiceForConfigData()
         }
         
         alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
     }
     
 }
