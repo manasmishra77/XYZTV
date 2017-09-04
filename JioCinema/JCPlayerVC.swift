@@ -15,7 +15,10 @@ private var playerViewControllerKVOContext = 0
 
 class JCPlayerVC: UIViewController
 {
-    @IBOutlet var lbl_NextVideoPlayingTime : UILabel!
+    @IBOutlet weak var nextVideoView: UIView!
+    @IBOutlet weak var nextVideoNameLabel: UILabel!
+    @IBOutlet weak var nextVideoPlayingTimeLabel: UILabel!
+    @IBOutlet weak var nextVideoThumbnail: UIImageView!
     
     var player:AVPlayer?
     var playerItem:AVPlayerItem?
@@ -74,8 +77,8 @@ class JCPlayerVC: UIViewController
         playerController?.player = player
         player?.play()
         
-        self.view.bringSubview(toFront: self.lbl_NextVideoPlayingTime)
-        self.lbl_NextVideoPlayingTime.isHidden = true
+        self.view.bringSubview(toFront: self.nextVideoView)
+        self.nextVideoView.isHidden = true
 
     }
     
@@ -135,20 +138,32 @@ class JCPlayerVC: UIViewController
                     
                     if index != self?.playlistData?.more?.count
                     {
-                    if remainingTime <= 5
-                    {
-                        self?.lbl_NextVideoPlayingTime.isHidden = false
-                        self?.lbl_NextVideoPlayingTime.text = "Next video will  play in " + "\(Int(remainingTime))" + " Seconds"
-                    }
+                        if remainingTime <= 5
+                        {
+                            self?.nextVideoView.isHidden = false
+                            self?.nextVideoNameLabel.text = self?.playlistData?.more?[index].name
+                            self?.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
+                            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending( (self?.playlistData?.more?[index].banner)!)
+                            RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: false){
+                                
+                                image in
+                                
+                                if let img = image {
+                                    DispatchQueue.main.async {
+                                        self?.nextVideoThumbnail.image = img
+                                    }
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        self?.lbl_NextVideoPlayingTime.isHidden = true
+                        self?.nextVideoView.isHidden = true
                     }
                 }
                 else
                 {
-                    self?.lbl_NextVideoPlayingTime.isHidden = true
+                    self?.nextVideoView.isHidden = true
                 }
                 
                 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -163,24 +163,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oku-Fb-Wqg">
-                                <rect key="frame" x="888" y="969" width="1032" height="64"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OXd-1y-bTi">
+                                <rect key="frame" x="1320" y="810" width="600" height="150"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="28g-LG-naa">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="ma3-tS-1Uj"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qG8-AD-0fn">
+                                        <rect key="frame" x="230" y="30" width="62" height="30"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
+                                        <rect key="frame" x="230" y="90" width="74" height="35"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.4023705051369863" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="1032" id="1Pk-Jy-Zpd"/>
-                                    <constraint firstAttribute="height" constant="64" id="xr3-ie-Y09"/>
+                                    <constraint firstItem="qG8-AD-0fn" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="1kE-R6-fhT"/>
+                                    <constraint firstItem="VOU-lG-iud" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="LRS-gx-Apm"/>
+                                    <constraint firstAttribute="height" constant="150" id="VbZ-uD-by1"/>
+                                    <constraint firstItem="28g-LG-naa" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="top" id="iNY-nA-5Ta"/>
+                                    <constraint firstAttribute="width" constant="600" id="o1S-YI-3jS"/>
+                                    <constraint firstItem="VOU-lG-iud" firstAttribute="top" secondItem="qG8-AD-0fn" secondAttribute="bottom" constant="30" id="r3t-xR-oKa"/>
+                                    <constraint firstAttribute="bottom" secondItem="28g-LG-naa" secondAttribute="bottom" id="uxU-o1-CQc"/>
+                                    <constraint firstItem="28g-LG-naa" firstAttribute="leading" secondItem="OXd-1y-bTi" secondAttribute="leading" id="vud-gi-QAD"/>
+                                    <constraint firstItem="qG8-AD-0fn" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="top" constant="30" id="wpy-fp-J1o"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="oku-Fb-Wqg" secondAttribute="bottom" constant="47" id="Pw2-dF-7S8"/>
-                            <constraint firstAttribute="trailing" secondItem="oku-Fb-Wqg" secondAttribute="trailing" id="xYS-f6-uHT"/>
+                            <constraint firstAttribute="trailing" secondItem="OXd-1y-bTi" secondAttribute="trailing" id="7L1-Yi-o4A"/>
+                            <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="120" id="9no-cs-ZY7"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="lbl_NextVideoPlayingTime" destination="oku-Fb-Wqg" id="AjF-bU-5kh"/>
+                        <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
+                        <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>
+                        <outlet property="nextVideoThumbnail" destination="28g-LG-naa" id="SfY-j2-3tZ"/>
+                        <outlet property="nextVideoView" destination="OXd-1y-bTi" id="4EC-AH-v9j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2IR-za-JQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
