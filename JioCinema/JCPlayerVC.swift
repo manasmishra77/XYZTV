@@ -1,4 +1,4 @@
-//
+ //
 //  JCPlayerVC.swift
 //  JioCinema
 //
@@ -42,9 +42,25 @@ class JCPlayerVC: UIViewController
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        //self.removePlayerObserver()
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        if let currentTime = player?.currentItem?.currentTime()
+        {
+            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let totalDuration = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
+            self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+        }
+        if isResumed != nil
+        {
+            self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
+        }
+
+        removePlayerObserver()
     }
+    
+//    override func viewDidDisappear(_ animated: Bool) {
+//        //self.removePlayerObserver()
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -67,15 +83,15 @@ class JCPlayerVC: UIViewController
         player = AVPlayer(playerItem: playerItem)
         
         if playerController == nil {
-        
-        playerController = AVPlayerViewController()
-        if isResumed != nil, isResumed!
-        {
-            player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
-        }
-        self.addChildViewController(playerController!)
-        self.view.addSubview((playerController?.view)!)
-        playerController?.view.frame = self.view.frame
+            
+            playerController = AVPlayerViewController()
+            if isResumed != nil, isResumed!
+            {
+                player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
+            }
+            self.addChildViewController(playerController!)
+            self.view.addSubview((playerController?.view)!)
+            playerController?.view.frame = self.view.frame
         }
         addPlayerNotificationObserver()
         
@@ -84,7 +100,7 @@ class JCPlayerVC: UIViewController
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.nextVideoView.isHidden = true
-
+        
     }
     
     func addMetadtaToPlayer()
@@ -149,32 +165,11 @@ class JCPlayerVC: UIViewController
         
     }
     
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
-    {
-        for press in presses {
-            if(press.type == .menu)
-            {
-                if let currentTime = player?.currentItem?.currentTime()
-                {
-                let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-                let totalDuration = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
-                self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
-                }
-                removePlayerObserver()
-                if isResumed != nil
-                {
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
-                }
-                
-            }
-        }
-    }
-    
-    
+
     //MARK:- Add Player Observer
     
     func addPlayerNotificationObserver () {
-         NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
@@ -202,7 +197,7 @@ class JCPlayerVC: UIViewController
                 //Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
                 Log.DLog(message: remainingTime as AnyObject)
                 
-                if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
+                if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
                 {
                     let index = (self?.playlistIndex)! + 1
                     
@@ -237,11 +232,11 @@ class JCPlayerVC: UIViewController
                 }
                 
                 
-         }
+        }
     }
     func getPlayerDuration() -> Double {
         Log.DLog(message: "$$$$$$$$" as AnyObject)
-
+        
         Log.DLog(message: self.player?.currentItem as AnyObject)
         
         guard let currentItem = self.player?.currentItem else { return 0.0 }
@@ -263,7 +258,7 @@ class JCPlayerVC: UIViewController
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         self.playerTimeObserverToken = nil
         self.player = nil
-       // self.currentItem = nil
+        // self.currentItem = nil
     }
     
     
@@ -292,15 +287,15 @@ class JCPlayerVC: UIViewController
         }
         else if keyPath == #keyPath(JCPlayerVC.player.rate) {
             let newRate = (change?[NSKeyValueChangeKey.newKey] as! NSNumber).doubleValue
-          //  self.playerDelegate?.didILinkPlayerStatusRate(rate: newRate)
+            //  self.playerDelegate?.didILinkPlayerStatusRate(rate: newRate)
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
-           // self.playerDelegate?.didILinkPlayerStatusBufferEmpty()
+            // self.playerDelegate?.didILinkPlayerStatusBufferEmpty()
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
-          //  self.playerDelegate?.didILinkPlayerStatusPlaybackLikelyToKeepUp()
+            //  self.playerDelegate?.didILinkPlayerStatusPlaybackLikelyToKeepUp()
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
             let newStatus: AVPlayerItemStatus
@@ -313,11 +308,11 @@ class JCPlayerVC: UIViewController
             switch newStatus {
             case .readyToPlay:
                 self.addPlayerPeriodicTimeObserver()
-               // self.playerDelegate?.didILinkPlayerStatusReadyToPlay()
+                // self.playerDelegate?.didILinkPlayerStatusReadyToPlay()
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
-               // self.playerDelegate?.didILinkPlayerStatusFailed(player?.currentItem?.error?.localizedDescription, error: player?.currentItem?.error)
+            // self.playerDelegate?.didILinkPlayerStatusFailed(player?.currentItem?.error?.localizedDescription, error: player?.currentItem?.error)
             default:
                 print("unknown")
             }
@@ -327,18 +322,18 @@ class JCPlayerVC: UIViewController
         }
     }
     
-
+    
     
     
     
     func playerDidFinishPlaying(note: NSNotification) {
         Log.DLog(message: self.playlistData?.more?.count as AnyObject )
         Log.DLog(message: self.playlistIndex as AnyObject )
-
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
+        
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self.playlistData != nil
         {
             self.playlistIndex = self.playlistIndex + 1
-
+            
             if self.playlistIndex != self.playlistData?.more?.count
             {
                 let moreId = self.playlistData?.more?[self.playlistIndex].id
@@ -350,7 +345,7 @@ class JCPlayerVC: UIViewController
             }
             else
             {
-                    dismissPlayerVC()
+                dismissPlayerVC()
             }
         }
         else
@@ -393,7 +388,7 @@ class JCPlayerVC: UIViewController
                         self.currentItemDescription = self.playlistData?.more?[self.playlistIndex].description
                         self.callWebServiceForPlaybackRights(id: moreId!)
                     }
-              }
+                }
                 return
             }
         }
@@ -457,7 +452,7 @@ class JCPlayerVC: UIViewController
         
         
     }
-
+    
 }
 
 class PlaybackRightsModel:Mappable
