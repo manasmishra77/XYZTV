@@ -21,6 +21,7 @@ class JCPlayerVC: UIViewController
     @IBOutlet weak var nextVideoThumbnail: UIImageView!
     
     var player:AVPlayer?
+    var playerItem:AVPlayerItem?
     var playerTimeObserverToken: Any?
     var playerController:AVPlayerViewController?
     var playbackRightsData:PlaybackRightsModel?
@@ -55,9 +56,11 @@ class JCPlayerVC: UIViewController
             self.removePlayerObserver()
         }
         
-        
         let videoUrl = URL(string: url)
-        player = AVPlayer(url: videoUrl!)
+        playerItem = AVPlayerItem(url: videoUrl!)
+        
+        player = AVPlayer(playerItem: playerItem)
+        
         if playerController == nil {
         
         playerController = AVPlayerViewController()
