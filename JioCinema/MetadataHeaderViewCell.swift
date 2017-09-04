@@ -133,12 +133,16 @@ class MetadataHeaderViewCell: UIView {
 
     @IBAction func didClickOnAddToWatchListButton(_ sender: Any)
     {
+        addToWatchlistButtonClicked()
+    }
+    
+    func addToWatchlistButtonClicked()
+    {
         var params = [String:Any]()
         var url = ""
-        weak var weakSelf = self
         if item?.app?.type == VideoType.TVShow.rawValue,metadata?.contentId != nil
         {
-             params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
         }
         else if item?.app?.type == VideoType.Movie.rawValue,metadata?.contentId != nil
         {
@@ -147,33 +151,78 @@ class MetadataHeaderViewCell: UIView {
         
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
-        url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
-        
-            let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-            RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
-                if let responseError = error
-                {
-                    //TODO: handle error
-                    print(responseError)
-                    return
-                }
-                if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-                {
-                    let code = parsedResponse["code"] as? Int
-                    if(code == 200)
-                    {
-
-                        DispatchQueue.main.async {
-                            weakSelf?.watchlistLabel.text = (weakSelf?.metadata?.inQueue)! ? "Add to watchlist" : "Remove from watchlist"
-                        }
-                    }
-                    return
-                }
+            if (metadata?.inQueue) != nil
+            {
+                url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
+                callWebServiceToUpdateWatchlist(withUrl: url, andParameters: params)
+            }                
+            else
+            {
+                callWebServiceForWatchlistStatus()
             }
+            
         }
         else
         {
             NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
+    }
+    
+    func callWebServiceToUpdateWatchlist(withUrl url:String, andParameters params: Dictionary<String, Any>)
+    {
+        let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                let code = parsedResponse["code"] as? Int
+                if(code == 200)
+                {
+                    
+                    DispatchQueue.main.async {
+                        self.watchlistLabel.text = (self.metadata?.inQueue)! ? "Add to watchlist" : "Remove from watchlist"
+                    }
+                }
+                return
+            }
+        }
+
+    }
+    
+    func callWebServiceForWatchlistStatus()
+    {
+        let url = playbackRightsURL.appending((item?.id)!)
+        let params : [String : Any] = ["id":item?.id as Any,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
+        let watchlistStatusRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: watchlistStatusRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                if let responseString = String(data: responseData, encoding: .utf8)
+                {
+                    let playbackRightsData = PlaybackRightsModel(JSONString: responseString)
+                    weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
+                    
+                    DispatchQueue.main.async {
+                        self.addToWatchlistButtonClicked()
+                    }
+                }
+                return
+
+            }
+        
+        }
+
     }
 }
