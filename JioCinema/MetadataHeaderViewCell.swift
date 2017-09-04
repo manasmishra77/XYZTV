@@ -111,6 +111,10 @@ class MetadataHeaderViewCell: UIView {
             if let itemId = item?.id
             {
                 id = itemId
+                playerVC.currentItemTitle = item?.name
+                playerVC.currentItemDescription = item?.description
+                playerVC.currentItemDuration = String(describing: item?.duration)
+                playerVC.currentItemImage = item?.banner
             }
         }
         else
@@ -118,10 +122,14 @@ class MetadataHeaderViewCell: UIView {
             if let latestId = metadata?.latestEpisodeId
             {
                 id = latestId
+                playerVC.currentItemTitle = metadata?.name
+                playerVC.currentItemDescription = metadata?.description
+                playerVC.currentItemImage = metadata?.banner
             }
         }
         if id != nil
         {
+            
         playerVC.callWebServiceForPlaybackRights(id: id!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical

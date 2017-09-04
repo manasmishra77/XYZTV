@@ -383,6 +383,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         let id = (item?.app?.type == VideoType.Movie.rawValue) ? item?.id! : metadata?.latestEpisodeId!
+        playerVC.currentItemImage = item?.banner
+        playerVC.currentItemTitle = item?.name
+        playerVC.currentItemDuration = String(describing: item?.totalDuration)
+        playerVC.currentItemDescription = item?.description
+        
         playerVC.callWebServiceForPlaybackRights(id: id!)
         
         playerVC.modalPresentationStyle = .overFullScreen

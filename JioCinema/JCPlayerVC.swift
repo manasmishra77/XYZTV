@@ -29,6 +29,10 @@ class JCPlayerVC: UIViewController
     var duration:Double = 0
     var playerId:String?
     var playlistData:PlaylistDataModel?
+    var currentItemImage:String?
+    var currentItemTitle:String?
+    var currentItemDuration:String?
+    var currentItemDescription:String?
     
     var playlistIndex = 0
     
@@ -59,6 +63,7 @@ class JCPlayerVC: UIViewController
         let videoUrl = URL(string: url)
         playerItem = AVPlayerItem(url: videoUrl!)
         
+        self.addMetadtaToPlayer()
         player = AVPlayer(playerItem: playerItem)
         
         if playerController == nil {
@@ -82,20 +87,85 @@ class JCPlayerVC: UIViewController
 
     }
     
+    func addMetadtaToPlayer()
+    {
+        let titleMetadataItem = AVMutableMetadataItem()
+        titleMetadataItem.identifier = AVMetadataCommonIdentifierTitle
+        titleMetadataItem.extendedLanguageTag = "und"
+        titleMetadataItem.locale = NSLocale.current
+        titleMetadataItem.key = AVMetadataCommonKeyTitle as NSCopying & NSObjectProtocol
+        titleMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        if currentItemTitle != nil
+        {
+            titleMetadataItem.value = currentItemTitle! as NSCopying & NSObjectProtocol
+        }
+        
+        let descriptionMetadataItem = AVMutableMetadataItem()
+        descriptionMetadataItem.identifier = AVMetadataCommonIdentifierDescription
+        descriptionMetadataItem.extendedLanguageTag = "und"
+        descriptionMetadataItem.locale = NSLocale.current
+        descriptionMetadataItem.key = AVMetadataCommonKeyDescription as NSCopying & NSObjectProtocol
+        descriptionMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        if currentItemDescription != nil
+        {
+            descriptionMetadataItem.value = currentItemDescription! as NSCopying & NSObjectProtocol
+        }
+        
+        
+        let imageMetadataItem = AVMutableMetadataItem()
+        imageMetadataItem.identifier = AVMetadataCommonIdentifierArtwork
+        imageMetadataItem.extendedLanguageTag = "und"
+        imageMetadataItem.locale = NSLocale.current
+        imageMetadataItem.key = AVMetadataCommonKeyArtwork as NSCopying & NSObjectProtocol
+        imageMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        if currentItemImage != nil
+        {
+            let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(currentItemImage!))!
+            
+            
+            RJILImageDownloader.shared.downloadImage(urlString: imageUrl, shouldCache: false){
+                
+                image in
+                
+                if let img = image {
+                    DispatchQueue.main.async {
+                        let pngData = UIImagePNGRepresentation(img)
+                        imageMetadataItem.value = pngData as (NSCopying & NSObjectProtocol)?
+                    }
+                }
+            }
+        }
+        
+        //        let durationMetadataItem = AVMutableMetadataItem()
+        //        durationMetadataItem.key = AVMetadatacommonkey as NSCopying & NSObjectProtocol
+        //        durationMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        //        durationMetadataItem.value = currentItemDescription! as NSCopying & NSObjectProtocol
+        
+        
+        
+        playerItem?.externalMetadata.append(titleMetadataItem)
+        playerItem?.externalMetadata.append(descriptionMetadataItem)
+        playerItem?.externalMetadata.append(imageMetadataItem)
+        
+    }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
     {
         for press in presses {
             if(press.type == .menu)
             {
-                let currentTimeduration = "\(CMTimeGetSeconds((player?.currentItem?.currentTime())!))"
+                if let currentTime = player?.currentItem?.currentTime()
+                {
+                let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
                 let totalDuration = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
+                self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                }
                 removePlayerObserver()
-                self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeduration, totalDuration: totalDuration)
                 if isResumed != nil
                 {
                     self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
                 }
+                
             }
         }
     }
@@ -272,6 +342,10 @@ class JCPlayerVC: UIViewController
             if self.playlistIndex != self.playlistData?.more?.count
             {
                 let moreId = self.playlistData?.more?[self.playlistIndex].id
+                self.currentItemImage = self.playlistData?.more?[self.playlistIndex].banner
+                self.currentItemTitle = self.playlistData?.more?[self.playlistIndex].name
+                self.currentItemDuration = String(describing: self.playlistData?.more?[self.playlistIndex].totalDuration)
+                self.currentItemDescription = self.playlistData?.more?[self.playlistIndex].description
                 self.callWebServiceForPlaybackRights(id: moreId!)
             }
             else
@@ -313,6 +387,10 @@ class JCPlayerVC: UIViewController
                     if (self.playlistData?.more?.count)! > 0
                     {
                         let moreId = self.playlistData?.more?[self.playlistIndex].id
+                        self.currentItemImage = self.playlistData?.more?[self.playlistIndex].banner
+                        self.currentItemTitle = self.playlistData?.more?[self.playlistIndex].name
+                        self.currentItemDuration = String(describing: self.playlistData?.more?[self.playlistIndex].totalDuration)
+                        self.currentItemDescription = self.playlistData?.more?[self.playlistIndex].description
                         self.callWebServiceForPlaybackRights(id: moreId!)
                     }
               }

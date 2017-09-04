@@ -140,6 +140,10 @@ class JCTabBarController: UITabBarController {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
                 resumeWatchingVC.playableItemDuration = duration
                 resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
+                resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
+                resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
+                resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
+                resumeWatchingVC.itemDuration = (currentPlayableItem as! Item).totalDuration
                 self.present(resumeWatchingVC, animated: false, completion: nil)
             }
             else if let duration = (currentPlayableItem as? Episode)?.duration, duration != 0
@@ -147,6 +151,10 @@ class JCTabBarController: UITabBarController {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
                 resumeWatchingVC.playableItemDuration = duration
                 resumeWatchingVC.playerId = (currentPlayableItem as! Episode).id
+                resumeWatchingVC.itemDescription = (currentPlayableItem as! Episode).subtitle
+                resumeWatchingVC.itemImage = (currentPlayableItem as! Episode).banner
+                resumeWatchingVC.itemTitle = (currentPlayableItem as! Episode).name
+                resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Episode).totalDuration)
                 self.present(resumeWatchingVC, animated: false, completion: nil)
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
@@ -233,7 +241,12 @@ class JCTabBarController: UITabBarController {
             
             if isCurrentItemEpisode
             {
-                playerVC.callWebServiceForPlaybackRights(id: ((currentPlayableItem as! Episode).id!))
+                let item = (currentPlayableItem as! Episode)
+                playerVC.currentItemImage = item.banner
+                playerVC.currentItemTitle = item.name
+                playerVC.currentItemDuration = String(describing: item.totalDuration)
+                playerVC.currentItemDescription = item.subtitle
+                playerVC.callWebServiceForPlaybackRights(id: item.id!)
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
                 playerVC.playerId = (currentPlayableItem as! Episode).id!
@@ -245,6 +258,10 @@ class JCTabBarController: UITabBarController {
                 let item = (currentPlayableItem as! Item)
                 if (item.id?.characters.count)! > 0
                 {
+                    playerVC.currentItemImage = item.banner
+                    playerVC.currentItemTitle = item.name
+                    playerVC.currentItemDuration = String(describing: item.totalDuration)
+                    playerVC.currentItemDescription = item.description
                     playerVC.callWebServiceForPlaybackRights(id: item.id!)
                 }
                 else

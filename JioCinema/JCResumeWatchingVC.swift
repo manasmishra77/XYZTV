@@ -14,6 +14,10 @@ class JCResumeWatchingVC: UIViewController
     @IBOutlet weak var resumeWatchingButton: UIButton!
     var playableItemDuration = 0
     var playerId:String?
+    var itemTitle:String?
+    var itemDescription:String?
+    var itemImage:String?
+    var itemDuration:String?
     var isVideoResumed = false
 
     override func viewDidLoad()
@@ -61,6 +65,10 @@ class JCResumeWatchingVC: UIViewController
     func playVideo()
     {
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+        playerVC.currentItemDescription = itemDescription
+        playerVC.currentItemTitle = itemTitle
+        playerVC.currentItemImage = itemImage
+        playerVC.currentItemDuration = itemDuration
         playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
