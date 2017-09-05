@@ -224,8 +224,19 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        let playerId = languageGenreDetailModel?.data?.items?[indexPath.row].id
+        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+        playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[indexPath.row].description
+        playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[indexPath.row].name
+        playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[indexPath.row].banner
+        playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[indexPath.row].totalDuration
+        playerVC.callWebServiceForPlaybackRights(id: playerId!)
+        playerVC.modalPresentationStyle = .overFullScreen
+        playerVC.modalTransitionStyle = .coverVertical
         
+        self.present(playerVC, animated: false, completion: nil)
     }
     
     fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath)
