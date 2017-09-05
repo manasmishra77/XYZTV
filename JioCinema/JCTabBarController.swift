@@ -122,8 +122,6 @@ class JCTabBarController: UITabBarController {
                         DispatchQueue.main.async {
                             weakSelf?.presentLoginVC()
                         }
-                        
-                        
                     }
                 }
                 return
