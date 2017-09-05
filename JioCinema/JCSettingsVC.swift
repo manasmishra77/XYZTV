@@ -208,8 +208,24 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             }
             else
             {
-                JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
-                NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
+                weak var weakSelf = self
+                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                    if(isOnJioNetwork == false)
+                    {
+                        print("Not on jio network")
+                        JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
+                        NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
+                        
+                    }
+                    else
+                    {
+                        DispatchQueue.main.async {
+                            weakSelf?.settingsTableView.reloadData()
+                        }
+                        
+                    }
+            
+                }
             }
         }
         else

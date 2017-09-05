@@ -233,9 +233,25 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         }
         else
         {
-            showPlayerVC(forIndexPath: indexPath.row)
+            if JCLoginManager.sharedInstance.isUserLoggedIn()
+            {
+                showPlayerVC(forIndexPath: indexPath.row)
+            }
+            else
+            {
+                presentLoginVC()
+            }
         }
         
+    }
+    
+    func presentLoginVC()
+    {
+        let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
+        loginVC.modalPresentationStyle = .overFullScreen
+        loginVC.modalTransitionStyle = .coverVertical
+        loginVC.view.layer.speed = 0.7
+        self.present(loginVC, animated: true, completion: nil)
     }
     
     fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath)

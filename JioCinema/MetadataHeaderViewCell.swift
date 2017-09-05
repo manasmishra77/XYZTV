@@ -9,7 +9,7 @@
 import UIKit
 
 class MetadataHeaderViewCell: UIView {
-
+    
     
     enum VideoType:Int
     {
@@ -27,7 +27,7 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var imdbImageLogo: UIImageView!
     @IBOutlet weak var starringLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel! 
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
@@ -39,7 +39,7 @@ class MetadataHeaderViewCell: UIView {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     func prepareView() ->UIView
     {
         self.titleLabel.text = metadata?.name
@@ -47,10 +47,10 @@ class MetadataHeaderViewCell: UIView {
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")
         self.starringLabel.text = metadata?.artist?.joined(separator: ",")
         
-//        if metadata != nil
-//        {
-//            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
-//        }
+        //        if metadata != nil
+        //        {
+        //            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
+        //        }
         
         if item?.app?.type == VideoType.Movie.rawValue, metadata != nil
         {
@@ -130,15 +130,18 @@ class MetadataHeaderViewCell: UIView {
         if id != nil
         {
             
-        playerVC.callWebServiceForPlaybackRights(id: id!)
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
-        let playerItem = ["player":playerVC]
-        NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+            if JCLoginManager.sharedInstance.isUserLoggedIn()
+            {
+                playerVC.callWebServiceForPlaybackRights(id: id!)
+            }
+            playerVC.modalPresentationStyle = .overFullScreen
+            playerVC.modalTransitionStyle = .coverVertical
+            let playerItem = ["player":playerVC]
+            NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
         }
     }
- 
-
+    
+    
     @IBAction func didClickOnAddToWatchListButton(_ sender: Any)
     {
         addToWatchlistButtonClicked()
@@ -163,7 +166,7 @@ class MetadataHeaderViewCell: UIView {
             {
                 url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
                 callWebServiceToUpdateWatchlist(withUrl: url, andParameters: params)
-            }                
+            }
             else
             {
                 callWebServiceForWatchlistStatus()
@@ -199,7 +202,7 @@ class MetadataHeaderViewCell: UIView {
                 return
             }
         }
-
+        
     }
     
     func callWebServiceForWatchlistStatus()
@@ -227,10 +230,10 @@ class MetadataHeaderViewCell: UIView {
                     }
                 }
                 return
-
+                
             }
-        
+            
         }
-
+        
     }
 }

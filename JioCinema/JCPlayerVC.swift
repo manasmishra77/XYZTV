@@ -352,7 +352,6 @@ class JCPlayerVC: UIViewController
     
     func dismissPlayerVC()
     {
-        removePlayerObserver()
         self.dismiss(animated: true, completion: nil)
     }
     
