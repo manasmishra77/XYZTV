@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="itemCellPlaceholder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
-                        <rect key="frame" x="0.0" y="0.0" width="392" height="205"/>
+                        <rect key="frame" x="15" y="15" width="362" height="185"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
-                        <rect key="frame" x="0.0" y="215" width="392" height="35"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
+                        <rect key="frame" x="15" y="210" width="377" height="40"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                         <color key="textColor" red="0.80087509384384381" green="0.80087509384384381" blue="0.80087509384384381" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -33,11 +33,11 @@
                 <constraint firstAttribute="bottom" secondItem="da6-is-0b4" secondAttribute="bottom" id="7qn-4f-WnT"/>
                 <constraint firstAttribute="trailing" secondItem="da6-is-0b4" secondAttribute="trailing" id="Eo9-jQ-Hlq"/>
                 <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="10" id="ICz-15-wga"/>
-                <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="45" id="ZsR-1P-11D"/>
-                <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="cLy-gq-NOw"/>
-                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="f4W-U2-6Ff"/>
-                <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="fSF-31-6yh"/>
-                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="mFs-wD-PHh"/>
+                <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="50" id="ZsR-1P-11D"/>
+                <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" constant="15" id="cLy-gq-NOw"/>
+                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="f4W-U2-6Ff"/>
+                <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="fSF-31-6yh"/>
+                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="mFs-wD-PHh"/>
             </constraints>
             <connections>
                 <outlet property="itemImageView" destination="lX4-Jx-2Fq" id="kwm-0Y-z5X"/>
