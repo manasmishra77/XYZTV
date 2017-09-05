@@ -296,13 +296,20 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((item?.banner)!))!)
         {
             backgroundImageView.image = image
-            showMetadata()
-            metadataTableView.reloadData()
+            
+            DispatchQueue.main.async {
+                weakSelf?.showMetadata()
+                weakSelf?.metadataTableView.reloadData()
+            }
         }
         else
         {
             self.downloadImageFrom(urlString: (item?.banner)!, completion: { (loaded) in
-                weakSelf?.showMetadata()
+                DispatchQueue.main.async {
+                    weakSelf?.showMetadata()
+                    weakSelf?.metadataTableView.reloadData()
+                }
+                
             })
         }
         

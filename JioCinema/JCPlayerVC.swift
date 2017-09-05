@@ -184,15 +184,12 @@ class JCPlayerVC: UIViewController
             self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
                 [weak self] time in
                 
-                Log.DLog(message: "Remaining Time" as AnyObject)
-                
+                if self?.player != nil {
                 let currentPlayerTime = Double(CMTimeGetSeconds(time))
                 let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
-                
-                
-                //Log.DLog(message: self?.player?.currentItem?.duration as AnyObject)
+                Log.DLog(message: "Remaining Time" as AnyObject)
                 Log.DLog(message: remainingTime as AnyObject)
-                
+               
                 if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
                 {
                     let index = (self?.playlistIndex)! + 1
@@ -226,13 +223,16 @@ class JCPlayerVC: UIViewController
                 {
                     self?.nextVideoView.isHidden = true
                 }
-                
+                }
+                else
+                {
+                    self?.playerTimeObserverToken = nil
+                }
                 
         }
     }
     func getPlayerDuration() -> Double {
         Log.DLog(message: "$$$$$$$$" as AnyObject)
-        
         Log.DLog(message: self.player?.currentItem as AnyObject)
         
         guard let currentItem = self.player?.currentItem else { return 0.0 }
