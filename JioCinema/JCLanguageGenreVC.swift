@@ -226,17 +226,16 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        let playerId = languageGenreDetailModel?.data?.items?[indexPath.row].id
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[indexPath.row].description
-        playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[indexPath.row].name
-        playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[indexPath.row].banner
-        playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[indexPath.row].totalDuration
-        playerVC.callWebServiceForPlaybackRights(id: playerId!)
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
         
-        self.present(playerVC, animated: false, completion: nil)
+        if currentType == VideoType.Movie.rawValue || currentType == VideoType.TVShow.rawValue
+        {
+            showMetaData(forItemIndex: indexPath.row)
+        }
+        else
+        {
+            showPlayerVC(forIndexPath: indexPath.row)
+        }
+        
     }
     
     fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath)
@@ -262,5 +261,29 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
                 }
             }
         }
+    }
+    
+    fileprivate func showMetaData(forItemIndex itemIndex: Int)
+    {
+        let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
+        metadataVC.item = languageGenreDetailModel?.data?.items?[itemIndex]
+        metadataVC.modalPresentationStyle = .overFullScreen
+        metadataVC.modalTransitionStyle = .coverVertical
+        self.present(metadataVC, animated: false, completion: nil)
+    }
+    
+    fileprivate func showPlayerVC(forIndexPath index:Int)
+    {
+        let playerId = languageGenreDetailModel?.data?.items?[index].id
+        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+        playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[index].description
+        playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[index].name
+        playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[index].banner
+        playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
+        playerVC.callWebServiceForPlaybackRights(id: playerId!)
+        playerVC.modalPresentationStyle = .overFullScreen
+        playerVC.modalTransitionStyle = .coverVertical
+        
+        self.present(playerVC, animated: false, completion: nil)
     }
 }
