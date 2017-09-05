@@ -93,8 +93,6 @@ class JCTabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
     func didReceiveNotificationForCellTap(notification:Notification) -> Void
     {
         weak var weakSelf = self
@@ -111,12 +109,12 @@ class JCTabBarController: UITabBarController {
                 isCurrentItemEpisode = false
             }
         }
-            else if let item = notification.userInfo?["item"] as? Episode
+        else if let item = notification.userInfo?["item"] as? Episode
         {
             currentPlayableItem = item
             isCurrentItemEpisode = true
         }
-            else {
+        else {
                 JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                     if(isOnJioNetwork == false)
                     {
@@ -224,8 +222,11 @@ class JCTabBarController: UITabBarController {
     func showMetadata()
     {
         print("show metadata")
+        
+        let selectedItem:Item = currentPlayableItem as! Item
+        Log.DLog(message: selectedItem.id as AnyObject)
         let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-        metadataVC.item = currentPlayableItem as? Item
+        metadataVC.item = selectedItem
         metadataVC.modalPresentationStyle = .overFullScreen
         metadataVC.modalTransitionStyle = .coverVertical
         self.present(metadataVC, animated: false, completion: nil)

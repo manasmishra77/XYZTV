@@ -20,7 +20,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         case Clip = 6
     }
     
-    var item:Item?
+    var item:Item!
     var metadata:MetadataModel?
     var selectedYearIndex = 0
     let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
@@ -46,7 +46,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
         
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
-        
         
         // Do any additional setup after loading the view.
     }
@@ -418,20 +417,32 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             else {
                 return
         }
-        item?.id = receivedItem.id
-        item?.name = receivedItem.name
-        item?.showname = ""
-        item?.subtitle = receivedItem.subtitle
-        item?.image = receivedItem.image
-        item?.tvImage = ""
-        item?.description = receivedItem.description
-        item?.banner = receivedItem.banner
-        item?.format = receivedItem.format
-        item?.language = receivedItem.language
-        item?.vendor = ""
-        item?.app = receivedItem.app
-        item?.latestId = ""
-        item?.layout = -1
+        
+        let tempItem = Item()
+        
+        tempItem.id = receivedItem.id
+        tempItem.name = receivedItem.name
+        tempItem.showname = ""
+        tempItem.subtitle = receivedItem.subtitle
+        tempItem.image = receivedItem.image
+        tempItem.tvImage = ""
+        tempItem.description = receivedItem.description
+        tempItem.banner = receivedItem.banner
+        tempItem.format = receivedItem.format
+        tempItem.language = receivedItem.language
+        tempItem.vendor = ""
+        tempItem.app = receivedItem.app
+        tempItem.latestId = ""
+        tempItem.layout = -1
+        
+        tempItem.genre = item.genre
+        tempItem.duration = item.duration
+        tempItem.isPlaylist = item.isPlaylist
+        tempItem.playlistId = item.playlistId
+        tempItem.totalDuration = item.totalDuration
+        tempItem.list = item.list
+
+        item = tempItem
         
         loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
         metadataContainerView.isHidden = true
@@ -663,6 +674,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
             self.metadata?.episodes = tempMetadata?.episodes
+        }
+    }
+
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.first?.type == UIPressType.menu
+        {
+        
         }
     }
 }

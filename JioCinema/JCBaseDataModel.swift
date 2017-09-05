@@ -154,6 +154,10 @@ class Item:Mappable
     var totalDuration:String?
     var list:[List]?
     
+   
+    init() {
+        
+    }
     required init(map:Map) {
         
     }
