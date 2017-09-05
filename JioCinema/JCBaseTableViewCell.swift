@@ -178,6 +178,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        
         if data != nil
         {
             let itemToPlay = ["item":(data?[indexPath.row])!]
