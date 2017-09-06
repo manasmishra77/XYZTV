@@ -637,10 +637,23 @@
                                     <action selector="didClickOnSignInButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="Tfq-A8-qZV"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTP has been sent again" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2E-0R-bbW">
+                                <rect key="frame" x="685" y="515" width="550" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="550" id="6eS-6j-qca"/>
+                                    <constraint firstAttribute="height" constant="50" id="ZFN-Q9-Lcm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
                             <constraint firstItem="gw5-58-ffi" firstAttribute="top" secondItem="w4K-hQ-Xg3" secondAttribute="bottom" constant="3" id="PFC-xL-qiP"/>
                             <constraint firstItem="w4K-hQ-Xg3" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="Weo-lG-OU5"/>
+                            <constraint firstItem="L2E-0R-bbW" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="cTT-1R-fRO"/>
+                            <constraint firstItem="L2E-0R-bbW" firstAttribute="centerY" secondItem="bb0-nK-NIq" secondAttribute="centerY" id="eRB-ZD-XWo"/>
                             <constraint firstItem="gw5-58-ffi" firstAttribute="centerX" secondItem="bb0-nK-NIq" secondAttribute="centerX" id="gbA-ev-E0M"/>
                             <constraint firstItem="w4K-hQ-Xg3" firstAttribute="top" secondItem="O2k-6m-pYf" secondAttribute="bottom" constant="20" id="wqs-Rf-5Gc"/>
                         </constraints>
@@ -648,6 +661,7 @@
                     <connections>
                         <outlet property="getOTPButton" destination="w4K-hQ-Xg3" id="LZa-dh-WoK"/>
                         <outlet property="resendOTPButton" destination="gw5-58-ffi" id="c0S-TH-HNJ"/>
+                        <outlet property="resendOTPLableToast" destination="L2E-0R-bbW" id="flH-2N-YOd"/>
                         <outlet property="signInButton" destination="MAj-KC-VnA" id="0xl-gZ-hZJ"/>
                     </connections>
                 </viewController>
