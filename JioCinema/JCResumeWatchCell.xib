@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
@@ -31,7 +31,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oVx-Z5-1dR">
-                        <rect key="frame" x="0.0" y="189" width="392" height="10"/>
+                        <rect key="frame" x="0.0" y="195" width="392" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="hL8-qL-zJw"/>
                         </constraints>
@@ -46,7 +46,7 @@
                 <constraint firstItem="oVx-Z5-1dR" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="92r-eZ-H5n"/>
                 <constraint firstAttribute="trailing" secondItem="8ri-7F-RAA" secondAttribute="trailing" id="Bni-PI-tCA"/>
                 <constraint firstItem="8ri-7F-RAA" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="HLB-7H-qxB"/>
-                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="16" id="Ma4-7i-jT9"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="10" id="Ma4-7i-jT9"/>
                 <constraint firstItem="8ri-7F-RAA" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="Yyu-qU-hmD"/>
                 <constraint firstAttribute="trailing" secondItem="nSf-xZ-DEC" secondAttribute="trailing" id="eaw-Sx-ZJg"/>
                 <constraint firstAttribute="bottom" secondItem="nSf-xZ-DEC" secondAttribute="bottom" id="fIg-lX-vWC"/>

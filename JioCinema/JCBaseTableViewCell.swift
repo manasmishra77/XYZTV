@@ -73,7 +73,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     
                     let progress:Float?
                     if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
-                        {
+                    {
                             progress = Float(duration) / Float(totalDuration)!
                             resumeWatchCell.progressBar.setProgress(progress!, animated: false)
                     }
