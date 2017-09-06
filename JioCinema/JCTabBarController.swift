@@ -138,7 +138,7 @@ class JCTabBarController: UITabBarController {
                 resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
                 resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
                 resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
-                resumeWatchingVC.itemDuration = (currentPlayableItem as! Item).totalDuration
+                resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
                 self.present(resumeWatchingVC, animated: false, completion: nil)
             }
             else if let duration = (currentPlayableItem as? Episode)?.duration, duration != 0

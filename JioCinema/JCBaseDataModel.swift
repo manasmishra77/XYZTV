@@ -152,9 +152,10 @@ class Item:Mappable
     var isPlaylist:Bool?
     var playlistId:String?
     var totalDuration:String?
+    var totalDurationInt:Int?
     var list:[List]?
     
-   
+    
     init() {
         
     }
@@ -166,7 +167,7 @@ class Item:Mappable
     {
         var tempStore: Double?
         tempStore <- map["id"]
-       
+        
         id <- map["id"]
         
         if id == nil, tempStore != nil {
@@ -195,6 +196,14 @@ class Item:Mappable
         layout <- map["layout"]
         duration <- map["duration"]
         totalDuration <- map["totalDuration"]
+        if totalDuration == nil
+        {
+            totalDurationInt <- map["totalDuration"]
+            if totalDurationInt != nil
+            {
+                totalDuration = String(describing: totalDurationInt!)
+            }
+        }
         list <- map["list"]
     }
 }

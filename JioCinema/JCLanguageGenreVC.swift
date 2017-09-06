@@ -295,7 +295,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[index].description
         playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[index].name
         playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[index].banner
-        playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
+        //playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
         playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
