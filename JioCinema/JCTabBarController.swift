@@ -51,7 +51,7 @@ class JCTabBarController: UITabBarController {
         searchVC.view.backgroundColor = .black
         let searchViewController = UISearchController.init(searchResultsController: searchVC)
         searchViewController.view.backgroundColor = .black
-        searchViewController.searchBar.placeholder = "Search..."
+        searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
         //searchViewController.searchBar.barTintColor = UIColor.black
         searchViewController.searchBar.tintColor = UIColor.gray
