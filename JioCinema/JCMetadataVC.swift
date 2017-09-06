@@ -125,10 +125,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             }
             if indexPath.row == 2
             {
-                let dict = getStarCastImagesUrl(artists: (metadata?.artist)!)
+                if let artists = metadata?.artist
+                {
+                let dict = getStarCastImagesUrl(artists: artists)
                 cell.categoryTitleLabel.text = (dict.count != 0) ? "Cast & Crew" : ""
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
+                }
             }
         }
         return cell
@@ -506,12 +509,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            if let season = metadata?.isSeason,collectionView == headerCell.seasonCollectionView     //seasons
+            if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
             {
-                if season
-                {
                 return (metadata?.filter?.count)!
-                }
+               
             }
             else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
             {
@@ -538,18 +539,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        if let season = metadata?.isSeason,collectionView == headerCell.seasonCollectionView     //seasons
+        if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
         {
-            if season
-            {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = String(describing: metadata!.filter![indexPath.row].season!)
             return cell
-            }
-            else
-            {
-                return UICollectionViewCell()
-            }
+           
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
