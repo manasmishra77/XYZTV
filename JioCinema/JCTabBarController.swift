@@ -60,7 +60,6 @@ class JCTabBarController: UITabBarController {
         searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
         searchViewController.searchBar.delegate = searchVC
         searchViewController.searchBar.searchBarStyle = .minimal
-        searchViewController.extendedLayoutIncludesOpaqueBars = true
         searchVC.searchViewController = searchViewController
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
