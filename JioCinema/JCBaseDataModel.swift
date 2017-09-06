@@ -148,7 +148,8 @@ class Item:Mappable
     var app:App?
     var latestId:String?
     var layout:Int?
-    var duration:Int?
+    var duration:String?
+    var durationInt:Int?
     var isPlaylist:Bool?
     var playlistId:String?
     var totalDuration:String?
@@ -195,6 +196,15 @@ class Item:Mappable
         }
         layout <- map["layout"]
         duration <- map["duration"]
+        if duration == nil
+        {
+            durationInt <- map["duration"]
+            if durationInt != nil
+            {
+                duration = String(describing: durationInt!)
+            }
+        }
+        
         totalDuration <- map["totalDuration"]
         if totalDuration == nil
         {

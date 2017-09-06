@@ -47,7 +47,7 @@ class JCPlayerVC: UIViewController
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-            let totalDuration = "\(CMTimeGetSeconds((player?.currentItem?.duration)!))"
+            let totalDuration = "\((CMTimeGetSeconds((player?.currentItem?.duration)!)))"
             self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
         }
         if isResumed != nil
@@ -420,10 +420,10 @@ class JCPlayerVC: UIViewController
     func callWebServiceForAddToResumeWatchlist(currentTimeDuration:String,totalDuration:String)
     {
         let url = addToResumeWatchlistUrl
-        let json: Dictionary<String, String> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
+        let json: Dictionary<String, Any> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
-        params["listId"] = "10"
+        params["listId"] = 10
         params["json"] = json
         params["id"] = playerId
         params["duration"] = currentTimeDuration

@@ -130,27 +130,35 @@ class JCTabBarController: UITabBarController {
         
         if !isCurrentItemEpisode
         {
-            if let duration = (currentPlayableItem as? Item)?.duration, duration != 0
+            if let duration = (currentPlayableItem as? Item)?.duration
             {
+                let durationInt = Int(duration)
+                if durationInt != 0
+                {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                resumeWatchingVC.playableItemDuration = duration
+                resumeWatchingVC.playableItemDuration = durationInt!
                 resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
                 resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
                 resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
                 resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
                 resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
                 self.present(resumeWatchingVC, animated: false, completion: nil)
+                }
             }
-            else if let duration = (currentPlayableItem as? Episode)?.duration, duration != 0
+            else if let duration = (currentPlayableItem as? Episode)?.duration
             {
+                let durationInt = Int(duration)
+                if durationInt != 0
+                {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                resumeWatchingVC.playableItemDuration = duration
+                resumeWatchingVC.playableItemDuration = durationInt
                 resumeWatchingVC.playerId = (currentPlayableItem as! Episode).id
                 resumeWatchingVC.itemDescription = (currentPlayableItem as! Episode).subtitle
                 resumeWatchingVC.itemImage = (currentPlayableItem as! Episode).banner
                 resumeWatchingVC.itemTitle = (currentPlayableItem as! Episode).name
                 resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Episode).totalDuration)
                 self.present(resumeWatchingVC, animated: false, completion: nil)
+                }
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
