@@ -266,18 +266,24 @@ class JCTabBarController: UITabBarController {
                 {
                     if item.isPlaylist!
                     {
-                        
                         playerVC.callWebServiceForPlayListData(id: item.playlistId!)
                     }
                 }
                 
-                
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
                 playerVC.playerId = (currentPlayableItem as! Item).id!
-                self.present(playerVC, animated: false, completion: nil)                
+                
+                if let topController = UIApplication.topViewController() {
+                    if topController is JCMetadataVC {
+                        topController.present(playerVC, animated: false, completion: nil)
+                    }
+                    else
+                    {
+                        self.present(playerVC, animated: false, completion: nil)
+                    }
+                }
             }
-        
         }
         else
         {
@@ -302,4 +308,22 @@ class JCTabBarController: UITabBarController {
         NotificationCenter.default.removeObserver(self)
     }
 }
+
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? UITabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
+    }
+}
+
 
