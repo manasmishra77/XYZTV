@@ -170,7 +170,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             {
                 //TODO: handle error
                 print(responseError)
-                return
+                self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
+//                return
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
