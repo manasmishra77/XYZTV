@@ -135,8 +135,8 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         if let nextFocussedCell = context.nextFocusedView as? JCSettingsTableViewCell
         {
             nextFocussedCell.baseView.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
-            nextFocussedCell.textLabel?.textColor = #colorLiteral(red: 0.9085350633, green: 0.1763573289, blue: 0.4845796227, alpha: 1)
-            nextFocussedCell.settingsDetailLabel.textColor = #colorLiteral(red: 0.9085350633, green: 0.1763573289, blue: 0.4845796227, alpha: 1)
+            nextFocussedCell.textLabel?.textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
+            nextFocussedCell.settingsDetailLabel.textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
             nextFocussedCell.cellAccessoryImage.image = #imageLiteral(resourceName: "ArrowPink.png")
             
             switch nextFocussedCell.cellIndexpath
