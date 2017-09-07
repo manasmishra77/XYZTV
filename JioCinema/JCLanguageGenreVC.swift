@@ -105,9 +105,22 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             {
                 if let responseString = String(data: responseData, encoding: .utf8)
                 {
-                    weakself?.languageGenreDetailModel = LanguageGenreDetailModel(JSONString: responseString)
-                    DispatchQueue.main.async {
-                        weakself?.prepareView()
+                    if weakself?.loadedPage == 0
+                    {
+                        weakself?.languageGenreDetailModel = LanguageGenreDetailModel(JSONString: responseString)
+                        DispatchQueue.main.async {
+                            weakself?.prepareView()
+                        }
+                    }
+                    else
+                    {
+                        let tempData = LanguageGenreDetailModel(JSONString: responseString)
+                        
+                        for item in (tempData?.data?.items)!
+                        {
+                            weakself?.languageGenreDetailModel?.data?.items?.append(item)
+                        }
+                        weakself?.languageGenreCollectionView.reloadData()
                     }
                 }
             }
@@ -188,6 +201,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
             }
         }
+        loadedPage = 0
     }
     
 }
@@ -219,6 +233,22 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             else
             {
                 self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
+            }
+        }
+        
+        if(indexPath.row == (languageGenreDetailModel?.data?.items?.count)! - 1)
+        {
+            if(loadedPage < (languageGenreDetailModel?.pageCount)! - 1)
+            {
+                if item?.app?.type == VideoType.Language.rawValue {
+                    callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                }
+                else
+                {
+                    callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                }
+                
+                loadedPage += 1
             }
         }
         

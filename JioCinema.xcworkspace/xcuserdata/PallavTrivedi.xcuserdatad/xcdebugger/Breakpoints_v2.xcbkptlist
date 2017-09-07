@@ -74,7 +74,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCMetadataVC.swift"
-                  timestampString = "526465196.658591"
+                  timestampString = "526472380.288985"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "548"
@@ -89,7 +89,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCMetadataVC.swift"
-                  timestampString = "526465196.660872"
+                  timestampString = "526472380.291278"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "548"
@@ -122,7 +122,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCOTPVC.swift"
-                  timestampString = "526465196.665856"
+                  timestampString = "526472380.306823"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "119"
@@ -137,7 +137,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCOTPVC.swift"
-                  timestampString = "526465196.668155"
+                  timestampString = "526472380.309297"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "111"
@@ -186,7 +186,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCOTPVC.swift"
-                  timestampString = "526465196.677361"
+                  timestampString = "526472380.319353"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "113"
@@ -201,7 +201,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCOTPVC.swift"
-                  timestampString = "526465196.679535"
+                  timestampString = "526472380.321671"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "111"
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "526463002.552918"
+            timestampString = "526472191.440762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "callWebServiceForLanguageGenreData(isLanguage:pageNo:paramString:type:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -336,6 +336,22 @@
             startingLineNumber = "133"
             endingLineNumber = "133"
             landmarkName = "didReceiveNotificationForCellTap(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCLanguageGenreVC.swift"
+            timestampString = "526472277.508893"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "callWebServiceForLanguageGenreData(isLanguage:pageNo:paramString:type:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
