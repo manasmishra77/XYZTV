@@ -13,6 +13,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBOutlet weak var resendOTPButton: JCButton!
     @IBOutlet weak var signInButton: JCButton!
     @IBOutlet weak var getOTPButton: JCButton!
+    @IBOutlet weak var resendOTPLableToast: UILabel!
     var isRequestMadeForResend = false
    var searchController:UISearchController? = nil
     var enteredJioNumber:String?
@@ -63,8 +64,15 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBAction func didClickOnResendOTPButton(_ sender: Any)
     {
         resendOTPButton.isEnabled = false
-        self.isRequestMadeForResend = false
+        self.isRequestMadeForResend = true
+        resendOTPLableToast.isHidden = false
+        Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector (hideResendOTPLabelToast), userInfo: nil, repeats: false)
         self.callWebServiceToGetOTP(number: enteredJioNumber!)
+    }
+    
+    func hideResendOTPLabelToast()
+    {
+        resendOTPLableToast.isHidden = true
     }
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
@@ -141,6 +149,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                         
                         weakSelf?.isRequestMadeForResend = false
                     }
+                    _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
                 }
                 return
             }

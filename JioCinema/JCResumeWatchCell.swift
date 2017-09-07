@@ -22,7 +22,7 @@ class JCResumeWatchCell: UICollectionViewCell {
         
         if (context.nextFocusedView == self)
         {
-            let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.origin.x, y: progressBar.frame.origin.y + 20, width: itemImageView.focusedFrameGuide.layoutFrame.size.width, height: progressBar.frame.size.height)
+            let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.origin.x+15, y: progressBar.frame.origin.y + 20, width: itemImageView.focusedFrameGuide.layoutFrame.size.width, height: progressBar.frame.size.height)
             self.progressBar.frame = frame
         }
         else
