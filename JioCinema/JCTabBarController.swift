@@ -132,11 +132,11 @@ class JCTabBarController: UITabBarController {
         {
             if let duration = (currentPlayableItem as? Item)?.duration
             {
-                let durationInt = Int(duration)
+                let durationInt = Int(Float(duration)!)
                 if durationInt != 0
                 {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                resumeWatchingVC.playableItemDuration = durationInt!
+                resumeWatchingVC.playableItemDuration = durationInt
                 resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
                 resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
                 resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
@@ -144,10 +144,14 @@ class JCTabBarController: UITabBarController {
                 resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
                 self.present(resumeWatchingVC, animated: false, completion: nil)
                 }
+                else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
+                {
+                    showMetadata()
+                }
             }
             else if let duration = (currentPlayableItem as? Episode)?.duration
             {
-                let durationInt = Int(duration)
+                let durationInt = Int(Float(duration))
                 if durationInt != 0
                 {
                 let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC

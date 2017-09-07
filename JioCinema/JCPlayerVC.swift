@@ -429,7 +429,7 @@ class JCPlayerVC: UIViewController
         params["duration"] = currentTimeDuration
         params["totalduration"] = totalDuration
         
-        let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
             {
