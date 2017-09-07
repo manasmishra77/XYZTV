@@ -166,6 +166,7 @@ class JCSplashVC: UIViewController {
     {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Language)
+        JCDataStore.sharedDataStore.languageData?.data?[0].title = "Languages"
         
     }
     
@@ -196,6 +197,8 @@ class JCSplashVC: UIViewController {
     {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Genre)
+        JCDataStore.sharedDataStore.genreData?.data?[0].title = "Genres"
+        
     }
     
     

@@ -477,15 +477,15 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="772" id="WpB-ec-gyA"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="80" minimumInteritemSpacing="85" id="iTY-9q-Tyn">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="55" minimumInteritemSpacing="55" id="iTY-9q-Tyn">
                                     <size key="itemSize" width="376" height="250"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="80" minY="0.0" maxX="81" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="95" minY="0.0" maxX="96" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="wfY-oT-ceF">
-                                        <rect key="frame" x="80" y="0.0" width="376" height="250"/>
+                                        <rect key="frame" x="95" y="0.0" width="376" height="250"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="376" height="250"/>

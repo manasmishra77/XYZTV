@@ -83,7 +83,7 @@ class JCResumeWatchingVC: UIViewController
         let json = ["id":playerId]
         let params = ["uniqueId":JCAppUser.shared.unique,"listId":"10","json":json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
-        let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
             

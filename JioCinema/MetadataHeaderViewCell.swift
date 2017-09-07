@@ -181,7 +181,7 @@ class MetadataHeaderViewCell: UIView {
     
     func callWebServiceToUpdateWatchlist(withUrl url:String, andParameters params: Dictionary<String, Any>)
     {
-        let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
             if let responseError = error
             {

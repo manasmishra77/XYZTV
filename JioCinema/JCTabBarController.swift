@@ -76,13 +76,13 @@ class JCTabBarController: UITabBarController {
         
         // Do any additional setup after loading the view.
     }
-   
+    
     
     func setTabBarTitle()
     {
-        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 210.0, height: 135.0))
+        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 250.0, height: 135.0))
         tabBarTitleLabel.text = "JioCinema"
-        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 40.0)
+        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 44.0)
         tabBarTitleLabel.textColor = UIColor.white
         self.tabBar.addSubview(tabBarTitleLabel)
     }
@@ -114,39 +114,47 @@ class JCTabBarController: UITabBarController {
             isCurrentItemEpisode = true
         }
         else {
-                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
-                    if(isOnJioNetwork == false)
-                    {
-                        print("Not on jio network")
-                        DispatchQueue.main.async {
-                            weakSelf?.presentLoginVC()
-                        }
+            JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                if(isOnJioNetwork == false)
+                {
+                    print("Not on jio network")
+                    DispatchQueue.main.async {
+                        weakSelf?.presentLoginVC()
                     }
                 }
-                return
+            }
+            return
         }
-
+        
         //if metadata is to be shown, show it here, else, proceed with the below flow
         
         if !isCurrentItemEpisode
         {
             if let duration = (currentPlayableItem as? Item)?.duration
             {
-                let durationInt = Int(Float(duration)!)
-                if durationInt != 0
+                
+                if duration.contains(":")
                 {
-                let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                resumeWatchingVC.playableItemDuration = durationInt
-                resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
-                resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
-                resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
-                resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
-                resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
-                self.present(resumeWatchingVC, animated: false, completion: nil)
+                    weakSelf?.checkLoginAndPlay()
                 }
-                else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
+                else
                 {
-                    showMetadata()
+                    let durationInt = Int(Float(duration)!)
+                    if durationInt != 0
+                    {
+                        let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                        resumeWatchingVC.playableItemDuration = durationInt
+                        resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
+                        resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
+                        resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
+                        resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
+                        resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
+                        self.present(resumeWatchingVC, animated: false, completion: nil)
+                    }
+                    else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
+                    {
+                        showMetadata()
+                    }
                 }
             }
             else if let duration = (currentPlayableItem as? Episode)?.duration
@@ -154,14 +162,14 @@ class JCTabBarController: UITabBarController {
                 let durationInt = Int(Float(duration))
                 if durationInt != 0
                 {
-                let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                resumeWatchingVC.playableItemDuration = durationInt
-                resumeWatchingVC.playerId = (currentPlayableItem as! Episode).id
-                resumeWatchingVC.itemDescription = (currentPlayableItem as! Episode).subtitle
-                resumeWatchingVC.itemImage = (currentPlayableItem as! Episode).banner
-                resumeWatchingVC.itemTitle = (currentPlayableItem as! Episode).name
-                resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Episode).totalDuration)
-                self.present(resumeWatchingVC, animated: false, completion: nil)
+                    let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                    resumeWatchingVC.playableItemDuration = durationInt
+                    resumeWatchingVC.playerId = (currentPlayableItem as! Episode).id
+                    resumeWatchingVC.itemDescription = (currentPlayableItem as! Episode).subtitle
+                    resumeWatchingVC.itemImage = (currentPlayableItem as! Episode).banner
+                    resumeWatchingVC.itemTitle = (currentPlayableItem as! Episode).name
+                    resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Episode).totalDuration)
+                    self.present(resumeWatchingVC, animated: false, completion: nil)
                 }
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
@@ -214,7 +222,7 @@ class JCTabBarController: UITabBarController {
                     }
                     else
                     {
-                    NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
+                        NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
                     }
                     
                 }
@@ -245,9 +253,9 @@ class JCTabBarController: UITabBarController {
     {
         if currentPlayableItem != nil, JCLoginManager.sharedInstance.isLoginFromSettingsScreen == false
         {
-        print("play video")
-        
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+            print("play video")
+            
+            let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
             
             if isCurrentItemEpisode
             {

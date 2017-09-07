@@ -77,7 +77,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             params["lang"] = langArray
             params["genres"] = [paramString]
             params["type"] = type
-            params["filter"] = 3
+            params["filter"] = 0
             params["key"] = "language"
             
         }
@@ -88,7 +88,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             params["lang"] = [paramString]
             params["genres"] = genreArray
             params["type"] = type
-            params["filter"] = 3
+            params["filter"] = 0
             params["key"] = "genre"
         }
         let languageGenreDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
@@ -221,6 +221,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
                 self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
             }
         }
+        
         return cell
     }
     

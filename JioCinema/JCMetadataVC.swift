@@ -44,7 +44,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
         self.metadataTableView.tableFooterView = UIView.init()
         
+        if item!.name!.characters.count < 1 {
+            loadingLabel.text = "Loading metadata for \(String(describing: item!.showname!))"
+        }
+        else
+        {
         loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
+        }
         
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
         
