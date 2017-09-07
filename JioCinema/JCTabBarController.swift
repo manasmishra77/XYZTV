@@ -80,9 +80,10 @@ class JCTabBarController: UITabBarController {
     
     func setTabBarTitle()
     {
-        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 250.0, height: 135.0))
+        let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 300.0, height: 135.0))
+        
         tabBarTitleLabel.text = "JioCinema"
-        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 44.0)
+        tabBarTitleLabel.font = UIFont.init(name: "HelveticaNeue-Bold", size: 56.0)
         tabBarTitleLabel.textColor = UIColor.white
         self.tabBar.addSubview(tabBarTitleLabel)
     }

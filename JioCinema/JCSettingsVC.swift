@@ -177,6 +177,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         else
         {
             headerLabel.isHidden = true
+            self.settingsImageView.image = #imageLiteral(resourceName: "Settings.png")
         }
         
         if let prevFocussedCell = context.previouslyFocusedView as? JCSettingsTableViewCell
