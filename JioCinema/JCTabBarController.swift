@@ -287,13 +287,7 @@ class JCTabBarController: UITabBarController {
                 playerVC.playerId = (currentPlayableItem as! Item).id!
                 
                 if let topController = UIApplication.topViewController() {
-                    if topController is JCMetadataVC {
-                        topController.present(playerVC, animated: false, completion: nil)
-                    }
-                    else
-                    {
-                        self.present(playerVC, animated: false, completion: nil)
-                    }
+                    topController.present(playerVC, animated: false, completion: nil)
                 }
             }
         }
