@@ -15,31 +15,41 @@ private var playerViewControllerKVOContext = 0
 
 class JCPlayerVC: UIViewController
 {
-    @IBOutlet weak var nextVideoView: UIView!
-    @IBOutlet weak var nextVideoNameLabel: UILabel!
-    @IBOutlet weak var nextVideoPlayingTimeLabel: UILabel!
-    @IBOutlet weak var nextVideoThumbnail: UIImageView!
+    @IBOutlet weak var nextVideoView                    :UIView!
+    @IBOutlet weak var view_Recommendation              :UIView!
+    @IBOutlet weak var nextVideoNameLabel               :UILabel!
+    @IBOutlet weak var nextVideoPlayingTimeLabel        :UILabel!
+    @IBOutlet weak var nextVideoThumbnail               :UIImageView!
+    @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
+
+    var playerTimeObserverToken     :Any?
     
-    var player:AVPlayer?
-    var playerItem:AVPlayerItem?
-    var playerTimeObserverToken: Any?
-    var playerController:AVPlayerViewController?
-    var playbackRightsData:PlaybackRightsModel?
-    var isResumed:Bool?
-    var duration:Double = 0
-    var playerId:String?
-    var playlistData:PlaylistDataModel?
-    var currentItemImage:String?
-    var currentItemTitle:String?
-    var currentItemDuration:String?
-    var currentItemDescription:String?
+    var metadata                    :MetadataModel?
+
+    var player                      :AVPlayer?
+    var playerItem                  :AVPlayerItem?
+    var playerController            :AVPlayerViewController?
     
+    var playbackRightsData          :PlaybackRightsModel?
+    var playlistData                :PlaylistDataModel?
+    
+    var currentItemImage            :String?
+    var currentItemTitle            :String?
+    var currentItemDuration         :String?
+    var currentItemDescription      :String?
+    var playerId                    :String?
+    
+    var isRecommendationView        = false
+    var isResumed                   :Bool?
+
     var playlistIndex = 0
-    
+    var duration      = 0.0
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        addSwipeGesture()
         
-        // Do any additional setup after loading the view.
+        self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,14 +65,22 @@ class JCPlayerVC: UIViewController
             self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
 
-        removePlayerObserver()
+        if (player != nil)
+        {
+            removePlayerObserver()
+        }
+    }
+    override func viewDidLayoutSubviews() {
+        if self.view_Recommendation.frame.origin.y >= screenHeight - 30
+        {
+            self.setCustomSetting(state: false)
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     //MARK:- AVPlayerViewController Methods
     
@@ -75,7 +93,7 @@ class JCPlayerVC: UIViewController
         let videoUrl = URL(string: url)
         playerItem = AVPlayerItem(url: videoUrl!)
         
-        self.addMetadtaToPlayer()
+        self.addMetadataToPlayer()
         player = AVPlayer(playerItem: playerItem)
         
         if playerController == nil {
@@ -95,11 +113,12 @@ class JCPlayerVC: UIViewController
         player?.play()
         
         self.view.bringSubview(toFront: self.nextVideoView)
+        self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
         
     }
     
-    func addMetadtaToPlayer()
+    func addMetadataToPlayer()
     {
         let titleMetadataItem = AVMutableMetadataItem()
         titleMetadataItem.identifier = AVMetadataCommonIdentifierTitle
@@ -160,104 +179,10 @@ class JCPlayerVC: UIViewController
         playerItem?.externalMetadata.append(imageMetadataItem)
         
     }
-    
-
-    //MARK:- Add Player Observer
-    
-    func addPlayerNotificationObserver () {
-        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        
-        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
-    }
-    
-    func addPlayerPeriodicTimeObserver() {
-        let interval = CMTime(seconds: 1,
-                              preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        let mainQueue = DispatchQueue.main
-        
-        // Add time observer
-        playerTimeObserverToken =
-            self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
-                [weak self] time in
-                
-                if self?.player != nil {
-                let currentPlayerTime = Double(CMTimeGetSeconds(time))
-                let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
-                Log.DLog(message: "Remaining Time" as AnyObject)
-                Log.DLog(message: remainingTime as AnyObject)
-               
-                if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
-                {
-                    let index = (self?.playlistIndex)! + 1
-                    
-                    if index != self?.playlistData?.more?.count
-                    {
-                        if remainingTime <= 5
-                        {
-                            self?.nextVideoView.isHidden = false
-                            self?.nextVideoNameLabel.text = self?.playlistData?.more?[index].name
-                            self?.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
-                            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending( (self?.playlistData?.more?[index].banner)!)
-                            RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: false){
-                                
-                                image in
-                                
-                                if let img = image {
-                                    DispatchQueue.main.async {
-                                        self?.nextVideoThumbnail.image = img
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        self?.nextVideoView.isHidden = true
-                    }
-                }
-                else
-                {
-                    self?.nextVideoView.isHidden = true
-                }
-                }
-                else
-                {
-                    self?.playerTimeObserverToken = nil
-                }
-                
-        }
-    }
     func getPlayerDuration() -> Double {
-        Log.DLog(message: "$$$$$$$$" as AnyObject)
-        Log.DLog(message: self.player?.currentItem as AnyObject)
-        
         guard let currentItem = self.player?.currentItem else { return 0.0 }
         return CMTimeGetSeconds(currentItem.duration)
     }
-    
-    //MARK:- Remove Player Observer
-    func removePlayerObserver() {
-        self.player?.pause()
-        if let timeObserverToken = playerTimeObserverToken {
-            self.player?.removeTimeObserver(timeObserverToken)
-        }
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-        
-        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
-        self.playerTimeObserverToken = nil
-        self.player = nil
-        // self.currentItem = nil
-    }
-    
-    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
         guard context == &playerViewControllerKVOContext else {
@@ -304,11 +229,9 @@ class JCPlayerVC: UIViewController
             switch newStatus {
             case .readyToPlay:
                 self.addPlayerPeriodicTimeObserver()
-                // self.playerDelegate?.didILinkPlayerStatusReadyToPlay()
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
-            // self.playerDelegate?.didILinkPlayerStatusFailed(player?.currentItem?.error?.localizedDescription, error: player?.currentItem?.error)
             default:
                 print("unknown")
             }
@@ -317,15 +240,8 @@ class JCPlayerVC: UIViewController
             }
         }
     }
-    
-    
-    
-    
-    
+    //MARK:- AVPlayer Finish Playing Item
     func playerDidFinishPlaying(note: NSNotification) {
-        Log.DLog(message: self.playlistData?.more?.count as AnyObject )
-        Log.DLog(message: self.playlistIndex as AnyObject )
-        
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self.playlistData != nil
         {
             self.playlistIndex = self.playlistIndex + 1
@@ -349,10 +265,154 @@ class JCPlayerVC: UIViewController
             dismissPlayerVC()
         }
     }
+
+    //MARK:- Add Player Observer
+    func addPlayerNotificationObserver () {
+        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
+    }
     
+    func addPlayerPeriodicTimeObserver() {
+        let interval = CMTime(seconds: 1,
+                              preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let mainQueue = DispatchQueue.main
+        
+        // Add time observer
+        playerTimeObserverToken =
+            self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
+                [weak self] time in
+                
+                if self?.player != nil {
+                let currentPlayerTime = Double(CMTimeGetSeconds(time))
+                let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
+                    
+                if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
+                {
+                    let index = (self?.playlistIndex)! + 1
+                    
+                    if index != self?.playlistData?.more?.count
+                    {
+                        if remainingTime <= 5
+                        {
+                            self?.nextVideoView.isHidden = false
+                            self?.nextVideoNameLabel.text = self?.playlistData?.more?[index].name
+                            self?.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
+                            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending( (self?.playlistData?.more?[index].banner)!)
+                            RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: false){
+                                
+                                image in
+                                
+                                if let img = image {
+                                    DispatchQueue.main.async {
+                                        self?.nextVideoThumbnail.image = img
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        self?.nextVideoView.isHidden = true
+                    }
+                }
+                else
+                {
+                    self?.nextVideoView.isHidden = true
+                }
+                }
+                else
+                {
+                    self?.playerTimeObserverToken = nil
+                }
+                
+        }
+    }
+    
+    //MARK:- Remove Player Observer
+    func removePlayerObserver() {
+        self.player?.pause()
+        if let timeObserverToken = playerTimeObserverToken {
+            self.player?.removeTimeObserver(timeObserverToken)
+        }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+        
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
+        self.playerTimeObserverToken = nil
+        self.player = nil
+    }
+    
+    //MARK:- Custom Methods
+    func setCustomSetting(state:Bool)
+    {
+        self.collectionView_Recommendation.isScrollEnabled = state
+        self.isRecommendationView = state
+        self.collectionView_Recommendation.reloadData()
+    }
+    //MARK:- Dismiss Viewcontroller
     func dismissPlayerVC()
     {
         self.dismiss(animated: true, completion: nil)
+    }
+    //MARK:- Add Swipe Gesture
+    func addSwipeGesture()
+    {
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
+        swipeUp.direction = UISwipeGestureRecognizerDirection.up
+        self.view.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
+
+    }
+    
+    func swipeGestureHandler(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.up:
+                self.swipeUpRecommendationView()
+                break
+            case UISwipeGestureRecognizerDirection.down:
+                self.swipeDownRecommendationView()
+            break
+            default:
+                break
+            }
+        }
+    }
+    
+    //MARK:- Swipe Up Recommendation View
+    func swipeUpRecommendationView()
+    {
+        Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-300, width: screenWidth, height: self.view_Recommendation.frame.height)
+            }, completion: { (completed) in
+                self.setCustomSetting(state: true)
+            })
+        }
+    }
+    //MARK:- Swipe Down Recommendation View
+    func swipeDownRecommendationView()
+    {
+        Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-30, width: screenWidth, height: self.view_Recommendation.frame.height)
+            }, completion: { (completed) in
+                self.setCustomSetting(state: false)
+            })
+        }
     }
     
     //MARK:- Webservice Methods
@@ -443,12 +503,78 @@ class JCPlayerVC: UIViewController
                 return
             }
         }
-        
-        
-        
     }
     
+    fileprivate func downloadImageFrom(urlString:String,completionHandler:@escaping (UIImage)->Void)
+    {
+        let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString)
+        RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: true){
+            image in
+            if let img = image {
+                completionHandler(img)
+            }
+        }
+    }
+
 }
+ 
+ //MARK:- UICOLLECTIONVIEW DELEGATE
+ extension JCPlayerVC: UICollectionViewDelegate
+ {
+    func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
+        return isRecommendationView
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let model = metadata?.more?[indexPath.row]
+        self.callWebServiceForPlaybackRights(id: (model?.id)!)
+        self.currentItemImage = model?.banner
+        self.currentItemTitle = model?.name
+        self.currentItemDescription = model?.description
+        self.swipeDownRecommendationView()
+        
+    }
+ }
+ //MARK:- UICOLLECTIONVIEW DATASOURCE
+
+ extension JCPlayerVC: UICollectionViewDataSource{
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if metadata != nil, metadata?.more != nil
+        {
+            return (metadata?.more?.count)!
+        }
+        return 0
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let model = metadata?.more?[indexPath.row]
+        cell.nameLabel.text = model?.name
+        
+        if indexPath.row == 0
+        {
+            cell.view_NowPlaying.isHidden = false
+        }
+        else
+        {
+            cell.view_NowPlaying.isHidden = true
+        }
+        
+        
+        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((model?.banner)!))!)
+        {
+            cell.itemImageView.image = image
+        }
+        else
+        {
+            self.downloadImageFrom(urlString: (model?.banner)!, completionHandler: { (downloadImage) in
+                cell.itemImageView.image = downloadImage
+            })
+        }
+        return cell
+    }
+ 
+ }
+ //MARK:- PlaybackRight Model
 
 class PlaybackRightsModel:Mappable
 {
@@ -489,6 +615,7 @@ class PlaybackRightsModel:Mappable
         
     }
 }
+ //MARK:- Subscription Model
 
 class Subscription:Mappable
 {
@@ -503,6 +630,7 @@ class Subscription:Mappable
         isSubscribed <- map["isSubscribed"]
     }
 }
+ //MARK:- PlaylistDataModel Model
 
 class PlaylistDataModel: Mappable {
     
