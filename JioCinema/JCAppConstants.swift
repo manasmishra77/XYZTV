@@ -15,6 +15,9 @@ public enum JCParameterEncoding
     case BODY
 }
 
+let screenHeight:CGFloat = UIScreen.main.bounds.height
+let screenWidth:CGFloat = UIScreen.main.bounds.width
+
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"

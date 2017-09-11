@@ -357,6 +357,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
+    //version = 1
     
     func didReceiveNotificationForWatchNow(notification:Notification)
     {
@@ -369,6 +370,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 else {
                     return
             }
+            player.metadata = self.metadata
             self.present(player, animated: false, completion: nil)
         }
         else

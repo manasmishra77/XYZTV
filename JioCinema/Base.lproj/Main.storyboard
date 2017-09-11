@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
@@ -198,17 +198,50 @@
                                     <constraint firstItem="qG8-AD-0fn" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="top" constant="30" id="wpy-fp-J1o"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRe-AD-HU3">
+                                <rect key="frame" x="0.0" y="1060" width="1920" height="300"/>
+                                <subviews>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QOy-iQ-IFl">
+                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="300"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="T53-kQ-kSh">
+                                            <size key="itemSize" width="376" height="300"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="XTY-lV-J6s" id="2ag-Ry-UGW"/>
+                                            <outlet property="delegate" destination="XTY-lV-J6s" id="nGW-x6-dbk"/>
+                                        </connections>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="2l9-rj-DSo"/>
+                                    <constraint firstAttribute="bottom" secondItem="QOy-iQ-IFl" secondAttribute="bottom" id="5cS-qh-OTw"/>
+                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="top" secondItem="VRe-AD-HU3" secondAttribute="top" id="DHZ-hB-zqn"/>
+                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="leading" secondItem="VRe-AD-HU3" secondAttribute="leading" id="b3J-Yg-Ldo"/>
+                                    <constraint firstAttribute="trailing" secondItem="QOy-iQ-IFl" secondAttribute="trailing" id="hQi-2J-exS"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="OXd-1y-bTi" secondAttribute="trailing" id="7L1-Yi-o4A"/>
                             <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="120" id="9no-cs-ZY7"/>
+                            <constraint firstItem="VRe-AD-HU3" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="100" id="Fvz-bN-LKI"/>
+                            <constraint firstItem="VRe-AD-HU3" firstAttribute="leading" secondItem="qDA-Z1-tmP" secondAttribute="leading" id="csv-Ka-hV1"/>
+                            <constraint firstAttribute="trailing" secondItem="VRe-AD-HU3" secondAttribute="trailing" id="d9K-vB-PAR"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="dpq-BY-oY7"/>
                         <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
                         <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>
                         <outlet property="nextVideoThumbnail" destination="28g-LG-naa" id="SfY-j2-3tZ"/>
                         <outlet property="nextVideoView" destination="OXd-1y-bTi" id="4EC-AH-v9j"/>
+                        <outlet property="view_Recommendation" destination="VRe-AD-HU3" id="F2X-Yx-4uT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2IR-za-JQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
