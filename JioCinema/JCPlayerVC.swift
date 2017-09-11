@@ -44,8 +44,6 @@ class JCPlayerVC: UIViewController
 
     var playlistIndex = 0
     var duration      = 0.0
-    
-    let dispatchGroup = DispatchGroup()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -533,6 +531,7 @@ class JCPlayerVC: UIViewController
         self.currentItemTitle = model?.name
         self.currentItemDescription = model?.description
         self.swipeDownRecommendationView()
+        
     }
  }
  //MARK:- UICOLLECTIONVIEW DATASOURCE
@@ -550,6 +549,15 @@ class JCPlayerVC: UIViewController
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         let model = metadata?.more?[indexPath.row]
         cell.nameLabel.text = model?.name
+        
+        if indexPath.row == 0
+        {
+            cell.view_NowPlaying.isHidden = false
+        }
+        else
+        {
+            cell.view_NowPlaying.isHidden = true
+        }
         
         
         if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((model?.banner)!))!)
