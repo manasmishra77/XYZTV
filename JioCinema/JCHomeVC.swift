@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
     var loadedPage = 0
@@ -39,6 +38,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             callWebServiceForResumeWatchData()
         }
         baseTableView.reloadData()
+        
     }
     
     override func didReceiveMemoryWarning() {
