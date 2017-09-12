@@ -111,6 +111,7 @@ class MetadataHeaderViewCell: UIView {
             if let itemId = item?.id
             {
                 id = itemId
+                
                 playerVC.currentItemTitle = item?.name
                 playerVC.currentItemDescription = item?.description
                 playerVC.currentItemDuration = String(describing: item?.duration)
@@ -134,6 +135,9 @@ class MetadataHeaderViewCell: UIView {
             {
                 playerVC.callWebServiceForPlaybackRights(id: id!)
             }
+            
+            playerVC.item = item
+
             playerVC.modalPresentationStyle = .overFullScreen
             playerVC.modalTransitionStyle = .coverVertical
             let playerItem = ["player":playerVC]

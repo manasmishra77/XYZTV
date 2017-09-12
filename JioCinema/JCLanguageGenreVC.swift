@@ -321,11 +321,16 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     fileprivate func showPlayerVC(forIndexPath index:Int)
     {
+        let model = languageGenreDetailModel?.data?.items?[index]
+        
         let playerId = languageGenreDetailModel?.data?.items?[index].id
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[index].description
         playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[index].name
         playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[index].banner
+        
+        
+        playerVC.item = model
         //playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
         playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
