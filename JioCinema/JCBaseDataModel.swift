@@ -241,6 +241,8 @@ class App:Mappable
     var resolution:Int?
     var isNew:Bool?
     var type:Int?
+    init()
+    {}
     
     required init(map:Map) {
         
