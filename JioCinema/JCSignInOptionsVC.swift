@@ -33,8 +33,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-        jioIdTextField.text     = "pallavtrivedi-4"
-        passwordTextField.text  = "pallav@1010"
+//        jioIdTextField.text     = "pallavtrivedi-4"
+//        passwordTextField.text  = "pallav@1010"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -52,6 +52,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 if let responseError = error
                 {
                     print(responseError)
+                    //Analytics for Login Fail
                     return
                 }
                 
@@ -63,6 +64,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
                         
+                        //Analytics for Login Success   (jio id, Manual)
+                        let analyticsData = ["method":"JIOID","source":"manual","identity":JCAppUser.shared.uid]
+                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
+                        
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                                 NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
@@ -73,6 +78,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     else if(code == 400)
                     {
                         self.showAlert(alertString: parsedResponse["message"]! as! String)
+                        //Analytics for Login Fail
+                        let pro = ["userid":]
+                        let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
+                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                     }
                 }
             }

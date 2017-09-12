@@ -286,7 +286,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.metadata?.artist = tempMetadata?.artist
             }
             self.metadata?.displayText = tempMetadata?.displayText
-            
         }
     }
     

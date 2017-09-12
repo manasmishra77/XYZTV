@@ -184,9 +184,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-               
                     weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
-               
             }
         }
     }
@@ -227,6 +225,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                             NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
                         })
                     }
+                    
+                    //Analytics login success (OTP)
+                    let analyticsData = ["method":"OTP","source":"manual","identity":JCAppUser.shared.commonName]
+                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
                 else
                 {
