@@ -55,6 +55,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource  ,UISearc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
+        cell.itemFromViewController = VideoType.Search
         cell.categoryTitleLabel.text = searchResultArray?[indexPath.row].categoryName
         cell.data = searchResultArray?[indexPath.row].resultItems
         cell.tableCellCollectionView.reloadData()

@@ -15,7 +15,9 @@ enum VideoType:Int
     case TVShow = 1
     case Clip = 6
     case Home = -1
+    case Search = -2
 }
+
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
     
@@ -334,7 +336,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerView = prepareHeaderView()
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
-        headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 680)
+        headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 725)
         self.view.addSubview(headerView!)
         headerView?.isHidden = false
     }
