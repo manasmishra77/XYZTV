@@ -23,7 +23,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(callResumeWatchWebServiceOnPlayerDismiss), name: playerDismissNotificationName, object: nil)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
@@ -202,6 +202,11 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
         }
+    }
+    
+    func callResumeWatchWebServiceOnPlayerDismiss()
+    {
+        callWebServiceForResumeWatchData()
     }
 }
 

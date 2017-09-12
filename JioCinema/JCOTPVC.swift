@@ -227,8 +227,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     }
                     
                     //Analytics login success (OTP)
-                    let analyticsData = ["method":"OTP","source":"manual","identity":JCAppUser.shared.commonName]
-                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
+//                    let analyticsData = ["method":"OTP","source":"manual","identity":JCAppUser.shared.commonName]
+//                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
                 else
                 {

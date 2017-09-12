@@ -63,6 +63,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         // Dispose of any resources that can be recreated.
     }
     
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 320
     }
@@ -690,7 +691,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
-        
+            NotificationCenter.default.post(name: playerDismissNotificationName, object: nil)
         }
     }
 }
