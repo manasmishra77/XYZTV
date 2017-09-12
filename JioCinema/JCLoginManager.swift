@@ -87,7 +87,9 @@ class JCLoginManager:UIViewController
                         {
                             self.callWebServiceToLoginViaSubId(info: userData, completion: { (isLoginSuccessful) in
                                 completion(isLoginSuccessful)
+                                
                             })
+                            
                         }
                         
                     })
@@ -137,6 +139,10 @@ class JCLoginManager:UIViewController
                     weakSelf?.setUserData(data: parsedResponse)
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
+                    
+                    //Analytics for Login Success (4g,skip)
+//                    let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
+//                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
                 else
                 {

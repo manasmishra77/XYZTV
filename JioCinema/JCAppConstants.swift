@@ -109,6 +109,7 @@ let heightOfCarouselSection = 600
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
 let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
+let playerDismissNotificationName = Notification.Name("playerDismissed")
 let watchNowNotificationName = Notification.Name("didClickOnWatchNowNotification")
 let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell")
 let showLoginFromMetadataNotificationName = Notification.Name("showLoginFromMetadata")
@@ -131,3 +132,6 @@ let returnSessionDetailsValue = "T"
 let subscriberIdKey = "subscriberId"
 
 
+//Variables
+
+var isLoginPresentedFromAddToWatchlist = false

@@ -179,6 +179,7 @@ class MetadataHeaderViewCell: UIView {
         }
         else
         {
+            isLoginPresentedFromAddToWatchlist = true
             NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
     }

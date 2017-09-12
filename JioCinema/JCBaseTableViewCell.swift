@@ -205,15 +205,15 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
     }
     
-    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if let focusedView = context.nextFocusedView as? JCItemCell {
-            tableCellCollectionView.isScrollEnabled = false
-            if let indexPath = tableCellCollectionView.indexPath(for: focusedView)
-            {
-            tableCellCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
-            }
-       }
-    }
+//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+//        if let focusedView = context.nextFocusedView as? JCItemCell {
+//            tableCellCollectionView.isScrollEnabled = false
+//            if let indexPath = tableCellCollectionView.indexPath(for: focusedView)
+//            {
+//            tableCellCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+//            }
+//       }
+//    }
     
     
     fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath)
