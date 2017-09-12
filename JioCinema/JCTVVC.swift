@@ -80,7 +80,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        
+        cell.tableCellCollectionView.tag = indexPath.row
+        cell.itemFromViewController = VideoType.TVShow
+
         if !JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             isTVWatchlistAvailable = false

@@ -78,7 +78,9 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        
+        cell.tableCellCollectionView.tag = indexPath.row
+        cell.itemFromViewController = VideoType.Movie
+
         if !JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             isMoviesWatchlistAvailable = false

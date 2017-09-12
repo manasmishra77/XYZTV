@@ -18,6 +18,9 @@ public enum JCParameterEncoding
 let screenHeight:CGFloat = UIScreen.main.bounds.height
 let screenWidth:CGFloat = UIScreen.main.bounds.width
 
+var collectionIndex = -1
+var selectedItemFromViewController:VideoType = VideoType.Home
+
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"

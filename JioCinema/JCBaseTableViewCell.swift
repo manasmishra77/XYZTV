@@ -17,6 +17,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     var episodes:[Episode]?
     var artistImages:[String:String]?
     var isResumeWatchCell = false
+    var itemFromViewController:VideoType?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -179,6 +180,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        collectionIndex = collectionView.tag
+        selectedItemFromViewController = self.itemFromViewController!
         
         if data != nil
         {

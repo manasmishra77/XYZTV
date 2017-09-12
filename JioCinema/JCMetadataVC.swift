@@ -14,12 +14,10 @@ enum VideoType:Int
     case Music = 2
     case TVShow = 1
     case Clip = 6
+    case Home = -1
 }
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
-    
-    
-    
     
     var item:Item!
     var metadata:MetadataModel?
@@ -54,7 +52,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
-        
         // Do any additional setup after loading the view.
     }
     
@@ -372,8 +369,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                     return
             }
             player.metadata = self.metadata
-            player.reloadDelegate = self
-
             self.present(player, animated: false, completion: nil)
         }
         else
@@ -409,7 +404,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         playerVC.currentItemDuration = String(describing: item?.totalDuration)
         playerVC.currentItemDescription = item?.description
         
-        playerVC.reloadDelegate = self
         playerVC.item = item
         
         playerVC.callWebServiceForPlaybackRights(id: id!)
@@ -466,7 +460,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         metadataContainerView.isHidden = true
         headerView?.isHidden = true
         loaderContainerView.isHidden = false
+        
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
+        
         
     }
     
@@ -696,16 +692,4 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     }
 }
 
-extension JCMetadataVC: ReloadMetaDataDelegate
-{
-    func didRefreshMetaDataVC(receivedItem: More) {
-        Log.DLog(message: "##### didRefreshMetaDataVC" as AnyObject)
-        self.item = Item()
-        item.id = receivedItem.id
-        item.banner = receivedItem.banner
-        item.name = receivedItem.name
 
-        self.metadata = nil
-        callWebServiceForMetadata(id: item.id!)
-    }
-}

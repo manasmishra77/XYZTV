@@ -70,8 +70,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        
-        
+        cell.tableCellCollectionView.tag = indexPath.row
+        cell.itemFromViewController = VideoType.Home
+
         if !JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             isResumeWatchDataAvailable = false

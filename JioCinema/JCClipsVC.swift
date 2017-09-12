@@ -66,14 +66,19 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
-        
+        cell.itemFromViewController = VideoType.Clip
+
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
+            cell.tableCellCollectionView.tag = indexPath.row + 1
+
             cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].title
         }
         else
         {
+            cell.tableCellCollectionView.tag = indexPath.row
+
             cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].items
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title
         }
