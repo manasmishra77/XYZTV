@@ -734,7 +734,7 @@ class JCPlayerVC: UIViewController
         else if metadata?.app?.type == VideoType.Movie.rawValue
         {
             let model = metadata?.more?[indexPath.row]
-            metaDataID = (metadata?.id)!
+           // metaDataID = (metadata?.id)!
             modelID = (model?.id)!
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name

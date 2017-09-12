@@ -86,7 +86,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
-        
+        cell.itemFromViewController = VideoType.init(rawValue:(item.app?.type)!)
+
         cell.moreLikeData = nil
         cell.episodes = nil
         cell.data = nil
