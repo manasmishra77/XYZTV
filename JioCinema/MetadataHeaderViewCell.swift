@@ -140,6 +140,7 @@ class MetadataHeaderViewCell: UIView {
 
             playerVC.modalPresentationStyle = .overFullScreen
             playerVC.modalTransitionStyle = .coverVertical
+            latestEpisodeId = id!
             let playerItem = ["player":playerVC]
             NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
         }

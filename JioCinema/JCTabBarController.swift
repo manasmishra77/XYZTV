@@ -283,7 +283,15 @@ class JCTabBarController: UITabBarController {
                     playerVC.currentItemTitle = item.name
                     playerVC.currentItemDuration = String(describing: item.totalDuration)
                     playerVC.currentItemDescription = item.description
+                    if latestEpisodeId != "-1"
+                    {
+                    playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
+                        latestEpisodeId = "-1"
+                    }
+                    else
+                    {
                     playerVC.callWebServiceForPlaybackRights(id: item.id!)
+                    }
                 }
                 else
                 {
