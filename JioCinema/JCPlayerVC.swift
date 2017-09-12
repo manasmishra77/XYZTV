@@ -391,7 +391,7 @@ class JCPlayerVC: UIViewController
             metadataVC.item = tempItem
             metadataVC.modalPresentationStyle = .overFullScreen
             metadataVC.modalTransitionStyle = .coverVertical
-            topController.present(metadataVC, animated: false, completion: nil)
+            topController.present(metadataVC, animated: true, completion: nil)
         }
     }
     //MARK:- Custom Setting
