@@ -8,17 +8,18 @@
 
 import UIKit
 
+enum VideoType:Int
+{
+    case Movie = 0
+    case Music = 2
+    case TVShow = 1
+    case Clip = 6
+}
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
     
     
-    enum VideoType:Int
-    {
-        case Movie = 0
-        case Music = 2
-        case TVShow = 1
-        case Clip = 6
-    }
+    
     
     var item:Item!
     var metadata:MetadataModel?
@@ -371,6 +372,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                     return
             }
             player.metadata = self.metadata
+            player.reloadDelegate = self
+
             self.present(player, animated: false, completion: nil)
         }
         else
@@ -405,6 +408,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         playerVC.currentItemTitle = item?.name
         playerVC.currentItemDuration = String(describing: item?.totalDuration)
         playerVC.currentItemDescription = item?.description
+        
+        playerVC.reloadDelegate = self
+        playerVC.item = item
         
         playerVC.callWebServiceForPlaybackRights(id: id!)
         
@@ -687,5 +693,19 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
         {
         
         }
+    }
+}
+
+extension JCMetadataVC: ReloadMetaDataDelegate
+{
+    func didRefreshMetaDataVC(receivedItem: More) {
+        Log.DLog(message: "##### didRefreshMetaDataVC" as AnyObject)
+        self.item = Item()
+        item.id = receivedItem.id
+        item.banner = receivedItem.banner
+        item.name = receivedItem.name
+
+        self.metadata = nil
+        callWebServiceForMetadata(id: item.id!)
     }
 }

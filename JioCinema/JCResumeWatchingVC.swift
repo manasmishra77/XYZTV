@@ -19,6 +19,9 @@ class JCResumeWatchingVC: UIViewController
     var itemImage:String?
     var itemDuration:String?
     var isVideoResumed = false
+    
+    var item                        :Any?
+
 
     override func viewDidLoad()
     {
@@ -75,6 +78,7 @@ class JCResumeWatchingVC: UIViewController
         playerVC.duration = Double(playableItemDuration)
         playerVC.isResumed = isVideoResumed
         
+        playerVC.item = self.item
         self.present(playerVC, animated: false, completion: nil)
     }
     

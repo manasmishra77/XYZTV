@@ -150,6 +150,8 @@ class JCTabBarController: UITabBarController {
                         resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
                         resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
                         resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
+                        resumeWatchingVC.item = currentPlayableItem
+                        
                         self.present(resumeWatchingVC, animated: false, completion: nil)
                     }
                     else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
@@ -294,6 +296,9 @@ class JCTabBarController: UITabBarController {
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
                 playerVC.playerId = (currentPlayableItem as! Item).id!
+                
+                playerVC.item = currentPlayableItem
+
                 
                 if let topController = UIApplication.topViewController() {
                     topController.present(playerVC, animated: false, completion: nil)

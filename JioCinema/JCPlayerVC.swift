@@ -13,6 +13,10 @@ import AVFoundation
 
 private var playerViewControllerKVOContext = 0
 
+protocol ReloadMetaDataDelegate {
+    func didRefreshMetaDataVC(receivedItem: More)
+ }
+ 
 class JCPlayerVC: UIViewController
 {
     @IBOutlet weak var nextVideoView                    :UIView!
@@ -22,8 +26,11 @@ class JCPlayerVC: UIViewController
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
 
+    var reloadDelegate              :ReloadMetaDataDelegate?
+
     var playerTimeObserverToken     :Any?
-    
+    var item                        :Any?
+
     var metadata                    :MetadataModel?
 
     var player                      :AVPlayer?
@@ -48,6 +55,10 @@ class JCPlayerVC: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         addSwipeGesture()
+        if metadata == nil
+        {
+            fetchRecommendationData()
+        }
         
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
     }
@@ -416,6 +427,83 @@ class JCPlayerVC: UIViewController
     }
     
     //MARK:- Webservice Methods
+    func fetchRecommendationData()
+    {
+        if let data = self.item as? Item
+        {
+            if data.app?.type == VideoType.Movie.rawValue
+            {
+                let url = metadataUrl.appending(data.id!)
+                self.callWebServiceForMoreLikeData(url: url)
+            }
+            else if data.app?.type == VideoType.TVShow.rawValue
+            {
+                let url = metadataUrl.appending(data.id!).appending("/0/0")
+                self.callWebServiceForMoreLikeData(url: url)
+            }
+            else if data.app?.type == VideoType.Music.rawValue
+            {
+            
+            }
+        }
+
+    }
+    
+    
+    func callWebServiceForMoreLikeData(url:String)
+    {
+        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    weakSelf?.collectionView_Recommendation.reloadData()
+                }
+                return
+            }
+        }
+        
+    }
+    
+    func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        if let responseString = String(data: responseData, encoding: .utf8)
+        {
+            let tempMetadata = MetadataModel(JSONString: responseString)
+            
+            
+//            if let data = self.item as? Item
+//            {
+//                
+//                
+//                if data.app?.type == VideoType.Movie.rawValue
+//                {
+//                    let url = metadataUrl.appending(data.id!)
+//                    self.callWebServiceForMoreLikeData(url: url)
+//                }
+//                else if data.app?.type == VideoType.TVShow.rawValue
+//                {
+//                    let url = metadataUrl.appending(data.id!).appending("/0/0")
+//                    self.callWebServiceForMoreLikeData(url: url)
+//                }
+//            }
+//
+            
+            
+            self.metadata = tempMetadata
+        }
+    }
+    
     func callWebServiceForPlayListData(id:String)
     {
         playerId = id
@@ -515,7 +603,6 @@ class JCPlayerVC: UIViewController
             }
         }
     }
-
 }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
@@ -525,12 +612,28 @@ class JCPlayerVC: UIViewController
         return isRecommendationView
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let model = metadata?.more?[indexPath.row]
-        self.callWebServiceForPlaybackRights(id: (model?.id)!)
-        self.currentItemImage = model?.banner
-        self.currentItemTitle = model?.name
-        self.currentItemDescription = model?.description
         self.swipeDownRecommendationView()
+        var url = ""
+        if metadata?.app?.type == VideoType.TVShow.rawValue
+        {
+            let model = metadata?.episodes?[indexPath.row]
+            self.currentItemImage = model?.banner
+            self.currentItemTitle = model?.name
+            self.callWebServiceForPlaybackRights(id: (model?.id)!)
+             url = metadataUrl.appending((model?.id!)!)
+            self.callWebServiceForMoreLikeData(url: url)
+
+        }
+        else if metadata?.app?.type == VideoType.Movie.rawValue {
+            let model = metadata?.more?[indexPath.row]
+            self.currentItemImage = model?.banner
+            self.currentItemTitle = model?.name
+            self.currentItemDescription = model?.description
+            self.reloadDelegate?.didRefreshMetaDataVC(receivedItem: model!)
+            self.dismissPlayerVC()
+         //   self.callWebServiceForPlaybackRights(id: (model?.id)!)
+          //  url = metadataUrl.appending((model?.id!)!)
+        }
         
     }
  }
@@ -541,32 +644,83 @@ class JCPlayerVC: UIViewController
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if metadata != nil, metadata?.more != nil
         {
-            return (metadata?.more?.count)!
+            if metadata?.app?.type == VideoType.TVShow.rawValue
+            {
+                return (metadata?.episodes?.count)!
+            }
+            else
+            {
+                return (metadata?.more?.count)!
+            }
         }
         return 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-        let model = metadata?.more?[indexPath.row]
-        cell.nameLabel.text = model?.name
         
-        if indexPath.row == 0
+        var imageUrl = ""
+        var modelID = ""
+        if metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            cell.view_NowPlaying.isHidden = false
+            let model = metadata?.episodes?[indexPath.row]
+            modelID = (model?.id)!
+            imageUrl = (model?.banner)!
+            cell.nameLabel.text = model?.name
+        }
+        else {
+            let model = metadata?.more?[indexPath.row]
+            modelID = (model?.id)!
+            imageUrl = (model?.banner)!
+            cell.nameLabel.text = model?.name
+        }
+        
+        
+        
+        if metadata != nil
+        {
+            if metadata?.id == modelID
+            {
+                cell.view_NowPlaying.isHidden = false
+            }
+            else
+            {
+                cell.view_NowPlaying.isHidden = true
+            }
         }
         else
         {
-            cell.view_NowPlaying.isHidden = true
+            if let data = self.item as? Item
+            {
+                if data.id == modelID
+                {
+                    cell.view_NowPlaying.isHidden = false
+                }
+                else
+                {
+                    cell.view_NowPlaying.isHidden = true
+                }
+            }
+            else if let data = self.item as? Episode
+            {
+                if data.id == modelID
+                {
+                    cell.view_NowPlaying.isHidden = false
+                }
+                else
+                {
+                    cell.view_NowPlaying.isHidden = true
+                }
+            }
         }
         
         
-        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((model?.banner)!))!)
+        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         {
             cell.itemImageView.image = image
         }
         else
         {
-            self.downloadImageFrom(urlString: (model?.banner)!, completionHandler: { (downloadImage) in
+            self.downloadImageFrom(urlString: imageUrl, completionHandler: { (downloadImage) in
                 cell.itemImageView.image = downloadImage
             })
         }
