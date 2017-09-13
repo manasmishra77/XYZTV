@@ -295,10 +295,10 @@ class JCTabBarController: UITabBarController {
                 }
                 else
                 {
-                    if item.isPlaylist!
-                    {
-                        playerVC.callWebServiceForPlayListData(id: item.playlistId!)
-                    }
+//                    if item.isPlaylist!
+//                    {
+//                        playerVC.callWebServiceForPlayListData(id: item.playlistId!)
+//                    }
                 }
                 
                 playerVC.modalPresentationStyle = .overFullScreen
@@ -306,7 +306,6 @@ class JCTabBarController: UITabBarController {
                 playerVC.playerId = (currentPlayableItem as! Item).id!
                 
                 playerVC.item = currentPlayableItem
-
                 
                 if let topController = UIApplication.topViewController() {
                     topController.present(playerVC, animated: false, completion: nil)

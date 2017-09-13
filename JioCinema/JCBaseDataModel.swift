@@ -182,6 +182,11 @@ class Item:Mappable
         description <- map["description"]
         banner <- map["banner"]
         isPlaylist <- map["isPlaylist"]
+        if isPlaylist == nil {
+            isPlaylist = false
+        }
+        
+        
         playlistId <- map["playlistId"]
         format <- map["format"]
         language <- map["language"]

@@ -13,8 +13,6 @@ import AVFoundation
 
 private var playerViewControllerKVOContext = 0
 
-
- 
 class JCPlayerVC: UIViewController
 {
     @IBOutlet weak var nextVideoView                    :UIView!
@@ -46,7 +44,8 @@ class JCPlayerVC: UIViewController
     var isRecommendationView        = false
     var isResumed                   :Bool?
 
-    var playlistIndex               = 0
+    var currentPlayingIndex         = -1
+    
     var duration                    = 0.0
     
     var arr_RecommendationList = [Item]()
@@ -84,7 +83,7 @@ class JCPlayerVC: UIViewController
     override func viewDidLayoutSubviews() {
         if self.view_Recommendation.frame.origin.y >= screenHeight - 30
         {
-            self.setCustomSetting(state: false)
+            self.setCustomRecommendationViewSetting(state: false)
         }
     }
     
@@ -119,7 +118,7 @@ class JCPlayerVC: UIViewController
                     
                     if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
                     {
-                        let index = (self?.playlistIndex)! + 1
+                        let index = (self?.currentPlayingIndex)! + 1
                         
                         if index != self?.playlistData?.more?.count
                         {
@@ -209,6 +208,8 @@ class JCPlayerVC: UIViewController
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
+        
+        //self.collectionView_Recommendation.reloadData()
         
     }
     
@@ -337,22 +338,44 @@ class JCPlayerVC: UIViewController
     }
     //MARK:- AVPlayer Finish Playing Item
     func playerDidFinishPlaying(note: NSNotification) {
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self.playlistData != nil
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
         {
-            self.playlistIndex = self.playlistIndex + 1
-            
-            if self.playlistIndex != self.playlistData?.more?.count
+            if metadata != nil
             {
-                let moreId = self.playlistData?.more?[self.playlistIndex].id
-                self.currentItemImage = self.playlistData?.more?[self.playlistIndex].banner
-                self.currentItemTitle = self.playlistData?.more?[self.playlistIndex].name
-                self.currentItemDuration = String(describing: self.playlistData?.more?[self.playlistIndex].totalDuration)
-                self.currentItemDescription = self.playlistData?.more?[self.playlistIndex].description
-                self.callWebServiceForPlaybackRights(id: moreId!)
+                if metadata?.app?.type == VideoType.TVShow.rawValue
+                {
+//                    let model = metadata?.episodes?[indexPath.row]
+//                    metaDataID = (metadata?.latestEpisodeId)!
+//                    modelID = (model?.id)!
+//                    imageUrl = (model?.banner)!
+//                    cell.nameLabel.text = model?.name
+                }
+                else if metadata?.app?.type == VideoType.Movie.rawValue
+                {
+//                    let model = metadata?.more?[indexPath.row]
+//                    // metaDataID = (metadata?.id)!
+//                    modelID = (model?.id)!
+//                    imageUrl = (model?.banner)!
+//                    cell.nameLabel.text = model?.name
+                }
+                return
             }
-            else
+            else // For Clips,Music or Playlist
             {
-                dismissPlayerVC()
+                if let data = self.item as? Item
+                {
+                    if data.isPlaylist!
+                    {
+                        handlePlayListNextItem()
+                    }
+                    else {
+                    
+                    }
+                }
+                else if let data = self.item as? Episode {
+                
+                }
+
             }
         }
         else
@@ -361,6 +384,23 @@ class JCPlayerVC: UIViewController
         }
     }
 
+    func handlePlayListNextItem()
+    {
+        self.currentPlayingIndex = self.currentPlayingIndex + 1
+        if self.currentPlayingIndex != self.playlistData?.more?.count
+        {
+            let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
+            self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
+            self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
+            self.currentItemDuration = String(describing: self.playlistData?.more?[self.currentPlayingIndex].totalDuration)
+            self.currentItemDescription = self.playlistData?.more?[self.currentPlayingIndex].description
+            self.callWebServiceForPlaybackRights(id: moreId!)
+        }
+        else
+        {
+            dismissPlayerVC()
+        }
+    }
     
     //MARK:- Custom Methods
     //MARK:- Download Image
@@ -394,13 +434,22 @@ class JCPlayerVC: UIViewController
             topController.present(metadataVC, animated: true, completion: nil)
         }
     }
+    func hideUnhideNowPlayingView(cell:JCItemCell,state:Bool)
+    {
+        DispatchQueue.main.async {
+            cell.view_NowPlaying.isHidden = state
+            cell.isUserInteractionEnabled = state
+        }
+    }
     //MARK:- Custom Setting
-    func setCustomSetting(state:Bool)
+    func setCustomRecommendationViewSetting(state:Bool)
     {
         self.collectionView_Recommendation.isScrollEnabled = state
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
     }
+    
+    
     //MARK:- Dismiss Viewcontroller
     func dismissPlayerVC()
     {
@@ -442,7 +491,7 @@ class JCPlayerVC: UIViewController
             UIView.animate(withDuration: 0.5, animations: {
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-300, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
-                self.setCustomSetting(state: true)
+                self.setCustomRecommendationViewSetting(state: true)
             })
         }
     }
@@ -454,7 +503,7 @@ class JCPlayerVC: UIViewController
             UIView.animate(withDuration: 0.5, animations: {
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-30, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
-                self.setCustomSetting(state: false)
+                self.setCustomRecommendationViewSetting(state: false)
             })
         }
     }
@@ -464,6 +513,12 @@ class JCPlayerVC: UIViewController
     {
         if let data = self.item as? Item
         {
+            if data.isPlaylist!
+            {
+                self.callWebServiceForPlayListData(id: data.playlistId!)
+            }
+            else{
+            
             if data.app?.type == VideoType.Movie.rawValue
             {
                 let url = metadataUrl.appending(data.id!)
@@ -490,6 +545,7 @@ class JCPlayerVC: UIViewController
                 }
                 self.collectionView_Recommendation.reloadData()
             }
+            }
         }
     }
     
@@ -515,7 +571,6 @@ class JCPlayerVC: UIViewController
                 return
             }
         }
-        
     }
     
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
@@ -568,11 +623,13 @@ class JCPlayerVC: UIViewController
                     self.playlistData = PlaylistDataModel(JSONString: responseString)
                     if (self.playlistData?.more?.count)! > 0
                     {
-                        let moreId = self.playlistData?.more?[self.playlistIndex].id
-                        self.currentItemImage = self.playlistData?.more?[self.playlistIndex].banner
-                        self.currentItemTitle = self.playlistData?.more?[self.playlistIndex].name
-                        self.currentItemDuration = String(describing: self.playlistData?.more?[self.playlistIndex].totalDuration)
-                        self.currentItemDescription = self.playlistData?.more?[self.playlistIndex].description
+                        self.collectionView_Recommendation.reloadData()
+                        self.currentPlayingIndex = 0
+                        let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
+                        self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
+                        self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
+                        self.currentItemDuration = String(describing: self.playlistData?.more?[self.currentPlayingIndex].totalDuration)
+                        self.currentItemDescription = self.playlistData?.more?[self.currentPlayingIndex].description
                         self.callWebServiceForPlaybackRights(id: moreId!)
                     }
                 }
@@ -681,6 +738,15 @@ class JCPlayerVC: UIViewController
         {
             if let data = self.item as? Item
             {
+                if data.isPlaylist!     // If Playlist exist
+                {
+                    self.currentPlayingIndex = indexPath.row
+                    let model = self.playlistData?.more?[indexPath.row]
+                    self.currentItemImage = model?.banner
+                    self.currentItemTitle = model?.name
+                    self.callWebServiceForPlaybackRights(id: (model?.id)!)
+                }
+                else
                 if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
                     let model = arr_RecommendationList[indexPath.row]
@@ -710,12 +776,23 @@ class JCPlayerVC: UIViewController
                 return (metadata?.more?.count)!
             }
         }
-        else // Selected Item is either Music or Clip
+       else if let data = self.item as? Item
         {
-            return arr_RecommendationList.count
+            if data.isPlaylist!     // If Playlist exist
+            {
+                if playlistData != nil
+                {
+                    return (playlistData?.more?.count)!
+                }
+            }
+            else
+            {
+                return arr_RecommendationList.count
+            }
         }
         return 0
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         
@@ -739,53 +816,75 @@ class JCPlayerVC: UIViewController
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
         }
-        else // For Clips And Music
+        else // For Clips,Music or Playlist
         {
-            let model = arr_RecommendationList[indexPath.row]
-            modelID = (model.id)!
-            imageUrl = (model.banner)!
-            cell.nameLabel.text = model.name
+            if let data = self.item as? Item
+            {
+                if data.isPlaylist!
+                {
+                    let model = self.playlistData?.more?[indexPath.row]
+                    modelID = (model?.id)!
+                    imageUrl = (model?.banner)!
+                    cell.nameLabel.text = model?.name
+                }
+                else
+                {
+                    let model = arr_RecommendationList[indexPath.row]
+                    modelID = (model.id)!
+                    imageUrl = (model.banner)!
+                    cell.nameLabel.text = model.name
+                }
+            }
         }
         
         if metadata != nil
         {
             if metaDataID == modelID
             {
-                cell.view_NowPlaying.isHidden = false
-                cell.isUserInteractionEnabled = false
+                self.hideUnhideNowPlayingView(cell: cell, state: false)
             }
             else
             {
-                cell.view_NowPlaying.isHidden = true
-                cell.isUserInteractionEnabled = true
+                self.hideUnhideNowPlayingView(cell: cell, state: true)
             }
         }
-        else // For Clips And Music
+        else // For Clips,Music or Playlist item
         {
             if let data = self.item as? Item
             {
+                if data.isPlaylist!
+                {
+                    let currentPlayingPlayListItemID = self.playlistData?.more?[self.currentPlayingIndex].id
+                    if currentPlayingPlayListItemID == modelID
+                    {
+                        self.hideUnhideNowPlayingView(cell: cell, state: false)
+                    }
+                    else
+                    {
+                        self.hideUnhideNowPlayingView(cell: cell, state: true)
+                    }
+                }
+                else{
+                
                 if data.id == modelID
                 {
-                    cell.view_NowPlaying.isHidden = false
-                    cell.isUserInteractionEnabled = false
+                    self.hideUnhideNowPlayingView(cell: cell, state: false)
                 }
                 else
                 {
-                    cell.view_NowPlaying.isHidden = true
-                    cell.isUserInteractionEnabled = true
+                    self.hideUnhideNowPlayingView(cell: cell, state: true)
                 }
+            }
             }
             else if let data = self.item as? Episode
             {
                 if data.id == modelID
                 {
-                    cell.view_NowPlaying.isHidden = false
-                    cell.isUserInteractionEnabled = false
+                    self.hideUnhideNowPlayingView(cell: cell, state: false)
                 }
                 else
                 {
-                    cell.view_NowPlaying.isHidden = true
-                    cell.isUserInteractionEnabled = true
+                    self.hideUnhideNowPlayingView(cell: cell, state: true)
                 }
             }
         }
