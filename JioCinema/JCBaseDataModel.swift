@@ -186,8 +186,12 @@ class Item:Mappable
             isPlaylist = false
         }
         
-        
+        tempStore <- map["playlistId"]
         playlistId <- map["playlistId"]
+        if playlistId == nil, tempStore != nil {
+            playlistId = "\(String(describing: Int(tempStore!)))"
+        }
+        
         format <- map["format"]
         language <- map["language"]
         genre <- map["genre"]

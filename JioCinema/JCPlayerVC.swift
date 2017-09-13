@@ -303,15 +303,17 @@ class JCPlayerVC: UIViewController
         }
         else if keyPath == #keyPath(JCPlayerVC.player.rate) {
             let newRate = (change?[NSKeyValueChangeKey.newKey] as! NSNumber).doubleValue
-            //  self.playerDelegate?.didILinkPlayerStatusRate(rate: newRate)
+            
+            if newRate == 0
+            {
+                swipeDownRecommendationView()
+            }
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
-            // self.playerDelegate?.didILinkPlayerStatusBufferEmpty()
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
-            //  self.playerDelegate?.didILinkPlayerStatusPlaybackLikelyToKeepUp()
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
             let newStatus: AVPlayerItemStatus
@@ -344,11 +346,7 @@ class JCPlayerVC: UIViewController
             {
                 if metadata?.app?.type == VideoType.TVShow.rawValue
                 {
-//                    let model = metadata?.episodes?[indexPath.row]
-//                    metaDataID = (metadata?.latestEpisodeId)!
-//                    modelID = (model?.id)!
-//                    imageUrl = (model?.banner)!
-//                    cell.nameLabel.text = model?.name
+                    handleEpisodeNextItem()
                 }
                 else if metadata?.app?.type == VideoType.Movie.rawValue
                 {
@@ -368,9 +366,12 @@ class JCPlayerVC: UIViewController
                     {
                         handlePlayListNextItem()
                     }
-                    else {
-                    
-                    }
+                    else
+                        if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
+                        
+                        {
+                            handleMusicOrClipNextItem()
+                        }
                 }
                 else if let data = self.item as? Episode {
                 
@@ -389,18 +390,68 @@ class JCPlayerVC: UIViewController
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.playlistData?.more?.count
         {
-            let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
-            self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
-            self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
-            self.currentItemDuration = String(describing: self.playlistData?.more?[self.currentPlayingIndex].totalDuration)
-            self.currentItemDescription = self.playlistData?.more?[self.currentPlayingIndex].description
-            self.callWebServiceForPlaybackRights(id: moreId!)
+            let modal = self.playlistData?.more?[self.currentPlayingIndex]
+            self.currentItemImage = modal?.banner
+            self.currentItemTitle = modal?.name
+            self.currentItemDuration = String(describing: modal?.totalDuration)
+            self.currentItemDescription = modal?.description
+            self.callWebServiceForPlaybackRights(id: (modal?.id)!)
         }
         else
         {
+            self.currentPlayingIndex = self.currentPlayingIndex - 1
             dismissPlayerVC()
         }
     }
+    
+    func handleMusicOrClipNextItem()
+    {
+        self.currentPlayingIndex = self.currentPlayingIndex + 1
+        if self.currentPlayingIndex != self.arr_RecommendationList.count
+        {
+            let modal = arr_RecommendationList[self.currentPlayingIndex]
+            self.currentItemImage = modal.banner
+            self.currentItemTitle = modal.name
+            self.currentItemDuration = String(describing: modal.totalDuration)
+            self.currentItemDescription = modal.description
+            self.callWebServiceForPlaybackRights(id: modal.id!)
+        }
+        else
+        {
+            self.currentPlayingIndex = self.currentPlayingIndex - 1
+            dismissPlayerVC()
+        }
+    }
+    
+    func handleEpisodeNextItem()
+    {
+        self.currentPlayingIndex = self.currentPlayingIndex - 1
+        if self.currentPlayingIndex >= 0 //
+        {
+            let modal = metadata?.episodes?[currentPlayingIndex]
+            self.metadata?.latestEpisodeId = modal?.id
+            self.currentItemImage = modal?.banner
+            self.currentItemTitle = modal?.name
+            self.currentItemDuration = String(describing: modal?.totalDuration)
+            //self.currentItemDescription = modal?.description
+            self.callWebServiceForPlaybackRights(id: (modal?.id!)!)
+        }
+        else
+        {
+            self.currentPlayingIndex = self.currentPlayingIndex + 1
+            dismissPlayerVC()
+        }
+        
+        
+        //                    let model = metadata?.episodes?[indexPath.row]
+        //                    metaDataID = (metadata?.latestEpisodeId)!
+        //                    modelID = (model?.id)!
+        //                    imageUrl = (model?.banner)!
+        //                    cell.nameLabel.text = model?.name
+
+        
+    }
+
     
     //MARK:- Custom Methods
     //MARK:- Download Image
@@ -418,7 +469,11 @@ class JCPlayerVC: UIViewController
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
+        Log.DLog(message: "openMetaDataVC" as AnyObject)
+        
         if let topController = UIApplication.topViewController() {
+            Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
+
             let tempItem = Item()
             tempItem.id = model.id
             tempItem.name = model.name
@@ -438,7 +493,7 @@ class JCPlayerVC: UIViewController
     {
         DispatchQueue.main.async {
             cell.view_NowPlaying.isHidden = state
-            cell.isUserInteractionEnabled = state
+           // cell.isUserInteractionEnabled = state
         }
     }
     //MARK:- Custom Setting
@@ -549,7 +604,6 @@ class JCPlayerVC: UIViewController
         }
     }
     
-    
     func callWebServiceForMoreLikeData(url:String)
     {
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
@@ -623,8 +677,22 @@ class JCPlayerVC: UIViewController
                     self.playlistData = PlaylistDataModel(JSONString: responseString)
                     if (self.playlistData?.more?.count)! > 0
                     {
-                        self.collectionView_Recommendation.reloadData()
                         self.currentPlayingIndex = 0
+                        if let data = self.item as? Item
+                        {
+                        for i in 0 ..< (self.playlistData?.more?.count)!
+                        {
+                            let modal = self.playlistData?.more?[i]
+                            if modal?.id == data.id
+                            {
+                                Log.DLog(message: data.id as AnyObject)
+                                self.currentPlayingIndex = i
+                                break
+                            }
+                        }
+                        }
+                        
+                        self.collectionView_Recommendation.reloadData()
                         let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
                         self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
                         self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
@@ -705,12 +773,20 @@ class JCPlayerVC: UIViewController
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
+
+        if self.currentPlayingIndex == indexPath.row {
+            return
+        }
+        
+        self.currentPlayingIndex = indexPath.row
+        
        // var url = ""
         if metadata != nil
         {
             if metadata?.app?.type == VideoType.TVShow.rawValue
                 {
                         let model = metadata?.episodes?[indexPath.row]
+                        self.metadata?.latestEpisodeId = model?.id
                         self.currentItemImage = model?.banner
                         self.currentItemTitle = model?.name
                         self.callWebServiceForPlaybackRights(id: (model?.id)!)
@@ -723,12 +799,20 @@ class JCPlayerVC: UIViewController
                         self.currentItemImage = model?.banner
                         self.currentItemTitle = model?.name
                         self.currentItemDescription = model?.description
+
+//                    self.presentingViewController?.dismiss(animated: true, completion: { 
+//                        DispatchQueue.main.async {
+//                            self.openMetaDataVC(model: model!)
+//                        }
+//                    })
                     
                     self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                         DispatchQueue.main.async {
                               self.openMetaDataVC(model: model!)
                         }
                     })
+                    
+                    
                         // self.callWebServiceForPlaybackRights(id: (model?.id)!)
                         // url = metadataUrl.appending((model?.id!)!)
                         return
@@ -740,7 +824,6 @@ class JCPlayerVC: UIViewController
             {
                 if data.isPlaylist!     // If Playlist exist
                 {
-                    self.currentPlayingIndex = indexPath.row
                     let model = self.playlistData?.more?[indexPath.row]
                     self.currentItemImage = model?.banner
                     self.currentItemTitle = model?.name
@@ -764,14 +847,13 @@ class JCPlayerVC: UIViewController
  extension JCPlayerVC: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if metadata != nil, metadata?.more != nil
+        if metadata != nil
         {
-            if metadata?.app?.type == VideoType.TVShow.rawValue
+            if metadata?.app?.type == VideoType.TVShow.rawValue, metadata?.episodes != nil
             {
                 return (metadata?.episodes?.count)!
             }
-            else if metadata?.app?.type == VideoType.Movie.rawValue
-
+            else if metadata?.app?.type == VideoType.Movie.rawValue, metadata?.more != nil
             {
                 return (metadata?.more?.count)!
             }
@@ -794,7 +876,7 @@ class JCPlayerVC: UIViewController
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         
         var imageUrl    = ""
         var modelID     = ""
@@ -857,6 +939,7 @@ class JCPlayerVC: UIViewController
                     let currentPlayingPlayListItemID = self.playlistData?.more?[self.currentPlayingIndex].id
                     if currentPlayingPlayListItemID == modelID
                     {
+                        currentPlayingIndex = indexPath.row
                         self.hideUnhideNowPlayingView(cell: cell, state: false)
                     }
                     else
@@ -868,6 +951,7 @@ class JCPlayerVC: UIViewController
                 
                 if data.id == modelID
                 {
+                    currentPlayingIndex = indexPath.row
                     self.hideUnhideNowPlayingView(cell: cell, state: false)
                 }
                 else
@@ -880,6 +964,7 @@ class JCPlayerVC: UIViewController
             {
                 if data.id == modelID
                 {
+                    currentPlayingIndex = indexPath.row
                     self.hideUnhideNowPlayingView(cell: cell, state: false)
                 }
                 else
