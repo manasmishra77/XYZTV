@@ -35,6 +35,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     var currentFilter:FilterType?
     var languageGenreDetailModel:LanguageGenreDetailModel?
     
+    @IBOutlet weak var noVideosAvailableLabel: UILabel!
     @IBOutlet weak var languageGenreCollectionView: UICollectionView!
     
     @IBOutlet weak var languageGenreButton: JCButton!
@@ -108,9 +109,26 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                     if weakself?.loadedPage == 0
                     {
                         weakself?.languageGenreDetailModel = LanguageGenreDetailModel(JSONString: responseString)
-                        DispatchQueue.main.async {
-                            weakself?.prepareView()
+                        if weakself?.languageGenreDetailModel?.data?.items?.count != 0 && weakself?.languageGenreDetailModel?.data?.items?.count != nil{
+                            DispatchQueue.main.async {
+                                self.languageGenreButton.isEnabled = true
+                                self.languageGenreCollectionView.isHidden = false
+                                self.noVideosAvailableLabel.isHidden = true
+                                weakself?.prepareView()
+                            }
+                            
                         }
+                        else{
+                            DispatchQueue.main.async {
+                                self.languageGenreButton.isEnabled = false
+                                self.languageGenreCollectionView.isHidden = true
+                                self.noVideosAvailableLabel.isHidden = false
+                                weakself?.prepareView()
+                            }
+                        }
+//                        DispatchQueue.main.async {
+//                            weakself?.prepareView()
+//                        }
                     }
                     else
                     {
@@ -184,6 +202,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
+                currentParamString = "All Genres"
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentType)
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.genres?[filter].name
@@ -195,6 +214,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
+                currentParamString = "All Genres"
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.languages?[filter].name

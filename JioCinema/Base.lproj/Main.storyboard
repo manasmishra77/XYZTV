@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
@@ -530,8 +530,15 @@
                                     <outlet property="delegate" destination="RQp-zj-aXG" id="ETR-at-bbj"/>
                                 </connections>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No video available!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOE-UX-E5Z">
+                                <rect key="frame" x="785" y="517" width="349" height="47"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="cOE-UX-E5Z" firstAttribute="centerY" secondItem="YVa-Fj-BSN" secondAttribute="centerY" id="0Ba-tV-6J0"/>
                             <constraint firstItem="DmK-gu-MRv" firstAttribute="top" secondItem="TmG-gv-hHK" secondAttribute="bottom" constant="55" id="0UH-Bl-8rV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DmK-gu-MRv" secondAttribute="trailing" constant="440" id="Amj-Y4-UaZ"/>
                             <constraint firstItem="TmG-gv-hHK" firstAttribute="centerX" secondItem="YVa-Fj-BSN" secondAttribute="centerX" id="BKb-X9-ruV"/>
@@ -540,6 +547,7 @@
                             <constraint firstItem="6xU-q8-4MI" firstAttribute="top" secondItem="Z4c-fe-hXv" secondAttribute="bottom" id="eyY-6O-Jj7"/>
                             <constraint firstItem="Z4c-fe-hXv" firstAttribute="leading" secondItem="YVa-Fj-BSN" secondAttribute="leading" id="gFi-Qy-Lsn"/>
                             <constraint firstItem="vJA-fj-MB3" firstAttribute="leading" secondItem="YVa-Fj-BSN" secondAttribute="leadingMargin" constant="450" id="jmw-Lw-zr3"/>
+                            <constraint firstItem="cOE-UX-E5Z" firstAttribute="centerX" secondItem="YVa-Fj-BSN" secondAttribute="centerX" id="sWm-1i-3Uq"/>
                             <constraint firstItem="TmG-gv-hHK" firstAttribute="top" secondItem="r3a-hi-NoU" secondAttribute="bottom" constant="20" id="tYp-y8-qHD"/>
                         </constraints>
                     </view>
@@ -547,6 +555,7 @@
                         <outlet property="headerLabel" destination="TmG-gv-hHK" id="6Bk-be-oju"/>
                         <outlet property="languageGenreButton" destination="DmK-gu-MRv" id="UgC-9W-zSd"/>
                         <outlet property="languageGenreCollectionView" destination="Z4c-fe-hXv" id="fiI-0k-IHe"/>
+                        <outlet property="noVideosAvailableLabel" destination="cOE-UX-E5Z" id="783-5S-Arr"/>
                         <outlet property="videoCategoryButton" destination="vJA-fj-MB3" id="JLm-Yv-SaU"/>
                     </connections>
                 </viewController>
