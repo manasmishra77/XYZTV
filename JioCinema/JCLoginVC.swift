@@ -56,7 +56,8 @@ class JCLoginVC: UIViewController {
         searchContainerViewController.modalPresentationStyle = .overFullScreen
         searchContainerViewController.modalTransitionStyle = .coverVertical
         
-        self.present(searchContainerViewController, animated: true, completion: nil)
+        //self.present(searchContainerViewController, animated: true, completion: nil)
+        self.present(searchController, animated: true, completion: nil)
     }
     
     
