@@ -26,6 +26,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     var selectedYearIndex = 0
     let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
     
+    @IBOutlet weak var metadataTableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
@@ -336,7 +337,16 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerView = prepareHeaderView()
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
-        headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 725)
+        if item.app?.type == VideoType.Movie.rawValue
+        {
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 600)
+            metadataTableViewTopConstraint.constant = 590
+        }
+        else
+        {
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 725)
+            metadataTableViewTopConstraint.constant = 730
+        }
         self.view.addSubview(headerView!)
         headerView?.isHidden = false
     }
