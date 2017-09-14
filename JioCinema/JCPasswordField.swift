@@ -17,11 +17,11 @@ class JCPasswordField: UITextField,UITextFieldDelegate
         {
             self.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
             self.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSForegroundColorAttributeName:#colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)])
-            self.textColor = UIColor.black
+            //self.textColor = UIColor.black
         }
         else
         {
-            self.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.3)
+            self.backgroundColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.3597708972)
             self.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSForegroundColorAttributeName:#colorLiteral(red: 0.4361188412, green: 0.4361297488, blue: 0.4361238778, alpha: 1)])
         }
         

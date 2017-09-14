@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '320CD318DA4B5164A94823F41475F6BC'
+               BlueprintIdentifier = '5F9881F2A559C951F035177AE289494A'
                BlueprintName = 'Pods-JioCinema'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods-JioCinema.framework'>

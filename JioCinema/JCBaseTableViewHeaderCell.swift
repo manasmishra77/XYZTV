@@ -51,7 +51,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
         
         let imageUrl = (carousalData?[indexPath.row].tvImage)!
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-        cell.carouselImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+        cell.carouselImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "carousel_placeholder-min.png"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
         return cell
