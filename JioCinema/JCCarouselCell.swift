@@ -13,6 +13,6 @@ class JCCarouselCell: UICollectionViewCell
     @IBOutlet weak var carouselImageView: UIImageView!
     
     override func prepareForReuse() {
-        self.carouselImageView.image = #imageLiteral(resourceName: "carousel_placeholder-min.png")
+       // self.carouselImageView.image = #imageLiteral(resourceName: "carousel_placeholder-min.png")
     }
 }

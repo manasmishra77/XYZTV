@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
 
@@ -49,16 +50,10 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: carouselCellIdentifier, for: indexPath) as! JCCarouselCell
         
         let imageUrl = (carousalData?[indexPath.row].tvImage)!
-        
-        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-        {
-            cell.carouselImageView.image = image;
-        }
-        else
-        {
-            self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
-        }
-        
+        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+        cell.carouselImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+        });
         return cell
     }
  
@@ -68,28 +63,6 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
     }
     
-    fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath){
-        
-        weak var weakSelf = self
-        
-        let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString)
-        RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: true){
-            
-            image in
-            
-            if let img = image {
-                
-                DispatchQueue.main.async {
-                    
-                    if let cell = weakSelf?.headerCollectionView?.cellForItem(at: indexPath){
-                        
-                        let carouselCell = cell as! JCCarouselCell
-                        carouselCell.carouselImageView.image = img
-                    }
-                }
-            }
-        }
-    }
     
 }
 
