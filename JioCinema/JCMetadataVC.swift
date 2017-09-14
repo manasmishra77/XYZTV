@@ -48,11 +48,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.metadataTableView.tableFooterView = UIView.init()
         
         if item!.name!.characters.count < 1 {
-            loadingLabel.text = "Loading metadata for \(String(describing: item!.showname!))"
+            loadingLabel.text = "Loading"
         }
         else
         {
-        loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
+        loadingLabel.text = "Loading"
         }
         
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
@@ -442,7 +442,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 
         item = tempItem
         
-        loadingLabel.text = "Loading metadata for \(String(describing: item!.name!))"
+        loadingLabel.text = "Loading"
         metadataContainerView.isHidden = true
         headerView?.isHidden = true
         loaderContainerView.isHidden = false
