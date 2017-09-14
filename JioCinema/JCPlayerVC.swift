@@ -788,17 +788,12 @@ class JCPlayerVC: UIViewController
                         self.currentItemTitle = model?.name
                         self.currentItemDescription = model?.description
 
-//                    self.presentingViewController?.dismiss(animated: true, completion: { 
-//                        DispatchQueue.main.async {
-//                            self.openMetaDataVC(model: model!)
-//                        }
-//                    })
                     
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                        DispatchQueue.main.async {
-                              self.openMetaDataVC(model: model!)
-                        }
-                    })
+                        self.presentingViewController?.dismiss(animated: true, completion: {
+                            DispatchQueue.main.async {
+                                self.openMetaDataVC(model: model!)
+                            }
+                        })
                     
                     
                         // self.callWebServiceForPlaybackRights(id: (model?.id)!)

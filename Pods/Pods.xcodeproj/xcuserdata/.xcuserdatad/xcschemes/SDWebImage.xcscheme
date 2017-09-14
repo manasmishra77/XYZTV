@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '04E926366B04F765B9429F174E9C4C10'
-               BlueprintName = 'WillowTreeOuroboros'
+               BlueprintIdentifier = '8E7720F42AFB6F5615F7DEE56ABD29FD'
+               BlueprintName = 'SDWebImage'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'WillowTreeOuroboros.framework'>
+               BuildableName = 'SDWebImage.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
