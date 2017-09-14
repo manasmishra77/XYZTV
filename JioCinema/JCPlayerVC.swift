@@ -117,26 +117,67 @@ class JCPlayerVC: UIViewController
                     let currentPlayerTime = Double(CMTimeGetSeconds(time))
                     let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
                     
-                    if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),self?.playlistData != nil
+                    if remainingTime <= 5
                     {
-                        let index = (self?.currentPlayingIndex)! + 1
-                        
-                        if index != self?.playlistData?.more?.count
+                        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
                         {
-                            if remainingTime <= 5
+                            let index = (self?.currentPlayingIndex)! + 1
+                           
+                            if self?.metadata != nil
                             {
-                                self?.nextVideoView.isHidden = false
-                                self?.nextVideoNameLabel.text = self?.playlistData?.more?[index].name
-                                self?.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
-                                let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending( (self?.playlistData?.more?[index].banner)!)
-                                RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: false){
-                                    
-                                    image in
-                                    
-                                    if let img = image {
-                                        DispatchQueue.main.async {
-                                            self?.nextVideoThumbnail.image = img
+                                if self?.metadata?.app?.type == VideoType.TVShow.rawValue, self?.metadata?.episodes != nil
+                                {
+                                    if index != self?.metadata?.episodes?.count
+                                    {
+                                        let modal = self?.metadata?.episodes?[index]
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                    }
+                                    else
+                                    {
+                                        self?.nextVideoView.isHidden = true
+                                    }
+                                }
+                                else if self?.metadata?.app?.type == VideoType.Movie.rawValue, self?.metadata?.more != nil
+                                {
+                                   /* if index != self?.metadata?.more?.count
+                                    {
+                                        let modal = self?.metadata?.more?[index]
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                    }
+                                    else
+                                    {
+                                        self?.nextVideoView.isHidden = true
+                                    }
+                                    */
+                                }
+                            }
+                            else if let data = self?.item as? Item
+                            {
+                                if data.isPlaylist!     // If Playlist exist
+                                {
+                                    if self?.playlistData != nil
+                                    {
+                                        if index != self?.playlistData?.more?.count
+                                        {
+                                            let modal = self?.playlistData?.more?[index]
+                                            self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
                                         }
+                                        else
+                                        {
+                                            self?.nextVideoView.isHidden = true
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if index != self?.arr_RecommendationList.count
+                                    {
+                                        let modal = self?.arr_RecommendationList[index]
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                    }
+                                    else
+                                    {
+                                        self?.nextVideoView.isHidden = true
                                     }
                                 }
                             }
@@ -146,10 +187,6 @@ class JCPlayerVC: UIViewController
                             self?.nextVideoView.isHidden = true
                         }
                     }
-                    else
-                    {
-                        self?.nextVideoView.isHidden = true
-                    }
                 }
                 else
                 {
@@ -158,6 +195,7 @@ class JCPlayerVC: UIViewController
                 
         }
     }
+    
     
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
@@ -249,9 +287,7 @@ class JCPlayerVC: UIViewController
         {
             let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(currentItemImage!))!
             
-            
             RJILImageDownloader.shared.downloadImage(urlString: imageUrl, shouldCache: false){
-                
                 image in
                 
                 if let img = image {
@@ -351,11 +387,7 @@ class JCPlayerVC: UIViewController
                 }
                 else if metadata?.app?.type == VideoType.Movie.rawValue
                 {
-//                    let model = metadata?.more?[indexPath.row]
-//                    // metaDataID = (metadata?.id)!
-//                    modelID = (model?.id)!
-//                    imageUrl = (model?.banner)!
-//                    cell.nameLabel.text = model?.name
+                    dismissPlayerVC()
                 }
                 return
             }
@@ -375,7 +407,8 @@ class JCPlayerVC: UIViewController
                         }
                 }
                 else if let data = self.item as? Episode {
-                
+                    Log.DLog(message: data as AnyObject)
+                    Log.DLog(message: "$$$ Finish Episode" as AnyObject)
                 }
 
             }
@@ -385,6 +418,8 @@ class JCPlayerVC: UIViewController
             dismissPlayerVC()
         }
     }
+
+    //MARK:- Handle Next Item
 
     func handlePlayListNextItem()
     {
@@ -442,15 +477,6 @@ class JCPlayerVC: UIViewController
             self.currentPlayingIndex = self.currentPlayingIndex + 1
             dismissPlayerVC()
         }
-        
-        
-        //                    let model = metadata?.episodes?[indexPath.row]
-        //                    metaDataID = (metadata?.latestEpisodeId)!
-        //                    modelID = (model?.id)!
-        //                    imageUrl = (model?.banner)!
-        //                    cell.nameLabel.text = model?.name
-
-        
     }
 
     
@@ -477,13 +503,30 @@ class JCPlayerVC: UIViewController
             topController.present(metadataVC, animated: true, completion: nil)
         }
     }
+    //MARK:- Hide/Unhide Now Playing
     func hideUnhideNowPlayingView(cell:JCItemCell,state:Bool)
     {
         DispatchQueue.main.async {
             cell.view_NowPlaying.isHidden = state
-           // cell.isUserInteractionEnabled = state
         }
     }
+    //MARK:- Show Next Video View
+
+    func showNextVideoView(videoName:String,remainingTime:Int,banner:String)
+    {
+        DispatchQueue.main.async {
+            self.nextVideoView.isHidden = false
+            self.nextVideoNameLabel.text = videoName
+            self.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
+            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner)
+            let url = URL(string: imageUrl!)
+            self.nextVideoThumbnail.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
+        }
+        
+    }
+
     //MARK:- Custom Setting
     func setCustomRecommendationViewSetting(state:Bool)
     {
@@ -873,7 +916,7 @@ class JCPlayerVC: UIViewController
         if metadata?.app?.type == VideoType.TVShow.rawValue
         {
             let model = metadata?.episodes?[indexPath.row]
-            metaDataID = (metadata?.latestEpisodeId)!
+            metaDataID = playerId!
             modelID = (model?.id)!
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
@@ -911,6 +954,7 @@ class JCPlayerVC: UIViewController
         {
             if metaDataID == modelID
             {
+                currentPlayingIndex = indexPath.row
                 self.hideUnhideNowPlayingView(cell: cell, state: false)
             }
             else
