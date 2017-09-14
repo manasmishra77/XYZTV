@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "462"
             endingLineNumber = "462"
-            landmarkName = "openMetaDataVC(model:)"
+            landmarkName = "handlePlayListNextItem()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "794"
             endingLineNumber = "794"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkName = "callWebServiceForRemovingResumedWatchlist()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,38 +47,277 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "792"
             endingLineNumber = "792"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkName = "callWebServiceForRemovingResumedWatchlist()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCSettingsVC.swift"
+            timestampString = "527085793.898071"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCLoginManager.swift"
+            timestampString = "527085938.01873"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "performNetworkCheck(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCLoginManager.swift"
+            timestampString = "527085826.112672"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "performNetworkCheck(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCLoginManager.swift"
+            timestampString = "527085827.819372"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "performNetworkCheck(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCLoginManager.swift"
+            timestampString = "527085829.037663"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "performNetworkCheck(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCSettingsVC.swift"
+            timestampString = "527085925.491883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCPlayerVC.collectionView (__ObjC.UICollectionView, didSelectItemAt : Foundation.IndexPath) -&gt; ()"
+                  symbolName = "JioCinema.JCSettingsVC.tableView (__ObjC.UITableView, didSelectRowAt : Foundation.IndexPath) -&gt; ()"
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCPlayerVC.swift"
-                  timestampString = "527078353.272073"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCSettingsVC.swift"
+                  timestampString = "527086361.30188"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "792"
-                  endingLineNumber = "792"
-                  offsetFromSymbolStart = "4208">
+                  startingLineNumber = "213"
+                  endingLineNumber = "213"
+                  offsetFromSymbolStart = "528">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCPlayerVC.(collectionView (__ObjC.UICollectionView, didSelectItemAt : Foundation.IndexPath) -&gt; ()).(closure #1)"
+                  symbolName = "JioCinema.JCSettingsVC.(tableView (__ObjC.UITableView, didSelectRowAt : Foundation.IndexPath) -&gt; ()).(closure #1)"
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCPlayerVC.swift"
-                  timestampString = "527078353.274369"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCSettingsVC.swift"
+                  timestampString = "527086361.304152"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "793"
-                  endingLineNumber = "793"
-                  offsetFromSymbolStart = "23">
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCMetadataVC.swift"
+            timestampString = "527086085.524838"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
+            landmarkName = "didReceiveNotificationForMetadataCellTap(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "527086608.073646"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "didReceiveNotificationForCellTap(notification:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "JioCinema.JCTabBarController.didReceiveNotificationForCellTap (notification : Foundation.Notification) -&gt; ()"
+                  moduleName = "JioCinema"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCTabBarController.swift"
+                  timestampString = "527086361.313681"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "2000">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "JioCinema.JCTabBarController.(didReceiveNotificationForCellTap (notification : Foundation.Notification) -&gt; ()).(closure #1)"
+                  moduleName = "JioCinema"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCTabBarController.swift"
+                  timestampString = "527086361.315946"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "527086608.073646"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "didReceiveNotificationForCellTap(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "527086191.416038"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "didReceiveNotificationForCellTap(notification:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "JioCinema.JCTabBarController.didReceiveNotificationForCellTap (notification : Foundation.Notification) -&gt; ()"
+                  moduleName = "JioCinema"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCTabBarController.swift"
+                  timestampString = "527086361.324992"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "JioCinema.JCTabBarController.(didReceiveNotificationForCellTap (notification : Foundation.Notification) -&gt; ()).(closure #1)"
+                  moduleName = "JioCinema"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCTabBarController.swift"
+                  timestampString = "527086361.327083"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "JioCinema.JCTabBarController.(didReceiveNotificationForCellTap (notification : Foundation.Notification) -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "JioCinema"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCTabBarController.swift"
+                  timestampString = "527086361.329233"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "12">
                </Location>
             </Locations>
          </BreakpointContent>

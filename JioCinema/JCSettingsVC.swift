@@ -215,8 +215,9 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                     {
                         print("Not on jio network")
                         JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
-                        NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
-                        
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
+                        }
                     }
                     else
                     {

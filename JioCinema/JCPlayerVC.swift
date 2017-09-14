@@ -609,7 +609,7 @@
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.5, animations: {
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-30, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
             })
