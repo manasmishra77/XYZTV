@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2657" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="7je-qu-qFq">
-                    <rect key="frame" x="20" y="16" width="1880" height="1064"/>
+                    <rect key="frame" x="20" y="20" width="1880" height="1060"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="68x-KJ-ko0">
@@ -36,7 +36,7 @@
                 <constraint firstItem="68x-KJ-ko0" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="QP5-AU-690"/>
                 <constraint firstAttribute="bottom" secondItem="7je-qu-qFq" secondAttribute="bottom" id="cjZ-vD-mkR"/>
                 <constraint firstItem="68x-KJ-ko0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="nfl-ci-O0r"/>
-                <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="xFh-Mc-gwa"/>
+                <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="xFh-Mc-gwa"/>
             </constraints>
             <point key="canvasLocation" x="329" y="25"/>
         </view>

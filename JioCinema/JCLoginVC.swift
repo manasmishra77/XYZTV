@@ -34,7 +34,7 @@ class JCLoginVC: UIViewController {
     @IBAction func didClickOnOTPSignIn(_ sender: UIButton)
     {
         let otpVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: otpVCStoryBoardId) as! JCOTPVC
-        
+        /*
         let searchController = UISearchController(searchResultsController: otpVC)
         
         searchController.searchResultsUpdater = otpVC as? UISearchResultsUpdating
@@ -57,7 +57,8 @@ class JCLoginVC: UIViewController {
         searchContainerViewController.modalTransitionStyle = .coverVertical
         
         //self.present(searchContainerViewController, animated: true, completion: nil)
-        self.present(searchController, animated: true, completion: nil)
+        */
+        self.present(otpVC, animated: true, completion: nil)
     }
     
     

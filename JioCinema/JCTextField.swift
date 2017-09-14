@@ -19,7 +19,7 @@ class JCTextField: UITextField,UITextFieldDelegate
         }
         else
         {
-            self.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.1951078183)
+            self.backgroundColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.3597708972)
             self.attributedPlaceholder = NSAttributedString(string: "Jio ID", attributes: [NSForegroundColorAttributeName:#colorLiteral(red: 0.3607843137, green: 0.3607843137, blue: 0.3607843137, alpha: 1)])
         }
 
