@@ -87,6 +87,7 @@
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
 		7BFEC4CD1F178CB4001DFE6D /* loginBg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CC1F178CB4001DFE6D /* loginBg.jpg */; };
+		B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */; };
 		B811ED421F56BC4600E55FAD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B811ED411F56BC4600E55FAD /* Log.swift */; };
 /* End PBXBuildFile section */
 
@@ -177,6 +178,7 @@
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
 		7BFEC4CC1F178CB4001DFE6D /* loginBg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = loginBg.jpg; sourceTree = "<group>"; };
+		B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCKeyboardButton.swift; sourceTree = "<group>"; };
 		B811ED411F56BC4600E55FAD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -374,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				7BFEC4C21F174ACA001DFE6D /* JCButton.swift */,
+				B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */,
 				7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */,
 				7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */,
 				7BD39C951F419E110014255C /* JCMetadataButton.swift */,
@@ -595,6 +598,7 @@
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
+				B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */,
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,

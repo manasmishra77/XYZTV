@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource  ,UISearchBarDelegate, UISearchControllerDelegate {
+class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
 
     var searchViewController:UISearchController? = nil
     var searchModel:SearchDataModel?
@@ -25,19 +25,45 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource  ,UISearc
         // Do any additional setup after loading the view.
     }
     
+    
+    /*
+    //To be changed
+    override func viewDidAppear(_ animated: Bool) {
+        let searchViewController = UISearchController.init(searchResultsController: nil)
+        searchViewController.searchResultsUpdater = self
+        //searchViewController.view.backgroundColor = .black
+        searchViewController.searchBar.placeholder = "Search"
+        searchViewController.searchBar.tintColor = UIColor.white
+        //searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.tintColor = UIColor.gray
+        searchViewController.hidesNavigationBarDuringPresentation = false
+        //searchViewController.obscuresBackgroundDuringPresentation = false
+        //searchViewController.searchBar.delegate = self
+        searchViewController.searchBar.searchBarStyle = .minimal
+        //self.searchViewController = searchViewController
+        self.view.addSubview(searchViewController.searchBar)
+        //let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        //searchContainerController.view.backgroundColor = UIColor.black
+       // self.present(searchContainerController, animated: false, completion: nil)
+    */
+   
+    
     override func viewDidDisappear(_ animated: Bool)
     {
         searchResultArray?.removeAll()
         searchResultArray = nil
         searchViewController?.searchBar.text = ""
         baseTableView.reloadData()
-        
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        searchResultForkey(with: searchController.searchBar.text!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        searchViewController?.extendedLayoutIncludesOpaqueBars = false
-        
+        searchViewController?.extendedLayoutIncludesOpaqueBars = true
+      
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()

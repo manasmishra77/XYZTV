@@ -10,12 +10,15 @@ import UIKit
 
 class JCOTPVC: UIViewController,UISearchBarDelegate
 {
+    
+    @IBOutlet weak var keyBoardButton1: JCKeyboardButton!
+    @IBOutlet weak var jioNumberTFLabel: UILabel!
     @IBOutlet weak var resendOTPButton: JCButton!
     @IBOutlet weak var signInButton: JCButton!
     @IBOutlet weak var getOTPButton: JCButton!
     @IBOutlet weak var resendOTPLableToast: UILabel!
     var isRequestMadeForResend = false
-   var searchController:UISearchController? = nil
+   //var searchController:UISearchController? = nil
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
     var timerCount = 0
@@ -27,7 +30,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         getOTPButton.layer.cornerRadius = 8
         signInButton.layer.cornerRadius = 8
         resendOTPButton.layer.cornerRadius = 8
-        searchController?.searchBar.delegate = self
+        jioNumberTFLabel.layer.cornerRadius = 8
+        
+        //searchController?.searchBar.delegate = self
         
     }
     
@@ -48,7 +53,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnSignInButton(_ sender: Any)
     {
-        let enteredOTP = searchController?.searchBar.text!
+        let enteredOTP = jioNumberTFLabel.text//searchController?.searchBar.text!
         if(enteredOTP?.characters.count == 0)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter OTP")
@@ -56,8 +61,27 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         else
         {
             self.callWebServiceToVerifyOTP(otp: enteredOTP!)
-            searchController?.searchBar.text = ""
-            searchController?.searchBar.placeholder = "Enter OTP"
+            //searchController?.searchBar.text = ""
+            //searchController?.searchBar.placeholder = "Enter OTP"
+        }
+    }
+    
+    @IBAction func didClickOnKeyBoardButton(_ sender: JCKeyboardButton) {
+        
+        if sender.tag == -1{
+            if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
+                let number = jioNumberTFLabel.text
+                let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
+                jioNumberTFLabel.text = truncatedNumber
+            }
+        }
+        else{
+            var number = jioNumberTFLabel.text
+            if number == "Enter Jio Number" || number == "Enter OTP"{
+                number = ""
+            }
+            jioNumberTFLabel.text = number! + String(sender.tag)
+            
         }
     }
     
@@ -77,8 +101,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        enteredJioNumber = searchController?.searchBar.text!
-        if(enteredJioNumber?.characters.count == 0)
+        enteredJioNumber = jioNumberTFLabel.text// searchController?.searchBar.text!
+        if(enteredJioNumber?.characters.count != 10)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
         }
@@ -117,13 +141,14 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 if responseError.code == 204
                 {
                     DispatchQueue.main.async {
-                        weakSelf?.searchController?.searchBar.text = ""
-                        weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
-                        weakSelf?.searchController?.searchBar.isSecureTextEntry = true
+                        //weakSelf?.searchController?.searchBar.text = ""
+                        //weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
+                        //weakSelf?.searchController?.searchBar.isSecureTextEntry = true
                         weakSelf?.getOTPButton.isHidden = true
                         weakSelf?.resendOTPButton.isHidden = false
                         weakSelf?.resendOTPButton.isEnabled = false
                         weakSelf?.signInButton.isHidden = false
+                        weakSelf?.jioNumberTFLabel.text = "Enter OTP"
                         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
                         
                     }
@@ -139,12 +164,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                         if (weakSelf?.isRequestMadeForResend)!
                         {
                             weakSelf?.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
-                            weakSelf?.searchController?.searchBar.text = ""
+                            //weakSelf?.searchController?.searchBar.text = ""
                         }
                         else
                         {
                             weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
-                            weakSelf?.searchController?.searchBar.text = ""
+                            //weakSelf?.searchController?.searchBar.text = ""
                         }
                         
                         weakSelf?.isRequestMadeForResend = false
@@ -221,7 +246,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     DispatchQueue.main.async {
-                        weakSelf?.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                        weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
                         })
                     }
