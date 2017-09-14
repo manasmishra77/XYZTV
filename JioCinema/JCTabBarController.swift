@@ -55,20 +55,16 @@ class JCTabBarController: UITabBarController {
         searchViewController.view.backgroundColor = .black
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
-        //searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.barTintColor = UIColor.black
         searchViewController.searchBar.tintColor = UIColor.gray
-        searchViewController.hidesNavigationBarDuringPresentation = false
+        searchViewController.hidesNavigationBarDuringPresentation = true
         searchViewController.obscuresBackgroundDuringPresentation = false
-        searchViewController.searchBar.inputAccessoryView?.backgroundColor = UIColor.white
-            
         searchViewController.searchBar.delegate = searchVC
         searchViewController.searchBar.searchBarStyle = .minimal
         searchVC.searchViewController = searchViewController
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
-        
-        searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
-        //searchViewController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+                searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
 
         settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 6)
@@ -246,7 +242,6 @@ class JCTabBarController: UITabBarController {
     func showMetadata()
     {
         print("show metadata")
-        
         let selectedItem:Item = currentPlayableItem as! Item
         Log.DLog(message: selectedItem.id as AnyObject)
         let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
@@ -341,16 +336,21 @@ class JCTabBarController: UITabBarController {
 }
 
 extension UIApplication {
-    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let navigationController = controller as? UINavigationController {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController?
+    {
+        if let navigationController = controller as? UINavigationController
+        {
             return topViewController(controller: navigationController.visibleViewController)
         }
-        if let tabController = controller as? UITabBarController {
-            if let selected = tabController.selectedViewController {
+        if let tabController = controller as? UITabBarController
+        {
+            if let selected = tabController.selectedViewController
+            {
                 return topViewController(controller: selected)
             }
         }
-        if let presented = controller?.presentedViewController {
+        if let presented = controller?.presentedViewController
+        {
             return topViewController(controller: presented)
         }
         return controller

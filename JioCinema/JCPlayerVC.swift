@@ -1,34 +1,34 @@
  //
-//  JCPlayerVC.swift
-//  JioCinema
-//
-//  Created by Pallav Trivedi on 01/08/17.
-//  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
-//
-
-import UIKit
-import ObjectMapper
-import AVKit
-import AVFoundation
-import SDWebImage
-
-private var playerViewControllerKVOContext = 0
-
-class JCPlayerVC: UIViewController
-{
+ //  JCPlayerVC.swift
+ //  JioCinema
+ //
+ //  Created by Pallav Trivedi on 01/08/17.
+ //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
+ //
+ 
+ import UIKit
+ import ObjectMapper
+ import AVKit
+ import AVFoundation
+ import SDWebImage
+ 
+ private var playerViewControllerKVOContext = 0
+ 
+ class JCPlayerVC: UIViewController
+ {
     @IBOutlet weak var nextVideoView                    :UIView!
     @IBOutlet weak var view_Recommendation              :UIView!
     @IBOutlet weak var nextVideoNameLabel               :UILabel!
     @IBOutlet weak var nextVideoPlayingTimeLabel        :UILabel!
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
-
-
+    
+    
     var playerTimeObserverToken     :Any?
     var item                        :Any?
-
+    
     var metadata                    :MetadataModel?
-
+    
     var player                      :AVPlayer?
     var playerItem                  :AVPlayerItem?
     var playerController            :AVPlayerViewController?
@@ -44,13 +44,16 @@ class JCPlayerVC: UIViewController
     
     var isRecommendationView        = false
     var isResumed                   :Bool?
-
+    
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
     
     var arr_RecommendationList = [Item]()
-
+    
+    var moreModal:More?
+    
+    
     //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,13 +72,32 @@ class JCPlayerVC: UIViewController
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
             let totalDuration = "\((CMTimeGetSeconds((player?.currentItem?.duration)!)))"
-            self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+            
+            if (CMTimeGetSeconds((player?.currentItem?.duration)!) - CMTimeGetSeconds(currentTime) < 300)
+            {
+                self.callWebServiceForRemovingResumedWatchlist()
+            }
+            else
+            {
+                self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+            }
         }
-        if isResumed != nil
+        if isResumed == true
         {
-            self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                DispatchQueue.main.async {
+                    if self.moreModal != nil
+                    {
+                        self.isResumed = false
+                        self.openMetaDataVC(model: self.moreModal!)
+                    }
+                }
+            })
+            
+            
+            // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
-
+        
         if (player != nil)
         {
             removePlayerObserver()
@@ -122,7 +144,7 @@ class JCPlayerVC: UIViewController
                         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
                         {
                             let index = (self?.currentPlayingIndex)! + 1
-                           
+                            
                             if self?.metadata != nil
                             {
                                 if self?.metadata?.app?.type == VideoType.TVShow.rawValue, self?.metadata?.episodes != nil
@@ -139,16 +161,16 @@ class JCPlayerVC: UIViewController
                                 }
                                 else if self?.metadata?.app?.type == VideoType.Movie.rawValue, self?.metadata?.more != nil
                                 {
-                                   /* if index != self?.metadata?.more?.count
-                                    {
-                                        let modal = self?.metadata?.more?[index]
-                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
-                                    }
-                                    else
-                                    {
-                                        self?.nextVideoView.isHidden = true
-                                    }
-                                    */
+                                    /* if index != self?.metadata?.more?.count
+                                     {
+                                     let modal = self?.metadata?.more?[index]
+                                     self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                     }
+                                     else
+                                     {
+                                     self?.nextVideoView.isHidden = true
+                                     }
+                                     */
                                 }
                             }
                             else if let data = self?.item as? Item
@@ -213,7 +235,7 @@ class JCPlayerVC: UIViewController
         self.playerTimeObserverToken = nil
         self.player = nil
     }
-
+    
     //MARK:- AVPlayerViewController Methods
     
     func instantiatePlayer(with url:String)
@@ -401,16 +423,16 @@ class JCPlayerVC: UIViewController
                     }
                     else
                         if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
-                        
+                            
                         {
                             handleMusicOrClipNextItem()
-                        }
+                    }
                 }
                 else if let data = self.item as? Episode {
                     Log.DLog(message: data as AnyObject)
                     Log.DLog(message: "$$$ Finish Episode" as AnyObject)
                 }
-
+                
             }
         }
         else
@@ -418,9 +440,9 @@ class JCPlayerVC: UIViewController
             dismissPlayerVC()
         }
     }
-
+    
     //MARK:- Handle Next Item
-
+    
     func handlePlayListNextItem()
     {
         self.currentPlayingIndex = self.currentPlayingIndex + 1
@@ -478,10 +500,10 @@ class JCPlayerVC: UIViewController
             dismissPlayerVC()
         }
     }
-
+    
     
     //MARK:- Custom Methods
-
+    
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
@@ -511,7 +533,7 @@ class JCPlayerVC: UIViewController
         }
     }
     //MARK:- Show Next Video View
-
+    
     func showNextVideoView(videoName:String,remainingTime:Int,banner:String)
     {
         DispatchQueue.main.async {
@@ -526,7 +548,7 @@ class JCPlayerVC: UIViewController
         }
         
     }
-
+    
     //MARK:- Custom Setting
     func setCustomRecommendationViewSetting(state:Bool)
     {
@@ -551,7 +573,7 @@ class JCPlayerVC: UIViewController
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
         self.view.addGestureRecognizer(swipeDown)
-
+        
     }
     
     func swipeGestureHandler(gesture: UIGestureRecognizer) {
@@ -562,7 +584,7 @@ class JCPlayerVC: UIViewController
                 break
             case UISwipeGestureRecognizerDirection.down:
                 self.swipeDownRecommendationView()
-            break
+                break
             default:
                 break
             }
@@ -604,33 +626,33 @@ class JCPlayerVC: UIViewController
                 self.callWebServiceForPlayListData(id: data.playlistId!)
             }
             else{
-            
-            if data.app?.type == VideoType.Movie.rawValue
-            {
-                let url = metadataUrl.appending(data.id!)
-                self.callWebServiceForMoreLikeData(url: url)
-            }
-            else if data.app?.type == VideoType.TVShow.rawValue
-            {
-                let url = metadataUrl.appending(data.id!).appending("/0/0")
-                self.callWebServiceForMoreLikeData(url: url)
-            }
-            else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
-            {
-                if selectedItemFromViewController == VideoType.Music
+                
+                if data.app?.type == VideoType.Movie.rawValue
                 {
-                    arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
+                    let url = metadataUrl.appending(data.id!)
+                    self.callWebServiceForMoreLikeData(url: url)
                 }
-                else if selectedItemFromViewController == VideoType.Clip
+                else if data.app?.type == VideoType.TVShow.rawValue
                 {
-                    arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items)!
+                    let url = metadataUrl.appending(data.id!).appending("/0/0")
+                    self.callWebServiceForMoreLikeData(url: url)
                 }
-                else if selectedItemFromViewController == VideoType.Home
+                else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
-                    arr_RecommendationList = (JCDataStore.sharedDataStore.mergedHomeData?[collectionIndex].items!)!
+                    if selectedItemFromViewController == VideoType.Music
+                    {
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
+                    }
+                    else if selectedItemFromViewController == VideoType.Clip
+                    {
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items)!
+                    }
+                    else if selectedItemFromViewController == VideoType.Home
+                    {
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.mergedHomeData?[collectionIndex].items!)!
+                    }
+                    self.collectionView_Recommendation.reloadData()
                 }
-                self.collectionView_Recommendation.reloadData()
-            }
             }
         }
     }
@@ -666,22 +688,22 @@ class JCPlayerVC: UIViewController
             let tempMetadata = MetadataModel(JSONString: responseString)
             
             
-//            if let data = self.item as? Item
-//            {
-//                
-//                
-//                if data.app?.type == VideoType.Movie.rawValue
-//                {
-//                    let url = metadataUrl.appending(data.id!)
-//                    self.callWebServiceForMoreLikeData(url: url)
-//                }
-//                else if data.app?.type == VideoType.TVShow.rawValue
-//                {
-//                    let url = metadataUrl.appending(data.id!).appending("/0/0")
-//                    self.callWebServiceForMoreLikeData(url: url)
-//                }
-//            }
-//
+            //            if let data = self.item as? Item
+            //            {
+            //
+            //
+            //                if data.app?.type == VideoType.Movie.rawValue
+            //                {
+            //                    let url = metadataUrl.appending(data.id!)
+            //                    self.callWebServiceForMoreLikeData(url: url)
+            //                }
+            //                else if data.app?.type == VideoType.TVShow.rawValue
+            //                {
+            //                    let url = metadataUrl.appending(data.id!).appending("/0/0")
+            //                    self.callWebServiceForMoreLikeData(url: url)
+            //                }
+            //            }
+            //
             
             
             self.metadata = tempMetadata
@@ -711,16 +733,16 @@ class JCPlayerVC: UIViewController
                         self.currentPlayingIndex = 0
                         if let data = self.item as? Item
                         {
-                        for i in 0 ..< (self.playlistData?.more?.count)!
-                        {
-                            let modal = self.playlistData?.more?[i]
-                            if modal?.id == data.id
+                            for i in 0 ..< (self.playlistData?.more?.count)!
                             {
-                                Log.DLog(message: data.id as AnyObject)
-                                self.currentPlayingIndex = i
-                                break
+                                let modal = self.playlistData?.more?[i]
+                                if modal?.id == data.id
+                                {
+                                    Log.DLog(message: data.id as AnyObject)
+                                    self.currentPlayingIndex = i
+                                    break
+                                }
                             }
-                        }
                         }
                         
                         self.collectionView_Recommendation.reloadData()
@@ -765,6 +787,34 @@ class JCPlayerVC: UIViewController
         }
     }
     
+    
+    func callWebServiceForRemovingResumedWatchlist()
+    {
+        let json = ["id":playerId]
+        let params = ["uniqueId":JCAppUser.shared.unique,"listId":"10","json":json] as [String : Any]
+        let url = removeFromResumeWatchlistUrl
+        let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
+            
+            if let responseError = error
+            {
+                print(responseError)
+                return
+            }
+            
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                let code = parsedResponse["code"]
+                print("Removed from Resume Watchlist \(String(describing: code))")
+                DispatchQueue.main.async {
+                    weakSelf?.dismiss(animated: false, completion: nil)
+                }
+            }
+        }
+        
+    }
+    
     func callWebServiceForAddToResumeWatchlist(currentTimeDuration:String,totalDuration:String)
     {
         let url = addToResumeWatchlistUrl
@@ -794,7 +844,7 @@ class JCPlayerVC: UIViewController
     }
     
     
-  }
+ }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
  extension JCPlayerVC: UICollectionViewDelegate
@@ -804,50 +854,64 @@ class JCPlayerVC: UIViewController
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
-
+        
         if self.currentPlayingIndex == indexPath.row {
             return
         }
         
         self.currentPlayingIndex = indexPath.row
         
-       // var url = ""
+        // var url = ""
         if metadata != nil
         {
             if metadata?.app?.type == VideoType.TVShow.rawValue
-                {
-                        let model = metadata?.episodes?[indexPath.row]
-                        self.metadata?.latestEpisodeId = model?.id
-                        self.currentItemImage = model?.banner
-                        self.currentItemTitle = model?.name
-                        self.callWebServiceForPlaybackRights(id: (model?.id)!)
-                       // url = metadataUrl.appending((model?.id!)!)
-                       // self.callWebServiceForMoreLikeData(url: url)
-                }
+            {
+                let model = metadata?.episodes?[indexPath.row]
+                self.metadata?.latestEpisodeId = model?.id
+                self.currentItemImage = model?.banner
+                self.currentItemTitle = model?.name
+                self.callWebServiceForPlaybackRights(id: (model?.id)!)
+                // url = metadataUrl.appending((model?.id!)!)
+                // self.callWebServiceForMoreLikeData(url: url)
+            }
             else if metadata?.app?.type == VideoType.Movie.rawValue
+            {
+                let model = metadata?.more?[indexPath.row]
+                self.currentItemImage = model?.banner
+                self.currentItemTitle = model?.name
+                self.currentItemDescription = model?.description
+                
+                //                    self.dismiss(animated: true, completion: {
+                //                        DispatchQueue.main.async {
+                //                            self.openMetaDataVC(model: model!)
+                //                        }
+                //                    })
+                
+                //                    self.presentingViewController?.dismiss(animated: true, completion: {
+                //                        DispatchQueue.main.async {
+                //                            self.openMetaDataVC(model: model!)
+                //                        }
+                //                    })
+                
+                moreModal = model
+                if isResumed == true{
+                    dismissPlayerVC()
+                }
+                else
                 {
-                        let model = metadata?.more?[indexPath.row]
-                        self.currentItemImage = model?.banner
-                        self.currentItemTitle = model?.name
-                        self.currentItemDescription = model?.description
-
-//                    self.presentingViewController?.dismiss(animated: true, completion: { 
-//                        DispatchQueue.main.async {
-//                            self.openMetaDataVC(model: model!)
-//                        }
-//                    })
                     
                     self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                         DispatchQueue.main.async {
-                              self.openMetaDataVC(model: model!)
+                            self.openMetaDataVC(model: model!)
                         }
                     })
-                    
-                    
-                        // self.callWebServiceForPlaybackRights(id: (model?.id)!)
-                        // url = metadataUrl.appending((model?.id!)!)
-                        return
                 }
+                
+                
+                // self.callWebServiceForPlaybackRights(id: (model?.id)!)
+                // url = metadataUrl.appending((model?.id!)!)
+                return
+            }
         }
         else
         {
@@ -861,20 +925,20 @@ class JCPlayerVC: UIViewController
                     self.callWebServiceForPlaybackRights(id: (model?.id)!)
                 }
                 else
-                if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
-                {
-                    let model = arr_RecommendationList[indexPath.row]
-                    self.item = model
-                    self.currentItemImage = model.banner
-                    self.currentItemTitle = model.name
-                    self.callWebServiceForPlaybackRights(id: (model.id)!)
+                    if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
+                    {
+                        let model = arr_RecommendationList[indexPath.row]
+                        self.item = model
+                        self.currentItemImage = model.banner
+                        self.currentItemTitle = model.name
+                        self.callWebServiceForPlaybackRights(id: (model.id)!)
                 }
             }
         }
     }
  }
  //MARK:- UICOLLECTIONVIEW DATASOURCE
-
+ 
  extension JCPlayerVC: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -889,7 +953,7 @@ class JCPlayerVC: UIViewController
                 return (metadata?.more?.count)!
             }
         }
-       else if let data = self.item as? Item
+        else if let data = self.item as? Item
         {
             if data.isPlaylist!     // If Playlist exist
             {
@@ -924,7 +988,7 @@ class JCPlayerVC: UIViewController
         else if metadata?.app?.type == VideoType.Movie.rawValue
         {
             let model = metadata?.more?[indexPath.row]
-           // metaDataID = (metadata?.id)!
+            // metaDataID = (metadata?.id)!
             modelID = (model?.id)!
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
@@ -980,17 +1044,17 @@ class JCPlayerVC: UIViewController
                     }
                 }
                 else{
-                
-                if data.id == modelID
-                {
-                    currentPlayingIndex = indexPath.row
-                    self.hideUnhideNowPlayingView(cell: cell, state: false)
+                    
+                    if data.id == modelID
+                    {
+                        currentPlayingIndex = indexPath.row
+                        self.hideUnhideNowPlayingView(cell: cell, state: false)
+                    }
+                    else
+                    {
+                        self.hideUnhideNowPlayingView(cell: cell, state: true)
+                    }
                 }
-                else
-                {
-                    self.hideUnhideNowPlayingView(cell: cell, state: true)
-                }
-            }
             }
             else if let data = self.item as? Episode
             {
@@ -1012,12 +1076,12 @@ class JCPlayerVC: UIViewController
         });
         return cell
     }
- 
+    
  }
  //MARK:- PlaybackRight Model
-
-class PlaybackRightsModel:Mappable
-{
+ 
+ class PlaybackRightsModel:Mappable
+ {
     var code:Int?
     var message:String?
     var duration:Float?
@@ -1054,11 +1118,11 @@ class PlaybackRightsModel:Mappable
         thumb <- map["thumb"]
         
     }
-}
+ }
  //MARK:- Subscription Model
-
-class Subscription:Mappable
-{
+ 
+ class Subscription:Mappable
+ {
     var isSubscribed:Bool?
     
     required init(map:Map) {
@@ -1069,10 +1133,10 @@ class Subscription:Mappable
     {
         isSubscribed <- map["isSubscribed"]
     }
-}
+ }
  //MARK:- PlaylistDataModel Model
-
-class PlaylistDataModel: Mappable {
+ 
+ class PlaylistDataModel: Mappable {
     
     var more: [More]?
     
@@ -1085,4 +1149,4 @@ class PlaylistDataModel: Mappable {
         more <- map["more"]
     }
     
-}
+ }
