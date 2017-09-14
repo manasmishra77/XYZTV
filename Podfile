@@ -9,6 +9,6 @@ target 'JioCinema' do
 
   # Pods for JioCinema
   pod 'ObjectMapper', '~> 2.2.8'
-
+  pod 'SDWebImage', '~>3.8'
 
 end

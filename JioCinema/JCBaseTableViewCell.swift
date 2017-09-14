@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
     
@@ -84,14 +85,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                         resumeWatchCell.progressBar.setProgress(0, animated: false)
                     }
                     
-                    if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-                    {
-                        resumeWatchCell.itemImageView.image = image;
-                    }
-                    else
-                    {
-                        self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
-                    }
+                    let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                    resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                        (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    });
                 }
                 return resumeWatchCell
             }
@@ -100,14 +97,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 if let imageUrl = data?[indexPath.row].banner!
                 {
                     cell.nameLabel.text = data?[indexPath.row].name!
-                    if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-                    {
-                        cell.itemImageView.image = image;
-                    }
-                    else
-                    {
-                        self.downloadImageFrom(urlString: imageUrl, indexPath: indexPath)
-                    }
+                    
+                    let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+                    cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                        (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    });
                 }
                 return cell
             }
@@ -119,29 +113,23 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             cell.nameLabel.text = episodes?[indexPath.row].name
             let imageUrl = episodes?[indexPath.row].banner!
             
-            if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-            {
-                cell.itemImageView.image = image;
-            }
-            else
-            {
-                self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
-            }
+            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
+            
+           
+            
         }
             
         else if(moreLikeData?[indexPath.row].banner != nil)
         {
             cell.nameLabel.text = moreLikeData?[indexPath.row].name
             let imageUrl = moreLikeData?[indexPath.row].banner!
-            
-            if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-            {
-                cell.itemImageView.image = image;
-            }
-            else
-            {
-                self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
-            }
+            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
         }
             
         else if(artistImages != nil)
@@ -150,15 +138,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let keys = Array(artistImages!.keys)
             let key = keys[indexPath.row]
             let imageUrl = artistImages?[key]
-            
-            if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-            {
-                cell.itemImageView.image = image;
-            }
-            else
-            {
-                self.downloadImageFrom(urlString: imageUrl!, indexPath: indexPath)
-            }
+           
+            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
         }
         
         //        let finalCellFrame = cell.frame
@@ -214,38 +198,4 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 //            }
 //       }
 //    }
-    
-    
-    fileprivate func downloadImageFrom(urlString:String,indexPath:IndexPath)
-    {
-        
-        weak var weakSelf = self
-        
-        let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString)
-        RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: true){
-            
-            image in
-            
-            if let img = image {
-                
-                DispatchQueue.main.async {
-                    
-                    if let cell = weakSelf?.tableCellCollectionView?.cellForItem(at: indexPath){
-                        
-                        if (weakSelf?.isResumeWatchCell)!
-                        {
-                        let itemCell = cell as! JCResumeWatchCell
-                        itemCell.itemImageView.image = img
-                        }
-                        else
-                        {
-                            let itemCell = cell as! JCItemCell
-                            itemCell.itemImageView.image = img
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
 }

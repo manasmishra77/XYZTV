@@ -15,7 +15,7 @@ class JCResumeWatchCell: UICollectionViewCell {
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var nameLabel: UILabel!
     override func prepareForReuse() {
-        self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
+       // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

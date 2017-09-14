@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 enum VideoType:Int
 {
@@ -304,26 +305,15 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     func prepareMetadataScreen()
     {
         weak var weakSelf = self
-        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((item?.banner)!))!)
-        {
-            backgroundImageView.image = image
-            
+        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((item?.banner)!))!
+        let url = URL(string: imageUrl)
+        backgroundImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             DispatchQueue.main.async {
                 weakSelf?.showMetadata()
                 weakSelf?.metadataTableView.reloadData()
             }
-        }
-        else
-        {
-            self.downloadImageFrom(urlString: (item?.banner)!, completion: { (loaded) in
-                DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
-                    weakSelf?.metadataTableView.reloadData()
-                }
-                
-            })
-        }
-        
+        });
     }
     
     func showMetadata()
@@ -351,24 +341,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerView?.isHidden = false
     }
     
-    fileprivate func downloadImageFrom(urlString:String,completion:@escaping NetworkCheckCompletionBlock)
-    {
-        let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString)
-        RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: true){
-            
-            image in
-            
-            if let img = image {
-                
-                DispatchQueue.main.async {
-                    
-                    self.backgroundImageView.image = img
-                    completion(true)
-                }
-            }
-        }
-    }
-    //version = 1
+       //version = 1
     
     func didReceiveNotificationForWatchNow(notification:Notification)
     {

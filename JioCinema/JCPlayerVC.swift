@@ -10,6 +10,7 @@ import UIKit
 import ObjectMapper
 import AVKit
 import AVFoundation
+import SDWebImage
 
 private var playerViewControllerKVOContext = 0
 
@@ -454,26 +455,13 @@ class JCPlayerVC: UIViewController
 
     
     //MARK:- Custom Methods
-    //MARK:- Download Image
-    func downloadImageFrom(urlString:String,completionHandler:@escaping (UIImage)->Void)
-    {
-        let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString)
-        RJILImageDownloader.shared.downloadImage(urlString: imageUrl!, shouldCache: true){
-            image in
-            if let img = image {
-                completionHandler(img)
-            }
-        }
-    }
 
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
         Log.DLog(message: "openMetaDataVC" as AnyObject)
-        
         if let topController = UIApplication.topViewController() {
             Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
-
             let tempItem = Item()
             tempItem.id = model.id
             tempItem.name = model.name
@@ -974,16 +962,10 @@ class JCPlayerVC: UIViewController
             }
         }
         
-        if let image = RJILImageDownloader.shared.loadCachedImage(url: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-        {
-            cell.itemImageView.image = image
-        }
-        else
-        {
-            self.downloadImageFrom(urlString: imageUrl, completionHandler: { (downloadImage) in
-                cell.itemImageView.image = downloadImage
-            })
-        }
+        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+        });
         return cell
     }
  
