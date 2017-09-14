@@ -96,8 +96,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     func textFieldDidEndEditing(_ textField: UITextField)
     {
+        
         if(textField.isEqual(jioIdTextField))
         {
+            //textField.frame.size = passwordTextField.frame.size
             if(textField.text?.characters.count == 0)
             {
                 self.showAlert(alertString: "JioID can't be empty")
@@ -113,6 +115,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
         if(textField.isEqual(passwordTextField))
         {
+            //textField.frame.size.width = passwordTextField.frame.size
             if(textField.text?.characters.count == 0)
             {
                 self.showAlert(alertString: "Password can't be empty")

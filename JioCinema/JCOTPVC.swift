@@ -19,6 +19,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBOutlet weak var resendOTPLableToast: UILabel!
     var isRequestMadeForResend = false
    //var searchController:UISearchController? = nil
+    var myPreferredFocuseView: UIView? = nil
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
     var timerCount = 0
@@ -33,17 +34,58 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         jioNumberTFLabel.layer.cornerRadius = 8
         
         //searchController?.searchBar.delegate = self
+            addSwipeGesture()
+    }
+    
+    
+    //MARK:- Add Swipe Gesture
+    func addSwipeGesture()
+    {
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
         
     }
     
+    func swipeGestureHandler(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.up:
+               // self.swipeUpRecommendationView()
+                break
+            case UISwipeGestureRecognizerDirection.down:
+                //self.swipeDownRecommendationView()
+                if signInButton.isHidden{
+                    if getOTPButton.isFocused == false{
+                        myPreferredFocuseView = getOTPButton
+                        self.setNeedsFocusUpdate()
+                        self.updateFocusIfNeeded()
+                    }
+                }
+                else{
+                    if signInButton.isFocused == false && resendOTPButton.isFocused == false{
+                        myPreferredFocuseView = signInButton
+                        self.setNeedsFocusUpdate()
+                        self.updateFocusIfNeeded()
+                    }
+                }
+                break
+            default:
+                break
+            }
+        }
+    }
+
+    
     override func viewDidAppear(_ animated: Bool) {
+        myPreferredFocuseView = getOTPButton
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
     }
     
     override var preferredFocusEnvironments: [UIFocusEnvironment]
     {
-        return [getOTPButton]
+        return [myPreferredFocuseView!]
     }
     
     override func didReceiveMemoryWarning() {
@@ -68,6 +110,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnKeyBoardButton(_ sender: JCKeyboardButton) {
         
+        
         if sender.tag == -1{
             if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
                 let number = jioNumberTFLabel.text
@@ -79,6 +122,16 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             var number = jioNumberTFLabel.text
             if number == "Enter Jio Number" || number == "Enter OTP"{
                 number = ""
+            }
+            if signInButton.isHidden == true{
+                if (number?.characters.count)! > 10{
+                    return
+                }
+            }
+            else{
+                if (number?.characters.count)! > 6{
+                    return
+                }
             }
             jioNumberTFLabel.text = number! + String(sender.tag)
             
@@ -113,7 +166,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     }
     
     
-    
     fileprivate func showAlert(alertTitle:String,alertMessage:String)
     {
         let alert = UIAlertController(title: alertTitle,
@@ -130,17 +182,26 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     fileprivate func callWebServiceToGetOTP(number:String)
     {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        view.addSubview(activityIndicator)
+        activityIndicator.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
+        activityIndicator.startAnimating()
+        
         enteredNumber = "+91".appending(number)
         let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
         weak var weakSelf = self
         let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: otpRequest) { (data, response, error) in
+            DispatchQueue.main.async {
+                activityIndicator.stopAnimating()
+            }
             
             if let responseError = error as NSError?
             {
                 if responseError.code == 204
                 {
                     DispatchQueue.main.async {
+                        
                         //weakSelf?.searchController?.searchBar.text = ""
                         //weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
                         //weakSelf?.searchController?.searchBar.isSecureTextEntry = true

@@ -897,6 +897,7 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="CsW-id-Iun"/>
                                     <constraint firstAttribute="width" constant="760" id="e3l-7o-W5w"/>
