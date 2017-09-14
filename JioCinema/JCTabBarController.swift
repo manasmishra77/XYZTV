@@ -55,20 +55,16 @@ class JCTabBarController: UITabBarController {
         searchViewController.view.backgroundColor = .black
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
-        //searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.barTintColor = UIColor.black
         searchViewController.searchBar.tintColor = UIColor.gray
-        searchViewController.hidesNavigationBarDuringPresentation = false
+        searchViewController.hidesNavigationBarDuringPresentation = true
         searchViewController.obscuresBackgroundDuringPresentation = false
-        searchViewController.searchBar.inputAccessoryView?.backgroundColor = UIColor.white
-            
         searchViewController.searchBar.delegate = searchVC
         searchViewController.searchBar.searchBarStyle = .minimal
         searchVC.searchViewController = searchViewController
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
-        
-        searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
-        //searchViewController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+                searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
 
         settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 6)
