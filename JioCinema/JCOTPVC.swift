@@ -116,6 +116,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 let number = jioNumberTFLabel.text
                 let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
                 jioNumberTFLabel.text = truncatedNumber
+                
             }
         }
         else{
