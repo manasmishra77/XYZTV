@@ -22,6 +22,7 @@ class JCItemCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
+            self.superview?.alpha = 1.0
             self.view_NowPlaying.frame = itemImageView.focusedFrameGuide.layoutFrame
             self.view_NowPlaying.frame.origin.x = self.view_NowPlaying.frame.origin.x + 15
             self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
@@ -37,6 +38,7 @@ class JCItemCell: UICollectionViewCell {
         }
         else
         {
+            self.superview?.alpha = 0.5
             self.view_NowPlaying.frame = itemImageView.frame
         }
 
