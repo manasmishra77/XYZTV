@@ -386,6 +386,7 @@
             case .readyToPlay:
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
+                self.scrollCollectionViewToRow(row: currentPlayingIndex)
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
@@ -503,7 +504,17 @@
     
     
     //MARK:- Custom Methods
-    
+    //MARK:- Scroll Collection View To Row
+    func scrollCollectionViewToRow(row:Int)
+    {
+        if row >= 0 {
+            DispatchQueue.main.async {
+                let path = IndexPath(row: row, section: 0)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+            }
+        }
+    }
+
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
@@ -555,6 +566,7 @@
         self.collectionView_Recommendation.isScrollEnabled = state
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
+        self.scrollCollectionViewToRow(row: currentPlayingIndex)
     }
     
     
@@ -652,6 +664,8 @@
                         arr_RecommendationList = (JCDataStore.sharedDataStore.mergedHomeData?[collectionIndex].items!)!
                     }
                     self.collectionView_Recommendation.reloadData()
+                    self.scrollCollectionViewToRow(row: currentPlayingIndex)
+
                 }
             }
         }
@@ -674,6 +688,8 @@
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     weakSelf?.collectionView_Recommendation.reloadData()
+                    weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex)!)
+
                 }
                 return
             }
@@ -746,6 +762,9 @@
                         }
                         
                         self.collectionView_Recommendation.reloadData()
+                        self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+
+                        
                         let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
                         self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
                         self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
@@ -1074,8 +1093,12 @@
         cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
+        
+        
         return cell
     }
+    
+    
     
  }
  //MARK:- PlaybackRight Model
