@@ -23,7 +23,6 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
-    
     var playerTimeObserverToken     :Any?
     var item                        :Any?
     
@@ -596,7 +595,10 @@
     {
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
+
             UIView.animate(withDuration: 0.5, animations: {
+                let tempFrame = self.nextVideoView.frame
+                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-300, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
@@ -608,7 +610,10 @@
     {
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
+ 
             UIView.animate(withDuration: 0.5, animations: {
+                let tempFrame = self.nextVideoView.frame
+                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y + 300, width: tempFrame.size.width, height: tempFrame.size.height)
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
