@@ -115,6 +115,7 @@ class JCTabBarController: UITabBarController {
             isCurrentItemEpisode = true
         }
         else {
+           
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                 if(isOnJioNetwork == false)
                 {
@@ -124,6 +125,7 @@ class JCTabBarController: UITabBarController {
                     }
                 }
             }
+        
             return
         }
         

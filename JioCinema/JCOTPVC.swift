@@ -17,6 +17,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBOutlet weak var signInButton: JCButton!
     @IBOutlet weak var getOTPButton: JCButton!
     @IBOutlet weak var resendOTPLableToast: UILabel!
+    var activityIndicator:UIActivityIndicatorView?
     var isRequestMadeForResend = false
    //var searchController:UISearchController? = nil
     var myPreferredFocuseView: UIView? = nil
@@ -102,6 +103,11 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         }
         else
         {
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            view.addSubview(activityIndicator!)
+            activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
+            activityIndicator?.startAnimating()
+            
             self.callWebServiceToVerifyOTP(otp: enteredOTP!)
             //searchController?.searchBar.text = ""
             //searchController?.searchBar.placeholder = "Enter OTP"
@@ -117,6 +123,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
                 jioNumberTFLabel.text = truncatedNumber
                 
+                if truncatedNumber == ""
+                {
+                    jioNumberTFLabel.text = "Enter Jio Number"
+                }
             }
         }
         else{
@@ -125,12 +135,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 number = ""
             }
             if signInButton.isHidden == true{
-                if (number?.characters.count)! > 10{
+                if (number?.characters.count)! > 9{
                     return
                 }
             }
             else{
-                if (number?.characters.count)! > 6{
+                if (number?.characters.count)! > 5{
                     return
                 }
             }
@@ -159,6 +169,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         if(enteredJioNumber?.characters.count != 10)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
+            self.jioNumberTFLabel.text = "Enter Jio Number"
         }
         else
         {
@@ -183,10 +194,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     fileprivate func callWebServiceToGetOTP(number:String)
     {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        view.addSubview(activityIndicator)
-        activityIndicator.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
-        activityIndicator.startAnimating()
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        view.addSubview(activityIndicator!)
+        activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
+        activityIndicator?.startAnimating()
         
         enteredNumber = "+91".appending(number)
         let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
@@ -194,7 +205,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: otpRequest) { (data, response, error) in
             DispatchQueue.main.async {
-                activityIndicator.stopAnimating()
+                weakSelf?.activityIndicator?.stopAnimating()
             }
             
             if let responseError = error as NSError?
@@ -231,6 +242,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                         else
                         {
                             weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
+                            self.jioNumberTFLabel.text = "Enter Jio Number"
                             //weakSelf?.searchController?.searchBar.text = ""
                         }
                         
@@ -268,6 +280,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
 //                return
+                DispatchQueue.main.async {
+                    self.activityIndicator?.stopAnimating()
+                }
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
@@ -293,6 +308,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
             
+            DispatchQueue.main.async {
+                weakSelf?.activityIndicator?.stopAnimating()
+            }
             if let responseError = error
             {
                 //TODO: handle error
