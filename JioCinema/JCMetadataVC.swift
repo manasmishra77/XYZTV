@@ -305,6 +305,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     func prepareMetadataScreen()
     {
         weak var weakSelf = self
+        
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((item?.banner)!))!
         let url = URL(string: imageUrl)
         backgroundImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
@@ -334,8 +335,15 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         else
         {
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 725)
-            metadataTableViewTopConstraint.constant = 730
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 800)
+            if let isSeason = metadata?.isSeason,isSeason
+            {
+                metadataTableViewTopConstraint.constant = 740
+            }
+            else
+            {
+            metadataTableViewTopConstraint.constant = 780
+            }
         }
         self.view.addSubview(headerView!)
         headerView?.isHidden = false
