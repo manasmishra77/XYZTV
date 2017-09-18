@@ -108,6 +108,8 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
         headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
+        headerCell.itemFromViewController = VideoType.Music
+        headerCell.headerCollectionView.tag = 0
         return headerCell
     }
     

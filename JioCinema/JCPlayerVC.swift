@@ -101,6 +101,7 @@
         {
             removePlayerObserver()
         }
+        latestEpisodeId = "-1"
     }
     override func viewDidLayoutSubviews() {
         if self.view_Recommendation.frame.origin.y >= screenHeight - 30
@@ -501,7 +502,6 @@
         }
     }
     
-    
     //MARK:- Custom Methods
     //MARK:- Scroll Collection View To Row
     func scrollCollectionViewToRow(row:Int)
@@ -565,7 +565,10 @@
         self.collectionView_Recommendation.isScrollEnabled = state
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
-        self.scrollCollectionViewToRow(row: currentPlayingIndex)
+        if state
+        {
+            self.scrollCollectionViewToRow(row: currentPlayingIndex)
+        }
     }
     
     
@@ -785,6 +788,7 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
+        print(id)
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
@@ -952,11 +956,23 @@
                     if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                     {
                         let model = arr_RecommendationList[indexPath.row]
+                        print("model id is \(String(describing: model.id))")
+                        print("model id is \(String(describing: model.playlistId))")
+                        print("model id is \(String(describing: model.isPlaylist))")
+
                         self.item = model
                         self.currentItemImage = model.banner
                         self.currentItemTitle = model.name
-                        self.callWebServiceForPlaybackRights(id: (model.id)!)
-                }
+                        
+                        if model.isPlaylist!
+                        {
+                            self.callWebServiceForPlayListData(id: model.playlistId!)
+                        }
+                        else
+                        {
+                            self.callWebServiceForPlaybackRights(id: (model.id)!)
+                        }
+                    }
             }
         }
     }
@@ -1025,7 +1041,10 @@
                 {
                     let model = self.playlistData?.more?[indexPath.row]
                     modelID = (model?.id)!
-                    imageUrl = (model?.banner)!
+                    if model?.banner != nil
+                    {
+                        imageUrl = (model?.banner)!
+                    }
                     cell.nameLabel.text = model?.name
                 }
                 else
