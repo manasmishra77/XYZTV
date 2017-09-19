@@ -873,7 +873,9 @@
     func callWebServiceForAddToResumeWatchlist(currentTimeDuration:String,totalDuration:String)
     {
         let url = addToResumeWatchlistUrl
-        let json: Dictionary<String, Any> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
+        
+        let id = latestEpisodeId == "-1" ? playerId! : latestEpisodeId
+        let json: Dictionary<String, Any> = ["id":id, "duration":currentTimeDuration, "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = 10

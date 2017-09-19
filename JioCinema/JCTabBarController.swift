@@ -277,7 +277,7 @@ class JCTabBarController: UITabBarController {
                     if latestEpisodeId != "-1"
                     {
                     playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
-                        latestEpisodeId = "-1"
+                        //latestEpisodeId = "-1"
                     }
                     else
                     {
