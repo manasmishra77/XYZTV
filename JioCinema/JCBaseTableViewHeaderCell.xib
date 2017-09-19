@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="1864" height="620"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" prefetchingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eY0-rE-Kl2">
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" dataMode="none" prefetchingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eY0-rE-Kl2">
                         <rect key="frame" x="0.0" y="0.0" width="1880" height="600"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="JZG-Yf-mAc">

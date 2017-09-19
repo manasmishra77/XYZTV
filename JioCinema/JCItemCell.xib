@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="itemCellPlaceholder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                     </imageView>
                     <view hidden="YES" alpha="0.6666666" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bik-wl-s7S">
@@ -72,6 +72,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="itemCellPlaceholder" width="448" height="252"/>
+        <image name="ItemPlaceHolder" width="224" height="126"/>
     </resources>
 </document>

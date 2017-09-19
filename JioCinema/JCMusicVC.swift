@@ -66,7 +66,6 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = VideoType.Music
-
         
         if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
         {
@@ -100,6 +99,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
             headerCell.carousalData = JCDataStore.sharedDataStore.musicData?.data?[0].items
+            headerCell.itemFromViewController = VideoType.Music
+            headerCell.headerCollectionView.tag = 0
             return headerCell
         }
         else

@@ -17,6 +17,8 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
     var horizontalInset = CGFloat()
     var cellWidth = CGFloat()
     var carousalData:[Item]?
+    var itemFromViewController:VideoType?
+
     
     @IBOutlet weak var headerCollectionView: UICollectionView!
     let carouselCellIdentifier = "kBaseCollectionViewCell"
@@ -60,6 +62,9 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
  
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        collectionIndex = collectionView.tag
+        selectedItemFromViewController = self.itemFromViewController!
+        
         let itemToPlay = ["item":(carousalData?[indexPath.row])!]
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
     }

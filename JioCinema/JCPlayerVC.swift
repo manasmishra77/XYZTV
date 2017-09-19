@@ -23,7 +23,6 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
-    
     var playerTimeObserverToken     :Any?
     var item                        :Any?
     
@@ -102,6 +101,7 @@
         {
             removePlayerObserver()
         }
+        latestEpisodeId = "-1"
     }
     override func viewDidLayoutSubviews() {
         if self.view_Recommendation.frame.origin.y >= screenHeight - 30
@@ -241,7 +241,17 @@
     func instantiatePlayer(with url:String)
     {
         if((self.player) != nil) {
+            
+           // self.playerController?.player?.seek(to: CMTimeMake(0, 0))
+          //  player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+//            let offsetTime = 0.1
+//            let seekTime : CMTime = CMTimeMake(Int64(Double(offsetTime)), 0)
+//            self.playerController?.player?.seek(to: seekTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+           // player?.seek(to: seekTime)
+          //  NativeVideoPlayer.Player.Seek(tm, CMTime.Zero, CMTime.Zero);
+
             self.removePlayerObserver()
+            self.playerController = nil
         }
         
         let videoUrl = URL(string: url)
@@ -386,6 +396,7 @@
             case .readyToPlay:
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
+                self.scrollCollectionViewToRow(row: currentPlayingIndex)
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
@@ -501,9 +512,18 @@
         }
     }
     
-    
     //MARK:- Custom Methods
-    
+    //MARK:- Scroll Collection View To Row
+    func scrollCollectionViewToRow(row:Int)
+    {
+        if row >= 0 {
+            DispatchQueue.main.async {
+                let path = IndexPath(row: row, section: 0)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+            }
+        }
+    }
+
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
@@ -555,6 +575,10 @@
         self.collectionView_Recommendation.isScrollEnabled = state
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
+        if state
+        {
+            self.scrollCollectionViewToRow(row: currentPlayingIndex)
+        }
     }
     
     
@@ -596,7 +620,10 @@
     {
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
+
             UIView.animate(withDuration: 0.5, animations: {
+                let tempFrame = self.nextVideoView.frame
+                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-300, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
@@ -608,7 +635,10 @@
     {
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
+ 
             UIView.animate(withDuration: 0.5, animations: {
+                let tempFrame = self.nextVideoView.frame
+                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y + 300, width: tempFrame.size.width, height: tempFrame.size.height)
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
@@ -652,6 +682,8 @@
                         arr_RecommendationList = (JCDataStore.sharedDataStore.mergedHomeData?[collectionIndex].items!)!
                     }
                     self.collectionView_Recommendation.reloadData()
+                    self.scrollCollectionViewToRow(row: currentPlayingIndex)
+
                 }
             }
         }
@@ -674,6 +706,8 @@
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     weakSelf?.collectionView_Recommendation.reloadData()
+                    weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex)!)
+
                 }
                 return
             }
@@ -746,6 +780,9 @@
                         }
                         
                         self.collectionView_Recommendation.reloadData()
+                        self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+
+                        
                         let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
                         self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
                         self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name
@@ -761,6 +798,7 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
+        print(id)
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
@@ -854,7 +892,6 @@
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
-        
         if self.currentPlayingIndex == indexPath.row {
             return
         }
@@ -931,8 +968,16 @@
                         self.item = model
                         self.currentItemImage = model.banner
                         self.currentItemTitle = model.name
-                        self.callWebServiceForPlaybackRights(id: (model.id)!)
-                }
+                        
+                        if model.isPlaylist!
+                        {
+                            self.callWebServiceForPlayListData(id: model.playlistId!)
+                        }
+                        else
+                        {
+                            self.callWebServiceForPlaybackRights(id: (model.id)!)
+                        }
+                    }
             }
         }
     }
@@ -1001,7 +1046,10 @@
                 {
                     let model = self.playlistData?.more?[indexPath.row]
                     modelID = (model?.id)!
-                    imageUrl = (model?.banner)!
+                    if model?.banner != nil
+                    {
+                        imageUrl = (model?.banner)!
+                    }
                     cell.nameLabel.text = model?.name
                 }
                 else
@@ -1074,8 +1122,12 @@
         cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
+        
+        
         return cell
     }
+    
+    
     
  }
  //MARK:- PlaybackRight Model

@@ -11,6 +11,7 @@ import SDWebImage
 
 class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
     
+    @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var tableCellCollectionView: UICollectionView!
     var data:[Item]?
@@ -24,10 +25,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         super.awakeFromNib()
         tableCellCollectionView.delegate = self
         tableCellCollectionView.dataSource = self
+        //self.alpha = 0.5
         self.tableCellCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
         self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
     }
+    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -189,13 +192,4 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
     }
     
-//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-//        if let focusedView = context.nextFocusedView as? JCItemCell {
-//            tableCellCollectionView.isScrollEnabled = false
-//            if let indexPath = tableCellCollectionView.indexPath(for: focusedView)
-//            {
-//            tableCellCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
-//            }
-//       }
-//    }
 }
