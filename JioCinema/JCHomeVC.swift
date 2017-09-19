@@ -9,6 +9,7 @@
 import UIKit
 class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
+    var isResumeWatchRowReloadNeeded = false
     var loadedPage = 0
     var isResumeWatchDataAvailable = false
     override func viewWillLayoutSubviews() {
@@ -205,12 +206,23 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             isResumeWatchDataAvailable = true
         }
         DispatchQueue.main.async {
+            if (weakSelf?.isResumeWatchRowReloadNeeded)!
+            {
+                let indexPath = IndexPath.init(row: 0, section: 0)
+            weakSelf?.baseTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                weakSelf?.isResumeWatchRowReloadNeeded = false
+            }
+            else
+            {
             weakSelf?.baseTableView.reloadData()
+            }
+            
         }
     }
     
     func callResumeWatchWebServiceOnPlayerDismiss()
     {
+        isResumeWatchRowReloadNeeded = true
         callWebServiceForResumeWatchData()
     }
 }
