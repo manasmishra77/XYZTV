@@ -101,6 +101,8 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                         weakself?.languageGenreDetailModel = LanguageGenreDetailModel(JSONString: responseString)
                         if weakself?.languageGenreDetailModel?.data?.items?.count != 0 && weakself?.languageGenreDetailModel?.data?.items?.count != nil{
                             DispatchQueue.main.async {
+                                JCDataStore.sharedDataStore.languageGenreDetailModel = weakself?.languageGenreDetailModel
+                                
                                 self.languageGenreButton.isEnabled = true
                                 self.languageGenreCollectionView.isHidden = false
                                 self.noVideosAvailableLabel.isHidden = true
@@ -266,6 +268,12 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     {
         collectionIndex = collectionView.tag
         
+        if item?.app?.type == VideoType.Language.rawValue {
+            selectedItemFromViewController = VideoType.Language
+        }
+        else if item?.app?.type == VideoType.Genre.rawValue {
+            selectedItemFromViewController = VideoType.Genre
+        }
         
         if currentType == VideoType.Movie.rawValue || currentType == VideoType.TVShow.rawValue
         {
