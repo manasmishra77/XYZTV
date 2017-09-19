@@ -243,7 +243,7 @@
         if((self.player) != nil) {
             
            // self.playerController?.player?.seek(to: CMTimeMake(0, 0))
-            player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+          //  player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
 //            let offsetTime = 0.1
 //            let seekTime : CMTime = CMTimeMake(Int64(Double(offsetTime)), 0)
 //            self.playerController?.player?.seek(to: seekTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
@@ -251,6 +251,7 @@
           //  NativeVideoPlayer.Player.Seek(tm, CMTime.Zero, CMTime.Zero);
 
             self.removePlayerObserver()
+            self.playerController = nil
         }
         
         let videoUrl = URL(string: url)
