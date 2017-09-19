@@ -327,7 +327,11 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                            NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
+                            if !isLoginPresentedFromAddToWatchlist
+                            {
+                                NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
+                            }
+                            isLoginPresentedFromAddToWatchlist = false
                         })
                     }
                     

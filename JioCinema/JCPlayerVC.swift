@@ -891,7 +891,6 @@
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
-        
         if self.currentPlayingIndex == indexPath.row {
             return
         }
