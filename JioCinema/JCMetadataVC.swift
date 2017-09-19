@@ -11,13 +11,18 @@ import SDWebImage
 
 enum VideoType:Int
 {
-    case Movie = 0
-    case Music = 2
-    case TVShow = 1
-    case Clip = 6
-    case Home = -1
-    case Search = -2
+    case Search     = -2
+    case Home       = -1
+    case Movie      = 0
+    case TVShow     = 1
+    case Music      = 2
+    case Trailer    = 3
+    case Clip       = 6
+    case Language   = 9
+    case Genre      = 10
+
 }
+
 
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {

@@ -11,17 +11,6 @@ import SDWebImage
 
 class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
-    enum VideoType:Int
-    {
-        case Movie = 0
-        case Music = 2
-        case TVShow = 1
-        case Clip = 6
-        case Trailer = 3
-        case Language = 9
-        case Genre = 10
-    }
-    
     enum FilterType
     {
         case VideoCategory
@@ -244,6 +233,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+
         if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner!
         {
             cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
@@ -274,6 +264,8 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        collectionIndex = collectionView.tag
+        
         
         if currentType == VideoType.Movie.rawValue || currentType == VideoType.TVShow.rawValue
         {

@@ -11,14 +11,7 @@ import UIKit
 class MetadataHeaderViewCell: UIView {
     
     
-    enum VideoType:Int
-    {
-        case Movie = 0
-        case Music = 2
-        case TVShow = 1
-        case Clip = 6
-    }
-    
+      
     var metadata:MetadataModel?
     var item:Item?
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
