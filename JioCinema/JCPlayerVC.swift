@@ -241,6 +241,15 @@
     func instantiatePlayer(with url:String)
     {
         if((self.player) != nil) {
+            
+           // self.playerController?.player?.seek(to: CMTimeMake(0, 0))
+            player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+//            let offsetTime = 0.1
+//            let seekTime : CMTime = CMTimeMake(Int64(Double(offsetTime)), 0)
+//            self.playerController?.player?.seek(to: seekTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+           // player?.seek(to: seekTime)
+          //  NativeVideoPlayer.Player.Seek(tm, CMTime.Zero, CMTime.Zero);
+
             self.removePlayerObserver()
         }
         
@@ -956,10 +965,6 @@
                     if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                     {
                         let model = arr_RecommendationList[indexPath.row]
-                        print("model id is \(String(describing: model.id))")
-                        print("model id is \(String(describing: model.playlistId))")
-                        print("model id is \(String(describing: model.isPlaylist))")
-
                         self.item = model
                         self.currentItemImage = model.banner
                         self.currentItemTitle = model.name
