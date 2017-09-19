@@ -432,18 +432,15 @@
                     {
                         handlePlayListNextItem()
                     }
-                    else
-                        if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
-                            
-                        {
-                            handleMusicOrClipNextItem()
+                    else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue || data.app?.type == VideoType.Language.rawValue || data.app?.type == VideoType.Genre.rawValue
+                    {
+                            handleNextItem()
                     }
                 }
                 else if let data = self.item as? Episode {
                     Log.DLog(message: data as AnyObject)
                     Log.DLog(message: "$$$ Finish Episode" as AnyObject)
                 }
-                
             }
         }
         else
@@ -473,7 +470,7 @@
         }
     }
     
-    func handleMusicOrClipNextItem()
+    func handleNextItem()
     {
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.arr_RecommendationList.count
@@ -669,6 +666,8 @@
                 }
                 else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
+                    print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
+                    
                     if selectedItemFromViewController == VideoType.Music
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
@@ -681,9 +680,23 @@
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.mergedHomeData?[collectionIndex].items!)!
                     }
+                    else if selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
+                    {
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items)!
+                    }
+                
+                    for i in 0 ..< (arr_RecommendationList.count)
+                    {
+                        let modal = arr_RecommendationList[i]
+                        if modal.id == data.id
+                        {
+                            Log.DLog(message: data.id as AnyObject)
+                            self.currentPlayingIndex = i
+                            break
+                        }
+                    }
                     self.collectionView_Recommendation.reloadData()
                     self.scrollCollectionViewToRow(row: currentPlayingIndex)
-
                 }
             }
         }
@@ -918,18 +931,6 @@
                 self.currentItemTitle = model?.name
                 self.currentItemDescription = model?.description
                 
-                //                    self.dismiss(animated: true, completion: {
-                //                        DispatchQueue.main.async {
-                //                            self.openMetaDataVC(model: model!)
-                //                        }
-                //                    })
-                
-                //                    self.presentingViewController?.dismiss(animated: true, completion: {
-                //                        DispatchQueue.main.async {
-                //                            self.openMetaDataVC(model: model!)
-                //                        }
-                //                    })
-                
                 moreModal = model
                 if isResumed == true{
                     dismissPlayerVC()
@@ -943,7 +944,6 @@
                         }
                     })
                 }
-                
                 
                 // self.callWebServiceForPlaybackRights(id: (model?.id)!)
                 // url = metadataUrl.appending((model?.id!)!)
@@ -962,7 +962,7 @@
                     self.callWebServiceForPlaybackRights(id: (model?.id)!)
                 }
                 else
-                    if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
+                    if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue || data.app?.type == VideoType.Language.rawValue || data.app?.type == VideoType.Genre.rawValue
                     {
                         let model = arr_RecommendationList[indexPath.row]
                         self.item = model
@@ -1122,7 +1122,6 @@
         cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
-        
         
         return cell
     }

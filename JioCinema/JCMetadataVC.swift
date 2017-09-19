@@ -20,13 +20,10 @@ enum VideoType:Int
     case Clip       = 6
     case Language   = 9
     case Genre      = 10
-
 }
-
 
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
-    
     var item:Item!
     var metadata:MetadataModel?
     var selectedYearIndex = 0
