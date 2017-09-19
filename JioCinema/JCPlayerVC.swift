@@ -143,13 +143,14 @@
                     {
                         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
                         {
-                            let index = (self?.currentPlayingIndex)! + 1
                             
                             if self?.metadata != nil
                             {
+                                
                                 if self?.metadata?.app?.type == VideoType.TVShow.rawValue, self?.metadata?.episodes != nil
                                 {
-                                    if index != self?.metadata?.episodes?.count
+                                    let index = (self?.currentPlayingIndex)! - 1
+                                    if index >= 0
                                     {
                                         let modal = self?.metadata?.episodes?[index]
                                         self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
@@ -158,6 +159,7 @@
                                     {
                                         self?.nextVideoView.isHidden = true
                                     }
+                                    
                                 }
                                 else if self?.metadata?.app?.type == VideoType.Movie.rawValue, self?.metadata?.more != nil
                                 {
@@ -175,6 +177,8 @@
                             }
                             else if let data = self?.item as? Item
                             {
+                                let index = (self?.currentPlayingIndex)! + 1
+
                                 if data.isPlaylist!     // If Playlist exist
                                 {
                                     if self?.playlistData != nil
