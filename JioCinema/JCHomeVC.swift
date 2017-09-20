@@ -72,13 +72,14 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
-
+        
+        
         if !JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             isResumeWatchDataAvailable = false
         }
         
-        if isResumeWatchDataAvailable,indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
+        if isResumeWatchDataAvailable, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             cell.isResumeWatchCell = true
             cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
@@ -97,7 +98,8 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
             {
-                callWebServiceForHomeData(page: loadedPage + 1)
+              
+                self.callWebServiceForHomeData(page: self.loadedPage + 1)
                 loadedPage += 1
             }
         }
@@ -112,7 +114,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         headerCell.headerCollectionView.tag = 0
         return headerCell
     }
-    
+    /*
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (JCDataStore.sharedDataStore.homeData?.totalPages) != nil
         {
@@ -122,6 +124,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
             else
             {
+                print("InFooter")
                 let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
                 return footerCell
             }
@@ -131,6 +134,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             return UIView.init()
         }
     }
+    */
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 600
@@ -138,7 +142,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
     {
-        print(indexPath)
+       // print(indexPath)
         
         return false
     }
@@ -204,6 +208,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             isResumeWatchDataAvailable = true
         }
+        
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
         }

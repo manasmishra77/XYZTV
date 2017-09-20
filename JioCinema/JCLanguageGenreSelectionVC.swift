@@ -15,7 +15,9 @@ protocol JCLanguageGenreSelectionDelegate : class
 
 class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
+    var textForHeaderlabel = ""
 
+    @IBOutlet weak var headerOdTableViewlabel: UILabel!
     var dataSource:[List]?
     weak var languageSelectionDelegate:JCLanguageGenreSelectionDelegate?
     @IBOutlet weak var languageGenreSelctionTableView: UITableView!
@@ -23,6 +25,9 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        headerOdTableViewlabel.text = textForHeaderlabel
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,6 +61,7 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableVi
         languageSelectionDelegate?.selectedFilter(filter: indexPath.row)
         self.dismiss(animated: false, completion: nil)
     }
+    
     
     
 }

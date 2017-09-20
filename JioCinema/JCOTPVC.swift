@@ -25,6 +25,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     var enteredNumber:String? = nil
     var timerCount = 0
     let containerView = UIView.init(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
+    var placeHoledrForJioNumberTFLabel = "Enter Jio Number"
      
     override func viewDidLoad()
     {
@@ -125,7 +126,13 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 
                 if truncatedNumber == ""
                 {
-                    jioNumberTFLabel.text = "Enter Jio Number"
+                    if signInButton.isHidden == true{
+                        jioNumberTFLabel.text = "Enter Jio Number"
+                    }
+                    else{
+                        jioNumberTFLabel.text = "Enter OTP"
+                    }
+                    //jioNumberTFLabel.text = "Enter Jio Number"
                 }
             }
         }

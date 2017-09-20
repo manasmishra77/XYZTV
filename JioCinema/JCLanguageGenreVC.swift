@@ -175,6 +175,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     {
         currentFilter = FilterType.VideoCategory
         let languageGenreSelectionVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreSelectionStoryBoardId) as! JCLanguageGenreSelectionVC
+        languageGenreSelectionVC.textForHeaderlabel = "Select Content"
         languageGenreSelectionVC.dataSource = item?.list
         languageGenreSelectionVC.languageSelectionDelegate = self
         self.present(languageGenreSelectionVC, animated: false, completion: nil)
@@ -186,10 +187,12 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         let languageGenreSelectionVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreSelectionStoryBoardId) as! JCLanguageGenreSelectionVC
         if item?.app?.type == VideoType.Language.rawValue
         {
+            languageGenreSelectionVC.textForHeaderlabel = "Select Genre"
             languageGenreSelectionVC.dataSource = languageGenreDetailModel?.data?.genres
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
+            languageGenreSelectionVC.textForHeaderlabel = "Select Language"
             languageGenreSelectionVC.dataSource = languageGenreDetailModel?.data?.languages
         }
         languageGenreSelectionVC.languageSelectionDelegate = self
@@ -215,7 +218,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
-                currentParamString = "All Genres"
+                currentParamString = "All Languages"
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.languages?[filter].name

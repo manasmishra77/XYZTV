@@ -26,17 +26,13 @@ class JCItemCell: UICollectionViewCell {
             {
                 self.superview?.alpha = 1.0
             }
-            self.view_NowPlaying.frame = itemImageView.focusedFrameGuide.layoutFrame
+                        self.view_NowPlaying.frame = itemImageView.focusedFrameGuide.layoutFrame
             self.view_NowPlaying.frame.origin.x = self.view_NowPlaying.frame.origin.x + 15
             self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
             
             let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.width/2 - nowPlayingLabel.frame.width/2, y: itemImageView.focusedFrameGuide.layoutFrame.height/2 , width: nowPlayingLabel.frame.size.width, height: nowPlayingLabel.frame.size.height)
             nowPlayingLabel.frame.origin.x = frame.origin.x + 15
             nowPlayingLabel.frame.origin.y = frame.origin.y + 15
-            
-            
-//            let frame = CGRect.init(x: 0, y: 0, width: self.view_NowPlaying.frame.size.width, height: self.view_NowPlaying.frame.size.height)
-//            nowPlayingLabel.frame = frame
 
         }
         else
