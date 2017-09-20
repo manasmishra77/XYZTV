@@ -118,7 +118,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         headerCell.headerCollectionView.tag = 0
         return headerCell
     }
-    /*
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (JCDataStore.sharedDataStore.homeData?.totalPages) != nil
         {
@@ -138,7 +138,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             return UIView.init()
         }
     }
-    */
+ 
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 600
