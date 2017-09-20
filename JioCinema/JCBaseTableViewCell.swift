@@ -200,8 +200,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 //let initals = artistName
                 cell.nameLabel.text = artistName
             
-            let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
-            cell.frame = tempFrame
+           // let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
+            //cell.frame = tempFrame
             
             //cell.nowPlayingLabel.text =
             //cell.clipsToBounds = true
