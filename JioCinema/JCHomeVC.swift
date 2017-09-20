@@ -70,7 +70,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("######### indexpath Row is \(indexPath.row)")
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
+        
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
         
@@ -104,6 +106,8 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
                 loadedPage += 1
             }
         }
+        
+        cell.isOpaque = true
         return cell
     }
     
@@ -143,8 +147,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
     {
-       // print(indexPath)
-        
         return false
     }
     
