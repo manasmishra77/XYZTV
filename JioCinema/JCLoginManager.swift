@@ -141,6 +141,7 @@ class JCLoginManager:UIViewController
                     completion(true)
                     
                     //Analytics for Login Success (4g,skip)
+                    JCMediaAnalytics.manager.recordLoginEventwith(method: "4G", andSource: "skip")
 //                    let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
 //                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
