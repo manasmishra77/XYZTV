@@ -71,8 +71,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("######### indexpath Row is \(indexPath.row)")
-        let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        
+        let cell: JCBaseTableViewCell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
         
