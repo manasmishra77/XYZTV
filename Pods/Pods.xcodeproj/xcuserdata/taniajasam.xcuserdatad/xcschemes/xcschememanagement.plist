@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>WillowTreeOuroboros.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -27,7 +37,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0A6DBE51250E671ED3F5E5D07E9331F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1D9E4ABDF8CCD2C3CD76FED1B3BE02B2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>320CD318DA4B5164A94823F41475F6BC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9695448CCECF46FC6A093CA3333BBA5D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

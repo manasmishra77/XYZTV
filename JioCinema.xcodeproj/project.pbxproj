@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
+		201E06121F72B5C000D6E19B /* JCMediaAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E06111F72B5C000D6E19B /* JCMediaAnalytics.swift */; };
+		201E06141F72B68C00D6E19B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 201E06131F72B68C00D6E19B /* libsqlite3.0.tbd */; };
+		201E06161F72B69700D6E19B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 201E06151F72B69700D6E19B /* libsqlite3.tbd */; };
 		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
 		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
 		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
@@ -93,6 +96,9 @@
 
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
+		201E06111F72B5C000D6E19B /* JCMediaAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMediaAnalytics.swift; sourceTree = "<group>"; };
+		201E06131F72B68C00D6E19B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		201E06151F72B69700D6E19B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		2024C4861F3C38A8003A08C3 /* Terms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terms.png; sourceTree = "<group>"; };
 		2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowGrey.png; sourceTree = "<group>"; };
 		2024C48A1F3C9C34003A08C3 /* ArrowPink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowPink.png; sourceTree = "<group>"; };
@@ -187,6 +193,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				201E06161F72B69700D6E19B /* libsqlite3.tbd in Frameworks */,
+				201E06141F72B68C00D6E19B /* libsqlite3.0.tbd in Frameworks */,
 				7BE58DC31F62A06700DAB214 /* libRJILMA.a in Frameworks */,
 				00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */,
 			);
@@ -268,6 +276,7 @@
 		7BA1C6E71F2F0702002AB966 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				201E06111F72B5C000D6E19B /* JCMediaAnalytics.swift */,
 				7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */,
 				B811ED411F56BC4600E55FAD /* Log.swift */,
 			);
@@ -387,6 +396,8 @@
 		991FCC032C29485454E4C5A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				201E06151F72B69700D6E19B /* libsqlite3.tbd */,
+				201E06131F72B68C00D6E19B /* libsqlite3.0.tbd */,
 				44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */,
 			);
 			name = Frameworks;
@@ -588,6 +599,7 @@
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
+				201E06121F72B5C000D6E19B /* JCMediaAnalytics.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */,
@@ -738,7 +750,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
 				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
-				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -763,7 +775,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
 				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
-				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

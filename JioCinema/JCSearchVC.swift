@@ -143,6 +143,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                 {
                     self.searchModel = SearchDataModel(JSONString: responseString)
                     let array = (self.searchModel?.searchData?.categoryItems)!
+                    let analyticsData = ["stest" : key, "isvoice": false, "scount" : array.count] as [String : Any]
+                    JCMediaAnalytics.manager.trackSearchEventfor(dataDict: analyticsData)
                     if array.count > 0
                     {
                         DispatchQueue.main.async {

@@ -53,6 +53,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 {
                     print(responseError)
                     //Analytics for Login Fail
+                    let analyticsData = ["userid" : self.jioIdTextField.text!, "message" : responseError.localizedDescription] as [String : Any]
+                    JCMediaAnalytics.manager.recordLoginFailedEventwith(userDict: analyticsData)
                     return
                 }
                 
@@ -65,6 +67,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         JCLoginManager.sharedInstance.setUserToDefaults()
                         
                         //Analytics for Login Success   (jio id, Manual)
+                        JCMediaAnalytics.manager.recordLoginEventwith(method: "JIOID", andSource: "manual")
 //                        let analyticsData = ["method":"JIOID","source":"manual","identity":JCAppUser.shared.uid]
 //                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                         
@@ -84,6 +87,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     {
                         self.showAlert(alertString: parsedResponse["message"]! as! String)
                         //Analytics for Login Fail
+                        let analyticsData = ["userid" : self.jioIdTextField.text!, "message" : parsedResponse["message"]!] as [String : Any]
+                        JCMediaAnalytics.manager.recordLoginFailedEventwith(userDict: analyticsData)
 //                        let pro = ["userid":]
 //                        let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
 //                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
