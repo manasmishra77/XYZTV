@@ -72,4 +72,20 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource,UICo
     
 }
 
-
+extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return minimumLineSpacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
+        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
