@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
+class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
 
     let verticalInset = CGFloat(10)
     let spaceBetweenCells = CGFloat(40)
