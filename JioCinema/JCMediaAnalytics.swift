@@ -19,7 +19,7 @@ class JCMediaAnalytics
         params["source"] = source
         params["identity"] = JCAppUser.shared.commonName
         
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: params)
+      //  JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: params)
     }
     
     func recordLoginFailedEventwith(userDict: Dictionary<String, Any>)
@@ -28,7 +28,7 @@ class JCMediaAnalytics
         params["pro"] = userDict
         params["key"] = "login_failed"
         
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "login_failed", andEventProperties: params)
+       // JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "login_failed", andEventProperties: params)
     }
     
     func trackSearchEventfor(dataDict: Dictionary<String, Any>)
@@ -38,7 +38,7 @@ class JCMediaAnalytics
         params["pro"] = dataDict
         params["platform"] = "TVOS"
         
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "search", andEventProperties: params)
+     //   JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "search", andEventProperties: params)
     }
     
     func trackMediaStart()
@@ -50,7 +50,7 @@ class JCMediaAnalytics
         //        params["Source"] =
         //        params["Row Position"] =
         
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_start", andEventProperties: params)
+     //   JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_start", andEventProperties: params)
     }
     
     func trackMediaEnd()
@@ -69,7 +69,7 @@ class JCMediaAnalytics
 //        params["Row Position"] =
 //        params["Source"] =
         
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_end", andEventProperties: params)
+     //   JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_end", andEventProperties: params)
     }
     
     func trackMediaError()
@@ -87,6 +87,6 @@ class JCMediaAnalytics
 //        params["sec"] =
 //        params["serr"] =
 //        
-        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_error", andEventProperties: params)
+     //   JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "media_error", andEventProperties: params)
     }
 }
