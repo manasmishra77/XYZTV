@@ -69,11 +69,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("######### indexpath Row is \(indexPath.row)")
+        let cell: JCBaseTableViewCell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
         
@@ -208,24 +206,20 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         //Success
         DispatchQueue.main.async {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
-        }
-        
-        weak var weakSelf = self
-        if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
-        {
-            isResumeWatchDataAvailable = true
-        }
-        
-        DispatchQueue.main.async {
+            weak var weakSelf = self
+            if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
+            {
+                self.isResumeWatchDataAvailable = true
+            }
             if (weakSelf?.isResumeWatchRowReloadNeeded)!
             {
                 let indexPath = IndexPath.init(row: 0, section: 0)
-            weakSelf?.baseTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                weakSelf?.baseTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
                 weakSelf?.isResumeWatchRowReloadNeeded = false
             }
             else
             {
-            weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.reloadData()
             }
         }
     }
