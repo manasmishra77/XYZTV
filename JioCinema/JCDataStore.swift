@@ -27,6 +27,8 @@ class JCDataStore
     var moviesWatchList:WatchListDataModel?
     var resumeWatchList:ResumeWatchListDataModel?
     
+    var languageGenreDetailModel:LanguageGenreDetailModel?
+
     enum Category
     {
         case Home

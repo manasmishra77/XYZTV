@@ -10,17 +10,7 @@ import UIKit
 
 class JCTabBarController: UITabBarController {
     
-    enum VideoType:Int
-    {
-        case Movie = 0
-        case Music = 2
-        case TVShow = 1
-        case Clip = 6
-        case Trailer = 3
-        case Language = 9
-        case Genre = 10
-    }
-    
+      
     var settingsVC:JCSettingsVC?
     var currentPlayableItem:Any?
     var isCurrentItemEpisode = false
@@ -287,7 +277,7 @@ class JCTabBarController: UITabBarController {
                     if latestEpisodeId != "-1"
                     {
                     playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
-                        latestEpisodeId = "-1"
+                        //latestEpisodeId = "-1"
                     }
                     else
                     {

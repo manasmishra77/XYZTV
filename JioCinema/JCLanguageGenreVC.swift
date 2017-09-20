@@ -11,17 +11,6 @@ import SDWebImage
 
 class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
-    enum VideoType:Int
-    {
-        case Movie = 0
-        case Music = 2
-        case TVShow = 1
-        case Clip = 6
-        case Trailer = 3
-        case Language = 9
-        case Genre = 10
-    }
-    
     enum FilterType
     {
         case VideoCategory
@@ -112,6 +101,8 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                         weakself?.languageGenreDetailModel = LanguageGenreDetailModel(JSONString: responseString)
                         if weakself?.languageGenreDetailModel?.data?.items?.count != 0 && weakself?.languageGenreDetailModel?.data?.items?.count != nil{
                             DispatchQueue.main.async {
+                                JCDataStore.sharedDataStore.languageGenreDetailModel = weakself?.languageGenreDetailModel
+                                
                                 self.languageGenreButton.isEnabled = true
                                 self.languageGenreCollectionView.isHidden = false
                                 self.noVideosAvailableLabel.isHidden = true
@@ -139,7 +130,10 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                         {
                             weakself?.languageGenreDetailModel?.data?.items?.append(item)
                         }
-                        weakself?.languageGenreCollectionView.reloadData()
+                        DispatchQueue.main.async {
+                            weakself?.languageGenreCollectionView.reloadData()
+                        }
+                        
                     }
                 }
             }
@@ -247,13 +241,17 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+
         if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner!
         {
             cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
             let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+            DispatchQueue.main.async {
+                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                })
+            }
+            
         }
         
         if(indexPath.row == (languageGenreDetailModel?.data?.items?.count)! - 1)
@@ -277,6 +275,14 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        collectionIndex = collectionView.tag
+        
+        if item?.app?.type == VideoType.Language.rawValue {
+            selectedItemFromViewController = VideoType.Language
+        }
+        else if item?.app?.type == VideoType.Genre.rawValue {
+            selectedItemFromViewController = VideoType.Genre
+        }
         
         if currentType == VideoType.Movie.rawValue || currentType == VideoType.TVShow.rawValue
         {
