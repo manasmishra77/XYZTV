@@ -28,6 +28,9 @@ class JCDataStore
     var resumeWatchList:ResumeWatchListDataModel?
     
     var languageGenreDetailModel:LanguageGenreDetailModel?
+    var secretCdnTokenKey:String?
+    var cdnEncryptionFlag:Bool = false
+    var cdnUrlExpiryDuration:Int?
 
     enum Category
     {
@@ -54,9 +57,33 @@ class JCDataStore
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             self.configData = ConfigData(JSONString: responseString)
+            if let configUrls = self.configData?.configDataUrls
+            {
+                if let cdnTokenKey = configUrls.cdnTokenKey
+                {
+                    self.setSecretCdnToken(recievedKey: cdnTokenKey)
+                   
+                }
+                if let expiryDuration = configUrls.cdnUrlExpiryDuration
+                {
+                    self.cdnUrlExpiryDuration = expiryDuration
+                }
+                self.cdnEncryptionFlag = configUrls.cdnEncryptionFlag
+            }
         }
     }
     
+    private func setSecretCdnToken(recievedKey:String) {
+        var token:String = ""
+        let cdnEncryptorKey = ["R:18", "e:5", "l:12", "i:9", "a:1", "n:14", "c:3", "e:5", "J:10", "i:9", "o:15"]
+        let charArray = recievedKey.characters.map{String($0)}
+        for key in cdnEncryptorKey{
+            let index = Int(key.components(separatedBy: ":").last!)
+            token.append(charArray[index! - 1])
+        }
+        self.secretCdnTokenKey = token
+    }
+
     public func setData(withResponseData responseData:Data, category:Category)
     {
         if let responseString = String(data: responseData, encoding: .utf8)
@@ -115,3 +142,4 @@ class JCDataStore
         }
     }
 }
+
