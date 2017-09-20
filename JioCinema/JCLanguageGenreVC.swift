@@ -130,7 +130,10 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                         {
                             weakself?.languageGenreDetailModel?.data?.items?.append(item)
                         }
-                        weakself?.languageGenreCollectionView.reloadData()
+                        DispatchQueue.main.async {
+                            weakself?.languageGenreCollectionView.reloadData()
+                        }
+                        
                     }
                 }
             }
@@ -240,9 +243,12 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         {
             cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
             let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+            DispatchQueue.main.async {
+                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                })
+            }
+            
         }
         
         if(indexPath.row == (languageGenreDetailModel?.data?.items?.count)! - 1)
