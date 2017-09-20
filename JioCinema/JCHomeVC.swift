@@ -205,7 +205,10 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func evaluateResumeWatchData(dictionaryResponseData responseData:Data)
     {
         //Success
+        DispatchQueue.main.async {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
+        }
+        
         weak var weakSelf = self
         if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
         {
@@ -223,7 +226,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             {
             weakSelf?.baseTableView.reloadData()
             }
-            
         }
     }
     

@@ -206,18 +206,18 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         if(loadedPage == 0)
         {
-            JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TV)
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }
         else
         {
-            JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .TV)
                 weakSelf?.baseTableView.reloadData()
             }
         }
