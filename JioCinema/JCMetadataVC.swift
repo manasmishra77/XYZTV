@@ -41,6 +41,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: watchNowNotificationName, object: nil, queue: nil, using: didReceiveNotificationForWatchNow(notification:))
         NotificationCenter.default.addObserver(forName: metadataCellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForMetadataCellTap(notification:))
+        NotificationCenter.default.addObserver(forName: openSearchVCNotificationName, object: nil, queue: nil, using: didReceiveNotificationForArtistSearch(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(presentLoginVC), name: showLoginFromMetadataNotificationName, object: nil)
         //NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
@@ -418,6 +419,35 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         loginVC.view.layer.speed = 0.7
         self.present(loginVC, animated: true, completion: nil)
     }
+    
+    func didReceiveNotificationForArtistSearch(notification:Notification)
+    {
+        guard let artistName = notification.userInfo?["artist"] as? String
+            else {
+                return
+        }
+        //present search from here
+        
+        let artistSearchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
+        artistSearchVC.view.backgroundColor = .black
+        
+        let searchViewController = UISearchController.init(searchResultsController: artistSearchVC)
+        searchViewController.view.backgroundColor = .black
+        searchViewController.searchBar.placeholder = "Search"
+        searchViewController.searchBar.tintColor = UIColor.white
+        searchViewController.searchBar.barTintColor = UIColor.black
+        searchViewController.searchBar.tintColor = UIColor.gray
+        searchViewController.hidesNavigationBarDuringPresentation = true
+        searchViewController.obscuresBackgroundDuringPresentation = false
+        searchViewController.searchBar.delegate = artistSearchVC
+        searchViewController.searchBar.searchBarStyle = .minimal
+        searchViewController.searchBar.text = artistName
+        artistSearchVC.searchViewController = searchViewController
+       
+    
+        self.present(searchViewController, animated: false, completion: nil)
+    }
+    
     
     func didReceiveNotificationForMetadataCellTap(notification:Notification)
     {

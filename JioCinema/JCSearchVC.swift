@@ -62,6 +62,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchViewController?.extendedLayoutIncludesOpaqueBars = false
+        if (searchViewController?.searchBar.text?.characters.count)! > 0
+        {
+            searchResultForkey(with: (searchViewController?.searchBar.text)!)
+        }
       
     }
     override func viewWillLayoutSubviews() {

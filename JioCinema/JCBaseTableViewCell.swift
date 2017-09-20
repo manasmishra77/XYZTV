@@ -117,8 +117,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 {
                     
                     DispatchQueue.main.async {
-
+                        
+                        if !(self.categoryTitleLabel.text == "Languages" || self.categoryTitleLabel.text == "Genres")
+                        {
                     cell.nameLabel.text = self.data?[indexPath.row].name!
+                        }
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
                     cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
@@ -176,7 +179,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if(artistImages != nil)
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-            
+            let collectionView = cell.superview as? UICollectionView
             DispatchQueue.main.async {
 
             let keys = Array(self.artistImages!.keys)
@@ -189,7 +192,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             });
             }
             cell.isOpaque = true
-
+                let artistDict = artistImages?.filter({$0.key != ""})
+                let artistName = artistDict?[indexPath.row].key
+                cell.nameLabel.text = artistName
+            
+            let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
+            cell.frame = tempFrame
+            
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = tempFrame.size.height / 2
+            
+            
             return cell
 
         }
@@ -213,6 +226,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.isOpaque = true
         return cell
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return true
@@ -240,7 +255,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
         else if artistImages != nil
         {
-            //open search screen
+            if let artistDict = artistImages?.filter({$0.key != ""})
+            {
+                let artistName = artistDict[indexPath.row].key
+                let artistToSearch = ["artist":artistName]
+                NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: artistToSearch)
+            }
         }
         
     }
