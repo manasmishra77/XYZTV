@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
 		201E06121F72B5C000D6E19B /* JCMediaAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E06111F72B5C000D6E19B /* JCMediaAnalytics.swift */; };
-		201E06141F72B68C00D6E19B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 201E06131F72B68C00D6E19B /* libsqlite3.0.tbd */; };
-		201E06161F72B69700D6E19B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 201E06151F72B69700D6E19B /* libsqlite3.tbd */; };
 		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
 		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
 		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
@@ -193,8 +191,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				201E06161F72B69700D6E19B /* libsqlite3.tbd in Frameworks */,
-				201E06141F72B68C00D6E19B /* libsqlite3.0.tbd in Frameworks */,
 				7BE58DC31F62A06700DAB214 /* libRJILMA.a in Frameworks */,
 				00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */,
 			);
