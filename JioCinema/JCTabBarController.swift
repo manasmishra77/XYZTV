@@ -15,6 +15,7 @@ class JCTabBarController: UITabBarController {
     var settingsVC:JCSettingsVC?
     var currentPlayableItem:Any?
     var isCurrentItemEpisode = false
+    var reachability:Reachability?
     override func viewDidLoad() {
         super.viewDidLoad()
         startNetworkNotifier()
@@ -326,6 +327,42 @@ class JCTabBarController: UITabBarController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    // MARK:- Network Notifier
+    
+    func startNetworkNotifier()
+    {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
+        reachability = Reachability.init()
+        do{
+            try reachability?.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
+        
+    }
+    
+    func reachabilityChanged(note: Notification) {
+        let r = note.object as! Reachability
+        if r.isReachable {
+            if (reachability?.isReachableViaWiFi)! {
+                print("Reachable via WiFi")
+                
+            } else {
+                print("Reachable via Cellular")
+                
+            }
+        } else {
+            print("Network not reachable")
+            let alertController = UIAlertController.init(title: "Alert", message: "No network available", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: nil))
+            
+            appDelegate?.window?.rootViewController?.present(alertController, animated: false, completion: nil)
+        }
+    }
+    
+    
+
 }
 
 extension UIApplication {
@@ -347,48 +384,6 @@ extension UIApplication {
             return topViewController(controller: presented)
         }
         return controller
-    }
-}
-
-
-// MARK:- Network Notifier
-
-func startNetworkNotifier()
-{
-    NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
-    reachability = Reachability.init()
-    do{
-        try reachability.startNotifier()
-    }catch{
-        print("could not start reachability notifier")
-    }
-    
-}
-
-@objc func reachabilityChanged(note: Notification) {
-    let r = note.object as! Reachability
-    if r.isReachable {
-        if reachability.isReachableViaWiFi {
-            print("Reachable via WiFi")
-            if ILinkPlayer.sharedInstance.currentItem != nil
-            {
-                if !ILinkPlayer.sharedInstance.isPlaying()
-                {
-                    ILinkPlayer.sharedInstance.play()
-                }
-            }
-        } else {
-            print("Reachable via Cellular")
-            if ILinkPlayer.sharedInstance.currentItem != nil
-            {
-                if ILinkPlayer.sharedInstance.isPlaying()
-                {
-                    ILinkPlayer.sharedInstance.pause()
-                }
-            }
-        }
-    } else {
-        print("Network not reachable")
     }
 }
 
