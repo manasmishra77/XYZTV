@@ -118,9 +118,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     
                     DispatchQueue.main.async {
                         
-                        if !(self.categoryTitleLabel.text == "Languages" || self.categoryTitleLabel.text == "Genres")
+                        if !(self.data?[indexPath.row].app?.type == VideoType.Language.rawValue || self.data?[indexPath.row].app?.type == VideoType.Genre.rawValue)
                         {
                     cell.nameLabel.text = self.data?[indexPath.row].name!
+                        }
+                        else
+                        {
+                            cell.nameLabel.text = ""
                         }
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
@@ -179,7 +183,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if(artistImages != nil)
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-            let collectionView = cell.superview as? UICollectionView
             DispatchQueue.main.async {
 
             let keys = Array(self.artistImages!.keys)
@@ -194,11 +197,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             cell.isOpaque = true
                 let artistDict = artistImages?.filter({$0.key != ""})
                 let artistName = artistDict?[indexPath.row].key
+                //let initals = artistName
                 cell.nameLabel.text = artistName
             
             let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
             cell.frame = tempFrame
             
+            //cell.nowPlayingLabel.text =
             //cell.clipsToBounds = true
             //cell.layer.cornerRadius = tempFrame.size.height / 2
             
@@ -226,8 +231,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.isOpaque = true
         return cell
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return true
