@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
 class JCTabBarController: UITabBarController {
     
@@ -16,9 +17,9 @@ class JCTabBarController: UITabBarController {
     var isCurrentItemEpisode = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        startNetworkNotifier()
         setTabBarTitle()
-        
+
         NotificationCenter.default.addObserver(forName: cellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForCellTap(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
         
@@ -346,6 +347,48 @@ extension UIApplication {
             return topViewController(controller: presented)
         }
         return controller
+    }
+}
+
+
+// MARK:- Network Notifier
+
+func startNetworkNotifier()
+{
+    NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
+    reachability = Reachability.init()
+    do{
+        try reachability.startNotifier()
+    }catch{
+        print("could not start reachability notifier")
+    }
+    
+}
+
+@objc func reachabilityChanged(note: Notification) {
+    let r = note.object as! Reachability
+    if r.isReachable {
+        if reachability.isReachableViaWiFi {
+            print("Reachable via WiFi")
+            if ILinkPlayer.sharedInstance.currentItem != nil
+            {
+                if !ILinkPlayer.sharedInstance.isPlaying()
+                {
+                    ILinkPlayer.sharedInstance.play()
+                }
+            }
+        } else {
+            print("Reachable via Cellular")
+            if ILinkPlayer.sharedInstance.currentItem != nil
+            {
+                if ILinkPlayer.sharedInstance.isPlaying()
+                {
+                    ILinkPlayer.sharedInstance.pause()
+                }
+            }
+        }
+    } else {
+        print("Network not reachable")
     }
 }
 

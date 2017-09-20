@@ -25,6 +25,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     var currentFilter:FilterType?
     var languageGenreDetailModel:LanguageGenreDetailModel?
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noVideosAvailableLabel: UILabel!
     @IBOutlet weak var languageGenreCollectionView: UICollectionView!
     
@@ -41,12 +42,14 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         {
             currentParamString = "All Genres"
             callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage,paramString: currentParamString!, type: currentType)
+            activityIndicator.isHidden = false
             headerLabel.text = item?.language
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
             currentParamString = "All Languages"
             callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage,paramString: currentParamString!, type: currentType)
+            activityIndicator.isHidden = false
             headerLabel.text = item?.genre
         }
         
@@ -59,6 +62,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
     func callWebServiceForLanguageGenreData(isLanguage:Bool,pageNo:Int,paramString:String,type:Int)
     {
+        
         let url = langGenreDataUrl.appending("\(pageNo)")
         var params = [String:Any]()
         if isLanguage
@@ -86,6 +90,9 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         weak var weakself = self
         
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
+            DispatchQueue.main.async {
+                weakself?.activityIndicator.isHidden = true
+            }
             if let responseError = error
             {
                 print(responseError.localizedDescription)
@@ -202,9 +209,11 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                 currentType = filter
                 currentParamString = "All Genres"
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentType)
+                activityIndicator.isHidden = false
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.genres?[filter].name
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentType)
+                activityIndicator.isHidden = false
             }
         }
         else if item?.app?.type == VideoType.Genre.rawValue
@@ -214,9 +223,11 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                 currentType = filter
                 currentParamString = "All Languages"
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
+                activityIndicator.isHidden = false
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.languages?[filter].name
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
+                activityIndicator.isHidden = false
             }
         }
         loadedPage = 0
@@ -260,10 +271,12 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             {
                 if item?.app?.type == VideoType.Language.rawValue {
                     callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                    activityIndicator.isHidden = false
                 }
                 else
                 {
                     callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                    activityIndicator.isHidden = false
                 }
                 
                 loadedPage += 1

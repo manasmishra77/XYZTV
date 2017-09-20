@@ -19,6 +19,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -47,6 +52,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0A6DBE51250E671ED3F5E5D07E9331F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1D9E4ABDF8CCD2C3CD76FED1B3BE02B2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2F0C0F810568D3E82219429D9D870F04</key>
 		<dict>
 			<key>primary</key>
@@ -63,6 +78,11 @@
 			<true/>
 		</dict>
 		<key>8E7720F42AFB6F5615F7DEE56ABD29FD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9695448CCECF46FC6A093CA3333BBA5D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

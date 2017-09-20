@@ -146,6 +146,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                             weakself?.baseTableView.reloadData()
                         }
                     }
+                    else
+                    {
+                        
+                    }
                }
             }
         }
