@@ -209,7 +209,20 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 else
                 {
                     print("$$$$ Handle Player")
-                    self.openPlayerVC(item: item!)
+                    if JCLoginManager.sharedInstance.isUserLoggedIn()
+                    {
+                        self.openPlayerVC(item: item!)
+                    }
+                    else
+                    {
+                        currentPlayableItem = item
+                        let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
+                        loginVC.modalPresentationStyle = .overFullScreen
+                        loginVC.modalTransitionStyle = .coverVertical
+                        loginVC.view.layer.speed = 0.7
+                        UIApplication.topViewController()?.present(loginVC, animated: false, completion: nil)
+                    }
+                    
                 }
             }
             else
