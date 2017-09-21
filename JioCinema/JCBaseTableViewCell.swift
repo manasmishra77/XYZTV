@@ -141,12 +141,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
             DispatchQueue.main.async {
-                
+                cell.itemImageView.clipsToBounds = true
                 let xAxis = 2 * cell.itemImageView.frame.origin.x
                 let newFrame = CGRect.init(x: xAxis, y: cell.itemImageView.frame.origin.y, width: cell.itemImageView.frame.size.height , height: cell.itemImageView.frame.size.height)
                 cell.itemImageView.frame = newFrame
                 cell.itemImageView.layer.cornerRadius = cell.itemImageView.frame.size.height / 2
-
+                cell.nameLabel.textAlignment = .center
                 let keys = Array(self.artistImages!.keys)
                 let key = keys[indexPath.row]
                 let imageUrl = self.artistImages?[key]
@@ -161,7 +161,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let artistName = artistDict?[indexPath.row].key
             cell.nameLabel.text = artistName
             
-            cell.backgroundColor = UIColor.black
+            cell.backgroundColor = .clear
             return cell
         }
         //        let finalCellFrame = cell.frame
@@ -311,7 +311,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
            return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
         }
         
-        return CGSize(width: 320, height: collectionView.frame.height)
+        return CGSize(width: 392, height: collectionView.frame.height)
         
 //        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
 //        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)

@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                     </imageView>
                     <view hidden="YES" alpha="0.6666666" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bik-wl-s7S">
@@ -48,6 +48,7 @@
                     </label>
                 </subviews>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="Bik-wl-s7S" secondAttribute="bottom" constant="10" id="7b3-UO-Xcs"/>
                 <constraint firstAttribute="bottom" secondItem="da6-is-0b4" secondAttribute="bottom" id="7qn-4f-WnT"/>
