@@ -264,7 +264,7 @@ class JCTabBarController: UITabBarController {
                 playerVC.callWebServiceForPlaybackRights(id: item.id!)
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
-                playerVC.playerId = (currentPlayableItem as! Episode).id!
+               // playerVC.playerId = (currentPlayableItem as! Episode).id!
                 let playerItem = ["player":playerVC]
                 NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
             }

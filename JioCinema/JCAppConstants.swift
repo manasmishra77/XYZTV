@@ -139,4 +139,6 @@ let subscriberIdKey = "subscriberId"
 //Variables
 
 var isLoginPresentedFromAddToWatchlist = false
+var isSearchOpenFromMetaData = false
+
 var latestEpisodeId = "-1"
