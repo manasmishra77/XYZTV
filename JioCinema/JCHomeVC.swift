@@ -11,6 +11,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 {
     var loadedPage = 0
     var isResumeWatchDataAvailable = false
+    var isFirstLoaded = false
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
@@ -19,6 +20,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        isFirstLoaded = true
         super.activityIndicator.isHidden = true
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -26,7 +28,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(callResumeWatchWebServiceOnPlayerDismiss), name: playerDismissNotificationName, object: nil)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
-        
+        self.baseTableView.remembersLastFocusedIndexPath = true
         // Do any additional setup after loading the view.
         
     }
@@ -37,7 +39,11 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             callWebServiceForResumeWatchData()
         }
-        baseTableView.reloadData()
+        else
+        {
+            baseTableView.reloadData()
+        }
+        
         
     }
     
@@ -202,9 +208,44 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
         {
             isResumeWatchDataAvailable = true
+            
+            DispatchQueue.main.async {
+                let visibleCell = weakSelf?.baseTableView.visibleCells
+                if (weakSelf?.isFirstLoaded)! {
+                    weakSelf?.isFirstLoaded = false
+                    weakSelf?.baseTableView.reloadData()
+                   // weakSelf?.isFirstLoaded = false
+                }
+                else
+                {
+                    for visible in visibleCell!
+                    {
+                        let visibleIndex = weakSelf?.baseTableView.indexPath(for: visible)
+                        if visibleIndex?.row == 0
+                        {
+                            let resumeCell = weakSelf?.baseTableView.cellForRow(at: visibleIndex!) as! JCBaseTableViewCell
+                            if resumeCell.isResumeWatchCell {
+                                resumeCell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
+                                resumeCell.tableCellCollectionView.reloadData()
+                            }
+                            else
+                            {
+                                weakSelf?.baseTableView.reloadData()
+                            }
+                            
+                            break
+                        }
+                    }
+                }
+
+            }
         }
-        DispatchQueue.main.async {
-            weakSelf?.baseTableView.reloadData()
+        else{
+            if (self.isFirstLoaded) {
+                //weakSelf?.isFirstLoaded = false
+                self.baseTableView.reloadData()
+                self.isFirstLoaded = false
+            }
         }
     }
     

@@ -483,7 +483,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             let firstFolderParsed = (Int(firstFolder, radix: 16))!%99
             let secondFolderParsed = (Int(secondFolder, radix: 16))!%99
-            let imageUrl = "http://images.hdi.cdn.ril.com/vr1/Starcast/\(firstFolderParsed)/\(secondFolderParsed)/\(hexString)_low.jpg"
+            let imageUrl = "http://jioimages.cdn.jio.com/content/entry/data/\(firstFolderParsed)/\(secondFolderParsed)/\(hexString)_low.jpg"
             artistImages[artist] = imageUrl
             
         }
@@ -684,7 +684,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
-            NotificationCenter.default.post(name: playerDismissNotificationName, object: nil)
+            if let vc = UIApplication.topViewController(){
+                if vc is JCMetadataVC{
+                     NotificationCenter.default.post(name: playerDismissNotificationName, object: nil)
+                }
+            }
         }
     }
     
