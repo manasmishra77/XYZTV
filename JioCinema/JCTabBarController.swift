@@ -9,11 +9,13 @@
 import UIKit
 import ReachabilitySwift
 
+var currentPlayableItem:Any?
+
 class JCTabBarController: UITabBarController {
     
       
     var settingsVC:JCSettingsVC?
-    var currentPlayableItem:Any?
+    
     var isCurrentItemEpisode = false
     var reachability:Reachability?
     
@@ -209,7 +211,7 @@ class JCTabBarController: UITabBarController {
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")
-                    if let item = weakSelf?.currentPlayableItem as? Item
+                    if let item = currentPlayableItem as? Item
                     {
                         if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue)
                         {
