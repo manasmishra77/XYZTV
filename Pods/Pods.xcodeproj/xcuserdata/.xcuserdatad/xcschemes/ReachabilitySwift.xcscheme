@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '9695448CCECF46FC6A093CA3333BBA5D'
-               BlueprintName = 'Pods-JioCinema'
+               BlueprintIdentifier = '1D9E4ABDF8CCD2C3CD76FED1B3BE02B2'
+               BlueprintName = 'ReachabilitySwift'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Pods-JioCinema.framework'>
+               BuildableName = 'ReachabilitySwift.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -115,7 +115,11 @@ let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell"
 let showLoginFromMetadataNotificationName = Notification.Name("showLoginFromMetadata")
 let loginSuccessNotificationName = Notification.Name("loginSuccessful")
 let readyToPlayNotificationName = Notification.Name("readyToPlay")
+let openSearchVCNotificationName = Notification.Name("openSearchVC")
 let isAutoPlayOnKey = "isAutoPlayOn"
+
+//App Delegate
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 
 //OTP verification constants

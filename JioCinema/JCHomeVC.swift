@@ -138,7 +138,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
     {
-        print(indexPath)
         
         return false
     }

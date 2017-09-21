@@ -16,12 +16,14 @@ protocol JCLanguageGenreSelectionDelegate : class
 class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
 
+    @IBOutlet weak var selectionVCHeaderLabel: UILabel!
     var dataSource:[List]?
     weak var languageSelectionDelegate:JCLanguageGenreSelectionDelegate?
     @IBOutlet weak var languageGenreSelctionTableView: UITableView!
+    var textForHeader:String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        selectionVCHeaderLabel.text = textForHeader
         // Do any additional setup after loading the view.
     }
 

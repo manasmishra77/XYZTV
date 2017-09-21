@@ -99,7 +99,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             {
                 if let imageUrl = data?[indexPath.row].banner!
                 {
-                    cell.nameLabel.text = data?[indexPath.row].name!
+                    
+                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
                     cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
@@ -137,17 +138,35 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+            DispatchQueue.main.async {
+                
+                let keys = Array(self.artistImages!.keys)
+                let key = keys[indexPath.row]
+                let imageUrl = self.artistImages?[key]
+                
+                let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                });
+            }
+            cell.isOpaque = true
+            let artistDict = artistImages?.filter({$0.key != ""})
+            let artistName = artistDict?[indexPath.row].key
+            //let initals = artistName
+            cell.nameLabel.text = artistName
             
-            let keys = Array(artistImages!.keys)
-            let key = keys[indexPath.row]
-            let imageUrl = artistImages?[key]
-           
-            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+            // let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
+            //cell.frame = tempFrame
+            
+            //cell.nowPlayingLabel.text =
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = tempFrame.size.height / 2
+            
+            
+            return cell
+            
         }
-        
         //        let finalCellFrame = cell.frame
         //        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
         //        if translation.x > 0
@@ -188,6 +207,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if artistImages != nil
         {
             //open search screen
+            if let artistDict = artistImages?.filter({$0.key != ""})
+            {
+                let artistName = artistDict[indexPath.row].key
+                NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
+            }
         }
         
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
 class JCTabBarController: UITabBarController {
     
@@ -14,11 +15,13 @@ class JCTabBarController: UITabBarController {
     var settingsVC:JCSettingsVC?
     var currentPlayableItem:Any?
     var isCurrentItemEpisode = false
+    var reachability:Reachability?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setTabBarTitle()
-        
+        startNetworkNotifier()
         NotificationCenter.default.addObserver(forName: cellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForCellTap(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
         
@@ -277,20 +280,20 @@ class JCTabBarController: UITabBarController {
                     if latestEpisodeId != "-1"
                     {
                     playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
-                        latestEpisodeId = "-1"
+                       // latestEpisodeId = "-1"
                     }
                     else
                     {
                     playerVC.callWebServiceForPlaybackRights(id: item.id!)
                     }
                 }
-                else
-                {
+               // else
+                //{
 //                    if item.isPlaylist!
 //                    {
 //                        playerVC.callWebServiceForPlayListData(id: item.playlistId!)
 //                    }
-                }
+                //}
                 
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
@@ -325,6 +328,40 @@ class JCTabBarController: UITabBarController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    // MARK:- Network Notifier
+    
+    func startNetworkNotifier()
+    {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
+        reachability = Reachability.init()
+        do{
+            try reachability?.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
+        
+    }
+    
+    func reachabilityChanged(note: Notification) {
+        let r = note.object as! Reachability
+        if r.isReachable {
+            if (reachability?.isReachableViaWiFi)! {
+                print("Reachable via WiFi")
+                
+            } else {
+                print("Reachable via Cellular")
+                
+            }
+        } else {
+            print("Network not reachable")
+            let alertController = UIAlertController.init(title: "Alert", message: "No network available", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: nil))
+            
+            appDelegate?.window?.rootViewController?.present(alertController, animated: false, completion: nil)
+        }
+    }
+    
 }
 
 extension UIApplication {

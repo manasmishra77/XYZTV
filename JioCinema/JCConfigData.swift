@@ -49,6 +49,9 @@ class ConfigDataURLs: Mappable
     var video:String?
     var videoDRMurl:String?
     var wvProxyUrl:String?
+    var cdnEncryptionFlag:Bool = false
+    var cdnTokenKey:String?
+    var cdnUrlExpiryDuration:Int?
     
     required init?(map: Map) {
         
@@ -76,5 +79,8 @@ class ConfigDataURLs: Mappable
         video <- map["video"]
         videoDRMurl <- map["videoDRMurl"]
         wvProxyUrl <- map["wvProxyUrl"]
+        cdnEncryptionFlag <- map["cdnencryption_flag"]
+        cdnTokenKey <- map["tid"]
+        cdnUrlExpiryDuration <- map["cdnUrlExpiry"]
     }
 }

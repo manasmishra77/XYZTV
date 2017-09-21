@@ -125,7 +125,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 
                 if truncatedNumber == ""
                 {
-                    jioNumberTFLabel.text = "Enter Jio Number"
+                    jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"
+                   
                 }
             }
         }

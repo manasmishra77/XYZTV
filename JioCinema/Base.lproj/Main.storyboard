@@ -576,11 +576,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="pPm-gB-ruG">
-                                <rect key="frame" x="786" y="70" width="349" height="991"/>
+                                <rect key="frame" x="786" y="170" width="349" height="890"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="349" id="MMj-Un-lxG"/>
-                                    <constraint firstAttribute="height" constant="991" id="PKG-Hj-S3B"/>
+                                    <constraint firstAttribute="height" constant="890" id="PKG-Hj-S3B"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="kLanguageGenreSelectionPrototypeCell" id="kS9-Ba-n1i" customClass="JCLanguageGenreSelectionPrototypeCell" customModule="JioCinema" customModuleProvider="target">
@@ -615,14 +615,23 @@
                                     <outlet property="delegate" destination="ErY-W5-jhA" id="76D-j2-QQc"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rR-xw-boL">
+                                <rect key="frame" x="895" y="70" width="131" height="60"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="50"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="pPm-gB-ruG" firstAttribute="top" secondItem="L2M-uy-BSa" secondAttribute="bottom" constant="70" id="fEw-LT-Eeu"/>
+                            <constraint firstItem="6rR-xw-boL" firstAttribute="centerX" secondItem="kJa-yI-h2k" secondAttribute="centerX" id="VU5-Dw-7rp"/>
+                            <constraint firstItem="6rR-xw-boL" firstAttribute="top" secondItem="L2M-uy-BSa" secondAttribute="bottom" constant="70" id="atz-2F-LAe"/>
+                            <constraint firstItem="pPm-gB-ruG" firstAttribute="top" secondItem="L2M-uy-BSa" secondAttribute="bottom" constant="170" id="fEw-LT-Eeu"/>
                             <constraint firstItem="pPm-gB-ruG" firstAttribute="centerX" secondItem="kJa-yI-h2k" secondAttribute="centerX" id="hCv-3n-7Qp"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="languageGenreSelctionTableView" destination="pPm-gB-ruG" id="KCD-kG-Wod"/>
+                        <outlet property="selectionVCHeaderLabel" destination="6rR-xw-boL" id="lgo-JL-ulZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JQt-5Y-SMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
