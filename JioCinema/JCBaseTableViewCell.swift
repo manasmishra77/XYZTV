@@ -142,6 +142,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
             DispatchQueue.main.async {
                 
+                let xAxis = 2 * cell.itemImageView.frame.origin.x
+                let newFrame = CGRect.init(x: xAxis, y: cell.itemImageView.frame.origin.y, width: cell.itemImageView.frame.size.height , height: cell.itemImageView.frame.size.height)
+                cell.itemImageView.frame = newFrame
+                cell.itemImageView.layer.cornerRadius = cell.itemImageView.frame.size.height / 2
+
                 let keys = Array(self.artistImages!.keys)
                 let key = keys[indexPath.row]
                 let imageUrl = self.artistImages?[key]
@@ -154,19 +159,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             cell.isOpaque = true
             let artistDict = artistImages?.filter({$0.key != ""})
             let artistName = artistDict?[indexPath.row].key
-            //let initals = artistName
             cell.nameLabel.text = artistName
             
-            // let tempFrame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.size.height, height: cell.frame.size.height)
-            //cell.frame = tempFrame
-            
-            //cell.nowPlayingLabel.text =
-            //cell.clipsToBounds = true
-            //cell.layer.cornerRadius = tempFrame.size.height / 2
-            
-            
+            cell.backgroundColor = UIColor.black
             return cell
-            
         }
         //        let finalCellFrame = cell.frame
         //        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
@@ -293,3 +289,46 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
     
 }
+
+
+extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+       
+         if(artistImages != nil)
+         {
+            return 15
+         }
+        
+        return 30
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if(artistImages != nil)
+        {
+           return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
+        }
+        
+        return CGSize(width: 320, height: collectionView.frame.height)
+        
+//        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
+//        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        
+//        if(artistImages != nil)
+//        {
+//            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        }
+        
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+       // return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
+
