@@ -47,6 +47,9 @@
 		7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7D91F140DA100F319BF /* JCConfigData.swift */; };
 		7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7DB1F14752400F319BF /* JCDataStore.swift */; };
 		7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */; };
+		7B94D0261F78D8980011A756 /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B94D0231F78D8980011A756 /* kInfinityScrollView.xib */; };
+		7B94D0271F78D8980011A756 /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B94D0241F78D8980011A756 /* InfinityScrollView.swift */; };
+		7B94D0281F78D8980011A756 /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B94D0251F78D8980011A756 /* CarouselViewButton.swift */; };
 		7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */; };
 		7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */; };
 		7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */; };
@@ -138,6 +141,9 @@
 		7B78D7D91F140DA100F319BF /* JCConfigData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCConfigData.swift; sourceTree = "<group>"; };
 		7B78D7DB1F14752400F319BF /* JCDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCDataStore.swift; sourceTree = "<group>"; };
 		7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLanguageGenreSelectionVC.swift; sourceTree = "<group>"; };
+		7B94D0231F78D8980011A756 /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
+		7B94D0241F78D8980011A756 /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
+		7B94D0251F78D8980011A756 /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLoginManager.swift; sourceTree = "<group>"; };
 		7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSeasonCollectionViewCell.swift; sourceTree = "<group>"; };
 		7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCSeasonCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -381,6 +387,9 @@
 		7BFEC4C11F174A84001DFE6D /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
+				7B94D0231F78D8980011A756 /* kInfinityScrollView.xib */,
+				7B94D0241F78D8980011A756 /* InfinityScrollView.swift */,
+				7B94D0251F78D8980011A756 /* CarouselViewButton.swift */,
 				7BFEC4C21F174ACA001DFE6D /* JCButton.swift */,
 				B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */,
 				7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */,
@@ -490,6 +499,7 @@
 				7BFE51391F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib in Resources */,
 				7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */,
 				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
+				7B94D0261F78D8980011A756 /* kInfinityScrollView.xib in Resources */,
 				7BFEC4CD1F178CB4001DFE6D /* loginBg.jpg in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
 				7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */,
@@ -569,6 +579,7 @@
 				2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */,
 				B811ED421F56BC4600E55FAD /* Log.swift in Sources */,
 				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
+				7B94D0281F78D8980011A756 /* CarouselViewButton.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
@@ -580,6 +591,7 @@
 				7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */,
 				797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */,
 				7BFEC4BC1F15C647001DFE6D /* JCHomeVC.swift in Sources */,
+				7B94D0271F78D8980011A756 /* InfinityScrollView.swift in Sources */,
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,

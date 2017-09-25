@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "callWebServiceForHomeData(page:)"
+            landmarkName = "tableView(_:canFocusRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
