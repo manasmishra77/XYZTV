@@ -68,6 +68,7 @@ class JCTabBarController: UITabBarController {
         self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
         self.tabBar.alpha = 0.7
+        self.tabBar.backgroundColor = UIColor.black
         
         // Do any additional setup after loading the view.
     }

@@ -26,7 +26,7 @@ class JCArtistImageCell: UICollectionViewCell {
         {
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
             {
-                self.superview?.alpha = 0.5
+                self.superview?.alpha = 0.4
             }
         }
         

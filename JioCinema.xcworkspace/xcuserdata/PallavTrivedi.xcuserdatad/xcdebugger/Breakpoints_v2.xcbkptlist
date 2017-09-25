@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCBaseTableViewCell.swift"
-            timestampString = "527772553.031132"
+            timestampString = "528019791.417797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
@@ -49,54 +49,6 @@
             endingLineNumber = "179"
             landmarkName = "evaluateHomeData(dictionaryResponseData:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCHomeVC.evaluateHomeData (dictionaryResponseData : Foundation.Data) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCHomeVC.swift"
-                  timestampString = "527768422.997455"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "355">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCHomeVC.(evaluateHomeData (dictionaryResponseData : Foundation.Data) -&gt; ()).(closure #1)"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCHomeVC.swift"
-                  timestampString = "527768422.999772"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "269">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCHomeVC.swift"
-            timestampString = "527755878.276228"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
-            landmarkName = "tableView(_:canFocusRowAt:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -121,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "527768092.333937"
+            filePath = "JioCinema/JCPlayerVC.swift"
+            timestampString = "528021038.732369"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "483"
-            endingLineNumber = "483"
-            landmarkName = "getStarCastImagesUrl(artists:)"
+            startingLineNumber = "846"
+            endingLineNumber = "846"
+            landmarkName = "callWebServiceForPlaybackRights(id:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
