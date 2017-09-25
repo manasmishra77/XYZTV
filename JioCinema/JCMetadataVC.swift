@@ -1,3 +1,4 @@
+
 //
 //  JCMetadataVC.swift
 //  JioCinema
@@ -34,7 +35,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loaderContainerView: UIView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
+  //  @IBOutlet weak var backgroundImageView: UIImageView!
     var headerView:UIView?
     
     override func viewDidLoad() {
@@ -309,15 +310,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     {
         weak var weakSelf = self
         
-        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending((item?.banner)!))!
-        let url = URL(string: imageUrl)
-        backgroundImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             DispatchQueue.main.async {
                 weakSelf?.showMetadata()
                 weakSelf?.metadataTableView.reloadData()
             }
-        });
     }
     
     func showMetadata()
@@ -483,7 +479,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             let firstFolderParsed = (Int(firstFolder, radix: 16))!%99
             let secondFolderParsed = (Int(secondFolder, radix: 16))!%99
-            let imageUrl = "http://jioimages.cdn.jio.com/content/entry/data/\(firstFolderParsed)/\(secondFolderParsed)/\(hexString)_low.jpg"
+            let imageUrl = "http://jioimages.cdn.jio.com/content/entry/data/\(firstFolderParsed)/\(secondFolderParsed)/\(hexString)_o_low.jpg"
             artistImages[artist] = imageUrl
             
         }

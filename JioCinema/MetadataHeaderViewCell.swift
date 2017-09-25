@@ -7,11 +7,11 @@
 //
 
 import UIKit
+import SDWebImage
+
 
 class MetadataHeaderViewCell: UIView {
     
-    
-      
     var metadata:MetadataModel?
     var item:Item?
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
@@ -25,6 +25,7 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     
+    @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
     @IBOutlet weak var seasonsLabel: UILabel!
@@ -39,7 +40,10 @@ class MetadataHeaderViewCell: UIView {
         self.subtitleLabel.text = metadata?.newSubtitle
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")
         self.starringLabel.text = metadata?.artist?.joined(separator: ",")
-        
+         let imageUrl = metadata?.banner
+        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+        bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         //        if metadata != nil
         //        {
         //            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"

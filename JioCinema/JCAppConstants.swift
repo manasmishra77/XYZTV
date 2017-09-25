@@ -102,6 +102,7 @@ let yearCellIdentifier = "kYearCell"
 let monthCellIdentifier = "kMonthCell"
 let resumeWatchCellIdentifier = "kResumeWatchCell"
 let itemCellIdentifier = "kJCItemCell"
+let artistImageCellIdentifier = "kJCArtistImageCell"
 let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell"
 
 //Constant Values

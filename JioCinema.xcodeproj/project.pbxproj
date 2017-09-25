@@ -34,6 +34,8 @@
 		7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */; };
 		7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */; };
 		7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B3A43F81F4424F900EE3824 /* imdb_logo.png */; };
+		7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */; };
+		7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */; };
 		7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */; };
 		7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */; };
 		7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78D7C11F13A91900F319BF /* AppDelegate.swift */; };
@@ -121,6 +123,8 @@
 		7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewFooterCell.swift; sourceTree = "<group>"; };
 		7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseTableViewFooterCell.xib; sourceTree = "<group>"; };
 		7B3A43F81F4424F900EE3824 /* imdb_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imdb_logo.png; sourceTree = "<group>"; };
+		7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCArtistImageCell.swift; sourceTree = "<group>"; };
+		7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCArtistImageCell.xib; sourceTree = "<group>"; };
 		7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataVC.swift; sourceTree = "<group>"; };
 		7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCLanguageGenreDetailModel.swift; sourceTree = "<group>"; };
 		7B78D7BE1F13A91900F319BF /* JioCinema.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JioCinema.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,6 +303,8 @@
 				7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */,
 				7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */,
 				7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */,
+				7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */,
+				7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -482,6 +488,7 @@
 				7BC1E7161F33044700D08E83 /* JioCinema-SplashScreen.png in Resources */,
 				7BD39C9A1F419F470014255C /* WatchNow.png in Resources */,
 				7BFE51391F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib in Resources */,
+				7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */,
 				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
 				7BFEC4CD1F178CB4001DFE6D /* loginBg.jpg in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
@@ -577,6 +584,7 @@
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
+				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
 				7BFEC4BA1F15C01A001DFE6D /* JCLoginVC.swift in Sources */,
@@ -723,8 +731,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -736,8 +744,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9eeca810-cdaa-459d-82de-5c79cf63e710";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
+				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -749,8 +757,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -761,8 +769,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9eeca810-cdaa-459d-82de-5c79cf63e710";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
+				PROVISIONING_PROFILE = "33488edb-e817-4696-ad90-b487f56e4f17";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

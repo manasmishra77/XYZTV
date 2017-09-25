@@ -27,6 +27,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         tableCellCollectionView.dataSource = self
         //self.alpha = 0.5
         self.tableCellCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.tableCellCollectionView.register(UINib.init(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
         self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
     }
@@ -123,8 +124,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
             
-           
-            
         }
             
         else if(moreLikeData?[indexPath.row].banner != nil)
@@ -139,27 +138,27 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
             DispatchQueue.main.async {
-                cell.itemImageView.clipsToBounds = true
-                let xAxis = 2 * cell.itemImageView.frame.origin.x
-                let newFrame = CGRect.init(x: xAxis, y: cell.itemImageView.frame.origin.y, width: cell.itemImageView.frame.size.height , height: cell.itemImageView.frame.size.height)
-                cell.itemImageView.frame = newFrame
-                cell.itemImageView.layer.cornerRadius = cell.itemImageView.frame.size.height / 2
-                cell.nameLabel.textAlignment = .center
+                cell.artistImageView.clipsToBounds = true
+                let xAxis = 2 * cell.artistImageView.frame.origin.x
+                let newFrame = CGRect.init(x: xAxis, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
+                cell.artistImageView.frame = newFrame
+                cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
+                cell.artistNameLabel.textAlignment = .center
                 let keys = Array(self.artistImages!.keys)
                 let key = keys[indexPath.row]
                 let imageUrl = self.artistImages?[key]
                 
-                let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                let url = URL(string: imageUrl!)
+                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                     (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
                 });
             }
             cell.isOpaque = true
             let artistDict = artistImages?.filter({$0.key != ""})
             let artistName = artistDict?[indexPath.row].key
-            cell.nameLabel.text = artistName
+            cell.artistNameLabel.text = artistName
             
             cell.backgroundColor = .clear
             return cell

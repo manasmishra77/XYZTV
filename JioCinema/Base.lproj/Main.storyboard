@@ -371,14 +371,10 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8AA-j0-7gm">
-                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.078431372549019607" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.062745098039215685" green="0.066666666666666666" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
                                         <rect key="frame" x="40" y="703" width="1880" height="377"/>
@@ -390,7 +386,6 @@
                                         </connections>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="703" id="13c-eV-Ep7"/>
                                     <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" id="2Xt-yn-niL"/>
@@ -437,7 +432,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroundImageView" destination="8AA-j0-7gm" id="GUD-dO-fPR"/>
                         <outlet property="loaderContainerView" destination="MVl-t3-UwF" id="Pgg-uh-Htd"/>
                         <outlet property="loadingLabel" destination="Uyr-Yb-QCy" id="Qes-TU-jmL"/>
                         <outlet property="metadataContainerView" destination="v2z-Ee-E5k" id="q3b-HW-cmr"/>
