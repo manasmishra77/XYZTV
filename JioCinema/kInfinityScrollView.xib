@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="kInfinityScrollView" id="iN0-l3-epB" customClass="InfinityScrollView" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZHr-DU-B2R">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1070"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItB-lo-Op8">
+                            <rect key="frame" x="-1490" y="60" width="1600" height="950"/>
+                            <subviews>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYZ-De-tSz" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" backgroundImage="ItemPlaceHolder"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="QYZ-De-tSz" firstAttribute="top" secondItem="ItB-lo-Op8" secondAttribute="top" id="Ude-S0-b30"/>
+                                <constraint firstItem="QYZ-De-tSz" firstAttribute="leading" secondItem="ItB-lo-Op8" secondAttribute="leading" id="q3H-yT-gFh"/>
+                                <constraint firstAttribute="trailing" secondItem="QYZ-De-tSz" secondAttribute="trailing" id="vA5-7l-etV"/>
+                                <constraint firstAttribute="bottom" secondItem="QYZ-De-tSz" secondAttribute="bottom" id="yFb-h5-0sE"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgV-FY-Ztf">
+                            <rect key="frame" x="160" y="60" width="1600" height="950"/>
+                            <subviews>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOS-dx-0Sr" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" backgroundImage="ItemPlaceHolder"/>
+                                    <connections>
+                                        <action selector="didClickOnMiddleButton:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="v3W-rD-kQ8"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstItem="WOS-dx-0Sr" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="2Nf-hE-a8h"/>
+                                <constraint firstAttribute="bottom" secondItem="WOS-dx-0Sr" secondAttribute="bottom" id="jWC-lu-ZbU"/>
+                                <constraint firstAttribute="width" constant="1600" id="mXa-La-mBb"/>
+                                <constraint firstAttribute="trailing" secondItem="WOS-dx-0Sr" secondAttribute="trailing" id="sYF-we-zIV"/>
+                                <constraint firstItem="WOS-dx-0Sr" firstAttribute="leading" secondItem="cgV-FY-Ztf" secondAttribute="leading" id="unH-Xh-H6l"/>
+                            </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="Hpk-oC-LbH" appends="YES" id="naL-g9-1Fq"/>
+                            </connections>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6U-N3-jrm">
+                            <rect key="frame" x="1810" y="60" width="1600" height="950"/>
+                            <subviews>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eCz-uu-G7U" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" backgroundImage="ItemPlaceHolder"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="eCz-uu-G7U" secondAttribute="trailing" id="4bf-AA-fSB"/>
+                                <constraint firstItem="eCz-uu-G7U" firstAttribute="leading" secondItem="R6U-N3-jrm" secondAttribute="leading" id="KXJ-iW-PDY"/>
+                                <constraint firstAttribute="bottom" secondItem="eCz-uu-G7U" secondAttribute="bottom" id="dej-Qg-dcY"/>
+                                <constraint firstItem="eCz-uu-G7U" firstAttribute="top" secondItem="R6U-N3-jrm" secondAttribute="top" id="goc-IT-8B7"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IE-bg-PV9">
+                            <rect key="frame" x="-3135" y="60" width="1600" height="950"/>
+                            <subviews>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngx-b5-YWi" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" backgroundImage="ItemPlaceHolder"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="ngx-b5-YWi" firstAttribute="top" secondItem="3IE-bg-PV9" secondAttribute="top" id="313-GZ-wSz"/>
+                                <constraint firstAttribute="bottom" secondItem="ngx-b5-YWi" secondAttribute="bottom" id="HY1-Km-xUT"/>
+                                <constraint firstItem="ngx-b5-YWi" firstAttribute="leading" secondItem="3IE-bg-PV9" secondAttribute="leading" id="MXE-C7-ddL"/>
+                                <constraint firstAttribute="trailing" secondItem="ngx-b5-YWi" secondAttribute="trailing" id="hCF-6j-laT"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8f-Wv-Yg7">
+                            <rect key="frame" x="3460" y="60" width="1600" height="950"/>
+                            <subviews>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Vf-7G-Kww" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" backgroundImage="ItemPlaceHolder"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="4Vf-7G-Kww" secondAttribute="bottom" id="4Nq-oW-pcA"/>
+                                <constraint firstAttribute="trailing" secondItem="4Vf-7G-Kww" secondAttribute="trailing" id="5YF-iY-k2w"/>
+                                <constraint firstItem="4Vf-7G-Kww" firstAttribute="top" secondItem="p8f-Wv-Yg7" secondAttribute="top" id="F0J-pj-onf"/>
+                                <constraint firstItem="4Vf-7G-Kww" firstAttribute="leading" secondItem="p8f-Wv-Yg7" secondAttribute="leading" id="upz-DK-4RL"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstItem="3IE-bg-PV9" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="1Dg-i4-JW2"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="centerX" secondItem="ZHr-DU-B2R" secondAttribute="centerX" id="2yx-m7-X0s"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="centerY" secondItem="ZHr-DU-B2R" secondAttribute="centerY" id="7l4-WH-EQC"/>
+                        <constraint firstItem="3IE-bg-PV9" firstAttribute="leading" secondItem="ZHr-DU-B2R" secondAttribute="leading" constant="-3135" id="8UA-wm-Z2Q"/>
+                        <constraint firstItem="R6U-N3-jrm" firstAttribute="leading" secondItem="cgV-FY-Ztf" secondAttribute="trailing" constant="50" id="BZO-68-ZRU"/>
+                        <constraint firstItem="R6U-N3-jrm" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="CdI-9b-IQo"/>
+                        <constraint firstItem="ItB-lo-Op8" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="ESd-Pn-LJj"/>
+                        <constraint firstItem="p8f-Wv-Yg7" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="Epy-ac-aT6"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="leading" secondItem="ItB-lo-Op8" secondAttribute="trailing" constant="50" id="GN6-KW-qU5"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="top" secondItem="ZHr-DU-B2R" secondAttribute="top" constant="60" id="Hid-ci-NOx"/>
+                        <constraint firstItem="p8f-Wv-Yg7" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="MAJ-xY-0bT"/>
+                        <constraint firstItem="ItB-lo-Op8" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="Opy-pT-05S"/>
+                        <constraint firstItem="ItB-lo-Op8" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="TdH-Lp-5xQ"/>
+                        <constraint firstItem="R6U-N3-jrm" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="YSh-ce-pxo"/>
+                        <constraint firstItem="3IE-bg-PV9" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="gQq-QU-BfO"/>
+                        <constraint firstItem="R6U-N3-jrm" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="mVy-wu-9EX"/>
+                        <constraint firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" constant="60" id="qfR-VR-2UZ"/>
+                        <constraint firstItem="p8f-Wv-Yg7" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="vcJ-Zb-JtR"/>
+                        <constraint firstItem="3IE-bg-PV9" firstAttribute="top" secondItem="ItB-lo-Op8" secondAttribute="top" id="wko-gY-82s"/>
+                        <constraint firstItem="p8f-Wv-Yg7" firstAttribute="leading" secondItem="R6U-N3-jrm" secondAttribute="leading" constant="1650" id="ydb-dR-4Vd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="ZHr-DU-B2R" secondAttribute="bottom" constant="10" id="3UV-rD-9PC"/>
+                <constraint firstItem="ZHr-DU-B2R" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8Ry-BE-LXO"/>
+                <constraint firstItem="ZHr-DU-B2R" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="EK6-J2-Xwt"/>
+                <constraint firstAttribute="trailing" secondItem="ZHr-DU-B2R" secondAttribute="trailing" id="phi-Q8-81H"/>
+            </constraints>
+            <connections>
+                <outlet property="extraLeftButton" destination="ngx-b5-YWi" id="xl2-6X-DnL"/>
+                <outlet property="extraLeftView" destination="3IE-bg-PV9" id="W4L-vB-PRO"/>
+                <outlet property="extraRightButton" destination="4Vf-7G-Kww" id="Net-yI-44I"/>
+                <outlet property="extraRightView" destination="p8f-Wv-Yg7" id="2KK-O7-h2K"/>
+                <outlet property="leftButton" destination="QYZ-De-tSz" id="FLb-op-GIb"/>
+                <outlet property="leftView" destination="ItB-lo-Op8" id="m8f-2d-Xto"/>
+                <outlet property="middleButton" destination="WOS-dx-0Sr" id="upp-Cs-Wlu"/>
+                <outlet property="middleView" destination="cgV-FY-Ztf" id="dMs-Na-eUo"/>
+                <outlet property="rightButton" destination="eCz-uu-G7U" id="Gbc-Pg-fzY"/>
+                <outlet property="rightView" destination="R6U-N3-jrm" id="xLQ-kT-AFz"/>
+                <outletCollection property="gestureRecognizers" destination="K8a-M2-yHO" appends="YES" id="3Pa-u7-TZU"/>
+                <outletCollection property="gestureRecognizers" destination="Wnr-jt-fJp" appends="YES" id="wWg-yV-dIT"/>
+            </connections>
+            <point key="canvasLocation" x="236" y="352"/>
+        </view>
+        <swipeGestureRecognizer direction="right" id="K8a-M2-yHO">
+            <connections>
+                <action selector="horizontallySwipped:" destination="iN0-l3-epB" id="0u1-hW-Pac"/>
+            </connections>
+        </swipeGestureRecognizer>
+        <tapGestureRecognizer id="Hpk-oC-LbH">
+            <pressTypeMask key="allowedPressTypes" select="YES"/>
+            <connections>
+                <action selector="singlyTapped:" destination="iN0-l3-epB" id="xwA-hN-l1z"/>
+            </connections>
+        </tapGestureRecognizer>
+        <swipeGestureRecognizer direction="left" id="Wnr-jt-fJp">
+            <connections>
+                <action selector="horizontallySwipped:" destination="iN0-l3-epB" id="rPB-89-nhH"/>
+            </connections>
+        </swipeGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="ItemPlaceHolder" width="448" height="252"/>
+    </resources>
+</document>

@@ -100,11 +100,19 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
-            let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-            headerCell.carousalData = JCDataStore.sharedDataStore.clipsData?.data?[0].items
-            headerCell.itemFromViewController = VideoType.Music
-            headerCell.headerCollectionView.tag = 0
-            return headerCell
+            /*
+             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
+             headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
+             headerCell.itemFromViewController = VideoType.Music
+             headerCell.headerCollectionView.tag = 0
+             return headerCell
+             */
+            //For autorotate carousel
+            let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
+            let carouselView = carouselViews?.first as! InfinityScrollView
+            carouselView.carouselArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].items)!
+            carouselView.loadViews()
+            return carouselView
         }
         else
         {
@@ -143,7 +151,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 600
+        return 650
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {

@@ -261,7 +261,6 @@
                 let header = ["AVURLAssetHTTPHeaderFieldsKey" : headerValues]
                 videoAsset = AVURLAsset(url: URL.init(string: changedUrl)!, options: header)
                 videoAsset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
-                
             }
             
         }
