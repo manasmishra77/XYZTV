@@ -28,7 +28,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(callResumeWatchWebServiceOnPlayerDismiss), name: playerDismissNotificationName, object: nil)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
-        self.baseTableView.remembersLastFocusedIndexPath = true
         // Do any additional setup after loading the view.
         
     }
@@ -117,14 +116,18 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         headerCell.itemFromViewController = VideoType.Music
         headerCell.headerCollectionView.tag = 0
         return headerCell
-         */
+        */
+ 
+        
         //For autorotate carousel
         let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
         let carouselView = carouselViews?.first as! InfinityScrollView
         carouselView.carouselArray = (JCDataStore.sharedDataStore.homeData?.data?[0].items)!
         carouselView.loadViews()
         return carouselView
+        
     }
+    
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (JCDataStore.sharedDataStore.homeData?.totalPages) != nil
@@ -144,6 +147,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             return UIView.init()
         }
     }
+    
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 650
