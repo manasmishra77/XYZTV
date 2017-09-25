@@ -206,7 +206,6 @@ class InfinityScrollView: UIView {
             })
             
         }
-        
     }
     @IBAction func singlyTapped(_ sender: UITapGestureRecognizer) {
         
