@@ -52,6 +52,13 @@ class InfinityScrollView: UIView {
         extraLeftView.frame.origin.x = leftView.frame.origin.x - 50 - middleView.frame.size.width
         extraRightView.frame.origin.x = rightView.frame.origin.x + middleView.frame.size.width + 50
 
+        //Setting Alpha of buttons
+        self.middleButton.alpha = 0.5
+        self.leftButton.alpha = self.middleButton.alpha
+        self.rightButton.alpha = self.middleButton.alpha
+        self.extraLeftButton.alpha = self.middleButton.alpha
+        self.extraRightButton.alpha = self.middleButton.alpha
+        
         
         extraLeftButton.isUserInteractionEnabled = false
         leftButton.isUserInteractionEnabled = false

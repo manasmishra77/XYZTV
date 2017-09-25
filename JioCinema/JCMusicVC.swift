@@ -179,7 +179,6 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     func evaluateMusicData(dictionaryResponseData responseData:Data)
     {
         //Success
-        
         if(loadedPage == 0)
         {
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Music)
