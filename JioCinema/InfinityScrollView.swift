@@ -71,19 +71,19 @@ class InfinityScrollView: UIView {
         //LeftButton
         let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage
         let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
-        self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+        self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //MiddleButton
         let middleButtonImageUrlString = self.carouselArray[newImage.current!].tvImage
         let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
-        self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+        self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //RightButton
         let rightButtonImageUrlString = self.carouselArray[newImage.next!].tvImage
         let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
-        self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+        self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //ExtraLeft
         let extraLeftButtonImageUrlString = self.carouselArray[newImage.extraOne!].tvImage
         let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString!))!)
-        self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+        self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //ExtraRight
         var extraRightCount = 0
         if newImage.next! + 1 < carouselArray.count{
@@ -91,7 +91,7 @@ class InfinityScrollView: UIView {
         }
         let extraRightButtonImageUrlString = self.carouselArray[extraRightCount].tvImage
         let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString!))!)
-        self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+        self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage:#imageLiteral(resourceName: "CarouselPlaceholder"))
         
     }
     
@@ -133,19 +133,19 @@ class InfinityScrollView: UIView {
                 //LeftButton
                 let leftButtonImageUrlString = self.carouselArray[previousImage.previous!].tvImage
                 let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
-                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //MiddleButton
                 let middleButtonImageUrlString = self.carouselArray[previousImage.current!].tvImage
                 let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
-                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //RightButton
                 let rightButtonImageUrlString = self.carouselArray[previousImage.next!].tvImage
                 let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
-                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //ExtraLeft
                 let extraLeftButtonImageUrlString = self.carouselArray[previousImage.extraOne!].tvImage
                 let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString!))!)
-                self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 
                 
                 //self.changeFocusForCarouselDelegate?.setFocusEnvironments()
@@ -184,19 +184,19 @@ class InfinityScrollView: UIView {
                 //LeftButton
                 let leftButtonImageUrlString = self.carouselArray[nextImage.previous!].tvImage
                 let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
-                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //MiddleButton
                 let middleButtonImageUrlString = self.carouselArray[nextImage.current!].tvImage
                 let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
-                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //RightButton
                 let rightButtonImageUrlString = self.carouselArray[nextImage.next!].tvImage
                 let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
-                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //ExtraRight
                 let extraRightButtonImageUrlString = self.carouselArray[nextImage.extraOne!].tvImage
                 let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString!))!)
-                self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage: UIImage(named: "ItemPlaceHolder"))
+                self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 
                 //CallToChangeTheFocusOfTheButton 
                 //self.changeFocusForCarouselDelegate?.setFocusEnvironments()
