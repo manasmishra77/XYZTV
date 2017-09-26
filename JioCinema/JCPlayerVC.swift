@@ -931,12 +931,12 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
-        print(id)
+        print("Playback rights id is === \(id)")
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
+       // weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             if let responseError = error
             {
@@ -955,14 +955,14 @@
                         {
                             if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
                             {
-                                print("FPS URL Hit ==== \(String(describing: weakSelf?.playbackRightsData?.url))")
-                                weakSelf?.instantiatePlayer(with: (weakSelf?.playbackRightsData!.url!)!)
+                                print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
+                                self.instantiatePlayer(with: (self.playbackRightsData!.url!))
                             }
                         }
                         else
                         {
-                            print("AES URL Hit ==== \(String(describing: weakSelf?.playbackRightsData?.aesUrl))")
-                            weakSelf?.instantiatePlayer(with: (weakSelf?.playbackRightsData!.aesUrl!)!)
+                            print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                            self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
                         }
                     }
                 }
