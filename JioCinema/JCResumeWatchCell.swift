@@ -28,7 +28,7 @@ class JCResumeWatchCell: UICollectionViewCell {
         }
         else
         {
-            self.superview?.alpha = 0.5
+            self.superview?.alpha = 0.4
             self.nameLabel.font = self.nameLabel.font.withSize(24)
             let frame = CGRect.init(x: itemImageView.frame.origin.x, y: progressBar.frame.origin.y - 20, width: itemImageView.frame.size.width, height: progressBar.frame.size.height)
             self.progressBar.frame = frame

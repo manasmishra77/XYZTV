@@ -23,7 +23,7 @@ class JCCarouselCell: UICollectionViewCell
         }
         else
         {
-            self.superview?.alpha = 0.5
+            self.superview?.alpha = 0.4
         }
         
     }
