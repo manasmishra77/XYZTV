@@ -274,7 +274,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         if presses.first?.type == UIPressType.menu
         {
             //ForChangingTheAlphaWhenMenuButtonPressed
-            if (self.tabBarController?.selectedViewController as? JCMusicVC) != nil{
+            if (self.tabBarController?.selectedViewController as? JCMoviesVC) != nil{
                 
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                     isAbleToChangeAlpha = true
