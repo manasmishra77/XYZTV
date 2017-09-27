@@ -12,7 +12,28 @@
  import AVFoundation
  import SDWebImage
  
+ 
+ let URL_SCHEME_NAME = "skd"
+ let URL_GET_KEY =  "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getkey"
+ let URL_GET_CERT = "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getcert"
+ 
+ let PLAYABLE_KEY = "playable"
+ let STATUS_KEY = "status"
+ let AVPLAYER_BUFFER_KEEP_UP = "playbackLikelyToKeepUp"
+ let AVPLAYER_BUFFER_EMPTY = "playbackBufferEmpty"
+ 
  private var playerViewControllerKVOContext = 0
+ 
+ private func globalNotificationQueue() -> DispatchQueue {
+    var globalQueue = 0 as? DispatchQueue
+    var getQueueOnce: Int = 0
+    if (getQueueOnce == 0) {
+        globalQueue = DispatchQueue(label: "tester notify queue")
+    }
+    getQueueOnce = 1
+    return globalQueue!
+ }
+ 
  
  class JCPlayerVC: UIViewController
  {
@@ -52,6 +73,10 @@
     
     var moreModal:More?
     
+    static let assetKeysRequiredToPlay = [
+        "playable",
+        "hasProtectedContent"
+    ]
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -61,7 +86,6 @@
         {
             fetchRecommendationData()
         }
-        
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
     }
     
@@ -178,7 +202,7 @@
                             else if let data = self?.item as? Item
                             {
                                 let index = (self?.currentPlayingIndex)! + 1
-
+                                
                                 if data.isPlaylist!     // If Playlist exist
                                 {
                                     if self?.playlistData != nil
@@ -242,18 +266,39 @@
     
     //MARK:- AVPlayerViewController Methods
     
-    func instantiatePlayer(with url:String)
+    func resetPlayer()
     {
         if((self.player) != nil) {
             
             self.removePlayerObserver()
             self.playerController = nil
         }
-        
+    }
+    
+    func instantiatePlayer(with url:String)
+    {
+        self.resetPlayer()
+        if metadata != nil  // For Handling FPS URL
+        {
+            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
+            {
+                handleFairPlayStreamingUrl(videoUrl: url)
+            }
+        }
+        else
+        {
+                handleAESStreamingUrl(videoUrl: url)
+        }
+    }
+   
+    //MARK:- Handle AES Video Url
+
+    func handleAESStreamingUrl(videoUrl:String)
+    {
         var videoAsset:AVURLAsset?
         if JCDataStore.sharedDataStore.cdnEncryptionFlag
         {
-            let videoUrl = URL.init(string: url)
+            let videoUrl = URL.init(string: videoUrl)
             if let absoluteUrlString = videoUrl?.absoluteString
             {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme!)!, with: "fakeHttp")
@@ -262,19 +307,68 @@
                 videoAsset = AVURLAsset(url: URL.init(string: changedUrl)!, options: header)
                 videoAsset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
             }
-            
         }
         else
         {
-            videoAsset = AVURLAsset(url:URL.init(string: url)!)
-            
+            videoAsset = AVURLAsset(url:URL.init(string: videoUrl)!)
         }
         playerItem = AVPlayerItem.init(asset: videoAsset!)
+        self.playVideoWithPlayerItem()
+    }
+    
+    //MARK:- Handle Fairplay Video Url
+    func handleFairPlayStreamingUrl(videoUrl:String)
+    {
+        let url = URL(string: videoUrl)
+        let asset = AVURLAsset(url: url!, options: nil)
+        asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
+        let requestedKeys: [Any] = [PLAYABLE_KEY]
+        // Tells the asset to load the values of any of the specified keys that are not already loaded.
+        asset.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {() -> Void in
+            DispatchQueue.main.async(execute: {() -> Void in
+                /* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
+                self.prepare(toPlay: asset, withKeys: JCPlayerVC.assetKeysRequiredToPlay)
+            })
+        })
+    }
+    func prepare(toPlay asset: AVURLAsset, withKeys requestedKeys: [String]) {
+        
+        for key in JCPlayerVC.assetKeysRequiredToPlay {
+            var error: NSError?
+            if asset.statusOfValue(forKey: key, error: &error) == .failed {
+                let stringFormat = NSLocalizedString("error.asset_key_%@_failed.description", comment: "Can't use this AVAsset because one of it's keys failed to load")
+                let message = String.localizedStringWithFormat(stringFormat, key)
+                return
+            }
+        }
+        
+        // We can't play this asset.
+        if !asset.isPlayable || asset.hasProtectedContent {
+            let message = NSLocalizedString("error.asset_not_playable.description", comment: "Can't use this AVAsset because it isn't playable or has protected content")
+            return
+        }
+        
+        
+        if (playerItem != nil) {
+            defer {
+            }
+            do {
+                playerItem?.removeObserver(self, forKeyPath: STATUS_KEY)
+                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_EMPTY)
+                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_KEEP_UP)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+            } catch {
+            }
+        }
+        playerItem = AVPlayerItem(asset: asset)
+        self.playVideoWithPlayerItem()
+    }
+    //MARK:- Play Video
+    func playVideoWithPlayerItem()
+    {
         self.addMetadataToPlayer()
         player = AVPlayer(playerItem: playerItem)
-        
         if playerController == nil {
-            
             playerController = AVPlayerViewController()
             if isResumed != nil, isResumed!
             {
@@ -285,16 +379,12 @@
             playerController?.view.frame = self.view.frame
         }
         addPlayerNotificationObserver()
-        
         playerController?.player = player
         player?.play()
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
-        
-        //self.collectionView_Recommendation.reloadData()
-        
     }
     
     func addMetadataToPlayer()
@@ -413,6 +503,9 @@
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
+                print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                self.resetPlayer()
+                self.handleAESStreamingUrl(videoUrl: (self.playbackRightsData?.aesUrl)!)
             default:
                 print("unknown")
             }
@@ -447,7 +540,7 @@
                     }
                     else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue || data.app?.type == VideoType.Language.rawValue || data.app?.type == VideoType.Genre.rawValue
                     {
-                            handleNextItem()
+                        handleNextItem()
                     }
                 }
                 else if let data = self.item as? Episode {
@@ -533,7 +626,7 @@
             }
         }
     }
-
+    
     //MARK:- Open MetaDataVC
     func openMetaDataVC(model:More)
     {
@@ -630,7 +723,7 @@
     {
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
-
+            
             UIView.animate(withDuration: 0.5, animations: {
                 let tempFrame = self.nextVideoView.frame
                 self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
@@ -645,7 +738,7 @@
     {
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
- 
+            
             UIView.animate(withDuration: 0.5, animations: {
                 let tempFrame = self.nextVideoView.frame
                 self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y + 300, width: tempFrame.size.width, height: tempFrame.size.height)
@@ -655,6 +748,20 @@
             })
         }
     }
+    //MARK:- Show Alert
+    func showAlert(alertTitle:String,alertMessage:String)
+    {
+        let alert = UIAlertController(title: alertTitle,
+                                      message: alertMessage,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cancelAction = UIAlertAction(title: "OK",
+                                         style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+
     
     //MARK:- Webservice Methods
     func fetchRecommendationData()
@@ -697,7 +804,7 @@
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items)!
                     }
-                
+                    
                     for i in 0 ..< (arr_RecommendationList.count)
                     {
                         let modal = arr_RecommendationList[i]
@@ -733,7 +840,7 @@
                 DispatchQueue.main.async {
                     weakSelf?.collectionView_Recommendation.reloadData()
                     weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex)!)
-
+                    
                 }
                 return
             }
@@ -807,7 +914,7 @@
                         
                         self.collectionView_Recommendation.reloadData()
                         self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
-
+                        
                         
                         let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
                         self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
@@ -824,12 +931,12 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
-        print(id)
+        print("Playback rights id is === \(id)")
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
+       // weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             if let responseError = error
             {
@@ -843,7 +950,20 @@
                 {
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
-                        weakSelf?.instantiatePlayer(with: (weakSelf?.playbackRightsData!.aesUrl!)!)
+                        
+                        if self.metadata != nil  // For Handling FPS URL
+                        {
+                            if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
+                            {
+                                print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
+                                self.instantiatePlayer(with: (self.playbackRightsData!.url!))
+                            }
+                        }
+                        else
+                        {
+                            print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                            self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                        }
                     }
                 }
                 return
@@ -883,8 +1003,8 @@
     {
         let url = addToResumeWatchlistUrl
         //let json: Dictionary<String, Any> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
-                let id = latestEpisodeId == "-1" ? playerId! : latestEpisodeId
-                let json: Dictionary<String, Any> = ["id":id, "duration":currentTimeDuration, "totalduration": totalDuration]
+        let id = latestEpisodeId == "-1" ? playerId! : latestEpisodeId
+        let json: Dictionary<String, Any> = ["id":id, "duration":currentTimeDuration, "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = 10
@@ -921,6 +1041,7 @@
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
         if self.currentPlayingIndex == indexPath.row {
+            self.showAlert(alertTitle: "Video is already playing", alertMessage: "")
             return
         }
         
@@ -992,7 +1113,7 @@
                         {
                             self.callWebServiceForPlaybackRights(id: (model.id)!)
                         }
-                    }
+                }
             }
         }
     }
@@ -1216,7 +1337,7 @@
     }
     
  }
-
+ 
  //MARK -- AVAssetResourceLoaderDelegate Methods
  
  extension JCPlayerVC: AVAssetResourceLoaderDelegate
@@ -1265,10 +1386,150 @@
         let currentTimeInSeconds: Int = Int(ceil(deviceTime.timeIntervalSince1970)) + JCDataStore.sharedDataStore.cdnUrlExpiryDuration!
         return "\(currentTimeInSeconds)"
     }
+    func generateRedirectURL(sourceURL: String)-> URLRequest? {
+        
+        let redirect = URLRequest(url: URL(string: sourceURL)!)
+        return redirect
+    }
+    
+    func getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest requestBytes: Data, contentIdentifierHost assetStr: String, leaseExpiryDuration expiryDuration: TimeInterval, error errorOut: Error?,completionHandler: @escaping(Data?)->Void)
+    {
+        let dict: [AnyHashable: Any] = [
+            "spc" : requestBytes.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
+            "id" : "whaterver",
+            "leaseExpiryDuration" : Double(expiryDuration)
+        ]
+        
+        var jsonData: Data? = try? JSONSerialization.data(withJSONObject: dict, options: [])
+        
+        let url = URL(string: URL_GET_KEY)
+        let req = NSMutableURLRequest(url: url!)
+        req.httpMethod = "POST"
+        req.setValue("\(UInt((jsonData?.count)!))", forHTTPHeaderField: "Content-Length")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
+        req.httpBody = jsonData
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
+            //print("error: \(error!)")
+            print("data: \(data!)")
+            if (data != nil)
+            {
+                let decodedData = Data(base64Encoded: data!, options: [])
+                completionHandler(decodedData!)
+            }
+            else
+            {
+                completionHandler(data)
+            }
+        })
+        task.resume()
+    }
+    
+    func getAppCertificateData(completionHandler:@escaping (Data?)->Void) {
+        let url = URL(string: URL_GET_CERT)
+        let req = NSMutableURLRequest(url: url!)
+        req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
+        let session = URLSession.shared
+        let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
+            //print("error: \(error!)")
+            print("ASYNC Certificate data: \(data!)")
+            if (data != nil)
+            {
+                let decodedData = Data(base64Encoded: data!, options: [])
+                completionHandler(decodedData!)
+            }
+            else
+            {
+                completionHandler(data)
+            }
+        })
+        task.resume()
+    }
+    
     
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool
     {
+        if metadata != nil  // For Handling FPS URL
+        {
+            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
+            {
+                let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
+                let url: URL? = loadingRequest.request.url
+                let error: Error? = nil
+                var handled: Bool = false
+                
+                // Must be a non-standard URI scheme for AVFoundation to invoke your AVAssetResourceLoader delegate
+                // for help in loading it.
+                
+                if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
+                    return false
+                }
+                
+                let assetStr: String = url!.host!
+                var assetId: Data?
+                var requestBytes: Data?
+                
+                assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as Data
+                if (assetId == nil) {
+                    return handled
+                }
+                
+                self.getAppCertificateData { (certificate) in
+                    
+                    
+                    do {
+                        requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate!, contentIdentifier: assetId!, options: nil)
+                        
+                        print("Request Bytes is \(String(describing: requestBytes))")
+                        //var responseData: Data? = nil
+                        let expiryDuration = 0.0 as? TimeInterval
+                        
+                        
+                        self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes!, contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration!, error: error, completionHandler: { (responseData) in
+                            print("Key  is \(String(describing: responseData))")
+                            
+                            
+                            if (responseData != nil){
+                                dataRequest?.respond(with: responseData!)
+                                if expiryDuration != 0.0
+                                {
+                                    var infoRequest: AVAssetResourceLoadingContentInformationRequest? = loadingRequest.contentInformationRequest
+                                    if (infoRequest != nil)
+                                    {
+                                        infoRequest?.renewalDate = Date(timeIntervalSinceNow: expiryDuration!)
+                                        infoRequest?.contentType = "application/octet-stream"
+                                        infoRequest?.contentLength = Int64(responseData!.count)
+                                        infoRequest?.isByteRangeAccessSupported = false
+                                    }
+                                    
+                                }
+                                loadingRequest.finishLoading()
+                            }
+                            else{
+                                if error != nil {
+                                    try? loadingRequest.finishLoading()
+                                }
+                                else {
+                                    loadingRequest.finishLoading()
+                                }
+                            }
+                            
+                            handled = true;	// Request has been handled regardless of whether server returned an error.
+                            // completionHandler(responseData)
+                            //  return handled
+                        })
+                        
+                    }
+                    catch {
+                    }
+                }
+                return true
+                
+            }
+        }
         
         var url = loadingRequest.request.url?.absoluteString
         print(url!)
@@ -1281,7 +1542,6 @@
             contentRequest?.isByteRangeAccessSupported = true
         }
         if (dataRequest != nil) {
-            
             //this is data request so processing the url. change the scheme to http
             if (url?.contains("fakeHttp"))!, (url?.contains("token"))! {
                 url = url?.replacingOccurrences(of: "fakeHttp", with: "http")
@@ -1327,11 +1587,7 @@
         }
         return true
     }
-    func generateRedirectURL(sourceURL: String)-> URLRequest? {
-        
-        let redirect = URLRequest(url: URL(string: sourceURL)!)
-        return redirect
-    }
+    
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForResponseTo authenticationChallenge: URLAuthenticationChallenge) -> Bool
     {
@@ -1340,8 +1596,14 @@
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForRenewalOfRequestedResource renewalRequest: AVAssetResourceRenewalRequest) -> Bool {
         
+        if metadata != nil  // For Handling FPS URL
+        {
+            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
+            {
+                return self.resourceLoader(resourceLoader, shouldWaitForLoadingOfRequestedResource: renewalRequest)
+            }
+        }
         return true
-        
     }
     
  }

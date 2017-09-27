@@ -119,6 +119,11 @@ let readyToPlayNotificationName = Notification.Name("readyToPlay")
 let openSearchVCNotificationName = Notification.Name("openSearchVC")
 let isAutoPlayOnKey = "isAutoPlayOn"
 
+
+//Google Analytics
+let googleAnalyticsTId = "UA-106863966-2"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
+let googleAnalyticsEndPoint = "https://www.google-analytics.com/collect?"
+
 //App Delegate
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
@@ -133,7 +138,6 @@ let upgradeAuthKey = "upgradeAuth"
 let returnSessionDetailsKey = "returnSessionDetails"
 let upgradAuthValue = "Y"
 let returnSessionDetailsValue = "T"
-
 let subscriberIdKey = "subscriberId"
 
 

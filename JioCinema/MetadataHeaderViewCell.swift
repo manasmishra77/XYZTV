@@ -42,8 +42,11 @@ class MetadataHeaderViewCell: UIView {
         self.starringLabel.text = metadata?.artist?.joined(separator: ",")
          let imageUrl = metadata?.banner
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
-        bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
+        DispatchQueue.main.async {
+            self.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
+        }
+        
         //        if metadata != nil
         //        {
         //            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"

@@ -29,7 +29,7 @@ class JCResumeWatchCell: UICollectionViewCell {
         else
         {
             //self.superview?.alpha = 0.5
-            //ToBeChanged
+            //ForChangingTheAlphaWhenMenuButtonPressed
             if self.superview?.tag ==  3{
                 self.superview?.alpha = 1.0
                 self.superview?.tag = 0

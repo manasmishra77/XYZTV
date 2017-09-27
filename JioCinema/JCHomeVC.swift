@@ -13,8 +13,12 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     var isResumeWatchDataAvailable = false
     var isFirstLoaded = false
     
+<<<<<<< HEAD
     var isAbleToChangeAlpha = false
     var focusShiftedFromTabBarToVC = false
+=======
+    
+>>>>>>> 745d4e7b429518cbfb97c97263cb7e90547d7735
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
@@ -47,7 +51,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             baseTableView.reloadData()
         }
         
-        
+        JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
     }
     
     override func didReceiveMemoryWarning() {
@@ -270,16 +274,25 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     
+<<<<<<< HEAD
     //ToBeChanged
+=======
+    //ChangingTheAlpha
+    var isAbleToChangeAlpha = false
+    var focusShiftedFromTabBarToVC = false
+>>>>>>> 745d4e7b429518cbfb97c97263cb7e90547d7735
     //ChangingTheAlpha
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
             //ForChangingTheAlphaWhenMenuButtonPressed
             if (self.tabBarController?.selectedViewController as? JCHomeVC) != nil{
+<<<<<<< HEAD
                 if (baseTableView.headerView(forSection: 0)?.contentView as? InfinityScrollView) != nil{
                     print("100")
                 }
+=======
+>>>>>>> 745d4e7b429518cbfb97c97263cb7e90547d7735
                 
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                     isAbleToChangeAlpha = true

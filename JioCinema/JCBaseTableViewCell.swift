@@ -163,6 +163,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             cell.backgroundColor = .clear
             return cell
         }
+        
+        //Falling Animation (Cards)
         //        let finalCellFrame = cell.frame
         //        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
         //        if translation.x > 0
@@ -180,8 +182,21 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         return cell
     }
     
-    
-    
+  
+    //Focus fixed on first cell
+    /*
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if let focusedView = context.nextFocusedView as? JCItemCell {
+            
+            tableCellCollectionView.isScrollEnabled = false
+            if let indexPath = tableCellCollectionView.indexPath(for: focusedView)
+            {
+            tableCellCollectionView.scrollToItem(at: indexPath, at: .init(rawValue: 80), animated: true)
+            }
+        }
+     
+    }*/
+   
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         collectionIndex = collectionView.tag
