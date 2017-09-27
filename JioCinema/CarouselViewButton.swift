@@ -23,7 +23,7 @@ class CarouselViewButton: UIButton {
         {
             //self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             self.alpha = 1.0
-            self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
+            self.transform = CGAffineTransform.init(scaleX: 1.03, y: 1.05)
         }
         else
         {
