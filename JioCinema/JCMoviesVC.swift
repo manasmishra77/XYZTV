@@ -22,7 +22,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     {
         super.viewDidLoad()
         callWebServiceForMoviesData(page: loadedPage)
-        
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
@@ -128,6 +127,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
         {
             /*
+             //ForCarouselWithCollectionView
              let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
              headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
              headerCell.itemFromViewController = VideoType.Music
@@ -139,6 +139,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             let carouselView = carouselViews?.first as! InfinityScrollView
             carouselView.carouselArray = (JCDataStore.sharedDataStore.moviesData?.data?[0].items)!
             carouselView.loadViews()
+            uiviewCarousel = carouselView
             return carouselView
         }
         else
@@ -266,15 +267,20 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         }
     }
     
-    //ChangingTheAlpha
+    //ForChangingTheAlphaWhenMenuButtonPressed
     var isAbleToChangeAlpha = false
-    var focusShiftedFromTabBarToVC = false
-    //ChangingTheAlpha
+    var focusShiftedFromTabBarToVC = true
+    var uiviewCarousel: UIView? = nil
+
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
             //ForChangingTheAlphaWhenMenuButtonPressed
-            if (self.tabBarController?.selectedViewController as? JCMusicVC) != nil{
+            if (self.tabBarController?.selectedViewController as? JCMoviesVC) != nil{
+                
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 0.3
+                }
                 
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                     isAbleToChangeAlpha = true

@@ -54,7 +54,7 @@ class InfinityScrollView: UIView {
 
         //Setting Alpha of buttons
         self.middleButton.alpha = 1.0
-        self.leftButton.alpha = self.middleButton.alpha
+        self.leftButton.alpha = self.middleButton.alpha - 0.5
         self.rightButton.alpha = self.leftButton.alpha
         self.extraLeftButton.alpha = self.leftButton.alpha
         self.extraRightButton.alpha = self.leftButton.alpha

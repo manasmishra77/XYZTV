@@ -112,6 +112,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             let carouselView = carouselViews?.first as! InfinityScrollView
             carouselView.carouselArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].items)!
             carouselView.loadViews()
+            uiviewCarousel = carouselView
             return carouselView
         }
         else
@@ -204,13 +205,18 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     //ChangingTheAlpha
     var isAbleToChangeAlpha = false
-    var focusShiftedFromTabBarToVC = false
+    var focusShiftedFromTabBarToVC = true
+    var uiviewCarousel: UIView? = nil
+
     //ChangingTheAlpha
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
             //ForChangingTheAlphaWhenMenuButtonPressed
             if (self.tabBarController?.selectedViewController as? JCClipsVC) != nil{
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 1
+                }
                 
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                     isAbleToChangeAlpha = true
