@@ -43,7 +43,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             baseTableView.reloadData()
         }
         
-        
+        JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
     }
     
     override func didReceiveMemoryWarning() {
