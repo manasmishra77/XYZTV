@@ -197,4 +197,50 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
+    
+    //ChangingTheAlpha
+    var isAbleToChangeAlpha = false
+    var focusShiftedFromTabBarToVC = false
+    //ChangingTheAlpha
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.first?.type == UIPressType.menu
+        {
+            //ForChangingTheAlphaWhenMenuButtonPressed
+            if (self.tabBarController?.selectedViewController as? JCMusicVC) != nil{
+                
+                if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                    isAbleToChangeAlpha = true
+                    for cell in cells{
+                        if cell.tableCellCollectionView.alpha == CGFloat(1){
+                            cell.tableCellCollectionView.tag = 3
+                        }
+                        cell.tableCellCollectionView.alpha = 1
+                        
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        
+        //ForChangingTheAlphaWhenMenuButtonPressed
+        if isAbleToChangeAlpha{
+            isAbleToChangeAlpha = false
+            focusShiftedFromTabBarToVC = true
+        }
+        else if focusShiftedFromTabBarToVC{
+            focusShiftedFromTabBarToVC = false
+            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                isAbleToChangeAlpha = false
+                for cell in cells{
+                    if cell != cells.first{
+                        cell.tableCellCollectionView.alpha = 0.5
+                    }
+                }
+            }
+        }
+    }
+
 }
