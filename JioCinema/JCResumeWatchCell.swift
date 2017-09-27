@@ -28,7 +28,15 @@ class JCResumeWatchCell: UICollectionViewCell {
         }
         else
         {
-            self.superview?.alpha = 0.5
+            //self.superview?.alpha = 0.5
+            //ForChangingTheAlphaWhenMenuButtonPressed
+            if self.superview?.tag ==  3{
+                self.superview?.alpha = 1.0
+                self.superview?.tag = 0
+            }
+            else{
+                self.superview?.alpha = 0.5
+            }
             self.nameLabel.font = self.nameLabel.font.withSize(24)
             let frame = CGRect.init(x: itemImageView.frame.origin.x, y: progressBar.frame.origin.y - 20, width: itemImageView.frame.size.width, height: progressBar.frame.size.height)
             self.progressBar.frame = frame

@@ -46,7 +46,17 @@ class JCItemCell: UICollectionViewCell {
             self.nameLabel.font = self.nameLabel.font.withSize(24)
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
             {
-                self.superview?.alpha = 0.5
+                
+                //self.superview?.alpha = 0.5
+                //ToBeChanged
+                //ForChangingTheAlphaWhenMenuButtonPressed
+                if self.superview?.tag ==  3{
+                    self.superview?.alpha = 1.0
+                    self.superview?.tag = 0
+                }
+                else{
+                    self.superview?.alpha = 0.5
+                }
             }
             self.view_NowPlaying.frame = itemImageView.frame
         }
