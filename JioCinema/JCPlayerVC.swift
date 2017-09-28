@@ -350,18 +350,19 @@
             return
         }
         
+//        if (playerItem != nil) {
+//            defer {
+//            }
+//            do {
+//                playerItem?.removeObserver(self, forKeyPath: STATUS_KEY)
+//                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_EMPTY)
+//                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_KEEP_UP)
+//                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+//            } catch {
+//            }
+//        }
         
-        if (playerItem != nil) {
-            defer {
-            }
-            do {
-                playerItem?.removeObserver(self, forKeyPath: STATUS_KEY)
-                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_EMPTY)
-                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_KEEP_UP)
-                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-            } catch {
-            }
-        }
+        
         playerItem = AVPlayerItem(asset: asset)
         self.playVideoWithPlayerItem()
     }
