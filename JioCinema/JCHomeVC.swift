@@ -12,6 +12,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     var loadedPage = 0
     var isResumeWatchDataAvailable = false
     var isFirstLoaded = false
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
@@ -28,6 +29,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(callResumeWatchWebServiceOnPlayerDismiss), name: playerDismissNotificationName, object: nil)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
+        
         // Do any additional setup after loading the view.
         
     }
@@ -43,7 +45,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             baseTableView.reloadData()
         }
         
-        
+        JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
     }
     
     override func didReceiveMemoryWarning() {
@@ -124,6 +126,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         let carouselView = carouselViews?.first as! InfinityScrollView
         carouselView.carouselArray = (JCDataStore.sharedDataStore.homeData?.data?[0].items)!
         carouselView.loadViews()
+        uiviewCarousel = carouselView
         return carouselView
         
     }
@@ -264,6 +267,65 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     {
         callWebServiceForResumeWatchData()
     }
-}
+    
+    
+    //ToBeChanged
+    //ChangingTheAlpha
+    var isAbleToChangeAlpha = false
+    var focusShiftedFromTabBarToVC = true
+    var uiviewCarousel: UIView? = nil
 
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.first?.type == UIPressType.menu
+        {
+            //ForChangingTheAlphaWhenMenuButtonPressed
+            if (self.tabBarController?.selectedViewController as? JCHomeVC) != nil{
+                
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 1
+                }
+                if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                    isAbleToChangeAlpha = true
+                    for cell in cells{
+                        if cell.tableCellCollectionView.alpha == CGFloat(1){
+                            cell.tableCellCollectionView.tag = 3
+                        }
+                        cell.tableCellCollectionView.alpha = 1
+                        
+                    }
+                }
+            }
+        }
+     
+    }
+
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        //ChangingAlphaIfScrollingToTabItemNormally
+        if (context.previouslyFocusedView as? CarouselViewButton) != nil {
+            if context.nextFocusedView?.tag != 101 {
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 1
+                }
+            }
+           
+        }
+        
+        //ForChangingTheAlphaWhenMenuButtonPressed
+        if isAbleToChangeAlpha{
+            isAbleToChangeAlpha = false
+            focusShiftedFromTabBarToVC = true
+        }
+        else if focusShiftedFromTabBarToVC{
+            focusShiftedFromTabBarToVC = false
+            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                isAbleToChangeAlpha = false
+                for cell in cells{
+                    if cell != cells.first{
+                    cell.tableCellCollectionView.alpha = 0.5
+                    }
+                }
+            }
+        }
+    }
+}
 

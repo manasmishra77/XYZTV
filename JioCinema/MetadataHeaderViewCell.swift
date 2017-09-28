@@ -15,7 +15,9 @@ class MetadataHeaderViewCell: UIView {
     var metadata:MetadataModel?
     var item:Item?
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
+    @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!
+    @IBOutlet weak var starringStaticLabel: UILabel!
     @IBOutlet weak var tvShowSubtitleLabel: UILabel!
     @IBOutlet weak var imdbImageLogo: UIImageView!
     @IBOutlet weak var starringLabel: UILabel!
@@ -39,6 +41,12 @@ class MetadataHeaderViewCell: UIView {
         self.titleLabel.text = metadata?.name
         self.subtitleLabel.text = metadata?.newSubtitle
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")
+        if metadata?.directors?.count == 0 || metadata?.directors == nil{
+            directorStaticLabel.isHidden = true
+        }
+        if metadata?.artist?.count == 0 || metadata?.artist == nil{
+            starringStaticLabel.isHidden = true
+        }
         self.starringLabel.text = metadata?.artist?.joined(separator: ",")
          let imageUrl = metadata?.banner
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)

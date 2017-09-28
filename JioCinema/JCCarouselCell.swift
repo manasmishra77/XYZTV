@@ -23,7 +23,13 @@ class JCCarouselCell: UICollectionViewCell
         }
         else
         {
-            self.superview?.alpha = 0.4
+            if self.superview?.alpha == CGFloat(0.99){
+                self.superview?.alpha = 1.0
+            }
+            else{
+              self.superview?.alpha = 0.5  
+            }
+            
         }
         
     }

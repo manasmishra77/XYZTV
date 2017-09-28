@@ -1125,7 +1125,7 @@
         {
             if let data = self.item as? Item
             {
-                if data.isPlaylist!     // If Playlist exist
+                if data.isPlaylist! // If Playlist exist
                 {
                     let model = self.playlistData?.more?[indexPath.row]
                     self.currentItemImage = model?.banner

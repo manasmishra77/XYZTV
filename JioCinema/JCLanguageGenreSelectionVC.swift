@@ -5,7 +5,6 @@
 //  Created by Pallav Trivedi on 03/09/17.
 //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
-
 import UIKit
 
 protocol JCLanguageGenreSelectionDelegate : class
