@@ -279,7 +279,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             if (self.tabBarController?.selectedViewController as? JCMoviesVC) != nil{
                 
                 if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
-                    headerViewOfTableSection.middleButton.alpha = 0.3
+                    headerViewOfTableSection.middleButton.alpha = 1
                 }
                 
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
@@ -299,6 +299,15 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         
+        //ChangingAlphaIfScrollingToTabItemNormally
+        if (context.previouslyFocusedView as? CarouselViewButton) != nil {
+            if context.nextFocusedView?.tag != 101 {
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 1
+                }
+            }
+            
+        }
         //ForChangingTheAlphaWhenMenuButtonPressed
         if isAbleToChangeAlpha{
             isAbleToChangeAlpha = false

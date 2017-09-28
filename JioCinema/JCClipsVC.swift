@@ -234,7 +234,15 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        
+        //ChangingAlphaIfScrollingToTabItemNormally
+        if (context.previouslyFocusedView as? CarouselViewButton) != nil {
+            if context.nextFocusedView?.tag != 101 {
+                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    headerViewOfTableSection.middleButton.alpha = 1
+                }
+            }
+            
+        }
         //ForChangingTheAlphaWhenMenuButtonPressed
         if isAbleToChangeAlpha{
             isAbleToChangeAlpha = false
