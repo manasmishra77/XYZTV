@@ -643,6 +643,20 @@
     
     //MARK:- Custom Methods
     //MARK:- Scroll Collection View To Row
+    var myPreferredFocusView:UIView? = nil
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment]
+    {
+        if myPreferredFocusView != nil
+        {
+            return [myPreferredFocusView!]
+        }
+        else
+        {
+            return []
+        }
+    }
+    
     func scrollCollectionViewToRow(row:Int)
     {
         if row >= 0 {
@@ -650,6 +664,12 @@
                 let path = IndexPath(row: row, section: 0)
                 self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
             }
+        }
+        DispatchQueue.main.async {
+            let cell = self.collectionView_Recommendation.visibleCells.first
+            self.myPreferredFocusView = cell
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
         }
     }
     
