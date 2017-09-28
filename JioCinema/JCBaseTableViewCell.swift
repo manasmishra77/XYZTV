@@ -206,12 +206,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         {
             if isSearchOpenFromMetaData
             {
-                isSearchOpenFromMetaData = false
+                
                 
                 let item = self.data?[indexPath.row]
                 print("Tap item is \(item)")
                 if item?.app?.type == VideoType.Movie.rawValue || item?.app?.type == VideoType.TVShow.rawValue
                 {
+                    isSearchOpenFromMetaData = false
                     if let topController = UIApplication.topViewController() {
                         topController.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             DispatchQueue.main.async {
