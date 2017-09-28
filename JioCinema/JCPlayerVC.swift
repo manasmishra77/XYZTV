@@ -44,6 +44,8 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
+    var isVideoUrlFailedCount = 1
+    
     var playerTimeObserverToken     :Any?
     var item                        :Any?
     
@@ -269,7 +271,7 @@
     func resetPlayer()
     {
         if((self.player) != nil) {
-            
+            self.player?.pause()
             self.removePlayerObserver()
             self.playerController = nil
         }
@@ -504,8 +506,32 @@
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
                 print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-                self.resetPlayer()
-                self.handleAESStreamingUrl(videoUrl: (self.playbackRightsData?.aesUrl)!)
+                if isVideoUrlFailedCount == 0
+                {
+                    isVideoUrlFailedCount = 1
+                    self.resetPlayer()
+                    self.handleAESStreamingUrl(videoUrl: (self.playbackRightsData?.aesUrl)!)
+                }
+                else
+                {
+                    
+                    let alert = UIAlertController(title: "Unable to process your request right now",
+                                                  message: "",
+                                                  preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                        DispatchQueue.main.async {
+                            print("dismiss")
+                            self.dismissPlayerVC()
+                        }
+                    }
+                    
+                    alert.addAction(cancelAction)
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: true, completion: nil)
+                    }
+ 
+                }
             default:
                 print("unknown")
             }
@@ -773,7 +799,7 @@
                 self.callWebServiceForPlayListData(id: data.playlistId!)
             }
             else{
-                
+                print("data id is == \(data.id)")
                 if data.app?.type == VideoType.Movie.rawValue
                 {
                     let url = metadataUrl.appending(data.id!)
@@ -790,10 +816,14 @@
                     
                     if selectedItemFromViewController == VideoType.Music
                     {
+                        self.callWebServiceForPlaybackRights(id: data.id!)
+
                         arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
                     }
                     else if selectedItemFromViewController == VideoType.Clip
                     {
+                        self.callWebServiceForPlaybackRights(id: data.id!)
+
                         arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items)!
                     }
                     else if selectedItemFromViewController == VideoType.Home
@@ -950,6 +980,11 @@
                 {
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
+                        
+//                        if((self.player) != nil) {
+//                            self.player?.pause()
+//                            self.resetPlayer()
+//                        }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {

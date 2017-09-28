@@ -287,7 +287,7 @@ class JCTabBarController: UITabBarController {
                     }
                     else
                     {
-                    playerVC.callWebServiceForPlaybackRights(id: item.id!)
+                       // playerVC.callWebServiceForPlaybackRights(id: item.id!)
                     }
                 }
                // else
