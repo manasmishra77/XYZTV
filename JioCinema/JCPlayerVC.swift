@@ -664,14 +664,20 @@
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
                 self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+                let cell = self.collectionView_Recommendation.cellForItem(at: path)
+                self.myPreferredFocusView = cell
+                self.setNeedsFocusUpdate()
+                self.updateFocusIfNeeded()
+
+                
             }
         }
-        DispatchQueue.main.async {
-            let cell = self.collectionView_Recommendation.visibleCells.first
-            self.myPreferredFocusView = cell
-            self.setNeedsFocusUpdate()
-            self.updateFocusIfNeeded()
-        }
+//        DispatchQueue.main.async {
+//            let cell = self.collectionView_Recommendation
+//            self.myPreferredFocusView = cell
+//            self.setNeedsFocusUpdate()
+//            self.updateFocusIfNeeded()
+//        }
     }
     
     //MARK:- Open MetaDataVC
