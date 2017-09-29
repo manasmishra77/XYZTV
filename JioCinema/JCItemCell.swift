@@ -30,7 +30,8 @@ class JCItemCell: UICollectionViewCell {
             self.nameLabel.font = self.nameLabel.font.withSize(30)
             self.view_NowPlaying.frame = itemImageView.focusedFrameGuide.layoutFrame
             self.view_NowPlaying.frame.origin.x = self.view_NowPlaying.frame.origin.x + 15
-            self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
+            self.view_NowPlaying.frame.origin.y = self.view_NowPlaying.frame.origin.y + 15
+            //self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
             
             let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.width/2 - nowPlayingLabel.frame.width/2, y: itemImageView.focusedFrameGuide.layoutFrame.height/2 , width: nowPlayingLabel.frame.size.width, height: nowPlayingLabel.frame.size.height)
             nowPlayingLabel.frame.origin.x = frame.origin.x + 15

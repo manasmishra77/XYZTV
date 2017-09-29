@@ -23,8 +23,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="1684" height="350"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-2O-Hcl">
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-2O-Hcl">
                         <rect key="frame" x="0.0" y="70" width="1888" height="260"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="30" minimumInteritemSpacing="10" id="cp1-2v-ZfO">
                             <size key="itemSize" width="376" height="250"/>
@@ -34,29 +35,27 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-JA-ni5">
-                        <rect key="frame" x="20" y="0.0" width="0.0" height="62"/>
+                        <rect key="frame" x="20" y="0.0" width="1840" height="62"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="62" id="UFE-5f-mpC"/>
+                            <constraint firstAttribute="width" constant="1840" id="NA8-1D-UQE"/>
+                            <constraint firstAttribute="height" constant="62" id="jH7-0G-y0u"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
                         <color key="textColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Xxw-2O-Hcl" secondAttribute="trailing" id="1nP-SY-TwE"/>
-                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" id="Bx1-22-03n"/>
-                    <constraint firstItem="Xxw-2O-Hcl" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" id="E5m-mJ-UXv"/>
-                    <constraint firstItem="Xxw-2O-Hcl" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" constant="70" id="Jxx-nx-BDp"/>
-                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" constant="20" id="Rnb-VZ-V5u"/>
-                    <constraint firstAttribute="bottom" secondItem="Xxw-2O-Hcl" secondAttribute="bottom" constant="20" id="qhE-uQ-Pez"/>
+                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" constant="20" id="JgB-Os-Kra"/>
+                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" id="Upz-qE-LHB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="categoryTitleLabel" destination="Zq0-JA-ni5" id="Tw0-sO-has"/>
                 <outlet property="tableCellCollectionView" destination="Xxw-2O-Hcl" id="Svt-YA-gVZ"/>
             </connections>
+            <point key="canvasLocation" x="-645" y="349"/>
         </tableViewCell>
     </objects>
 </document>

@@ -339,14 +339,14 @@
             var error: NSError?
             if asset.statusOfValue(forKey: key, error: &error) == .failed {
                 let stringFormat = NSLocalizedString("error.asset_key_%@_failed.description", comment: "Can't use this AVAsset because one of it's keys failed to load")
-                let message = String.localizedStringWithFormat(stringFormat, key)
+                let _ = String.localizedStringWithFormat(stringFormat, key)
                 return
             }
         }
         
         // We can't play this asset.
-        if !asset.isPlayable || asset.hasProtectedContent {
-            let message = NSLocalizedString("error.asset_not_playable.description", comment: "Can't use this AVAsset because it isn't playable or has protected content")
+        if !asset.isPlayable {
+            let _ = NSLocalizedString("error.asset_not_playable.description", comment: "Can't use this AVAsset because it isn't playable or has protected content")
             return
         }
         
@@ -728,12 +728,19 @@
     //MARK:- Custom Setting
     func setCustomRecommendationViewSetting(state:Bool)
     {
+        
         self.collectionView_Recommendation.isScrollEnabled = state
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
         if state
         {
             self.scrollCollectionViewToRow(row: currentPlayingIndex)
+        }
+        if !state {
+            DispatchQueue.main.async {
+                self.myPreferredFocusView = nil
+                self.setNeedsFocusUpdate()
+            }
         }
     }
     
