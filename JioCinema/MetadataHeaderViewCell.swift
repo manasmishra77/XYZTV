@@ -26,6 +26,7 @@ class MetadataHeaderViewCell: UIView {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
+    @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var monthsCollectionView: UICollectionView!
@@ -34,21 +35,18 @@ class MetadataHeaderViewCell: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        if #available(tvOS 11.0, *) {
+            constarintForContainer.constant = -60
+    
+        } else {
+
+        }
 
     }
     
     func prepareView() ->UIView
     {
-        if #available(tvOS 11.0, *) {
-            let imdbFrame = CGRect.init(x: imdbImageLogo.frame.origin.x - 70, y: imdbImageLogo.frame.origin.y, width: imdbImageLogo.frame.size.width, height: imdbImageLogo.frame.size.height)
-            imdbImageLogo.frame = imdbFrame
-            
-            
-            
-            
-        } else {
-            // or use some work around
-        }
+    
         self.titleLabel.text = metadata?.name
         self.subtitleLabel.text = metadata?.newSubtitle
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")

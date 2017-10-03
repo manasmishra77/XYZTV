@@ -975,11 +975,11 @@
                                 }
                             }
                         }
-                        
-                        self.collectionView_Recommendation.reloadData()
-                        self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
-                        
-                        
+                        DispatchQueue.main.async {
+                            self.collectionView_Recommendation.reloadData()
+                            self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+                        }
+
                         let moreId = self.playlistData?.more?[self.currentPlayingIndex].id
                         self.currentItemImage = self.playlistData?.more?[self.currentPlayingIndex].banner
                         self.currentItemTitle = self.playlistData?.more?[self.currentPlayingIndex].name

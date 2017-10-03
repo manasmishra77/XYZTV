@@ -22,6 +22,7 @@ class JCItemCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
+            self.superview?.tag = 0
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
             {
                 self.superview?.alpha = 1.0

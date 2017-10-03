@@ -31,6 +31,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     @IBOutlet weak var languageGenreButton: JCButton!
     @IBOutlet weak var videoCategoryButton: JCButton!
     
+    
     override func viewDidLoad()
     {
         
