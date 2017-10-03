@@ -34,22 +34,15 @@
                             <inset key="sectionInset" minX="200" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                     </collectionView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-JA-ni5">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-JA-ni5">
                         <rect key="frame" x="20" y="0.0" width="1840" height="62"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="1840" id="NA8-1D-UQE"/>
-                            <constraint firstAttribute="height" constant="62" id="jH7-0G-y0u"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
                         <color key="textColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                <constraints>
-                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" constant="20" id="JgB-Os-Kra"/>
-                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" id="Upz-qE-LHB"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="categoryTitleLabel" destination="Zq0-JA-ni5" id="Tw0-sO-has"/>

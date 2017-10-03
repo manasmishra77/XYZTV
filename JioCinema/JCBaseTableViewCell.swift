@@ -32,8 +32,14 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         // Initialization code
         
         if #available(tvOS 11.0, *) {
-            let frame = CGRect.init(x: tableCellCollectionView.frame.origin.x - 70, y: tableCellCollectionView.frame.origin.y, width: tableCellCollectionView.frame.size.width, height: tableCellCollectionView.frame.size.height)
-            tableCellCollectionView.frame = frame
+            let collectionFrame = CGRect.init(x: tableCellCollectionView.frame.origin.x - 70, y: tableCellCollectionView.frame.origin.y, width: tableCellCollectionView.frame.size.width, height: tableCellCollectionView.frame.size.height)
+            tableCellCollectionView.frame = collectionFrame
+            
+            let labelFrame = CGRect(x: categoryTitleLabel.frame.origin.x - 70, y: categoryTitleLabel.frame.origin.y, width: categoryTitleLabel.frame.size.width, height: categoryTitleLabel.frame.size.height)
+            
+            categoryTitleLabel.frame = labelFrame
+
+            
         } else {
             // or use some work around
         }

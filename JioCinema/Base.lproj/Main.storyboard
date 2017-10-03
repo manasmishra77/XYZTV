@@ -372,14 +372,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                        <rect key="frame" x="0.0" y="-60" width="1920" height="1072"/>
                                         <color key="backgroundColor" red="0.062745098039215685" green="0.066666666666666666" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="-60" y="703" width="1980" height="377"/>
+                                        <rect key="frame" x="40" y="703" width="1880" height="257"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
@@ -391,12 +391,12 @@
                                 <constraints>
                                     <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="703" id="13c-eV-Ep7"/>
                                     <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" id="2Xt-yn-niL"/>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="-60" id="PBe-lE-Qq6"/>
+                                    <constraint firstAttribute="bottom" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-52" id="4MW-ix-IUW"/>
+                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="Ech-t2-tST"/>
+                                    <constraint firstAttribute="trailing" secondItem="uz9-6i-hkZ" secondAttribute="trailing" id="K3B-gD-Czx"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="40" id="PBe-lE-Qq6"/>
                                     <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" id="UHz-V6-cK6"/>
-                                    <constraint firstAttribute="trailing" secondItem="uz9-6i-hkZ" secondAttribute="trailing" id="bbA-9Q-qvp"/>
-                                    <constraint firstAttribute="bottom" secondItem="uz9-6i-hkZ" secondAttribute="bottom" id="lp0-gc-Cg6"/>
-                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" id="pTf-6n-l91"/>
-                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="xkh-Qt-ctY"/>
+                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="ySU-cL-Bsl"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVl-t3-UwF" userLabel="Loader View">
@@ -425,14 +425,14 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="v2z-Ee-E5k" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" constant="-60" id="23T-PN-qEs"/>
+                            <constraint firstItem="v2z-Ee-E5k" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" id="23T-PN-qEs"/>
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" constant="-60" id="EIN-Gl-Rn0"/>
                             <constraint firstAttribute="trailing" secondItem="v2z-Ee-E5k" secondAttribute="trailing" id="K8M-fu-KOS"/>
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="LTH-Kl-2wq"/>
                             <constraint firstAttribute="trailing" secondItem="MVl-t3-UwF" secondAttribute="trailing" id="Sao-nC-y7S"/>
-                            <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="bottom" constant="-60" id="WLV-oQ-aaq"/>
+                            <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="bottom" id="WLV-oQ-aaq"/>
                             <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="MVl-t3-UwF" secondAttribute="bottom" constant="-60" id="gvR-am-2QF"/>
                             <constraint firstItem="v2z-Ee-E5k" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="q5b-FR-NN0"/>
                         </constraints>

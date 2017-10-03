@@ -34,10 +34,21 @@ class MetadataHeaderViewCell: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+
     }
     
     func prepareView() ->UIView
     {
+        if #available(tvOS 11.0, *) {
+            let imdbFrame = CGRect.init(x: imdbImageLogo.frame.origin.x - 70, y: imdbImageLogo.frame.origin.y, width: imdbImageLogo.frame.size.width, height: imdbImageLogo.frame.size.height)
+            imdbImageLogo.frame = imdbFrame
+            
+            
+            
+            
+        } else {
+            // or use some work around
+        }
         self.titleLabel.text = metadata?.name
         self.subtitleLabel.text = metadata?.newSubtitle
         self.directorLabel.text = metadata?.directors?.joined(separator: ",")
