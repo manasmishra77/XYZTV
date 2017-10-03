@@ -30,6 +30,16 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         self.tableCellCollectionView.register(UINib.init(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
         self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
+        
+        if #available(tvOS 11.0, *) {
+            let frame = CGRect.init(x: tableCellCollectionView.frame.origin.x - 70, y: tableCellCollectionView.frame.origin.y, width: tableCellCollectionView.frame.size.width, height: tableCellCollectionView.frame.size.height)
+            tableCellCollectionView.frame = frame
+        } else {
+            // or use some work around
+        }
+        
+        
+        
     }
     
     
