@@ -35,6 +35,7 @@ class MetadataHeaderViewCell: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
         if #available(tvOS 11.0, *) {
             constarintForContainer.constant = -60
     

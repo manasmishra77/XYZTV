@@ -157,10 +157,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
-                let xAxis = 2 * cell.artistImageView.frame.origin.x
-                let newFrame = CGRect.init(x: xAxis, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
+                let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
+                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
                 cell.artistImageView.frame = newFrame
                 cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
+                
                 cell.artistNameLabel.textAlignment = .center
                 let keys = Array(self.artistImages!.keys)
                 let key = keys[indexPath.row]
