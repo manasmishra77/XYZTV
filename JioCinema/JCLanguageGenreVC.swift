@@ -131,12 +131,13 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                         {
                             weakself?.languageGenreDetailModel?.data?.items?.append(item)
                         }
+                        DispatchQueue.main.async {
                         weakself?.languageGenreCollectionView.reloadData()
+                        }
                     }
                 }
             }
         }
-        
     }
     
     func prepareView()
@@ -249,22 +250,23 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             });
         }
         
-        if(indexPath.row == (languageGenreDetailModel?.data?.items?.count)! - 1)
+        DispatchQueue.main.async {
+        if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count)! - 1)
         {
-            if(loadedPage < (languageGenreDetailModel?.pageCount)! - 1)
+            if(self.loadedPage < (self.languageGenreDetailModel?.pageCount)! - 1)
             {
-                if item?.app?.type == VideoType.Language.rawValue {
-                    callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                if self.item?.app?.type == VideoType.Language.rawValue {
+                    self.callWebServiceForLanguageGenreData(isLanguage: true, pageNo: self.loadedPage+1,paramString: self.currentParamString!, type: self.currentType)
                 }
                 else
                 {
-                    callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage+1,paramString: currentParamString!, type: currentType)
+                    self.callWebServiceForLanguageGenreData(isLanguage: false, pageNo: self.loadedPage+1,paramString: self.currentParamString!, type: self.currentType)
                 }
                 
-                loadedPage += 1
+                self.loadedPage += 1
             }
         }
-        
+        }
         return cell
     }
     

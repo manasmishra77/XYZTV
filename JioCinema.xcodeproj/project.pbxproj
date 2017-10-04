@@ -94,6 +94,7 @@
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
 		B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */; };
 		B811ED421F56BC4600E55FAD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B811ED411F56BC4600E55FAD /* Log.swift */; };
+		B822EBE01F84CE95002332B4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B822EBDF1F84CE94002332B4 /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +191,7 @@
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
 		B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCKeyboardButton.swift; sourceTree = "<group>"; };
 		B811ED411F56BC4600E55FAD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		B822EBDF1F84CE94002332B4 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,7 @@
 				7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */,
 				B811ED411F56BC4600E55FAD /* Log.swift */,
 				7B545E7F1F7A604C007C5004 /* JCAnalyticsManager.swift */,
+				B822EBDF1F84CE94002332B4 /* Utility.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
+				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,

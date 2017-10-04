@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class JCSplashVC: UIViewController {
     
     @IBOutlet weak var splashImage: UIImageView!
@@ -16,11 +17,11 @@ class JCSplashVC: UIViewController {
     var isHomeDataAvailable:Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        Utility.sharedInstance.startNetworkNotifier()
+
         //Call config service
         callWebServiceForConfigData()
-        
+
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
@@ -56,7 +57,7 @@ class JCSplashVC: UIViewController {
             }
             else
             {
-                weakSelf?.showAlert(alertString: "No Network Available")
+                weakSelf?.showAlert(alertString: networkMessage)
             }
         }
     }
@@ -89,7 +90,7 @@ class JCSplashVC: UIViewController {
             {
                 //TODO: handle error
                 print(responseError)
-                weakSelf?.showAlert(alertString: "No Network Available")
+                weakSelf?.showAlert(alertString: networkMessage)
                 return
             }
             if let responseData = data
@@ -214,7 +215,7 @@ class JCSplashVC: UIViewController {
         }
     }
     
-    fileprivate func showAlert(alertString:String)
+     func showAlert(alertString:String)
     {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",
@@ -222,7 +223,9 @@ class JCSplashVC: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
-            weakSelf?.callWebServiceForConfigData()
+           
+                weakSelf?.callWebServiceForConfigData()
+            
         }
         
         alert.addAction(cancelAction)

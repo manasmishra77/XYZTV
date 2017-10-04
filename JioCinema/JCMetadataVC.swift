@@ -335,14 +335,15 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         else
         {
+            print(screenHeight)
             headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 800)
             if let isSeason = metadata?.isSeason,isSeason
             {
-                metadataTableViewTopConstraint.constant = 740
+                metadataTableViewTopConstraint.constant = 685
             }
             else
             {
-            metadataTableViewTopConstraint.constant = 780
+                metadataTableViewTopConstraint.constant = 740
             }
         }
         self.view.addSubview(headerView!)

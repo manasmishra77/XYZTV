@@ -34,6 +34,16 @@ class RJILApiManager {
     
     func post(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "POST", completion: completion)
+
+//        if isNetworkAvailable
+//        {
+//        }
+//        else
+//        {
+//            if let topController = UIApplication.topViewController() {
+//                Utility.sharedInstance.showAlert(viewController: topController, title:networkMessage, message: "")
+//            }
+//        }
     }
     
     func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
@@ -42,6 +52,16 @@ class RJILApiManager {
     
     func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
+
+//        if isNetworkAvailable
+//        {
+//        }
+//        else
+//        {
+//            if let topController = UIApplication.topViewController() {
+//                Utility.sharedInstance.showAlert(viewController: topController, title:networkMessage, message: "")
+//            }
+//        }
     }
     
     
