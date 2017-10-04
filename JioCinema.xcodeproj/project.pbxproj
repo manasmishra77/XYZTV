@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
+		196409511F84D89F00C52C18 /* SearchContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196409501F84D89F00C52C18 /* SearchContainerViewController.swift */; };
 		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
 		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
 		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
@@ -98,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
+		196409501F84D89F00C52C18 /* SearchContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContainerViewController.swift; sourceTree = "<group>"; };
 		2024C4861F3C38A8003A08C3 /* Terms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terms.png; sourceTree = "<group>"; };
 		2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowGrey.png; sourceTree = "<group>"; };
 		2024C48A1F3C9C34003A08C3 /* ArrowPink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowPink.png; sourceTree = "<group>"; };
@@ -205,6 +207,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1964094F1F84D87500C52C18 /* SearchVC */ = {
+			isa = PBXGroup;
+			children = (
+				196409501F84D89F00C52C18 /* SearchContainerViewController.swift */,
+			);
+			name = SearchVC;
+			sourceTree = "<group>";
+		};
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +346,7 @@
 		7BFEC4A71F154BDC001DFE6D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1964094F1F84D87500C52C18 /* SearchVC */,
 				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
 				797880F81F4ECB390032943E /* JCSearchVC.swift */,
 				7BFEC4AA1F154C42001DFE6D /* JCSplashVC.swift */,
@@ -598,6 +609,7 @@
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
 				7BFEC4BA1F15C01A001DFE6D /* JCLoginVC.swift in Sources */,
+				196409511F84D89F00C52C18 /* SearchContainerViewController.swift in Sources */,
 				7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */,
 				7BB0E2011F1DECE600A1DB0B /* JCBaseVC.swift in Sources */,
 				7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */,

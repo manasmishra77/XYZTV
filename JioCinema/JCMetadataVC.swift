@@ -330,19 +330,19 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerCell.monthsCollectionView.reloadData()
         if item.app?.type == VideoType.Movie.rawValue
         {
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 600)
-            metadataTableViewTopConstraint.constant = 590
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: screenHeight - 480)
+            metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
         }
         else
         {
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: 800)
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: screenHeight - 480)
             if let isSeason = metadata?.isSeason,isSeason
             {
-                metadataTableViewTopConstraint.constant = 740
+                metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
             }
             else
             {
-            metadataTableViewTopConstraint.constant = 780
+            metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
             }
         }
         self.view.addSubview(headerView!)
