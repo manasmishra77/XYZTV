@@ -17,6 +17,8 @@ public enum JCParameterEncoding
 
 let screenHeight:CGFloat = UIScreen.main.bounds.height
 let screenWidth:CGFloat = UIScreen.main.bounds.width
+let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
+let networkMessage = "No Network Available"
 
 var collectionIndex = -1
 var selectedItemFromViewController:VideoType = VideoType.Home
