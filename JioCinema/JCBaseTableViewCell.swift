@@ -303,6 +303,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     func openPlayerVC(item:Item)
     {
         Log.DLog(message: "openPlayerVC" as AnyObject)
+        if playerVC_Global != nil {
+            return
+        }
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemImage = item.banner
         playerVC.currentItemTitle = item.name

@@ -80,6 +80,8 @@ let kAppKey = "appkey"
 //Values
 let kAppKeyValue = "06758e99be484fca56fb"
 
+var playerVC_Global: UIViewController?
+
 //StoryBoard Ids
 let loginVCStoryBoardId = "kLoginVC"
 let signInOptionsStoryBoardId = "kSignInOptionsVC"

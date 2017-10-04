@@ -319,6 +319,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     fileprivate func showPlayerVC(forIndexPath index:Int)
     {
+        if playerVC_Global != nil {
+            return
+        }
         let model = languageGenreDetailModel?.data?.items?[index]
         
         let playerId = languageGenreDetailModel?.data?.items?[index].id

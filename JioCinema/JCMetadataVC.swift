@@ -338,11 +338,20 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: screenHeight - 480)
             if let isSeason = metadata?.isSeason,isSeason
             {
-                metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
+                if #available(tvOS 11.0, *){
+                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
+                }else{
+                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
+                }
+               
             }
             else
             {
-            metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
+                if #available(tvOS 11.0, *){
+                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
+                }else{
+                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 150
+                }
             }
         }
         self.view.addSubview(headerView!)
@@ -390,7 +399,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     func prepareToPlay()
     {
         print("play video from metadata vc")
-        
+        if playerVC_Global != nil {
+            return
+        }
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         let id = (item?.app?.type == VideoType.Movie.rawValue) ? item?.id! : metadata?.latestEpisodeId!
         playerVC.currentItemImage = item?.banner

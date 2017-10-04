@@ -83,6 +83,7 @@
     //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        playerVC_Global = self
         addSwipeGesture()
         if metadata == nil
         {
@@ -118,8 +119,6 @@
                     }
                 }
             })
-            
-            
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
         
@@ -127,6 +126,7 @@
         {
             removePlayerObserver()
         }
+        playerVC_Global = nil
         latestEpisodeId = "-1"
     }
     override func viewDidLayoutSubviews() {
@@ -1015,10 +1015,10 @@
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
                         
-//                        if((self.player) != nil) {
-//                            self.player?.pause()
-//                            self.resetPlayer()
-//                        }
+                        if((self.player) != nil) {
+                            self.player?.pause()
+                            self.resetPlayer()
+                        }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {

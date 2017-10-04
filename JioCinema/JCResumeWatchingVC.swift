@@ -67,6 +67,9 @@ class JCResumeWatchingVC: UIViewController
     
     func playVideo()
     {
+        if playerVC_Global != nil {
+            return
+        }
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemDescription = itemDescription
         playerVC.currentItemTitle = itemTitle

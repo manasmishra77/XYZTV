@@ -251,7 +251,10 @@ class JCTabBarController: UITabBarController {
         if currentPlayableItem != nil, JCLoginManager.sharedInstance.isLoginFromSettingsScreen == false
         {
             print("play video")
-            
+            if playerVC_Global != nil {
+                return
+            }
+
             let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
             
             if isCurrentItemEpisode

@@ -121,6 +121,9 @@ class MetadataHeaderViewCell: UIView {
     
     @IBAction func didClickOnWatchNowButton(_ sender: Any)
     {
+        print("mmmmmmmm")
+        if playerVC_Global == nil {
+        print("2222222222")
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         var id:String?
         
@@ -148,7 +151,6 @@ class MetadataHeaderViewCell: UIView {
         }
         if id != nil
         {
-            
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 playerVC.callWebServiceForPlaybackRights(id: id!)
@@ -162,6 +164,8 @@ class MetadataHeaderViewCell: UIView {
             let playerItem = ["player":playerVC]
             NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
         }
+        }
+
     }
     
     
