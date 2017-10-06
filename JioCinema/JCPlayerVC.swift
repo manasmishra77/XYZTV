@@ -89,6 +89,22 @@
         {
             fetchRecommendationData()
         }
+        else
+        {
+            if metadata?.app?.type == VideoType.TVShow.rawValue
+            {
+                for i in 0 ..< (metadata?.episodes?.count)!
+                {
+                    let model = metadata?.episodes?[i]
+                    if model?.id == playerId
+                    {
+                        self.currentPlayingIndex = i
+                        break
+                    }
+                }
+                self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+            }
+        }
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
     }
     
@@ -660,6 +676,7 @@
     
     func scrollCollectionViewToRow(row:Int)
     {
+        print("Scroll to Row is = \(row)")
         if row >= 0 {
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
@@ -809,7 +826,7 @@
         }
     }
     //MARK:- Show Alert
-    func showAlert(alertTitle:String,alertMessage:String)
+    func showAlert(alertTitle:String,alertMessage:String,completionHandler:(()->Void)?)
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
@@ -819,7 +836,8 @@
                                          style: .cancel, handler: nil)
         
         alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
+       // self.present(UIViewController, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+        self.present(alert, animated: true, completion: completionHandler)
     }
 
     
@@ -1000,7 +1018,6 @@
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-       // weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             if let responseError = error
             {
@@ -1019,6 +1036,10 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
+//                        for i in 0 ..< (self.playbackRightsData?.more?.count)
+//                        {
+//
+//                        }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {
@@ -1108,12 +1129,15 @@
         return isRecommendationView
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.swipeDownRecommendationView()
         if self.currentPlayingIndex == indexPath.row {
-            self.showAlert(alertTitle: "Video is already playing", alertMessage: "")
+            self.showAlert(alertTitle: "Video is already playing", alertMessage: "", completionHandler: {
+                self.view_Recommendation.superview!.bringSubview(toFront: self.view_Recommendation)
+                print(self.view_Recommendation.alpha)
+                self.view_Recommendation.alpha = 1
+            })
             return
         }
-        
+        self.swipeDownRecommendationView()
         self.currentPlayingIndex = indexPath.row
         
         // var url = ""

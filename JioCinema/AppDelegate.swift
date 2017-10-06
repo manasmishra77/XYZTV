@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
         // Override point for customization after application launch.
+        handlerUncaughtException()
         return true
     }
 
@@ -42,6 +43,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func handlerUncaughtException() -> Void {
+        
+        NSSetUncaughtExceptionHandler { (exception) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+
+        }
+        
+        signal(SIGABRT) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGILL) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        
+        signal(SIGSEGV) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGFPE) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGBUS) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        
+        signal(SIGPIPE) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
     }
     
 }
