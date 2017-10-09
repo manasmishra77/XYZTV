@@ -196,26 +196,29 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     {
         if item?.app?.type == VideoType.Language.rawValue
         {
+            let currentTypeId = item?.list?[filter].id
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
+                
                 currentParamString = "All Genres"
-                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentType)
+                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.genres?[filter].name
-                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentType)
+                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
+            let currentTypeId = item?.list?[filter].id
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
                 currentParamString = "All Languages"
-                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
+                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
                 currentParamString = languageGenreDetailModel?.data?.languages?[filter].name
-                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentType)
+                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
         }
         loadedPage = 0
@@ -281,7 +284,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             selectedItemFromViewController = VideoType.Genre
         }
         
-        if currentType == VideoType.Movie.rawValue || currentType == VideoType.TVShow.rawValue
+        let videoType = item?.list![currentType].id
+        
+        if videoType == VideoType.Movie.rawValue || videoType == VideoType.TVShow.rawValue
         {
             showMetaData(forItemIndex: indexPath.row)
         }

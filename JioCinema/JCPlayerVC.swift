@@ -862,6 +862,18 @@
                     let url = metadataUrl.appending(data.id!).appending("/0/0")
                     self.callWebServiceForMoreLikeData(url: url)
                 }
+                else if data.app?.type == VideoType.Trailer.rawValue
+                {
+                    self.callWebServiceForPlaybackRights(id: data.id!)
+
+                }
+                else if data.app?.type == VideoType.Episode.rawValue
+                {
+                    self.callWebServiceForPlaybackRights(id: data.id!)
+
+                    //let url = metadataUrl.appending(data.id!).appending("/0/0")
+                  //  self.callWebServiceForMoreLikeData(url: url)
+                }
                 else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
                     print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
@@ -1129,15 +1141,12 @@
         return isRecommendationView
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.swipeDownRecommendationView()
+
         if self.currentPlayingIndex == indexPath.row {
-            self.showAlert(alertTitle: "Video is already playing", alertMessage: "", completionHandler: {
-                self.view_Recommendation.superview!.bringSubview(toFront: self.view_Recommendation)
-                print(self.view_Recommendation.alpha)
-                self.view_Recommendation.alpha = 1
-            })
+            print("Video is already playing")
             return
         }
-        self.swipeDownRecommendationView()
         self.currentPlayingIndex = indexPath.row
         
         // var url = ""
