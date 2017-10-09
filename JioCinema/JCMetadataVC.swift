@@ -32,7 +32,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     var selectedYearIndex = 0
     let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
     
-    @IBOutlet weak var metadataTableViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var metaDataHeaderContainer: UIView!
+    @IBOutlet weak var metaDataHeaderHeight: NSLayoutConstraint!
+    
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
@@ -328,39 +332,21 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             headerView = resetHeaderView()
         }
         headerView = prepareHeaderView()
+        metadataContainerView.addSubview(headerView!)
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
-        if item.app?.type == VideoType.Movie.rawValue
-        {
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: screenHeight - 480)
-            metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
+        let headerHeight = screenHeight * (4/5)
+        if #available(tvOS 11.0, *){
+            headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
+            
+        }else{
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
+            tableViewTopConstraint.constant = -40
+            tableViewBottomConstraint.constant = 0
         }
-        else
-        {
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: screenHeight - 480)
-            if let isSeason = metadata?.isSeason,isSeason
-            {
-                if #available(tvOS 11.0, *){
-                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 50
-                }else{
-                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
-                }
-               
-            }
-            else
-            {
-                if #available(tvOS 11.0, *){
-                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 100
-                }else{
-                    metadataTableViewTopConstraint.constant = (headerView?.frame.height)! + 150
-                }
-            }
-        }
-        self.view.addSubview(headerView!)
-        headerView?.isHidden = false
+        metaDataHeaderHeight.constant = headerHeight
     }
     
-       //version = 1
     
     func didReceiveNotificationForWatchNow(notification:Notification)
     {
@@ -521,8 +507,9 @@ extension Data {
     }
 }
 
-extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
+extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if metadata?.app?.type == VideoType.TVShow.rawValue
         {

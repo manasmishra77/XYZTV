@@ -371,34 +371,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
-                                <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
-                                        <rect key="frame" x="0.0" y="-60" width="1920" height="1072"/>
-                                        <color key="backgroundColor" red="0.062745098039215685" green="0.066666666666666666" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="40" y="703" width="1880" height="257"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="1hA-3Y-GlB" id="GjC-CG-mV3"/>
-                                            <outlet property="delegate" destination="1hA-3Y-GlB" id="9EG-KA-hvZ"/>
-                                        </connections>
-                                    </tableView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="703" id="13c-eV-Ep7"/>
-                                    <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" id="2Xt-yn-niL"/>
-                                    <constraint firstAttribute="bottom" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-52" id="4MW-ix-IUW"/>
-                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="Ech-t2-tST"/>
-                                    <constraint firstAttribute="trailing" secondItem="uz9-6i-hkZ" secondAttribute="trailing" id="K3B-gD-Czx"/>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="40" id="PBe-lE-Qq6"/>
-                                    <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" id="UHz-V6-cK6"/>
-                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="ySU-cL-Bsl"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVl-t3-UwF" userLabel="Loader View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
@@ -424,8 +396,39 @@
                                     <constraint firstItem="Uyr-Yb-QCy" firstAttribute="centerX" secondItem="MVl-t3-UwF" secondAttribute="centerX" id="vnk-cg-z7E"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
+                                <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
+                                        <rect key="frame" x="20" y="640" width="1880" height="380"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="1hA-3Y-GlB" id="GjC-CG-mV3"/>
+                                            <outlet property="delegate" destination="1hA-3Y-GlB" id="9EG-KA-hvZ"/>
+                                        </connections>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
+                                        <rect key="frame" x="0.0" y="-60" width="1920" height="800"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="800" id="DYQ-fl-2h2"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="8rM-Oz-TFq"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="20" id="9nR-NA-SzZ"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-100" id="FJE-Cb-wkk"/>
+                                    <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" constant="20" id="QPw-9Y-Ve8"/>
+                                    <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="hfX-1k-F5C"/>
+                                    <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" constant="-60" id="lcl-Sv-aTx"/>
+                                    <constraint firstAttribute="trailing" secondItem="uz9-6i-hkZ" secondAttribute="trailing" id="xec-as-DtL"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.062745098039215685" green="0.066666666666666666" blue="0.058823529411764705" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="v2z-Ee-E5k" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" id="23T-PN-qEs"/>
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" constant="-60" id="EIN-Gl-Rn0"/>
@@ -440,9 +443,12 @@
                     <connections>
                         <outlet property="loaderContainerView" destination="MVl-t3-UwF" id="Pgg-uh-Htd"/>
                         <outlet property="loadingLabel" destination="Uyr-Yb-QCy" id="Qes-TU-jmL"/>
+                        <outlet property="metaDataHeaderContainer" destination="uz9-6i-hkZ" id="ReO-Vc-5rU"/>
+                        <outlet property="metaDataHeaderHeight" destination="DYQ-fl-2h2" id="bxJ-tx-LTV"/>
                         <outlet property="metadataContainerView" destination="v2z-Ee-E5k" id="q3b-HW-cmr"/>
                         <outlet property="metadataTableView" destination="1dP-RB-Mav" id="Ubu-9X-YyY"/>
-                        <outlet property="metadataTableViewTopConstraint" destination="13c-eV-Ep7" id="bNm-mI-oOA"/>
+                        <outlet property="tableViewBottomConstraint" destination="lcl-Sv-aTx" id="8Uf-fF-cjN"/>
+                        <outlet property="tableViewTopConstraint" destination="FJE-Cb-wkk" id="jEo-4H-R4P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cpb-qF-gZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
