@@ -23,6 +23,9 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         selectionVCHeaderLabel.text = textForHeader
+        
+        languageGenreSelctionTableView.delegate = self
+        languageGenreSelctionTableView.dataSource = self
         // Do any additional setup after loading the view.
     }
 
