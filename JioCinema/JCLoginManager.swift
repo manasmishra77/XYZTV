@@ -137,6 +137,10 @@ class JCLoginManager:UIViewController
                 if(code == 200)
                 {
                     weakSelf?.setUserData(data: parsedResponse)
+                    
+                    let eventProperties = ["Source":"4G","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
+                    
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
                     

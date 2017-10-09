@@ -432,6 +432,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func didReceiveNotificationForMetadataCellTap(notification:Notification)
     {
+        
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         guard let receivedItem = notification.userInfo?["item"] as? More
             else {
                 return
@@ -623,6 +630,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
         {
             let filter = String(metadata!.filter![indexPath.row].season!)
@@ -704,6 +717,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func didReceiveNotificationForArtistSearch(notification:Notification)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         guard let artistName = notification.userInfo?["artist"] as? String
             else {
                 return

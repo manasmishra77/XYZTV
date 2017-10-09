@@ -1,6 +1,10 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
+## CleverTap-iOS-SDK
+
+Please refer to https://github.com/CleverTap/clevertap-ios-sdk/blob/master/LICENSE
+
 ## ObjectMapper
 
 The MIT License (MIT)

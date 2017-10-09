@@ -1141,6 +1141,13 @@
         return isRecommendationView
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+//        if !Utility.sharedInstance.isNetworkAvailable
+//        {
+//            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+//            return
+//        }
+        
         self.swipeDownRecommendationView()
 
         if self.currentPlayingIndex == indexPath.row {
