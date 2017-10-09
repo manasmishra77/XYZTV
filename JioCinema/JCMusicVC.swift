@@ -21,7 +21,7 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        callWebServiceForMusicData(page: loadedPage)
+       // callWebServiceForMusicData(page: loadedPage)
         
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -31,6 +31,13 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         // Do any additional setup after loading the view.
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if JCDataStore.sharedDataStore.musicData?.data == nil
+        {
+            callWebServiceForMusicData(page: loadedPage)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,6 +166,12 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func callWebServiceForMusicData(page:Int)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         let url = musicDataUrl.appending(String(page))
         let musicDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self

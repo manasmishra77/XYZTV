@@ -22,7 +22,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        callWebServiceForTVData(page: loadedPage)
+        //callWebServiceForTVData(page: loadedPage)
         
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -36,6 +36,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
+        if JCDataStore.sharedDataStore.tvData?.data == nil
+        {
+            callWebServiceForTVData(page: loadedPage)
+        }
+        
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForTVWatchlist()
@@ -191,6 +196,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func callWebServiceForTVData(page:Int)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         let url = tvDataUrl.appending(String(page))
         let tvDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self

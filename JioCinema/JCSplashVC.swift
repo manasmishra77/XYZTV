@@ -57,7 +57,7 @@ class JCSplashVC: UIViewController {
             }
             else
             {
-                weakSelf?.showAlert(alertString: networkMessage)
+                weakSelf?.showAlert(alertString: networkErrorMessage)
             }
         }
     }
@@ -90,7 +90,7 @@ class JCSplashVC: UIViewController {
             {
                 //TODO: handle error
                 print(responseError)
-                weakSelf?.showAlert(alertString: networkMessage)
+                weakSelf?.showAlert(alertString: networkErrorMessage)
                 return
             }
             if let responseData = data
