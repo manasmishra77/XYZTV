@@ -21,7 +21,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        callWebServiceForClipsData(page: loadedPage)
+        //callWebServiceForClipsData(page: loadedPage)
         
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -31,6 +31,13 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         // Do any additional setup after loading the view.
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if JCDataStore.sharedDataStore.clipsData?.data == nil
+        {
+            callWebServiceForClipsData(page: loadedPage)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -162,6 +169,12 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func callWebServiceForClipsData(page:Int)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         let url = clipsDataUrl.appending(String(page))
         let clipsDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self

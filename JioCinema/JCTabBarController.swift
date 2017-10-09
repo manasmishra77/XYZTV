@@ -88,6 +88,13 @@ class JCTabBarController: UITabBarController {
     
     func didReceiveNotificationForCellTap(notification:Notification) -> Void
     {
+        
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         weak var weakSelf = self
         if let item = notification.userInfo?["item"] as? Item
         {

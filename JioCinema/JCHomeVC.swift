@@ -165,6 +165,12 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func callWebServiceForHomeData(page:Int)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self

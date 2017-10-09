@@ -41,7 +41,7 @@ class Utility
         } else {
             isNetworkAvailable = false
             print("Network not reachable")
-            let alertController = UIAlertController.init(title: networkMessage, message: "", preferredStyle: .alert)
+            let alertController = UIAlertController.init(title: networkErrorMessage, message: "", preferredStyle: .alert)
             alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: nil))
             
             appDelegate?.window?.rootViewController?.present(alertController, animated: false, completion: nil)
@@ -57,4 +57,15 @@ class Utility
         }
     }
     
+    func showDismissableAlert(title: String,message: String)
+    {
+        let topVC = UIApplication.topViewController()
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+               // topVC?.dismiss(animated: true, completion: nil)
+            }))
+            topVC?.present(alert, animated: true, completion: nil)
+        }
+    }
 }
