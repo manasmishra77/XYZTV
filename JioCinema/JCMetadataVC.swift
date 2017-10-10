@@ -528,11 +528,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             {
                 return (metadata?.filter?.count)!
             }
-            else if collectionView == headerCell.monthsCollectionView   //months, in case of episodes
+            else if collectionView == headerCell.monthsCollectionView  //months, in case of episodes
             {
-                if let count = (metadata?.filter![selectedYearIndex].month?.count)
-                {
-                    return count
+                if  (metadata?.filter?.count)! > selectedYearIndex
+               {
+                    if let count = (metadata?.filter![selectedYearIndex].month?.count)
+                    {
+                        return count
+                    }
                 }
                 else
                 {
