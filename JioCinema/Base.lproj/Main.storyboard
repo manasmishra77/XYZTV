@@ -276,6 +276,7 @@
                                     <constraint firstAttribute="height" constant="60" id="PMf-sE-Mkp"/>
                                     <constraint firstAttribute="width" constant="640" id="RsN-94-cwp"/>
                                 </constraints>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Resume Watching">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
