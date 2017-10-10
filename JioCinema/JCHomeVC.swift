@@ -263,7 +263,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         else{
             if (self.isFirstLoaded) {
                 //weakSelf?.isFirstLoaded = false
-                self.baseTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.baseTableView.reloadData()
+                }
                 self.isFirstLoaded = false
             }
         }

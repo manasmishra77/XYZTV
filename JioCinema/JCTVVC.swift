@@ -272,11 +272,14 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
-        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)        
-        weak var weakSelf = self
-        DispatchQueue.main.async {
-            weakSelf?.baseTableView.reloadData()
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
+        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                weakSelf?.baseTableView.reloadData()
+            }
         }
+        
     }
     
     //ChangingTheAlpha
