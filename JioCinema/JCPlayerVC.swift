@@ -552,7 +552,6 @@
                     DispatchQueue.main.async {
                         self.present(alert, animated: true, completion: nil)
                     }
- 
                 }
             default:
                 print("unknown")
@@ -876,6 +875,8 @@
             }
             else{
                 print("data id is == \(data.id)")
+                print("data App type is == \(data.app?.type)")
+
                 if data.app?.type == VideoType.Movie.rawValue
                 {
                     let url = metadataUrl.appending(data.id!)
@@ -902,7 +903,13 @@
                 {
                     print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
                     arr_RecommendationList.removeAll()
-                    if selectedItemFromViewController == VideoType.Music
+                    if selectedItemFromViewController == VideoType.Search
+                    {
+                        self.callWebServiceForPlaybackRights(id: data.id!)
+                        let url = metadataUrl.appending(data.id!)
+                        self.callWebServiceForMoreLikeData(url: url)
+                    }
+                   else if selectedItemFromViewController == VideoType.Music
                     {
                         self.callWebServiceForPlaybackRights(id: data.id!)
 

@@ -177,6 +177,8 @@ class JCTabBarController: UITabBarController {
                             resumeWatchingVC.itemImage = currentItem.banner
                             resumeWatchingVC.itemTitle = currentItem.name
                             resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
+                            resumeWatchingVC.item = currentPlayableItem
+
                             self.present(resumeWatchingVC, animated: false, completion: nil)
                         }else{
                             showMetadata()
@@ -196,6 +198,8 @@ class JCTabBarController: UITabBarController {
                     resumeWatchingVC.itemImage = (currentPlayableItem as! Episode).banner
                     resumeWatchingVC.itemTitle = (currentPlayableItem as! Episode).name
                     resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Episode).totalDuration)
+                    resumeWatchingVC.item = currentPlayableItem
+
                     self.present(resumeWatchingVC, animated: false, completion: nil)
                 }
             }
@@ -220,6 +224,8 @@ class JCTabBarController: UITabBarController {
                     resumeWatchingVC.itemImage = currentItem.banner
                     resumeWatchingVC.itemTitle = currentItem.name
                     resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
+                    resumeWatchingVC.item = currentPlayableItem
+
                     self.present(resumeWatchingVC, animated: false, completion: nil)
                 }else{
                      showMetadata()
