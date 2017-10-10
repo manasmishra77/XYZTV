@@ -458,7 +458,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         loadingLabel.text = "Loading"
         metadataContainerView.isHidden = true
-        headerView?.isHidden = true
         loaderContainerView.isHidden = false
         
         (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
