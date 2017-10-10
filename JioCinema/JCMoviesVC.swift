@@ -271,10 +271,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
-        weak var weakSelf = self
-        DispatchQueue.main.async {
-            weakSelf?.baseTableView.reloadData()
+        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                weakSelf?.baseTableView.reloadData()
+            }
         }
+        
     }
     
     //ForChangingTheAlphaWhenMenuButtonPressed

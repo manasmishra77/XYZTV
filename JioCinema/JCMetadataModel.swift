@@ -116,7 +116,17 @@ class MetadataModel:Mappable
     {
         appkey <- map["appkey"]
         type <- map["type"]
+        
+        var tmpStore: Double?
+        tmpStore <- map["contentId"]
+        
         contentId <- map["contentId"]
+        
+        if contentId == nil, tmpStore != nil {
+            contentId = "\(String(describing: Int(tmpStore!)))"
+        }
+        
+        //contentId <- map["contentId"]
         showdate <- map["showdate"]
         isTrailerAvailable <- map["isTrailerAvailable"]
         trailerId <- map["trailerId"]

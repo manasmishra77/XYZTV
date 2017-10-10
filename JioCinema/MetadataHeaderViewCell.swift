@@ -65,10 +65,10 @@ class MetadataHeaderViewCell: UIView {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
         
-        //        if metadata != nil
-        //        {
-        //            watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
-        //        }
+                if metadata != nil
+                {
+                    watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
+                }
         
         if item?.app?.type == VideoType.Movie.rawValue, metadata != nil
         {
@@ -180,11 +180,11 @@ class MetadataHeaderViewCell: UIView {
         var url = ""
         if item?.app?.type == VideoType.TVShow.rawValue,metadata?.contentId != nil
         {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
         }
         else if item?.app?.type == VideoType.Movie.rawValue,metadata?.contentId != nil
         {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id":(metadata?.contentId!)!]]
         }
         
         if JCLoginManager.sharedInstance.isUserLoggedIn()
