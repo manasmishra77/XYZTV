@@ -22,7 +22,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        //callWebServiceForTVData(page: loadedPage)
+        callWebServiceForTVData(page: loadedPage)
         
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)

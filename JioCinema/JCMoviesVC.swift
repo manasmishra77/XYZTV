@@ -21,7 +21,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     override func viewDidLoad()
     {
         super.viewDidLoad()
-       // callWebServiceForMoviesData(page: loadedPage)
+        callWebServiceForMoviesData(page: loadedPage)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)

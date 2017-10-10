@@ -21,7 +21,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        //callWebServiceForClipsData(page: loadedPage)
+        callWebServiceForClipsData(page: loadedPage)
         
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)

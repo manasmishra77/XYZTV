@@ -158,7 +158,29 @@ class JCTabBarController: UITabBarController {
                     }
                     else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
                     {
-                        showMetadata()
+                        var currentItem = currentPlayableItem as! Item
+                        var resumeWatch = false
+                        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items as? [Item]{
+                            for each in resumeWatchListArray{
+                                if each.id == currentItem.id{
+                                    currentItem = each
+                                    resumeWatch = true
+                                    break
+                                }
+                            }
+                        }
+                        if resumeWatch{
+                            let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                            resumeWatchingVC.playableItemDuration = Int(Float(currentItem.duration!)!)
+                            resumeWatchingVC.playerId = currentItem.id
+                            resumeWatchingVC.itemDescription = currentItem.subtitle
+                            resumeWatchingVC.itemImage = currentItem.banner
+                            resumeWatchingVC.itemTitle = currentItem.name
+                            resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
+                            self.present(resumeWatchingVC, animated: false, completion: nil)
+                        }else{
+                            showMetadata()
+                        }
                     }
                 }
             }
@@ -179,7 +201,30 @@ class JCTabBarController: UITabBarController {
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
-                showMetadata()
+                var currentItem = currentPlayableItem as! Item
+                var resumeWatch = false
+                if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items as? [Item]{
+                    for each in resumeWatchListArray{
+                        if each.id == currentItem.id{
+                            currentItem = each
+                            resumeWatch = true
+                            break
+                        }
+                    }
+                }
+                if resumeWatch{
+                    let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+                    resumeWatchingVC.playableItemDuration = Int(Float(currentItem.duration!)!)
+                    resumeWatchingVC.playerId = currentItem.id
+                    resumeWatchingVC.itemDescription = currentItem.subtitle
+                    resumeWatchingVC.itemImage = currentItem.banner
+                    resumeWatchingVC.itemTitle = currentItem.name
+                    resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
+                    self.present(resumeWatchingVC, animated: false, completion: nil)
+                }else{
+                     showMetadata()
+                }
+  
             }
             else
             {
