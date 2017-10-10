@@ -50,6 +50,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage,paramString: currentParamString!, type: currentType)
             headerLabel.text = item?.genre
         }
+        noVideosAvailableLabel.isHidden = true
         
     }
     
@@ -132,14 +133,17 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                     else
                     {
                         let tempData = LanguageGenreDetailModel(JSONString: responseString)
+                        if let items = tempData?.data?.items{
+                            for item in items
+                            {
+                                weakself?.languageGenreDetailModel?.data?.items?.append(item)
+                            }
+                            DispatchQueue.main.async {
+                                weakself?.languageGenreCollectionView.reloadData()
+                            }
+                        }
                         
-                        for item in (tempData?.data?.items)!
-                        {
-                            weakself?.languageGenreDetailModel?.data?.items?.append(item)
-                        }
-                        DispatchQueue.main.async {
-                        weakself?.languageGenreCollectionView.reloadData()
-                        }
+                       
                     }
                 }
             }
@@ -202,27 +206,30 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     {
         if item?.app?.type == VideoType.Language.rawValue
         {
-            let currentTypeId = item?.list?[filter].id
+            var currentTypeId:Int?
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
-                
+                currentTypeId = item?.list?[filter].id
                 currentParamString = "All Genres"
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
+                currentTypeId = item?.list?[currentType].id
                 currentParamString = languageGenreDetailModel?.data?.genres?[filter].name
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
-            let currentTypeId = item?.list?[filter].id
+            var currentTypeId:Int?
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
+                currentTypeId = item?.list?[filter].id
                 currentParamString = "All Languages"
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
+                currentTypeId = item?.list?[currentType].id
                 currentParamString = languageGenreDetailModel?.data?.languages?[filter].name
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
