@@ -76,7 +76,6 @@
 		7BE0EA4F1F30694100151D23 /* JCTVVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0EA4E1F30694100151D23 /* JCTVVC.swift */; };
 		7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0EA501F30695700151D23 /* JCClipsVC.swift */; };
 		7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */; };
-		7BE58DC31F62A06700DAB214 /* libRJILMA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BE58DC21F62A06700DAB214 /* libRJILMA.a */; };
 		7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE51361F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift */; };
 		7BFE51391F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BFE51371F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib */; };
 		7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE51401F29F47100C901C7 /* JCItemCell.swift */; };
@@ -173,8 +172,6 @@
 		7BE0EA4E1F30694100151D23 /* JCTVVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCTVVC.swift; sourceTree = "<group>"; };
 		7BE0EA501F30695700151D23 /* JCClipsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCClipsVC.swift; sourceTree = "<group>"; };
 		7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPlayerVC.swift; sourceTree = "<group>"; };
-		7BE58DC11F62A06700DAB214 /* JIOMediaAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIOMediaAnalytics.h; sourceTree = "<group>"; };
-		7BE58DC21F62A06700DAB214 /* libRJILMA.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRJILMA.a; sourceTree = "<group>"; };
 		7BFE51361F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewHeaderCell.swift; sourceTree = "<group>"; };
 		7BFE51371F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseTableViewHeaderCell.xib; sourceTree = "<group>"; };
 		7BFE51401F29F47100C901C7 /* JCItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCItemCell.swift; sourceTree = "<group>"; };
@@ -201,7 +198,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BE58DC31F62A06700DAB214 /* libRJILMA.a in Frameworks */,
 				00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,7 +243,6 @@
 				7B78D7D81F140D7300F319BF /* Models */,
 				7B78D7D51F13BCD400F319BF /* Constants */,
 				7B78D7D01F13B92900F319BF /* ApiManager */,
-				7BE58DC01F62A06700DAB214 /* JioMediaAnalytics */,
 				7B78D7C51F13A91900F319BF /* Main.storyboard */,
 				7B78D7C11F13A91900F319BF /* AppDelegate.swift */,
 				7B78D7C81F13A91A00F319BF /* Assets.xcassets */,
@@ -335,15 +330,6 @@
 				7BD39C941F419D150014255C /* JioCinema-Bridging-Header.h */,
 			);
 			name = BridgningHeader;
-			sourceTree = "<group>";
-		};
-		7BE58DC01F62A06700DAB214 /* JioMediaAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				7BE58DC11F62A06700DAB214 /* JIOMediaAnalytics.h */,
-				7BE58DC21F62A06700DAB214 /* libRJILMA.a */,
-			);
-			path = JioMediaAnalytics;
 			sourceTree = "<group>";
 		};
 		7BFEC4A71F154BDC001DFE6D /* ViewControllers */ = {

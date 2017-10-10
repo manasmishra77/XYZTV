@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CleverTapTVOS
 
 class JCAnalyticsManager
 {
@@ -132,6 +133,13 @@ class JCAnalyticsManager
             task.resume()
         }
         
+    }
+
+    
+    //MARK: Clever Tap Events
+    func sendEventToCleverTap(eventName:String,properties:[String:Any])
+    {
+        CleverTap.sharedInstance().recordEvent(eventName, withProps: properties)
     }
     
 }

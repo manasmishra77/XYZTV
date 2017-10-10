@@ -72,7 +72,7 @@
     var duration                    = 0.0
     
     var arr_RecommendationList = [Item]()
-    
+
     var moreModal:More?
     
     static let assetKeysRequiredToPlay = [
@@ -192,6 +192,7 @@
                                 if self?.metadata?.app?.type == VideoType.TVShow.rawValue, self?.metadata?.episodes != nil
                                 {
                                     let index = (self?.currentPlayingIndex)! - 1
+                               
                                     if index >= 0
                                     {
                                         let modal = self?.metadata?.episodes?[index]
@@ -201,7 +202,20 @@
                                     {
                                         self?.nextVideoView.isHidden = true
                                     }
+                                }
+                                else if self?.metadata?.app?.type == VideoType.Trailer.rawValue, self?.metadata?.more != nil
+                                {
+                                    let index = (self?.currentPlayingIndex)! + 1
                                     
+                                    if index >= 0
+                                    {
+                                        let modal = self?.metadata?.more?[index]
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                    }
+                                    else
+                                    {
+                                        self?.nextVideoView.isHidden = true
+                                    }
                                 }
                                 else if self?.metadata?.app?.type == VideoType.Movie.rawValue, self?.metadata?.more != nil
                                 {
@@ -302,6 +316,10 @@
             {
                 handleFairPlayStreamingUrl(videoUrl: url)
             }
+            else
+            {
+                handleAESStreamingUrl(videoUrl: url)
+            }
         }
         else
         {
@@ -365,19 +383,6 @@
             let _ = NSLocalizedString("error.asset_not_playable.description", comment: "Can't use this AVAsset because it isn't playable or has protected content")
             return
         }
-        
-//        if (playerItem != nil) {
-//            defer {
-//            }
-//            do {
-//                playerItem?.removeObserver(self, forKeyPath: STATUS_KEY)
-//                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_EMPTY)
-//                playerItem?.removeObserver(self, forKeyPath: AVPLAYER_BUFFER_KEEP_UP)
-//                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-//            } catch {
-//            }
-//        }
-        
         
         playerItem = AVPlayerItem(asset: asset)
         self.playVideoWithPlayerItem()
@@ -567,6 +572,10 @@
                 {
                     handleEpisodeNextItem()
                 }
+                else if metadata?.app?.type == VideoType.Trailer.rawValue
+                {
+                    handleTrailerNextItem()
+                }
                 else if metadata?.app?.type == VideoType.Movie.rawValue
                 {
                     dismissPlayerVC()
@@ -597,9 +606,26 @@
             dismissPlayerVC()
         }
     }
-    
+   
     //MARK:- Handle Next Item
-    
+    func handleTrailerNextItem()
+    {
+        self.currentPlayingIndex = self.currentPlayingIndex + 1
+        if self.currentPlayingIndex != self.metadata?.more?.count
+        {
+            let modal = self.metadata?.more?[self.currentPlayingIndex]
+            self.currentItemImage = modal?.banner
+            self.currentItemTitle = modal?.name
+            self.currentItemDuration = String(describing: modal?.totalDuration)
+            self.currentItemDescription = modal?.description
+            self.callWebServiceForPlaybackRights(id: (modal?.id)!)
+        }
+        else
+        {
+            self.currentPlayingIndex = self.currentPlayingIndex - 1
+            dismissPlayerVC()
+        }
+    }
     func handlePlayListNextItem()
     {
         self.currentPlayingIndex = self.currentPlayingIndex + 1
@@ -685,8 +711,6 @@
                 self.myPreferredFocusView = cell
                 self.setNeedsFocusUpdate()
                 self.updateFocusIfNeeded()
-
-                
             }
         }
 //        DispatchQueue.main.async {
@@ -865,19 +889,19 @@
                 else if data.app?.type == VideoType.Trailer.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: data.id!)
-
+                    let url = metadataUrl.appending(data.id!)
+                    self.callWebServiceForMoreLikeData(url: url)
                 }
                 else if data.app?.type == VideoType.Episode.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: data.id!)
-
-                    //let url = metadataUrl.appending(data.id!).appending("/0/0")
-                  //  self.callWebServiceForMoreLikeData(url: url)
+                    let url = metadataUrl.appending(data.id!)
+                    self.callWebServiceForMoreLikeData(url: url)
                 }
                 else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
                     print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
-                    
+                    arr_RecommendationList.removeAll()
                     if selectedItemFromViewController == VideoType.Music
                     {
                         self.callWebServiceForPlaybackRights(id: data.id!)
@@ -899,22 +923,31 @@
                         arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items)!
                     }
                     
-                    for i in 0 ..< (arr_RecommendationList.count)
-                    {
-                        let modal = arr_RecommendationList[i]
-                        if modal.id == data.id
-                        {
-                            Log.DLog(message: data.id as AnyObject)
-                            self.currentPlayingIndex = i
-                            break
-                        }
-                    }
-                    self.collectionView_Recommendation.reloadData()
-                    self.scrollCollectionViewToRow(row: currentPlayingIndex)
+                    reloadCollectionViewWithCurrentPlayingIndex()
                 }
             }
         }
     }
+    
+    func reloadCollectionViewWithCurrentPlayingIndex()
+    {
+        if let data = self.item as? Item
+        {
+        for i in 0 ..< (arr_RecommendationList.count)
+        {
+            let modal = arr_RecommendationList[i]
+            if modal.id == data.id
+            {
+                Log.DLog(message: data.id as AnyObject)
+                self.currentPlayingIndex = i
+                break
+            }
+        }
+        self.collectionView_Recommendation.reloadData()
+        self.scrollCollectionViewToRow(row: currentPlayingIndex)
+        }
+    }
+    
     
     func callWebServiceForMoreLikeData(url:String)
     {
@@ -930,8 +963,9 @@
             }
             if let responseData = data
             {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
+                    weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+
                     weakSelf?.collectionView_Recommendation.reloadData()
                     weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex)!)
                     
@@ -947,27 +981,45 @@
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
-            
-            
-            //            if let data = self.item as? Item
-            //            {
-            //
-            //
-            //                if data.app?.type == VideoType.Movie.rawValue
-            //                {
-            //                    let url = metadataUrl.appending(data.id!)
-            //                    self.callWebServiceForMoreLikeData(url: url)
-            //                }
-            //                else if data.app?.type == VideoType.TVShow.rawValue
-            //                {
-            //                    let url = metadataUrl.appending(data.id!).appending("/0/0")
-            //                    self.callWebServiceForMoreLikeData(url: url)
-            //                }
-            //            }
-            //
-            
-            
             self.metadata = tempMetadata
+            print("app is ====== \(self.metadata?.app?.type)")
+            
+            if let data = self.item as? Item
+            {
+                if data.app?.type == VideoType.Episode.rawValue
+                {
+                     for i in 0 ..< (self.metadata?.episodes?.count)!
+                    {
+                        let modal = self.metadata?.episodes![i]
+                        if modal?.id == data.id
+                        {
+                            self.currentPlayingIndex = i
+                            break
+                        }
+                    }
+                }
+                else if data.app?.type == VideoType.Trailer.rawValue
+                {
+                   
+                    for i in 0 ..< (self.metadata?.more?.count)!
+                    {
+                        let modal = self.metadata?.more![i]
+                        if modal?.id == data.id
+                        {
+                            self.currentPlayingIndex = i
+                            break
+                        }
+                    }
+                }
+                
+                print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
+                DispatchQueue.main.async {
+                    self.collectionView_Recommendation.reloadData()
+                    self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+                }
+            }
+            
+            
         }
     }
     
@@ -1060,6 +1112,11 @@
                                 print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
                                 self.instantiatePlayer(with: (self.playbackRightsData!.url!))
                             }
+                            else
+                            {
+                                print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                                self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                            }
                         }
                         else
                         {
@@ -1141,6 +1198,13 @@
         return isRecommendationView
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+//        if !Utility.sharedInstance.isNetworkAvailable
+//        {
+//            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+//            return
+//        }
+        
         self.swipeDownRecommendationView()
 
         if self.currentPlayingIndex == indexPath.row {
@@ -1159,8 +1223,16 @@
                 self.currentItemImage = model?.banner
                 self.currentItemTitle = model?.name
                 self.callWebServiceForPlaybackRights(id: (model?.id)!)
-                // url = metadataUrl.appending((model?.id!)!)
-                // self.callWebServiceForMoreLikeData(url: url)
+            }
+            else if metadata?.app?.type == VideoType.Trailer.rawValue
+            {
+                let model = metadata?.more?[indexPath.row]
+                self.currentItemImage = model?.banner
+                self.currentItemTitle = model?.name
+                self.currentItemDescription = model?.description
+                print("playable id is.....\(model?.id)")
+                self.callWebServiceForPlaybackRights(id: (model?.id)!)
+
             }
             else if metadata?.app?.type == VideoType.Movie.rawValue
             {
@@ -1175,8 +1247,7 @@
                 }
                 else
                 {
-                    
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                         DispatchQueue.main.async {
                             self.openMetaDataVC(model: model!)
                         }
@@ -1231,7 +1302,7 @@
             {
                 return (metadata?.episodes?.count)!
             }
-            else if metadata?.app?.type == VideoType.Movie.rawValue, metadata?.more != nil
+            else if (metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue), metadata?.more != nil
             {
                 return (metadata?.more?.count)!
             }
@@ -1255,7 +1326,6 @@
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-        
         var imageUrl    = ""
         var modelID     = ""
         var metaDataID  = ""
@@ -1268,10 +1338,10 @@
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
         }
-        else if metadata?.app?.type == VideoType.Movie.rawValue
+        else if metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue
         {
             let model = metadata?.more?[indexPath.row]
-            // metaDataID = (metadata?.id)!
+            metaDataID = playerId!
             modelID = (model?.id)!
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
@@ -1329,8 +1399,8 @@
                         self.hideUnhideNowPlayingView(cell: cell, state: true)
                     }
                 }
-                else{
-                    
+                else
+                {
                     if data.id == modelID
                     {
                         currentPlayingIndex = indexPath.row

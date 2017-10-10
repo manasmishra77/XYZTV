@@ -326,6 +326,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 {
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
+                    let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             if !isLoginPresentedFromAddToWatchlist

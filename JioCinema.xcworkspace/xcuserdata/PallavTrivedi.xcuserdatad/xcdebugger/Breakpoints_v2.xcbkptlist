@@ -74,7 +74,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCHomeVC.swift"
-                  timestampString = "529236157.386727"
+                  timestampString = "529248646.491106"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -89,7 +89,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/JCHomeVC.swift"
-                  timestampString = "529236157.389113"
+                  timestampString = "529248646.493699"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -175,7 +175,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "197"
             endingLineNumber = "197"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:andParameters:)"
+            landmarkName = "addToWatchlistButtonClicked()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -191,8 +191,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "209"
             endingLineNumber = "209"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:andParameters:)"
-            landmarkType = "7">
+            landmarkName = "MetadataHeaderViewCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -207,7 +207,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "203"
             endingLineNumber = "203"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:andParameters:)"
+            landmarkName = "addToWatchlistButtonClicked()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,7 +234,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/MetadataHeaderViewCell.swift"
-                  timestampString = "529236157.419384"
+                  timestampString = "529248646.526629"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "213"
@@ -249,7 +249,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PallavTrivedi/Documents/Workspace/tvOS/JioCinemaTVOS/JioCinema/MetadataHeaderViewCell.swift"
-                  timestampString = "529236157.42154"
+                  timestampString = "529248646.529414"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "214"
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "529226562.116157"
+            timestampString = "529241994.515339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "callWebServiceForLanguageGenreData(isLanguage:pageNo:paramString:type:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -319,6 +319,38 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
             endingLineNumber = "57"
+            landmarkName = "JCLanguageGenreSelectionVC"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "529238244.29749"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "didReceiveNotificationForCellTap(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCSettingsVC.swift"
+            timestampString = "529248641.987803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>

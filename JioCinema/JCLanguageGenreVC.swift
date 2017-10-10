@@ -60,6 +60,12 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
     func callWebServiceForLanguageGenreData(isLanguage:Bool,pageNo:Int,paramString:String,type:Int)
     {
+        if !Utility.sharedInstance.isNetworkAvailable
+        {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        
         let url = langGenreDataUrl.appending("\(pageNo)")
         var params = [String:Any]()
         if isLanguage
