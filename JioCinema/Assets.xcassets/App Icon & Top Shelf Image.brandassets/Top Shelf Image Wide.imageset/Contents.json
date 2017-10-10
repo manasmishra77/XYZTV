@@ -4,6 +4,10 @@
       "idiom" : "tv",
       "filename" : "top-shelf-ios-2320x720.jpg",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "tv",
+      "scale" : "2x"
     }
   ],
   "info" : {

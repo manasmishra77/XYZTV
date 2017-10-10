@@ -226,12 +226,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 
                 
                 let item = self.data?[indexPath.row]
-                print("Tap item is \(item)")
                 if item?.app?.type == VideoType.Movie.rawValue || item?.app?.type == VideoType.TVShow.rawValue
                 {
                     isSearchOpenFromMetaData = false
                     if let topController = UIApplication.topViewController() {
-                        topController.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                        topController.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: {
                             DispatchQueue.main.async {
                                 self.openMetaDataVC(item: item!)
                             }
@@ -259,8 +258,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
             else
             {
-            let itemToPlay = ["item":(data?[indexPath.row])!]
-            NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
+                var itemToPlay = ["item":(data?[indexPath.row])!]
+                if isResumeWatchCell
+                {
+                    let dataTemp = data?[indexPath.row]
+                    if dataTemp?.app?.type == 1{
+                        dataTemp?.app?.type = 7
+                    }
+                    
+                    itemToPlay = ["item":dataTemp!]
+                }
+                NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
             }
         }
         else if moreLikeData != nil

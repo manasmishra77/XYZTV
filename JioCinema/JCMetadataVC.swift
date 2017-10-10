@@ -69,7 +69,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         // Do any additional setup after loading the view.
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -88,7 +87,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         else if metadata?.episodes != nil , metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            return 3
+            return 2
         }
         else
         {
@@ -135,16 +134,16 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 cell.episodes = metadata?.episodes
                 cell.tableCellCollectionView.reloadData()
             }
+//            if indexPath.row == 1
+//            {
+//                cell.moreLikeData = metadata?.more
+//                if metadata?.more != nil
+//                {
+//                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item!.name!))" : ""
+//                }
+//                cell.tableCellCollectionView.reloadData()
+//            }
             if indexPath.row == 1
-            {
-                cell.moreLikeData = metadata?.more
-                if metadata?.more != nil
-                {
-                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item!.name!))" : ""
-                }
-                cell.tableCellCollectionView.reloadData()
-            }
-            if indexPath.row == 2
             {
                 if let artists = metadata?.artist
                 {
@@ -310,6 +309,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             self.metadata = MetadataModel(JSONString: responseString)
+            print(metadata)
         }
     }
     
@@ -699,6 +699,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let vc = UIApplication.topViewController(){
                 if vc is JCMetadataVC{
                      NotificationCenter.default.post(name: playerDismissNotificationName, object: nil)
+                    NotificationCenter.default.removeObserver(self)
                 }
             }
         }

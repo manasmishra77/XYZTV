@@ -93,16 +93,20 @@
         {
             if metadata?.app?.type == VideoType.TVShow.rawValue
             {
-                for i in 0 ..< (metadata?.episodes?.count)!
+                if metadata?.episodes != nil
                 {
-                    let model = metadata?.episodes?[i]
-                    if model?.id == playerId
+                    for i in 0 ..< (metadata?.episodes?.count)!
                     {
-                        self.currentPlayingIndex = i
-                        break
+                        let model = metadata?.episodes?[i]
+                        if model?.id == playerId
+                        {
+                            self.currentPlayingIndex = i
+                            break
+                        }
                     }
+                    self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
                 }
-                self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+                
             }
         }
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)

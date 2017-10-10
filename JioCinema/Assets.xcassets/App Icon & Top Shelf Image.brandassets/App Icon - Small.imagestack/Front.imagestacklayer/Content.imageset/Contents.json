@@ -4,6 +4,10 @@
       "idiom" : "tv",
       "filename" : "TV_launch_icon_400x240.jpg",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "tv",
+      "scale" : "2x"
     }
   ],
   "info" : {

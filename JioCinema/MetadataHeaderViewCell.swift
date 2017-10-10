@@ -57,7 +57,10 @@ class MetadataHeaderViewCell: UIView {
         if metadata?.artist?.count == 0 || metadata?.artist == nil{
             starringStaticLabel.isHidden = true
         }
-        self.starringLabel.text = metadata?.artist?.joined(separator: ",")
+
+        self.starringLabel.text = (metadata?.artist?.joined(separator: ",").characters.count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
+        
+        
          let imageUrl = metadata?.banner
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
         DispatchQueue.main.async {
@@ -108,6 +111,7 @@ class MetadataHeaderViewCell: UIView {
             return UIView.init()
         }
     }
+    
     
     func resetView() -> UIView
     {
@@ -265,3 +269,11 @@ class MetadataHeaderViewCell: UIView {
         
     }
 }
+extension String {
+    func subString(start: Int, end: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: start)
+        let endIndex = self.index(startIndex, offsetBy: end)
+        
+        let finalString = self.substring(from: startIndex)
+        return finalString.substring(to: endIndex)
+    }}

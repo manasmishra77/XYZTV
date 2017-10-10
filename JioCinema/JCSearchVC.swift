@@ -48,8 +48,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     */
    
     
+    
     override func viewDidDisappear(_ animated: Bool)
     {
+        isSearchOpenFromMetaData = false
         searchResultArray.removeAll()
         searchViewController?.searchBar.text = ""
         baseTableView.reloadData()
