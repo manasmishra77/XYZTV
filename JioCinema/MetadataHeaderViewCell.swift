@@ -68,7 +68,8 @@ class MetadataHeaderViewCell: UIView {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
         
-                if metadata != nil
+        
+                if metadata != nil, JCLoginManager.sharedInstance.isUserLoggedIn()
                 {
                     watchlistLabel.text = (metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
                 }
