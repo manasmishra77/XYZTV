@@ -68,4 +68,15 @@ class Utility
             topVC?.present(alert, animated: true, completion: nil)
         }
     }
+    
+    func encodeStringWithBase64(aString: String?) -> String
+    {
+        if aString != nil
+        {
+            let encodedData = aString?.data(using: .utf8)
+            let encodedString = encodedData?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+            return encodedString!
+        }
+        return ""
+    }
 }

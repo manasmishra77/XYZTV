@@ -138,7 +138,7 @@ class JCLoginManager:UIViewController
                 {
                     weakSelf?.setUserData(data: parsedResponse)
                     
-                    let eventProperties = ["Source":"4G","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+                    let eventProperties = ["Source":"4G","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     
                     JCLoginManager.sharedInstance.setUserToDefaults()
@@ -150,6 +150,8 @@ class JCLoginManager:UIViewController
                 }
                 else
                 {
+//                    let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"4G","Platform":"TVOS","Error Code":]
+//                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     completion(false)
                 }
             }

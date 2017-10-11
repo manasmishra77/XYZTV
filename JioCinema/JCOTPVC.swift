@@ -326,7 +326,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 {
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
-                    let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+                    let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
@@ -344,7 +344,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 }
                 else
                 {
-                
+                    let eventProperties:[String:Any] = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"OTP","Platform":"TVOS","Error Code":"\(String(describing: code))","error messgae":parsedResponse["message"]!]
+                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
                 }
             }
         }
