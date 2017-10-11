@@ -888,7 +888,6 @@
                 }
                 else if data.app?.type == VideoType.TVShow.rawValue
                 {
-                    self.callWebServiceForPlaybackRights(id: data.id!)
                     let url = metadataUrl.appending(data.id!).appending("/0/0")
                     self.callWebServiceForMoreLikeData(url: url)
                 }
@@ -1112,38 +1111,28 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
+//                        for i in 0 ..< (self.playbackRightsData?.more?.count)
+//                        {
+//
+//                        }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {
-                            switch self.metadata?.app?.type!
+                            if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
                             {
-                            case VideoType.Movie.rawValue?,VideoType.TVShow.rawValue?:
                                 print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
                                 self.instantiatePlayer(with: (self.playbackRightsData!.url!))
-                                break
-                            default:
-                                print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                            }
+                            else
+                            {
+                                print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
                                 self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
                             }
                         }
                         else
                         {
-                            if let data = self.item as? Item
-                            {
-                                switch data.app?.type!
-                                {
-                                case VideoType.Movie.rawValue?,VideoType.TVShow.rawValue?:
-                                    print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
-                                    self.instantiatePlayer(with: (self.playbackRightsData!.url!))
-                                    break
-                                default:
-                                    print("default")
-                                    print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-                                    self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
-                                }
-                  
-                            }
-                            
+                            print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                            self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
                         }
                     }
                 }
