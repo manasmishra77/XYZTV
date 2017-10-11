@@ -322,9 +322,10 @@ class JCTabBarController: UITabBarController {
                 playerVC.currentItemTitle = item.name
                 playerVC.currentItemDuration = String(describing: item.totalDuration)
                 playerVC.currentItemDescription = item.subtitle
-                playerVC.callWebServiceForPlaybackRights(id: item.id!)
+               // playerVC.callWebServiceForPlaybackRights(id: item.id!)
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
+                playerVC.playerId = item.id!
                // playerVC.playerId = (currentPlayableItem as! Episode).id!
                 let playerItem = ["player":playerVC]
                 NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
@@ -340,7 +341,7 @@ class JCTabBarController: UITabBarController {
                     playerVC.currentItemDescription = item.description
                     if latestEpisodeId != "-1"
                     {
-                    playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
+                       // playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
                        // latestEpisodeId = "-1"
                     }
                     else
@@ -358,8 +359,9 @@ class JCTabBarController: UITabBarController {
                 
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
-                playerVC.playerId = (currentPlayableItem as! Item).id!
+               // playerVC.playerId = (currentPlayableItem as! Item).id!
                 
+                playerVC.playerId = item.id!
                 playerVC.item = currentPlayableItem
                 
                 if let topController = UIApplication.topViewController() {
