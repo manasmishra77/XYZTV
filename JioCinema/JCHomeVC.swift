@@ -282,7 +282,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     var isAbleToChangeAlpha = false
     var focusShiftedFromTabBarToVC = true
     var uiviewCarousel: UIView? = nil
-
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
@@ -304,18 +304,24 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
                 }
             }
         }
-     
+        
     }
-
+    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         //ChangingAlphaIfScrollingToTabItemNormally
+        
         if (context.previouslyFocusedView as? CarouselViewButton) != nil {
             if context.nextFocusedView?.tag != 101 {
                 if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
                     headerViewOfTableSection.middleButton.alpha = 1
+                    if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                        cells.first?.tableCellCollectionView.alpha = 1
+                        focusShiftedFromTabBarToVC = true
+                        return
+                    }
                 }
             }
-           
+            
         }
         
         //ForChangingTheAlphaWhenMenuButtonPressed
@@ -325,13 +331,18 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
         else if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
+            
             if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                 isAbleToChangeAlpha = false
                 for cell in cells{
-                    if cell != cells.first{
-                    cell.tableCellCollectionView.alpha = 0.5
+                    if cell != cells.first {
+                        cell.tableCellCollectionView.alpha = 0.5
                     }
                 }
+                if cells.count == 1{
+                    cells.first?.tableCellCollectionView.alpha = 0.5
+                }
+                
             }
         }
     }

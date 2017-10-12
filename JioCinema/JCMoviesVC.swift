@@ -12,6 +12,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
 {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
+    var dataItemsForTableview = [DataContainer]()
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -57,20 +58,60 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
+        /*
+         if (JCDataStore.sharedDataStore.moviesData?.data) != nil
+         {
+         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
+         {
+         return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
+         }
+         else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil,JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0,JCLoginManager.sharedInstance.isUserLoggedIn()
+         {
+         return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
+         }
+         else
+         {
+         return (JCDataStore.sharedDataStore.moviesData?.data?.count)!
+         }
+         }
+         else
+         {
+         return 0
+         }
+         */
+        dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.moviesData?.data) != nil
         {
-            if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
+            if !JCLoginManager.sharedInstance.isUserLoggedIn()
             {
-                return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
+                isMoviesWatchlistAvailable = false
             }
-            else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil,JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0,JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
-                return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
+            if isMoviesWatchlistAvailable{
+                dataItemsForTableview.append((JCDataStore.sharedDataStore.moviesWatchList?.data)!)
             }
-            else
-            {
-                return (JCDataStore.sharedDataStore.moviesData?.data?.count)!
-            }
+            
+                if (JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal) != nil{
+                    if (JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal)! {
+                        var index = 0
+                        for each in (JCDataStore.sharedDataStore.moviesData?.data)!{
+                            if index != 0{
+                        dataItemsForTableview.append(each)
+                            }
+                            index = index + 1
+                        }
+                        
+                    }else{
+                        for each in (JCDataStore.sharedDataStore.moviesData?.data)!{                                dataItemsForTableview.append(each)
+                        }
+                    }
+                }
+                else{
+                    for each in (JCDataStore.sharedDataStore.moviesData?.data)!{                                dataItemsForTableview.append(each)
+                    }
+                }
+            
+            return dataItemsForTableview.count
+            
         }
         else
         {
@@ -83,40 +124,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Movie
-
-        if !JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            isMoviesWatchlistAvailable = false
-        }
-        
-        if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
-        {
-            cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
-        }
-        else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
-            {
-            cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
-            cell.categoryTitleLabel.text = "WatchList"
-                cell.tableCellCollectionView.reloadData()
-            }
-            else
-            {
-                isMoviesWatchlistAvailable = false
-            }
-        }
-        else
-        {
-            let dataRow = indexPath.row - 1
-            cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
-            cell.tableCellCollectionView.reloadData()
-        }
-        
-        
-        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1)
+        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        cell.tableCellCollectionView.reloadData()
+        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
             {
@@ -125,6 +136,44 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             }
         }
         return cell
+        /*
+         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
+         {
+         cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
+         cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
+         }
+         else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
+         {
+         if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
+         {
+         cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
+         cell.categoryTitleLabel.text = "WatchList"
+         cell.tableCellCollectionView.reloadData()
+         }
+         else
+         {
+         isMoviesWatchlistAvailable = false
+         }
+         }
+         else
+         {
+         let dataRow = indexPath.row - 1
+         cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
+         cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
+         cell.tableCellCollectionView.reloadData()
+         }
+         
+         
+         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1)
+         {
+         if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
+         {
+         callWebServiceForMoviesData(page: loadedPage + 1)
+         loadedPage += 1
+         }
+         }
+         return cell
+         */
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -258,14 +307,14 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             
             if let responseData = data
             {
-                self.isMoviesWatchlistAvailable = true
+                
                 DispatchQueue.main.async {
                     weakSelf?.evaluateMoviesWatchlistData(dictionaryResponseData: responseData)
                 }
                 return
             }
         }
-
+        
     }
     
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
@@ -274,17 +323,20 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
             weak var weakSelf = self
             DispatchQueue.main.async {
+                self.isMoviesWatchlistAvailable = true
+                JCDataStore.sharedDataStore.moviesWatchList?.data?.title = "Watch List"
                 weakSelf?.baseTableView.reloadData()
             }
         }
         
     }
     
-    //ForChangingTheAlphaWhenMenuButtonPressed
+    //ToBeChanged
+    //ChangingTheAlpha
     var isAbleToChangeAlpha = false
     var focusShiftedFromTabBarToVC = true
     var uiviewCarousel: UIView? = nil
-
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
@@ -294,7 +346,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
                 if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
                     headerViewOfTableSection.middleButton.alpha = 1
                 }
-                
                 if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                     isAbleToChangeAlpha = true
                     for cell in cells{
@@ -311,16 +362,22 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        
         //ChangingAlphaIfScrollingToTabItemNormally
+        
         if (context.previouslyFocusedView as? CarouselViewButton) != nil {
             if context.nextFocusedView?.tag != 101 {
                 if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
                     headerViewOfTableSection.middleButton.alpha = 1
+                    if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                        cells.first?.tableCellCollectionView.alpha = 1
+                        focusShiftedFromTabBarToVC = true
+                        return
+                    }
                 }
             }
             
         }
+        
         //ForChangingTheAlphaWhenMenuButtonPressed
         if isAbleToChangeAlpha{
             isAbleToChangeAlpha = false
@@ -328,16 +385,21 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         }
         else if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
+            
             if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                 isAbleToChangeAlpha = false
                 for cell in cells{
-                    if cell != cells.first{
+                    if cell != cells.first {
                         cell.tableCellCollectionView.alpha = 0.5
                     }
                 }
+                if cells.count == 1{
+                    cells.first?.tableCellCollectionView.alpha = 0.5
+                }
+                
             }
         }
     }
-
+    
     
 }
