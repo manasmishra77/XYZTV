@@ -13,6 +13,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
 
     var loadedPage = 0
     var isTVWatchlistAvailable = false
+    var dataItemsForTableview = [DataContainer]()
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -61,7 +62,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if (JCDataStore.sharedDataStore.tvData?.data) != nil
+        /*if (JCDataStore.sharedDataStore.tvData?.data) != nil
         {
             if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
             {
@@ -80,6 +81,45 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         {
             return 0
         }
+ */
+        dataItemsForTableview.removeAll()
+        if (JCDataStore.sharedDataStore.tvData?.data) != nil
+        {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn()
+            {
+                isTVWatchlistAvailable = false
+            }
+            if isTVWatchlistAvailable{
+                dataItemsForTableview.append((JCDataStore.sharedDataStore.tvWatchList?.data)!)
+            }
+            
+            if (JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal) != nil{
+                if (JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal)! {
+                    var index = 0
+                    for each in (JCDataStore.sharedDataStore.tvData?.data)!{
+                        if index != 0{
+                            dataItemsForTableview.append(each)
+                        }
+                        index = index + 1
+                    }
+                    
+                }else{
+                    for each in (JCDataStore.sharedDataStore.tvData?.data)!{                                dataItemsForTableview.append(each)
+                    }
+                }
+            }
+            else{
+                for each in (JCDataStore.sharedDataStore.tvData?.data)!{                                dataItemsForTableview.append(each)
+                }
+            }
+            
+            return dataItemsForTableview.count
+            
+        }
+        else
+        {
+            return 0
+        }
         
     }
     
@@ -88,11 +128,20 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.TVShow
 
-        if !JCLoginManager.sharedInstance.isUserLoggedIn()
+        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        cell.tableCellCollectionView.reloadData()
+        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
         {
-            isTVWatchlistAvailable = false
+            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
+            {
+                callWebServiceForTVData(page: loadedPage + 1)
+                loadedPage += 1
+            }
         }
+        return cell
         
+        /*
         if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
         {
             cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
@@ -129,6 +178,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
         return cell
+ */
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -261,7 +311,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             
             if let responseData = data
             {
-                self.isTVWatchlistAvailable = true
                 DispatchQueue.main.async {
                     weakSelf?.evaluateTVWatchlistData(dictionaryResponseData: responseData)
                 }
@@ -276,18 +325,20 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
             weak var weakSelf = self
             DispatchQueue.main.async {
+                weakSelf?.isTVWatchlistAvailable = true
+                JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
                 weakSelf?.baseTableView.reloadData()
             }
         }
         
     }
     
+    //ToBeChanged
     //ChangingTheAlpha
     var isAbleToChangeAlpha = false
     var focusShiftedFromTabBarToVC = true
     var uiviewCarousel: UIView? = nil
-
-    //ChangingTheAlpha
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
@@ -314,14 +365,21 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         //ChangingAlphaIfScrollingToTabItemNormally
+        
         if (context.previouslyFocusedView as? CarouselViewButton) != nil {
             if context.nextFocusedView?.tag != 101 {
                 if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
                     headerViewOfTableSection.middleButton.alpha = 1
+                    if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+                        cells.first?.tableCellCollectionView.alpha = 1
+                        focusShiftedFromTabBarToVC = true
+                        return
+                    }
                 }
             }
             
         }
+        
         //ForChangingTheAlphaWhenMenuButtonPressed
         if isAbleToChangeAlpha{
             isAbleToChangeAlpha = false
@@ -329,13 +387,18 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         }
         else if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
+            
             if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
                 isAbleToChangeAlpha = false
                 for cell in cells{
-                    if cell != cells.first{
+                    if cell != cells.first {
                         cell.tableCellCollectionView.alpha = 0.5
                     }
                 }
+                if cells.count == 1{
+                    cells.first?.tableCellCollectionView.alpha = 0.5
+                }
+                
             }
         }
     }

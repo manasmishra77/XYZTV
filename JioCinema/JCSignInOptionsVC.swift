@@ -34,7 +34,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
        jioIdTextField.text     = "pallavtrivedi-4"
-       passwordTextField.text  = "pallav@101"
+       passwordTextField.text  = "pallav@1010"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
