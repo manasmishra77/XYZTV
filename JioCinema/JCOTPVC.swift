@@ -277,9 +277,15 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             
             if let responseError = error
             {
+              
+                
                 //TODO: handle error
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
+                let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
+                JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+                
+                
 //                return
                 DispatchQueue.main.async {
                     self.activityIndicator?.stopAnimating()
@@ -337,15 +343,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                             isLoginPresentedFromAddToWatchlist = false
                         })
                     }
-                    
-                    //Analytics login success (OTP)
-//                    let analyticsData = ["method":"OTP","source":"manual","identity":JCAppUser.shared.commonName]
-//                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
                 else
                 {
-                    let eventProperties:[String:Any] = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"OTP","Platform":"TVOS","Error Code":"\(String(describing: code))","error messgae":parsedResponse["message"]!]
-                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+                  
                 }
             }
         }

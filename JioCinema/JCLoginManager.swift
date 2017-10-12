@@ -144,14 +144,10 @@ class JCLoginManager:UIViewController
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
                     
-                    //Analytics for Login Success (4g,skip)
-//                    let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
-//                    JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                 }
                 else
                 {
-//                    let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"4G","Platform":"TVOS","Error Code":]
-//                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
+
                     completion(false)
                 }
             }
