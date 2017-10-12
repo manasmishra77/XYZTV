@@ -34,7 +34,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
        jioIdTextField.text     = "pallavtrivedi-4"
-       passwordTextField.text  = "pallav@101"
+       passwordTextField.text  = "pallav@1010"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -64,6 +64,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
                         
+                        //Analytics for Login Success   (jio id, Manual)
+//                        let analyticsData = ["method":"JIOID","source":"manual","identity":JCAppUser.shared.uid]
+//                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
+                        
                         let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":JCAppUser.shared.uid]
                         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                         
@@ -82,10 +86,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     else if(code == 400)
                     {
                         self.showAlert(alertString: parsedResponse["message"]! as! String)
-                       
-                        let message = parsedResponse["message"] as? String
-                        let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.jioIdTextField.text!),"Reason":"Jio ID","Platform":"TVOS","Error Code":code!,"Message":message] as [String : Any]
-                        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+                        //Analytics for Login Fail
+//                        let pro = ["userid":]
+//                        let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
+//                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                     }
                 }
             }

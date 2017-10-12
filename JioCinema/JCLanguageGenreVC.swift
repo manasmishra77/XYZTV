@@ -351,7 +351,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         
         playerVC.item = model
         //playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
-        playerVC.callWebServiceForPlaybackRights(id: playerId!)
+        
+        //OPTIMIZATION PLAYERVC
+       // playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         

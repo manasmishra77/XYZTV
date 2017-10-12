@@ -223,8 +223,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         {
             if isSearchOpenFromMetaData
             {
-                
-                
                 let item = self.data?[indexPath.row]
                 if item?.app?.type == VideoType.Movie.rawValue || item?.app?.type == VideoType.TVShow.rawValue
                 {
@@ -319,7 +317,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         playerVC.currentItemTitle = item.name
         playerVC.currentItemDuration = String(describing: item.totalDuration)
         playerVC.currentItemDescription = item.subtitle
-        playerVC.callWebServiceForPlaybackRights(id: item.id!)
+        //OPTIMIZATION PLAYERVC
+       // playerVC.callWebServiceForPlaybackRights(id: item.id!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         playerVC.playerId = item.id

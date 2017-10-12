@@ -75,7 +75,7 @@ class JCResumeWatchingVC: UIViewController
         playerVC.currentItemTitle = itemTitle
         playerVC.currentItemImage = itemImage
         playerVC.currentItemDuration = itemDuration
-        playerVC.callWebServiceForPlaybackRights(id: playerId!)
+       // playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         playerVC.duration = Double(playableItemDuration)

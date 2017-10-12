@@ -91,8 +91,12 @@
         }
         else
         {
+            
             if metadata?.app?.type == VideoType.TVShow.rawValue
             {
+                print("metadata id = \(metadata?.id)")
+                print("player id = \(playerId)")
+                self.callWebServiceForPlaybackRights(id: playerId!)
                 if metadata?.episodes != nil
                 {
                     for i in 0 ..< (metadata?.episodes?.count)!
@@ -106,7 +110,10 @@
                     }
                     self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
                 }
-                
+            }
+          else if metadata?.app?.type == VideoType.Movie.rawValue
+            {
+                self.callWebServiceForPlaybackRights(id: playerId!)
             }
         }
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
@@ -883,11 +890,13 @@
 
                 if data.app?.type == VideoType.Movie.rawValue
                 {
+                    self.callWebServiceForPlaybackRights(id: data.id!)
                     let url = metadataUrl.appending(data.id!)
                     self.callWebServiceForMoreLikeData(url: url)
                 }
                 else if data.app?.type == VideoType.TVShow.rawValue
                 {
+                    self.callWebServiceForPlaybackRights(id: playerId!)
                     let url = metadataUrl.appending(data.id!).appending("/0/0")
                     self.callWebServiceForMoreLikeData(url: url)
                 }
@@ -1111,10 +1120,6 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
-//                        for i in 0 ..< (self.playbackRightsData?.more?.count)
-//                        {
-//
-//                        }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {

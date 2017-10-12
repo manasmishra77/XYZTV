@@ -137,7 +137,6 @@ class MetadataHeaderViewCell: UIView {
             if let itemId = item?.id
             {
                 id = itemId
-                
                 playerVC.currentItemTitle = item?.name
                 playerVC.currentItemDescription = item?.description
                 playerVC.currentItemDuration = String(describing: item?.duration)
@@ -158,9 +157,11 @@ class MetadataHeaderViewCell: UIView {
         {
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
-                playerVC.callWebServiceForPlaybackRights(id: id!)
+                //OPTIMIZATION PLAYERVC
+               // playerVC.callWebServiceForPlaybackRights(id: id!)
             }
-            
+            print("id is === \(id!)")
+            playerVC.playerId = id!
             playerVC.item = item
 
             playerVC.modalPresentationStyle = .overFullScreen

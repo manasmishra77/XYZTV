@@ -322,10 +322,11 @@ class JCTabBarController: UITabBarController {
                 playerVC.currentItemTitle = item.name
                 playerVC.currentItemDuration = String(describing: item.totalDuration)
                 playerVC.currentItemDescription = item.subtitle
-                playerVC.callWebServiceForPlaybackRights(id: item.id!)
+                //OPTIMIZATION PLAYERVC
+               // playerVC.callWebServiceForPlaybackRights(id: item.id!)
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
-               // playerVC.playerId = (currentPlayableItem as! Episode).id!
+                playerVC.playerId = item.id!
                 let playerItem = ["player":playerVC]
                 NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
             }
@@ -338,10 +339,16 @@ class JCTabBarController: UITabBarController {
                     playerVC.currentItemTitle = item.name
                     playerVC.currentItemDuration = String(describing: item.totalDuration)
                     playerVC.currentItemDescription = item.description
+                    
+                    print(item.id)
+                    print(latestEpisodeId)
+                    
                     if latestEpisodeId != "-1"
                     {
-                    playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
-                       // latestEpisodeId = "-1"
+                        //  OPTIMIZATION PLAYERVC
+                        //  playerVC.callWebServiceForPlaybackRights(id: latestEpisodeId)
+                        
+                        // latestEpisodeId = "-1"
                     }
                     else
                     {
@@ -358,8 +365,7 @@ class JCTabBarController: UITabBarController {
                 
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
-                playerVC.playerId = (currentPlayableItem as! Item).id!
-                
+                playerVC.playerId = latestEpisodeId
                 playerVC.item = currentPlayableItem
                 
                 if let topController = UIApplication.topViewController() {
