@@ -43,7 +43,7 @@ class JCTabBarController: UITabBarController {
         let searchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
         searchVC.view.backgroundColor = .black
         
-        let searchViewController = UISearchController.init(searchResultsController: searchVC)
+        let searchViewController = UISearchController(searchResultsController: searchVC)
         searchViewController.view.backgroundColor = .black
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
@@ -56,16 +56,28 @@ class JCTabBarController: UITabBarController {
         searchVC.searchViewController = searchViewController
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
-                searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+        //searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
+     
+        //ToSetSearchVC,TBC
+        let tempVC = JCBaseVC.init(nibName: "JCBaseVC", bundle: nil)
+        let navControllerForSearchContainer = UINavigationController(rootViewController: searchContainerController)
+        
+        navControllerForSearchContainer.tabBarItem = UITabBarItem(title: "Search", image: nil, tag: 5)
+        
 
         settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 6)
         
-        let viewControllersArray = [homeVC, moviesVC, tvVC, musicVC, clipsVC, searchContainerController, settingsVC!] as [Any]
+        let viewControllersArray = [homeVC, moviesVC, tvVC, musicVC, clipsVC, navControllerForSearchContainer, settingsVC!] as [Any]
         self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
-        self.tabBar.alpha = 0.7
+        //self.tabBar.alpha = 0.7
         self.tabBar.backgroundColor = UIColor.black
+        
+        //Setting the refernces //TBC
+        JCAppReference.shared.tabBarCotroller = self
+        JCAppReference.shared.tempVC = tempVC
+        JCAppReference.shared.isTempVCRootVCInSearchNC = false
         
         // Do any additional setup after loading the view.
     }
@@ -318,17 +330,26 @@ class JCTabBarController: UITabBarController {
             if isCurrentItemEpisode
             {
                 let item = (currentPlayableItem as! Episode)
-                playerVC.currentItemImage = item.banner
-                playerVC.currentItemTitle = item.name
-                playerVC.currentItemDuration = String(describing: item.totalDuration)
-                playerVC.currentItemDescription = item.subtitle
-                //OPTIMIZATION PLAYERVC
-               // playerVC.callWebServiceForPlaybackRights(id: item.id!)
-                playerVC.modalPresentationStyle = .overFullScreen
-                playerVC.modalTransitionStyle = .coverVertical
-                playerVC.playerId = item.id!
-                let playerItem = ["player":playerVC]
-                NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+                
+                if let itemFromResumeList = checkAndPlayItemInResumeWatchList(item){
+                    self.playItemUsingResumeWatch(itemFromResumeList)
+                    //return
+                }
+                else{
+                    playerVC.currentItemImage = item.banner
+                    playerVC.currentItemTitle = item.name
+                    playerVC.currentItemDuration = String(describing: item.totalDuration)
+                    playerVC.currentItemDescription = item.subtitle
+                    //OPTIMIZATION PLAYERVC
+                    // playerVC.callWebServiceForPlaybackRights(id: item.id!)
+                    playerVC.modalPresentationStyle = .overFullScreen
+                    playerVC.modalTransitionStyle = .coverVertical
+                    playerVC.playerId = item.id!
+                    let playerItem = ["player":playerVC]
+                    NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: playerItem)
+                }
+                
+                
             }
             else
             {
@@ -394,6 +415,38 @@ class JCTabBarController: UITabBarController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    //Checking whether the item is in resume watch list or not
+    func checkAndPlayItemInResumeWatchList(_ itemToBeChecked: Episode) -> Item?
+    {
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items, itemToBeChecked.id != nil
+        {
+            let itemMatched = resumeWatchArray.filter{ $0.id == itemToBeChecked.id}.first
+            if itemMatched != nil
+            {
+                return itemMatched
+            }
+        }
+        return nil
+    }
+    
+    func playItemUsingResumeWatch(_ resumeItem : Item) {
+        let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+        
+        //For resume watch type need to be changed to 7
+        resumeItem.app?.type = 7
+        currentPlayableItem = resumeItem
+        resumeWatchingVC.playableItemDuration = Int(Float(resumeItem.duration!)!)
+        resumeWatchingVC.playerId = resumeItem.id
+        resumeWatchingVC.itemDescription = resumeItem.subtitle
+        resumeWatchingVC.itemImage = resumeItem.banner
+        resumeWatchingVC.itemTitle = resumeItem.name
+        resumeWatchingVC.itemDuration = String(describing: resumeItem.totalDuration)
+        
+        resumeWatchingVC.item = currentPlayableItem
+        
+        JCAppReference.shared.metaDataVc?.present(resumeWatchingVC, animated: false, completion: nil)
     }
     
     

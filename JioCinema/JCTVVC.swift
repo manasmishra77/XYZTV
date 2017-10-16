@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
+class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
 {
 
     var loadedPage = 0
@@ -37,6 +37,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
+
         if JCDataStore.sharedDataStore.tvData?.data == nil
         {
             callWebServiceForTVData(page: loadedPage)
@@ -49,6 +50,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         baseTableView.reloadData()
         
     }
+  
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -104,12 +106,14 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
                     }
                     
                 }else{
-                    for each in (JCDataStore.sharedDataStore.tvData?.data)!{                                dataItemsForTableview.append(each)
+                    for each in (JCDataStore.sharedDataStore.tvData?.data)!{
+                        dataItemsForTableview.append(each)
                     }
                 }
             }
             else{
-                for each in (JCDataStore.sharedDataStore.tvData?.data)!{                                dataItemsForTableview.append(each)
+                for each in (JCDataStore.sharedDataStore.tvData?.data)!{
+                    dataItemsForTableview.append(each)
                 }
             }
             
@@ -402,5 +406,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
+    
 
 }

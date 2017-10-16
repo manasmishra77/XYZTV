@@ -36,6 +36,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
+        
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             callWebServiceForResumeWatchData()
@@ -47,6 +48,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
         
         JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
     }
+ 
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -346,5 +348,26 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
+    
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

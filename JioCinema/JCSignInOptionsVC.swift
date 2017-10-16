@@ -166,5 +166,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    
 
 }

@@ -35,6 +35,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     override func viewDidAppear(_ animated: Bool)
     {
+ 
         if JCDataStore.sharedDataStore.moviesData?.data == nil
         {
             callWebServiceForMoviesData(page: loadedPage)
@@ -45,6 +46,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         }
         baseTableView.reloadData()
     }
+ 
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -400,6 +402,8 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             }
         }
     }
+    
+    
     
     
 }

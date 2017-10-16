@@ -20,7 +20,7 @@ class JCResumeWatchingVC: UIViewController
     var itemDuration:String?
     var isVideoResumed = false
     
-    var item                        :Any?
+    var item :Any?
 
 
     override func viewDidLoad()

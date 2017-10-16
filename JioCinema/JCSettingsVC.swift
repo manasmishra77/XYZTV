@@ -32,9 +32,10 @@ class JCSettingsVC: UIViewController
     
     override func viewDidAppear(_ animated: Bool)
     {
-       
+
         settingsTableView.reloadData()
     }
+   
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
@@ -273,5 +274,6 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         
         
     }
+    
 }
 

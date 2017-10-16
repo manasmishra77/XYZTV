@@ -56,6 +56,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
         self.metadataTableView.tableFooterView = UIView.init()
+        headerCell.addToWatchListButton.isEnabled = false
         
         if item!.name!.characters.count < 1 {
             loadingLabel.text = "Loading"
@@ -65,7 +66,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         loadingLabel.text = "Loading"
         }
         
-        (item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: (item?.id)!) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
+        callWebServiceForMetadata(id: (item?.id)!)
+        //(item?.app?.type == VideoType.Movie.rawValue) ? callWebServiceForMetadata(id: ) : callWebServiceForMetadata(id: ((item?.id)!).appending("/0/0"))
         // Do any additional setup after loading the view.
     }
     
@@ -73,7 +75,26 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        callWebServiceForMoreLikeData(id: (item?.id)!)
+        
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(){
+        headerCell.addToWatchListButton.isEnabled = true
+        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        
+        //Removing seasarch container from search navigation controller
+        changingSearchNCRootVC()
+        JCAppReference.shared.metaDataVc = self
+        
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        JCAppReference.shared.metaDataVc = nil
+        //Removing search container from search navigation controller
+        changingSearchNCRootVC()
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
@@ -198,15 +219,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if let responseData = data
             {
                 weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    weakSelf?.showMetadata()
+                }
                 if JCLoginManager.sharedInstance.isUserLoggedIn()
                 {
                     weakSelf?.callWebserviceForWatchListStatus(id: id)
                 }
-                else
-                {
-                    weakSelf?.callWebServiceForMoreLikeData(id: id)
-                }
-                
                 return
             }
         }
@@ -215,7 +234,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func callWebServiceForMoreLikeData(id:String)
     {
-        let url = item?.app?.type == VideoType.Movie.rawValue ? metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: "")) :metadataUrl.appending(id)
+        let url = item?.app?.type == VideoType.Movie.rawValue ? metadataUrl.appending(id) :metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -228,9 +247,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             }
             if let responseData = data
             {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                
                 DispatchQueue.main.async {
-                    weakSelf?.prepareMetadataScreen()
+                    weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                    weakSelf?.metadataTableView.reloadData()
                 }
                 
                 return
@@ -241,8 +261,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func callWebserviceForWatchListStatus(id:String)
     {
-        let url = playbackRightsURL.appending(id.replacingOccurrences(of: "/0/0", with: ""))
-        let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
+        let urlId = (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)! + "/" + id
+        let showId: String = (metadata?.app?.type)! == VideoType.Movie.rawValue ? "" : id
+        let url = playbackRightsURL.appending(urlId)
+        let params = ["id" : (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)!,"showId" : showId, "uniqueId" : JCAppUser.shared.unique, "deviceType" : "stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
@@ -250,16 +272,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             {
                 //TODO: handle error
                 print(responseError)
-                if(id.contains("/0/0"))
-                {
-                    weakSelf?.callWebServiceForMoreLikeData(id: id)
-                }
-                else
-                {
-                    DispatchQueue.main.async {
-                        weakSelf?.prepareMetadataScreen()
-                    }
-                }
+              
                 return
             }
             if let responseData = data
@@ -267,17 +280,24 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 if let responseString = String(data: responseData, encoding: .utf8)
                 {
                     let playbackRightsData = PlaybackRightsModel(JSONString: responseString)
-                    weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
-                    if(id.contains("/0/0"))
-                    {
-                        weakSelf?.callWebServiceForMoreLikeData(id: id)
-                    }
-                    else
-                    {
-                        DispatchQueue.main.async {
-                            weakSelf?.prepareMetadataScreen()
+                    
+                    DispatchQueue.main.async {
+                        weakSelf?.headerCell.addToWatchListButton.isEnabled = true
+                        weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
+                        if weakSelf?.metadata?.inQueue != nil{
+                            if (weakSelf?.metadata?.inQueue)!{
+                                weakSelf?.headerCell.watchlistLabel.text = "Remove from watchlist"
+                            }
+                            else{
+                                weakSelf?.headerCell.watchlistLabel.text = "Add to watchlist"
+                            }
                         }
+                        else{
+                            weakSelf?.headerCell.watchlistLabel.text = "Add to watchlist"
+                        }
+                        
                     }
+                    
                 }
                 return
             }
@@ -318,7 +338,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         weak var weakSelf = self
         
             DispatchQueue.main.async {
-                weakSelf?.showMetadata()
+                //weakSelf?.showMetadata()
                 weakSelf?.metadataTableView.reloadData()
             }
     }
@@ -354,6 +374,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
+            if let isForResumeScreen = notification.userInfo?["isForResumeScreen"] as? Bool{
+                if isForResumeScreen{
+                    self.playItemUsingResumeWatch(notification.userInfo?["item"] as! Item)
+                }
+            }
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             guard let player = notification.userInfo?["player"] as? JCPlayerVC
                 else {
@@ -382,6 +407,21 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 }
             }
         }
+    }
+    
+    func playItemUsingResumeWatch(_ resumeItem : Item) {
+        let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+        currentPlayableItem = resumeItem
+        resumeWatchingVC.playableItemDuration = Int(Float(resumeItem.duration!)!)
+        resumeWatchingVC.playerId = resumeItem.id
+        resumeWatchingVC.itemDescription = resumeItem.subtitle
+        resumeWatchingVC.itemImage = resumeItem.banner
+        resumeWatchingVC.itemTitle = resumeItem.name
+        resumeWatchingVC.itemDuration = String(describing: resumeItem.totalDuration)
+        
+        resumeWatchingVC.item = currentPlayableItem
+        
+        self.present(resumeWatchingVC, animated: false, completion: nil)
     }
     
     func prepareToPlay()
@@ -696,12 +736,15 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu
         {
+         
             if let vc = UIApplication.topViewController(){
                 if vc is JCMetadataVC{
                      NotificationCenter.default.post(name: playerDismissNotificationName, object: nil)
                     NotificationCenter.default.removeObserver(self)
                 }
             }
+         
+
         }
     }
     
@@ -722,7 +765,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let artistSearchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
         artistSearchVC.view.backgroundColor = .black
         
-        let searchViewController = UISearchController.init(searchResultsController: artistSearchVC)
+        let searchViewController = UISearchController(searchResultsController: artistSearchVC)
         searchViewController.view.backgroundColor = .black
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
@@ -738,6 +781,53 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         
         self.present(searchViewController, animated: false, completion: nil)
     }
+    
+    //Removing seasarch container from search navigation controller
+    func changingSearchNCRootVC(){
+        if JCAppReference.shared.isTempVCRootVCInSearchNC == nil{
+            return
+        }
+        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
+            JCAppReference.shared.isTempVCRootVCInSearchNC = false
+            let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
+            searchVC.view.backgroundColor = .black
+            
+            let searchViewController = UISearchController.init(searchResultsController: searchVC)
+            searchViewController.view.backgroundColor = .black
+            searchViewController.searchBar.placeholder = "Search"
+            searchViewController.searchBar.tintColor = UIColor.white
+            searchViewController.searchBar.barTintColor = UIColor.black
+            searchViewController.searchBar.tintColor = UIColor.gray
+            searchViewController.hidesNavigationBarDuringPresentation = true
+            searchViewController.obscuresBackgroundDuringPresentation = false
+            searchViewController.searchBar.delegate = searchVC
+            searchViewController.searchBar.searchBarStyle = .minimal
+            searchVC.searchViewController = searchViewController
+            let searchContainerController = UISearchContainerViewController(searchController: searchViewController)
+            searchContainerController.view.backgroundColor = UIColor.black
+            if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
+                navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
+            }
+            
+        }
+        else{
+            JCAppReference.shared.isTempVCRootVCInSearchNC = true
+            if let navVC = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
+                navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
+            }
+        }
+    }
+    
+    
 }
+
+
+
+
+
+
+
+
+
 
 

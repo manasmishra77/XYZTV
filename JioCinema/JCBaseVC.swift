@@ -25,10 +25,7 @@ class JCBaseVC: UIViewController {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
-        if(self.tabBarController?.tabBar.isHidden == false)
-        {
-            self.tabBarController?.tabBar.alpha = 0.7
-        }
+      
     }
 
     /*

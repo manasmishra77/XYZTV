@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class JCAppUser:NSObject,NSCoding
 {
@@ -29,6 +30,10 @@ class JCAppUser:NSObject,NSCoding
     var uid:String = ""
     var unique:String = ""
     var userGroup:String = ""
+    
+    
+    
+
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -67,3 +72,16 @@ class JCAppUser:NSObject,NSCoding
     }
     
 }
+
+//Setting the refernces for searchvc
+class JCAppReference: NSObject {
+    static var shared = JCAppReference()
+    
+    private override init(){} //singleTone
+    //Setting the refernces for searchvc
+    var tabBarCotroller: UITabBarController? = nil
+    var tempVC: UIViewController? = nil
+    var isTempVCRootVCInSearchNC: Bool? = nil
+    var searchText: String? = nil
+    //Reference for metadatavc for presenting resume watch scene on it
+    var metaDataVc: UIViewController? = nil}

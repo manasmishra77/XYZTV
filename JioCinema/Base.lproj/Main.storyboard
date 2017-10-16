@@ -147,7 +147,7 @@
         <scene sceneID="FPJ-C5-E7U">
             <objects>
                 <tabBarController storyboardIdentifier="kTabBarController" id="IVy-sS-KEV" customClass="JCTabBarController" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" alpha="0.69999999999999996" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Mrk-WF-368">
+                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Mrk-WF-368">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -341,6 +341,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <color key="backgroundColor" red="0.039876302083333336" green="0.048448350694444448" blue="0.070909288194444448" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="YeZ-Wh-y1J" firstAttribute="top" secondItem="zRX-Jc-hjK" secondAttribute="bottom" constant="50" id="1dk-q1-ss6"/>
                             <constraint firstItem="YeZ-Wh-y1J" firstAttribute="centerX" secondItem="ICd-XO-quP" secondAttribute="centerX" id="5hu-OG-N7X"/>
@@ -372,6 +373,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="fH9-Ef-IIE">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVl-t3-UwF" userLabel="Loader View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
@@ -429,16 +433,20 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.047058823529411764" green="0.050980392156862744" blue="0.043137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="v2z-Ee-E5k" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" id="23T-PN-qEs"/>
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="top" secondItem="Ale-3h-JlR" secondAttribute="bottom" constant="-60" id="EIN-Gl-Rn0"/>
                             <constraint firstAttribute="trailing" secondItem="v2z-Ee-E5k" secondAttribute="trailing" id="K8M-fu-KOS"/>
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="LTH-Kl-2wq"/>
                             <constraint firstAttribute="trailing" secondItem="MVl-t3-UwF" secondAttribute="trailing" id="Sao-nC-y7S"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="VH6-Rm-vgk"/>
                             <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="bottom" id="WLV-oQ-aaq"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="bottom" secondItem="v2z-Ee-E5k" secondAttribute="bottom" constant="60" id="YLC-LO-4gN"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="cyN-Um-oDh"/>
                             <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="MVl-t3-UwF" secondAttribute="bottom" constant="-60" id="gvR-am-2QF"/>
                             <constraint firstItem="v2z-Ee-E5k" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="q5b-FR-NN0"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="trailing" secondItem="v2z-Ee-E5k" secondAttribute="trailing" id="xdi-iX-IIw"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1351,6 +1359,7 @@
     </scenes>
     <resources>
         <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
+        <image name="MetaDatBackGroundImage" width="1920" height="1080"/>
         <image name="OtpBackgroundScreen" width="957" height="536"/>
         <image name="Settings" width="300" height="300"/>
         <image name="back_ic" width="60" height="60"/>

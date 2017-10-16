@@ -70,7 +70,18 @@ class JCLoginVC: UIViewController {
         singInOptionsVC.modalTransitionStyle = .coverVertical
         singInOptionsVC.view.layer.speed = 0.7
 
-        self.present(singInOptionsVC, animated: true, completion: nil)
+        self.present(singInOptionsVC, animated: true, completion: {
+            self.changingSearchNCRootVC()
+            
+        })
     }
  
+    //Removing seasarch container from search navigation controller
+    func changingSearchNCRootVC(){
+            JCAppReference.shared.isTempVCRootVCInSearchNC = true
+            if let navVC = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
+                navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
+            }
+        
+    }
 }

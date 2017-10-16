@@ -34,11 +34,13 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     override func viewDidAppear(_ animated: Bool) {
+
         if JCDataStore.sharedDataStore.musicData?.data == nil
         {
             callWebServiceForMusicData(page: loadedPage)
         }
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -281,5 +283,6 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
+    
 
 }

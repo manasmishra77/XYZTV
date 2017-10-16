@@ -24,36 +24,14 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         activityIndicator.isHidden = true
         // Do any additional setup after loading the view.
     }
-    
-    
-    /*
-    //To be changed
-    override func viewDidAppear(_ animated: Bool) {
-        let searchViewController = UISearchController.init(searchResultsController: nil)
-        searchViewController.searchResultsUpdater = self
-        //searchViewController.view.backgroundColor = .black
-        searchViewController.searchBar.placeholder = "Search"
-        searchViewController.searchBar.tintColor = UIColor.white
-        //searchViewController.searchBar.barTintColor = UIColor.black
-        searchViewController.searchBar.tintColor = UIColor.gray
-        searchViewController.hidesNavigationBarDuringPresentation = false
-        //searchViewController.obscuresBackgroundDuringPresentation = false
-        //searchViewController.searchBar.delegate = self
-        searchViewController.searchBar.searchBarStyle = .minimal
-        //self.searchViewController = searchViewController
-        self.view.addSubview(searchViewController.searchBar)
-        //let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
-        //searchContainerController.view.backgroundColor = UIColor.black
-       // self.present(searchContainerController, animated: false, completion: nil)
-    */
-   
-    
-    
+
     override func viewDidDisappear(_ animated: Bool)
     {
         isSearchOpenFromMetaData = false
         searchResultArray.removeAll()
-        searchViewController?.searchBar.text = ""
+        //searchViewController?.searchBar.text = ""
+        
+        
         baseTableView.reloadData()
     }
     
@@ -63,6 +41,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        searchViewController?.searchBar.text = JCAppReference.shared.searchText
         searchViewController?.extendedLayoutIncludesOpaqueBars = false
         if (searchViewController?.searchBar.text?.characters.count)! > 0
         {
@@ -145,8 +124,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                     if array.count > 0
                     {
                         DispatchQueue.main.async {
+                            
                             weakself?.searchResultArray = array
                             weakself?.baseTableView.reloadData()
+                            JCAppReference.shared.searchText = self.searchViewController?.searchBar.text
                         }
                     }
                     

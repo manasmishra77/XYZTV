@@ -870,7 +870,6 @@
                                          style: .cancel, handler: nil)
         
         alert.addAction(cancelAction)
-       // self.present(UIViewController, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
         self.present(alert, animated: true, completion: completionHandler)
     }
 
@@ -1197,7 +1196,7 @@
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                //                let code = parsedResponse["code"] as? Int
+                
                 print("Added to Resume Watchlist")
                 return
             }

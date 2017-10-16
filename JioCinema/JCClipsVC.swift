@@ -34,11 +34,13 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     override func viewDidAppear(_ animated: Bool) {
+  
         if JCDataStore.sharedDataStore.clipsData?.data == nil
         {
             callWebServiceForClipsData(page: loadedPage)
         }
     }
+  
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -273,7 +275,6 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
             }
         }
     }
-
     
     
 }
