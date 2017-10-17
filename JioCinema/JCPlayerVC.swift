@@ -1176,7 +1176,6 @@
     func callWebServiceForAddToResumeWatchlist(currentTimeDuration:String,totalDuration:String)
     {
         let url = addToResumeWatchlistUrl
-        //let json: Dictionary<String, Any> = ["id":playerId!, "duration":currentTimeDuration, "totalduration": totalDuration]
         let id = latestEpisodeId == "-1" ? playerId! : latestEpisodeId
         let json: Dictionary<String, Any> = ["id":id, "duration":currentTimeDuration, "totalduration": totalDuration]
         var params: Dictionary<String, Any> = [:]
@@ -1196,7 +1195,6 @@
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                
                 print("Added to Resume Watchlist")
                 return
             }

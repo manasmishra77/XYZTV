@@ -104,6 +104,9 @@ class JCResumeWatchingVC: UIViewController
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
+                //Removing data from resume wathching screen
+                JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
+                
                 DispatchQueue.main.async {
                     weakSelf?.dismiss(animated: false, completion: nil)
                 }

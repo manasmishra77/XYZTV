@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
+class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate
 {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
@@ -35,7 +35,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     override func viewDidAppear(_ animated: Bool)
     {
- 
+        self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.moviesData?.data == nil
         {
             callWebServiceForMoviesData(page: loadedPage)
@@ -46,7 +46,9 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         }
         baseTableView.reloadData()
     }
- 
+    override func viewDidDisappear(_ animated: Bool) {
+        //self.tabBarController?.delegate = nil
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -60,27 +62,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        /*
-         if (JCDataStore.sharedDataStore.moviesData?.data) != nil
-         {
-         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
-         {
-         return (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1
-         }
-         else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil,JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0,JCLoginManager.sharedInstance.isUserLoggedIn()
-         {
-         return (JCDataStore.sharedDataStore.moviesData?.data?.count)! + 1
-         }
-         else
-         {
-         return (JCDataStore.sharedDataStore.moviesData?.data?.count)!
-         }
-         }
-         else
-         {
-         return 0
-         }
-         */
+    
         dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.moviesData?.data) != nil
         {
@@ -88,29 +70,17 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             {
                 isMoviesWatchlistAvailable = false
             }
-            if isMoviesWatchlistAvailable{
-                dataItemsForTableview.append((JCDataStore.sharedDataStore.moviesWatchList?.data)!)
+            dataItemsForTableview = (JCDataStore.sharedDataStore.moviesData?.data)!
+            if let isCarousal = dataItemsForTableview[0].isCarousal {
+                if isCarousal{
+                    dataItemsForTableview.remove(at: 0)
+                }
             }
-            
-                if (JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal) != nil{
-                    if (JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal)! {
-                        var index = 0
-                        for each in (JCDataStore.sharedDataStore.moviesData?.data)!{
-                            if index != 0{
-                        dataItemsForTableview.append(each)
-                            }
-                            index = index + 1
-                        }
-                        
-                    }else{
-                        for each in (JCDataStore.sharedDataStore.moviesData?.data)!{                                dataItemsForTableview.append(each)
-                        }
-                    }
+            if isMoviesWatchlistAvailable{
+                if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0{
+                    dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
                 }
-                else{
-                    for each in (JCDataStore.sharedDataStore.moviesData?.data)!{                                dataItemsForTableview.append(each)
-                    }
-                }
+            }
             
             return dataItemsForTableview.count
             
@@ -138,44 +108,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
             }
         }
         return cell
-        /*
-         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
-         {
-         cell.data = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].items
-         cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row + 1].title
-         }
-         else if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
-         {
-         if JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count != 0
-         {
-         cell.data = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
-         cell.categoryTitleLabel.text = "WatchList"
-         cell.tableCellCollectionView.reloadData()
-         }
-         else
-         {
-         isMoviesWatchlistAvailable = false
-         }
-         }
-         else
-         {
-         let dataRow = indexPath.row - 1
-         cell.data = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].items : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].items
-         cell.categoryTitleLabel.text = (isMoviesWatchlistAvailable) ? JCDataStore.sharedDataStore.moviesData?.data?[dataRow].title : JCDataStore.sharedDataStore.moviesData?.data?[indexPath.row].title
-         cell.tableCellCollectionView.reloadData()
-         }
-         
-         
-         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 1)
-         {
-         if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
-         {
-         callWebServiceForMoviesData(page: loadedPage + 1)
-         loadedPage += 1
-         }
-         }
-         return cell
-         */
+        
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -333,63 +266,15 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
         
     }
     
-    //ToBeChanged
     //ChangingTheAlpha
-    var isAbleToChangeAlpha = false
-    var focusShiftedFromTabBarToVC = true
     var uiviewCarousel: UIView? = nil
-    
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu
-        {
-            //ForChangingTheAlphaWhenMenuButtonPressed
-            if (self.tabBarController?.selectedViewController as? JCMoviesVC) != nil{
-                
-                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
-                    headerViewOfTableSection.middleButton.alpha = 1
-                }
-                if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                    isAbleToChangeAlpha = true
-                    for cell in cells{
-                        if cell.tableCellCollectionView.alpha == CGFloat(1){
-                            cell.tableCellCollectionView.tag = 3
-                        }
-                        cell.tableCellCollectionView.alpha = 1
-                        
-                    }
-                }
-            }
-        }
-        
-    }
+    var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        //ChangingAlphaIfScrollingToTabItemNormally
-        
-        if (context.previouslyFocusedView as? CarouselViewButton) != nil {
-            if context.nextFocusedView?.tag != 101 {
-                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
-                    headerViewOfTableSection.middleButton.alpha = 1
-                    if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                        cells.first?.tableCellCollectionView.alpha = 1
-                        focusShiftedFromTabBarToVC = true
-                        return
-                    }
-                }
-            }
-            
-        }
-        
-        //ForChangingTheAlphaWhenMenuButtonPressed
-        if isAbleToChangeAlpha{
-            isAbleToChangeAlpha = false
-            focusShiftedFromTabBarToVC = true
-        }
-        else if focusShiftedFromTabBarToVC{
+        //ChangingTheAlpha when focus shifted from tab bar item to view controller view
+        if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
-            
             if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                isAbleToChangeAlpha = false
                 for cell in cells{
                     if cell != cells.first {
                         cell.tableCellCollectionView.alpha = 0.5
@@ -400,6 +285,17 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate
                 }
                 
             }
+        }
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        //ChangingTheAlpha when tab bar item selected
+        focusShiftedFromTabBarToVC = true
+        if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+            headerViewOfTableSection.middleButton.alpha = 1
+        }
+        for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
+            each.tableCellCollectionView.alpha = 1
         }
     }
     

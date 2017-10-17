@@ -197,12 +197,19 @@ class MetadataHeaderViewCell: UIView {
         }
         
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
-            url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
+            if metadata?.inQueue != nil {
+                url = (metadata?.inQueue)! ? removeFromWatchListUrl : addToWatchListUrl
+            }else{
+                metadata?.inQueue = false
+                url = addToWatchListUrl
+            }
+            
             
             callWebServiceToUpdateWatchlist(withUrl: url, andParameters: params)
             
         }else{
             isLoginPresentedFromAddToWatchlist = true
+            addToWatchListButton.isEnabled = true
             NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
         
@@ -230,6 +237,7 @@ class MetadataHeaderViewCell: UIView {
                 let code = parsedResponse["code"] as? Int
                 if(code == 200)
                 {
+                    
                     self.metadata?.inQueue = !(self.metadata?.inQueue)!
  
                     DispatchQueue.main.async {
@@ -244,6 +252,7 @@ class MetadataHeaderViewCell: UIView {
         }
         
     }
+    
     
     func callWebServiceForWatchlistStatus()
     {
@@ -276,6 +285,8 @@ class MetadataHeaderViewCell: UIView {
         }
         
     }
+    
+    
     //ChangingTheDataSourceForWatchListItems
     func changingDataSourceForWatchList() {
         if self.item?.app?.type == VideoType.TVShow.rawValue{
@@ -283,10 +294,43 @@ class MetadataHeaderViewCell: UIView {
                 JCDataStore.sharedDataStore.tvWatchList?.data?.items?.insert(self.item!, at: 0)
             }
             else{
-                JCDataStore.sharedDataStore.tvWatchList?.data?.items?.filter() { $0.id != self.metadata?.contentId }
+                JCDataStore.sharedDataStore.tvWatchList?.data?.items = JCDataStore.sharedDataStore.tvWatchList?.data?.items?.filter() { $0.id != self.metadata?.contentId }
+                
             }
-            
-            
+            if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
+                let indexpath = IndexPath(row: 0, section: 0)
+                DispatchQueue.main.async {
+                    
+                    if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                        tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                    }
+                    else{
+                        tvVC.baseTableView.reloadData()
+                    }
+                }
+               
+            }
+        }
+        else if self.item?.app?.type == VideoType.Movie.rawValue{
+            if (self.metadata?.inQueue)!{
+                JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.insert(self.item!, at: 0)
+            }
+            else{
+                JCDataStore.sharedDataStore.moviesWatchList?.data?.items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.filter() { $0.id != self.item?.id }
+            }
+            if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
+                
+                DispatchQueue.main.async {
+                    if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 1{
+                        let indexpath = IndexPath(row: 0, section: 0)
+                        movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                    }
+                    else{
+                        movieVC.baseTableView.reloadData()
+                    }
+                }
+                
+            }
         }
     }
     

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
+class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
 {
     var loadedPage = 0
     var isResumeWatchDataAvailable = false
@@ -36,6 +36,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool)
     {
+        self.tabBarController?.delegate = self
         
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
@@ -279,63 +280,15 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    //ToBeChanged
     //ChangingTheAlpha
-    var isAbleToChangeAlpha = false
-    var focusShiftedFromTabBarToVC = true
     var uiviewCarousel: UIView? = nil
-    
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu
-        {
-            //ForChangingTheAlphaWhenMenuButtonPressed
-            if (self.tabBarController?.selectedViewController as? JCHomeVC) != nil{
-                
-                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
-                    headerViewOfTableSection.middleButton.alpha = 1
-                }
-                if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                    isAbleToChangeAlpha = true
-                    for cell in cells{
-                        if cell.tableCellCollectionView.alpha == CGFloat(1){
-                            cell.tableCellCollectionView.tag = 3
-                        }
-                        cell.tableCellCollectionView.alpha = 1
-                        
-                    }
-                }
-            }
-        }
-        
-    }
+    var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        //ChangingAlphaIfScrollingToTabItemNormally
-        
-        if (context.previouslyFocusedView as? CarouselViewButton) != nil {
-            if context.nextFocusedView?.tag != 101 {
-                if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
-                    headerViewOfTableSection.middleButton.alpha = 1
-                    if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                        cells.first?.tableCellCollectionView.alpha = 1
-                        focusShiftedFromTabBarToVC = true
-                        return
-                    }
-                }
-            }
-            
-        }
-        
-        //ForChangingTheAlphaWhenMenuButtonPressed
-        if isAbleToChangeAlpha{
-            isAbleToChangeAlpha = false
-            focusShiftedFromTabBarToVC = true
-        }
-        else if focusShiftedFromTabBarToVC{
+        //ChangingTheAlpha when focus shifted from tab bar item to view controller view
+        if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
-            
             if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                isAbleToChangeAlpha = false
                 for cell in cells{
                     if cell != cells.first {
                         cell.tableCellCollectionView.alpha = 0.5
@@ -346,6 +299,17 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource
                 }
                 
             }
+        }
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        //ChangingTheAlpha when tab bar item selected
+        focusShiftedFromTabBarToVC = true
+        if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+            headerViewOfTableSection.middleButton.alpha = 1
+        }
+        for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
+            each.tableCellCollectionView.alpha = 1
         }
     }
     

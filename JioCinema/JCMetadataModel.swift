@@ -289,7 +289,7 @@ class Meta:Mappable
     }
 }
 
-class More:Mappable
+class More: Mappable
 {
     var id:String?
     var name:String?
