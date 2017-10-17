@@ -305,6 +305,9 @@ class MetadataHeaderViewCell: UIView {
                         tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                     }
                     else{
+                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! == 1{
+                            tvVC.isTVWatchlistAvailable = true
+                        }
                         tvVC.baseTableView.reloadData()
                     }
                 }
@@ -326,6 +329,9 @@ class MetadataHeaderViewCell: UIView {
                         movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                     }
                     else{
+                        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! == 1{
+                            movieVC.isMoviesWatchlistAvailable = true
+                        }
                         movieVC.baseTableView.reloadData()
                     }
                 }
