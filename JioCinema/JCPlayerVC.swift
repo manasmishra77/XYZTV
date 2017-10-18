@@ -37,6 +37,11 @@
  
  class JCPlayerVC: UIViewController
  {
+    
+    @IBOutlet weak var textOnLoaderCoverView: UILabel!
+    @IBOutlet weak var activityIndicatorOfLoaderView: UIActivityIndicatorView!
+    @IBOutlet weak var loaderCoverView: UIView!
+    
     @IBOutlet weak var nextVideoView                    :UIView!
     @IBOutlet weak var view_Recommendation              :UIView!
     @IBOutlet weak var nextVideoNameLabel               :UILabel!
@@ -1096,16 +1101,27 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
+        self.activityIndicatorOfLoaderView.startAnimating()
         print("Playback rights id is === \(id)")
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+            DispatchQueue.main.async {
+                self.activityIndicatorOfLoaderView.stopAnimating()
+
+            }
             if let responseError = error
             {
                 //TODO: handle error
                 print(responseError)
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
+                }
                 return
             }
             if let responseData = data

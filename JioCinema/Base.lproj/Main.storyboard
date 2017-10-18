@@ -13,6 +13,7 @@
         <array key="HelveticaNeue.ttc">
             <string>HelveticaNeue</string>
             <string>HelveticaNeue-Bold</string>
+            <string>HelveticaNeue-Medium</string>
         </array>
     </customFonts>
     <scenes>
@@ -229,21 +230,56 @@
                                     <constraint firstAttribute="height" constant="300" id="Dys-AQ-rVF"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xym-mI-ik0" userLabel="Loader View">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="M96-XT-G9E">
+                                        <rect key="frame" x="928" y="508" width="64" height="64"/>
+                                    </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EbU-It-uxH">
+                                        <rect key="frame" x="860" y="602" width="201" height="34"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="28"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="610-L2-zn9">
+                                        <rect key="frame" x="840" y="660" width="241" height="86"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Try Again"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="EbU-It-uxH" firstAttribute="centerX" secondItem="Xym-mI-ik0" secondAttribute="centerX" id="9X1-Sv-Mx2"/>
+                                    <constraint firstItem="M96-XT-G9E" firstAttribute="centerY" secondItem="Xym-mI-ik0" secondAttribute="centerY" id="BUZ-hj-YXC"/>
+                                    <constraint firstItem="610-L2-zn9" firstAttribute="top" secondItem="EbU-It-uxH" secondAttribute="bottom" constant="24" id="Dso-HD-led"/>
+                                    <constraint firstItem="M96-XT-G9E" firstAttribute="centerX" secondItem="Xym-mI-ik0" secondAttribute="centerX" id="MJp-PD-mzq"/>
+                                    <constraint firstItem="EbU-It-uxH" firstAttribute="top" secondItem="M96-XT-G9E" secondAttribute="bottom" constant="30" id="ReV-YU-0sF"/>
+                                    <constraint firstItem="610-L2-zn9" firstAttribute="centerX" secondItem="Xym-mI-ik0" secondAttribute="centerX" id="cys-xz-2fr"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Xym-mI-ik0" firstAttribute="leading" secondItem="qDA-Z1-tmP" secondAttribute="leading" id="1Yj-sw-aSR"/>
                             <constraint firstAttribute="trailing" secondItem="OXd-1y-bTi" secondAttribute="trailing" id="7L1-Yi-o4A"/>
                             <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="70" id="9no-cs-ZY7"/>
                             <constraint firstAttribute="bottom" secondItem="VRe-AD-HU3" secondAttribute="bottom" constant="-250" id="RiY-8m-uwM"/>
+                            <constraint firstAttribute="bottom" secondItem="Xym-mI-ik0" secondAttribute="bottom" id="VHM-9S-HwJ"/>
+                            <constraint firstItem="Xym-mI-ik0" firstAttribute="top" secondItem="qDA-Z1-tmP" secondAttribute="top" id="Zlq-fp-ONk"/>
                             <constraint firstAttribute="trailing" secondItem="VRe-AD-HU3" secondAttribute="trailing" id="ZrE-yM-eOt"/>
                             <constraint firstItem="VRe-AD-HU3" firstAttribute="leading" secondItem="qDA-Z1-tmP" secondAttribute="leading" id="f3k-3z-0xz"/>
+                            <constraint firstAttribute="trailing" secondItem="Xym-mI-ik0" secondAttribute="trailing" id="y2R-fr-71k"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorOfLoaderView" destination="M96-XT-G9E" id="IVw-Po-Rmf"/>
                         <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="dpq-BY-oY7"/>
+                        <outlet property="loaderCoverView" destination="Xym-mI-ik0" id="e2B-3D-V4V"/>
                         <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
                         <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>
                         <outlet property="nextVideoThumbnail" destination="28g-LG-naa" id="SfY-j2-3tZ"/>
                         <outlet property="nextVideoView" destination="OXd-1y-bTi" id="4EC-AH-v9j"/>
+                        <outlet property="textOnLoaderCoverView" destination="EbU-It-uxH" id="NJ2-fw-KGr"/>
                         <outlet property="view_Recommendation" destination="VRe-AD-HU3" id="F2X-Yx-4uT"/>
                     </connections>
                 </viewController>
@@ -405,7 +441,7 @@
                                 <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="20" y="640" width="1880" height="380"/>
+                                        <rect key="frame" x="20" y="620" width="1880" height="400"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
@@ -425,7 +461,7 @@
                                 <constraints>
                                     <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="8rM-Oz-TFq"/>
                                     <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="20" id="9nR-NA-SzZ"/>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-100" id="FJE-Cb-wkk"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-120" id="FJE-Cb-wkk"/>
                                     <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" constant="20" id="QPw-9Y-Ve8"/>
                                     <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="hfX-1k-F5C"/>
                                     <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" constant="-60" id="lcl-Sv-aTx"/>

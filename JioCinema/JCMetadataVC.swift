@@ -353,6 +353,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         headerView = prepareHeaderView()
         metadataContainerView.addSubview(headerView!)
+        if metadata?.type == VideoType.Movie.rawValue{
+            tableViewTopConstraint.constant = -175
+        }
+        
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
         let headerHeight = screenHeight * (4/5)
@@ -775,7 +779,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         searchViewController.obscuresBackgroundDuringPresentation = false
         searchViewController.searchBar.delegate = artistSearchVC
         searchViewController.searchBar.searchBarStyle = .minimal
-        searchViewController.searchBar.text = artistName
+        //searchViewController.searchBar.text = artistName
+        JCAppReference.shared.searchText = artistName
         artistSearchVC.searchViewController = searchViewController
         
         
@@ -820,14 +825,3 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     
 }
-
-
-
-
-
-
-
-
-
-
-

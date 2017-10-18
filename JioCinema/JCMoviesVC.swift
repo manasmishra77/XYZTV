@@ -280,7 +280,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
                         cell.tableCellCollectionView.alpha = 0.5
                     }
                 }
-                if cells.count == 1{
+                if cells.count <= 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }
                 
