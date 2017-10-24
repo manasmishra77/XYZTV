@@ -77,9 +77,12 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
                 }
             }
             if isMoviesWatchlistAvailable{
-                if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0{
-                    dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
+                if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil{
+                    if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0{
+                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
+                    }
                 }
+               
             }
             
             return dataItemsForTableview.count

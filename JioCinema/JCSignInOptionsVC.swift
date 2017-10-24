@@ -25,6 +25,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // Do any additional setup after loading the view.
         
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.changingSearchNCRootVC()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -33,8 +36,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       jioIdTextField.text     = "pallavtrivedi-4"
-       passwordTextField.text  = "pallav@1010"
+       //jioIdTextField.text     = "pallavtrivedi-4"
+       //passwordTextField.text  = "pallav@1010"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -150,6 +153,33 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
         }
+    }
+    //Removing seasarch container from search navigation controller
+    func changingSearchNCRootVC(){
+        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
+            JCAppReference.shared.isTempVCRootVCInSearchNC = false
+            let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
+            searchVC.view.backgroundColor = .black
+            
+            let searchViewController = UISearchController.init(searchResultsController: searchVC)
+            searchViewController.view.backgroundColor = .black
+            searchViewController.searchBar.placeholder = "Search"
+            searchViewController.searchBar.tintColor = UIColor.white
+            searchViewController.searchBar.barTintColor = UIColor.black
+            searchViewController.searchBar.tintColor = UIColor.gray
+            searchViewController.hidesNavigationBarDuringPresentation = true
+            searchViewController.obscuresBackgroundDuringPresentation = false
+            searchViewController.searchBar.delegate = searchVC
+            searchViewController.searchBar.searchBarStyle = .minimal
+            searchVC.searchViewController = searchViewController
+            let searchContainerController = UISearchContainerViewController(searchController: searchViewController)
+            searchContainerController.view.backgroundColor = UIColor.black
+            if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
+                navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
+            }
+        }
+        
+        
     }
     
    fileprivate func showAlert(alertString:String)

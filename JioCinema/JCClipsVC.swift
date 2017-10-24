@@ -129,7 +129,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         }
         else
         {
-            return UIView.init()
+            return UIView()
         }
     }
     
@@ -147,13 +147,13 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (JCDataStore.sharedDataStore.clipsData?.totalPages) == nil
         {
-            return UIView.init()
+            return UIView()
         }
         else
         {
             if(loadedPage == (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
             {
-                return UIView.init()
+                return UIView()
             }
             else
             {

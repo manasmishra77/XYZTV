@@ -477,13 +477,6 @@
             }
         }
         
-        //        let durationMetadataItem = AVMutableMetadataItem()
-        //        durationMetadataItem.key = AVMetadatacommonkey as NSCopying & NSObjectProtocol
-        //        durationMetadataItem.keySpace = AVMetadataKeySpaceCommon
-        //        durationMetadataItem.value = currentItemDescription! as NSCopying & NSObjectProtocol
-        
-        
-        
         playerItem?.externalMetadata.append(titleMetadataItem)
         playerItem?.externalMetadata.append(descriptionMetadataItem)
         playerItem?.externalMetadata.append(imageMetadataItem)
@@ -929,6 +922,7 @@
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
+                
             })
         }
     }
@@ -988,21 +982,25 @@
                 {
                     print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
                     arr_RecommendationList.removeAll()
+                    
+                    self.callWebServiceForPlaybackRights(id: data.id!)
+
+                    
                     if selectedItemFromViewController == VideoType.Search
                     {
-                        self.callWebServiceForPlaybackRights(id: data.id!)
+                       // self.callWebServiceForPlaybackRights(id: data.id!)
                         let url = metadataUrl.appending(data.id!)
                         self.callWebServiceForMoreLikeData(url: url)
                     }
                    else if selectedItemFromViewController == VideoType.Music
                     {
-                        self.callWebServiceForPlaybackRights(id: data.id!)
+                        //self.callWebServiceForPlaybackRights(id: data.id!)
 
                         arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
                     }
                     else if selectedItemFromViewController == VideoType.Clip
                     {
-                        self.callWebServiceForPlaybackRights(id: data.id!)
+                        //self.callWebServiceForPlaybackRights(id: data.id!)
 
                         arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items)!
                     }
@@ -1169,7 +1167,10 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
-        self.activityIndicatorOfLoaderView.startAnimating()
+        DispatchQueue.main.async {
+            self.activityIndicatorOfLoaderView.startAnimating()
+        }
+        
         print("Playback rights id is === \(id)")
         playerId = id
         let url = playbackRightsURL.appending(id)

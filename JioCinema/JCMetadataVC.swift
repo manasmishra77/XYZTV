@@ -89,7 +89,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidAppear(_ animated: Bool) {
         
         //Removing seasarch container from search navigation controller
-        changingSearchNCRootVC()
         JCAppReference.shared.metaDataVc = self
         
     }
@@ -97,7 +96,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         JCAppReference.shared.metaDataVc = nil
         //Removing search container from search navigation controller
-        changingSearchNCRootVC()
+        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
+            changingSearchNCRootVC()
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -769,6 +771,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             else {
                 return
         }
+        changingSearchNCRootVC()
         //present search from here
         
         let artistSearchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
