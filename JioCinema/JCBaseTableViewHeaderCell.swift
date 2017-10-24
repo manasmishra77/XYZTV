@@ -63,6 +63,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
     {
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
+        categoryTitle = "Carousal"
         
         let itemToPlay = ["item":(carousalData?[indexPath.row])!]
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
