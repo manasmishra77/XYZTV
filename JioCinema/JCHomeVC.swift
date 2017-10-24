@@ -30,6 +30,9 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
+        let eventProperties = ["Platform":"TVOS","Screen":"Home"] as [String:Any]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen View", properties: eventProperties)
+        
         // Do any additional setup after loading the view.
         
     }

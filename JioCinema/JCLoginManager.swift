@@ -147,7 +147,8 @@ class JCLoginManager:UIViewController
                 }
                 else
                 {
-
+                    let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"4G","Platform":"TVOS","Error Code":code,"Message":""] as [String:Any]
+                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
                     completion(false)
                 }
             }
@@ -172,6 +173,9 @@ class JCLoginManager:UIViewController
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
+        
+        let eventProperties = ["Platform":"TVOS","Logged Out":"Logged Out"] as [String:Any]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged Out", properties: eventProperties)
     }
     
     
