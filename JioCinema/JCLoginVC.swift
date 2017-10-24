@@ -34,30 +34,6 @@ class JCLoginVC: UIViewController {
     @IBAction func didClickOnOTPSignIn(_ sender: UIButton)
     {
         let otpVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: otpVCStoryBoardId) as! JCOTPVC
-        /*
-        let searchController = UISearchController(searchResultsController: otpVC)
-        
-        searchController.searchResultsUpdater = otpVC as? UISearchResultsUpdating
-        
-        searchController.obscuresBackgroundDuringPresentation = true
-        searchController.hidesNavigationBarDuringPresentation = false
-        
-        searchController.searchBar.placeholder = "Enter Jio Number"
-        searchController.searchBar.tintColor = UIColor.black
-        searchController.searchBar.barTintColor = UIColor.black
-        searchController.searchBar.searchBarStyle = .default
-        searchController.searchBar.keyboardType = .numberPad
-        searchController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        otpVC.containerView.addSubview(searchController.searchBar)
-        
-        otpVC.searchController = searchController
-        searchController.searchBar.sizeToFit()
-        let searchContainerViewController = UISearchContainerViewController(searchController: searchController)
-        searchContainerViewController.modalPresentationStyle = .overFullScreen
-        searchContainerViewController.modalTransitionStyle = .coverVertical
-        
-        //self.present(searchContainerViewController, animated: true, completion: nil)
-        */
         self.present(otpVC, animated: true, completion: nil)
     }
     
@@ -78,10 +54,11 @@ class JCLoginVC: UIViewController {
  
     //Removing seasarch container from search navigation controller
     func changingSearchNCRootVC(){
+        if !JCAppReference.shared.isTempVCRootVCInSearchNC!{
             JCAppReference.shared.isTempVCRootVCInSearchNC = true
             if let navVC = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
                 navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
             }
-        
+        }
     }
 }

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCPlayerVC.swift"
-            timestampString = "530011923.273432"
+            timestampString = "530458647.576973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1036"
-            endingLineNumber = "1036"
+            startingLineNumber = "1034"
+            endingLineNumber = "1034"
             landmarkName = "evaluateMoreLikeData(dictionaryResponseData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -89,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "529318126.731152"
+            filePath = "JioCinema/JCPlayerVC.swift"
+            timestampString = "530458647.578096"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "selectedFilter(filter:)"
+            startingLineNumber = "1106"
+            endingLineNumber = "1106"
+            landmarkName = "callWebServiceForPlaybackRights(id:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCLanguageGenreSelectionVC.swift"
-            timestampString = "529311693.74486"
+            filePath = "JioCinema/JCPlayerVC.swift"
+            timestampString = "530458647.578831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,13 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCLanguageGenreVC.swift"
-            timestampString = "529318126.731244"
+            filePath = "JioCinema/JCPlayerVC.swift"
+            timestampString = "530458647.579514"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "selectedFilter(filter:)"
+            startingLineNumber = "879"
+            endingLineNumber = "879"
+            landmarkName = "fetchRecommendationData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

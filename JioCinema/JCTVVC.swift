@@ -82,9 +82,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 }
             }
             if isTVWatchlistAvailable{
-                if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
-                    dataItemsForTableview.insert((JCDataStore.sharedDataStore.tvWatchList?.data)!, at: 0)
+                if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
+                    if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.tvWatchList?.data)!, at: 0)
+                    }
                 }
+                
                 
             }
             return dataItemsForTableview.count

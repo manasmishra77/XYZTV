@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JCOTPVC: UIViewController,UISearchBarDelegate
+class JCOTPVC: UIViewController
 {
     
     @IBOutlet weak var keyBoardButton1: JCKeyboardButton!
@@ -19,13 +19,13 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBOutlet weak var resendOTPLableToast: UILabel!
     var activityIndicator:UIActivityIndicatorView?
     var isRequestMadeForResend = false
-   //var searchController:UISearchController? = nil
+    //var searchController:UISearchController? = nil
     var myPreferredFocuseView: UIView? = nil
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
     var timerCount = 0
     let containerView = UIView.init(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
-     
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         jioNumberTFLabel.layer.cornerRadius = 8
         
         //searchController?.searchBar.delegate = self
-            addSwipeGesture()
+        addSwipeGesture()
     }
     
     
@@ -52,7 +52,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.up:
-               // self.swipeUpRecommendationView()
+                // self.swipeUpRecommendationView()
                 break
             case UISwipeGestureRecognizerDirection.down:
                 //self.swipeDownRecommendationView()
@@ -76,7 +76,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
         }
     }
-
+    
     
     override func viewDidAppear(_ animated: Bool) {
         myPreferredFocuseView = getOTPButton
@@ -115,8 +115,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     }
     
     @IBAction func didClickOnKeyBoardButton(_ sender: JCKeyboardButton) {
-        
-        
         if sender.tag == -1{
             if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
                 let number = jioNumberTFLabel.text
@@ -126,7 +124,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 if truncatedNumber == ""
                 {
                     jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"
-                   
+                    
                 }
             }
         }
@@ -261,7 +259,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
         }
     }
-
+    
     func enableResendButton()
     {
         resendOTPButton.isEnabled = true
@@ -277,7 +275,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             
             if let responseError = error
             {
-              
+                
                 
                 //TODO: handle error
                 print(responseError)
@@ -286,14 +284,14 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
                 
                 
-//                return
+                //                return
                 DispatchQueue.main.async {
                     self.activityIndicator?.stopAnimating()
                 }
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                    weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
+                weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
             }
         }
     }
@@ -326,7 +324,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                    JCLoginManager.sharedInstance.loggingInViaSubId = false
+                JCLoginManager.sharedInstance.loggingInViaSubId = false
                 let code = parsedResponse["messageCode"] as! Int
                 if(code == 200)
                 {
@@ -346,7 +344,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 }
                 else
                 {
-                  
+                    
                 }
             }
         }
@@ -363,45 +361,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAppUser.shared.unique = data["uniqueId"] as! String
     }
     
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        var maxLength:Int?
-        if resendOTPButton.isHidden == true
-        {
-            maxLength = 10
-        }
-        else
-        {
-            maxLength = 6
-        }
-        let currentString: NSString = searchBar.text! as NSString
-            let newString: NSString =
-                currentString.replacingCharacters(in: range, with: text) as NSString
-            return newString.length <= maxLength!
-        
-    }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        if resendOTPButton.isHidden == true {
-            if (searchBar.text?.characters.count)! < 10 {
-                getOTPButton.isUserInteractionEnabled = false
-            }
-            else
-            {
-                getOTPButton.isUserInteractionEnabled = true
-            }
-        }
-        else
-        {
-            if (searchBar.text?.characters.count)! < 6 {
-                signInButton.isUserInteractionEnabled = false
-            }
-            else
-            {
-                signInButton.isUserInteractionEnabled = true
-            }
-        }
-        
-    }
+    
     
 }

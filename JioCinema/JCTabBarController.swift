@@ -77,6 +77,7 @@ class JCTabBarController: UITabBarController {
         //Setting the refernces //TBC
         JCAppReference.shared.tabBarCotroller = self
         JCAppReference.shared.tempVC = tempVC
+        JCAppReference.shared.searchContainer = searchContainerController
         JCAppReference.shared.isTempVCRootVCInSearchNC = false
         
         // Do any additional setup after loading the view.

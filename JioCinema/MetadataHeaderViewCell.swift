@@ -294,22 +294,26 @@ class MetadataHeaderViewCell: UIView {
                 JCDataStore.sharedDataStore.tvWatchList?.data?.items?.insert(self.item!, at: 0)
             }
             else{
-                JCDataStore.sharedDataStore.tvWatchList?.data?.items = JCDataStore.sharedDataStore.tvWatchList?.data?.items?.filter() { $0.id != self.metadata?.contentId }
+                JCDataStore.sharedDataStore.tvWatchList?.data?.items = JCDataStore.sharedDataStore.tvWatchList?.data?.items?.filter() { $0.id != self.metadata?.contentId
+                    
+                }
                 
             }
             if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
                 let indexpath = IndexPath(row: 0, section: 0)
                 DispatchQueue.main.async {
-                    
-                    if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
-                        tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
-                    }
-                    else{
-                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! == 1{
-                            tvVC.isTVWatchlistAvailable = true
+                    if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
+                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                            tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                         }
-                        tvVC.baseTableView.reloadData()
+                        else{
+                            if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! == 1{
+                                tvVC.isTVWatchlistAvailable = true
+                            }
+                            tvVC.baseTableView.reloadData()
+                        }
                     }
+                    
                 }
                
             }
@@ -324,16 +328,19 @@ class MetadataHeaderViewCell: UIView {
             if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
                 
                 DispatchQueue.main.async {
-                    if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 1{
-                        let indexpath = IndexPath(row: 0, section: 0)
-                        movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
-                    }
-                    else{
-                        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! == 1{
-                            movieVC.isMoviesWatchlistAvailable = true
+                   if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil {
+                        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 1{
+                            let indexpath = IndexPath(row: 0, section: 0)
+                            movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                         }
-                        movieVC.baseTableView.reloadData()
+                        else{
+                            if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! == 1{
+                                movieVC.isMoviesWatchlistAvailable = true
+                            }
+                            movieVC.baseTableView.reloadData()
+                        }
                     }
+                    
                 }
                 
             }
