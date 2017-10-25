@@ -71,7 +71,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
 //                        let analyticsData = ["method":"JIOID","source":"manual","identity":JCAppUser.shared.uid]
 //                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
                         
-                        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+                        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":JCAppUser.shared.uid]
                         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                         
                         DispatchQueue.main.async {
