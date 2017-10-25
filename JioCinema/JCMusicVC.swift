@@ -39,6 +39,9 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         {
             callWebServiceForMusicData(page: loadedPage)
         }
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
     override func viewDidDisappear(_ animated: Bool) {
         //self.tabBarController?.delegate = nil

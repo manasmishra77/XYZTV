@@ -139,6 +139,7 @@
             else
             {
                 self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                
             }
         }
         if isResumed == true
@@ -155,6 +156,7 @@
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
         self.sendMediaEndAnalyticsEvent()
+        
         if (player != nil)
         {
             removePlayerObserver()
@@ -709,6 +711,8 @@
     func sendMediaEndAnalyticsEvent()
     {
 //No,yes
+        self.sendVideoViewedEventToCleverTap()
+        
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
@@ -723,6 +727,53 @@
         let mediaErrorInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: "", errorCode: "", videoType: String(selectedItemFromViewController.rawValue), contentTitle: categoryTitle, contentId: playerId!, videoQuality: "Auto", bitrate: "", episodeSubtitle: "", playerErrorMessage: "", apiFailureCode: "", message: "", fpsFailure: "")
     }
  
+    func sendVideoViewedEventToCleverTap()
+    {
+        var title = ""
+        var episode = ""
+        var language = ""
+        var type:VideoType = .None
+        var isPlaylist = "false"
+        //var genre = ""
+        if metadata == nil
+        {
+            if let data = self.item as? Item
+            {
+                title = data.name!
+                language = data.language!
+                //genre = data.genre!
+                type = VideoType(rawValue: (data.app?.type)!)!
+                isPlaylist = String(describing: data.isPlaylist!)
+                if data.app?.type == VideoType.Episode.rawValue
+                {
+                    episode = data.name!
+                }
+            }
+        }
+        else
+        {
+            if metadata?.app?.type == VideoType.Episode.rawValue
+            {
+                episode = (metadata?.name)!
+            }
+            
+            title = (metadata?.name)!
+            language = (metadata?.language)!
+            //genre = ""
+            type = VideoType(rawValue: (metadata?.app?.type)!)!
+        }
+        
+        if let currentTime = player?.currentItem?.currentTime()
+        {
+            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let eventProperties:[String:Any] = ["Content ID":playerId!,"Type":type.name,"Threshold Duration":currentTimeDuration,"Title":title,"Episode":episode,"Language":language,"Source":categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":"","Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"
+            ]
+            JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties )
+        }
+        
+        
+    }
+    
     /*
     func bitrateLog(withObserved observed: Bool, andActual actual: Bool) -> Int {
         var evt: AVPlayerItemAccessLogEvent? = nil
@@ -946,6 +997,7 @@
     {
         if let data = self.item as? Item
         {
+            
             if data.isPlaylist!
             {
                 self.callWebServiceForPlayListData(id: data.playlistId!)

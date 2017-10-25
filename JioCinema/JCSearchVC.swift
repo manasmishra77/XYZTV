@@ -35,6 +35,15 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         }
         
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }

@@ -40,6 +40,10 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         {
             callWebServiceForClipsData(page: loadedPage)
         }
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
 
   

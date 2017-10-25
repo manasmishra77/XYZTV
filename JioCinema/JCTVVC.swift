@@ -49,6 +49,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         }
         baseTableView.reloadData()
         
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"TV","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
     override func viewDidDisappear(_ animated: Bool) {
        // self.tabBarController?.delegate = nil

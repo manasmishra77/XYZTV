@@ -23,6 +23,7 @@ enum VideoType:Int
     case ResumeWatching     = 8
     case Language           = 9
     case Genre              = 10
+    case None               = -111
     
     var name: String {
         get { return String(describing: self) }

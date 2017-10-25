@@ -219,8 +219,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     {
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
-        let titleLabel = self.viewWithTag(500000 + indexPath.row) as! UILabel
-        categoryTitle = titleLabel.text!
+        
+        if let topController = UIApplication.topViewController() {
+          //  let titleLabel = topController.view.viewWithTag(500000 + indexPath.row) as! UILabel
+            //categoryTitle = titleLabel.text!
+            categoryTitle = "check this crash"
+        }
         
         if data != nil
         {

@@ -45,6 +45,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             self.callWebServiceForMoviesWatchlist()
         }
         baseTableView.reloadData()
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
     override func viewDidDisappear(_ animated: Bool) {
         //self.tabBarController?.delegate = nil
