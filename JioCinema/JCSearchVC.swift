@@ -14,6 +14,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     var searchModel:SearchDataModel?
     var searchResultArray = [SearchedCategoryItem]()
     
+    //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -24,21 +25,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         activityIndicator.isHidden = true
         // Do any additional setup after loading the view.
     }
-
-    override func viewDidDisappear(_ animated: Bool)
-    {
-        isSearchOpenFromMetaData = false
-        searchResultArray.removeAll()
-        //searchViewController?.searchBar.text = ""
-        
-        
-        baseTableView.reloadData()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        searchResultForkey(with: searchController.searchBar.text!)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchViewController?.searchBar.text = JCAppReference.shared.searchText
@@ -47,12 +33,34 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         {
             searchResultForkey(with: (searchViewController?.searchBar.text)!)
         }
-      
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.sendSearchAnalyticsEvent()
+        isSearchOpenFromMetaData = false
+        searchResultArray.removeAll()
+        baseTableView.reloadData()
+        
+        
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
+    //MARK:- UITableView Delegate
+
     func numberOfSections(in tableView: UITableView) -> Int
     {
         return 1
@@ -66,6 +74,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = VideoType.Search
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
+
         cell.categoryTitleLabel.text = searchResultArray[indexPath.row].categoryName
         cell.data = searchResultArray[indexPath.row].resultItems
         cell.tableCellCollectionView.reloadData()
@@ -79,7 +89,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+    //MARK:- UISearchBar Delegate
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.characters.count > 0
@@ -94,7 +105,21 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             }
         }
     }
+   
+    //MARK:-  Analytics Event Methods
+    
+    func sendSearchAnalyticsEvent()
+    {
+        // For Internal Analytics Event
+        let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text!)!, isvoice: "false", queryResultCount: String(self.searchResultArray.count))
 
+    }
+    //MARK:-  Helper Methods
+
+    func updateSearchResults(for searchController: UISearchController) {
+        searchResultForkey(with: searchController.searchBar.text!)
+    }
+    
     fileprivate func searchResultForkey(with key:String)
     {
         let url = preditiveSearchURL
@@ -137,9 +162,4 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         }
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-        // Dispose of any resources that can be recreated.
 }

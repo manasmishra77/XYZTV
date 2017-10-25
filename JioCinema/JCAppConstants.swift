@@ -22,6 +22,7 @@ let networkErrorMessage = "No network available"
 
 var collectionIndex = -1
 var selectedItemFromViewController:VideoType = VideoType.Home
+var categoryTitle = ""
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"

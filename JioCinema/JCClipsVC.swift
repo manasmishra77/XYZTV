@@ -40,6 +40,10 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         {
             callWebServiceForClipsData(page: loadedPage)
         }
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
 
   
@@ -78,6 +82,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.itemFromViewController = VideoType.Clip
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {

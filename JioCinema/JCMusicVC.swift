@@ -39,6 +39,9 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         {
             callWebServiceForMusicData(page: loadedPage)
         }
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
     override func viewDidDisappear(_ animated: Bool) {
         //self.tabBarController?.delegate = nil
@@ -77,7 +80,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = VideoType.Music
-        
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
+
         if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
         {
             cell.tableCellCollectionView.tag = indexPath.row + 1

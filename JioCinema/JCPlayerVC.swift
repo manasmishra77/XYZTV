@@ -75,7 +75,8 @@
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
-    
+    var bufferCount                 = 0
+
     var arr_RecommendationList = [Item]()
 
     var moreModal:More?
@@ -138,6 +139,7 @@
             else
             {
                 self.callWebServiceForAddToResumeWatchlist(currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                
             }
         }
         if isResumed == true
@@ -153,6 +155,7 @@
             })
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
+        self.sendMediaEndAnalyticsEvent()
         
         if (player != nil)
         {
@@ -421,11 +424,13 @@
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
+        self.sendMediaStartAnalyticsEvent()
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
     }
+   
     
     func addMetadataToPlayer()
     {
@@ -516,6 +521,8 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
+            bufferCount = bufferCount + 1
+            
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
@@ -693,6 +700,118 @@
     }
     
     //MARK:- Custom Methods
+    //MARK:- Analytics Events
+    func sendMediaStartAnalyticsEvent()
+    {
+        let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+        
+        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: playerId!, mbid: mbid, mediaStartTime: String(duration), categoryTitle: "", rowPosition: String(collectionIndex))
+    }
+    
+    func sendMediaEndAnalyticsEvent()
+    {
+//No,yes
+        self.sendVideoViewedEventToCleverTap()
+        
+        if let currentTime = player?.currentItem?.currentTime()
+        {
+            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: currentTimeDuration, bufferDuration: "", bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: "", playList: "", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            
+            bufferCount = 0
+        }
+    }
+    
+    func sendMediaErrorAnalyticsEvent()
+    {
+        let mediaErrorInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: "", errorCode: "", videoType: String(selectedItemFromViewController.rawValue), contentTitle: categoryTitle, contentId: playerId!, videoQuality: "Auto", bitrate: "", episodeSubtitle: "", playerErrorMessage: "", apiFailureCode: "", message: "", fpsFailure: "")
+    }
+ 
+    func sendVideoViewedEventToCleverTap()
+    {
+        var title = ""
+        var episode = ""
+        var language = ""
+        var type:VideoType = .None
+        var isPlaylist = "false"
+        //var genre = ""
+        if metadata == nil
+        {
+            if let data = self.item as? Item
+            {
+                title = data.name!
+                language = data.language!
+                //genre = data.genre!
+                type = VideoType(rawValue: (data.app?.type)!)!
+                isPlaylist = String(describing: data.isPlaylist!)
+                if data.app?.type == VideoType.Episode.rawValue
+                {
+                    episode = data.name!
+                }
+            }
+        }
+        else
+        {
+            if metadata?.app?.type == VideoType.Episode.rawValue
+            {
+                episode = (metadata?.name)!
+            }
+            
+            title = (metadata?.name)!
+            language = (metadata?.language)!
+            //genre = ""
+            type = VideoType(rawValue: (metadata?.app?.type)!)!
+        }
+        
+        if let currentTime = player?.currentItem?.currentTime()
+        {
+            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let eventProperties:[String:Any] = ["Content ID":playerId!,"Type":type.name,"Threshold Duration":currentTimeDuration,"Title":title,"Episode":episode,"Language":language,"Source":categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":"","Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"
+            ]
+            JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties )
+        }
+        
+        
+    }
+    
+    /*
+    func bitrateLog(withObserved observed: Bool, andActual actual: Bool) -> Int {
+        var evt: AVPlayerItemAccessLogEvent? = nil
+        let accessL: AVPlayerItemAccessLog? = playerItem?.accessLog()
+        let events = accessL?.events
+        
+        for i in 0..< events?.count
+        {
+            
+        }
+        
+        for i in 0..<events?.count {
+            evt = events?[i] as? AVPlayerItemAccessLogEvent
+        }
+        var byte = Int(0.0)
+        let ary = evt?.uri?.components(separatedBy: "chunklist")
+        if ary?.count > 0 {
+            let Ary1 = ary?.count > 1 ? ary?[1]?.components(separatedBy: ".m3u8") : nil as? [Any]
+            if Ary1 && Ary1.count > 0 {
+                let str: String? = (Ary1[0] as? NSString)?.substring(from: 2)
+                byte = Int(str!) ?? 0 / 1000
+            }
+        }
+        if observed == false && actual == true {
+            byte = byte
+        }
+        else if observed == false && actual == false {
+            byte = Int(evt?.indicatedBitrate / 1024)
+        }
+        else {
+            byte = Int(evt?.observedBitrate / 1024)
+        }
+
+        return byte
+    }
+  */
+
+
     //MARK:- Scroll Collection View To Row
     var myPreferredFocusView:UIView? = nil
     
@@ -878,6 +997,7 @@
     {
         if let data = self.item as? Item
         {
+            
             if data.isPlaylist!
             {
                 self.callWebServiceForPlayListData(id: data.playlistId!)
