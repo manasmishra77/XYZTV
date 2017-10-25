@@ -92,6 +92,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         //Removing seasarch container from search navigation controller
         JCAppReference.shared.metaDataVc = self
         
+        //Clevertap Navigation Event
+        let metadataType = item.app?.type == VideoType.Movie.rawValue ? VideoType.Movie.name : VideoType.TVShow.name
+        let eventProperties = ["Screen Name":previousScreenName,"Platform":"TVOS","Metadata Page":metadataType]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Metadata")
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
         

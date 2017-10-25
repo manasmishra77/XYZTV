@@ -152,3 +152,7 @@ var isLoginPresentedFromAddToWatchlist = false
 var isSearchOpenFromMetaData = false
 
 var latestEpisodeId = "-1"
+
+//Screen Navigation Constants
+var previousScreenName = ""
+var currentScreenName = ""

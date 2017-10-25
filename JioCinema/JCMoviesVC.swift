@@ -49,6 +49,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
     }
     override func viewDidDisappear(_ animated: Bool) {
         //self.tabBarController?.delegate = nil

@@ -282,7 +282,8 @@ class JCTabBarController: UITabBarController {
                     print("Not on jio network")
                     if let item = currentPlayableItem as? Item
                     {
-                        if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue)
+                        if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue ||
+                            item.app?.type == VideoType.Episode.rawValue)
                         {
                             DispatchQueue.main.async {
                                 weakSelf?.presentLoginVC()

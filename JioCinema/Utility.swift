@@ -79,6 +79,12 @@ class Utility
         }
         return ""
     }
+    
+    func handleScreenNavigation(screenName:String)
+    {
+        previousScreenName = currentScreenName
+        currentScreenName = screenName
+    }
 }
 
 extension Date

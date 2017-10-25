@@ -37,6 +37,7 @@ class JCSettingsVC: UIViewController
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Settings","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Settings")
     }
    
     override func didReceiveMemoryWarning()

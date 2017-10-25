@@ -57,6 +57,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Home","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Home")
     }
  
     

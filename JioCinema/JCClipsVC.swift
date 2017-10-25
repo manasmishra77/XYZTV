@@ -44,6 +44,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Clips")
     }
 
   

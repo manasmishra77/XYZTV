@@ -42,6 +42,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Search")
     }
     
     override func viewWillLayoutSubviews() {

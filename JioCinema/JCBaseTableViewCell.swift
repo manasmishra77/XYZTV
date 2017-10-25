@@ -223,7 +223,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         if let topController = UIApplication.topViewController() {
           //  let titleLabel = topController.view.viewWithTag(500000 + indexPath.row) as! UILabel
             //categoryTitle = titleLabel.text!
-            categoryTitle = "check this crash"
+            categoryTitle = ""
         }
         
         if data != nil
