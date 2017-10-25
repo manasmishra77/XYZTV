@@ -7,11 +7,14 @@
 //
 
 import UIKit
-class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
+class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate
 {
     var loadedPage = 0
     var isResumeWatchDataAvailable = false
+    var isLanguageDataAvailable = false
+    var isGenereDataAvailable = false
     var isFirstLoaded = false
+    var dataItemsForTableview = [DataContainer]()
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -30,17 +33,15 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
-        let eventProperties = ["Platform":"TVOS","Screen":"Home"] as [String:Any]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen View", properties: eventProperties)
-        
         // Do any additional setup after loading the view.
         
     }
     
-    
     override func viewDidAppear(_ animated: Bool)
     {
         self.tabBarController?.delegate = self
+        callWebServiceForLanguageList()
+        callWebServiceForGenreList()
         
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
@@ -51,13 +52,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
             baseTableView.reloadData()
         }
         
-        //Internal Analytics
         JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
-        
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Home","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Home")
     }
  
     
@@ -75,11 +70,42 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
     {
         if JCDataStore.sharedDataStore.homeData?.data != nil
         {
-            if isResumeWatchDataAvailable, JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
-                return (JCDataStore.sharedDataStore.mergedHomeData?.count)!
+
+            if !JCLoginManager.sharedInstance.isUserLoggedIn(){
+                isResumeWatchDataAvailable = false
             }
-            return (JCDataStore.sharedDataStore.mergedHomeData?.count)! - 1
+            dataItemsForTableview = (JCDataStore.sharedDataStore.homeData?.data)!
+            if let isCarousal = dataItemsForTableview[0].isCarousal{
+                if isCarousal{
+                    dataItemsForTableview.remove(at: 0)
+                }
+            }
+            if isLanguageDataAvailable{
+                
+                if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0], let languagePosition = JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition
+                {
+                    if languagePosition < dataItemsForTableview.count{
+                        dataItemsForTableview.insert(languageData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)!)
+                    }
+                    
+                }
+            }
+            if isGenereDataAvailable{
+                if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0], let genrePosition = JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition
+                {
+                    if genrePosition < dataItemsForTableview.count{
+                        dataItemsForTableview.insert(genreData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)!)
+                    }
+                    
+                }
+                
+            }
+            if isResumeWatchDataAvailable{
+                if let dataResume = JCDataStore.sharedDataStore.resumeWatchList?.data {
+                        dataItemsForTableview.insert(dataResume, at: 0)
+                }
+            }
+            return dataItemsForTableview.count
         }
         else
         {
@@ -92,29 +118,17 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
-        cell.categoryTitleLabel.tag = indexPath.row + 500000
-
-        if !JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            isResumeWatchDataAvailable = false
-        }
+        cell.isResumeWatchCell = false
         
-        if isResumeWatchDataAvailable,indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
+        if isResumeWatchDataAvailable, indexPath.row == 0 {
             cell.isResumeWatchCell = true
-            cell.data = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.resumeWatchList?.title
-            cell.tableCellCollectionView.reloadData()
         }
-        else
-        {
-            cell.isResumeWatchCell = false
-            cell.data = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].items : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = isResumeWatchDataAvailable ? JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row].title : JCDataStore.sharedDataStore.mergedHomeData?[indexPath.row + 1].title
-            cell.tableCellCollectionView.reloadData()
-        }
+        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        cell.tableCellCollectionView.reloadData()
         
-        if(indexPath.row == (JCDataStore.sharedDataStore.mergedHomeData?.count)! - 2)
+        
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
             {
@@ -126,15 +140,6 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        /*
-        let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-        headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
-        headerCell.itemFromViewController = VideoType.Music
-        headerCell.headerCollectionView.tag = 0
-        return headerCell
-        */
- 
-        
         //For autorotate carousel
         let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
         let carouselView = carouselViews?.first as! InfinityScrollView
@@ -151,7 +156,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         {
             if(loadedPage == (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
             {
-                return UIView.init()
+                return UIView()
             }
             else
             {
@@ -161,7 +166,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         }
         else
         {
-            return UIView.init()
+            return UIView()
         }
     }
     
@@ -229,6 +234,15 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
             if let responseData = data
             {
                 weakSelf?.evaluateResumeWatchData(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    self.isResumeWatchDataAvailable = false
+                    if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
+                        if resumeItems.count > 0{
+                            self.isResumeWatchDataAvailable = true
+                        }
+                        self.baseTableView.reloadData()
+                    }
+                }
                 return
             }
         }
@@ -238,6 +252,8 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
     {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
+        JCDataStore.sharedDataStore.resumeWatchList?.data?.title = "Resume Watching"
+        /*
         weak var weakSelf = self
         if (JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.count)! > 0
         {
@@ -283,14 +299,14 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
                 self.isFirstLoaded = false
             }
         }
+ */
     }
     
     func callResumeWatchWebServiceOnPlayerDismiss()
     {
-        callWebServiceForResumeWatchData()
+        //callWebServiceForResumeWatchData()
     }
-    
-    
+        
     //ChangingTheAlpha
     var uiviewCarousel: UIView? = nil
     var focusShiftedFromTabBarToVC = true
@@ -322,6 +338,82 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
         }
+    }
+    
+    
+    //TBC
+    func callWebServiceForLanguageList()
+    {
+        let url = languageListUrl
+        let languageListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        //dispatchGroup.enter()
+        RJILApiManager.defaultManager.post(request: languageListRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                return
+            }
+            
+            if let responseData = data
+            {
+                weakSelf?.evaluateLanguageList(dictionaryResponseData: responseData)
+                DispatchQueue.main.async {
+                    if let languageData = JCDataStore.sharedDataStore.languageData?.data{
+                        if languageData.count > 0{
+                            self.isLanguageDataAvailable = true
+                            self.baseTableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func evaluateLanguageList(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Language)
+        JCDataStore.sharedDataStore.languageData?.data?[0].title = "Languages"
+        
+    }
+    
+    func callWebServiceForGenreList()
+    {
+        let url = genreListUrl
+        let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: genreListRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                //weakSelf?.dispatchGroup.leave()
+                return
+            }
+            if let responseData = data
+            {
+                weakSelf?.evaluateGenreList(dictionaryResponseData: responseData)
+                //weakSelf?.dispatchGroup.leave()
+                DispatchQueue.main.async {
+                    if let genreData = JCDataStore.sharedDataStore.genreData?.data{
+                        if genreData.count > 0{
+                            self.isGenereDataAvailable = true
+                            self.baseTableView.reloadData()
+                        }
+                        }
+                }
+            }
+        }
+    }
+    
+    func evaluateGenreList(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Genre)
+        JCDataStore.sharedDataStore.genreData?.data?[0].title = "Genres"
+        
     }
     
     

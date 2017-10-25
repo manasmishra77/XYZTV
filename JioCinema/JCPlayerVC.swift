@@ -1222,8 +1222,7 @@
         DispatchQueue.main.async {
             self.activityIndicatorOfLoaderView.startAnimating()
         }
-        
-        print("Playback rights id is === \(id)")
+                print("Playback rights id is === \(id)")
         playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
@@ -1302,7 +1301,12 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
+                //JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
+                if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                    homeVC.callWebServiceForResumeWatchData()
+                }
                 DispatchQueue.main.async {
+                    //To remove from resume watch list and reload home vc
                     weakSelf?.dismiss(animated: false, completion: nil)
                 }
             }
@@ -1333,6 +1337,11 @@
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 print("Added to Resume Watchlist")
+                //To add in homevc and update resume watchlist data
+                    if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                      homeVC.callWebServiceForResumeWatchData()
+                    }
+                
                 return
             }
         }

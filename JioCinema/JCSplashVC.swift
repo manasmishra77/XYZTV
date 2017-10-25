@@ -45,12 +45,10 @@ class JCSplashVC: UIViewController {
     func callWebservicesForHomeData()
     {
         callWebServiceForHomeData(page: 0)
-        callWebServiceForLanguageList()
-        callWebServiceForGenreList()
         weak var weakSelf = self
         dispatchGroup.notify(queue: DispatchQueue.main)
         {
-            weakSelf?.mergeDataArray()
+            //weakSelf?.mergeDataArray()
             if (weakSelf?.isHomeDataAvailable)!
             {
                 weakSelf?.navigateToHomeVC()
@@ -61,7 +59,7 @@ class JCSplashVC: UIViewController {
             }
         }
     }
-    
+    /*
     func mergeDataArray()
     {
         var tempArray = JCDataStore.sharedDataStore.homeData?.data
@@ -77,6 +75,7 @@ class JCSplashVC: UIViewController {
         
         JCDataStore.sharedDataStore.mergedHomeData = tempArray
     }
+     */
     
     func callWebServiceForConfigData()
     {
@@ -139,7 +138,7 @@ class JCSplashVC: UIViewController {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
     }
     
-    
+    /*
     func callWebServiceForLanguageList()
     {
         let url = languageListUrl
@@ -202,7 +201,7 @@ class JCSplashVC: UIViewController {
         
     }
     
-    
+    */
     
     func navigateToHomeVC()
     {

@@ -108,21 +108,24 @@ class JCResumeWatchingVC: UIViewController
                 JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
                 
                 DispatchQueue.main.async {
+                    if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                        let index = IndexPath(row: 0, section: 0)
+                        if let items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
+                            if items.count > 0{
+                                homeVC.isResumeWatchDataAvailable = true
+                                homeVC.baseTableView.reloadRows(at: [index], with: .fade)
+                            }else{
+                                homeVC.isResumeWatchDataAvailable = false
+                            }
+                        }else{
+                            homeVC.isResumeWatchDataAvailable = true
+                        }
+                    }
                     weakSelf?.dismiss(animated: false, completion: nil)
                 }
             }
         }
 
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

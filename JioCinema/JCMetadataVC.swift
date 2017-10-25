@@ -60,7 +60,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
-        self.metadataTableView.tableFooterView = UIView.init()
+        self.metadataTableView.tableFooterView = UIView()
         headerCell.addToWatchListButton.isEnabled = false
         
         if item!.name!.characters.count < 1 {
@@ -81,7 +81,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-        callWebServiceForMoreLikeData(id: (item?.id)!)
         
         if !JCLoginManager.sharedInstance.isUserLoggedIn(){
         headerCell.addToWatchListButton.isEnabled = true
@@ -89,7 +88,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     override func viewDidAppear(_ animated: Bool) {
         
-        //Removing seasarch container from search navigation controller
+        //Removing search container from search navigation controller
         JCAppReference.shared.metaDataVc = self
         
         //Clevertap Navigation Event
@@ -170,15 +169,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 cell.episodes = metadata?.episodes
                 cell.tableCellCollectionView.reloadData()
             }
-//            if indexPath.row == 1
-//            {
-//                cell.moreLikeData = metadata?.more
-//                if metadata?.more != nil
-//                {
-//                cell.categoryTitleLabel.text = (metadata?.more?.count != 0) ? "More Like \(String(describing: item!.name!))" : ""
-//                }
-//                cell.tableCellCollectionView.reloadData()
-//            }
+
             if indexPath.row == 1
             {
                 if let artists = metadata?.artist
@@ -237,6 +228,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
                 }
+                weakSelf?.callWebServiceForMoreLikeData(id: (weakSelf?.item?.id)!)
                 if JCLoginManager.sharedInstance.isUserLoggedIn()
                 {
                     weakSelf?.callWebserviceForWatchListStatus(id: id)
@@ -246,7 +238,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
     }
     
-    
+ 
     func callWebServiceForMoreLikeData(id:String)
     {
         let url = item?.app?.type == VideoType.Movie.rawValue ? metadataUrl.appending(id) :metadataUrl.appending(id + "/0/0")
@@ -263,15 +255,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if let responseData = data
             {
                 
+                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                let data1 = self.metadata?.episodes
                 DispatchQueue.main.async {
-                    weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                     weakSelf?.metadataTableView.reloadData()
                 }
-                
-                return
             }
         }
-        
     }
     
     func callWebserviceForWatchListStatus(id:String)
@@ -314,7 +304,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                     }
                     
                 }
-                return
+                
             }
         }
     }
@@ -325,6 +315,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
+            print("\(tempMetadata?.episodes?.count) 1111")
             if item?.app?.type == VideoType.Movie.rawValue
             {
                 self.metadata?.more = tempMetadata?.more
@@ -344,7 +335,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             self.metadata = MetadataModel(JSONString: responseString)
-            print(metadata)
+            print("\(metadata) + 123")
         }
     }
     

@@ -291,7 +291,13 @@ class MetadataHeaderViewCell: UIView {
     func changingDataSourceForWatchList() {
         if self.item?.app?.type == VideoType.TVShow.rawValue{
             if (self.metadata?.inQueue)!{
-                JCDataStore.sharedDataStore.tvWatchList?.data?.items?.insert(self.item!, at: 0)
+                if (JCDataStore.sharedDataStore.tvWatchList?.data?.items) != nil{
+                    JCDataStore.sharedDataStore.tvWatchList?.data?.items?.insert(self.item!, at: 0)
+                }
+                else{
+                    JCDataStore.sharedDataStore.tvWatchList?.data?.items = [self.item!]
+                }
+                //JCDataStore.sharedDataStore.tvWatchList?.data?.items?.insert(self.item!, at: 0)
             }
             else{
                 JCDataStore.sharedDataStore.tvWatchList?.data?.items = JCDataStore.sharedDataStore.tvWatchList?.data?.items?.filter() { $0.id != self.metadata?.contentId
@@ -320,7 +326,12 @@ class MetadataHeaderViewCell: UIView {
         }
         else if self.item?.app?.type == VideoType.Movie.rawValue{
             if (self.metadata?.inQueue)!{
-                JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.insert(self.item!, at: 0)
+                if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items) != nil{
+                    JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.insert(self.item!, at: 0)
+                }
+                else{
+                    JCDataStore.sharedDataStore.moviesWatchList?.data?.items = [self.item!]
+                }
             }
             else{
                 JCDataStore.sharedDataStore.moviesWatchList?.data?.items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.filter() { $0.id != self.item?.id }

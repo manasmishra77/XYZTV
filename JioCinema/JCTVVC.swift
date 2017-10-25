@@ -25,9 +25,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         super.viewDidLoad()
         callWebServiceForTVData(page: loadedPage)
         
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
@@ -46,6 +46,10 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForTVWatchlist()
+        }
+        else
+        {
+            isTVWatchlistAvailable = false
         }
         baseTableView.reloadData()
         
@@ -86,13 +90,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 }
             }
             if isTVWatchlistAvailable{
-                if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
-                    if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                if let items = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
+                    if items.count > 0 {
                         dataItemsForTableview.insert((JCDataStore.sharedDataStore.tvWatchList?.data)!, at: 0)
                     }
                 }
-                
-                
             }
             return dataItemsForTableview.count
             
@@ -123,56 +125,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         }
         return cell
         
-        /*
-        if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
-        {
-            cell.data = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.tvData?.data?[indexPath.row + 1].title
-            
-        }
-        else if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil, indexPath.row == 0, JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            if JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count != 0
-            {
-            cell.data = JCDataStore.sharedDataStore.tvWatchList?.data?.items
-            cell.categoryTitleLabel.text = "WatchList"
-            cell.tableCellCollectionView.reloadData()
-            }
-            else
-            {
-                isTVWatchlistAvailable = false
-            }
-        }
-        else
-        {
-            let dataRow = indexPath.row - 1
-            cell.data = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].items : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = (isTVWatchlistAvailable) ? JCDataStore.sharedDataStore.tvData?.data?[dataRow].title : JCDataStore.sharedDataStore.tvData?.data?[indexPath.row].title
-            cell.tableCellCollectionView.reloadData()
-        }
         
-        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
-        {
-            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
-            {
-                callWebServiceForTVData(page: loadedPage + 1)
-                loadedPage += 1
-            }
-        }
-        return cell
- */
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
         {
-            /*
-             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-             headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
-             headerCell.itemFromViewController = VideoType.Music
-             headerCell.headerCollectionView.tag = 0
-             return headerCell
-             */
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
