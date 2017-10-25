@@ -442,7 +442,6 @@
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
-        self.sendMediaStartAnalyticsEvent()
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
@@ -558,6 +557,8 @@
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
                 self.scrollCollectionViewToRow(row: currentPlayingIndex)
+                self.sendMediaStartAnalyticsEvent()
+
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
@@ -762,7 +763,7 @@
     {
         let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
         
-        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: playerId!, mbid: mbid, mediaStartTime: String(duration), categoryTitle: "", rowPosition: String(collectionIndex))
+        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: playerId!, mbid: mbid, mediaStartTime: String(duration), categoryTitle: categoryTitle, rowPosition: String(collectionIndex))
     }
     
     func sendBufferingEvent(eventProperties:[String:Any])

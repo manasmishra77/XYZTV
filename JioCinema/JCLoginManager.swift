@@ -141,6 +141,9 @@ class JCLoginManager:UIViewController
                     let eventProperties = ["Source":"4G","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     
+                    // For Internal Analytics Event
+                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+                    
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
                     
@@ -149,6 +152,9 @@ class JCLoginManager:UIViewController
                 {
                     let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid),"Reason":"4G","Platform":"TVOS","Error Code":code,"Message":""] as [String:Any]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+                    
+                    // For Internal Analytics Event
+                    let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: "", errorMessage: "")
                     completion(false)
                 }
             }
