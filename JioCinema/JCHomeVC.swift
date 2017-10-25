@@ -82,6 +82,7 @@ class JCHomeVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCont
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         if !JCLoginManager.sharedInstance.isUserLoggedIn()
         {

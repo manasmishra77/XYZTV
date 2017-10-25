@@ -78,6 +78,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.itemFromViewController = VideoType.Clip
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {

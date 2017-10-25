@@ -56,6 +56,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 {
                     print(responseError)
                     //Analytics for Login Fail
+                    self.sendLoggedInAnalyticsEventWithFailure(errorMessage: (error?.localizedDescription)!)
                     return
                 }
                 
@@ -67,13 +68,6 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
                         
-                        //Analytics for Login Success   (jio id, Manual)
-//                        let analyticsData = ["method":"JIOID","source":"manual","identity":JCAppUser.shared.uid]
-//                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
-                        
-                        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":JCAppUser.shared.uid]
-                        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
-                        
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                                 
@@ -84,12 +78,16 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                 isLoginPresentedFromAddToWatchlist = false
                             })
                         }
+                        self.sendLoggedInAnalyticsEventWithSuccess()
+                       
                         
                     }
                     else if(code == 400)
                     {
                         self.showAlert(alertString: parsedResponse["message"]! as! String)
-                        //Analytics for Login Fail
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        
+                        
 //                        let pro = ["userid":]
 //                        let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
 //                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
@@ -196,6 +194,34 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    //MARK:- Send Logged In Analytics Event With Success
+    func sendLoggedInAnalyticsEventWithSuccess() {
+        
+        // For Clever Tap Event
+        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+        
+    }
+    
+    //MARK:- Send Logged In Analytics Event With Failure
+    func sendLoggedInAnalyticsEventWithFailure(errorMessage:String) {
+        
+        // For Clever Tap Event
+//        let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
+//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        
+        //Analytics for LoggedIn Fail
+        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text!, errorMessage: errorMessage)
+        
+        
+    }
+    
     
     
 

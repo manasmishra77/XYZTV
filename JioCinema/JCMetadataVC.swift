@@ -23,6 +23,10 @@ enum VideoType:Int
     case ResumeWatching     = 8
     case Language           = 9
     case Genre              = 10
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
 }
 
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
@@ -124,6 +128,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
         cell.itemFromViewController = VideoType.init(rawValue:(item.app?.type)!)
+        cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         cell.moreLikeData = nil
         cell.episodes = nil

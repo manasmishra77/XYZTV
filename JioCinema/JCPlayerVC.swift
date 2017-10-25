@@ -75,7 +75,8 @@
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
-    
+    var bufferCount                 = 0
+
     var arr_RecommendationList = [Item]()
 
     var moreModal:More?
@@ -153,7 +154,7 @@
             })
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
-        
+        self.sendMediaEndAnalyticsEvent()
         if (player != nil)
         {
             removePlayerObserver()
@@ -421,11 +422,13 @@
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
+        self.sendMediaStartAnalyticsEvent()
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
     }
+   
     
     func addMetadataToPlayer()
     {
@@ -516,6 +519,8 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
+            bufferCount = bufferCount + 1
+            
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
@@ -693,6 +698,69 @@
     }
     
     //MARK:- Custom Methods
+    //MARK:- Analytics Events
+    func sendMediaStartAnalyticsEvent()
+    {
+        let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+        
+        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: playerId!, mbid: mbid, mediaStartTime: String(duration), categoryTitle: "", rowPosition: String(collectionIndex))
+    }
+    
+    func sendMediaEndAnalyticsEvent()
+    {
+//No,yes
+        if let currentTime = player?.currentItem?.currentTime()
+        {
+            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: currentTimeDuration, bufferDuration: "", bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: "", playList: "", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            
+            bufferCount = 0
+        }
+    }
+    
+    func sendMediaErrorAnalyticsEvent()
+    {
+        let mediaErrorInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: "", errorCode: "", videoType: String(selectedItemFromViewController.rawValue), contentTitle: categoryTitle, contentId: playerId!, videoQuality: "Auto", bitrate: "", episodeSubtitle: "", playerErrorMessage: "", apiFailureCode: "", message: "", fpsFailure: "")
+    }
+ 
+    /*
+    func bitrateLog(withObserved observed: Bool, andActual actual: Bool) -> Int {
+        var evt: AVPlayerItemAccessLogEvent? = nil
+        let accessL: AVPlayerItemAccessLog? = playerItem?.accessLog()
+        let events = accessL?.events
+        
+        for i in 0..< events?.count
+        {
+            
+        }
+        
+        for i in 0..<events?.count {
+            evt = events?[i] as? AVPlayerItemAccessLogEvent
+        }
+        var byte = Int(0.0)
+        let ary = evt?.uri?.components(separatedBy: "chunklist")
+        if ary?.count > 0 {
+            let Ary1 = ary?.count > 1 ? ary?[1]?.components(separatedBy: ".m3u8") : nil as? [Any]
+            if Ary1 && Ary1.count > 0 {
+                let str: String? = (Ary1[0] as? NSString)?.substring(from: 2)
+                byte = Int(str!) ?? 0 / 1000
+            }
+        }
+        if observed == false && actual == true {
+            byte = byte
+        }
+        else if observed == false && actual == false {
+            byte = Int(evt?.indicatedBitrate / 1024)
+        }
+        else {
+            byte = Int(evt?.observedBitrate / 1024)
+        }
+
+        return byte
+    }
+  */
+
+
     //MARK:- Scroll Collection View To Row
     var myPreferredFocusView:UIView? = nil
     

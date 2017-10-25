@@ -8,7 +8,10 @@
 
 import UIKit
 
-class JCOTPVC: UIViewController
+let MESSAGE_LOGINWITHOUTERROR   = "Login Failed"
+
+
+class JCOTPVC: UIViewController,UISearchBarDelegate
 {
     
     @IBOutlet weak var keyBoardButton1: JCKeyboardButton!
@@ -275,14 +278,10 @@ class JCOTPVC: UIViewController
             
             if let responseError = error
             {
-                
-                
                 //TODO: handle error
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-                let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
-                JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
-                
+               
                 
                 //                return
                 DispatchQueue.main.async {
@@ -320,6 +319,9 @@ class JCOTPVC: UIViewController
             {
                 //TODO: handle error
                 print(responseError)
+                
+                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: responseError.localizedDescription)
+                
                 return
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
@@ -330,8 +332,6 @@ class JCOTPVC: UIViewController
                 {
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
-                    let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
-                    JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             if !isLoginPresentedFromAddToWatchlist
@@ -341,10 +341,12 @@ class JCOTPVC: UIViewController
                             isLoginPresentedFromAddToWatchlist = false
                         })
                     }
+                    self.sendLoggedInAnalyticsEventWithSuccess()
+                    
                 }
                 else
                 {
-                    
+                    self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
                 }
             }
         }
@@ -362,6 +364,57 @@ class JCOTPVC: UIViewController
     }
     
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if resendOTPButton.isHidden == true {
+            if (searchBar.text?.characters.count)! < 10 {
+                getOTPButton.isUserInteractionEnabled = false
+            }
+            else
+            {
+                getOTPButton.isUserInteractionEnabled = true
+            }
+        }
+        else
+        {
+            if (searchBar.text?.characters.count)! < 6 {
+                signInButton.isUserInteractionEnabled = false
+            }
+            else
+            {
+                signInButton.isUserInteractionEnabled = true
+            }
+        }
+        
+    }
+    //MARK:- Send Logged In Analytics Event With Success
+    func sendLoggedInAnalyticsEventWithSuccess() {
+        //Sending events to clever tap
+        let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
+        
+        //Sending events for internal analytics
+        let eventDict = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "OTP", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+        
+        
+    }
+    
+    
+    
+    //MARK:- Send Logged In Analytics Event With Failure
+    func sendLoggedInAnalyticsEventWithFailure(errorMessage:String)
+    {
+        
+        // For Clever Tap Event
+        let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        
+        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioNumberTFLabel.text!, errorMessage: errorMessage)
+
+        
+    }
     
     
 }

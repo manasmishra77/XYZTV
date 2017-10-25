@@ -94,7 +94,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 if let imageUrl = data?[indexPath.row].banner!
                 {
                     resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
-                    
                     let progress:Float?
                     if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
                     {
@@ -117,7 +116,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             {
                 if let imageUrl = data?[indexPath.row].banner!
                 {
-                    
+
                     cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
@@ -132,6 +131,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             //For Metadata Controller More Like Data
         else if(episodes?[indexPath.row].banner != nil)
         {
+
             cell.nameLabel.text = episodes?[indexPath.row].name
             let imageUrl = episodes?[indexPath.row].banner!
             
@@ -144,6 +144,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(moreLikeData?[indexPath.row].banner != nil)
         {
+
             cell.nameLabel.text = moreLikeData?[indexPath.row].name
             let imageUrl = moreLikeData?[indexPath.row].banner!
             let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
@@ -218,6 +219,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     {
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
+        let titleLabel = self.viewWithTag(500000 + indexPath.row) as! UILabel
+        categoryTitle = titleLabel.text!
         
         if data != nil
         {
