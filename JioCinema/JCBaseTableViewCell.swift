@@ -115,9 +115,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
             else
             {
+                
                 if let imageUrl = data?[indexPath.row].banner!
                 {
-                    
                     cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
@@ -129,7 +129,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
             
         }
-            //For Metadata Controller More Like Data
+        //For Metadata Controller More Like Data
         else if(episodes?[indexPath.row].banner != nil)
         {
             cell.nameLabel.text = episodes?[indexPath.row].name
@@ -181,38 +181,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             return cell
         }
         
-        //Falling Animation (Cards)
-        //        let finalCellFrame = cell.frame
-        //        let translation:CGPoint = collectionView.panGestureRecognizer.translation(in: collectionView.superview)
-        //        if translation.x > 0
-        //        {
-        //            cell.frame = CGRect.init(x: finalCellFrame.origin.x - 500, y: -500.0, width: 0, height: 0)
-        //        }
-        //        else
-        //        {
-        //            cell.frame = CGRect.init(x: finalCellFrame.origin.x + 500, y: -500.0, width: 0, height: 0)
-        //        }
-        //        UIView.animate(withDuration: 0.5) {
-        //            cell.frame = finalCellFrame
-        //        }
-        
         return cell
     }
     
-  
-    //Focus fixed on first cell
-    /*
-    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if let focusedView = context.nextFocusedView as? JCItemCell {
-            
-            tableCellCollectionView.isScrollEnabled = false
-            if let indexPath = tableCellCollectionView.indexPath(for: focusedView)
-            {
-            tableCellCollectionView.scrollToItem(at: indexPath, at: .init(rawValue: 80), animated: true)
-            }
-        }
-     
-    }*/
    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {

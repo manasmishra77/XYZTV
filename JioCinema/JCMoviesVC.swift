@@ -23,9 +23,9 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     {
         super.viewDidLoad()
         callWebServiceForMoviesData(page: loadedPage)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
@@ -43,6 +43,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForMoviesWatchlist()
+        }
+        else
+        {
+            isMoviesWatchlistAvailable = false
         }
         baseTableView.reloadData()
     }
@@ -77,16 +81,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
                 }
             }
             if isMoviesWatchlistAvailable{
-                if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil{
-                    if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0{
+                if let items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
+                    if items.count > 0 {
                         dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
                     }
                 }
-               
             }
-            
             return dataItemsForTableview.count
-            
         }
         else
         {
@@ -117,14 +118,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
         {
-            /*
-             //ForCarouselWithCollectionView
-             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-             headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
-             headerCell.itemFromViewController = VideoType.Music
-             headerCell.headerCollectionView.tag = 0
-             return headerCell
-             */
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
@@ -135,7 +128,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         }
         else
         {
-            return UIView.init()
+            return UIView()
         }
     }
     
@@ -153,13 +146,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (JCDataStore.sharedDataStore.moviesData?.totalPages) == nil
         {
-            return UIView.init()
+            return UIView()
         }
         else
         {
             if(loadedPage == (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
             {
-                return UIView.init()
+                return UIView()
             }
             else
             {
