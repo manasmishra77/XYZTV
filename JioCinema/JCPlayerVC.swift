@@ -25,7 +25,7 @@
  private var playerViewControllerKVOContext = 0
  
  private func globalNotificationQueue() -> DispatchQueue {
-    var globalQueue = 0 as? DispatchQueue
+    var globalQueue: DispatchQueue? = nil
     var getQueueOnce: Int = 0
     if (getQueueOnce == 0) {
         globalQueue = DispatchQueue(label: "tester notify queue")
@@ -542,6 +542,7 @@
                 self.scrollCollectionViewToRow(row: currentPlayingIndex)
                 break
             case .failed:
+                
                 Log.DLog(message: "Failed" as AnyObject)
                 print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
                 if isVideoUrlFailedCount == 0
@@ -1334,7 +1335,7 @@
                 print(responseError)
                 return
             }
-            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
@@ -1765,9 +1766,14 @@
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
-            print("ASYNC Certificate data: \(data!)")
+            if error != nil {
+                print(error)
+                return
+            }
+            
             if (data != nil)
             {
+                print("ASYNC Certificate data: \(data!)")
                 let decodedData = Data(base64Encoded: data!, options: [])
                 completionHandler(decodedData!)
             }

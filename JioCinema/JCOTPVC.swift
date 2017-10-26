@@ -232,7 +232,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 {
                     let errorString = responseError.userInfo["NSLocalizedDescription"]! as! String
                     let data = errorString.data(using: .utf8)
-                    let json = try? JSONSerialization.jsonObject(with: data!)
+                    _ = try? JSONSerialization.jsonObject(with: data!)
                     
                     
                     DispatchQueue.main.async {

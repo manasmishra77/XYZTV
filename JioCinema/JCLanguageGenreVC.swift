@@ -343,7 +343,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         }
         let model = languageGenreDetailModel?.data?.items?[index]
         
-        let playerId = languageGenreDetailModel?.data?.items?[index].id
+        //let playerId = languageGenreDetailModel?.data?.items?[index].id
         let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[index].description
         playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[index].name

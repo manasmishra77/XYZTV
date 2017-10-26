@@ -96,9 +96,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title
         }
         
-        DispatchQueue.main.async {
-            cell.tableCellCollectionView.reloadData()
-        }
+        cell.tableCellCollectionView.reloadData()
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.musicData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.musicData?.totalPages)! - 1)
@@ -237,6 +236,10 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
                 }
                 if cells.count <= 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
+                }else{
+                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                        headerViewOfTableSection.middleButton.alpha = 0.5
+                    }
                 }
                 
             }

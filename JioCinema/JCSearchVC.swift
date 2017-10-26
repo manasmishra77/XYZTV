@@ -129,7 +129,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         weak var weakself = self
         
         RJILApiManager.defaultManager.post(request: searchRequest) { (data, response, error) in
-            if let responseError = error
+            if error != nil
             {
                 
                 DispatchQueue.main.async {

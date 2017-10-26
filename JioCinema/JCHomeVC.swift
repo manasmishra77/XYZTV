@@ -321,8 +321,12 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                         cell.tableCellCollectionView.alpha = 0.5
                     }
                 }
-                if cells.count < 3{
+                if cells.count < 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
+                }else{
+                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                        headerViewOfTableSection.middleButton.alpha = 0.5
+                    }
                 }
                 
             }

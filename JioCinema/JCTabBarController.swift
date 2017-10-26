@@ -173,7 +173,7 @@ class JCTabBarController: UITabBarController {
                     {
                         var currentItem = currentPlayableItem as! Item
                         var resumeWatch = false
-                        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items as? [Item]{
+                        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
                             for each in resumeWatchListArray{
                                 if each.id == currentItem.id{
                                     currentItem = each
@@ -220,7 +220,7 @@ class JCTabBarController: UITabBarController {
             {
                 var currentItem = currentPlayableItem as! Item
                 var resumeWatch = false
-                if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items as? [Item]{
+                if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
                     for each in resumeWatchListArray{
                         if each.id == currentItem.id{
                             currentItem = each

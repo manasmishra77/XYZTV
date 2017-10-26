@@ -100,9 +100,8 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title
         }
         
-        DispatchQueue.main.async {
-            cell.tableCellCollectionView.reloadData()
-        }
+        cell.tableCellCollectionView.reloadData()
+        
         if(indexPath.row == (JCDataStore.sharedDataStore.clipsData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)

@@ -97,3 +97,11 @@ extension Date
     }
     
 }
+extension String {
+    func subString(start: Int, end: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: start)
+        let endIndex = self.index(startIndex, offsetBy: end)
+        
+        let finalString = self.substring(from: startIndex)
+        return finalString.substring(to: endIndex)
+    }}

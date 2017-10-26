@@ -212,14 +212,7 @@ class MetadataHeaderViewCell: UIView {
             addToWatchListButton.isEnabled = true
             NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
-        
-        
-        
-        //        else
-        //        {
-        //            isLoginPresentedFromAddToWatchlist = true
-        //            NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
-        //        }
+
     }
     
     func callWebServiceToUpdateWatchlist(withUrl url:String, andParameters params: Dictionary<String, Any>)
@@ -363,7 +356,10 @@ class MetadataHeaderViewCell: UIView {
     {
         if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items, item?.id != nil
         {
-            let newitem = self.metadata?.latestEpisodeId
+            var newitem = self.item?.id
+            if metadata?.type == VideoType.TVShow.rawValue{
+                newitem = self.metadata?.latestEpisodeId
+            }
             let itemMatched = resumeWatchArray.filter{ $0.id == newitem}.first
             if itemMatched != nil
             {
@@ -378,11 +374,4 @@ class MetadataHeaderViewCell: UIView {
   
     
 }
-extension String {
-    func subString(start: Int, end: Int) -> String {
-        let startIndex = self.index(self.startIndex, offsetBy: start)
-        let endIndex = self.index(startIndex, offsetBy: end)
-        
-        let finalString = self.substring(from: startIndex)
-        return finalString.substring(to: endIndex)
-    }}
+
