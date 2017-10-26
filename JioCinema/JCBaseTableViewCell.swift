@@ -190,6 +190,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
         
+        if let topController = UIApplication.topViewController() {
+            categoryTitle = ""
+        }
+        
         if data != nil
         {
             if isSearchOpenFromMetaData

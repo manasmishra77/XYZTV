@@ -33,6 +33,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
+        //Clevertap screen viewed event
+        let eventProperties = ["Screen Viewed":"Home","Platform":"TVOS"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen Viewed", properties: eventProperties)
+        
+        
         // Do any additional setup after loading the view.
         
     }
@@ -52,6 +57,12 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             baseTableView.reloadData()
         }
         
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Home","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Home")
+        
+        //Internal Analytics
         JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
     }
  
