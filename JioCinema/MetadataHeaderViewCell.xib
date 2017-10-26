@@ -159,7 +159,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LCl-Ko-gAs">
-                                <rect key="frame" x="40" y="438" width="280" height="46"/>
+                                <rect key="frame" x="40" y="429" width="280" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="P2w-0N-jjb"/>
                                     <constraint firstAttribute="height" constant="46" id="gTH-Ns-xyR"/>
@@ -169,7 +169,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="mws-3v-ZW0" userLabel="seasonCollectionView">
-                                <rect key="frame" x="48" y="492" width="1780" height="62"/>
+                                <rect key="frame" x="48" y="483" width="1780" height="62"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1780" id="IQA-Y8-wsa"/>
@@ -183,7 +183,7 @@
                                 </collectionViewFlowLayout>
                             </collectionView>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aNz-oK-1j9">
-                                <rect key="frame" x="28" y="576" width="1836" height="55"/>
+                                <rect key="frame" x="28" y="555" width="1836" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="ac8-jo-5ci"/>
@@ -203,10 +203,10 @@
                             <constraint firstItem="ZjH-P3-8XQ" firstAttribute="centerX" secondItem="dac-EE-lbE" secondAttribute="centerX" id="4JJ-hj-3VZ"/>
                             <constraint firstItem="EDs-zs-uEF" firstAttribute="top" secondItem="7FN-Us-9LU" secondAttribute="bottom" constant="8" id="54j-OU-UVY"/>
                             <constraint firstItem="GpA-QT-sFJ" firstAttribute="top" secondItem="R4v-Qq-LSm" secondAttribute="bottom" constant="54" id="59e-4C-5Fq"/>
-                            <constraint firstItem="LCl-Ko-gAs" firstAttribute="top" secondItem="ZjH-P3-8XQ" secondAttribute="bottom" constant="24" id="7vn-fQ-63F"/>
+                            <constraint firstItem="LCl-Ko-gAs" firstAttribute="top" secondItem="ZjH-P3-8XQ" secondAttribute="bottom" constant="15" id="7vn-fQ-63F"/>
                             <constraint firstItem="R4v-Qq-LSm" firstAttribute="leading" secondItem="K0k-9c-b0U" secondAttribute="trailing" id="8g4-6y-xHQ"/>
                             <constraint firstItem="K0k-9c-b0U" firstAttribute="baseline" secondItem="oul-zh-oH9" secondAttribute="baseline" id="ACS-tA-2AO"/>
-                            <constraint firstItem="aNz-oK-1j9" firstAttribute="top" secondItem="mws-3v-ZW0" secondAttribute="bottom" constant="22" id="AtJ-e9-JPD"/>
+                            <constraint firstItem="aNz-oK-1j9" firstAttribute="top" secondItem="mws-3v-ZW0" secondAttribute="bottom" constant="10" id="AtJ-e9-JPD"/>
                             <constraint firstItem="L71-wL-lsO" firstAttribute="leading" secondItem="93C-9s-wj4" secondAttribute="leadingMargin" constant="26" id="CKV-l0-ASx"/>
                             <constraint firstItem="K0k-9c-b0U" firstAttribute="top" secondItem="93C-9s-wj4" secondAttribute="top" constant="20" id="CRq-mt-V5b"/>
                             <constraint firstItem="mws-3v-ZW0" firstAttribute="leading" secondItem="93C-9s-wj4" secondAttribute="leadingMargin" constant="40" id="En8-lw-zZx"/>
