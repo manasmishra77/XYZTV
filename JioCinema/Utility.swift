@@ -84,7 +84,10 @@ class Utility
     {
         previousScreenName = currentScreenName
         currentScreenName = screenName
+      let snavInternalEvent = JCAnalyticsEvent.sharedInstance.getSNAVEventForInternalAnalytics(currentScreen: previousScreenName, nextScreen: currentScreenName, durationInCurrentScreen: String(screenDisAppearTime))
     }
+    
+    
 }
 
 extension Date

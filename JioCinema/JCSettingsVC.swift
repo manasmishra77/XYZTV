@@ -32,12 +32,18 @@ class JCSettingsVC: UIViewController
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenAppearTime = Date()
+
         settingsTableView.reloadData()
         
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Settings","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         Utility.sharedInstance.handleScreenNavigation(screenName: "Settings")
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+
     }
    
     override func didReceiveMemoryWarning()

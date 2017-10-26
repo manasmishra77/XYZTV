@@ -15,6 +15,7 @@ let JCANALYTICSEVENT_MEDIASTART     = "media_start"
 let JCANALYTICSEVENT_MEDIAEND       = "media_end"
 let JCANALYTICSEVENT_MEDIAERROR     = "media_error"
 let JCANALYTICSEVENT_SNAV           = "snav"
+let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
 
 
 
@@ -43,6 +44,12 @@ class JCAnalyticsEvent: NSObject {
                                "key":eventKey,
                                "pro":proDictionary] as [String : Any]
         return finalDictionary
+    }
+    
+    func getApplaunchEventForInternalAnalytics() -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","sorce":"App_Launch","key":JCANALYTICSEVENT_APPLAUNCH]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_APPLAUNCH )
     }
     
     func getLoginFailedEventForInternalAnalytics(jioID:String, errorMessage:String) -> Dictionary<String, Any>

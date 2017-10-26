@@ -24,6 +24,9 @@ var collectionIndex = -1
 var selectedItemFromViewController:VideoType = VideoType.Home
 var categoryTitle = ""
 
+var screenAppearTime: Date!
+var screenDisAppearTime: Double!
+
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
