@@ -35,6 +35,8 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenAppearTime = Date()
+
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.moviesData?.data == nil
         {
@@ -56,7 +58,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
     }
     override func viewDidDisappear(_ animated: Bool) {
-        //self.tabBarController?.delegate = nil
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
     }
     
     override func didReceiveMemoryWarning() {

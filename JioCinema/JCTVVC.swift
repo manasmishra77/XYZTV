@@ -37,6 +37,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenAppearTime = Date()
+
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.tvData?.data == nil
         {
@@ -59,7 +61,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         Utility.sharedInstance.handleScreenNavigation(screenName: "TV")
     }
     override func viewDidDisappear(_ animated: Bool) {
-       // self.tabBarController?.delegate = nil
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
     }
   
     

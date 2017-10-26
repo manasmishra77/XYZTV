@@ -173,7 +173,6 @@
             })
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
-        self.sendMediaEndAnalyticsEvent()
         
         if (player != nil)
         {
@@ -318,6 +317,7 @@
     
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
+        sendMediaEndAnalyticsEvent()
         self.player?.pause()
         if let timeObserverToken = playerTimeObserverToken {
             self.player?.removeTimeObserver(timeObserverToken)
@@ -563,11 +563,6 @@
             case .failed:
                 
                 Log.DLog(message: "Failed" as AnyObject)
-                
-                //                if movie/tv and count = 0 then fps event bhejo
-                //                else if movie/tv and count = 1 then DRm bhejo
-                //                else DRm bhejo
-                
                 var failureType = "DRM"
                 var type = ""
                 var title = ""
@@ -582,7 +577,6 @@
                             type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                             title = data.name!
                             episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
-                            
                         }
                     }
                 }
@@ -775,11 +769,12 @@
     func sendPlaybackFailureEvent(eventProperties:[String:Any])
     {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Playback Error", properties: eventProperties)
+        self.sendMediaErrorAnalyticsEvent()
+
     }
     
     func sendMediaEndAnalyticsEvent()
     {
-        //No,yes
         self.sendVideoViewedEventToCleverTap()
         
         if let currentTime = player?.currentItem?.currentTime()
@@ -803,14 +798,12 @@
         var language = ""
         var type:VideoType = .None
         var isPlaylist = "false"
-        //var genre = ""
         if metadata == nil
         {
             if let data = self.item as? Item
             {
                 title = data.name!
                 language = data.language!
-                //genre = data.genre!
                 type = VideoType(rawValue: (data.app?.type)!)!
                 isPlaylist = String(describing: data.isPlaylist!)
                 if data.app?.type == VideoType.Episode.rawValue
@@ -828,7 +821,6 @@
             
             title = (metadata?.name)!
             language = (metadata?.language)!
-            //genre = ""
             type = VideoType(rawValue: (metadata?.app?.type)!)!
         }
         
@@ -844,44 +836,6 @@
         }
         
     }
-    
-    /*
-     func bitrateLog(withObserved observed: Bool, andActual actual: Bool) -> Int {
-     var evt: AVPlayerItemAccessLogEvent? = nil
-     let accessL: AVPlayerItemAccessLog? = playerItem?.accessLog()
-     let events = accessL?.events
-     
-     for i in 0..< events?.count
-     {
-     
-     }
-     
-     for i in 0..<events?.count {
-     evt = events?[i] as? AVPlayerItemAccessLogEvent
-     }
-     var byte = Int(0.0)
-     let ary = evt?.uri?.components(separatedBy: "chunklist")
-     if ary?.count > 0 {
-     let Ary1 = ary?.count > 1 ? ary?[1]?.components(separatedBy: ".m3u8") : nil as? [Any]
-     if Ary1 && Ary1.count > 0 {
-     let str: String? = (Ary1[0] as? NSString)?.substring(from: 2)
-     byte = Int(str!) ?? 0 / 1000
-     }
-     }
-     if observed == false && actual == true {
-     byte = byte
-     }
-     else if observed == false && actual == false {
-     byte = Int(evt?.indicatedBitrate / 1024)
-     }
-     else {
-     byte = Int(evt?.observedBitrate / 1024)
-     }
-     
-     return byte
-     }
-     */
-    
     
     //MARK:- Scroll Collection View To Row
     var myPreferredFocusView:UIView? = nil
@@ -1441,6 +1395,7 @@
             print("Video is already playing")
             return
         }
+        
         self.currentPlayingIndex = indexPath.row
         
         // var url = ""

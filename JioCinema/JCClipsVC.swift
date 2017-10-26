@@ -34,7 +34,8 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
-  
+        screenAppearTime = Date()
+
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.clipsData?.data == nil
         {
@@ -46,9 +47,10 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         Utility.sharedInstance.handleScreenNavigation(screenName: "Clips")
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+    }
 
-  
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -38,6 +38,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenAppearTime = Date()
         
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
@@ -53,9 +54,9 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         isSearchOpenFromMetaData = false
         searchResultArray.removeAll()
         baseTableView.reloadData()
-        
-        
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

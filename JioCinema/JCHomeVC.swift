@@ -41,9 +41,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         // Do any additional setup after loading the view.
         
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        
+    }
     override func viewDidAppear(_ animated: Bool)
     {
+        screenAppearTime = Date()
+        
         self.tabBarController?.delegate = self
         callWebServiceForLanguageList()
         callWebServiceForGenreList()

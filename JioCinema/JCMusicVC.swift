@@ -34,6 +34,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        screenAppearTime = Date()
+
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.musicData?.data == nil
         {
@@ -45,7 +47,7 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         Utility.sharedInstance.handleScreenNavigation(screenName: "Music")
     }
     override func viewDidDisappear(_ animated: Bool) {
-        //self.tabBarController?.delegate = nil
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
     }
     
     override func didReceiveMemoryWarning() {
