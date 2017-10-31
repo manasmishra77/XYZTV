@@ -131,6 +131,8 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             carouselView.carouselArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].items)!
             carouselView.loadViews()
             uiviewCarousel = carouselView
+            selectedItemFromViewController = VideoType.Clip
+            collectionIndex = 0
             return carouselView
         }
         else

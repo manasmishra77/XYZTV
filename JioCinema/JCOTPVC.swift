@@ -338,6 +338,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                             {
                                 NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
                             }
+                            if let metaDataVC = JCAppReference.shared.metaDataVc as? JCMetadataVC{
+                                metaDataVC.callToReloadWatchListStatusWhenJustLoggedIn()
+                            }
+                            
                             isLoginPresentedFromAddToWatchlist = false
                         })
                     }
@@ -395,6 +399,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         
         //Sending events for internal analytics
         let eventDict = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "OTP", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventDict)
         
         
     }
@@ -412,6 +417,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         // For Internal Analytics Event
         
         let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioNumberTFLabel.text!, errorMessage: errorMessage)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
 
         
     }

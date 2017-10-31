@@ -35,7 +35,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
         //Clevertap screen viewed event
         let eventProperties = ["Screen Viewed":"Home","Platform":"TVOS"]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen Viewed", properties: eventProperties)
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen View", properties: eventProperties)
         
         
         // Do any additional setup after loading the view.
@@ -162,6 +162,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         carouselView.carouselArray = (JCDataStore.sharedDataStore.homeData?.data?[0].items)!
         carouselView.loadViews()
         uiviewCarousel = carouselView
+        selectedItemFromViewController = VideoType.Home
+        collectionIndex = 0
         return carouselView
         
     }

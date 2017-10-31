@@ -139,6 +139,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             carouselView.carouselArray = (JCDataStore.sharedDataStore.tvData?.data?[0].items)!
             carouselView.loadViews()
             uiviewCarousel = carouselView
+            selectedItemFromViewController = VideoType.TVShow
+            collectionIndex = 0
             return carouselView
         }
         else

@@ -133,6 +133,8 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             carouselView.carouselArray = (JCDataStore.sharedDataStore.moviesData?.data?[0].items)!
             carouselView.loadViews()
             uiviewCarousel = carouselView
+            selectedItemFromViewController = VideoType.Movie
+            collectionIndex = 0
             return carouselView
         }
         else

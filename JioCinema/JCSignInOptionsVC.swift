@@ -36,8 +36,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       jioIdTextField.text     = "pallavtrivedi-4"
-       passwordTextField.text  = "pallav@1010"
+//       jioIdTextField.text     = "pallavtrivedi-4"
+//       passwordTextField.text  = "pallav@1010"
+               jioIdTextField.text     = "poonam2016"
+               passwordTextField.text  = "poonam@12"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -74,6 +76,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                 if !isLoginPresentedFromAddToWatchlist
                                 {
                                 NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
+                                }
+                                if let metaDataVC = JCAppReference.shared.metaDataVc as? JCMetadataVC{
+                                    metaDataVC.callToReloadWatchListStatusWhenJustLoggedIn()
                                 }
                                 isLoginPresentedFromAddToWatchlist = false
                             })
@@ -199,11 +204,12 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     func sendLoggedInAnalyticsEventWithSuccess() {
         
         // For Clever Tap Event
-        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":JCAppUser.shared.uid]
+        let eventProperties = ["Source":"Jio ID","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
         
         // For Internal Analytics Event
         let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
         
     }
     
@@ -216,6 +222,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
         // For Internal Analytics Event
         let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text!, errorMessage: errorMessage)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
         
     }

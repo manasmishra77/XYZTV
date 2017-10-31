@@ -23,9 +23,10 @@ let networkErrorMessage = "No network available"
 var collectionIndex = -1
 var selectedItemFromViewController:VideoType = VideoType.Home
 var categoryTitle = ""
+var referenceFromPlayerVC = ""
 
 var screenAppearTime: Date!
-var screenDisAppearTime: Double!
+var screenDisAppearTime: Double! = 0.0
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"

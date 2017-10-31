@@ -18,8 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //Sending event for Internal Analytics
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
         handlerUncaughtException()
+        
         return true
     }
 

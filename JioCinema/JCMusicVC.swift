@@ -127,6 +127,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             carouselView.carouselArray = (JCDataStore.sharedDataStore.musicData?.data?[0].items)!
             carouselView.loadViews()
             uiviewCarousel = carouselView
+            selectedItemFromViewController = VideoType.Music
+            collectionIndex = 0
             return carouselView
         }
         else

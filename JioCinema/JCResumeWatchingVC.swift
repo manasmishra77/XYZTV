@@ -19,6 +19,7 @@ class JCResumeWatchingVC: UIViewController
     var itemImage:String?
     var itemDuration:String?
     var isVideoResumed = false
+    var previousVC: UIViewController? = nil
     
     var item :Any?
 
@@ -58,7 +59,7 @@ class JCResumeWatchingVC: UIViewController
         self.playVideo()
 
     }
-    
+
     
     @IBAction func didClickOnRemoveButton(_ sender: Any)
     {
@@ -70,7 +71,7 @@ class JCResumeWatchingVC: UIViewController
         if playerVC_Global != nil {
             return
         }
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+        let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemDescription = itemDescription
         playerVC.currentItemTitle = itemTitle
         playerVC.currentItemImage = itemImage
@@ -82,7 +83,24 @@ class JCResumeWatchingVC: UIViewController
         playerVC.isResumed = isVideoResumed
         
         playerVC.item = self.item
-        self.present(playerVC, animated: false, completion: nil)
+        self.dismiss(animated: false, completion: {
+            print(self.previousVC)
+            self.previousVC?.present(playerVC, animated: false, completion: nil)
+            
+        })
+//        if isVideoResumed{
+//            //self.present(playerVC, animated: false, completion: nil)
+//            self.dismiss(animated: false, completion: {
+//                self.previousVC?.present(playerVC, animated: false, completion: nil)
+//
+//            })
+//        }
+//        else{
+//            self.dismiss(animated: false, completion: {
+//                self.previousVC?.present(playerVC, animated: false, completion: nil)
+//            })
+//        }
+        
     }
     
     func callWebServiceForRemovingResumedWatchlist()
@@ -127,5 +145,6 @@ class JCResumeWatchingVC: UIViewController
         }
 
     }
+   
 
 }

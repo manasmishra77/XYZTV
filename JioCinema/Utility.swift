@@ -85,6 +85,7 @@ class Utility
         previousScreenName = currentScreenName
         currentScreenName = screenName
       let snavInternalEvent = JCAnalyticsEvent.sharedInstance.getSNAVEventForInternalAnalytics(currentScreen: previousScreenName, nextScreen: currentScreenName, durationInCurrentScreen: String(screenDisAppearTime))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: snavInternalEvent)
     }
     
     
@@ -107,4 +108,13 @@ extension String {
         
         let finalString = self.substring(from: startIndex)
         return finalString.substring(to: endIndex)
-    }}
+    }
+
+    //Converting String to float
+    func floatValue() -> Float? {
+            if let floatval = Float(self) {
+                return floatval
+            }
+            return nil
+        }
+}

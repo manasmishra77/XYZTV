@@ -208,6 +208,19 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         return false
     }
     
+    func callToReloadWatchListStatusWhenJustLoggedIn(){
+        callWebserviceForWatchListStatus(id: item.id!)
+        if item.app?.type == VideoType.Movie.rawValue{
+            if let movieVC = JCAppReference.shared.tabBarCotroller?.selectedViewController as? JCMoviesVC{
+                movieVC.callWebServiceForMoviesWatchlist()
+            }
+        }
+        else if item.app?.type == VideoType.TVShow.rawValue{
+            if let tvVC = JCAppReference.shared.tabBarCotroller?.selectedViewController as? JCTVVC{
+                tvVC.callWebServiceForTVWatchlist()
+            }
+        }
+    }
     
     func callWebServiceForMetadata(id:String)
     {
@@ -256,7 +269,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             {
                 
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                let data1 = self.metadata?.episodes
+                //let data1 = self.metadata?.episodes
                 DispatchQueue.main.async {
                     weakSelf?.metadataTableView.reloadData()
                 }
@@ -409,9 +422,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                     print("Not on jio network")
                     DispatchQueue.main.async {
                         weakSelf?.presentLoginVC()
-                    }
-                    
-                    
+                    }    
                 }
                 else
                 {
@@ -424,7 +435,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func playItemUsingResumeWatch(_ resumeItem : Item) {
-        let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+        let resumeWatchingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
         currentPlayableItem = resumeItem
         resumeWatchingVC.playableItemDuration = Int(Float(resumeItem.duration!)!)
         resumeWatchingVC.playerId = resumeItem.id
@@ -432,6 +443,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         resumeWatchingVC.itemImage = resumeItem.banner
         resumeWatchingVC.itemTitle = resumeItem.name
         resumeWatchingVC.itemDuration = String(describing: resumeItem.totalDuration)
+        resumeWatchingVC.previousVC = self
         
         resumeWatchingVC.item = currentPlayableItem
         
@@ -444,7 +456,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if playerVC_Global != nil {
             return
         }
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+        let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         let id = (item?.app?.type == VideoType.Movie.rawValue) ? item?.id! : metadata?.latestEpisodeId!
         playerVC.currentItemImage = item?.banner
         playerVC.currentItemTitle = item?.name
@@ -457,6 +469,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
+        
         self.present(playerVC, animated: false, completion: nil)
         
     }

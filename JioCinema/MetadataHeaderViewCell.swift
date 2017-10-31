@@ -14,6 +14,8 @@ class MetadataHeaderViewCell: UIView {
     
     var metadata:MetadataModel?
     var item:Item?
+    var userComingAfterLogin: Bool = false
+    
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
     @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!
@@ -209,6 +211,7 @@ class MetadataHeaderViewCell: UIView {
             
         }else{
             isLoginPresentedFromAddToWatchlist = true
+            userComingAfterLogin = true
             addToWatchListButton.isEnabled = true
             NotificationCenter.default.post(name: showLoginFromMetadataNotificationName, object: nil, userInfo: nil)
         }
@@ -301,6 +304,11 @@ class MetadataHeaderViewCell: UIView {
             if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
                 let indexpath = IndexPath(row: 0, section: 0)
                 DispatchQueue.main.async {
+                    if self.userComingAfterLogin{
+                        self.userComingAfterLogin = false
+                        tvVC.callWebServiceForTVWatchlist()
+                        return
+                    }
                     if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
                         if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
                             tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
@@ -332,6 +340,11 @@ class MetadataHeaderViewCell: UIView {
             if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
                 
                 DispatchQueue.main.async {
+                    if self.userComingAfterLogin{
+                        self.userComingAfterLogin = false
+                        movieVC.callWebServiceForMoviesWatchlist()
+                        return
+                    }
                    if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil {
                         if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 1{
                             let indexpath = IndexPath(row: 0, section: 0)
@@ -361,10 +374,12 @@ class MetadataHeaderViewCell: UIView {
                 newitem = self.metadata?.latestEpisodeId
             }
             let itemMatched = resumeWatchArray.filter{ $0.id == newitem}.first
+            // For resume watch, episode item type is 7
+            if metadata?.type == VideoType.TVShow.rawValue{
+                itemMatched?.app?.type = 7
+            }
             if itemMatched != nil
             {
-                // For resume watch, item type is 7
-                itemMatched?.app?.type = 7
                 self.item = itemMatched
                 return true
             }

@@ -16,6 +16,7 @@ let JCANALYTICSEVENT_MEDIAEND       = "media_end"
 let JCANALYTICSEVENT_MEDIAERROR     = "media_error"
 let JCANALYTICSEVENT_SNAV           = "snav"
 let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
+let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/event"
 
 
 
@@ -24,25 +25,16 @@ class JCAnalyticsEvent: NSObject {
     
     static let sharedInstance = JCAnalyticsEvent()
     
-    func getFinalEventDictionary(proDictionary:Dictionary<String, Any>,eventKey:String) -> Dictionary<String, Any>
+    func getFinalEventDictionary(proDictionary: Dictionary<String, Any>, eventKey:String) -> Dictionary<String, Any>
     {
         let sid = Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
-        let finalDictionary = ["sid":sid,
-                               "akey":kAppKeyValue,
-                               "uid":JCAppUser.shared.uid,
-                               "crmid":JCAppUser.shared.unique,
-                               "profileid":JCAppUser.shared.profileId,
-                               "idamid":JCAppUser.shared.unique,
-                               "rtc":Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss"),
-                               "did":UIDevice.current.identifierForVendor!.uuidString,
-                               "pf":"O",
-                               "nwk":"WIFI",
-                               "dtpe":"B",
-                               "osv":UIDevice.current.systemVersion,
-                               "mnu":"apple",
-                               "avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
-                               "key":eventKey,
-                               "pro":proDictionary] as [String : Any]
+        
+        let hash = convertStringToMD5Hash(artistName: sid)
+        let hexEncodedHash = hash.hexEncodedString()
+        
+        let rtcEpoch = String(describing:Date().timeIntervalSince1970)
+        
+        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
         return finalDictionary
     }
     
@@ -94,7 +86,7 @@ class JCAnalyticsEvent: NSObject {
                                "Source":categoryTitle]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIAEND )
     }
-
+    
     
     func getMediaErrorEventForInternalAnalytics(descriptionMessage:String, errorCode:String, videoType:String,  contentTitle:String, contentId:String, videoQuality:String, bitrate:String, episodeSubtitle:String, playerErrorMessage:String, apiFailureCode: String, message:String, fpsFailure:String) -> Dictionary<String, Any>
     {
@@ -113,12 +105,52 @@ class JCAnalyticsEvent: NSObject {
                                "failure":fpsFailure]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIAERROR )
     }
-
+    
     func getSNAVEventForInternalAnalytics(currentScreen:String, nextScreen:String, durationInCurrentScreen:String) -> Dictionary<String, Any>
     {
         let eventDictionary = ["platform":"TVOS",
                                "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
     }
-
+    
+    func sendEventForInternalAnalytics(paramDict: [String: Any]) {
+        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: JCANALYTICSEVENT_URL, params: paramDict, encoding: .JSON)
+        
+        RJILApiManager.defaultManager.post(request: loginRequest)
+        {
+            (data, response, error) in
+            if let responseError = error
+            {
+                print(responseError)
+                return
+            }
+            
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                print(parsedResponse)
+                let code = parsedResponse["code"] as? Int
+                if(code == 200)
+                {
+                    
+                }
+                
+            }
+        }
+    }
+    
+    func convertStringToMD5Hash(artistName:String) -> Data
+    {
+        let messageData = artistName.data(using:.utf8)!
+        var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+        
+        _ = digestData.withUnsafeMutableBytes {digestBytes in
+            messageData.withUnsafeBytes {messageBytes in
+                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+            }
+        }
+        
+        return digestData
+    }
 }
+
+

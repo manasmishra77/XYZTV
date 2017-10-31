@@ -38,7 +38,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let labelFrame = CGRect(x: categoryTitleLabel.frame.origin.x - 70, y: categoryTitleLabel.frame.origin.y, width: categoryTitleLabel.frame.size.width, height: categoryTitleLabel.frame.size.height)
             
             categoryTitleLabel.frame = labelFrame
-
+            
             
         } else {
             // or use some work around
@@ -98,8 +98,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     let progress:Float?
                     if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
                     {
-                            progress = Float(duration)! / Float(totalDuration)!
-                            resumeWatchCell.progressBar.setProgress(progress!, animated: false)
+                        progress = Float(duration)! / Float(totalDuration)!
+                        resumeWatchCell.progressBar.setProgress(progress!, animated: false)
                     }
                     else
                     {
@@ -129,7 +129,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
             
         }
-        //For Metadata Controller More Like Data
+            //For Metadata Controller More Like Data
         else if(episodes?[indexPath.row].banner != nil)
         {
             cell.nameLabel.text = episodes?[indexPath.row].name
@@ -184,13 +184,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         return cell
     }
     
-   
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
         
-        if let topController = UIApplication.topViewController() {
+        if UIApplication.topViewController() != nil {
             categoryTitle = ""
         }
         
@@ -247,6 +247,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if moreLikeData != nil
         {
             let itemToPlay = ["item":(moreLikeData?[indexPath.row])!]
+            categoryTitle = "More like data from Metadata"
             NotificationCenter.default.post(name: metadataCellTapNotificationName, object: nil, userInfo: itemToPlay)
         }
         else if episodes != nil
@@ -293,7 +294,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         playerVC.currentItemDuration = String(describing: item.totalDuration)
         playerVC.currentItemDescription = item.subtitle
         //OPTIMIZATION PLAYERVC
-       // playerVC.callWebServiceForPlaybackRights(id: item.id!)
+        // playerVC.callWebServiceForPlaybackRights(id: item.id!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         playerVC.playerId = item.id
@@ -303,7 +304,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             topController.present(playerVC, animated: false, completion: nil)
         }
     }
-
+    
     
 }
 
@@ -312,11 +313,11 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-       
-         if(artistImages != nil)
-         {
+        
+        if(artistImages != nil)
+        {
             return 15
-         }
+        }
         
         return 30
     }
@@ -325,26 +326,18 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         
         if(artistImages != nil)
         {
-           return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
+            return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
         }
         
         return CGSize(width: 392, height: collectionView.frame.height)
         
-//        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
-//        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
+        //        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
+        //        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        
-//        if(artistImages != nil)
-//        {
-//            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        }
-        
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
-       // return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
 

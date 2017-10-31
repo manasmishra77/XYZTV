@@ -24,23 +24,23 @@ class JCTabBarController: UITabBarController {
         NotificationCenter.default.addObserver(forName: cellTapNotificationName, object: nil, queue: nil, using: didReceiveNotificationForCellTap(notification:))
         NotificationCenter.default.addObserver(self, selector: #selector(prepareToPlay), name: readyToPlayNotificationName, object: nil)
         
-        let homeVC = JCHomeVC.init(nibName: "JCBaseVC", bundle: nil)
-        homeVC.tabBarItem = UITabBarItem.init(title: "Home", image: nil, tag: 0)
+        let homeVC = JCHomeVC(nibName: "JCBaseVC", bundle: nil)
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: nil, tag: 0)
         
-        let moviesVC = JCMoviesVC.init(nibName: "JCBaseVC", bundle: nil)
-        moviesVC.tabBarItem = UITabBarItem.init(title: "Movies", image: nil, tag: 1)
+        let moviesVC = JCMoviesVC(nibName: "JCBaseVC", bundle: nil)
+        moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: nil, tag: 1)
         
-        let tvVC = JCTVVC.init(nibName: "JCBaseVC", bundle: nil)
-        tvVC.tabBarItem = UITabBarItem.init(title: "TV", image: nil, tag: 2)
+        let tvVC = JCTVVC(nibName: "JCBaseVC", bundle: nil)
+        tvVC.tabBarItem = UITabBarItem(title: "TV", image: nil, tag: 2)
         
-        let musicVC = JCMusicVC.init(nibName: "JCBaseVC", bundle: nil)
-        musicVC.tabBarItem = UITabBarItem.init(title: "Music", image: nil, tag: 3)
+        let musicVC = JCMusicVC(nibName: "JCBaseVC", bundle: nil)
+        musicVC.tabBarItem = UITabBarItem(title: "Music", image: nil, tag: 3)
         
-        let clipsVC = JCClipsVC.init(nibName: "JCBaseVC", bundle: nil)
-        clipsVC.tabBarItem = UITabBarItem.init(title: "Clips", image: nil, tag: 4)
+        let clipsVC = JCClipsVC(nibName: "JCBaseVC", bundle: nil)
+        clipsVC.tabBarItem = UITabBarItem(title: "Clips", image: nil, tag: 4)
         
         
-        let searchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
+        let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
         searchVC.view.backgroundColor = .black
         
         let searchViewController = UISearchController(searchResultsController: searchVC)
@@ -59,14 +59,14 @@ class JCTabBarController: UITabBarController {
         //searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
      
         //ToSetSearchVC,TBC
-        let tempVC = JCBaseVC.init(nibName: "JCBaseVC", bundle: nil)
+        let tempVC = JCBaseVC(nibName: "JCBaseVC", bundle: nil)
         let navControllerForSearchContainer = UINavigationController(rootViewController: searchContainerController)
         
         navControllerForSearchContainer.tabBarItem = UITabBarItem(title: "Search", image: nil, tag: 5)
         
 
-        settingsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
-        settingsVC?.tabBarItem = UITabBarItem.init(title: "Settings", image: nil, tag: 6)
+        settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
+        settingsVC?.tabBarItem = UITabBarItem(title: "Settings", image: nil, tag: 6)
         
         let viewControllersArray = [homeVC, moviesVC, tvVC, musicVC, clipsVC, navControllerForSearchContainer, settingsVC!] as [Any]
         self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
@@ -158,44 +158,21 @@ class JCTabBarController: UITabBarController {
                     let durationInt = Int(Float(duration)!)
                     if durationInt != 0
                     {
-                        let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                        resumeWatchingVC.playableItemDuration = durationInt
-                        resumeWatchingVC.playerId = (currentPlayableItem as! Item).id
-                        resumeWatchingVC.itemDescription = (currentPlayableItem as! Item).description
-                        resumeWatchingVC.itemImage = (currentPlayableItem as! Item).banner
-                        resumeWatchingVC.itemTitle = (currentPlayableItem as! Item).name
-                        resumeWatchingVC.itemDuration = String(describing: (currentPlayableItem as! Item).totalDuration)
-                        resumeWatchingVC.item = currentPlayableItem
-                        
-                        self.present(resumeWatchingVC, animated: false, completion: nil)
+                        self.presentResumeWatchVC(itemToBePlayed: currentPlayableItem as! Item)
                     }
                     else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
                     {
-                        var currentItem = currentPlayableItem as! Item
-                        var resumeWatch = false
-                        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
-                            for each in resumeWatchListArray{
-                                if each.id == currentItem.id{
-                                    currentItem = each
-                                    resumeWatch = true
-                                    break
-                                }
-                            }
-                        }
-                        if resumeWatch{
-                            let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                            resumeWatchingVC.playableItemDuration = Int(Float(currentItem.duration!)!)
-                            resumeWatchingVC.playerId = currentItem.id
-                            resumeWatchingVC.itemDescription = currentItem.subtitle
-                            resumeWatchingVC.itemImage = currentItem.banner
-                            resumeWatchingVC.itemTitle = currentItem.name
-                            resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
-                            resumeWatchingVC.item = currentPlayableItem
-
-                            self.present(resumeWatchingVC, animated: false, completion: nil)
-                        }else{
-                            showMetadata()
-                        }
+                        showMetadata()
+//                        let currentItem = currentPlayableItem as! Item
+//                        if let playableResumeItem = checkInResumeWatchList(currentItem)
+//                        {
+//                            self.presentResumeWatchVC(itemToBePlayed: playableResumeItem)
+//                        }
+//                        else
+//                        {
+//                           showMetadata()
+//                        }
+                     
                     }
                 }
             }
@@ -218,32 +195,17 @@ class JCTabBarController: UITabBarController {
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
-                var currentItem = currentPlayableItem as! Item
-                var resumeWatch = false
-                if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
-                    for each in resumeWatchListArray{
-                        if each.id == currentItem.id{
-                            currentItem = each
-                            resumeWatch = true
-                            break
-                        }
-                    }
-                }
-                if resumeWatch{
-                    let resumeWatchingVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
-                    resumeWatchingVC.playableItemDuration = Int(Float(currentItem.duration!)!)
-                    resumeWatchingVC.playerId = currentItem.id
-                    resumeWatchingVC.itemDescription = currentItem.subtitle
-                    resumeWatchingVC.itemImage = currentItem.banner
-                    resumeWatchingVC.itemTitle = currentItem.name
-                    resumeWatchingVC.itemDuration = String(describing: currentItem.totalDuration)
-                    resumeWatchingVC.item = currentPlayableItem
-
-                    self.present(resumeWatchingVC, animated: false, completion: nil)
-                }else{
-                     showMetadata()
-                }
-  
+                //let currentItem = currentPlayableItem as! Item
+                showMetadata()
+//                if let playableResumeItem = checkInResumeWatchList(currentItem)
+//                {
+//                    self.presentResumeWatchVC(itemToBePlayed: playableResumeItem)
+//                }
+//                else
+//                {
+//                    showMetadata()
+//                }
+                
             }
             else
             {
@@ -258,11 +220,10 @@ class JCTabBarController: UITabBarController {
     
     func presentLanguageGenreController(item:Item)
     {
-        let languageGenreVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
-        DispatchQueue.main.async {
-            self.present(languageGenreVC, animated: false, completion: nil)
-        }
+        self.present(languageGenreVC, animated: false, completion: nil)
+        
         
     }
     
@@ -311,12 +272,29 @@ class JCTabBarController: UITabBarController {
         print("show metadata")
         let selectedItem:Item = currentPlayableItem as! Item
         Log.DLog(message: selectedItem.id as AnyObject)
-        let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
+        let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
         metadataVC.item = selectedItem
         metadataVC.modalPresentationStyle = .overFullScreen
         metadataVC.modalTransitionStyle = .coverVertical
         self.present(metadataVC, animated: false, completion: nil)
     }
+
+    func presentResumeWatchVC(itemToBePlayed: Item) {
+        let resumeWatchingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: resumeWatchingVCStoryBoardId) as! JCResumeWatchingVC
+        resumeWatchingVC.playableItemDuration = Int(Float(itemToBePlayed.duration!)!)
+        resumeWatchingVC.playerId = itemToBePlayed.id
+        resumeWatchingVC.itemDescription = itemToBePlayed.subtitle
+        resumeWatchingVC.itemImage = itemToBePlayed.banner
+        resumeWatchingVC.itemTitle = itemToBePlayed.name
+        resumeWatchingVC.itemDuration = String(describing: itemToBePlayed.totalDuration)
+        resumeWatchingVC.item = itemToBePlayed
+        resumeWatchingVC.previousVC = self
+        resumeWatchingVC.modalPresentationStyle = .overFullScreen
+        resumeWatchingVC.modalTransitionStyle = .coverVertical
+        self.present(resumeWatchingVC, animated: false, completion: nil)
+      
+    }
+    
     
     func prepareToPlay()
     {
@@ -327,7 +305,7 @@ class JCTabBarController: UITabBarController {
                 return
             }
 
-            let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+            let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
             
             if isCurrentItemEpisode
             {
@@ -378,14 +356,6 @@ class JCTabBarController: UITabBarController {
                        // playerVC.callWebServiceForPlaybackRights(id: item.id!)
                     }
                 }
-               // else
-                //{
-//                    if item.isPlaylist!
-//                    {
-//                        playerVC.callWebServiceForPlayListData(id: item.playlistId!)
-//                    }
-                //}
-                
                 playerVC.modalPresentationStyle = .overFullScreen
                 playerVC.modalTransitionStyle = .coverVertical
                 playerVC.playerId = latestEpisodeId
@@ -408,12 +378,13 @@ class JCTabBarController: UITabBarController {
     
     func presentLoginVC()
     {
-        let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
+        let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
         loginVC.modalPresentationStyle = .overFullScreen
         loginVC.modalTransitionStyle = .coverVertical
         loginVC.view.layer.speed = 0.7
         self.present(loginVC, animated: true, completion: nil)
     }
+    
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -422,6 +393,18 @@ class JCTabBarController: UITabBarController {
     //Checking whether the item is in resume watch list or not
     func checkAndPlayItemInResumeWatchList(_ itemToBeChecked: Episode) -> Item?
     {
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items, itemToBeChecked.id != nil
+        {
+            let itemMatched = resumeWatchArray.filter{ $0.id == itemToBeChecked.id}.first
+            if itemMatched != nil
+            {
+                return itemMatched
+            }
+        }
+        return nil
+    }
+    
+    func checkInResumeWatchList(_ itemToBeChecked: Item) -> Item?{
         if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items, itemToBeChecked.id != nil
         {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemToBeChecked.id}.first
@@ -444,6 +427,7 @@ class JCTabBarController: UITabBarController {
         resumeWatchingVC.itemDescription = resumeItem.subtitle
         resumeWatchingVC.itemImage = resumeItem.banner
         resumeWatchingVC.itemTitle = resumeItem.name
+        resumeWatchingVC.previousVC = JCAppReference.shared.metaDataVc
         resumeWatchingVC.itemDuration = String(describing: resumeItem.totalDuration)
         
         resumeWatchingVC.item = currentPlayableItem
@@ -475,5 +459,4 @@ extension UIApplication {
         return controller
     }
 }
-
 

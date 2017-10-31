@@ -143,6 +143,7 @@ class JCLoginManager:UIViewController
                     
                     // For Internal Analytics Event
                     let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+                    JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
                     
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
@@ -155,6 +156,7 @@ class JCLoginManager:UIViewController
                     
                     // For Internal Analytics Event
                     let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: "", errorMessage: "")
+                    JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
                     completion(false)
                 }
             }

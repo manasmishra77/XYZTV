@@ -23,7 +23,7 @@ class JCSettingsVC: UIViewController
         
         JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
         headerLabel.isHidden = true
-        settingsTableView.register(UINib.init(nibName: "JCSettingsTableViewCell", bundle: nil), forCellReuseIdentifier: cellItemIdentifier)
+        settingsTableView.register(UINib(nibName: "JCSettingsTableViewCell", bundle: nil), forCellReuseIdentifier: cellItemIdentifier)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         
@@ -215,6 +215,8 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 JCLoginManager.sharedInstance.logoutUser()
+                let eventProperties = ["Platform":"TVOS","userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+                JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged Out", properties: eventProperties)
                 settingsTableView.reloadData()
                 JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
             }
