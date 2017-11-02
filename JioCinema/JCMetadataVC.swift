@@ -84,6 +84,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         if !JCLoginManager.sharedInstance.isUserLoggedIn(){
         headerCell.addToWatchListButton.isEnabled = true
+            
         }
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -210,16 +211,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func callToReloadWatchListStatusWhenJustLoggedIn(){
         callWebserviceForWatchListStatus(id: item.id!)
-        if item.app?.type == VideoType.Movie.rawValue{
-            if let movieVC = JCAppReference.shared.tabBarCotroller?.selectedViewController as? JCMoviesVC{
-                movieVC.callWebServiceForMoviesWatchlist()
-            }
-        }
-        else if item.app?.type == VideoType.TVShow.rawValue{
-            if let tvVC = JCAppReference.shared.tabBarCotroller?.selectedViewController as? JCTVVC{
-                tvVC.callWebServiceForTVWatchlist()
-            }
-        }
     }
     
     func callWebServiceForMetadata(id:String)
@@ -845,6 +836,31 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
             }
         }
+    }
+    
+    
+    //MARK:- Change watchlist button status locally
+    func changeAddWatchlistButtonStatus() {
+        if checkIfItemIsInWatchList(item){
+            headerCell.watchlistLabel.text = "Remove from watchlist"
+        }
+        else{
+            headerCell.watchlistLabel.text = "Add to watchlist"
+        }
+        
+    }
+    
+    func checkIfItemIsInWatchList(_ itemToBeChecked: Item) -> Bool {
+        var watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?.items
+        if itemToBeChecked.app?.type == VideoType.Movie.rawValue{
+            watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
+        }
+        let itemMatched = watchListArray?.filter{ $0.id == itemToBeChecked.id}.first
+        if itemMatched != nil
+        {
+            return true
+        }
+        return false
     }
     
     

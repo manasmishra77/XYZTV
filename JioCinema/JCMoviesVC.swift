@@ -74,26 +74,10 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
     
-        dataItemsForTableview.removeAll()
+        //dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.moviesData?.data) != nil
         {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
-                isMoviesWatchlistAvailable = false
-            }
-            dataItemsForTableview = (JCDataStore.sharedDataStore.moviesData?.data)!
-            if let isCarousal = dataItemsForTableview[0].isCarousal {
-                if isCarousal{
-                    dataItemsForTableview.remove(at: 0)
-                }
-            }
-            if isMoviesWatchlistAvailable{
-                if let items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
-                    if items.count > 0 {
-                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
-                    }
-                }
-            }
+            changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
         }
         else
@@ -102,6 +86,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         }
         
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
@@ -181,6 +166,30 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         return false
     }
     
+    func changingDataSourceForBaseTableView(){
+        dataItemsForTableview.removeAll()
+        if (JCDataStore.sharedDataStore.moviesData?.data) != nil
+        {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn()
+            {
+                isMoviesWatchlistAvailable = false
+            }
+            dataItemsForTableview = (JCDataStore.sharedDataStore.moviesData?.data)!
+            if let isCarousal = dataItemsForTableview[0].isCarousal {
+                if isCarousal{
+                    dataItemsForTableview.remove(at: 0)
+                }
+            }
+            if isMoviesWatchlistAvailable{
+                if let items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
+                    if items.count > 0 {
+                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
+                    }
+                }
+            }
+        }
+        
+    }
     
     func callWebServiceForMoviesData(page:Int)
     {
@@ -264,10 +273,15 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
         if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
             weak var weakSelf = self
+            self.isMoviesWatchlistAvailable = true
+             self.changingDataSourceForBaseTableView()
             DispatchQueue.main.async {
-                self.isMoviesWatchlistAvailable = true
+                
                 JCDataStore.sharedDataStore.moviesWatchList?.data?.title = "Watch List"
-                weakSelf?.baseTableView.reloadData()
+                if weakSelf?.baseTableView != nil{
+                    weakSelf?.baseTableView.reloadData()
+                }
+                
             }
         }
         
@@ -296,6 +310,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
         //ChangingTheAlpha when tab bar item selected
         focusShiftedFromTabBarToVC = true
         if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{

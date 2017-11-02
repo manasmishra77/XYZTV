@@ -332,6 +332,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 {
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
+                    
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             if !isLoginPresentedFromAddToWatchlist
@@ -365,6 +366,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAppUser.shared.userGroup = data["userGrp"] as! String
         JCAppUser.shared.subscriberId = data["subscriberId"] as! String
         JCAppUser.shared.unique = data["uniqueId"] as! String
+        JCAppUser.shared.uid = data["username"] as! String
+        print(data["uniqueId"] as! String)
     }
     
     

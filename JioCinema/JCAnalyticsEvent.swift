@@ -128,11 +128,13 @@ class JCAnalyticsEvent: NSObject {
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 print(parsedResponse)
-                let code = parsedResponse["code"] as? Int
-                if(code == 200)
-                {
-                    
+                if let code = parsedResponse["code"] as? Int{
+                    if(code == 200)
+                    {
+                        
+                    }
                 }
+                
                 
             }
         }

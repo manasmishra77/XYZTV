@@ -14,7 +14,7 @@ class JCAppUser:NSObject,NSCoding
     
     static var shared = JCAppUser()
     
-    private override init(){} //singleTone
+     override init(){} //singleTone
     
     var jToken:String = ""
     var lbCookie:String = ""
@@ -77,7 +77,7 @@ class JCAppUser:NSObject,NSCoding
 class JCAppReference: NSObject {
     static var shared = JCAppReference()
     
-    private override init(){} //singleTone
+     override init(){} //singleTone
     //Setting the refernces for searchvc
     var tabBarCotroller: UITabBarController? = nil
     var tempVC: UIViewController? = nil

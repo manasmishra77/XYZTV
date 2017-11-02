@@ -78,6 +78,20 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         
+        //dataItemsForTableview.removeAll()
+        if (JCDataStore.sharedDataStore.tvData?.data) != nil
+        {
+           changingDataSourceForBaseTableView()
+            return dataItemsForTableview.count
+            
+        }
+        else
+        {
+            return 0
+        }
+        
+    }
+    func changingDataSourceForBaseTableView(){
         dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.tvData?.data) != nil
         {
@@ -98,12 +112,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                     }
                 }
             }
-            return dataItemsForTableview.count
-            
-        }
-        else
-        {
-            return 0
         }
         
     }
@@ -268,10 +276,15 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
         if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
             weak var weakSelf = self
+            weakSelf?.isTVWatchlistAvailable = true
+            weakSelf?.changingDataSourceForBaseTableView()
             DispatchQueue.main.async {
-                weakSelf?.isTVWatchlistAvailable = true
+    
                 JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
-                weakSelf?.baseTableView.reloadData()
+                if weakSelf?.baseTableView != nil{
+                    weakSelf?.baseTableView.reloadData()
+                }
+                
             }
         }
         

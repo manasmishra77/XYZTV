@@ -36,10 +36,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-//       jioIdTextField.text     = "pallavtrivedi-4"
-//       passwordTextField.text  = "pallav@1010"
-//               jioIdTextField.text     = "poonam2016"
-//               passwordTextField.text  = "poonam@12"
+       jioIdTextField.text     = "pallavtrivedi-4"
+    passwordTextField.text  = "pallav@1010"
+//              jioIdTextField.text     = "poonam2016"
+//        passwordTextField.text  = "poonam@12"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -81,6 +81,16 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                     metaDataVC.callToReloadWatchListStatusWhenJustLoggedIn()
                                 }
                                 isLoginPresentedFromAddToWatchlist = false
+                                if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                                    homevc.callWebServiceForResumeWatchData()
+                                }
+                                if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
+                                    movieVC.callWebServiceForMoviesWatchlist()
+                                }
+                                if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
+                                    //tvVC.callWebServiceForTVWatchlist()
+                                }
+                                
                             })
                         }
                         self.sendLoggedInAnalyticsEventWithSuccess()
@@ -135,6 +145,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
     func setUserData(userData: [String:Any])
     {
+        
         let result = userData["result"] as? [String:Any]
         
         JCAppUser.shared.lbCookie = result?["lbCookie"] as! String

@@ -39,6 +39,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
         
         // Do any additional setup after loading the view.
+        callWebServiceForLanguageList()
+        callWebServiceForGenreList()
         
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -50,8 +52,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         screenAppearTime = Date()
         
         self.tabBarController?.delegate = self
-        callWebServiceForLanguageList()
-        callWebServiceForGenreList()
+        
         
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {

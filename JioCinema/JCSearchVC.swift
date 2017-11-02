@@ -41,7 +41,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         screenAppearTime = Date()
         
         //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
+        let eventProperties = ["Screen Name": "Search", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         Utility.sharedInstance.handleScreenNavigation(screenName: "Search")
     }
