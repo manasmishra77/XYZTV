@@ -71,7 +71,9 @@
     
     var isRecommendationView        = false
     var isResumed                   :Bool?
-    
+    var startTime_BufferDuration    :Date?
+    var totalBufferDurationTime      = 0.0
+
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
@@ -240,7 +242,7 @@
                                         self?.nextVideoView.isHidden = true
                                     }
                                 }
-                                else if self?.metadata?.app?.type == VideoType.Trailer.rawValue, self?.metadata?.more != nil
+                                else if (self?.metadata?.app?.type == VideoType.Trailer.rawValue || self?.metadata?.app?.type == VideoType.Music.rawValue), self?.metadata?.more != nil
                                 {
                                     let index = (self?.currentPlayingIndex)! + 1
                                     
@@ -541,11 +543,14 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
+            startTime_BufferDuration = Date()
             bufferCount = bufferCount + 1
             
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
+            let difference =  Date().timeIntervalSince(startTime_BufferDuration!)
+            totalBufferDurationTime = difference + totalBufferDurationTime
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
             let newStatus: AVPlayerItemStatus
@@ -560,6 +565,7 @@
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
                 self.scrollCollectionViewToRow(row: currentPlayingIndex)
+                
                 self.sendMediaStartAnalyticsEvent()
 
                 break
@@ -643,9 +649,9 @@
                 {
                     handleEpisodeNextItem()
                 }
-                else if metadata?.app?.type == VideoType.Trailer.rawValue
+                else if metadata?.app?.type == VideoType.Trailer.rawValue || metadata?.app?.type == VideoType.Music.rawValue
                 {
-                    handleTrailerNextItem()
+                    handleTrailerOrMusicNextItem()
                 }
                 else if metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Music.rawValue || metadata?.app?.type == VideoType.Clip.rawValue
                 {
@@ -679,7 +685,7 @@
     }
     
     //MARK:- Handle Next Item
-    func handleTrailerNextItem()
+    func handleTrailerOrMusicNextItem()
     {
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.metadata?.more?.count
@@ -759,6 +765,9 @@
     //MARK:- Analytics Events
     func sendMediaStartAnalyticsEvent()
     {
+        if categoryTitle == ""{
+            setCategoryTitle()
+        }
         let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
         
         let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: playerId!, mbid: mbid, mediaStartTime: String(duration), categoryTitle: categoryTitle, rowPosition: String(collectionIndex))
@@ -779,16 +788,16 @@
     
     func sendMediaEndAnalyticsEvent()
     {
-        self.sendVideoViewedEventToCleverTap()
         
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: currentTimeDuration, bufferDuration: "", bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: "", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: currentTimeDuration, bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: "", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             
             bufferCount = 0
         }
+        self.sendVideoViewedEventToCleverTap()
     }
     
     func sendMediaErrorAnalyticsEvent()
@@ -833,17 +842,17 @@
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-            if categoryTitle == ""{
-                setCategoryTitle()
-            }
+//            if categoryTitle == ""{
+//                setCategoryTitle()
+//            }
             
-            
+            //sendMediaEndAnalyticsEvent()
             let eventProperties:[String:Any] = ["Content ID":playerId!,"Type":type.name,"Threshold Duration":currentTimeDuration,"Title":title,"Episode":episode,"Language":language,"Source": categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":bitrate,"Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"
             ]
             categoryTitle = ""
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties )
             
-            let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration":"","Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
+            let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration": String(describing: totalBufferDurationTime),"Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
             sendBufferingEvent(eventProperties: bufferEventProperties)
         }
         
@@ -1033,6 +1042,9 @@
             })
         }
     }
+   
+    
+    
     //MARK:- Show Alert
     func showAlert(alertTitle:String,alertMessage:String,completionHandler:(()->Void)?)
     {
@@ -1103,8 +1115,9 @@
                     else if selectedItemFromViewController == VideoType.Music
                     {
                         //self.callWebServiceForPlaybackRights(id: data.id!)
-                        
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
+                        let url = metadataUrl.appending(data.id!)
+                        self.callWebServiceForMoreLikeData(url: url)
+                        //arr_RecommendationList = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].items)!
                     }
                     else if selectedItemFromViewController == VideoType.Clip
                     {
@@ -1179,20 +1192,20 @@
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
-            self.metadata = tempMetadata
-            print("app is ====== \(self.metadata?.app?.type)")
-            
+            self.metadata = tempMetadata            
             if let data = self.item as? Item
             {
                 if data.app?.type == VideoType.Episode.rawValue
                 {
-                    for i in 0 ..< (self.metadata?.episodes?.count)!
-                    {
-                        let modal = self.metadata?.episodes![i]
-                        if modal?.id == data.id
+                    if ((self.metadata?.episodes) != nil){
+                        for i in 0 ..< (self.metadata?.episodes?.count)!
                         {
-                            self.currentPlayingIndex = i
-                            break
+                            let modal = self.metadata?.episodes![i]
+                            if modal?.id == data.id
+                            {
+                                self.currentPlayingIndex = i
+                                break
+                            }
                         }
                     }
                 }
@@ -1209,6 +1222,7 @@
                         }
                     }
                 }
+                
                 
                 print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
                 DispatchQueue.main.async {
@@ -1317,7 +1331,7 @@
                             if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
                             {
                                 print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
-                                self.instantiatePlayer(with: (self.playbackRightsData!.url!))
+                                self.instantiatePlayer(with: (self.playbackRightsData?.url)!)
                             }
                             else
                             {
@@ -1443,7 +1457,7 @@
                 duration = self.checkInResumeWatchList((model?.id)!)
                 self.callWebServiceForPlaybackRights(id: (model?.id)!)
             }
-            else if metadata?.app?.type == VideoType.Trailer.rawValue
+            else if metadata?.app?.type == VideoType.Trailer.rawValue || metadata?.app?.type == VideoType.Music.rawValue
             {
                 let model = metadata?.more?[indexPath.row]
                 self.currentItemImage = model?.banner
@@ -1555,7 +1569,7 @@
             {
                 return (metadata?.episodes?.count)!
             }
-            else if (metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue), metadata?.more != nil
+            else if (metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue || metadata?.app?.type == VideoType.Music.rawValue), metadata?.more != nil
             {
                 return (metadata?.more?.count)!
             }
@@ -1591,7 +1605,7 @@
             imageUrl = (model?.banner)!
             cell.nameLabel.text = model?.name
         }
-        else if metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue
+        else if metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Trailer.rawValue || metadata?.app?.type == VideoType.Music.rawValue
         {
             let model = metadata?.more?[indexPath.row]
             metaDataID = playerId!
@@ -1616,8 +1630,16 @@
                 else
                 {
                     let model = arr_RecommendationList[indexPath.row]
-                    modelID = (model.id)!
-                    imageUrl = (model.banner)!
+                    if let dataId = model.id{
+                        modelID = dataId
+                    }
+                    if let img = model.banner{
+                        imageUrl = img
+                    }else if let thumb = model.image{
+                        imageUrl = thumb
+                    }
+                   // modelID = (model.id)!
+                    //imageUrl = (model.banner)!
                     cell.nameLabel.text = model.name
                 }
             }

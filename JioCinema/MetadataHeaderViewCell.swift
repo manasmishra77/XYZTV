@@ -189,7 +189,7 @@ class MetadataHeaderViewCell: UIView {
         var params = [String:Any]()
         var url = ""
         
-        if item?.app?.type == VideoType.TVShow.rawValue,metadata?.contentId != nil
+        if (item?.app?.type == VideoType.TVShow.rawValue || item?.app?.type == VideoType.Episode.rawValue),metadata?.contentId != nil
         {
             params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":(metadata?.contentId!)!]]
         }

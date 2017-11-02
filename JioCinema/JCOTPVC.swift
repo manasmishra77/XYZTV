@@ -281,7 +281,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 //TODO: handle error
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-               
+               self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
                 
                 //                return
                 DispatchQueue.main.async {
@@ -291,6 +291,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
+            }
+            else{
+                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
             }
         }
     }

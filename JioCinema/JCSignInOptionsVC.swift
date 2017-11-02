@@ -88,7 +88,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                     movieVC.callWebServiceForMoviesWatchlist()
                                 }
                                 if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
-                                    //tvVC.callWebServiceForTVWatchlist()
+                                    tvVC.callWebServiceForTVWatchlist()
                                 }
                                 
                             })
@@ -101,11 +101,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     {
                         self.showAlert(alertString: parsedResponse["message"]! as! String)
                         self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
-                        
-                        
-//                        let pro = ["userid":]
-//                        let analyticsData = ["method":"4G","source":"skip","identity":JCAppUser.shared.commonName]
-//                        JIOMediaAnalytics.sharedInstance().recordEvent(withEventName: "logged_in", andEventProperties: analyticsData)
+                    }
+                    else{
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
                     }
                 }
             }
