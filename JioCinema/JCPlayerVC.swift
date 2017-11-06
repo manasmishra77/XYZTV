@@ -145,6 +145,7 @@
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         
         if let currentTime = player?.currentItem?.currentTime()

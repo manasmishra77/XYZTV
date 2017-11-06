@@ -35,6 +35,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     var item:Item!
     var metadata:MetadataModel?
     var selectedYearIndex = 0
+    var presentingScreen = ""
     let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
     
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
@@ -92,6 +93,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         //Removing search container from search navigation controller
         JCAppReference.shared.metaDataVc = self
         
+        //Send event to internal analytics
+        presentingScreen = currentScreenName
         Utility.sharedInstance.handleScreenNavigation(screenName: "Metadata")
         
         //Clevertap Navigation Event
@@ -107,6 +110,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if JCAppReference.shared.isTempVCRootVCInSearchNC!{
             changingSearchNCRootVC()
         }
+        
+        //Send event to internal analytics
+        Utility.sharedInstance.handleScreenNavigation(screenName: presentingScreen)
         
     }
     
