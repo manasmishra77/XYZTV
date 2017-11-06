@@ -52,11 +52,11 @@ let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls
-let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/1/")
-let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/6/")
-let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/33/")
-let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/9/")
-let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3/home/get/35/")
+let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/1/")
+let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/6/")
+let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/33/")
+let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/9/")
+let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/35/")
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
@@ -154,7 +154,7 @@ let subscriberIdKey = "subscriberId"
 
 var isLoginPresentedFromAddToWatchlist = false
 var isSearchOpenFromMetaData = false
-
+var isUserLoggedOutHimself = false
 var latestEpisodeId = "-1"
 
 //Screen Navigation Constants

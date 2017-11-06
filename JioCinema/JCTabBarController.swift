@@ -195,17 +195,7 @@ class JCTabBarController: UITabBarController {
             }
             else if (currentPlayableItem as! Item).app?.type == VideoType.Movie.rawValue || (currentPlayableItem as! Item).app?.type == VideoType.TVShow.rawValue
             {
-                //let currentItem = currentPlayableItem as! Item
                 showMetadata()
-//                if let playableResumeItem = checkInResumeWatchList(currentItem)
-//                {
-//                    self.presentResumeWatchVC(itemToBePlayed: playableResumeItem)
-//                }
-//                else
-//                {
-//                    showMetadata()
-//                }
-                
             }
             else
             {
@@ -237,6 +227,11 @@ class JCTabBarController: UITabBarController {
         }
         else
         {
+            if isUserLoggedOutHimself {
+                weakSelf?.presentLoginVC()
+                return
+            }
+            
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                 if(isOnJioNetwork == false)
                 {

@@ -53,7 +53,7 @@ class JCAnalyticsEvent: NSObject {
     
     func getLoggedInEventForInternalAnalytics(methodOfLogin:String,source:String,jioIdValue:String) -> Dictionary<String, Any>
     {
-        let eventDictionary = ["platform":"TVOS","method":methodOfLogin,"Source":source,"identity":jioIdValue]
+        let eventDictionary = ["platform":"TVOS", "method":methodOfLogin, "Source":source, "identity":jioIdValue]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_LOGGEDIN )
     }
     
@@ -115,6 +115,8 @@ class JCAnalyticsEvent: NSObject {
     
     func sendEventForInternalAnalytics(paramDict: [String: Any]) {
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: JCANALYTICSEVENT_URL, params: paramDict, encoding: .JSON)
+        print(paramDict)
+        
         
         RJILApiManager.defaultManager.post(request: loginRequest)
         {

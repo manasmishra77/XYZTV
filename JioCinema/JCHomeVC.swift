@@ -99,19 +99,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             }
             if isLanguageDataAvailable{
                 
-                if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0], let languagePosition = JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition
+                let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition) != nil ? (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)! : 4
+                if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0]
                 {
-                    if languagePosition < dataItemsForTableview.count{
-                        dataItemsForTableview.insert(languageData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition)!)
+                    if pos < dataItemsForTableview.count{
+                        dataItemsForTableview.insert(languageData, at: pos)
                     }
                     
                 }
             }
             if isGenereDataAvailable{
-                if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0], let genrePosition = JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition
-                {
-                    if genrePosition < dataItemsForTableview.count{
-                        dataItemsForTableview.insert(genreData, at: (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)!)
+                let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition) != nil ? (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)! : 6
+                if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0]{
+                    if pos < dataItemsForTableview.count{
+                        dataItemsForTableview.insert(genreData, at: pos)
                     }
                     
                 }
@@ -371,7 +372,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let languageListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         //dispatchGroup.enter()
-        RJILApiManager.defaultManager.post(request: languageListRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: languageListRequest) { (data, response, error) in
             if let responseError = error
             {
                 //TODO: handle error
@@ -407,7 +408,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let url = genreListUrl
         let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: genreListRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: genreListRequest) { (data, response, error) in
             if let responseError = error
             {
                 //TODO: handle error

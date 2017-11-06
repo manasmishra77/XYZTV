@@ -38,8 +38,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     {
 //       jioIdTextField.text     = "pallavtrivedi-4"
 //    passwordTextField.text  = "pallav@1010"
-//              jioIdTextField.text     = "poonam2016"
-//        passwordTextField.text  = "poonam@12"
+        jioIdTextField.text     = "poonam2016"
+        //passwordTextField.text  = "poonam@12"
+        passwordTextField.text  = "poonam@1"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -69,6 +70,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     {
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
+                        isUserLoggedOutHimself = false
                         
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {

@@ -335,6 +335,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 {
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
+                    isUserLoggedOutHimself = false
                     
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {

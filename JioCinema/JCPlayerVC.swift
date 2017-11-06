@@ -1290,7 +1290,7 @@
     func callWebServiceForPlaybackRights(id:String)
     {
         DispatchQueue.main.async {
-            self.activityIndicatorOfLoaderView.startAnimating()
+            //self.activityIndicatorOfLoaderView.startAnimating()
         }
         print("Playback rights id is === \(id)")
         playerId = id
@@ -1307,7 +1307,7 @@
                 //TODO: handle error
                 print(responseError)
                 DispatchQueue.main.async {
-                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
