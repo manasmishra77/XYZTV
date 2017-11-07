@@ -51,9 +51,9 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_LOGINFAILED )
     }
     
-    func getLoggedInEventForInternalAnalytics(methodOfLogin:String,source:String,jioIdValue:String) -> Dictionary<String, Any>
+    func getLoggedInEventForInternalAnalytics(methodOfLogin: String, source: String, jioIdValue: String) -> Dictionary<String, Any>
     {
-        let eventDictionary = ["platform":"TVOS", "method":methodOfLogin, "Source":source, "identity":jioIdValue]
+        let eventDictionary = ["platform": "TVOS", "method": methodOfLogin, "Source": source, "identity": jioIdValue]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_LOGGEDIN )
     }
     

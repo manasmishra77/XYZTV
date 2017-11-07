@@ -218,7 +218,13 @@ class InfinityScrollView: UIView {
         
     }
     @IBAction func didClickOnMiddleButton(_ sender: Any) {
-        let itemToPlay = ["item":(carouselArray[current])]
+        let itemToPlay = ["item": (carouselArray[current])]
+        
+        if let type = carouselArray[current].app?.type{
+            if let videoType = VideoType(rawValue: type){
+                selectedItemFromViewController = videoType
+            }
+        }
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
     }
     

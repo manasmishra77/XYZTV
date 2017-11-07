@@ -128,8 +128,13 @@ class JCTabBarController: UITabBarController {
             isCurrentItemEpisode = true
         }
         else {
+            if isUserLoggedOutHimself{
+                weakSelf?.presentLoginVC()
+                return
+            }
            
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
+                
                 if(isOnJioNetwork == false)
                 {
                     print("Not on jio network")

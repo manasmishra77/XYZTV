@@ -49,7 +49,7 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
-    var isVideoUrlFailedCount = 1
+    var isVideoUrlFailedCount = 0
     
     var playerTimeObserverToken     :Any?
     var item                        :Any?
@@ -586,7 +586,10 @@
                             failureType = "FPS"
                             type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                             title = data.name!
-                            episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
+                            if let desc = data.description{
+                                episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
+                            }
+                            
                         }
                     }
                 }
@@ -793,7 +796,7 @@
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: currentTimeDuration, bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: "", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: "false", rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             
             bufferCount = 0
@@ -1071,7 +1074,8 @@
             {
                 self.callWebServiceForPlayListData(id: data.playlistId!)
             }
-            else{
+            else
+            {
                 print("data id is == \(data.id)")
                 print("data App type is == \(data.app?.type)")
                 
@@ -1130,6 +1134,7 @@
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.homeData?.data?[collectionIndex].items!)!
                     }
+
                     else if selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items)!
@@ -1310,7 +1315,7 @@
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
                 }
                 return
@@ -1333,6 +1338,10 @@
                             {
                                 print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
                                 self.instantiatePlayer(with: (self.playbackRightsData?.url)!)
+                                
+                                //For simulator
+                                //print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                                //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl)!)
                             }
                             else
                             {
@@ -1742,7 +1751,7 @@
         duration <- map["duration"]
         inqueue <- map["inqueue"]
         totalDuration <- map["totalDuration"]
-        totalDuration <- map["totalDuration"]
+        //totalDuration <- map["totalDuration"]
         isSubscribed <- map["isSubscribed"]
         subscription <- map["subscription"]
         aesUrl <- map["aesUrl"]

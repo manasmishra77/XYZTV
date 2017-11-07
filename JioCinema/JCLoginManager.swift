@@ -139,12 +139,12 @@ class JCLoginManager:UIViewController
                 {
                     weakSelf?.setUserData(data: parsedResponse)
                     JCLoginManager.sharedInstance.setUserToDefaults()
-                    let eventProperties = ["Source":"4G","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+                    let eventProperties = ["Source": "4G", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                    
                     
                     // For Internal Analytics Event
-                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "4G", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
                     
                     
@@ -179,8 +179,8 @@ class JCLoginManager:UIViewController
     {
         UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
         JCAppUser.shared = JCAppUser()
-        isUserLoggedOutHimself = false
-        let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
+        isUserLoggedOutHimself = true
+         let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil

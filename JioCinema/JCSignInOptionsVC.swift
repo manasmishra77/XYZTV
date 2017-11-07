@@ -38,9 +38,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     {
 //       jioIdTextField.text     = "pallavtrivedi-4"
 //    passwordTextField.text  = "pallav@1010"
-        jioIdTextField.text     = "poonam2016"
+        //jioIdTextField.text     = "poonam2016"
         //passwordTextField.text  = "poonam@12"
-        passwordTextField.text  = "poonam@1"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -48,7 +47,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         }
         else
         {
-            let params:[String:String]? = ["os":"Android","username":jioIdTextField.text!,"password":passwordTextField.text!,"deviceId":"12345"]
+            let params:[String:String]? = ["os": "Android", "username": jioIdTextField.text!, "password": passwordTextField.text!, "deviceId": "12345"]
             let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
             weak var weakSelf = self
             

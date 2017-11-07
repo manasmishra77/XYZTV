@@ -37,7 +37,7 @@ class JCSettingsVC: UIViewController
         settingsTableView.reloadData()
         
         //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Settings","Platform":"TVOS","Metadata Page":""]
+        let eventProperties = ["Screen Name":"Settings", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         Utility.sharedInstance.handleScreenNavigation(screenName: "Settings")
     }
@@ -215,7 +215,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 JCLoginManager.sharedInstance.logoutUser()
-                let eventProperties = ["Platform":"TVOS","userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+                let eventProperties = ["Platform": "TVOS", "userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                 JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged Out", properties: eventProperties)
                 settingsTableView.reloadData()
                 JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
@@ -223,6 +223,13 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             else
             {
                 weak var weakSelf = self
+                if isUserLoggedOutHimself{
+                    JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
+                    NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
+                    weakSelf?.settingsTableView.reloadData()
+                    return
+                }
+                
                 JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                     if(isOnJioNetwork == false)
                     {

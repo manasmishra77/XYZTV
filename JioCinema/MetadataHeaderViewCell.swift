@@ -12,8 +12,8 @@ import SDWebImage
 
 class MetadataHeaderViewCell: UIView {
     
-    var metadata:MetadataModel?
-    var item:Item?
+    var metadata: MetadataModel?
+    var item: Item?
     var userComingAfterLogin: Bool = false
     
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
@@ -238,7 +238,7 @@ class MetadataHeaderViewCell: UIView {
  
                     DispatchQueue.main.async {
                         self.addToWatchListButton.isEnabled = true
-                        self.watchlistLabel.text = (self.metadata?.inQueue)! ? "Remove from watchlist" : "Add to watchlist"
+                        self.watchlistLabel.text = (self.metadata?.inQueue)! ? REMOVE_FROM_WATCHLIST : ADD_TO_WATCHLIST
                     }
                     //ChangingTheDataSourceForWatchListItems
                     self.changingDataSourceForWatchList()

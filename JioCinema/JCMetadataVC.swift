@@ -30,8 +30,13 @@ enum VideoType:Int
     }
 }
 
+let ADD_TO_WATCHLIST = "Add to watchlist"
+let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
+
 class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
 {
+    
+    
     var item:Item!
     var metadata:MetadataModel?
     var selectedYearIndex = 0
@@ -50,6 +55,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
   //  @IBOutlet weak var backgroundImageView: UIImageView!
     var headerView:UIView?
     
+    //MARK:- View methods
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: watchNowNotificationName, object: nil, queue: nil, using: didReceiveNotificationForWatchNow(notification:))
@@ -116,6 +122,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
     }
     
+    //MARK:- Table view delegate methods
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
@@ -141,7 +148,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
-        cell.itemFromViewController = VideoType.init(rawValue:(item.app?.type)!)
+        cell.itemFromViewController = VideoType(rawValue:(item.app?.type)!)
         cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         cell.moreLikeData = nil
@@ -194,7 +201,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
     }
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
     
+    //MARK:- Prepare views of metadata
     func prepareHeaderView() -> UIView
     {
         headerCell.item = item
@@ -210,11 +221,49 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     {
         return headerCell.resetView()
     }
-    
-    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
-        return false
+    func showMetadata()
+    {
+        loaderContainerView.isHidden = true
+        metadataContainerView.isHidden = false
+        if headerView != nil
+        {
+            headerView = resetHeaderView()
+        }
+        headerView = prepareHeaderView()
+        metadataContainerView.addSubview(headerView!)
+        if metadata?.type == VideoType.Movie.rawValue{
+            tableViewTopConstraint.constant = -175
+        }
+        
+        headerCell.seasonCollectionView.reloadData()
+        headerCell.monthsCollectionView.reloadData()
+        let headerHeight = screenHeight * (4/5)
+        if #available(tvOS 11.0, *){
+            headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
+            
+        }else{
+            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
+            tableViewTopConstraint.constant = -65
+            if metadata?.type == VideoType.Movie.rawValue{
+                tableViewTopConstraint.constant = -100
+            }
+            
+            tableViewBottomConstraint.constant = 0
+        }
+        metaDataHeaderHeight.constant = headerHeight
+    }
+    func prepareMetadataScreen()
+    {
+        weak var weakSelf = self
+        
+        DispatchQueue.main.async {
+            //weakSelf?.showMetadata()
+            weakSelf?.metadataTableView.reloadData()
+        }
     }
     
+    
+    //MARK:- Web service methods
     func callToReloadWatchListStatusWhenJustLoggedIn(){
         callWebserviceForWatchListStatus(id: item.id!)
     }
@@ -301,14 +350,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                         weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
                         if weakSelf?.metadata?.inQueue != nil{
                             if (weakSelf?.metadata?.inQueue)!{
-                                weakSelf?.headerCell.watchlistLabel.text = "Remove from watchlist"
+                                weakSelf?.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
                             }
                             else{
-                                weakSelf?.headerCell.watchlistLabel.text = "Add to watchlist"
+                                weakSelf?.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
                             }
                         }
                         else{
-                            weakSelf?.headerCell.watchlistLabel.text = "Add to watchlist"
+                            weakSelf?.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
                         }
                         
                     }
@@ -319,6 +368,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
     }
     
+    //MARK:- Converting JSON to model
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
     {
         //Success
@@ -349,52 +399,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
     }
     
-    func prepareMetadataScreen()
-    {
-        weak var weakSelf = self
-        
-            DispatchQueue.main.async {
-                //weakSelf?.showMetadata()
-                weakSelf?.metadataTableView.reloadData()
-            }
-    }
-    
-    func showMetadata()
-    {
-        loaderContainerView.isHidden = true
-        metadataContainerView.isHidden = false
-        if headerView != nil
-        {
-            headerView = resetHeaderView()
-        }
-        headerView = prepareHeaderView()
-        metadataContainerView.addSubview(headerView!)
-        if metadata?.type == VideoType.Movie.rawValue{
-            tableViewTopConstraint.constant = -175
-        }
-        
-        headerCell.seasonCollectionView.reloadData()
-        headerCell.monthsCollectionView.reloadData()
-        let headerHeight = screenHeight * (4/5)
-        if #available(tvOS 11.0, *){
-            headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
-            
-        }else{
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
-            tableViewTopConstraint.constant = -65
-            if metadata?.type == VideoType.Movie.rawValue{
-                tableViewTopConstraint.constant = -100
-            }
-            
-            tableViewBottomConstraint.constant = 0
-        }
-        metaDataHeaderHeight.constant = headerHeight
-    }
-    
-    
+   
+
+    //MARK:- Receiving notification for watchnow
     func didReceiveNotificationForWatchNow(notification:Notification)
     {
         //here perform the check for login. Accordingly present login or player
+        
         weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
@@ -413,6 +424,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         else
         {
+            if isUserLoggedOutHimself{
+                weakSelf?.presentLoginVC()
+                return
+            }
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                 if(isOnJioNetwork == false)
                 {
@@ -848,10 +863,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //MARK:- Change watchlist button status locally
     func changeAddWatchlistButtonStatus() {
         if checkIfItemIsInWatchList(item){
-            headerCell.watchlistLabel.text = "Remove from watchlist"
+            headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
         }
         else{
-            headerCell.watchlistLabel.text = "Add to watchlist"
+            headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
         }
         
     }

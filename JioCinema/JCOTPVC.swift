@@ -99,7 +99,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnSignInButton(_ sender: Any)
     {
-        let enteredOTP = jioNumberTFLabel.text//searchController?.searchBar.text!
+        let enteredOTP = jioNumberTFLabel.text
         if(enteredOTP?.characters.count == 0)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter OTP")
@@ -167,7 +167,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        enteredJioNumber = jioNumberTFLabel.text// searchController?.searchBar.text!
+        enteredJioNumber = jioNumberTFLabel.text //+ "9082949573"
         if(enteredJioNumber?.characters.count != 10)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
@@ -401,7 +401,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     //MARK:- Send Logged In Analytics Event With Success
     func sendLoggedInAnalyticsEventWithSuccess() {
         //Sending events to clever tap
-        let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+        let eventProperties = ["Source": "OTP", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
         
         //Sending events for internal analytics

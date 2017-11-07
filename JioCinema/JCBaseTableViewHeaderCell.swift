@@ -17,7 +17,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
     var horizontalInset = CGFloat()
     var cellWidth = CGFloat()
     var carousalData:[Item]?
-    var itemFromViewController:VideoType?
+    var itemFromViewController: VideoType?
 
     
     @IBOutlet weak var headerCollectionView: UICollectionView!
