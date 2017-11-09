@@ -44,11 +44,10 @@ class JCTabBarController: UITabBarController {
         searchVC.view.backgroundColor = .black
         
         let searchViewController = UISearchController(searchResultsController: searchVC)
-        searchViewController.view.backgroundColor = .black
+        searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
         searchViewController.searchBar.barTintColor = UIColor.black
-        searchViewController.searchBar.tintColor = UIColor.gray
         searchViewController.hidesNavigationBarDuringPresentation = true
         searchViewController.obscuresBackgroundDuringPresentation = false
         searchViewController.searchBar.delegate = searchVC
@@ -73,6 +72,15 @@ class JCTabBarController: UITabBarController {
         
         //self.tabBar.alpha = 0.7
         self.tabBar.backgroundColor = UIColor.black
+        
+        //To change the tab bar title appearance
+        for item in self.tabBar.items! {
+            let unselectedItem = [NSForegroundColorAttributeName: UIColor.darkGray]
+            let selectedItem = [NSForegroundColorAttributeName: UIColor.white]
+            
+            item.setTitleTextAttributes(unselectedItem, for: .normal)
+            item.setTitleTextAttributes(selectedItem, for: .selected)
+        }
         
         //Setting the refernces //TBC
         JCAppReference.shared.tabBarCotroller = self
