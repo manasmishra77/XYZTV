@@ -236,7 +236,8 @@
                                     if index >= 0
                                     {
                                         let modal = self?.metadata?.episodes?[index]
-                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                        let imageUrl = ((modal?.banner) != nil) ? (modal?.banner)! : ""
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: imageUrl)
                                     }
                                     else
                                     {
@@ -250,7 +251,9 @@
                                     if index >= 0, index < (self?.metadata?.more?.count)!
                                     {
                                         let modal = self?.metadata?.more?[index]
-                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                        //self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                        let imageUrl = ((modal?.banner) != nil) ? (modal?.banner)! : ""
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: imageUrl)
                                     }
                                     else
                                     {
@@ -282,7 +285,9 @@
                                         if index != self?.playlistData?.more?.count
                                         {
                                             let modal = self?.playlistData?.more?[index]
-                                            self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                            //self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                            let imageUrl = ((modal?.banner) != nil) ? (modal?.banner)! : ""
+                                            self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: imageUrl)
                                         }
                                         else
                                         {
@@ -295,7 +300,9 @@
                                     if index != self?.arr_RecommendationList.count
                                     {
                                         let modal = self?.arr_RecommendationList[index]
-                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
+                                        let imageUrl = ((modal?.banner) != nil) ? (modal?.banner)! : ""
+                                        self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: imageUrl)
+                                        //self?.showNextVideoView(videoName: (modal?.name)!, remainingTime: Int(remainingTime), banner: (modal?.banner)!)
                                     }
                                     else
                                     {
@@ -450,10 +457,6 @@
         player = AVPlayer(playerItem: playerItem)
         if playerController == nil {
             playerController = AVPlayerViewController()
-            if isResumed != nil, isResumed!
-            {
-                player?.seek(to: CMTimeMakeWithSeconds(duration, (player?.currentItem?.asset.duration.timescale)!))
-            }
             self.addChildViewController(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
@@ -461,7 +464,9 @@
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
-        
+        if isResumed != nil, isResumed!{
+           player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
+        }
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
         self.nextVideoView.isHidden = true
@@ -581,7 +586,7 @@
                 self.scrollCollectionViewToRow(row: currentPlayingIndex)
                 
                 self.sendMediaStartAnalyticsEvent()
-
+                
                 break
             case .failed:
                 
@@ -1346,7 +1351,6 @@
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
                         
-
                         if((self.player) != nil) {
                             self.player?.pause()
                             self.resetPlayer()
@@ -1366,6 +1370,7 @@
                             else
                             {
                                 print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                                
                                 self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
                             }
                         }

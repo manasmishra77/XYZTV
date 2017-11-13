@@ -65,8 +65,9 @@ class MetadataHeaderViewCell: UIView {
    
         
         
-        let imageUrl = metadata?.banner
-        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+        let imageUrl = ((metadata?.banner) != nil) ? (metadata?.banner)! : ""
+        
+        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         DispatchQueue.main.async {
             self.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})

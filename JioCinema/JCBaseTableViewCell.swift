@@ -91,7 +91,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             if isResumeWatchCell
             {
                 let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
-                if let imageUrl = data?[indexPath.row].banner!
+                if let imageUrl = data?[indexPath.row].banner
                 {
                     resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
                     
@@ -116,7 +116,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             else
             {
                 
-                if let imageUrl = data?[indexPath.row].banner!
+                if let imageUrl = data?[indexPath.row].banner
                 {
                     cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
                     

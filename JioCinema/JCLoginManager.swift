@@ -16,10 +16,14 @@ class JCLoginManager:UIViewController
     var isLoginFromSettingsScreen = false
     func isUserLoggedIn() -> Bool
     {
-        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)
-        {
-            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
+        
+        if let isLoggedIn = UserDefaults.standard.value(forKey: isUserLoggedInKey) as? Bool{
+            return isLoggedIn
         }
+//        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)
+//        {
+//            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
+//        }
         return false
     }
     
@@ -70,7 +74,13 @@ class JCLoginManager:UIViewController
             {
                 let result = networkResponse["result"] as? [String:Any]
                 let data = result?["data"] as? [String:Any]
-                let isOnJioNetwork = data?["isJio"]! as! Bool
+                //let isOnJioNetwork = data?["isJio"]! as! Bool
+                guard let isOnJioNetwork = data?["isJio"] as? Bool else {
+                    completion(false)
+                    return
+                }
+                
+                
                 if isOnJioNetwork == true
                 {
                     let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)
@@ -139,6 +149,15 @@ class JCLoginManager:UIViewController
                 {
                     weakSelf?.setUserData(data: parsedResponse)
                     JCLoginManager.sharedInstance.setUserToDefaults()
+                    if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                        homevc.callWebServiceForResumeWatchData()
+                    }
+                    if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
+                        movieVC.callWebServiceForMoviesWatchlist()
+                    }
+                    if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
+                        tvVC.callWebServiceForTVWatchlist()
+                    }
                     let eventProperties = ["Source": "4G", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                    

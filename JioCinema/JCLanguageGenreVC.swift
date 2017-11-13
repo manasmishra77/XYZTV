@@ -257,7 +257,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
 
-        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner!
+        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner
         {
             cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
             let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)

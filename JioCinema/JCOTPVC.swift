@@ -302,15 +302,38 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     fileprivate func callWebServiceToLoginViaSubId(info:[String:Any])
     {
+        
+        //let sessionAttributes = info["sessionAttributes"] as! [String:Any]
+        guard let sessionAttributes = info["sessionAttributes"] as? [String:Any] else {
+            DispatchQueue.main.async {
+                self.activityIndicator?.stopAnimating()
+                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
+            }
+            return
+        }
+        guard let userData = sessionAttributes["user"] as? [String:Any] else {
+            DispatchQueue.main.async {
+                self.activityIndicator?.stopAnimating()
+                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
+            }
+            return
+        }
+        //let userData = sessionAttributes["user"] as! [String:Any]
+        guard let subId = userData["subscriberId"] as? String else {
+            DispatchQueue.main.async {
+                self.activityIndicator?.stopAnimating()
+                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
+            }
+            return
+        }
+        let params = [subscriberIdKey: subId]
+        if let lbCookie = info["lbCookie"] as? String {
+            JCAppUser.shared.lbCookie = lbCookie
+        }
+        if let ssoToken = info["ssoToken"] as? String {
+            JCAppUser.shared.ssoToken = ssoToken
+        }
         JCLoginManager.sharedInstance.loggingInViaSubId = true
-        
-        let sessionAttributes = info["sessionAttributes"] as! [String:Any]
-        let userData = sessionAttributes["user"] as! [String:Any]
-        let subId = userData["subscriberId"] as! String
-        let params = [subscriberIdKey:subId]
-        JCAppUser.shared.lbCookie = info["lbCookie"] as! String
-        JCAppUser.shared.ssoToken = info["ssoToken"] as! String
-        
         let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         weak var weakSelf = self
@@ -337,7 +360,15 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     weakSelf?.setUserData(data: parsedResponse )
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     isUserLoggedOutHimself = false
-                    
+                    if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                        homevc.callWebServiceForResumeWatchData()
+                    }
+                    if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
+                        movieVC.callWebServiceForMoviesWatchlist()
+                    }
+                    if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
+                        tvVC.callWebServiceForTVWatchlist()
+                    }
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                             if !isLoginPresentedFromAddToWatchlist
