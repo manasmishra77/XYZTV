@@ -11,6 +11,8 @@ import UIKit
 class JCArtistImageCell: UICollectionViewCell {
     
     @IBOutlet weak var artistImageView: UIImageView!
+    @IBOutlet weak var artistNameInitialButton: JCButton!
+    
     
     @IBOutlet weak var artistNameLabel: UILabel!
     
@@ -21,12 +23,18 @@ class JCArtistImageCell: UICollectionViewCell {
             {
                 self.superview?.alpha = 1.0
             }
-                   }
+            if !artistNameInitialButton.isHidden{
+                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(120)
+            }
+        }
         else
         {
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
             {
                 self.superview?.alpha = 0.4
+            }
+            if !artistNameInitialButton.isHidden{
+                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(100)
             }
         }
         

@@ -167,15 +167,33 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 let key = keys[indexPath.row]
                 let imageUrl = self.artistImages?[key]
                 
+                let artistDict = self.artistImages?.filter({$0.key != ""})
+                let artistName = artistDict?[indexPath.row].key
+                cell.artistNameLabel.text = artistName
+                let artistInitial = (artistName?.first)!
+                cell.artistImageView.isHidden = true
+                cell.artistNameInitialButton.isHidden = false
                 let url = URL(string: imageUrl!)
                 cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                     (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    
+                    if error != nil{
+                        print("Artist imageview is hidden")
+                        cell.artistImageView.isHidden = true
+                        //cell.artistNameInitial.text = String(describing: artistInitial)
+                        cell.artistNameInitialButton.isHidden = false
+                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+
+                    }
+                    else
+                    {
+                        cell.artistNameInitialButton.isHidden = true
+                        cell.artistImageView.isHidden = false
+                    }
                 });
             }
             cell.isOpaque = true
-            let artistDict = artistImages?.filter({$0.key != ""})
-            let artistName = artistDict?[indexPath.row].key
-            cell.artistNameLabel.text = artistName
+          
             
             cell.backgroundColor = .clear
             return cell
