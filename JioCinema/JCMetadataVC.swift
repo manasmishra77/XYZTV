@@ -806,6 +806,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         artistSearchVC.view.backgroundColor = .black
         
         let searchViewController = UISearchController(searchResultsController: artistSearchVC)
+        searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
         searchViewController.view.backgroundColor = .black
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
@@ -834,6 +835,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             searchVC.view.backgroundColor = .black
             
             let searchViewController = UISearchController.init(searchResultsController: searchVC)
+            searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
             searchViewController.view.backgroundColor = .black
             searchViewController.searchBar.placeholder = "Search"
             searchViewController.searchBar.tintColor = UIColor.white

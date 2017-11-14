@@ -377,7 +377,9 @@ class JCTabBarController: UITabBarController {
         else
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-            settingsVC?.settingsTableView.reloadData()
+            if let tableviewSetting = settingsVC?.settingsTableView{
+                tableviewSetting.reloadData()
+            }
             JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
             return
         }
@@ -390,7 +392,8 @@ class JCTabBarController: UITabBarController {
         loginVC.modalPresentationStyle = .overFullScreen
         loginVC.modalTransitionStyle = .coverVertical
         loginVC.view.layer.speed = 0.7
-        self.present(loginVC, animated: true, completion: nil)
+        let topVC = UIApplication.topViewController()
+        topVC?.present(loginVC, animated: true, completion: nil)
     }
     
     

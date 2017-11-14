@@ -223,6 +223,7 @@ class JCSplashVC: UIViewController {
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
            
+            
                 weakSelf?.callWebServiceForConfigData()
             
         }

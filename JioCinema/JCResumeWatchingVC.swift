@@ -55,6 +55,7 @@ class JCResumeWatchingVC: UIViewController
     
     @IBAction func didClickOnBeginningButton(_ sender: Any)
     {
+        playableItemDuration = 0
         isVideoResumed = false
         self.playVideo()
 

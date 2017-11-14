@@ -82,6 +82,7 @@
     var arr_RecommendationList = [Item]()
     
     var moreModal:More?
+    var didSeek :Bool?
     
     static let assetKeysRequiredToPlay = [
         "playable",
@@ -360,6 +361,7 @@
     func instantiatePlayer(with url:String)
     {
         self.resetPlayer()
+        didSeek = true
         if metadata != nil  // For Handling FPS URL
         {
             if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
@@ -581,17 +583,18 @@
             }
             switch newStatus {
             case .readyToPlay:
+                
+                self.seekPlayer()
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
                 self.scrollCollectionViewToRow(row: currentPlayingIndex)
-                
                 self.sendMediaStartAnalyticsEvent()
                 
                 break
             case .failed:
                 
                 Log.DLog(message: "Failed" as AnyObject)
-                var failureType = "DRM"
+                var failureType = "FPS"
                 var type = ""
                 var title = ""
                 var episodeDetail = ""
@@ -604,7 +607,7 @@
                             failureType = "FPS"
                             type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                             title = data.name!
-                            if let desc = data.description{
+                            if data.description != nil{
                                 episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
                             }
                             
@@ -615,7 +618,7 @@
                 {
                     if (metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Episode.rawValue), isVideoUrlFailedCount == 0
                     {
-                        failureType = "FPS"
+                        failureType = "AES"
                         type = (metadata?.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                         title = (metadata?.name)!
                         episodeDetail = (metadata?.app?.type == VideoType.Episode.rawValue) ? (metadata?.description)! : ""
@@ -802,7 +805,7 @@
     
     func sendPlaybackFailureEvent(eventProperties:[String:Any])
     {
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Playback Error", properties: eventProperties)
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Media Error", properties: eventProperties)
         self.sendMediaErrorAnalyticsEvent()
 
     }
@@ -880,7 +883,7 @@
             categoryTitle = ""
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties )
             
-            let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration": String(describing: totalBufferDurationTime),"Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
+            let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration": String(describing:Int(totalBufferDurationTime)),"Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
             sendBufferingEvent(eventProperties: bufferEventProperties)
         }
         
@@ -1949,8 +1952,12 @@
             print("data: \(data!)")
             if (data != nil)
             {
-                let decodedData = Data(base64Encoded: data!, options: [])
-                completionHandler(decodedData!)
+                if let decodedData = Data(base64Encoded: data!, options: []){
+                    completionHandler(decodedData)
+                }else{
+                    completionHandler(nil)
+                }
+                
             }
             else
             {
@@ -2160,4 +2167,25 @@
         return 0.0
     }
     
+    func seekPlayer() {
+        if duration >= (self.player?.currentItem?.currentTime().seconds)!, didSeek!{
+                self.player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
+            }
+        else{
+            didSeek = false
+        }
+    }
  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

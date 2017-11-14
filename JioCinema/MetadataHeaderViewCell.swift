@@ -312,13 +312,19 @@ class MetadataHeaderViewCell: UIView {
                     }
                     if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
                         if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
-                            tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                            if tvVC.baseTableView != nil{
+                                tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                            }
+                            
                         }
                         else{
                             if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! == 1{
                                 tvVC.isTVWatchlistAvailable = true
                             }
-                            tvVC.baseTableView.reloadData()
+                            if tvVC.baseTableView != nil{
+                                tvVC.baseTableView.reloadData()
+                            }
+                            
                         }
                     }
                     
@@ -349,13 +355,19 @@ class MetadataHeaderViewCell: UIView {
                    if JCDataStore.sharedDataStore.moviesWatchList?.data?.items != nil {
                         if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 1{
                             let indexpath = IndexPath(row: 0, section: 0)
-                            movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                            if movieVC.baseTableView != nil {
+                                movieVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
+                            }
+                            
                         }
                         else{
                             if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! == 1{
                                 movieVC.isMoviesWatchlistAvailable = true
                             }
-                            movieVC.baseTableView.reloadData()
+                            if movieVC.baseTableView != nil {
+                               movieVC.baseTableView.reloadData()
+                            }
+                            
                         }
                     }
                     

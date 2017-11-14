@@ -36,8 +36,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       //jioIdTextField.text     = "pallavtrivedi-4"
-    //passwordTextField.text  = "pallav@1010"
+      // jioIdTextField.text     = "pallavtrivedi-4"
+    //   passwordTextField.text  = "pallav@1010"
         //jioIdTextField.text     = "poonam2016"
         //passwordTextField.text  = "poonam@12"
         
@@ -177,6 +177,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             searchVC.view.backgroundColor = .black
             
             let searchViewController = UISearchController.init(searchResultsController: searchVC)
+            searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
             searchViewController.view.backgroundColor = .black
             searchViewController.searchBar.placeholder = "Search"
             searchViewController.searchBar.tintColor = UIColor.white

@@ -42,7 +42,14 @@ class Utility
             isNetworkAvailable = false
             print("Network not reachable")
             let alertController = UIAlertController.init(title: networkErrorMessage, message: "", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: nil))
+            
+            alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { (action) in
+            
+            if (appDelegate?.window?.rootViewController is JCSplashVC)
+            {
+                exit(0)
+            }
+            }  ))
             
             appDelegate?.window?.rootViewController?.present(alertController, animated: false, completion: nil)
         }

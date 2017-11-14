@@ -300,6 +300,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         
         let videoType = item?.list![currentType].id
         
+        if let playableItem = (languageGenreDetailModel?.data?.items?[indexPath.row]){
+            currentPlayableItem = playableItem
+        }
         if videoType == VideoType.Movie.rawValue || videoType == VideoType.TVShow.rawValue
         {
             showMetaData(forItemIndex: indexPath.row)
