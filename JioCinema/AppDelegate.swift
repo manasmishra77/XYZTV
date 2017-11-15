@@ -22,8 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Sending event for Internal Analytics
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
-        handlerUncaughtException()
-        
+        handlerUncaughtException() 
         return true
     }
 

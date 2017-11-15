@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13196" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -186,7 +186,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
-                                        <rect key="frame" x="230" y="90" width="74" height="35"/>
+                                        <rect key="frame" x="230" y="90" width="370" height="35"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -197,6 +197,7 @@
                                     <constraint firstItem="qG8-AD-0fn" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="1kE-R6-fhT"/>
                                     <constraint firstItem="VOU-lG-iud" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="LRS-gx-Apm"/>
                                     <constraint firstAttribute="height" constant="150" id="VbZ-uD-by1"/>
+                                    <constraint firstAttribute="trailing" secondItem="VOU-lG-iud" secondAttribute="trailing" id="Vlq-bf-WkN"/>
                                     <constraint firstItem="28g-LG-naa" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="top" id="iNY-nA-5Ta"/>
                                     <constraint firstAttribute="width" constant="600" id="o1S-YI-3jS"/>
                                     <constraint firstItem="VOU-lG-iud" firstAttribute="top" secondItem="qG8-AD-0fn" secondAttribute="bottom" constant="30" id="r3t-xR-oKa"/>
@@ -646,7 +647,7 @@
                                     <constraint firstAttribute="height" constant="890" id="PKG-Hj-S3B"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="kLanguageGenreSelectionPrototypeCell" id="kS9-Ba-n1i" customClass="JCLanguageGenreSelectionPrototypeCell" customModule="JioCinema" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="kLanguageGenreSelectionPrototypeCell" id="kS9-Ba-n1i" customClass="JCLanguageGenreSelectionPrototypeCell" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="66" width="349" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kS9-Ba-n1i" id="5wo-zS-NTk">
@@ -654,7 +655,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sm-18-YN3">
-                                                    <rect key="frame" x="8" y="8" width="333" height="50"/>
+                                                    <rect key="frame" x="8" y="23" width="231" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>

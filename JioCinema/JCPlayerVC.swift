@@ -529,6 +529,7 @@
     }
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
+        print(currentItem.duration)
         return CMTimeGetSeconds(currentItem.duration)
     }
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -583,7 +584,6 @@
             }
             switch newStatus {
             case .readyToPlay:
-                
                 self.seekPlayer()
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
@@ -929,7 +929,7 @@
         if row >= 0 {
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
-                self.collectionView_Recommendation.scrollToItem(at: path, at: .left, animated: true)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
                 let cell = self.collectionView_Recommendation.cellForItem(at: path)
                 self.myPreferredFocusView = cell
                 self.setNeedsFocusUpdate()

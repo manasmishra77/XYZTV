@@ -46,11 +46,11 @@ class RJILApiManager {
 //        }
     }
     
-    func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
+    func put(request:URLRequest, completion: @escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "PUT", completion: completion)
     }
     
-    func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
+    func get(request:URLRequest, completion: @escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
 
 //        if isNetworkAvailable
@@ -141,6 +141,21 @@ class RJILApiManager {
             _otpHeaders["Content-Type"] = "application/json"
             
             return _otpHeaders
+        }
+    }
+    
+    var checkVersionHeaders: [String:String]{
+        get{
+            var _checkVersionHeaders = [String:String]()
+            //_checkVersionHeaders["appkey"] = kAppKeyValue
+            _checkVersionHeaders["deviceId"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+            _checkVersionHeaders["appversion"] = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+            _checkVersionHeaders["os"] = "ios"
+            _checkVersionHeaders["devicetype"] = "stb"
+            //_checkVersionHeaders["storetype"] = "0"
+            
+            
+            return _checkVersionHeaders
         }
     }
     
@@ -241,12 +256,17 @@ class RJILApiManager {
             request = getRequest(forPath: path)
         }
         
-        if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
+        if path.contains(checkVersionUrl)
+        {
+            request?.allHTTPHeaderFields = checkVersionHeaders
+        }
+        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
         {
             if(JCLoginManager.sharedInstance.loggingInViaSubId)
             {
                 request?.allHTTPHeaderFields = subIdHeaders
             }
+                
             else
             {
                 request?.allHTTPHeaderFields = commonHeaders
@@ -268,7 +288,7 @@ class RJILApiManager {
             dataDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: { (location,response,error) in
                 if location != nil {
                     do{
-                        let responseData:Data = try Data(contentsOf: location!)
+                        let responseData:Data = try Data(from: location! as! Decoder)
                         completion(urlString, responseData)
                     }
                     catch{

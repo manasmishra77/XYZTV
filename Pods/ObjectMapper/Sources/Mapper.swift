@@ -270,7 +270,7 @@ public final class Mapper<N: BaseMappable> {
 			do {
 				parsedJSON = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
 			} catch let error {
-				print(error)
+				//print(error)
 				parsedJSON = nil
 			}
 			return parsedJSON

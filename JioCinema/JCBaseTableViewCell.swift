@@ -172,7 +172,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     if artistDict.count > 0{
                         let artistName = artistDict[indexPath.row].key
                         cell.artistNameLabel.text = artistName
-                        let artistInitial = (artistName.first)!
+                        let artistNameSubGroup = artistName.components(separatedBy: " ")
+                        var artistInitial = ""
+                        for each in artistNameSubGroup{
+                            if each.first != nil{
+                               artistInitial = artistInitial + String(describing: each.first!)
+                            }
+                        } 
                         cell.artistImageView.isHidden = true
                         cell.artistNameInitialButton.isHidden = false
                         let url = URL(string: imageUrl!)
@@ -180,12 +186,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
                             
                             if error != nil{
-                                print("Artist imageview is hidden")
                                 cell.artistImageView.isHidden = true
-                                //cell.artistNameInitial.text = String(describing: artistInitial)
                                 cell.artistNameInitialButton.isHidden = false
                                 cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
-                                
                             }
                             else
                             {

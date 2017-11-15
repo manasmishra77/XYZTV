@@ -73,6 +73,7 @@ let removeFromResumeWatchlistUrl = basePath.appending("common/v3/list/deletecont
 let languageListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/25")
 let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/29")
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
+let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
