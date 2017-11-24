@@ -167,7 +167,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        jioNumberTFLabel.text = "9082949573"
+       // jioNumberTFLabel.text = "9082949573"
         enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.characters.count != 10)
         {

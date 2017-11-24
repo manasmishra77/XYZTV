@@ -31,10 +31,7 @@ class JCAppUser:NSObject,NSCoding
     var unique:String = ""
     var userGroup:String = ""
     
-    
-    
 
-    
     required init?(coder aDecoder: NSCoder)
     {
         self.jToken = aDecoder.decodeObject(forKey: "jToken") as? String ?? ""
