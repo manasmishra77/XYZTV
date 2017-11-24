@@ -36,10 +36,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       //jioIdTextField.text     = "pallavtrivedi-4"
-       //passwordTextField.text  = "pallav@1010"
-        //jioIdTextField.text     = "poonam2016"
-        //passwordTextField.text  = "poonam@12"
+//       jioIdTextField.text     = "pallavtrivedi-4"
+//       passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "poonam2016"
+        passwordTextField.text  = "poonam@12"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -84,6 +84,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                 isLoginPresentedFromAddToWatchlist = false
                                 if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                                     homevc.callWebServiceForResumeWatchData()
+                                    homevc.callWebServiceForUserRecommendationList()
                                 }
                                 if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
                                     movieVC.callWebServiceForMoviesWatchlist()

@@ -103,6 +103,24 @@ class ResumeWatchListDataModel:Mappable
     }
 }
 
+class UserRecommendationListDataModel:Mappable
+{
+    var code: Int?
+    var message: String?
+    var data: [DataContainer]?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+    }
+}
+
+
 class DataContainer:Mappable
 {
     var items:[Item]?
@@ -113,6 +131,7 @@ class DataContainer:Mappable
     var isCarousal:Bool?
     var id:Int?
     var layout:Int?
+    var position: Int? = nil
     
     required init(map:Map) {
         
@@ -128,6 +147,8 @@ class DataContainer:Mappable
         isCarousal <- map["isCarousal"]
         id <- map["id"]
         layout <- map["layout"]
+        position <- map["position"]
+        
     }
 }
 

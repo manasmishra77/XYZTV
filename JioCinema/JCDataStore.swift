@@ -22,10 +22,12 @@ class JCDataStore
     var genreData:BaseDataModel?
     var mergedHomeData:[DataContainer]?
     
+    
     var configData:ConfigData?
     var tvWatchList:WatchListDataModel?
     var moviesWatchList:WatchListDataModel?
     var resumeWatchList:ResumeWatchListDataModel?
+    var userRecommendationList: UserRecommendationListDataModel?
     
     var languageGenreDetailModel:LanguageGenreDetailModel?
     
@@ -45,6 +47,7 @@ class JCDataStore
         case ResumeWatchList
         case Language
         case Genre
+        case UserRecommendation
     }
     
     
@@ -99,6 +102,8 @@ class JCDataStore
                 self.languageData = BaseDataModel(JSONString: responseString)
             case .Genre:
                 self.genreData = BaseDataModel(JSONString: responseString)
+            case .UserRecommendation:
+                self.userRecommendationList = UserRecommendationListDataModel(JSONString: responseString)
             }
             
         }
@@ -127,6 +132,7 @@ class JCDataStore
                 case .ResumeWatchList: break
                 case .Language: break
                 case .Genre: break
+                case .UserRecommendation: break
                 }
             }
         }

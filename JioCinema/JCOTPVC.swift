@@ -167,7 +167,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        //jioNumberTFLabel.text = "9082949573"
+        jioNumberTFLabel.text = "9082949573"
         enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.characters.count != 10)
         {
@@ -362,6 +362,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     isUserLoggedOutHimself = false
                     if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                         homevc.callWebServiceForResumeWatchData()
+                        homevc.callWebServiceForUserRecommendationList()
                     }
                     if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
                         movieVC.callWebServiceForMoviesWatchlist()

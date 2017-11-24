@@ -311,7 +311,7 @@ class MetadataHeaderViewCell: UIView {
                         return
                     }
                     if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
-                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 1{
                             if tvVC.baseTableView != nil{
                                 tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                             }
@@ -324,7 +324,6 @@ class MetadataHeaderViewCell: UIView {
                             if tvVC.baseTableView != nil{
                                 tvVC.baseTableView.reloadData()
                             }
-                            
                         }
                     }
                     
@@ -333,6 +332,12 @@ class MetadataHeaderViewCell: UIView {
             }
         }
         else if self.item?.app?.type == VideoType.Movie.rawValue{
+            if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                homeVC.callWebServiceForUserRecommendationList()
+            }
+        }
+            
+            /*
             if (self.metadata?.inQueue)!{
                 if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items) != nil{
                     JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.insert(self.item!, at: 0)
@@ -374,9 +379,8 @@ class MetadataHeaderViewCell: UIView {
                 }
                 
             }
-        }
+        }*/
     }
-    
     //Checking whether the item is in resume watch list or not
     func checkAndPlayItemInResumeWatchList() -> Bool
     {

@@ -151,6 +151,7 @@ class JCLoginManager:UIViewController
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                         homevc.callWebServiceForResumeWatchData()
+                        homevc.callWebServiceForUserRecommendationList()
                     }
                     if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
                         movieVC.callWebServiceForMoviesWatchlist()
@@ -205,6 +206,7 @@ class JCLoginManager:UIViewController
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
+        JCDataStore.sharedDataStore.userRecommendationList = nil
     }
 
     

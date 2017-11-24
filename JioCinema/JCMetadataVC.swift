@@ -325,10 +325,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func callWebserviceForWatchListStatus(id:String)
     {
-        let urlId = (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)! + "/" + id
-        let showId: String = (metadata?.app?.type)! == VideoType.Movie.rawValue ? "" : id
+        guard let appType = metadata?.app?.type else {
+            return
+        }
+        let latestEpisodeId = self.metadata?.latestEpisodeId ?? ""
+        let urlId = (appType == VideoType.Movie.rawValue) ? id : latestEpisodeId + "/" + id
+        let showId: String = (appType == VideoType.Movie.rawValue) ? "" : id
         let url = playbackRightsURL.appending(urlId)
-        let params = ["id" : (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)!,"showId" : showId, "uniqueId" : JCAppUser.shared.unique, "deviceType" : "stb"]
+        let params = ["id" : (appType == VideoType.Movie.rawValue) ? id : latestEpisodeId,"showId" : showId, "uniqueId" : JCAppUser.shared.unique, "deviceType" : "stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in

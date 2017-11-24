@@ -13,6 +13,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     var isResumeWatchDataAvailable = false
     var isLanguageDataAvailable = false
     var isGenereDataAvailable = false
+    var isUserRecommendationAvailable = false
     var isFirstLoaded = false
     var dataItemsForTableview = [DataContainer]()
 
@@ -41,6 +42,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         // Do any additional setup after loading the view.
         callWebServiceForLanguageList()
         callWebServiceForGenreList()
+        callWebServiceForUserRecommendationList()
+        callWebServiceForResumeWatchData()
         
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -53,15 +56,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
         self.tabBarController?.delegate = self
         
+        baseTableView.reloadData()
         
-        if JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            callWebServiceForResumeWatchData()
-        }
-        else
-        {
-            baseTableView.reloadData()
-        }
+        //callWebServiceForUserRecommendationList()
         
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Home","Platform":"TVOS","Metadata Page":""]
@@ -123,6 +120,19 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                         dataItemsForTableview.insert(dataResume, at: 0)
                 }
             }
+            if isUserRecommendationAvailable{
+                if let recommendationDataArray = JCDataStore.sharedDataStore.userRecommendationList?.data{
+                    var i = 0
+                    for recommendationData in recommendationDataArray{
+                        let pos = recommendationData.position ?? 4+i
+                        if pos < dataItemsForTableview.count{
+                            dataItemsForTableview.insert(recommendationData, at: pos)
+                        }
+                      i = i + 1
+                    }
+                }
+                
+            }
             return dataItemsForTableview.count
         }
         else
@@ -161,7 +171,13 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         //For autorotate carousel
         let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
         let carouselView = carouselViews?.first as! InfinityScrollView
-        carouselView.carouselArray = (JCDataStore.sharedDataStore.homeData?.data?[0].items)!
+        if let carouselItem = JCDataStore.sharedDataStore.homeData?.data?[0].items{
+            carouselView.carouselArray = carouselItem
+        }
+        else{
+            return UIView()
+        }
+        
         carouselView.loadViews()
         uiviewCarousel = carouselView
         selectedItemFromViewController = VideoType.Home
@@ -197,7 +213,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
     {
-        
         return false
     }
     
@@ -240,6 +255,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     func callWebServiceForResumeWatchData()
     {
+        guard JCLoginManager.sharedInstance.isUserLoggedIn() else{
+            isResumeWatchDataAvailable = false
+            return
+        }
         let url = resumeWatchGetUrl
         let params = ["uniqueId":JCAppUser.shared.unique]
         let resumeWatchDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -406,7 +425,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     func callWebServiceForGenreList()
     {
         let url = genreListUrl
-        let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: genreListRequest) { (data, response, error) in
             if let responseError = error
@@ -441,6 +460,46 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     
+    func callWebServiceForUserRecommendationList()
+    {
+        guard JCLoginManager.sharedInstance.isUserLoggedIn() else{
+            isUserRecommendationAvailable = false
+            return
+        }
+        let url = userRecommendationURL
+        let params = ["uniqueId": JCAppUser.shared.unique, "jioId": JCAppUser.shared.uid]
+        let recommendationListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: recommendationListRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                //TODO: handle error
+                print(responseError)
+                //weakSelf?.dispatchGroup.leave()
+                return
+            }
+            if let responseData = data
+            {
+               
+                weakSelf?.evaluateUserRecommendationList(dictionaryResponseData: responseData)
+                //weakSelf?.dispatchGroup.leave()
+                DispatchQueue.main.async {
+                    if let recommendationData = JCDataStore.sharedDataStore.userRecommendationList?.data, recommendationData.count > 0{
+                            self.isUserRecommendationAvailable = true
+                            self.baseTableView.reloadData()
+                    }else{
+                        self.isUserRecommendationAvailable = false
+                    }
+                }
+            }
+        }
+    }
+    
+    func evaluateUserRecommendationList(dictionaryResponseData responseData:Data)
+    {
+        //Success
+        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .UserRecommendation)
+    }
     
 }
 
