@@ -35,7 +35,7 @@
  }
  
  
- class JCPlayerVC: UIViewController
+ class JCPlayerVC: UIViewController, AVPlayerViewControllerDelegate
  {
     
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
@@ -73,6 +73,8 @@
     var isResumed                   :Bool?
     var startTime_BufferDuration    :Date?
     var totalBufferDurationTime      = 0.0
+    
+    var videoViewingLapsedTime = 0.0
 
     var currentPlayingIndex         = -1
     
@@ -92,16 +94,16 @@
     var bitrate:String{
         get{
             var bitrateString:String = ""
-            var unit = "kBps"
+            //var unit = "kBps"
             if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate
             {
-            var bitrate =  observedBitrate / (8*1024)
-            if bitrate > 1000 {
-                //Make it Mbps
-                bitrate = bitrate / 1024
-                    unit = "MBps"
-                }
-            bitrateString = NSString(format: "%.1f %@", bitrate > 0 ? bitrate : 0.0 ,unit as NSString) as String
+                var bitrate : Int =  Int(observedBitrate / (8*1024))
+//            if bitrate > 1000 {
+//                //Make it Mbps
+//                bitrate = bitrate / 1024
+//                    unit = "MBps"
+//                }
+            bitrateString = bitrate > 0 ? String(bitrate) : "0"
             }
          return bitrateString
             }
@@ -181,6 +183,7 @@
         
         if (player != nil)
         {
+            sendMediaEndAnalyticsEvent()
             removePlayerObserver()
         }
         playerVC_Global = nil
@@ -329,7 +332,7 @@
     
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
-        sendMediaEndAnalyticsEvent()
+        //sendMediaEndAnalyticsEvent()
         categoryTitle = referenceFromPlayerVC
         referenceFromPlayerVC = ""
         self.player?.pause()
@@ -355,6 +358,7 @@
             self.player?.pause()
             self.removePlayerObserver()
             self.playerController = nil
+            self.playerController?.delegate = nil
         }
     }
     
@@ -459,6 +463,7 @@
         player = AVPlayer(playerItem: playerItem)
         if playerController == nil {
             playerController = AVPlayerViewController()
+            playerController?.delegate = self
             self.addChildViewController(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
@@ -711,9 +716,11 @@
     //MARK:- Handle Next Item
     func handleTrailerOrMusicNextItem()
     {
+        
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.metadata?.more?.count
         {
+            sendMediaEndAnalyticsEvent()
             let modal = self.metadata?.more?[self.currentPlayingIndex]
             self.currentItemImage = modal?.banner
             self.currentItemTitle = modal?.name
@@ -732,6 +739,7 @@
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.playlistData?.more?.count
         {
+            sendMediaEndAnalyticsEvent()
             let modal = self.playlistData?.more?[self.currentPlayingIndex]
             self.currentItemImage = modal?.banner
             self.currentItemTitle = modal?.name
@@ -751,6 +759,7 @@
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.arr_RecommendationList.count
         {
+            sendMediaEndAnalyticsEvent()
             let modal = arr_RecommendationList[self.currentPlayingIndex]
             self.currentItemImage = modal.banner
             self.currentItemTitle = modal.name
@@ -770,6 +779,7 @@
         self.currentPlayingIndex = self.currentPlayingIndex - 1
         if self.currentPlayingIndex >= 0 //
         {
+            sendMediaEndAnalyticsEvent()
             let modal = metadata?.episodes?[currentPlayingIndex]
             self.metadata?.latestEpisodeId = modal?.id
             self.currentItemImage = modal?.banner
@@ -818,12 +828,14 @@
             var isPlayList = "false"
             if let data = self.item as? Item{
                 if let playList = data.isPlaylist, playList{
-                    isPlayList = "true"
                 }
             }
             
             let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            let timeSpent = CMTimeGetSeconds(currentTime) - duration - totalBufferDurationTime - videoViewingLapsedTime
+            
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(timeSpent)", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             
             bufferCount = 0
@@ -885,6 +897,11 @@
             
             let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration": String(describing:Int(totalBufferDurationTime)),"Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
             sendBufferingEvent(eventProperties: bufferEventProperties)
+            //
+            videoViewingLapsedTime = 0
+            totalBufferDurationTime = 0
+            duration = 0
+            bufferCount = 0
         }
         
     }
@@ -1536,6 +1553,7 @@
         {
             if metadata?.app?.type == VideoType.TVShow.rawValue
             {
+                sendMediaEndAnalyticsEvent()
                 let model = metadata?.episodes?[indexPath.row]
                 self.metadata?.latestEpisodeId = model?.id
                 self.currentItemImage = model?.banner
@@ -1545,6 +1563,7 @@
             }
             else if metadata?.app?.type == VideoType.Trailer.rawValue || metadata?.app?.type == VideoType.Music.rawValue || metadata?.app?.type == VideoType.Clip.rawValue
             {
+                sendMediaEndAnalyticsEvent()
                 let model = metadata?.more?[indexPath.row]
                 self.currentItemImage = model?.banner
                 self.currentItemTitle = model?.name
@@ -2174,6 +2193,11 @@
         else{
             didSeek = false
         }
+    }
+    
+    func playerViewController(_ playerViewController: AVPlayerViewController, willResumePlaybackAfterUserNavigatedFrom oldTime: CMTime, to targetTime: CMTime) {
+        let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
+        videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
  }
  

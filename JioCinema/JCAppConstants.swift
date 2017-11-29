@@ -52,7 +52,7 @@ let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls
-let versionApi = "v3"
+let versionApi = "v3.1"
 
 let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/1/")
 let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/6/")

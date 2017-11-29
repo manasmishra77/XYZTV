@@ -311,7 +311,7 @@ class MetadataHeaderViewCell: UIView {
                         return
                     }
                     if JCDataStore.sharedDataStore.tvWatchList?.data?.items != nil{
-                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0{
+                        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 1{
                             if tvVC.baseTableView != nil{
                                 tvVC.baseTableView.reloadRows(at: [indexpath], with: .fade)
                             }
