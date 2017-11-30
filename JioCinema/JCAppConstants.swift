@@ -25,7 +25,7 @@ var selectedItemFromViewController:VideoType = VideoType.Home
 var categoryTitle = ""
 var referenceFromPlayerVC = ""
 
-var screenAppearTime: Date!
+var screenAppearTime: Date! = Date()
 var screenDisAppearTime: Double! = 0.0
 
 //BasePath

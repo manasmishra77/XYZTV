@@ -96,7 +96,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
             if let responseError = error
             {
-                print(responseError.localizedDescription)
+              //  print(responseError.localizedDescription)
                 return
             }
             

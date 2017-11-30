@@ -99,6 +99,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         //Removing search container from search navigation controller
         JCAppReference.shared.metaDataVc = self
         
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
         //Send event to internal analytics
         presentingScreen = currentScreenName
         Utility.sharedInstance.handleScreenNavigation(screenName: "Metadata")
@@ -107,6 +108,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         let metadataType = item.app?.type == VideoType.Movie.rawValue ? VideoType.Movie.name : VideoType.TVShow.name
         let eventProperties = ["Screen Name":previousScreenName,"Platform":"TVOS","Metadata Page":metadataType]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        screenAppearTime = Date()
         
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -116,9 +118,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if JCAppReference.shared.isTempVCRootVCInSearchNC!{
             changingSearchNCRootVC()
         }
-        
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
         //Send event to internal analytics
         Utility.sharedInstance.handleScreenNavigation(screenName: presentingScreen)
+        screenAppearTime = Date()
         
     }
     
@@ -278,7 +281,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+              //  print(responseError)
                 return
             }
             if let responseData = data
@@ -308,7 +311,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 return
             }
             if let responseData = data
@@ -335,7 +338,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
               
                 return
             }
@@ -375,7 +378,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             let tempMetadata = MetadataModel(JSONString: responseString)
-            print("\(tempMetadata?.episodes?.count) 1111")
+            //print("\(tempMetadata?.episodes?.count) 1111")
             if item?.app?.type == VideoType.Movie.rawValue
             {
                 self.metadata?.more = tempMetadata?.more
@@ -395,7 +398,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let responseString = String(data: responseData, encoding: .utf8)
         {
             self.metadata = MetadataModel(JSONString: responseString)
-            print("\(metadata) + 123")
+           // print("\(metadata) + 123")
         }
     }
     
@@ -431,7 +434,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                 if(isOnJioNetwork == false)
                 {
-                    print("Not on jio network")
+                    //print("Not on jio network")
                     DispatchQueue.main.async {
                         weakSelf?.presentLoginVC()
                     }    
@@ -440,7 +443,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
                 {
                     //proceed without checking any login
                     weakSelf?.prepareToPlay()
-                    print("Is on jio network")
+                    //print("Is on jio network")
                 }
             }
         }
@@ -464,7 +467,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func prepareToPlay()
     {
-        print("play video from metadata vc")
+       // print("play video from metadata vc")
         if playerVC_Global != nil {
             return
         }
@@ -745,7 +748,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 return
             }
             if let responseData = data

@@ -70,7 +70,7 @@ class JCSplashVC: UIViewController {
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 weakSelf?.showAlert(alertString: networkErrorMessage)
                 return
             }
@@ -217,7 +217,7 @@ class JCSplashVC: UIViewController {
             }
             
         } catch {
-            print("Error deserializing JSON: \(error)")
+            //print("Error deserializing JSON: \(error)")
         }
         return nil
     }

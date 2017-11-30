@@ -164,7 +164,7 @@ class MetadataHeaderViewCell: UIView {
                     //OPTIMIZATION PLAYERVC
                     // playerVC.callWebServiceForPlaybackRights(id: id!)
                 }
-                print("id is === \(id!)")
+               // print("id is === \(id!)")
                 playerVC.playerId = id!
                 playerVC.item = item
                 
@@ -226,7 +226,7 @@ class MetadataHeaderViewCell: UIView {
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
@@ -261,7 +261,7 @@ class MetadataHeaderViewCell: UIView {
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data

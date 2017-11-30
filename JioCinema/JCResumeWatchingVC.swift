@@ -85,7 +85,7 @@ class JCResumeWatchingVC: UIViewController
         
         playerVC.item = self.item
         self.dismiss(animated: false, completion: {
-            print(self.previousVC)
+           // print(self.previousVC)
             self.previousVC?.present(playerVC, animated: false, completion: nil)
             
         })
@@ -115,14 +115,14 @@ class JCResumeWatchingVC: UIViewController
             
             if let responseError = error
             {
-                print(responseError)
+               // print(responseError)
                 return
             }
             
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 let code = parsedResponse["code"]
-                print("Removed from Resume Watchlist \(String(describing: code))")
+              //  print("Removed from Resume Watchlist \(String(describing: code))")
                 //Removing data from resume wathching screen
                 JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
                 

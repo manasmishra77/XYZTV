@@ -32,17 +32,20 @@ class JCSettingsVC: UIViewController
     
     override func viewDidAppear(_ animated: Bool)
     {
-        screenAppearTime = Date()
-
-        settingsTableView.reloadData()
-        
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Settings", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         Utility.sharedInstance.handleScreenNavigation(screenName: "Settings")
+        screenAppearTime = Date()
+
+        settingsTableView.reloadData()
+        
+  
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+//        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+ 
 
     }
    
@@ -233,7 +236,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                     if(isOnJioNetwork == false)
                     {
-                        print("Not on jio network")
+                      //  print("Not on jio network")
                         JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)

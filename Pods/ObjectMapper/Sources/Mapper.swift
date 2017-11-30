@@ -347,7 +347,7 @@ extension Mapper {
 			do {
 				JSONData = try JSONSerialization.data(withJSONObject: JSONObject, options: options)
 			} catch let error {
-				print(error)
+				//print(error)
 				JSONData = nil
 			}
 			

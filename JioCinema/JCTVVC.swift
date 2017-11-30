@@ -37,6 +37,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"TV","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "TV")
         screenAppearTime = Date()
 
         self.tabBarController?.delegate = self
@@ -55,13 +60,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         }
         baseTableView.reloadData()
         
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"TV","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "TV")
+
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+      
     }
   
     
@@ -211,7 +214,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 return
             }
             if let responseData = data
@@ -257,7 +260,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             
             if let responseError = error
             {
-                print(responseError)
+               // print(responseError)
                 return
             }
             

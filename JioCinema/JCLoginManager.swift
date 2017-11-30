@@ -45,7 +45,7 @@ class JCLoginManager:UIViewController
             }
             else
             {
-                print("There is an issue")
+               // print("There is an issue")
             }
             
         }
@@ -65,7 +65,7 @@ class JCLoginManager:UIViewController
                 
                 //else
                 //self.navigateToLoginVC()
-                print(responseError)
+               // print(responseError)
                 completion(false)
                 return
             }
@@ -88,7 +88,7 @@ class JCLoginManager:UIViewController
                         if let responseError = error
                         {
                             //self.navigateToLoginVC()
-                            print(responseError)
+                            //print(responseError)
                             completion(false)
                             return
                         }
@@ -137,7 +137,7 @@ class JCLoginManager:UIViewController
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+              //  print(responseError)
                 completion(false)
                 return
             }

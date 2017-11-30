@@ -178,8 +178,8 @@ class RJILApiManager {
             return json as? [String:Any]
             
         }catch let error {
-            print(String(data: data, encoding: .utf8) ?? "")
-            print(error.localizedDescription)
+           // print(String(data: data, encoding: .utf8) ?? "")
+           // print(error.localizedDescription)
         }
         
         return nil
@@ -210,7 +210,7 @@ class RJILApiManager {
                     request?.httpBody = jsonData
                 }
                 catch{
-                    print(error)
+                   // print(error)
                 }
                 break
             case .BODY:
@@ -292,7 +292,7 @@ class RJILApiManager {
                         completion(urlString, responseData)
                     }
                     catch{
-                        print(error)
+                        //print(error)
                         completion(urlString, nil)
                     }
                 }

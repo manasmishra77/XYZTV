@@ -11,7 +11,7 @@ import Foundation
 class Log {
     static  func DLog(message: AnyObject, function: String = #function) {
         #if DEBUG
-            print("\(function): \(message)")
+           // print("\(function): \(message)")
         #endif
     }
 }

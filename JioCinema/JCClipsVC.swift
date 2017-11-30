@@ -34,6 +34,12 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Clips")
+        
         screenAppearTime = Date()
 
         self.tabBarController?.delegate = self
@@ -42,13 +48,11 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             callWebServiceForClipsData(page: loadedPage)
         }
         
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Clips")
+    
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+       // screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+     
     }
 
     override func didReceiveMemoryWarning() {
@@ -195,7 +199,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data

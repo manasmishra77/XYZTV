@@ -79,7 +79,7 @@
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
-    var bufferCount                 = 0
+    var bufferCount                 = 0.0
     
     var arr_RecommendationList = [Item]()
     
@@ -123,8 +123,8 @@
             
             if metadata?.app?.type == VideoType.TVShow.rawValue
             {
-                print("metadata id = \(metadata?.id)")
-                print("player id = \(playerId)")
+               // print("metadata id = \(metadata?.id)")
+               // print("player id = \(playerId)")
                 self.callWebServiceForPlaybackRights(id: playerId!)
                 if metadata?.episodes != nil
                 {
@@ -534,7 +534,7 @@
     }
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
-        print(currentItem.duration)
+        //print(currentItem.duration)
         return CMTimeGetSeconds(currentItem.duration)
     }
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -571,7 +571,7 @@
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
         {
             startTime_BufferDuration = Date()
-            bufferCount = bufferCount + 1
+            bufferCount = bufferCount + 0.5
             
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
@@ -639,7 +639,7 @@
                     isVideoUrlFailedCount = 1
                     self.resetPlayer()
                     self.handleAESStreamingUrl(videoUrl: (self.playbackRightsData?.aesUrl)!)
-                    print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                  //  print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
                 }
                 else
                 {
@@ -825,16 +825,16 @@
         
         if let currentTime = player?.currentItem?.currentTime()
         {
-            var isPlayList = "false"
+            let isPlayList = "false"
             if let data = self.item as? Item{
                 if let playList = data.isPlaylist, playList{
                 }
             }
             
-            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeSpent = CMTimeGetSeconds(currentTime) - duration - totalBufferDurationTime - videoViewingLapsedTime
             
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(timeSpent)", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: totalBufferDurationTime) , bufferCount: String(bufferCount), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             
@@ -852,7 +852,7 @@
     func sendVideoViewedEventToCleverTap()
     {
         var title = ""
-        var episode = ""
+        var episodeNum = 0
         var language = ""
         var type:VideoType = .None
         var isPlaylist = "false"
@@ -866,36 +866,40 @@
                 isPlaylist = String(describing: data.isPlaylist!)
                 if data.app?.type == VideoType.Episode.rawValue
                 {
-                    episode = data.name!
+                    //episode = data.name ?? ""
+                    if let episode = self.item as? Episode{
+                        episodeNum = episode.episodeNo ?? 0
+                    }
                 }
             }
         }
         else
         {
-            if metadata?.app?.type == VideoType.Episode.rawValue
+            if metadata?.app?.type == VideoType.TVShow.rawValue
             {
-                episode = (metadata?.name)!
+                if let episode = self.item as? Episode{
+                    episodeNum = episode.episodeNo ?? 0
+                }
             }
             
-            title = (metadata?.name)!
-            language = (metadata?.language)!
+            title = (metadata?.name) ?? ""
+            language = (metadata?.language) ?? ""
             type = VideoType(rawValue: (metadata?.app?.type)!)!
         }
         
         if let currentTime = player?.currentItem?.currentTime()
         {
-            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
 //            if categoryTitle == ""{
 //                setCategoryTitle()
 //            }
             
             //sendMediaEndAnalyticsEvent()
-            let eventProperties:[String:Any] = ["Content ID":playerId!,"Type":type.name,"Threshold Duration":currentTimeDuration,"Title":title,"Episode":episode,"Language":language,"Source": categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":bitrate,"Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"
-            ]
+            let eventProperties:[String:Any] = ["Content ID":playerId!,"Type": type.rawValue,"Threshold Duration": currentTimeDuration,"Title":title,"Episode": episodeNum,"Language":language,"Source": categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":bitrate,"Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"]
             categoryTitle = ""
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties )
             
-            let bufferEventProperties = ["Buffer Count":String(describing: bufferCount),"Buffer Duration": String(describing:Int(totalBufferDurationTime)),"Content ID":playerId!,"Type":type.name,"Title":title,"Episode":episode,"Bitrate":bitrate,"Platform":"TVOS"]
+            let bufferEventProperties = ["Buffer Count":String(describing: Int(bufferCount)),"Buffer Duration": String(describing:Int(totalBufferDurationTime)),"Content ID":playerId!,"Type":type.rawValue,"Title":title,"Episode":episodeNum,"Bitrate": bitrate,"Platform": "TVOS"] as [String : Any]
             sendBufferingEvent(eventProperties: bufferEventProperties)
             //
             videoViewingLapsedTime = 0
@@ -908,19 +912,19 @@
     func setCategoryTitle()  {
         let vc = JCAppReference.shared.tabBarCotroller?.selectedViewController
         if let vc = vc as? JCHomeVC{
-            categoryTitle = vc.dataItemsForTableview[collectionIndex].title!
+            categoryTitle = vc.dataItemsForTableview[collectionIndex].title ?? ""
         }
         else if let vc = vc as? JCMoviesVC{
-            categoryTitle = vc.dataItemsForTableview[collectionIndex].title!
+            categoryTitle = vc.dataItemsForTableview[collectionIndex].title ?? ""
         }
         else if let vc = vc as? JCTVVC{
-            categoryTitle = vc.dataItemsForTableview[collectionIndex].title!
+            categoryTitle = vc.dataItemsForTableview[collectionIndex].title ?? ""
         }
         else if let vc = vc as? JCClipsVC{
-            categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data![collectionIndex].title!)!
+            categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data![collectionIndex].title ?? "")!
         }
         else if let vc = vc as? JCMusicVC{
-            categoryTitle = (JCDataStore.sharedDataStore.musicData?.data![collectionIndex].title!)!
+            categoryTitle = (JCDataStore.sharedDataStore.musicData?.data![collectionIndex].title ?? "")!
         }
        
     }
@@ -942,7 +946,7 @@
     
     func scrollCollectionViewToRow(row:Int)
     {
-        print("Scroll to Row is = \(row)")
+      //  print("Scroll to Row is = \(row)")
         if row >= 0 {
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
@@ -1120,8 +1124,8 @@
             }
             else
             {
-                print("data id is == \(data.id)")
-                print("data App type is == \(data.app?.type)")
+                //print("data id is == \(data.id)")
+               // print("data App type is == \(data.app?.type)")
                 
                 if data.app?.type == VideoType.Movie.rawValue
                 {
@@ -1145,7 +1149,7 @@
                 }
                 else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
-                    print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
+                    //print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
                     arr_RecommendationList.removeAll()
                     self.callWebServiceForPlaybackRights(id: data.id!)
                     
@@ -1273,7 +1277,7 @@
                 }
                 
                 
-                print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
+               // print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
                 DispatchQueue.main.async {
                     self.collectionView_Recommendation.reloadData()
                    self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
@@ -1355,7 +1359,7 @@
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
@@ -1380,7 +1384,7 @@
                         {
                             if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
                             {
-                                print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
+                                //print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
                                 self.instantiatePlayer(with: (self.playbackRightsData?.url)!)
                                 
                                 //For simulator
@@ -1389,7 +1393,7 @@
                             }
                             else
                             {
-                                print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                                //print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
                                 
                                 self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
                             }
@@ -1401,8 +1405,8 @@
                             if let data = self.item as? Item
                             {
                               //  if !data.isPlaylist! {
-                                    print("data id is == \(data.id)")
-                                    print("data App type is == \(data.app?.type)")
+                                   // print("data id is == \(data.id)")
+                                    //print("data App type is == \(data.app?.type)")
                                     
                                     if data.app?.type == VideoType.Movie.rawValue
                                     {
@@ -1429,7 +1433,7 @@
                                     }
                                     else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                                     {
-                                        print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
+                                        //print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
                                         
                                         if selectedItemFromViewController == VideoType.Search || selectedItemFromViewController == VideoType.Music
                                         {
@@ -1466,14 +1470,14 @@
             
             if let responseError = error
             {
-                print(responseError)
+                //print(responseError)
                 return
             }
             
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 let code = parsedResponse["code"]
-                print("Removed from Resume Watchlist \(String(describing: code))")
+               // print("Removed from Resume Watchlist \(String(describing: code))")
                 //JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
                 if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                     homeVC.callWebServiceForResumeWatchData()
@@ -1504,12 +1508,12 @@
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
             {
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                print("Added to Resume Watchlist")
+                //print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                     homeVC.callWebServiceForResumeWatchData()
@@ -1540,7 +1544,7 @@
         self.swipeDownRecommendationView()
         
         if self.currentPlayingIndex == indexPath.row {
-            print("Video is already playing")
+            //print("Video is already playing")
             return
         }
         
@@ -1568,7 +1572,7 @@
                 self.currentItemImage = model?.banner
                 self.currentItemTitle = model?.name
                 self.currentItemDescription = model?.description
-                print("playable id is.....\(model?.id)")
+                //print("playable id is.....\(model?.id)")
                 self.callWebServiceForPlaybackRights(id: (model?.id)!)
                 
             }
@@ -1908,7 +1912,7 @@
                 CC_MD5(stringBytes, CC_LONG((stringData?.count)!), UnsafeMutablePointer<UInt8>(mutating: MD5Bytes))
             })
         })
-        print("MD5Hex: \(MD5Data.map {String(format: "%02hhx", $0)}.joined())")
+       // print("MD5Hex: \(MD5Data.map {String(format: "%02hhx", $0)}.joined())")
         return MD5Data.base64EncodedString()
     }
     
@@ -1968,7 +1972,7 @@
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
-            print("data: \(data!)")
+            //print("data: \(data!)")
             if (data != nil)
             {
                 if let decodedData = Data(base64Encoded: data!, options: []){
@@ -2000,7 +2004,7 @@
             
             if (data != nil)
             {
-                print("ASYNC Certificate data: \(data!)")
+               // print("ASYNC Certificate data: \(data!)")
                 let decodedData = Data(base64Encoded: data!, options: [])
                 completionHandler(decodedData!)
             }
@@ -2047,13 +2051,13 @@
                     do {
                         requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate!, contentIdentifier: assetId!, options: nil)
                         
-                        print("Request Bytes is \(String(describing: requestBytes))")
+                       // print("Request Bytes is \(String(describing: requestBytes))")
                         //var responseData: Data? = nil
                         let expiryDuration = 0.0
                         
                         
                         self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes!, contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration, error: error, completionHandler: { (responseData) in
-                            print("Key  is \(String(describing: responseData))")
+                          //  print("Key  is \(String(describing: responseData))")
                             
                             
                             if (responseData != nil){
@@ -2097,7 +2101,7 @@
         }
         
         var url = loadingRequest.request.url?.absoluteString
-        print(url!)
+       // print(url!)
         let contentRequest = loadingRequest.contentInformationRequest
         let dataRequest = loadingRequest.dataRequest
         //Check if the it is a content request or data request, we have to check for data request and do the m3u8 file manipulation
@@ -2126,7 +2130,7 @@
                 let punctuation = (url?.contains(".m3u8?"))! ? "&" : "?"
                 let stkeyValue = self.getSTKeyValue()
                 let urlString = url! + "\(punctuation)jct=\(self.getJCTKeyValue(with: expiryTime))&pxe=\(expiryTime)&st=\(stkeyValue)"
-                print("printing value of url \(urlString)")
+                //print("printing value of url \(urlString)")
                 do{
                     let data = try Data(contentsOf: URL(string: urlString)!)
                     dataRequest?.respond(with: data)

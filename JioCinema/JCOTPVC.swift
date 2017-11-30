@@ -257,8 +257,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                print(parsedResponse["code"]!)
-                print(responseData)
+                //parsedResponse["code"]!)
+                //print(responseData)
                 return
             }
         }
@@ -280,7 +280,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
                 
@@ -345,7 +345,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 
                 self.sendLoggedInAnalyticsEventWithFailure(errorMessage: responseError.localizedDescription)
                 
@@ -403,7 +403,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAppUser.shared.subscriberId = data["subscriberId"] as! String
         JCAppUser.shared.unique = data["uniqueId"] as! String
         JCAppUser.shared.uid = data["username"] as! String
-        print(data["uniqueId"] as! String)
+        //print(data["uniqueId"] as! String)
     }
     
     

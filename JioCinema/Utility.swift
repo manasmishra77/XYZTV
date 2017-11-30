@@ -23,7 +23,7 @@ class Utility
         do{
             try reachability?.startNotifier()
         }catch{
-            print("could not start reachability notifier")
+           // print("could not start reachability notifier")
         }
     }
     
@@ -32,15 +32,15 @@ class Utility
         if r.isReachable {
             isNetworkAvailable = true
             if (reachability?.isReachableViaWiFi)! {
-                print("Reachable via WiFi")
+               // print("Reachable via WiFi")
                 
             } else {
-                print("Reachable via Cellular")
+                //print("Reachable via Cellular")
                 
             }
         } else {
             isNetworkAvailable = false
-            print("Network not reachable")
+           // print("Network not reachable")
             let alertController = UIAlertController.init(title: networkErrorMessage, message: "", preferredStyle: .alert)
             
             alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { (action) in
@@ -91,11 +91,9 @@ class Utility
     {
         previousScreenName = currentScreenName
         currentScreenName = screenName
-      let snavInternalEvent = JCAnalyticsEvent.sharedInstance.getSNAVEventForInternalAnalytics(currentScreen: previousScreenName, nextScreen: currentScreenName, durationInCurrentScreen: String(screenDisAppearTime))
+      let snavInternalEvent = JCAnalyticsEvent.sharedInstance.getSNAVEventForInternalAnalytics(currentScreen: previousScreenName, nextScreen: currentScreenName, durationInCurrentScreen: String(Int(screenDisAppearTime)))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: snavInternalEvent)
     }
-    
-    
 }
 
 extension Date

@@ -35,6 +35,12 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     
     override func viewDidAppear(_ animated: Bool)
     {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
         screenAppearTime = Date()
 
         self.tabBarController?.delegate = self
@@ -52,13 +58,14 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         }
         baseTableView.reloadData()
         
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
+//        //Clevertap Navigation Event
+//        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
+//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+//        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -206,7 +213,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data
@@ -252,7 +259,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             
             if let responseError = error
             {
-                print(responseError)
+                //print(responseError)
                 return
             }
             

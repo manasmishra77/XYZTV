@@ -145,7 +145,7 @@ class JCTabBarController: UITabBarController {
                 
                 if(isOnJioNetwork == false)
                 {
-                    print("Not on jio network")
+                   // print("Not on jio network")
                     DispatchQueue.main.async {
                         weakSelf?.presentLoginVC()
                     }
@@ -248,7 +248,7 @@ class JCTabBarController: UITabBarController {
             JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
                 if(isOnJioNetwork == false)
                 {
-                    print("Not on jio network")
+                   // print("Not on jio network")
                     if let item = currentPlayableItem as? Item
                     {
                         if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue ||
@@ -269,7 +269,7 @@ class JCTabBarController: UITabBarController {
                 {
                     //proceed without checking any login
                     weakSelf?.prepareToPlay()
-                    print("Is on jio network")
+                   // print("Is on jio network")
                 }
             }
         }
@@ -277,7 +277,7 @@ class JCTabBarController: UITabBarController {
     
     func showMetadata()
     {
-        print("show metadata")
+        //print("show metadata")
         let selectedItem:Item = currentPlayableItem as! Item
         Log.DLog(message: selectedItem.id as AnyObject)
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
@@ -308,7 +308,7 @@ class JCTabBarController: UITabBarController {
     {
         if currentPlayableItem != nil, JCLoginManager.sharedInstance.isLoginFromSettingsScreen == false
         {
-            print("play video")
+            //print("play video")
             if playerVC_Global != nil {
                 return
             }
@@ -349,8 +349,8 @@ class JCTabBarController: UITabBarController {
                     playerVC.currentItemDuration = String(describing: item.totalDuration)
                     playerVC.currentItemDescription = item.description
                     
-                    print(item.id)
-                    print(latestEpisodeId)
+                  //  print(item.id)
+                  //  print(latestEpisodeId)
                     
                     if latestEpisodeId != "-1"
                     {

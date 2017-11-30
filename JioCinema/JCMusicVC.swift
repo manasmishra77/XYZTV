@@ -34,6 +34,11 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Music")
         screenAppearTime = Date()
 
         self.tabBarController?.delegate = self
@@ -41,13 +46,10 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         {
             callWebServiceForMusicData(page: loadedPage)
         }
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Music")
+
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
     }
     
     override func didReceiveMemoryWarning() {
@@ -191,7 +193,7 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+             //   print(responseError)
                 return
             }
             if let responseData = data

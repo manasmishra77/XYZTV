@@ -19,8 +19,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
-    
-    
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -34,7 +33,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.baseTableView.dataSource = self
         
         //Clevertap screen viewed event
-        let eventProperties = ["Screen Viewed":"Home","Platform":"TVOS"]
+        let eventProperties = ["Screen Viewed": "Home", "Platform": "TVOS"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen View", properties: eventProperties)
         
         
@@ -44,11 +43,19 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-        
+        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+ 
     }
     override func viewDidAppear(_ animated: Bool)
     {
+        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Home","Platform": "TVOS","Metadata Page": ""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        Utility.sharedInstance.handleScreenNavigation(screenName: "Home")
+        
+//        //Internal Analytics
+//        JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
         screenAppearTime = Date()
         
         self.tabBarController?.delegate = self
@@ -62,14 +69,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         {
             baseTableView.reloadData()
         }
-        
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Home","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Home")
-        
-        //Internal Analytics
-        JCAnalyticsManager.sharedInstance.screenNavigation(screenName: "Home", customParameters: [String:String]())
+
     }
  
     
@@ -217,7 +217,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //print(responseError)
                 return
             }
             if let responseData = data
@@ -248,7 +248,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 return
             }
             if let responseData = data
@@ -376,7 +376,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+                //responseError)
                 return
             }
             
@@ -412,7 +412,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             if let responseError = error
             {
                 //TODO: handle error
-                print(responseError)
+               // print(responseError)
                 //weakSelf?.dispatchGroup.leave()
                 return
             }

@@ -32,9 +32,13 @@ class JCAnalyticsEvent: NSObject {
         let hash = convertStringToMD5Hash(artistName: sid)
         let hexEncodedHash = hash.hexEncodedString()
         
-        let rtcEpoch = String(describing:Date().timeIntervalSince1970)
+        let rtcEpoch = String(describing:Int(Date().timeIntervalSince1970))
+        let avnString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+//        if let avnValue = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String{
+//            avnString = avnValue
+//        }
         
-        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
+        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid, "crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk": "WIFI","dtpe":"B","osv": UIDevice.current.systemVersion,"mnu":"apple","avn": avnString,"key":eventKey,"pro": proDictionary] as [String : Any]
         return finalDictionary
     }
     
@@ -74,7 +78,7 @@ class JCAnalyticsEvent: NSObject {
         let eventDictionary = ["platform":"TVOS",
                                "cid":contentId,
                                "epos":playerCurrentPositionWhenMediaEnds,
-                               "ts":ts,
+                               "ts": ts,
                                "ref":"player",
                                "s":videoStartPlayingTime,
                                "bd":bufferDuration,
@@ -115,7 +119,7 @@ class JCAnalyticsEvent: NSObject {
     
     func sendEventForInternalAnalytics(paramDict: [String: Any]) {
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: JCANALYTICSEVENT_URL, params: paramDict, encoding: .JSON)
-        print(paramDict)
+        //print(paramDict)
         
         
         RJILApiManager.defaultManager.post(request: loginRequest)
@@ -123,13 +127,13 @@ class JCAnalyticsEvent: NSObject {
             (data, response, error) in
             if let responseError = error
             {
-                print(responseError)
+                //print(responseError)
                 return
             }
             
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                print(parsedResponse)
+                //print(parsedResponse)
                 if let code = parsedResponse["code"] as? Int{
                     if(code == 200)
                     {

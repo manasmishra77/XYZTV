@@ -37,9 +37,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
        //jioIdTextField.text     = "pallavtrivedi-4"
-       //passwordTextField.text  = "pallav@1010"
-        //jioIdTextField.text     = "poonam2016"
-        //passwordTextField.text  = "poonam@12"
+       //passwordTextField.text  = "pallav@1010" 
+//        jioIdTextField.text     = "poonam2016"
+//        passwordTextField.text  = "poonam@12"
+                jioIdTextField.text     = "digambarbhat-236"
+                passwordTextField.text  = "Digu@1991"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -56,7 +58,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 (data, response, error) in
                 if let responseError = error
                 {
-                    print(responseError)
+                    //print(responseError)
                     //Analytics for Login Fail
                     self.sendLoggedInAnalyticsEventWithFailure(errorMessage: (error?.localizedDescription)!)
                     return

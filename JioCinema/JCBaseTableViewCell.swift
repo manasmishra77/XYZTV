@@ -45,7 +45,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
         
         
-        
     }
     
     
@@ -240,7 +239,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 }
                 else
                 {
-                    print("$$$$ Handle Player")
+                    //print("$$$$ Handle Player")
                     if JCLoginManager.sharedInstance.isUserLoggedIn()
                     {
                         self.openPlayerVC(item: item!)
@@ -350,7 +349,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
             return 15
         }
         
-        return 30
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
