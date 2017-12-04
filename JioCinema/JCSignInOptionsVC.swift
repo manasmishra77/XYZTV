@@ -41,10 +41,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       jioIdTextField.text     = "pallavtrivedi-4"
-       passwordTextField.text  = "pallav@1010"
-//     jioIdTextField.text     = "poonam2016"
-//     passwordTextField.text  = "poonam@12"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
+        //     jioIdTextField.text     = "poonam2016"
+        //     passwordTextField.text  = "poonam@12"
         
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0)
         {
@@ -82,8 +82,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         //Updates after login
                         if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
                             if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-                                    homevc.callWebServiceForResumeWatchData()
-                                }
+                                homevc.callWebServiceForResumeWatchData()
+                                homevc.callWebServiceForUserRecommendationList()
+                            }
                             if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
                                 movieVC.callWebServiceForMoviesWatchlist()
                             }
@@ -96,7 +97,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
                                 if loginPresentedFromItemCell!{
                                     if let vc = vc as? JCHomeVC {
-                                           vc.playItemAfterLogin()
+                                        vc.playItemAfterLogin()
                                     }
                                     else if (vc as? JCMoviesVC) != nil {
                                         //vc.playItemAfterLogin()
@@ -135,7 +136,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             })
                         }
                         self.sendLoggedInAnalyticsEventWithSuccess()
-                       
+                        
                         
                     }
                     else if(code == 400)
@@ -144,7 +145,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
                     }
                     else{
-                       self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
                     }
                 }
             }
@@ -181,7 +182,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         }
     }
     
-        
+    
     func setUserData(userData: [String:Any])
     {
         let result = userData["result"] as? [String:Any]
@@ -201,7 +202,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     func navigateToHomeVC()
     {
-        DispatchQueue.main.async {            
+        DispatchQueue.main.async {
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
             let navController = UINavigationController.init(rootViewController: tabBarController)
             navController.navigationBar.isHidden = true
@@ -223,7 +224,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         }
     }
     
-   fileprivate func showAlert(alertString:String)
+    fileprivate func showAlert(alertString:String)
     {
         let alert = UIAlertController(title: "Alert",
                                       message: alertString,
@@ -265,5 +266,6 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     
     
-
+    
 }
+

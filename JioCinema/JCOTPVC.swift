@@ -286,7 +286,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 //TODO: handle error
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-               
+                
                 
                 //                return
                 DispatchQueue.main.async {
@@ -347,6 +347,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
                         if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
                             homevc.callWebServiceForResumeWatchData()
+                            homevc.callWebServiceForUserRecommendationList()
                         }
                         if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
                             movieVC.callWebServiceForMoviesWatchlist()
@@ -468,9 +469,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         
         let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioNumberTFLabel.text!, errorMessage: errorMessage)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
-
+        
         
     }
     
     
 }
+

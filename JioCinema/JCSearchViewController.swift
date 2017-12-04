@@ -14,6 +14,10 @@ class JCSearchViewController: UISearchController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage"))
+        imageView.frame = self.view.frame
+        self.view.addSubview(imageView)
+        self.view.sendSubview(toBack: imageView)
         
         
     }

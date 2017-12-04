@@ -30,7 +30,7 @@ let networkErrorMessage = "No network available"
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-let basePath = prodBase
+let basePath = qaBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
@@ -70,6 +70,7 @@ let languageListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c5
 let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/29")
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
+let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
