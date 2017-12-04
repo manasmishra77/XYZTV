@@ -40,8 +40,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
        //passwordTextField.text  = "pallav@1010" 
 //        jioIdTextField.text     = "poonam2016"
 //        passwordTextField.text  = "poonam@12"
-                jioIdTextField.text     = "digambarbhat-236"
-                passwordTextField.text  = "Digu@1991"
+//                jioIdTextField.text     = "digambarbhat-236"
+//                passwordTextField.text  = "Digu@1991"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
