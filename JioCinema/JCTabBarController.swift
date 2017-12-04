@@ -41,10 +41,16 @@ class JCTabBarController: UITabBarController {
         
         
         let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
-        searchVC.view.backgroundColor = .black
+        searchVC.view.backgroundColor = .clear
         
         let searchViewController = UISearchController(searchResultsController: searchVC)
         searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
+        
+        let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage")!)
+        imageView.frame = searchViewController.view.frame
+        searchViewController.view.addSubview(imageView)
+        searchViewController.view.sendSubview(toBack: imageView)
+        //searchViewController.view.backgroundColor = .clear
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
         searchViewController.searchBar.barTintColor = UIColor.black
@@ -54,7 +60,7 @@ class JCTabBarController: UITabBarController {
         searchViewController.searchBar.searchBarStyle = .minimal
         searchVC.searchViewController = searchViewController
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
-        searchContainerController.view.backgroundColor = UIColor.black
+        searchContainerController.view.backgroundColor = UIColor.clear
         //searchContainerController.tabBarItem = UITabBarItem.init(title: "Search", image: nil, tag: 5)
      
         //ToSetSearchVC,TBC

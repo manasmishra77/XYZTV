@@ -7,6 +7,7 @@ struct CheckVersionData {
 	var mandatory : Bool?
 	var description : String?
 	var heading : String?
+    var buildNumber: Int? = nil
     
     
 

@@ -97,7 +97,7 @@
             //var unit = "kBps"
             if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate
             {
-                var bitrate : Int =  Int(observedBitrate / (8*1024))
+                let bitrate : Int =  Int(observedBitrate / (8*1024))
 //            if bitrate > 1000 {
 //                //Make it Mbps
 //                bitrate = bitrate / 1024

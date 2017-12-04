@@ -1316,6 +1316,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="erQ-kh-6RM">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ns8-il-pSj">
                                 <rect key="frame" x="0.0" y="0.0" width="960" height="1080"/>
                                 <subviews>
@@ -1342,6 +1345,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZL-rz-ek8">
                                                 <rect key="frame" x="409" y="77" width="143" height="46"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1374,12 +1378,16 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="08P-AM-f1g" firstAttribute="top" secondItem="ns8-il-pSj" secondAttribute="bottom" constant="-60" id="1ev-e2-WuB"/>
+                            <constraint firstItem="08P-AM-f1g" firstAttribute="top" secondItem="erQ-kh-6RM" secondAttribute="bottom" constant="-60" id="6GK-mX-eDw"/>
                             <constraint firstItem="HUu-Mq-dHq" firstAttribute="width" secondItem="ns8-il-pSj" secondAttribute="width" id="8CU-Qq-eAg"/>
+                            <constraint firstAttribute="trailing" secondItem="erQ-kh-6RM" secondAttribute="trailing" id="GSd-n2-goZ"/>
                             <constraint firstItem="ns8-il-pSj" firstAttribute="leading" secondItem="gac-PN-58P" secondAttribute="leading" id="LE6-dp-kGc"/>
+                            <constraint firstItem="erQ-kh-6RM" firstAttribute="leading" secondItem="gac-PN-58P" secondAttribute="leading" id="QTA-MS-h9s"/>
                             <constraint firstItem="HUu-Mq-dHq" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="Qbg-9u-Htx"/>
                             <constraint firstAttribute="trailing" secondItem="HUu-Mq-dHq" secondAttribute="trailing" id="TWM-Kb-xdx"/>
                             <constraint firstItem="ns8-il-pSj" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="cGV-pU-ZiH"/>
                             <constraint firstItem="08P-AM-f1g" firstAttribute="top" secondItem="HUu-Mq-dHq" secondAttribute="bottom" constant="-60" id="e0e-RN-Tce"/>
+                            <constraint firstItem="erQ-kh-6RM" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="gkP-2f-s0m"/>
                             <constraint firstItem="HUu-Mq-dHq" firstAttribute="leading" secondItem="ns8-il-pSj" secondAttribute="trailing" id="uSZ-EY-boo"/>
                         </constraints>
                     </view>

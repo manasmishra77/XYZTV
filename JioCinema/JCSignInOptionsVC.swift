@@ -40,8 +40,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
        //passwordTextField.text  = "pallav@1010" 
 //        jioIdTextField.text     = "poonam2016"
 //        passwordTextField.text  = "poonam@12"
-//                jioIdTextField.text     = "digambarbhat-236"
-//                passwordTextField.text  = "Digu@1991"
+                jioIdTextField.text     = "digambarbhat-236"
+                passwordTextField.text  = "Digu@1991"
         
         if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
         {
@@ -176,11 +176,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         if JCAppReference.shared.isTempVCRootVCInSearchNC!{
             JCAppReference.shared.isTempVCRootVCInSearchNC = false
             let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
-            searchVC.view.backgroundColor = .black
+            searchVC.view.backgroundColor = .clear
             
             let searchViewController = UISearchController.init(searchResultsController: searchVC)
             searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-            searchViewController.view.backgroundColor = .black
+            searchViewController.view.backgroundColor = .clear
             searchViewController.searchBar.placeholder = "Search"
             searchViewController.searchBar.tintColor = UIColor.white
             searchViewController.searchBar.barTintColor = UIColor.black
@@ -191,7 +191,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             searchViewController.searchBar.searchBarStyle = .minimal
             searchVC.searchViewController = searchViewController
             let searchContainerController = UISearchContainerViewController(searchController: searchViewController)
-            searchContainerController.view.backgroundColor = UIColor.black
+            searchContainerController.view.backgroundColor = UIColor.clear
             if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
                 navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
             }

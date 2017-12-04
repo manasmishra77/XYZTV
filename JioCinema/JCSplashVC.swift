@@ -169,7 +169,24 @@ class JCSplashVC: UIViewController {
             {
                 let checkModel = weakSelf?.parseCheckVersionData(responseData)
                 let versionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1000"
-                if let currentVersion = Float(versionString), let upComingVersion = checkModel?.result?.data?[0].version{
+                let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+                
+                // If build number is coming from back-end
+                if let currentBuildNumber = Int(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].buildNumber, upComingBuildNumber != 0{
+                    if upComingBuildNumber > currentBuildNumber{
+                        if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
+                            weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
+                        }else{
+                            weakSelf?.showUpdateAlert(isMandatory: false, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
+                        }
+                    }
+                    else{
+                        weakSelf?.callWebServiceForConfigData()
+                    }
+                }
+                
+                //If version string is coming from back-end
+                else if let currentVersion = Float(versionString), let upComingVersion = checkModel?.result?.data?[0].version{
                     if currentVersion < upComingVersion{
                         if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
                             weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
@@ -179,11 +196,11 @@ class JCSplashVC: UIViewController {
                     }else{
                         weakSelf?.callWebServiceForConfigData()
                     }
-                }else{
+                }
+                else
+                {
                     weakSelf?.callWebServiceForConfigData()
                 }
-                
-                
                 return
             }
         }
@@ -200,7 +217,7 @@ class JCSplashVC: UIViewController {
                     if let resultDataDict = resultDict["result"] as? [String: Any]{
                         if let resultDataArray = resultDataDict["data"] as? [[String: Any]]{
                             let resultData = resultDataArray.first
-                            var checkModelData = CheckVersionData(version: nil, url: nil, mandatory: nil, description: nil, heading: nil)
+                            var checkModelData = CheckVersionData(version: nil, url: nil, mandatory: nil, description: nil, heading: nil, buildNumber: nil)
                             if resultData != nil{
                             let versionString = resultData!["version"] as? String ?? "0"
                             checkModelData.version = Float(versionString)
@@ -208,6 +225,7 @@ class JCSplashVC: UIViewController {
                             checkModelData.heading = resultData!["heading"] as? String
                             checkModelData.url = resultData!["url"] as? String
                             checkModelData.mandatory = resultData!["mandatory"] as? Bool
+                            checkModelData.buildNumber = resultData!["buildnumber"] as? Int ?? 0
                             checkModel.result = CheckVersionResult(data: [checkModelData])
                             return checkModel
                             }

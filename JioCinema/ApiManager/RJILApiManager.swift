@@ -338,12 +338,14 @@ class RJILApiManager {
             
             self.httpStatusCode = httpResponse.statusCode
             
+            
+            /*
             //TODO: will I come across this scenario
             /*//This condition is added to simulate refresh toke scenario
              if gSimulateRefreshTokenScenario { self.httpStatusCode = 400 }
              */
             
-            /* if self.httpStatusCode == 419 { //Authentication Failed Refresh Token
+             if self.httpStatusCode == 419 { //Authentication Failed Refresh Token
              //Authentication Failed
              //Check if token is getting refreshed
              if RJILApiManager.defaultManager.isRefreshingToken == false{
@@ -445,7 +447,14 @@ class RJILApiManager {
              }
              errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
              completion(nil, nil, NSError(domain: kApplicationErrorDomain, code: 400, userInfo: errorInfo))
-             }*/
+             } */
+            
+            
+            
+            
+            
+            
+            
             
             //TODO: error domain
             if self.httpStatusCode == 504{

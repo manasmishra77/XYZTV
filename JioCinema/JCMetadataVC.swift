@@ -806,11 +806,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         //present search from here
         
         let artistSearchVC = JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
-        artistSearchVC.view.backgroundColor = .black
+        artistSearchVC.view.backgroundColor = .clear
         
         let searchViewController = UISearchController(searchResultsController: artistSearchVC)
         searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        searchViewController.view.backgroundColor = .black
+        searchViewController.view.backgroundColor = .clear
         searchViewController.searchBar.placeholder = "Search"
         searchViewController.searchBar.tintColor = UIColor.white
         searchViewController.searchBar.barTintColor = UIColor.black
@@ -835,11 +835,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if JCAppReference.shared.isTempVCRootVCInSearchNC!{
             JCAppReference.shared.isTempVCRootVCInSearchNC = false
             let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
-            searchVC.view.backgroundColor = .black
+            searchVC.view.backgroundColor = .clear
             
             let searchViewController = UISearchController.init(searchResultsController: searchVC)
             searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-            searchViewController.view.backgroundColor = .black
+            searchViewController.view.backgroundColor = .clear
             searchViewController.searchBar.placeholder = "Search"
             searchViewController.searchBar.tintColor = UIColor.white
             searchViewController.searchBar.barTintColor = UIColor.black
@@ -850,7 +850,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             searchViewController.searchBar.searchBarStyle = .minimal
             searchVC.searchViewController = searchViewController
             let searchContainerController = UISearchContainerViewController(searchController: searchViewController)
-            searchContainerController.view.backgroundColor = UIColor.black
+            searchContainerController.view.backgroundColor = .clear
             if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
                 navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
             }
