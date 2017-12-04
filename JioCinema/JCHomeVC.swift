@@ -104,7 +104,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 }
             }
             if isGenereDataAvailable{
-                let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition)! ?? 6
+                let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition) ?? 6
                 if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0]{
                     if pos < dataItemsForTableview.count{
                         dataItemsForTableview.insert(genreData, at: pos)

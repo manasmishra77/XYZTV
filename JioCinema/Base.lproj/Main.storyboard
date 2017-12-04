@@ -1796,6 +1796,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="waI-Mq-l0q">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ns8-il-pSj">
                                 <rect key="frame" x="0.0" y="0.0" width="960" height="1080"/>
                                 <subviews>
@@ -1858,8 +1861,12 @@
                             <constraint firstItem="ns8-il-pSj" firstAttribute="leading" secondItem="gac-PN-58P" secondAttribute="leading" id="LE6-dp-kGc"/>
                             <constraint firstItem="HUu-Mq-dHq" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="Qbg-9u-Htx"/>
                             <constraint firstAttribute="trailing" secondItem="HUu-Mq-dHq" secondAttribute="trailing" id="TWM-Kb-xdx"/>
+                            <constraint firstItem="waI-Mq-l0q" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="aVd-VE-eIB"/>
                             <constraint firstItem="ns8-il-pSj" firstAttribute="top" secondItem="oP9-rh-hs9" secondAttribute="bottom" constant="-60" id="cGV-pU-ZiH"/>
                             <constraint firstItem="08P-AM-f1g" firstAttribute="top" secondItem="HUu-Mq-dHq" secondAttribute="bottom" constant="-60" id="e0e-RN-Tce"/>
+                            <constraint firstAttribute="trailing" secondItem="waI-Mq-l0q" secondAttribute="trailing" id="fUM-JB-FtF"/>
+                            <constraint firstItem="waI-Mq-l0q" firstAttribute="leading" secondItem="gac-PN-58P" secondAttribute="leading" id="iME-vn-EQm"/>
+                            <constraint firstItem="08P-AM-f1g" firstAttribute="top" secondItem="waI-Mq-l0q" secondAttribute="bottom" constant="-60" id="mEF-H5-EsL"/>
                             <constraint firstItem="HUu-Mq-dHq" firstAttribute="leading" secondItem="ns8-il-pSj" secondAttribute="trailing" id="uSZ-EY-boo"/>
                         </constraints>
                     </view>
