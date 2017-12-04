@@ -8,10 +8,10 @@
 
 import UIKit
 
-class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
+class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
-    
     var loadedPage = 0
+    fileprivate var screenAppearTiming = Date()
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -23,7 +23,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         super.viewDidLoad()
         callWebServiceForClipsData(page: loadedPage)
         
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
         self.baseTableView.delegate = self
@@ -34,13 +34,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Clips")
-        
-        screenAppearTime = Date()
+        screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.clipsData?.data == nil
@@ -48,11 +42,13 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             callWebServiceForClipsData(page: loadedPage)
         }
         
-    
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
-       // screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-     
+        Utility.sharedInstance.handleScreenNavigation(screenName: CLIP_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,7 +85,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.itemFromViewController = VideoType.Clip
-        cell.categoryTitleLabel.tag = indexPath.row + 500000
+        cell.cellDelgate = self
 
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
@@ -122,21 +118,16 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
-            /*
-             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-             headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
-             headerCell.itemFromViewController = VideoType.Music
-             headerCell.headerCollectionView.tag = 0
-             return headerCell
-             */
+            
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
             carouselView.carouselArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].items)!
             carouselView.loadViews()
             uiviewCarousel = carouselView
-            selectedItemFromViewController = VideoType.Clip
-            collectionIndex = 0
+            carouselView.carouselDelegate = self
+//            selectedItemFromViewController = VideoType.Clip
+//            collectionIndex = 0
             return carouselView
         }
         else
@@ -184,7 +175,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     
-    func callWebServiceForClipsData(page:Int)
+    func callWebServiceForClipsData(page: Int)
     {
         if !Utility.sharedInstance.isNetworkAvailable
         {
@@ -199,7 +190,7 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             if let responseError = error
             {
                 //TODO: handle error
-                //print(responseError)
+                print(responseError)
                 return
             }
             if let responseData = data
@@ -250,7 +241,6 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
                 if cells.count <= 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }
-                
             }
         }
     }
@@ -264,7 +254,76 @@ class JCClipsVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
         }
+        //Making tab bar delegate searchvc
+        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
+                if let searchVc = svc.searchController.searchResultsController as? JCSearchVC{
+                    tabBarController.delegate = searchVc
+            }
+        }
     }
     
+    //MARK:- JCBaseTableCell Delegate Methods
+    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if let tappedItem = item as? Item{
+            print(tappedItem)
+            
+            if tappedItem.app?.type == VideoType.Clip.rawValue{
+                print("At Clip")
+                checkLoginAndPlay(tappedItem, categoryName: (baseCell?.categoryTitleLabel.text!)!, categoryIndex: indexFromArray)
+            }
+        }
+    }
+    
+    func didTapOnCarouselItem(_ item: Any?) {
+        if let tappedItem = item as? Item{
+             if tappedItem.app?.type == VideoType.Clip.rawValue{
+                print("At Clip")
+                checkLoginAndPlay(tappedItem, categoryName: "Carousel", categoryIndex: 0)
+            }
+        }
+    }
+
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        //weak var weakSelf = self
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
+        }
+        else
+        {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
+    {
+        if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
+            if appType == .Clip || appType == .Music || appType == .Trailer{
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: CLIP_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "" )
+                self.present(playerVC, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func presentLoginVC()
+    {
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        self.present(loginVC, animated: true, completion: nil)
+    }
     
 }

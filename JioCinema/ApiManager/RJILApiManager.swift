@@ -46,11 +46,11 @@ class RJILApiManager {
 //        }
     }
     
-    func put(request:URLRequest, completion: @escaping RequestCompletionBlock) {
+    func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "PUT", completion: completion)
     }
     
-    func get(request:URLRequest, completion: @escaping RequestCompletionBlock) {
+    func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
 
 //        if isNetworkAvailable
@@ -178,8 +178,8 @@ class RJILApiManager {
             return json as? [String:Any]
             
         }catch let error {
-           // print(String(data: data, encoding: .utf8) ?? "")
-           // print(error.localizedDescription)
+            print(String(data: data, encoding: .utf8) ?? "")
+            print(error.localizedDescription)
         }
         
         return nil
@@ -210,7 +210,7 @@ class RJILApiManager {
                     request?.httpBody = jsonData
                 }
                 catch{
-                   // print(error)
+                    print(error)
                 }
                 break
             case .BODY:
@@ -243,7 +243,7 @@ class RJILApiManager {
                     paramString += escapedKey! + "=" + escapedValue! + "&"
                 }
                 
-                if paramString.characters.last == "&"{
+                if paramString.last == "&"{
                     paramString = paramString.substring(to: paramString.index(before: paramString.endIndex))
                 }
                 
@@ -266,7 +266,6 @@ class RJILApiManager {
             {
                 request?.allHTTPHeaderFields = subIdHeaders
             }
-                
             else
             {
                 request?.allHTTPHeaderFields = commonHeaders
@@ -288,11 +287,11 @@ class RJILApiManager {
             dataDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: { (location,response,error) in
                 if location != nil {
                     do{
-                        let responseData:Data = try Data(from: location! as! Decoder)
+                        let responseData:Data = try Data(contentsOf: location!)
                         completion(urlString, responseData)
                     }
                     catch{
-                        //print(error)
+                        print(error)
                         completion(urlString, nil)
                     }
                 }
@@ -339,9 +338,11 @@ class RJILApiManager {
             self.httpStatusCode = httpResponse.statusCode
             
             
+            
+            
             /*
             //TODO: will I come across this scenario
-            /*//This condition is added to simulate refresh toke scenario
+            /*//This condition is added to simulate refresh token scenario
              if gSimulateRefreshTokenScenario { self.httpStatusCode = 400 }
              */
             
@@ -447,7 +448,10 @@ class RJILApiManager {
              }
              errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
              completion(nil, nil, NSError(domain: kApplicationErrorDomain, code: 400, userInfo: errorInfo))
-             } */
+             }*/
+            
+            
+            
             
             
             

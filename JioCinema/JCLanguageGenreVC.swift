@@ -96,7 +96,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
             if let responseError = error
             {
-              //  print(responseError.localizedDescription)
+                print(responseError.localizedDescription)
                 return
             }
             
@@ -142,8 +142,6 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                                 weakself?.languageGenreCollectionView.reloadData()
                             }
                         }
-                        
-                       
                     }
                 }
             }
@@ -237,6 +235,57 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         loadedPage = 0
     }
     
+    
+    func presentLoginVC()
+    {
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        self.present(loginVC, animated: true, completion: nil)
+    }
+    
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int, fromScreen: String)
+    {
+        if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
+            if appType == .Clip || appType == .Music || appType == .Trailer{
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                self.present(playerVC, animated: true, completion: nil)
+            }
+            else if appType == .Episode{
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                self.present(playerVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    
+    
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        //weak var weakSelf = self
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            let fromScreen = (item?.app?.type == VideoType.Language.rawValue) ? LANGUAGE_SCREEN : GENRE_SCREEN
+            prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex, fromScreen: fromScreen)
+        }
+        else
+        {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    
 }
 
 extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
@@ -257,7 +306,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
 
-        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner
+        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner!
         {
             cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
             let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
@@ -288,79 +337,47 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        collectionIndex = collectionView.tag
-        categoryTitle = (languageGenreDetailModel?.data?.items?[indexPath.row].name!)!
-        
-        if item?.app?.type == VideoType.Language.rawValue {
-            selectedItemFromViewController = VideoType.Language
-        }
-        else if item?.app?.type == VideoType.Genre.rawValue {
-            selectedItemFromViewController = VideoType.Genre
-        }
-        
-        let videoType = item?.list![currentType].id
-        
-        if let playableItem = (languageGenreDetailModel?.data?.items?[indexPath.row]){
-            currentPlayableItem = playableItem
-        }
-        if videoType == VideoType.Movie.rawValue || videoType == VideoType.TVShow.rawValue
-        {
-            showMetaData(forItemIndex: indexPath.row)
-        }
-        else
-        {
-            if JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
-                showPlayerVC(forIndexPath: indexPath.row)
+        let categoryName = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
+        let fromScreen = (item?.app?.type == VideoType.Language.rawValue) ? LANGUAGE_SCREEN : GENRE_SCREEN
+        if let tappedItem = languageGenreDetailModel?.data?.items?[indexPath.row]{
+            if tappedItem.app?.type == VideoType.Movie.rawValue{
+                print("At Movie")
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
+                self.present(metadataVC, animated: true, completion: nil)
             }
-            else
-            {
-                presentLoginVC()
+            else if tappedItem.app?.type == VideoType.Music.rawValue{
+                print("At Music")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
+            }
+            else if tappedItem.app?.type == VideoType.TVShow.rawValue{
+                print("At TvShow")
+                if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
+                    if drn > 0{
+                        tappedItem.app?.type = VideoType.Episode.rawValue
+                        //checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+                    }else{
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
+                        self.present(metadataVC, animated: true, completion: nil)
+                    }
+                }else{
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
+                    self.present(metadataVC, animated: true, completion: nil)
+                }
+            }
+            else if tappedItem.app?.type == VideoType.Episode.rawValue{
+                print("At Episode")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
+            }
+            else if tappedItem.app?.type == VideoType.Clip.rawValue{
+                print("At Clip")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
+            }
+            else if tappedItem.app?.type == VideoType.Trailer.rawValue{
+                print("At Trailer")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
             }
         }
         
     }
     
-    func presentLoginVC()
-    {
-        let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
-        loginVC.modalPresentationStyle = .overFullScreen
-        loginVC.modalTransitionStyle = .coverVertical
-        loginVC.view.layer.speed = 0.7
-        self.present(loginVC, animated: true, completion: nil)
-    }
-    
-    fileprivate func showMetaData(forItemIndex itemIndex: Int)
-    {
-        let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-        metadataVC.item = languageGenreDetailModel?.data?.items?[itemIndex]
-        metadataVC.modalPresentationStyle = .overFullScreen
-        metadataVC.modalTransitionStyle = .coverVertical
-        self.present(metadataVC, animated: false, completion: nil)
-    }
-    
-    fileprivate func showPlayerVC(forIndexPath index:Int)
-    {
-        if playerVC_Global != nil {
-            return
-        }
-        let model = languageGenreDetailModel?.data?.items?[index]
-        
-        //let playerId = languageGenreDetailModel?.data?.items?[index].id
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.currentItemDescription = languageGenreDetailModel?.data?.items?[index].description
-        playerVC.currentItemTitle = languageGenreDetailModel?.data?.items?[index].name
-        playerVC.currentItemImage = languageGenreDetailModel?.data?.items?[index].banner
-        
-        
-        playerVC.item = model
-        //playerVC.currentItemDuration = languageGenreDetailModel?.data?.items?[index].totalDuration
-        
-        //OPTIMIZATION PLAYERVC
-       // playerVC.callWebServiceForPlaybackRights(id: playerId!)
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
-        
-        self.present(playerVC, animated: false, completion: nil)
-    }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,10 +19,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1070"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItB-lo-Op8">
-                            <rect key="frame" x="-1490" y="0.0" width="1600" height="1010"/>
+                            <rect key="frame" x="-1490" y="60" width="1600" height="950"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYZ-De-tSz" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="1010"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -37,10 +37,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgV-FY-Ztf">
-                            <rect key="frame" x="160" y="0.0" width="1600" height="1010"/>
+                            <rect key="frame" x="160" y="60" width="1600" height="950"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOS-dx-0Sr" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="1010"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -63,10 +63,10 @@
                             </connections>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6U-N3-jrm">
-                            <rect key="frame" x="1810" y="0.0" width="1600" height="1010"/>
+                            <rect key="frame" x="1810" y="60" width="1600" height="950"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eCz-uu-G7U" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="1010"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -81,10 +81,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IE-bg-PV9">
-                            <rect key="frame" x="-3135" y="0.0" width="1600" height="1010"/>
+                            <rect key="frame" x="-3135" y="60" width="1600" height="950"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngx-b5-YWi" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="1010"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -99,10 +99,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8f-Wv-Yg7">
-                            <rect key="frame" x="3460" y="0.0" width="1600" height="1010"/>
+                            <rect key="frame" x="3460" y="60" width="1600" height="950"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Vf-7G-Kww" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="1010"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="950"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -122,13 +122,14 @@
                     <constraints>
                         <constraint firstItem="3IE-bg-PV9" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="1Dg-i4-JW2"/>
                         <constraint firstItem="cgV-FY-Ztf" firstAttribute="centerX" secondItem="ZHr-DU-B2R" secondAttribute="centerX" id="2yx-m7-X0s"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="centerY" secondItem="ZHr-DU-B2R" secondAttribute="centerY" id="7l4-WH-EQC"/>
                         <constraint firstItem="3IE-bg-PV9" firstAttribute="leading" secondItem="ZHr-DU-B2R" secondAttribute="leading" constant="-3135" id="8UA-wm-Z2Q"/>
                         <constraint firstItem="R6U-N3-jrm" firstAttribute="leading" secondItem="cgV-FY-Ztf" secondAttribute="trailing" constant="50" id="BZO-68-ZRU"/>
                         <constraint firstItem="R6U-N3-jrm" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="CdI-9b-IQo"/>
                         <constraint firstItem="ItB-lo-Op8" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="ESd-Pn-LJj"/>
                         <constraint firstItem="p8f-Wv-Yg7" firstAttribute="top" secondItem="cgV-FY-Ztf" secondAttribute="top" id="Epy-ac-aT6"/>
                         <constraint firstItem="cgV-FY-Ztf" firstAttribute="leading" secondItem="ItB-lo-Op8" secondAttribute="trailing" constant="50" id="GN6-KW-qU5"/>
-                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="top" secondItem="ZHr-DU-B2R" secondAttribute="top" id="Hid-ci-NOx"/>
+                        <constraint firstItem="cgV-FY-Ztf" firstAttribute="top" secondItem="ZHr-DU-B2R" secondAttribute="top" constant="60" id="Hid-ci-NOx"/>
                         <constraint firstItem="p8f-Wv-Yg7" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="MAJ-xY-0bT"/>
                         <constraint firstItem="ItB-lo-Op8" firstAttribute="bottom" secondItem="cgV-FY-Ztf" secondAttribute="bottom" id="Opy-pT-05S"/>
                         <constraint firstItem="ItB-lo-Op8" firstAttribute="width" secondItem="cgV-FY-Ztf" secondAttribute="width" id="TdH-Lp-5xQ"/>

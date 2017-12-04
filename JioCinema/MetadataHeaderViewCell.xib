@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13196" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,15 +18,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="kMetadataHeaderViewCell" rowHeight="800" id="fBs-An-CcD" customClass="MetadataHeaderViewCell" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1920" height="800"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="kMetadataHeaderViewCell" rowHeight="800" id="fBs-An-CcD" customClass="MetadataHeaderViewCell" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1700" height="800"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fBs-An-CcD" id="S0Q-fX-qc8">
                 <rect key="frame" x="0.0" y="0.0" width="1700" height="800"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93C-9s-wj4">
-                        <rect key="frame" x="52" y="147" width="1852" height="653"/>
+                        <rect key="frame" x="52" y="147" width="1648" height="653"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imdb_logo" translatesAutoresizingMaskIntoConstraints="NO" id="L71-wL-lsO">
                                 <rect key="frame" x="34" y="32" width="51" height="22"/>
@@ -232,21 +232,21 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DP5-TO-JuN" userLabel="BannerImage">
-                        <rect key="frame" x="806" y="0.0" width="1098" height="615"/>
+                        <rect key="frame" x="602" y="0.0" width="1098" height="615"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="615" id="Hkd-D5-Ln1"/>
                             <constraint firstAttribute="width" constant="1098" id="Zwl-Ql-N5R"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetadataImageGradient" translatesAutoresizingMaskIntoConstraints="NO" id="inc-aN-HJt" userLabel="GradientImage">
-                        <rect key="frame" x="806" y="0.0" width="1098" height="615"/>
+                        <rect key="frame" x="602" y="0.0" width="1098" height="615"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1098" id="9Zi-66-Oft"/>
                             <constraint firstAttribute="height" constant="615" id="Rpd-aj-f61"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6a-U7-ppJ">
-                        <rect key="frame" x="60" y="50" width="1794" height="87"/>
+                        <rect key="frame" x="60" y="50" width="1590" height="87"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="87" id="pXw-iZ-mlj"/>
                         </constraints>

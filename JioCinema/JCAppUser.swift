@@ -14,7 +14,7 @@ class JCAppUser:NSObject,NSCoding
     
     static var shared = JCAppUser()
     
-     override init(){} //singleTone
+    override init(){} //singleTone
     
     var jToken:String = ""
     var lbCookie:String = ""

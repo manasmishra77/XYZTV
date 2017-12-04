@@ -27,7 +27,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
     var timerCount = 0
-    let containerView = UIView.init(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
+    let containerView = UIView(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
+    
+    var isLoginPresentedFromAddToWatchlist = false
+    var isLoginPresentedFromPlayNowButtonOfMetaData = false
+    var isLoginPresentedFromItemCell = false
+    var presentingVCOfLoginVc: Any = false
     
     override func viewDidLoad()
     {
@@ -99,8 +104,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnSignInButton(_ sender: Any)
     {
-        let enteredOTP = jioNumberTFLabel.text
-        if(enteredOTP?.characters.count == 0)
+        let enteredOTP = jioNumberTFLabel.text//searchController?.searchBar.text!
+        if(enteredOTP?.count == 0)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter OTP")
         }
@@ -137,12 +142,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 number = ""
             }
             if signInButton.isHidden == true{
-                if (number?.characters.count)! > 9{
+                if (number?.count)! > 9{
                     return
                 }
             }
             else{
-                if (number?.characters.count)! > 5{
+                if (number?.count)! > 5{
                     return
                 }
             }
@@ -167,9 +172,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        //jioNumberTFLabel.text = "9082949573"
-        enteredJioNumber = jioNumberTFLabel.text
-        if(enteredJioNumber?.characters.count != 10)
+        enteredJioNumber = jioNumberTFLabel.text// searchController?.searchBar.text!
+        if(enteredJioNumber?.count != 10)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
             self.jioNumberTFLabel.text = "Enter Jio Number"
@@ -257,8 +261,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                //parsedResponse["code"]!)
-                //print(responseData)
+                print(parsedResponse["code"]!)
+                print(responseData)
                 return
             }
         }
@@ -280,9 +284,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseError = error
             {
                 //TODO: handle error
-                //print(responseError)
+                print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-               self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
+               
                 
                 //                return
                 DispatchQueue.main.async {
@@ -293,47 +297,21 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             {
                 weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
             }
-            else{
-                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
-            }
         }
     }
     
     
     fileprivate func callWebServiceToLoginViaSubId(info:[String:Any])
     {
-        
-        //let sessionAttributes = info["sessionAttributes"] as! [String:Any]
-        guard let sessionAttributes = info["sessionAttributes"] as? [String:Any] else {
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
-            }
-            return
-        }
-        guard let userData = sessionAttributes["user"] as? [String:Any] else {
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
-            }
-            return
-        }
-        //let userData = sessionAttributes["user"] as! [String:Any]
-        guard let subId = userData["subscriberId"] as? String else {
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.showAlert(alertTitle: "Unable to login", alertMessage: "")
-            }
-            return
-        }
-        let params = [subscriberIdKey: subId]
-        if let lbCookie = info["lbCookie"] as? String {
-            JCAppUser.shared.lbCookie = lbCookie
-        }
-        if let ssoToken = info["ssoToken"] as? String {
-            JCAppUser.shared.ssoToken = ssoToken
-        }
         JCLoginManager.sharedInstance.loggingInViaSubId = true
+        
+        let sessionAttributes = info["sessionAttributes"] as! [String:Any]
+        let userData = sessionAttributes["user"] as! [String:Any]
+        let subId = userData["subscriberId"] as! String
+        let params = [subscriberIdKey:subId]
+        JCAppUser.shared.lbCookie = info["lbCookie"] as! String
+        JCAppUser.shared.ssoToken = info["ssoToken"] as! String
+        
         let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         weak var weakSelf = self
@@ -345,7 +323,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseError = error
             {
                 //TODO: handle error
-                //print(responseError)
+                print(responseError)
                 
                 self.sendLoggedInAnalyticsEventWithFailure(errorMessage: responseError.localizedDescription)
                 
@@ -357,33 +335,67 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 let code = parsedResponse["messageCode"] as! Int
                 if(code == 200)
                 {
-                    weakSelf?.setUserData(data: parsedResponse )
+                    
+                    weakSelf?.setUserData(data: parsedResponse)
                     JCLoginManager.sharedInstance.setUserToDefaults()
-                    isUserLoggedOutHimself = false
-                    if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
-                        homevc.callWebServiceForResumeWatchData()
+                    let vc = weakSelf?.presentingVCOfLoginVc
+                    let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist
+                    let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData
+                    let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell
+                    
+                    //Updates after login
+                    if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
+                        if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
+                            homevc.callWebServiceForResumeWatchData()
+                        }
+                        if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
+                            movieVC.callWebServiceForMoviesWatchlist()
+                        }
+                        if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
+                            tvVc.callWebServiceForTVWatchlist()
+                        }
                     }
-                    if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
-                        movieVC.callWebServiceForMoviesWatchlist()
-                    }
-                    if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
-                        tvVC.callWebServiceForTVWatchlist()
-                    }
+                    
                     DispatchQueue.main.async {
                         weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                            if !isLoginPresentedFromAddToWatchlist
-                            {
-                                NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
+                            if loginPresentedFromItemCell!{
+                                if let vc = vc as? JCHomeVC {
+                                    vc.playItemAfterLogin()
+                                }
+                                else if (vc as? JCMoviesVC) != nil {
+                                    //vc.playItemAfterLogin()
+                                }
+                                else if (vc as? JCTVVC) != nil {
+                                    //vc.playItemAfterLogin()
+                                }
+                                else if let vc = vc as? JCMusicVC {
+                                    vc.playItemAfterLogin()
+                                }
+                                else if let vc = vc as? JCClipsVC {
+                                    vc.playItemAfterLogin()
+                                }
+                                else if let vc = vc as? JCSearchVC {
+                                    vc.playItemAfterLogin()
+                                }
+                                else if let vc = vc as? JCMetadataVC {
+                                    vc.playItemAfterLogin()
+                                }
                             }
-                            if let metaDataVC = JCAppReference.shared.metaDataVc as? JCMetadataVC{
-                                metaDataVC.callToReloadWatchListStatusWhenJustLoggedIn()
+                            if presentedFromAddToWatchList!{
+                                if let vc = vc as? JCMetadataVC{
+                                    //Change Add to watchlist button status
+                                    
+                                }
                             }
-                            
-                            isLoginPresentedFromAddToWatchlist = false
+                            if presentedFromPlayNowButtonOfMetadata!{
+                                if let vc = vc as? JCMetadataVC{
+                                    //Play after login
+                                    vc.didClickOnWatchNowButton(nil)
+                                }
+                            }
                         })
                     }
                     self.sendLoggedInAnalyticsEventWithSuccess()
-                    
                 }
                 else
                 {
@@ -403,7 +415,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAppUser.shared.subscriberId = data["subscriberId"] as! String
         JCAppUser.shared.unique = data["uniqueId"] as! String
         JCAppUser.shared.uid = data["username"] as! String
-        //print(data["uniqueId"] as! String)
     }
     
     
@@ -433,7 +444,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     //MARK:- Send Logged In Analytics Event With Success
     func sendLoggedInAnalyticsEventWithSuccess() {
         //Sending events to clever tap
-        let eventProperties = ["Source": "OTP", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+        let eventProperties = ["Source":"OTP","Platform":"TVOS","Userid":Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
         
         //Sending events for internal analytics

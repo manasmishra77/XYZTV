@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
-		19E355131FBACDE6009C7E09 /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */; };
-		19E355141FBACDE6009C7E09 /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355111FBACDE4009C7E09 /* CheckVersionData.swift */; };
-		19E355151FBACDE6009C7E09 /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */; };
+		198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */; };
+		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
+		19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */; };
+		19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */; };
 		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
 		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
 		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
@@ -102,10 +103,10 @@
 
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
-		19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
-		19E355111FBACDE4009C7E09 /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
-		19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
-		19E355161FBB0C3A009C7E09 /* JioCinema.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JioCinema.entitlements; sourceTree = "<group>"; };
+		198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
+		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
+		19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
+		19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
 		2024C4861F3C38A8003A08C3 /* Terms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terms.png; sourceTree = "<group>"; };
 		2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowGrey.png; sourceTree = "<group>"; };
 		2024C48A1F3C9C34003A08C3 /* ArrowPink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowPink.png; sourceTree = "<group>"; };
@@ -212,14 +213,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		19E3550F1FBACDC1009C7E09 /* CheckVersionModel */ = {
+		198E48711FCBD580006EEA27 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */,
-				19E355111FBACDE4009C7E09 /* CheckVersionData.swift */,
-				19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */,
+				198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */,
+				797880F81F4ECB390032943E /* JCSearchVC.swift */,
+				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
 			);
-			name = CheckVersionModel;
+			name = Search;
+			sourceTree = "<group>";
+		};
+		19ED97ED1FD5405800E43CBE /* VersionModel */ = {
+			isa = PBXGroup;
+			children = (
+				19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */,
+				19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */,
+				19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */,
+			);
+			name = VersionModel;
 			sourceTree = "<group>";
 		};
 		7B78D7B51F13A91900F319BF = {
@@ -244,7 +255,6 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
-				19E355161FBB0C3A009C7E09 /* JioCinema.entitlements */,
 				B8EADF041F9DC42C0069671B /* Analytics */,
 				7BA1C6E71F2F0702002AB966 /* Common */,
 				7BB0E2031F1DEE6100A1DB0B /* CustomCells */,
@@ -289,7 +299,7 @@
 				7BFEC4A51F154223001DFE6D /* JCAppUser.swift */,
 				7BB0E2101F1E283B00A1DB0B /* JCBaseDataModel.swift */,
 				7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */,
-				19E3550F1FBACDC1009C7E09 /* CheckVersionModel */,
+				19ED97ED1FD5405800E43CBE /* VersionModel */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -346,8 +356,7 @@
 		7BFEC4A71F154BDC001DFE6D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
-				797880F81F4ECB390032943E /* JCSearchVC.swift */,
+				198E48711FCBD580006EEA27 /* Search */,
 				7BFEC4AA1F154C42001DFE6D /* JCSplashVC.swift */,
 				7BFEC4B91F15C01A001DFE6D /* JCLoginVC.swift */,
 				7BFEC4BB1F15C647001DFE6D /* JCHomeVC.swift */,
@@ -476,9 +485,6 @@
 							com.apple.BackgroundModes.appletvos = {
 								enabled = 0;
 							};
-							com.apple.Push = {
-								enabled = 0;
-							};
 						};
 					};
 				};
@@ -550,9 +556,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -580,13 +593,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JioCinema-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -603,7 +619,6 @@
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
-				19E355131FBACDE6009C7E09 /* CheckVersionModel.swift in Sources */,
 				2025F44D1F3AEE3C00C3B609 /* JCSettingsVC.swift in Sources */,
 				7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */,
 				7B545E801F7A604C007C5004 /* JCAnalyticsManager.swift in Sources */,
@@ -612,7 +627,6 @@
 				7BE0EA4F1F30694100151D23 /* JCTVVC.swift in Sources */,
 				7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */,
 				797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */,
-				19E355141FBACDE6009C7E09 /* CheckVersionData.swift in Sources */,
 				7BFEC4BC1F15C647001DFE6D /* JCHomeVC.swift in Sources */,
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
@@ -620,7 +634,7 @@
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
-				19E355151FBACDE6009C7E09 /* CheckVersionResult.swift in Sources */,
+				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
@@ -632,6 +646,7 @@
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
+				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
@@ -642,6 +657,7 @@
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
 				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
+				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
@@ -649,6 +665,7 @@
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
+				198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */,
 				7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */,
 				797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,

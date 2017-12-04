@@ -12,5 +12,7 @@ target 'JioCinema' do
   pod 'SDWebImage', '~>3.8'
   pod 'ReachabilitySwift','~>3'
   pod 'CleverTap-iOS-SDK', :subspecs => ['tvOS']
+  pod 'Fabric'
+  pod 'Crashlytics'
 
 end

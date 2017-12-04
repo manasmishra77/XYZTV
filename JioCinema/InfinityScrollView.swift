@@ -9,20 +9,11 @@
 import UIKit
 import SDWebImage
 
-protocol JCChangeFocusForCarouselDelegate : class
-{
-    func setFocusEnvironments()
+@objc protocol JCCarouselCellDelegate {
+    @objc optional func didTapOnCarouselItem(_ item: Any?)
 }
 
 class InfinityScrollView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     @IBOutlet weak var extraLeftButton: UIButton!
     @IBOutlet weak var extraRightButton: UIButton!
@@ -32,7 +23,7 @@ class InfinityScrollView: UIView {
     var current = 1
     var newImageLoaded = true
     var myPreferredFocuseView: UIView? = nil
-    weak var changeFocusForCarouselDelegate : JCChangeFocusForCarouselDelegate?
+    weak var carouselDelegate : JCCarouselCellDelegate?
     var carouselArray = [Item]()
     //var carouselArray: [UIImage] = [UIImage(named: "T1")!, UIImage(named: "T2")!, UIImage(named: "T3")!, UIImage(named: "T4")!, UIImage(named: "T5")!]
     
@@ -218,14 +209,7 @@ class InfinityScrollView: UIView {
         
     }
     @IBAction func didClickOnMiddleButton(_ sender: Any) {
-        let itemToPlay = ["item": (carouselArray[current])]
-        
-        if let type = carouselArray[current].app?.type{
-            if let videoType = VideoType(rawValue: type){
-                selectedItemFromViewController = videoType
-            }
-        }
-        NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
+        carouselDelegate?.didTapOnCarouselItem!(carouselArray[current])
     }
     
     //Next Image call for headercell of table

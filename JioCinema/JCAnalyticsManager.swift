@@ -112,14 +112,14 @@ class JCAnalyticsManager
             let url = URL.init(string: urlString)
             
             #if DEBUG
-               // print(urlString)
+                print(urlString)
             #endif
             
             let task = URLSession.shared.dataTask(with: url!) { (data, response, error)  in
                 if let httpReponse = response as? HTTPURLResponse {
                     let statusCode = httpReponse.statusCode
                     #if DEBUG
-                       // print("Status code is----->\(statusCode)")
+                        print("Status code is----->\(statusCode)")
                     #endif
                 }
                 else {

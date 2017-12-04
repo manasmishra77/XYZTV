@@ -150,10 +150,11 @@ class Item:Mappable
     var layout:Int?
     var duration:String?
     var durationInt:Int?
-    var isPlaylist:Bool?
+    var isPlaylist:Bool? = false
     var playlistId:String?
     var totalDuration:String?
     var totalDurationInt:Int?
+    var episodeId: String?
     var list:[List]?
     
     
@@ -264,4 +265,23 @@ class App:Mappable
         type <- map["type"]
     }
     
+}
+enum VideoType:Int
+{
+    case Search             = -2
+    case Home               = -1
+    case Movie              = 0
+    case TVShow             = 1
+    case Music              = 2
+    case Trailer            = 3
+    case Clip               = 6
+    case Episode            = 7
+    case ResumeWatching     = 8
+    case Language           = 9
+    case Genre              = 10
+    case None               = -111
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
 }

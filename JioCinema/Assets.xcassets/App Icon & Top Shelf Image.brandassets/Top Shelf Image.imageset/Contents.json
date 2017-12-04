@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "tv",
-      "filename" : "top_shelf_artwork_1920x720.jpg",
+      "filename" : "top-shelf-ios-1920x720.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "tv",
-      "filename" : "top_shelf_artwork_3840x1440.jpg",
       "scale" : "2x"
     }
   ],

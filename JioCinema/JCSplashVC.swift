@@ -2,7 +2,7 @@
 //  JCSplashVC.swift
 //  JioCinema
 //
-//  Crevard by Pallav Trivedi on 11/07/17.
+//  Created by Pallav Trivedi on 11/07/17.
 //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
 
@@ -17,9 +17,10 @@ class JCSplashVC: UIViewController {
     var isHomeDataAvailable:Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         Utility.sharedInstance.startNetworkNotifier()
-        callWebServiceToCheckVersion()
+
+        //Call config service
+        callWebServiceForConfigData()
 
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
@@ -70,7 +71,7 @@ class JCSplashVC: UIViewController {
             if let responseError = error
             {
                 //TODO: handle error
-                //print(responseError)
+                print(responseError)
                 weakSelf?.showAlert(alertString: networkErrorMessage)
                 return
             }
@@ -120,18 +121,19 @@ class JCSplashVC: UIViewController {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
     }
     
+    
     func navigateToHomeVC()
     {
         DispatchQueue.main.async {
             
             let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
             let navController = UINavigationController(rootViewController: tabBarVC)
-            navController.navigationBar.isHidden = false
+            navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
         }
     }
     
-     func showAlert(alertString:String)
+    func showAlert(alertString:String)
     {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",
@@ -139,10 +141,7 @@ class JCSplashVC: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
-           
-            
                 weakSelf?.callWebServiceForConfigData()
-            
         }
         
         alert.addAction(cancelAction)
@@ -151,7 +150,6 @@ class JCSplashVC: UIViewController {
         }
         
     }
-    
     //MARK:- Version check and update
     func callWebServiceToCheckVersion() {
         let url = checkVersionUrl
@@ -161,7 +159,7 @@ class JCSplashVC: UIViewController {
         RJILApiManager.defaultManager.get(request: checkVersionRequest) { (data, response, error) in
             if error != nil
             {
-               //print(error)
+                //print(error)
                 weakSelf?.callWebServiceForConfigData()
                 return
             }
@@ -184,8 +182,8 @@ class JCSplashVC: UIViewController {
                         weakSelf?.callWebServiceForConfigData()
                     }
                 }
-                
-                //If version string is coming from back-end
+                    
+                    //If version string is coming from back-end
                 else if let currentVersion = Float(versionString), let upComingVersion = checkModel?.result?.data?[0].version{
                     if currentVersion < upComingVersion{
                         if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
@@ -219,15 +217,15 @@ class JCSplashVC: UIViewController {
                             let resultData = resultDataArray.first
                             var checkModelData = CheckVersionData(version: nil, url: nil, mandatory: nil, description: nil, heading: nil, buildNumber: nil)
                             if resultData != nil{
-                            let versionString = resultData!["version"] as? String ?? "0"
-                            checkModelData.version = Float(versionString)
-                            checkModelData.description = resultData!["description"] as? String
-                            checkModelData.heading = resultData!["heading"] as? String
-                            checkModelData.url = resultData!["url"] as? String
-                            checkModelData.mandatory = resultData!["mandatory"] as? Bool
-                            checkModelData.buildNumber = resultData!["buildnumber"] as? Int ?? 0
-                            checkModel.result = CheckVersionResult(data: [checkModelData])
-                            return checkModel
+                                let versionString = resultData!["version"] as? String ?? "0"
+                                checkModelData.version = Float(versionString)
+                                checkModelData.description = resultData!["description"] as? String
+                                checkModelData.heading = resultData!["heading"] as? String
+                                checkModelData.url = resultData!["url"] as? String
+                                checkModelData.mandatory = resultData!["mandatory"] as? Bool
+                                checkModelData.buildNumber = resultData!["buildnumber"] as? Int ?? 0
+                                checkModel.result = CheckVersionResult(data: [checkModelData])
+                                return checkModel
                             }
                         }
                     }
@@ -267,8 +265,8 @@ class JCSplashVC: UIViewController {
         }
         alert.addAction(updateAction)
         DispatchQueue.main.async
-        {
-            self.present(alert, animated: true, completion: nil)
+            {
+                self.present(alert, animated: true, completion: nil)
         }
         
     }
@@ -278,22 +276,5 @@ class JCSplashVC: UIViewController {
             exit(0)
         }
     }
-   
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

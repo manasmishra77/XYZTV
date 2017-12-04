@@ -18,7 +18,6 @@ class JCItemCell: UICollectionViewCell {
 
     override func prepareForReuse() {
        // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
-        
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
@@ -34,7 +33,7 @@ class JCItemCell: UICollectionViewCell {
             self.view_NowPlaying.frame.origin.y = self.view_NowPlaying.frame.origin.y + 15
             //self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
             
-            let frame = CGRect(x: itemImageView.focusedFrameGuide.layoutFrame.width/2 - nowPlayingLabel.frame.width/2, y: itemImageView.focusedFrameGuide.layoutFrame.height/2 , width: nowPlayingLabel.frame.size.width, height: nowPlayingLabel.frame.size.height)
+            let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.width/2 - nowPlayingLabel.frame.width/2, y: itemImageView.focusedFrameGuide.layoutFrame.height/2 , width: nowPlayingLabel.frame.size.width, height: nowPlayingLabel.frame.size.height)
             nowPlayingLabel.frame.origin.x = frame.origin.x + 15
             nowPlayingLabel.frame.origin.y = frame.origin.y + 15
             

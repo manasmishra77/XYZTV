@@ -20,13 +20,11 @@ let screenWidth:CGFloat = UIScreen.main.bounds.width
 let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
 let networkErrorMessage = "No network available"
 
-var collectionIndex = -1
-var selectedItemFromViewController:VideoType = VideoType.Home
-var categoryTitle = ""
-var referenceFromPlayerVC = ""
+//var collectionIndex = -1
+//var selectedItemFromViewController:VideoType = VideoType.Home
+//var categoryTitle = ""
+//var referenceFromPlayerVC = ""
 
-var screenAppearTime: Date! = Date()
-var screenDisAppearTime: Double! = 0.0
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
@@ -52,13 +50,11 @@ let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls
-let versionApi = "v3.1"
-
-let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/1/")
-let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/6/")
-let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/33/")
-let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/9/")
-let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/35/")
+let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/1/")
+let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/6/")
+let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/33/")
+let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/9/")
+let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/35/")
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
@@ -153,13 +149,27 @@ let returnSessionDetailsValue = "T"
 let subscriberIdKey = "subscriberId"
 
 
-//Variables
+//Screen Name
+let HOME_SCREEN = "Home Screen"
+let MOVIE_SCREEN = "Movie Screen"
+let TV_SCREEN = "TV Screen"
+let MUSIC_SCREEN = "Music Screen"
+let CLIP_SCREEN = "Clip Screen"
+let SEARCH_SCREEN = "Search Screen"
+let METADATA_SCREEN = "Metadata Screen"
+let PLAYER_SCREEN = "Player Screen"
+let LANGUAGE_SCREEN = "Language Screen"
+let GENRE_SCREEN = "Genre Screen"
 
-var isLoginPresentedFromAddToWatchlist = false
-var isSearchOpenFromMetaData = false
-var isUserLoggedOutHimself = false
-var latestEpisodeId = "-1"
+//Category Name
+let RECOMMENDATION = "Recommendation"
+let MORELIKE = "More Like"
+let WATCH_NOW_BUTTON = "Watch-now button"
+
+let ADD_TO_WATCHLIST = "Add to watchlist"
+let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
 
 //Screen Navigation Constants
-var previousScreenName = ""
-var currentScreenName = ""
+//var previousScreenName = ""
+//var currentScreenName = ""
+
