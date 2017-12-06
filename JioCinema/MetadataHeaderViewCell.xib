@@ -289,7 +289,7 @@
                 <outlet property="tvShowSubtitleLabel" destination="oul-zh-oH9" id="gwp-dB-QG1"/>
                 <outlet property="watchlistLabel" destination="36Z-y4-rFe" id="Zki-yh-aPG"/>
             </connections>
-            <point key="canvasLocation" x="-993" y="447"/>
+            <point key="canvasLocation" x="-1435.5" y="274"/>
         </tableViewCell>
     </objects>
     <resources>

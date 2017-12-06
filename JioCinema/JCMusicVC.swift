@@ -118,13 +118,15 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            carouselView.carouselArray = (JCDataStore.sharedDataStore.musicData?.data?[0].items)!
-            carouselView.loadViews()
-            uiviewCarousel = carouselView
-            carouselView.carouselDelegate = self
-//            selectedItemFromViewController = VideoType.Music
-//            collectionIndex = 0
-            return carouselView
+            if let carouselItems = JCDataStore.sharedDataStore.musicData?.data?[0].items, carouselItems.count > 0{
+                carouselView.carouselArray = carouselItems
+                carouselView.loadViews()
+                carouselView.carouselDelegate = self
+                uiviewCarousel = carouselView
+                return carouselView
+            }else{
+                return UIView()
+            }
         }
         else
         {

@@ -262,10 +262,19 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let resumeWatchDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: resumeWatchDataRequest) { (data, response, error) in
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                 print(responseError)
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.presentLoginVC()
+                    }
+                }
                 return
             }
             if let responseData = data
@@ -547,11 +556,19 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let recommendationListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: recommendationListRequest) { (data, response, error) in
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                 print(responseError)
-                //weakSelf?.dispatchGroup.leave()
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.presentLoginVC()
+                    }
+                }
                 return
             }
             if let responseData = data

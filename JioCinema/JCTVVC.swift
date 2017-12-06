@@ -131,13 +131,15 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            carouselView.carouselArray = (JCDataStore.sharedDataStore.tvData?.data?[0].items)!
-            carouselView.loadViews()
-            uiviewCarousel = carouselView
-            carouselView.carouselDelegate = self
-//            selectedItemFromViewController = VideoType.TVShow
-//            collectionIndex = 0
-            return carouselView
+            if let carouselItems = JCDataStore.sharedDataStore.tvData?.data?[0].items, carouselItems.count > 0{
+                carouselView.carouselArray = carouselItems
+                carouselView.loadViews()
+                carouselView.carouselDelegate = self
+                uiviewCarousel = carouselView
+                return carouselView
+            }else{
+                return UIView()
+            }
         }
         else
         {
@@ -243,9 +245,19 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
             
-            if let responseError = error
+            if let responseError = error as NSError?
             {
+                //TODO: handle error
                 print(responseError)
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
+                    }
+                }
                 return
             }
             

@@ -32,7 +32,7 @@
                     <rect key="frame" x="928" y="508" width="64" height="64"/>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="7je-qu-qFq" secondAttribute="trailing" constant="20" id="AGA-PX-quy"/>
                 <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-30" id="Cc7-yd-11O"/>

@@ -845,10 +845,22 @@
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
             
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
-                print(responseError)
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+//                    let vc = self.presentingViewController
+//                    DispatchQueue.main.async {
+//                        JCLoginManager.sharedInstance.logoutUser()
+//                        self.dismiss(animated: false, completion: {
+//                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+//                            vc.present(loginVc, animated: false, completion: nil)
+//                        })
+//                        return
+//                    }
+                }
                 return
             }
             if let responseData = data
@@ -923,12 +935,32 @@
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.dismiss(animated: false, completion: {
+                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+                            vc.present(loginVc, animated: false, completion: nil)
+                        })
+                        return
+                    }
+                }
                 print(responseError)
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
                 return
             }
+            
             if let responseData = data
             {
                 if let responseString = String(data: responseData, encoding: .utf8)
@@ -986,9 +1018,22 @@
                 self.activityIndicatorOfLoaderView.stopAnimating()
                 
             }
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.dismiss(animated: false, completion: {
+                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+                            vc.present(loginVc, animated: false, completion: nil)
+                        })
+                        return
+                    }
+                }
                 print(responseError)
                 DispatchQueue.main.async {
                     //self.activityIndicatorOfLoaderView.stopAnimating()
@@ -1036,8 +1081,22 @@
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
             
-            if let responseError = error
+            if let responseError = error as NSError?
             {
+                //TODO: handle error
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+//                    let vc = self.presentingViewController
+//                    DispatchQueue.main.async {
+//                        JCLoginManager.sharedInstance.logoutUser()
+//                        self.dismiss(animated: false, completion: {
+//                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+//                            vc.present(loginVc, animated: false, completion: nil)
+//                        })
+//                        return
+//                    }
+                }
                 print(responseError)
                 return
             }

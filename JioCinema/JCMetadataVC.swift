@@ -614,29 +614,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             self.metadata?.episodes = tempMetadata?.episodes
         }
     }
-
-    //Removing seasarch container from search navigation controller
-    func changingSearchNCRootVC(){
-        if JCAppReference.shared.isTempVCRootVCInSearchNC == nil{
-            return
-        }
-        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
-            JCAppReference.shared.isTempVCRootVCInSearchNC = false
-            let searchVC = Utility.sharedInstance.prepareSearchViewController(searchText: "", jcSearchVc: nil)
-            let searchContainerController = UISearchContainerViewController(searchController: searchVC)
-            searchContainerController.view.backgroundColor = UIColor.black
-            if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
-                navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
-            }
-            
-        }
-        else{
-            JCAppReference.shared.isTempVCRootVCInSearchNC = true
-            if let navVC = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
-                navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
-            }
-        }
-    }
     
     
     //MARK:- Change watchlist button status locally
@@ -704,12 +681,22 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             DispatchQueue.main.async {
                 self.headerCell.addToWatchListButton.isEnabled = true
             }
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                 print(responseError)
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
+                    }
+                }
                 return
             }
+            
             if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 let code = parsedResponse["code"] as? Int
