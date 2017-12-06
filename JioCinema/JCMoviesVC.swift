@@ -346,6 +346,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             }
         }
     }
+    //MARK:- Carousel Delegate Methods
     func didTapOnCarouselItem(_ item: Any?) {
         didTapOnItemCell(nil, item, 0)
     }

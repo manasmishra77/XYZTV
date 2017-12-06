@@ -87,7 +87,7 @@ class Utility
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -113,12 +113,7 @@ class Utility
         }
         else if isMoreDataAvailable{
             playerVC.moreArray = recommendationArray as! [More]
-        }
-        
-        
-//        playerVC.modalPresentationStyle = .overFullScreen
-//        playerVC.modalTransitionStyle = .coverVertical
-        
+        }        
         return playerVC
     }
     
@@ -172,7 +167,6 @@ class Utility
         searchViewController.hidesNavigationBarDuringPresentation = true
         searchViewController.obscuresBackgroundDuringPresentation = false
         searchViewController.searchBar.delegate = searchVC
-        JCAppReference.shared.searchText = searchText
         searchViewController.searchBar.searchBarStyle = .minimal
         searchVC.searchViewController = searchViewController
         return searchViewController

@@ -33,9 +33,6 @@ class JCAppUser:NSObject,NSCoding
     var mToken: String = ""
     
     
-    
-    
-    
     required init?(coder aDecoder: NSCoder)
     {
         self.jToken = aDecoder.decodeObject(forKey: "jToken") as? String ?? ""
@@ -74,22 +71,6 @@ class JCAppUser:NSObject,NSCoding
         aCoder.encode(mToken, forKey: "mToken")
         
     }
-    
-}
-
-//Setting the refernces for searchvc
-class JCAppReference: NSObject {
-    static var shared = JCAppReference()
-    
-    override init(){} //singleTone
-    //Setting the refernces for searchvc
-    var tabBarCotroller: UITabBarController? = nil
-    var tempVC: UIViewController? = nil
-    var isTempVCRootVCInSearchNC: Bool? = nil
-    var searchText: String? = nil
-    var searchContainer: UISearchContainerViewController? = nil
-    //Reference for metadatavc for presenting resume watch scene on it
-    var metaDataVc: UIViewController? = nil
     
 }
 

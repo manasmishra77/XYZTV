@@ -49,20 +49,6 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
-    var isSwipingAllowed_RecommendationView = true
-    var playerTimeObserverToken     :Any?
-    
-    var player                      :AVPlayer?
-    var playerItem                  :AVPlayerItem?
-    var playerController            :AVPlayerViewController?
-    
-    var playbackRightsData          :PlaybackRightsModel?
-    var playlistData                :PlaylistDataModel?
-    var isRecommendationView        = false
-    var currentPlayingIndex         = -1
-    
-    var duration                    = 0.0
-    var bufferCount                 = 0
     
     //Player changes
     var id: String = ""
@@ -89,13 +75,26 @@
     fileprivate var totalBufferDurationTime      = 0.0
     fileprivate var didSeek :Bool = false
     
-    //For resume watch update
+    //For Resume watch update
     fileprivate var lastItemId = ""
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var isItemToBeAddedInResumeWatchList = true
     fileprivate var isMediaEndAnalyticsEventNotSent = true
     fileprivate var startTime_BufferDuration    :Date?
     fileprivate var episodeNumber :Int? = nil
+    
+    fileprivate var isSwipingAllowed_RecommendationView = true
+    fileprivate var playerTimeObserverToken     :Any?
+    //For player controller
+    @objc fileprivate var player                      :AVPlayer?
+    fileprivate var playerItem                  :AVPlayerItem?
+    fileprivate var playerController            :AVPlayerViewController?
+    
+    fileprivate var playbackRightsData          :PlaybackRightsModel?
+    fileprivate var playlistData                :PlaylistDataModel?
+    fileprivate var isRecommendationView        = false
+    fileprivate var currentPlayingIndex         = -1
+    fileprivate var bufferCount                 = 0
 
     static let assetKeysRequiredToPlay = [
         "playable",
@@ -342,6 +341,7 @@
             self.addChildViewController(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
+           
         }
         addPlayerNotificationObserver()
         playerController?.player = player
@@ -591,7 +591,6 @@
         }
     }
     
-    //MARK:- Custom Methods
     //MARK:- Analytics Events
     func sendMediaStartAnalyticsEvent()
     {
@@ -639,7 +638,6 @@
         sendBufferingEvent(eventProperties: bufferEventProperties)
         videoViewingLapsedTime = 0
         totalBufferDurationTime = 0
-        duration = 0
         bufferCount = 0
     }
     
@@ -749,13 +747,7 @@
             }
         }
     }
-    
-    
-    //MARK:- Dismiss Viewcontroller
-    func dismissPlayerVC()
-    {
-        self.dismiss(animated: true, completion: nil)
-    }
+
     //MARK:- Add Swipe Gesture
     func addSwipeGesture()
     {
@@ -851,15 +843,7 @@
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
-//                    let vc = self.presentingViewController
-//                    DispatchQueue.main.async {
-//                        JCLoginManager.sharedInstance.logoutUser()
-//                        self.dismiss(animated: false, completion: {
-//                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
-//                            vc.present(loginVc, animated: false, completion: nil)
-//                        })
-//                        return
-//                    }
+
                 }
                 return
             }
@@ -1084,18 +1068,10 @@
             if let responseError = error as NSError?
             {
                 //TODO: handle error
-                //Refresh sso token call fails
+                
                 if responseError.code == 143{
+                    //Refresh sso token call fails
                     print("Refresh sso token call fails")
-//                    let vc = self.presentingViewController
-//                    DispatchQueue.main.async {
-//                        JCLoginManager.sharedInstance.logoutUser()
-//                        self.dismiss(animated: false, completion: {
-//                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
-//                            vc.present(loginVc, animated: false, completion: nil)
-//                        })
-//                        return
-//                    }
                 }
                 print(responseError)
                 return
@@ -1105,13 +1081,11 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
-                //JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
-                if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
-                    homeVC.callWebServiceForResumeWatchData()
+               if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                    vc.callWebServiceForResumeWatchData()
                 }
             }
         }
-        
     }
     
     func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
@@ -1139,18 +1113,14 @@
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 
-                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
-                    if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-                        homevc.callWebServiceForResumeWatchData()
-                    }
+                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                    vc.callWebServiceForResumeWatchData()
                 }
-                
                 return
             }
         }
     }
     //MARK:- Resume watch view methods
-    
     @IBAction func didClickOnResumeWatchingButton(_ sender: Any) {
         resumeWatchView.isHidden = true
         callWebServiceForPlaybackRights(id: id)
@@ -1164,20 +1134,6 @@
         //callWebServiceForUpdatingResumedWatchlist()
         callWebServiceForRemovingResumedWatchlist(id)
         dismissPlayerVC()
-    }
-    
-    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float{
-        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
-        {
-            let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
-            if itemMatched != nil
-            {
-                if let drn = itemMatched?.duration?.floatValue(){
-                    return drn
-                }
-            }
-        }
-        return 0.0
     }
     
     //MARK:- Player Methods
@@ -1227,6 +1183,7 @@
         return
     }
     
+    //PlayerVc changing when an item is played from playervc recommendation
     func changePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: [Any] = [Any](), fromScreen: String, fromCategory: String, fromCategoryIndex: Int) {
         self.id = itemId
         self.bannerUrlString = itemImageString
@@ -1237,6 +1194,34 @@
         self.appType = appType
         self.isPlayList = isPlayList
         self.playListId = playListId
+    }
+    //Seek player
+    func seekPlayer() {
+        if Double(currentDuration) >= (self.player?.currentItem?.currentTime().seconds)!, didSeek{
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
+        }
+        else{
+            didSeek = false
+        }
+    }
+    //Check in resume watchlist
+    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float{
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
+        {
+            let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
+            if itemMatched != nil
+            {
+                if let drn = itemMatched?.duration?.floatValue(){
+                    return drn
+                }
+            }
+        }
+        return 0.0
+    }
+    //MARK:- Dismiss Viewcontroller
+    func dismissPlayerVC()
+    {
+        self.dismiss(animated: true, completion: nil)
     }
  }
  
@@ -1338,78 +1323,7 @@
         return cell
     }
  }
- //MARK:- PlaybackRight Model
  
- class PlaybackRightsModel: Mappable
- {
-    var code:Int?
-    var message:String?
-    var duration:Float?
-    var inqueue:Bool?
-    var totalDuration:String?
-    var isSubscribed:Bool?
-    var subscription: Subscription?
-    var aesUrl:String?
-    var url:String?
-    var tinyUrl:String?
-    var text:String?
-    var contentName:String?
-    var thumb:String?
-    
-    required init(map:Map) {
-        
-    }
-    
-    func mapping(map:Map)
-    {
-        code <- map["code"]
-        message <- map["message"]
-        duration <- map["duration"]
-        inqueue <- map["inqueue"]
-        totalDuration <- map["totalDuration"]
-        totalDuration <- map["totalDuration"]
-        isSubscribed <- map["isSubscribed"]
-        subscription <- map["subscription"]
-        aesUrl <- map["aesUrl"]
-        url <- map["url"]
-        tinyUrl <- map["tinyUrl"]
-        text <- map["text"]
-        contentName <- map["contentName"]
-        thumb <- map["thumb"]
-        
-    }
- }
- //MARK:- Subscription Model
- 
- class Subscription:Mappable
- {
-    var isSubscribed:Bool?
-    
-    required init(map:Map) {
-        
-    }
-    
-    func mapping(map:Map)
-    {
-        isSubscribed <- map["isSubscribed"]
-    }
- }
- //MARK:- PlaylistDataModel Model
- 
- class PlaylistDataModel: Mappable {
-    
-    var more: [More]?
-    
-    required init(map:Map) {
-    }
-    
-    func mapping(map:Map)
-    {
-        
-        more <- map["more"]
-    }
-    
- }
  
  //MARK:- AVAssetResourceLoaderDelegate Methods
  
@@ -1673,18 +1587,10 @@
         return true
     }
     
+    //MARK:- Player Controller Delegate methods
     func playerViewController(_ playerViewController: AVPlayerViewController, willResumePlaybackAfterUserNavigatedFrom oldTime: CMTime, to targetTime: CMTime) {
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
-    }
-    
-    func seekPlayer() {
-        if Double(currentDuration) >= (self.player?.currentItem?.currentTime().seconds)!, didSeek{
-            self.player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
-        }
-        else{
-            didSeek = false
-        }
     }
 
  }

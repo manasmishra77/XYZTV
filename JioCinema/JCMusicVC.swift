@@ -11,8 +11,8 @@ import UIKit
 class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
 
-    var loadedPage = 0
-     fileprivate var screenAppearTiming = Date()
+    fileprivate var loadedPage = 0
+    fileprivate var screenAppearTiming = Date()
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()

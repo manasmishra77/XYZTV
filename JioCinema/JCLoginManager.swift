@@ -176,13 +176,14 @@ class JCLoginManager:UIViewController
     
     fileprivate func setUserData(data: [String:Any])
     {
-        JCAppUser.shared.lbCookie = data["lbCookie"] as! String
-        JCAppUser.shared.ssoToken = data["ssoToken"] as! String
-        JCAppUser.shared.commonName = data["name"] as! String
-        JCAppUser.shared.userGroup = data["userGrp"] as! String
-        JCAppUser.shared.subscriberId = data["subscriberId"] as! String
-        JCAppUser.shared.unique = data["uniqueId"] as! String
-        JCAppUser.shared.uid = data["username"] as! String
+        JCAppUser.shared.lbCookie = data["lbCookie"] as? String ?? ""
+        JCAppUser.shared.ssoToken = data["ssoToken"] as? String ?? ""
+        JCAppUser.shared.commonName = data["name"] as? String ?? ""
+        JCAppUser.shared.userGroup = data["userGrp"] as? String ?? ""
+        JCAppUser.shared.subscriberId = data["subscriberId"] as? String ?? ""
+        JCAppUser.shared.unique = data["uniqueId"] as? String ?? ""
+        JCAppUser.shared.uid = data["username"] as? String ?? ""
+        JCAppUser.shared.mToken = data["mToken"] as? String ?? ""
     }
     
     func logoutUser()

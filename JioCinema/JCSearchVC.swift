@@ -41,12 +41,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        searchViewController?.searchBar.text = JCAppReference.shared.searchText
-//        searchViewController?.extendedLayoutIncludesOpaqueBars = false
-//        if (searchViewController?.searchBar.text?.count)! > 0
-//        {
-//            searchResultForkey(with: (searchViewController?.searchBar.text)!)
-//        }
         
     }
     
@@ -242,7 +236,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                         DispatchQueue.main.async {
                             weakself?.searchResultArray = array
                             weakself?.baseTableView.reloadData()
-                            JCAppReference.shared.searchText = self.searchViewController?.searchBar.text
                         }
                     }
                 }
