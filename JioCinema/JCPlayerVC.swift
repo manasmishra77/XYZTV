@@ -946,7 +946,7 @@
                         JCLoginManager.sharedInstance.logoutUser()
                         self.dismiss(animated: false, completion: {
                             let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
-                            vc.present(loginVc, animated: false, completion: nil)
+                            vc?.present(loginVc, animated: false, completion: nil)
                         })
                         return
                     }
@@ -1029,7 +1029,7 @@
                         JCLoginManager.sharedInstance.logoutUser()
                         self.dismiss(animated: false, completion: {
                             let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
-                            vc.present(loginVc, animated: false, completion: nil)
+                            vc?.present(loginVc, animated: false, completion: nil)
                         })
                         return
                     }

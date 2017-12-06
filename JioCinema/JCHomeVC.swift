@@ -271,8 +271,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     DispatchQueue.main.async {
-                        JCLoginManager.sharedInstance.logoutUser()
-                        self.presentLoginVC()
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
                     }
                 }
                 return
@@ -565,15 +565,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     DispatchQueue.main.async {
-                        JCLoginManager.sharedInstance.logoutUser()
-                        self.presentLoginVC()
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
                     }
                 }
                 return
             }
             if let responseData = data
             {
-                
                 weakSelf?.evaluateUserRecommendationList(dictionaryResponseData: responseData)
                 //weakSelf?.dispatchGroup.leave()
                 DispatchQueue.main.async {

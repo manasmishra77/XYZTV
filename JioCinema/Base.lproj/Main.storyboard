@@ -76,7 +76,7 @@
                                                     <constraint firstAttribute="width" constant="480" id="sTL-ns-UFL"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                                <state key="normal" title="Sign In via JIO Number"/>
+                                                <state key="normal" title="Sign In via Jio Number"/>
                                                 <connections>
                                                     <action selector="didClickOnOTPSignIn:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="pYm-5r-utO"/>
                                                 </connections>

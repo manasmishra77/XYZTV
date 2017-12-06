@@ -36,6 +36,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
         
+        //tvOS11 adjustment
         if #available(tvOS 11.0, *) {
             let collectionFrame = CGRect.init(x: tableCellCollectionView.frame.origin.x - 70, y: tableCellCollectionView.frame.origin.y, width: tableCellCollectionView.frame.size.width, height: tableCellCollectionView.frame.size.height)
             tableCellCollectionView.frame = collectionFrame
