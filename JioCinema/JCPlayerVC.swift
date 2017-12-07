@@ -825,9 +825,10 @@
         
         if let currentTime = player?.currentItem?.currentTime()
         {
-            let isPlayList = "false"
+            var isPlayList = "false"
             if let data = self.item as? Item{
                 if let playList = data.isPlaylist, playList{
+                    isPlayList = "true"
                 }
             }
             
@@ -2203,6 +2204,8 @@
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
+    
+    
  }
  
  
