@@ -72,8 +72,8 @@
 		7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */; };
 		7BC1E7161F33044700D08E83 /* JioCinema-SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */; };
 		7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */; };
-		7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */; };
-		7BD39C921F419CE90014255C /* MetadataHeaderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */; };
+		7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */; };
+		7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */; };
 		7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C951F419E110014255C /* JCMetadataButton.swift */; };
 		7BD39C991F419F470014255C /* AddtoWatchlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C971F419F470014255C /* AddtoWatchlist.png */; };
 		7BD39C9A1F419F470014255C /* WatchNow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C981F419F470014255C /* WatchNow.png */; };
@@ -172,8 +172,8 @@
 		7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCMonthCell.xib; sourceTree = "<group>"; };
 		7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JioCinema-SplashScreen.png"; sourceTree = "<group>"; };
 		7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataModel.swift; sourceTree = "<group>"; };
-		7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataHeaderViewCell.swift; sourceTree = "<group>"; };
-		7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataHeaderViewCell.xib; sourceTree = "<group>"; };
+		7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataHeaderView.swift; sourceTree = "<group>"; };
+		7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kMetadataHeaderView.xib; sourceTree = "<group>"; };
 		7BD39C941F419D150014255C /* JioCinema-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JioCinema-Bridging-Header.h"; sourceTree = "<group>"; };
 		7BD39C951F419E110014255C /* JCMetadataButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataButton.swift; sourceTree = "<group>"; };
 		7BD39C971F419F470014255C /* AddtoWatchlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddtoWatchlist.png; sourceTree = "<group>"; };
@@ -332,8 +332,8 @@
 				7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */,
 				2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */,
 				2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */,
-				7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */,
-				7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */,
+				7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */,
+				7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */,
 				7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */,
 				7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */,
 				7BB86E751F4C1C4700610436 /* JCYearCell.swift */,
@@ -539,7 +539,7 @@
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
-				7BD39C921F419CE90014255C /* MetadataHeaderViewCell.xib in Resources */,
+				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
@@ -655,7 +655,7 @@
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
-				7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */,
+				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
 				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,

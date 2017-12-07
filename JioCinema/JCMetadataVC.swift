@@ -17,7 +17,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     var metadata: MetadataModel?
     var selectedYearIndex = 0
     var userComingAfterLogin: Bool = false
-    let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
+    let headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
     var presentingScreen = ""
     
     //New metadata model
@@ -163,7 +163,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func prepareHeaderView() -> UIView
     {
         //headerCell.item = item
-        headerCell.metadata = metadata
         headerCell.seasonCollectionView.delegate = self
         headerCell.seasonCollectionView.dataSource = self
         headerCell.monthsCollectionView.delegate = self
@@ -340,11 +339,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         headerCell.monthsCollectionView.reloadData()
         let headerHeight = screenHeight * (4/5)
         if #available(tvOS 11.0, *){
-            headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
+            //headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
             
         }else{
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
-            tableViewTopConstraint.constant = -65
+            //headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
+             tableViewTopConstraint.constant = -65
             if metadata?.type == VideoType.Movie.rawValue{
                 tableViewTopConstraint.constant = -100
             }
@@ -641,7 +640,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     //MARK:- Metadata header cell delegate methods
-    func didClickOnWatchNowButton(_ headerView: MetadataHeaderViewCell?) {
+    func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?) {
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
             playVideo()
         }
@@ -651,7 +650,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
-    func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderViewCell, isStatusAdd: Bool) {
+    func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String:Any]()
         if itemAppType == .TVShow
         {
@@ -739,6 +738,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //prepare metadata view
     func prepareMetadataView() ->UIView
     {
+        headerCell.frame.size.width = metadataContainerView.frame.size.width
+        headerCell.frame.size.height = metadataContainerView.frame.size.height
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
@@ -749,7 +750,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.starringStaticLabel.isHidden = true
         }
         if metadata?.artist != nil{
-            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ",").characters.count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
+            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ",").count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
         }
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)

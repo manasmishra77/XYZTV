@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="3YS-bd-bkv" userLabel="kMetadataHeaderView" customClass="MetadataHeaderView" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
+                    <rect key="frame" x="822" y="0.0" width="1098" height="615"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1098" id="RDK-aM-gcq"/>
+                        <constraint firstAttribute="height" constant="615" id="cza-FJ-sAA"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetadataImageGradient" translatesAutoresizingMaskIntoConstraints="NO" id="1EK-sy-bqA" userLabel="GradientImage">
+                    <rect key="frame" x="822" y="0.0" width="1098" height="615"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oog-7o-H3Y">
+                    <rect key="frame" x="40" y="150" width="1880" height="930"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-yh-ge7">
+                            <rect key="frame" x="8" y="8" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="48"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imdb_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wcJ-FL-KxV">
+                            <rect key="frame" x="8" y="73" width="100" height="49"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MCj-Y8-Tdb">
+                            <rect key="frame" x="113" y="81" width="72" height="33"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="some subtitle will be here" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-9k-LOD">
+                            <rect key="frame" x="193" y="81" width="318" height="33"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DIRECTOR:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTO-oj-fuY">
+                            <rect key="frame" x="8" y="172" width="184" height="41"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="34"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvY-ef-buL">
+                            <rect key="frame" x="212" y="193" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STARRING:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIt-OS-2qO">
+                            <rect key="frame" x="8" y="253" width="179" height="41"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="34"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdM-i7-rsk">
+                            <rect key="frame" x="207" y="274" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njs-Mn-ow6">
+                            <rect key="frame" x="8" y="344" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVi-bc-1rd" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
+                            <rect key="frame" x="8" y="394" width="128" height="88"/>
+                            <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" image="WatchNow"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didClickOnWatchNowButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="pfQ-Ik-8T5"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56R-tw-AWf" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
+                            <rect key="frame" x="196" y="394" width="128" height="88"/>
+                            <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" image="AddtoWatchlist"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didClickOnAddToWatchListButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="CnE-Yh-dhY"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add to watchlist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDi-mf-e5u">
+                            <rect key="frame" x="0.0" y="511" width="3629" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                            <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
+                            <rect key="frame" x="3700" y="429" width="280" height="46"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Gzi-Za-KRX" userLabel="seasonCollectionView">
+                            <rect key="frame" x="3708" y="483" width="1780" height="62"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="30" minimumInteritemSpacing="10" id="fei-5S-VF1">
+                                <size key="itemSize" width="92" height="62"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                        <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
+                            <rect key="frame" x="3688" y="555" width="1836" height="55"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="30" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
+                                <size key="itemSize" width="92" height="36"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch Now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-Um-m5H">
+                            <rect key="frame" x="8" y="510" width="128" height="26"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                            <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="MCj-Y8-Tdb" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="trailing" constant="5" id="2B1-hc-zNv"/>
+                        <constraint firstItem="PIt-OS-2qO" firstAttribute="leading" secondItem="FTO-oj-fuY" secondAttribute="leading" id="4Sy-eY-fQn"/>
+                        <constraint firstItem="SVi-bc-1rd" firstAttribute="leading" secondItem="Njs-Mn-ow6" secondAttribute="leading" id="5hF-c2-Ttl"/>
+                        <constraint firstItem="gX0-yh-ge7" firstAttribute="leading" secondItem="oog-7o-H3Y" secondAttribute="leading" constant="8" id="7mo-Wa-NT6"/>
+                        <constraint firstItem="Njs-Mn-ow6" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="bottom" constant="50" id="819-dm-9AV"/>
+                        <constraint firstItem="56R-tw-AWf" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="trailing" constant="60" id="9mP-QF-knK"/>
+                        <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="wcJ-FL-KxV" secondAttribute="bottom" constant="50" id="Blj-2p-TcY"/>
+                        <constraint firstItem="wcJ-FL-KxV" firstAttribute="top" secondItem="gX0-yh-ge7" secondAttribute="bottom" constant="65" id="CkX-Mn-19l"/>
+                        <constraint firstItem="Gee-Um-m5H" firstAttribute="trailing" secondItem="SVi-bc-1rd" secondAttribute="trailing" id="DmP-fj-KmV"/>
+                        <constraint firstItem="Gee-Um-m5H" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="leading" id="NfM-ga-SZg"/>
+                        <constraint firstItem="PIt-OS-2qO" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="bottom" constant="40" id="NuG-xJ-zh2"/>
+                        <constraint firstItem="Njs-Mn-ow6" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="leading" id="PkI-XD-aXW"/>
+                        <constraint firstItem="CdM-i7-rsk" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="trailing" constant="20" id="Re4-VL-nEZ"/>
+                        <constraint firstItem="56R-tw-AWf" firstAttribute="centerY" secondItem="SVi-bc-1rd" secondAttribute="centerY" id="W6h-E2-mq4"/>
+                        <constraint firstItem="SVi-bc-1rd" firstAttribute="top" secondItem="Njs-Mn-ow6" secondAttribute="bottom" constant="50" id="Z5u-6S-7gt"/>
+                        <constraint firstItem="Gee-Um-m5H" firstAttribute="top" secondItem="SVi-bc-1rd" secondAttribute="bottom" constant="28" id="fU8-c2-YsK"/>
+                        <constraint firstItem="bwB-9k-LOD" firstAttribute="leading" secondItem="MCj-Y8-Tdb" secondAttribute="trailing" constant="8" id="gCu-xV-VOy"/>
+                        <constraint firstItem="JvY-ef-buL" firstAttribute="centerY" secondItem="FTO-oj-fuY" secondAttribute="centerY" id="h8H-oo-jhc"/>
+                        <constraint firstItem="MCj-Y8-Tdb" firstAttribute="centerY" secondItem="wcJ-FL-KxV" secondAttribute="centerY" id="hjg-Ke-Zco"/>
+                        <constraint firstItem="CdM-i7-rsk" firstAttribute="centerY" secondItem="PIt-OS-2qO" secondAttribute="centerY" id="inj-dN-x8D"/>
+                        <constraint firstItem="FTO-oj-fuY" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="kiN-PF-Lqy"/>
+                        <constraint firstItem="wcJ-FL-KxV" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="pNb-Ae-1sU"/>
+                        <constraint firstItem="JvY-ef-buL" firstAttribute="leading" secondItem="FTO-oj-fuY" secondAttribute="trailing" constant="20" id="uAh-Fs-DmW"/>
+                        <constraint firstItem="bwB-9k-LOD" firstAttribute="centerY" secondItem="MCj-Y8-Tdb" secondAttribute="centerY" id="wZh-9R-193"/>
+                        <constraint firstItem="gX0-yh-ge7" firstAttribute="top" secondItem="oog-7o-H3Y" secondAttribute="top" constant="8" id="xIt-d3-fzA"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="oog-7o-H3Y" secondAttribute="trailing" id="8zu-16-EwV"/>
+                <constraint firstItem="L7P-Yq-xJD" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" id="DP4-q5-UIb"/>
+                <constraint firstItem="oog-7o-H3Y" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" constant="150" id="F8o-Rr-FNQ"/>
+                <constraint firstItem="1EK-sy-bqA" firstAttribute="top" secondItem="L7P-Yq-xJD" secondAttribute="top" id="HWS-mT-08l"/>
+                <constraint firstItem="1EK-sy-bqA" firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="Yib-lZ-KHc"/>
+                <constraint firstAttribute="bottom" secondItem="oog-7o-H3Y" secondAttribute="bottom" id="efR-2O-tyZ"/>
+                <constraint firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="ehh-kK-oej"/>
+                <constraint firstItem="oog-7o-H3Y" firstAttribute="leading" secondItem="3YS-bd-bkv" secondAttribute="leading" constant="40" id="fp9-SJ-HG7"/>
+                <constraint firstItem="1EK-sy-bqA" firstAttribute="leading" secondItem="L7P-Yq-xJD" secondAttribute="leading" id="qAS-St-tnr"/>
+                <constraint firstItem="1EK-sy-bqA" firstAttribute="bottom" secondItem="L7P-Yq-xJD" secondAttribute="bottom" id="ykq-LM-pQR"/>
+            </constraints>
+            <connections>
+                <outlet property="addToWatchListButton" destination="56R-tw-AWf" id="Znf-U4-kcw"/>
+                <outlet property="bannerImageView" destination="L7P-Yq-xJD" id="e5a-DM-uRN"/>
+                <outlet property="directorLabel" destination="JvY-ef-buL" id="d4i-mF-8CK"/>
+                <outlet property="directorStaticLabel" destination="FTO-oj-fuY" id="KwM-Xs-elo"/>
+                <outlet property="imdbImageLogo" destination="wcJ-FL-KxV" id="5z5-xb-cBb"/>
+                <outlet property="monthsCollectionView" destination="ek5-ew-j1E" id="qNW-vC-L09"/>
+                <outlet property="playButton" destination="SVi-bc-1rd" id="rl2-x2-hle"/>
+                <outlet property="ratingLabel" destination="MCj-Y8-Tdb" id="1Z2-5V-XgE"/>
+                <outlet property="seasonCollectionView" destination="Gzi-Za-KRX" id="smp-Xa-y7q"/>
+                <outlet property="seasonsLabel" destination="CSY-Bj-9Od" id="Dkc-P2-IcJ"/>
+                <outlet property="starringLabel" destination="CdM-i7-rsk" id="w8Z-OK-Pc5"/>
+                <outlet property="starringStaticLabel" destination="PIt-OS-2qO" id="HFn-rn-7xz"/>
+                <outlet property="subtitleLabel" destination="bwB-9k-LOD" id="UF2-ZL-iPp"/>
+                <outlet property="titleLabel" destination="gX0-yh-ge7" id="fNO-Vd-Kf8"/>
+                <outlet property="tvShowSubtitleLabel" destination="Njs-Mn-ow6" id="Vcb-jQ-nHe"/>
+                <outlet property="watchlistLabel" destination="RDi-mf-e5u" id="wfS-xl-yPo"/>
+            </connections>
+            <point key="canvasLocation" x="-4500" y="-896"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="AddtoWatchlist" width="48" height="48"/>
+        <image name="MetadataImageGradient" width="1098" height="616"/>
+        <image name="WatchNow" width="48" height="48"/>
+        <image name="imdb_logo" width="100" height="49"/>
+    </resources>
+</document>

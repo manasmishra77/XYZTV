@@ -239,45 +239,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
     }
     
-    //MARK:- Custom Methods
-    
-    //MARK:- Open MetaDataVC
-    func openMetaDataVC(item:Item)
-    {
-        Log.DLog(message: "openMetaDataVC" as AnyObject)
-        if let topController = UIApplication.topViewController() {
-            let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = item
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
-            topController.present(metadataVC, animated: true, completion: nil)
-        }
-    }
-    //MARK:- Open PlayerVC
-    func openPlayerVC(item:Item)
-    {/*
-        Log.DLog(message: "openPlayerVC" as AnyObject)
-        if playerVC_Global != nil {
-            return
-        }
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.currentItemImage = item.banner
-        playerVC.currentItemTitle = item.name
-        playerVC.currentItemDuration = String(describing: item.totalDuration)
-        playerVC.currentItemDescription = item.subtitle
-        //OPTIMIZATION PLAYERVC
-        // playerVC.callWebServiceForPlaybackRights(id: item.id!)
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
-        playerVC.playerId = item.id
-        playerVC.item = item
-        
-        if let topController = UIApplication.topViewController() {
-            topController.present(playerVC, animated: false, completion: nil)
-        }*/
-    }
-    
-    
 }
 
 
