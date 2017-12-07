@@ -47,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        //Sending media_end analytics event when media_ends
+        if let playerVc = UIApplication.topViewController() as? JCPlayerVC{
+            playerVc.viewWillDisappear(true)
+        }
     }
     
     func handlerUncaughtException() -> Void {
