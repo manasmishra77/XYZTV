@@ -70,6 +70,8 @@ let languageListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c5
 let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/29")
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
+let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
+let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

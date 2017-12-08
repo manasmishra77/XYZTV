@@ -74,14 +74,6 @@ class JCLoginVC: UIViewController {
         })
     }
  
-    //Removing seasarch container from search navigation controller
-    func changingSearchNCRootVC(){
-        if let navVc = self.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
-            if let subNavVC = tabVc.viewControllers![5] as? UINavigationController{
-                subNavVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
-            }
-        }
-    }
     
     //MARK:- Sign in via jio id view implementation
     

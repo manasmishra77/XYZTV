@@ -10,14 +10,12 @@ import UIKit
 import SDWebImage
 
 @objc protocol MetadataHeaderCellDelegate {
-    @objc optional func didClickOnWatchNowButton(_ headerView: MetadataHeaderViewCell?)
-    @objc optional func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderViewCell, isStatusAdd: Bool)
+    @objc optional func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?)
+    @objc optional func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool)
 }
 
 
-class MetadataHeaderViewCell: UIView {
-    
-    var metadata:MetadataModel?
+class MetadataHeaderView: UIView {
     
     var delegate: MetadataHeaderCellDelegate? = nil
     
@@ -42,9 +40,9 @@ class MetadataHeaderViewCell: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        print(self)
         if #available(tvOS 11.0, *) {
-            constarintForContainer.constant = -60
+           // constarintForContainer.constant = -60
             
         } else {
             

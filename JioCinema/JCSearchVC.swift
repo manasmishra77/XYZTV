@@ -11,8 +11,6 @@ import UIKit
 class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
 
     var searchViewController:UISearchController? = nil
-    var searchModel:SearchDataModel?
-    var searchResultArray = [SearchedCategoryItem]()
     
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
@@ -25,6 +23,9 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     fileprivate var isOnSearchScreen = true
     fileprivate var screenAppearTiming = Date()
     fileprivate var metaDataForArtist: Any? = nil
+    
+    fileprivate var searchModel:SearchDataModel?
+    fileprivate var searchResultArray = [SearchedCategoryItem]()
     
     
     //MARK:- View Life Cycle
@@ -40,12 +41,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        searchViewController?.searchBar.text = JCAppReference.shared.searchText
-        searchViewController?.extendedLayoutIncludesOpaqueBars = false
-        if (searchViewController?.searchBar.text?.count)! > 0
-        {
-            searchResultForkey(with: (searchViewController?.searchBar.text)!)
-        }
         
     }
     
@@ -96,6 +91,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         return false
     }
     
+    
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item{
@@ -140,10 +136,18 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         }
     }
     
-    //For after login function
+    
+    //MARK:- Handling after login
     fileprivate var itemAfterLogin: Item? = nil
     fileprivate var categoryIndexAfterLogin: Int? = nil
     fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
     
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         //weak var weakSelf = self
@@ -160,18 +164,15 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             presentLoginVC()
         }
     }
-    func playItemAfterLogin() {
-        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
-        self.itemAfterLogin = nil
-        self.categoryIndexAfterLogin = nil
-        self.categoryNameAfterLogin = nil
-    }
+    
     
     func presentLoginVC()
     {
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
+    
+    //MARK:- Preparing playerVC
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
     {
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
@@ -201,32 +202,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             }
         }
     }
-   
-    //MARK:-  Analytics Event Methods
     
-    func sendSearchAnalyticsEvent()
-    {
-        // For Internal Analytics Event
-        let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text!)!, isvoice: "false", queryResultCount: String(self.searchResultArray.count))
-        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: searchInternalEvent)
-
-    }
-    //MARK:-  Helper Methods
-
+    //MARK:-  UISearchResultsUpdating Methods
     func updateSearchResults(for searchController: UISearchController) {
         searchResultForkey(with: searchController.searchBar.text!)
-    }
-    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any) {
-        isForArtistSearch = true
-        searchViewController?.searchBar.text = searchText
-        searchResultForkey(with: searchText)
-        self.metaDataItemId = metaDataItemId
-        self.metaDataAppType = metaDataAppType
-        self.metaDataFromScreen = metaDataFromScreen
-        self.metaDataCategoryName = metaDataCategoryName
-        self.metaDataCategoryIndex = metaDataCategoryIndex
-        self.metaDataTabBarIndex = metaDataTabBarIndex
-        self.metaDataForArtist = metaData
     }
     
     fileprivate func searchResultForkey(with key:String)
@@ -257,12 +236,33 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                         DispatchQueue.main.async {
                             weakself?.searchResultArray = array
                             weakself?.baseTableView.reloadData()
-                            JCAppReference.shared.searchText = self.searchViewController?.searchBar.text
                         }
                     }
                 }
             }
         }
+    }
+   
+    //MARK:-  Analytics Event Methods
+    func sendSearchAnalyticsEvent()
+    {
+        // For Internal Analytics Event
+        let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text!)!, isvoice: "false", queryResultCount: String(self.searchResultArray.count))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: searchInternalEvent)
+    }
+    
+    //MARK:- Artist search preparation methods
+    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any) {
+        isForArtistSearch = true
+        searchViewController?.searchBar.text = searchText
+        searchResultForkey(with: searchText)
+        self.metaDataItemId = metaDataItemId
+        self.metaDataAppType = metaDataAppType
+        self.metaDataFromScreen = metaDataFromScreen
+        self.metaDataCategoryName = metaDataCategoryName
+        self.metaDataCategoryIndex = metaDataCategoryIndex
+        self.metaDataTabBarIndex = metaDataTabBarIndex
+        self.metaDataForArtist = metaData
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
@@ -273,6 +273,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         }
        
     }
+    
+    //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         
         //ChangingTheAlpha when tab bar item selected

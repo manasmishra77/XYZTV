@@ -38,9 +38,6 @@ class JCTabBarController: UITabBarController {
         let searchVC = Utility.sharedInstance.prepareSearchViewController(searchText: "", jcSearchVc: nil)
         let searchContainerController = UISearchContainerViewController.init(searchController: searchVC)
         searchContainerController.view.backgroundColor = UIColor.black
-        
-        //ToSetSearchVC,TBC
-        let tempVC = JCBaseVC(nibName: "JCBaseVC", bundle: nil)
         let navControllerForSearchContainer = UINavigationController(rootViewController: searchContainerController)
         
         navControllerForSearchContainer.tabBarItem = UITabBarItem(title: "Search", image: nil, tag: 5)
@@ -83,55 +80,6 @@ class JCTabBarController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func presentLanguageGenreController(item:Item)
-    {
-        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
-        languageGenreVC.item = item
-        self.present(languageGenreVC, animated: false, completion: nil)
-        
-        
-    }
-    /*
-    func checkLoginAndPlay()
-    {
-        weak var weakSelf = self
-        if(JCLoginManager.sharedInstance.isUserLoggedIn())
-        {
-            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-            //prepareToPlay()
-        }
-        else
-        {
-            JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
-                if(isOnJioNetwork == false)
-                {
-                    print("Not on jio network")
-                    if let item = currentPlayableItem as? Item
-                    {
-                        if (item.app?.type == VideoType.Music.rawValue || item.app?.type == VideoType.Clip.rawValue || item.app?.type == VideoType.Trailer.rawValue ||
-                            item.app?.type == VideoType.Episode.rawValue)
-                        {
-                            DispatchQueue.main.async {
-                                //weakSelf?.presentLoginVC()
-                            }
-                        }
-                    }
-                    else
-                    {
-                        NotificationCenter.default.post(name: watchNowNotificationName, object: nil, userInfo: nil)
-                    }
-                    
-                }
-                else
-                {
-                    //proceed without checking any login
-                    //weakSelf?.prepareToPlay()
-                    print("Is on jio network")
-                }
-            }
-        }
-    }*/
 }
 
 extension UIApplication {

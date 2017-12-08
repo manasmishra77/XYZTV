@@ -17,7 +17,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     var metadata: MetadataModel?
     var selectedYearIndex = 0
     var userComingAfterLogin: Bool = false
-    let headerCell = Bundle.main.loadNibNamed("MetadataHeaderViewCell", owner: self, options: nil)?.last as! MetadataHeaderViewCell
+    let headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
     var presentingScreen = ""
     
     //New metadata model
@@ -163,7 +163,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func prepareHeaderView() -> UIView
     {
         //headerCell.item = item
-        headerCell.metadata = metadata
         headerCell.seasonCollectionView.delegate = self
         headerCell.seasonCollectionView.dataSource = self
         headerCell.monthsCollectionView.delegate = self
@@ -340,11 +339,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         headerCell.monthsCollectionView.reloadData()
         let headerHeight = screenHeight * (4/5)
         if #available(tvOS 11.0, *){
-            headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
+            //headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
             
         }else{
-            headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
-            tableViewTopConstraint.constant = -65
+            //headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
+             tableViewTopConstraint.constant = -65
             if metadata?.type == VideoType.Movie.rawValue{
                 tableViewTopConstraint.constant = -100
             }
@@ -614,29 +613,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             self.metadata?.episodes = tempMetadata?.episodes
         }
     }
-
-    //Removing seasarch container from search navigation controller
-    func changingSearchNCRootVC(){
-        if JCAppReference.shared.isTempVCRootVCInSearchNC == nil{
-            return
-        }
-        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
-            JCAppReference.shared.isTempVCRootVCInSearchNC = false
-            let searchVC = Utility.sharedInstance.prepareSearchViewController(searchText: "", jcSearchVc: nil)
-            let searchContainerController = UISearchContainerViewController(searchController: searchVC)
-            searchContainerController.view.backgroundColor = UIColor.black
-            if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
-                navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
-            }
-            
-        }
-        else{
-            JCAppReference.shared.isTempVCRootVCInSearchNC = true
-            if let navVC = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
-                navVC.setViewControllers([JCAppReference.shared.tempVC!], animated: false)
-            }
-        }
-    }
     
     
     //MARK:- Change watchlist button status locally
@@ -664,7 +640,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     //MARK:- Metadata header cell delegate methods
-    func didClickOnWatchNowButton(_ headerView: MetadataHeaderViewCell?) {
+    func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?) {
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
             playVideo()
         }
@@ -674,7 +650,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
-    func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderViewCell, isStatusAdd: Bool) {
+    func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String:Any]()
         if itemAppType == .TVShow
         {
@@ -704,12 +680,22 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             DispatchQueue.main.async {
                 self.headerCell.addToWatchListButton.isEnabled = true
             }
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                 print(responseError)
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
+                    }
+                }
                 return
             }
+            
             if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 let code = parsedResponse["code"] as? Int
@@ -752,6 +738,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //prepare metadata view
     func prepareMetadataView() ->UIView
     {
+        headerCell.frame.size.width = metadataContainerView.frame.size.width
+        headerCell.frame.size.height = metadataContainerView.frame.size.height
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
@@ -762,7 +750,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.starringStaticLabel.isHidden = true
         }
         if metadata?.artist != nil{
-            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ",").characters.count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
+            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ",").count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
         }
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)

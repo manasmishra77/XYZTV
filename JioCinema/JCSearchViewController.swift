@@ -9,11 +9,17 @@
 import UIKit
 
 class JCSearchViewController: UISearchController {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        
+        //Stting background gray image
+        let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage"))
+        imageView.frame = self.view.frame
+        self.view.addSubview(imageView)
+        self.view.sendSubview(toBack: imageView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,6 +30,8 @@ class JCSearchViewController: UISearchController {
         print("123")
     }
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        
+        //Sending event to the searchvc when menu button preesed
         if presses.first?.type == UIPressType.menu{
             if let searchVc = self.searchResultsController as? JCSearchVC{
                 searchVc.pressesBegan(presses, with: event)

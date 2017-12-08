@@ -34,7 +34,7 @@ class JCAnalyticsEvent: NSObject {
         
         let rtcEpoch = String(describing:Date().timeIntervalSince1970)
         
-        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
+        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001", "uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique, "profileid":JCAppUser.shared.profileId, "idamid":JCAppUser.shared.unique, "rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString, "pf":"O", "nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
         return finalDictionary
     }
     

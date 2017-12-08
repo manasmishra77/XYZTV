@@ -30,10 +30,8 @@ class JCAppUser:NSObject,NSCoding
     var uid:String = ""
     var unique:String = ""
     var userGroup:String = ""
+    var mToken: String = ""
     
-    
-    
-
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -51,6 +49,7 @@ class JCAppUser:NSObject,NSCoding
         self.uid = aDecoder.decodeObject(forKey: "uid") as? String ?? ""
         self.unique = aDecoder.decodeObject(forKey: "unique") as? String ?? ""
         self.userGroup = aDecoder.decodeObject(forKey: "userGroup") as? String ?? ""
+        self.mToken = aDecoder.decodeObject(forKey: "mToken") as? String ?? ""
     }
     
     func encode(with aCoder: NSCoder)
@@ -69,20 +68,9 @@ class JCAppUser:NSObject,NSCoding
         aCoder.encode(uid, forKey: "uid")
         aCoder.encode(unique, forKey: "unique")
         aCoder.encode(userGroup, forKey: "userGroup")
+        aCoder.encode(mToken, forKey: "mToken")
+        
     }
     
 }
 
-//Setting the refernces for searchvc
-class JCAppReference: NSObject {
-    static var shared = JCAppReference()
-    
-     override init(){} //singleTone
-    //Setting the refernces for searchvc
-    var tabBarCotroller: UITabBarController? = nil
-    var tempVC: UIViewController? = nil
-    var isTempVCRootVCInSearchNC: Bool? = nil
-    var searchText: String? = nil
-    var searchContainer: UISearchContainerViewController? = nil
-    //Reference for metadatavc for presenting resume watch scene on it
-    var metaDataVc: UIViewController? = nil}
