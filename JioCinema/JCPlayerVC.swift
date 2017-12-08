@@ -63,6 +63,7 @@
     
     var duration                    = 0.0
     var bufferCount                 = 0
+    var isRecommendationViewVisible = true
     
     //Player changes
     var id: String = ""
@@ -347,9 +348,16 @@
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
+        addTapGesture()
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
+
+        UIView.animate(withDuration: 5.0) {
+            self.view_Recommendation.alpha = 0.1
+            self.isRecommendationViewVisible = false
+        }
+
         self.nextVideoView.isHidden = true
     }
     
@@ -773,6 +781,8 @@
     
     func swipeGestureHandler(gesture: UIGestureRecognizer) {
         
+        self.view_Recommendation.alpha = 1.0
+
         if !isSwipingAllowed_RecommendationView{
             return
         }
@@ -790,9 +800,56 @@
         }
     }
     
+    //MARK:- Add Tap Gesture
+    func addTapGesture()
+    {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapGestureHandler))
+        let touchType = UITouchType.direct
+        tap.allowedPressTypes = [NSNumber.init(value: touchType.rawValue)]
+
+        self.playerController?.view.addGestureRecognizer(tap)
+        
+    }
+    
+    func tapGestureHandler(gesture: UIGestureRecognizer)
+    {
+        if !isRecommendationViewVisible
+        {
+            self.view_Recommendation.alpha = 1.0
+            UIView.animate(withDuration: 5.0) {
+                self.view_Recommendation.alpha = 0.1
+                self.isRecommendationViewVisible = false
+            }
+        }
+    }
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        
+        for press in presses {
+            
+            if press.type == .select
+            {
+//                if !isRecommendationViewVisible
+//                {
+//                    self.view_Recommendation.alpha = 1.0
+//                    UIView.animate(withDuration: 5.0) {
+//                        self.view_Recommendation.alpha = 0.1
+//                        self.isRecommendationViewVisible = false
+//                    }
+//                }
+            }
+            else if press.type == .playPause
+            {
+                self.view_Recommendation.alpha = 1.0
+            }
+            
+        }
+    }
+    
     //MARK:- Swipe Up Recommendation View
     func swipeUpRecommendationView()
     {
+        self.view_Recommendation.alpha = 1.0
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -822,6 +879,8 @@
             })
         }
     }
+    
+    
     //MARK:- Show Alert
     func showAlert(alertTitle:String,alertMessage:String,completionHandler:(()->Void)?)
     {

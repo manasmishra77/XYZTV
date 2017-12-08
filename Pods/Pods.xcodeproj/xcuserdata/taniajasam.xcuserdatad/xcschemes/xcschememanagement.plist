@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>WillowTreeOuroboros.xcscheme</key>
 		<dict>
 			<key>orderHint</key>

@@ -9,6 +9,8 @@
 //http://dev.media.jio.com/apidocSit/html/#api-Appkey-Resumewatch_Add
 
 import UIKit
+import Crashlytics
+import Fabric
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,11 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+        handlerUncaughtException()
+
         //Sending event for Internal Analytics
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
-        handlerUncaughtException()
+        Fabric.with([Crashlytics.self])
         
         return true
     }
