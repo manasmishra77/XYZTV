@@ -182,21 +182,29 @@ class InfinityScrollView: UIView {
                 self.current = nextImage.current!
                 
                 //LeftButton
-                let leftButtonImageUrlString = self.carouselArray[nextImage.previous!].tvImage
-                let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
-                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                let leftButtonImageUrlString = self.carouselArray[nextImage.previous!].tvImage ?? ""
+                if let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!){
+                    self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                }
+                
                 //MiddleButton
-                let middleButtonImageUrlString = self.carouselArray[nextImage.current!].tvImage
-                let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
-                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                let middleButtonImageUrlString = self.carouselArray[nextImage.current!].tvImage ?? ""
+                if let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!){
+                    self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                }
+                
                 //RightButton
-                let rightButtonImageUrlString = self.carouselArray[nextImage.next!].tvImage
-                let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
-                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                let rightButtonImageUrlString = self.carouselArray[nextImage.next!].tvImage ?? ""
+                if let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString))!){
+                    self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                }
+                
                 //ExtraRight
-                let extraRightButtonImageUrlString = self.carouselArray[nextImage.extraOne!].tvImage
-                let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString!))!)
-                self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                let extraRightButtonImageUrlString = self.carouselArray[nextImage.extraOne!].tvImage ?? ""
+                if let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString))!){
+                    self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+                }
+                
                 
                 //CallToChangeTheFocusOfTheButton 
                 //self.changeFocusForCarouselDelegate?.setFocusEnvironments()
@@ -222,7 +230,7 @@ class InfinityScrollView: UIView {
         
         if let type = carouselArray[current].app?.type{
             if let videoType = VideoType(rawValue: type){
-                selectedItemFromViewController = videoType
+               // selectedItemFromViewController = videoType
             }
         }
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)

@@ -12,6 +12,7 @@ import SDWebImage
 
 enum VideoType:Int
 {
+    case MetaData           = -3
     case Search             = -2
     case Home               = -1
     case Movie              = 0
@@ -24,6 +25,7 @@ enum VideoType:Int
     case Language           = 9
     case Genre              = 10
     case None               = -111
+    
     
     var name: String {
         get { return String(describing: self) }
@@ -151,7 +153,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
-        cell.itemFromViewController = VideoType(rawValue:(item.app?.type)!)
+        cell.itemFromViewController = VideoType.MetaData
         cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         cell.moreLikeData = nil

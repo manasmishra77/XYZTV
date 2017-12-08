@@ -149,17 +149,17 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
         let result = userData["result"] as? [String:Any]
         
-        JCAppUser.shared.lbCookie = result?["lbCookie"] as! String
+        JCAppUser.shared.lbCookie = result?["lbCookie"] as? String ?? ""
         JCAppUser.shared.ssoLevel = ""
-        JCAppUser.shared.ssoToken = result?["ssoToken"] as! String
-        JCAppUser.shared.commonName = result?["displayName"] as! String
+        JCAppUser.shared.ssoToken = result?["ssoToken"] as? String ?? ""
+        JCAppUser.shared.commonName = result?["displayName"] as? String ?? ""
         JCAppUser.shared.preferredLocale = ""
-        JCAppUser.shared.subscriberId = result?["subscriberId"] as! String
-        JCAppUser.shared.mail = result?["mail"] as! String
-        JCAppUser.shared.profileId = result?["profileId"] as! String
-        JCAppUser.shared.uid = result?["uId"] as! String
-        JCAppUser.shared.unique = result?["uniqueId"] as! String
-        JCAppUser.shared.userGroup = userData["userGrp"] as! String
+        JCAppUser.shared.subscriberId = result?["subscriberId"] as? String ?? ""
+        JCAppUser.shared.mail = result?["mail"] as? String ?? ""
+        JCAppUser.shared.profileId = result?["profileId"] as? String ?? ""
+        JCAppUser.shared.uid = result?["uId"] as? String ?? ""
+        JCAppUser.shared.unique = result?["uniqueId"] as? String ?? ""
+        JCAppUser.shared.userGroup = userData["userGrp"] as? String ?? ""
     }
     
     func navigateToHomeVC()

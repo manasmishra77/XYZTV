@@ -50,7 +50,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     override func viewDidAppear(_ animated: Bool)
     {
-        Crashlytics.sharedInstance().crash()
+        //Crashlytics.sharedInstance().crash()
         screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Home","Platform": "TVOS","Metadata Page": ""]

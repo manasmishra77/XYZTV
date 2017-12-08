@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
         
-        Fabric.with([Crashlytics.self])
+        //Fabric.with([Crashlytics.self])
         return true
     }
 
