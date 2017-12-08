@@ -60,9 +60,11 @@ class InfinityScrollView: UIView {
 
         let newImage = nextImage(current: 0)
         //LeftButton
-        let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage
-        let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
-        self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+        let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage ?? ""
+        if let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!)
+        {
+            self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+        }
         //MiddleButton
         let middleButtonImageUrlString = self.carouselArray[newImage.current!].tvImage
         let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
