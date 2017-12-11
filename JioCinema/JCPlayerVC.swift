@@ -86,6 +86,9 @@
     var moreModal:More?
     var didSeek :Bool?
     
+    fileprivate var playBackRightsTappedAt = Date()
+    fileprivate var videoStartingDuration = 0
+    
     static let assetKeysRequiredToPlay = [
         "playable",
         "hasProtectedContent"
@@ -590,6 +593,7 @@
             }
             switch newStatus {
             case .readyToPlay:
+                self.videoStartingDuration = Int(Date().timeIntervalSince(playBackRightsTappedAt))
                 self.seekPlayer()
                 self.addPlayerPeriodicTimeObserver()
                 self.collectionView_Recommendation.reloadData()
@@ -836,7 +840,7 @@
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeSpent = CMTimeGetSeconds(currentTime) - duration - totalBufferDurationTime - videoViewingLapsedTime
             
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(duration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: playerId!, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(videoStartingDuration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: selectedItemFromViewController.name, bitrate: bitrate, playList: isPlayList, rowPosition: String(collectionIndex), categoryTitle: categoryTitle)
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             
@@ -1345,6 +1349,7 @@
     
     func callWebServiceForPlaybackRights(id:String)
     {
+        playBackRightsTappedAt = Date()
         DispatchQueue.main.async {
             //self.activityIndicatorOfLoaderView.startAnimating()
         }
