@@ -354,7 +354,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as! Int
+                let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
                     weakSelf?.setUserData(data: parsedResponse )

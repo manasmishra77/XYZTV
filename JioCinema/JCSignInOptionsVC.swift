@@ -102,11 +102,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     }
                     else if(code == 400)
                     {
-                        self.showAlert(alertString: parsedResponse["message"]! as! String)
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        self.showAlert(alertString: parsedResponse["message"] as? String ?? "")
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
                     }
                     else{
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
                     }
                 }
             }

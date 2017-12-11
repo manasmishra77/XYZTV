@@ -122,17 +122,18 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            carouselView.carouselArray = (JCDataStore.sharedDataStore.moviesData?.data?[0].items)!
-            carouselView.loadViews()
-            uiviewCarousel = carouselView
-            selectedItemFromViewController = VideoType.Movie
-            collectionIndex = 0
-            return carouselView
+            if let items = (JCDataStore.sharedDataStore.moviesData?.data?[0].items){
+                carouselView.carouselArray = items
+                    carouselView.loadViews()
+                uiviewCarousel = carouselView
+                selectedItemFromViewController = VideoType.Movie
+                collectionIndex = 0
+                return carouselView
+            }
+           
         }
-        else
-        {
             return UIView()
-        }
+        
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {

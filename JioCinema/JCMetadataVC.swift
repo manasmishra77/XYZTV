@@ -173,7 +173,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
             else if indexPath.row == 1
             {
                 cell.categoryTitleLabel.text = "Cast & Crew"
-                let dict = getStarCastImagesUrl(artists: (metadata?.artist)!)
+                let dict = getStarCastImagesUrl(artists: (metadata?.artist) ?? [""])
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
             }
@@ -605,18 +605,18 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         {
             if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
             {
-                return (metadata?.filter?.count)!
+                return (metadata?.filter?.count) ?? 0
                
             }
             else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
             {
-                return (metadata?.filter?.count)!
+                return (metadata?.filter?.count) ?? 0
             }
             else if collectionView == headerCell.monthsCollectionView  //months, in case of episodes
             {
-                if  (metadata?.filter?.count)! > selectedYearIndex
+                if  ((metadata?.filter?.count) ?? 0) > selectedYearIndex
                {
-                    if let count = (metadata?.filter![selectedYearIndex].month?.count)
+                    if let count = (metadata?.filter?[selectedYearIndex].month?.count)
                     {
                         return count
                     }
@@ -639,14 +639,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
-            cell.seasonNumberLabel.text = String(describing: metadata!.filter![indexPath.row].season!)
+            cell.seasonNumberLabel.text = String(describing: metadata?.filter?[indexPath.row].season ?? 0)
             return cell
            
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
-            if let text = metadata!.filter![indexPath.row].filter
+            if let text = metadata?.filter?[indexPath.row].filter
             {
                 cell.yearLabel.text = text
             }
@@ -709,7 +709,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return
         }
         
-        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        if (metadata?.isSeason ?? false),collectionView == headerCell.seasonCollectionView     //seasons
         {
             let filter = String(metadata!.filter![indexPath.row].season!)
             callWebServiceForSelectedFilter(filter: filter)

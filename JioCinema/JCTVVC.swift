@@ -147,12 +147,17 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            carouselView.carouselArray = (JCDataStore.sharedDataStore.tvData?.data?[0].items)!
-            carouselView.loadViews()
-            uiviewCarousel = carouselView
-            selectedItemFromViewController = VideoType.TVShow
-            collectionIndex = 0
-            return carouselView
+            if let items = (JCDataStore.sharedDataStore.tvData?.data?[0].items){
+                carouselView.carouselArray = items
+                carouselView.loadViews()
+                uiviewCarousel = carouselView
+                selectedItemFromViewController = VideoType.TVShow
+                collectionIndex = 0
+                return carouselView
+            }else{
+               return UIView.init()
+            }
+            
         }
         else
         {

@@ -69,28 +69,28 @@ class InfinityScrollView: UIView {
 
         let newImage = nextImage(current: 0)
         //LeftButton
-        let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage
-        let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
+        let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage ?? ""
+        let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!)
         self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //MiddleButton
-        let middleButtonImageUrlString = self.carouselArray[newImage.current!].tvImage
-        let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
+        let middleButtonImageUrlString = self.carouselArray[newImage.current!].tvImage ?? ""
+        let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!)
         self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //RightButton
-        let rightButtonImageUrlString = self.carouselArray[newImage.next!].tvImage
-        let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
+        let rightButtonImageUrlString = self.carouselArray[newImage.next!].tvImage ?? ""
+        let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString))!)
         self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //ExtraLeft
-        let extraLeftButtonImageUrlString = self.carouselArray[newImage.extraOne!].tvImage
-        let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString!))!)
+        let extraLeftButtonImageUrlString = self.carouselArray[newImage.extraOne!].tvImage ?? ""
+        let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString))!)
         self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
         //ExtraRight
         var extraRightCount = 0
         if newImage.next! + 1 < carouselArray.count{
             extraRightCount = newImage.next! + 1
         }
-        let extraRightButtonImageUrlString = self.carouselArray[extraRightCount].tvImage
-        let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString!))!)
+        let extraRightButtonImageUrlString = self.carouselArray[extraRightCount].tvImage ?? ""
+        let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString))!)
         self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage:#imageLiteral(resourceName: "CarouselPlaceholder"))
         
     }
@@ -131,20 +131,20 @@ class InfinityScrollView: UIView {
                 let previousImage = self.previousImage(current: self.current)
                 self.current = previousImage.current!
                 //LeftButton
-                let leftButtonImageUrlString = self.carouselArray[previousImage.previous!].tvImage
-                let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString!))!)
+                let leftButtonImageUrlString = self.carouselArray[previousImage.previous!].tvImage ?? ""
+                let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!)
                 self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //MiddleButton
-                let middleButtonImageUrlString = self.carouselArray[previousImage.current!].tvImage
-                let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString!))!)
+                let middleButtonImageUrlString = self.carouselArray[previousImage.current!].tvImage ?? ""
+                let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!)
                 self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //RightButton
-                let rightButtonImageUrlString = self.carouselArray[previousImage.next!].tvImage
-                let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString!))!)
+                let rightButtonImageUrlString = self.carouselArray[previousImage.next!].tvImage ?? ""
+                let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString))!)
                 self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //ExtraLeft
-                let extraLeftButtonImageUrlString = self.carouselArray[previousImage.extraOne!].tvImage
-                let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString!))!)
+                let extraLeftButtonImageUrlString = self.carouselArray[previousImage.extraOne!].tvImage ?? ""
+                let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString))!)
                 self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 
                 

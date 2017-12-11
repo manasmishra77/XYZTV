@@ -133,9 +133,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if(episodes?[indexPath.row].banner != nil)
         {
             cell.nameLabel.text = episodes?[indexPath.row].name
-            let imageUrl = episodes?[indexPath.row].banner!
+            let imageUrl = episodes?[indexPath.row].banner ?? ""
             
-            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
             cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
@@ -165,7 +165,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 cell.artistNameLabel.textAlignment = .center
                 let keys = Array(self.artistImages!.keys)
                 let key = keys[indexPath.row]
-                let imageUrl = self.artistImages?[key]
+                let imageUrl = self.artistImages?[key] ?? ""
                 
                 if let artistDict = self.artistImages?.filter({$0.key != ""}){
                     if artistDict.count > 0{
@@ -180,7 +180,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                         } 
                         cell.artistImageView.isHidden = true
                         cell.artistNameInitialButton.isHidden = false
-                        let url = URL(string: imageUrl!)
+                        let url = URL(string: imageUrl)
                         cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
                             

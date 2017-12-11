@@ -126,17 +126,18 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            carouselView.carouselArray = (JCDataStore.sharedDataStore.musicData?.data?[0].items)!
-            carouselView.loadViews()
-            uiviewCarousel = carouselView
-            selectedItemFromViewController = VideoType.Music
-            collectionIndex = 0
-            return carouselView
+            if let items = (JCDataStore.sharedDataStore.musicData?.data?[0].items){
+                carouselView.carouselArray = items
+                carouselView.loadViews()
+                uiviewCarousel = carouselView
+                selectedItemFromViewController = VideoType.Music
+                collectionIndex = 0
+                return carouselView
+            }
+        
         }
-        else
-        {
-            return UIView.init()
-        }
+        return UIView.init()
+        
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {

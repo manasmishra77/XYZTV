@@ -49,7 +49,7 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: languageGenreSelectionCellIdentifier, for: indexPath) as! JCLanguageGenreSelectionPrototypeCell
-        cell.titleLabel.text = dataSource![indexPath.row].name!
+        cell.titleLabel.text = dataSource?[indexPath.row].name
         cell.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
         cell.layer.cornerRadius = 10
         return cell

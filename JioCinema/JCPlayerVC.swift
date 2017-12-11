@@ -283,7 +283,7 @@
                             {
                                 let index = (self?.currentPlayingIndex)! + 1
                                 
-                                if data.isPlaylist!     // If Playlist exist
+                                if data.isPlaylist != nil, data.isPlaylist!  // If Playlist exist
                                 {
                                     if self?.playlistData != nil
                                     {
@@ -923,10 +923,10 @@
             categoryTitle = vc.dataItemsForTableview[collectionIndex].title ?? ""
         }
         else if let vc = vc as? JCClipsVC{
-            categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data![collectionIndex].title ?? "")!
+            categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].title ?? "")
         }
         else if let vc = vc as? JCMusicVC{
-            categoryTitle = (JCDataStore.sharedDataStore.musicData?.data![collectionIndex].title ?? "")!
+            categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].title ?? "")
         }
        
     }
@@ -1003,8 +1003,8 @@
             self.nextVideoView.isHidden = false
             self.nextVideoNameLabel.text = videoName
             self.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
-            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner)
-            let url = URL(string: imageUrl!)
+            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner) ?? ""
+            let url = URL(string: imageUrl)
             self.nextVideoThumbnail.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
@@ -1120,7 +1120,7 @@
         if let data = self.item as? Item
         {
             
-            if data.isPlaylist!
+            if data.isPlaylist != nil, data.isPlaylist!
             {
                 self.callWebServiceForPlayListData(id: data.playlistId!)
             }
@@ -1157,16 +1157,16 @@
                     
                     if selectedItemFromViewController == VideoType.Clip
                     {
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items)!
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items) ?? [Item]()
                     }
                     else if selectedItemFromViewController == VideoType.Home
                     {
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.homeData?.data?[collectionIndex].items!)!
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.homeData?.data?[collectionIndex].items) ?? [Item]()
                     }
 
                     else if selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
                     {
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items)!
+                        arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items) ?? [Item]()
                     }
                     
                     reloadCollectionViewWithCurrentPlayingIndex()
@@ -1213,7 +1213,7 @@
                     weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                     
                     weakSelf?.collectionView_Recommendation.reloadData()
-                    weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex)!)
+                    weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex) ?? 0)
                     
                 }
                 return
@@ -1255,7 +1255,7 @@
                     if ((self.metadata?.episodes) != nil){
                         for i in 0 ..< (self.metadata?.episodes?.count)!
                         {
-                            let modal = self.metadata?.episodes![i]
+                            let modal = self.metadata?.episodes?[i]
                             if modal?.id == data.id
                             {
                                 self.currentPlayingIndex = i
@@ -1267,9 +1267,9 @@
                 else if data.app?.type == VideoType.Trailer.rawValue
                 {
                     
-                    for i in 0 ..< (self.metadata?.more?.count)!
+                    for i in 0 ..< ((self.metadata?.more?.count) ?? 1)
                     {
-                        let modal = self.metadata?.more![i]
+                        let modal = self.metadata?.more?[i]
                         if modal?.id == data.id
                         {
                             self.currentPlayingIndex = i
@@ -1308,12 +1308,12 @@
                 if let responseString = String(data: responseData, encoding: .utf8)
                 {
                     self.playlistData = PlaylistDataModel(JSONString: responseString)
-                    if (self.playlistData?.more?.count)! > 0
+                    if (self.playlistData?.more?.count) != nil, (self.playlistData?.more?.count)! > 0
                     {
                         self.currentPlayingIndex = 0
                         if let data = self.item as? Item
                         {
-                            for i in 0 ..< (self.playlistData?.more?.count)!
+                            for i in 0 ..< ((self.playlistData?.more?.count) ?? 1)
                             {
                                 let modal = self.playlistData?.more?[i]
                                 if modal?.id == data.id
@@ -1412,24 +1412,24 @@
                                     
                                     if data.app?.type == VideoType.Movie.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData!.url!))
+                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.TVShow.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData!.url!))
+                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!).appending("/0/0")
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.Trailer.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                                        self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.Episode.rawValue {
-                                        self.instantiatePlayer(with: (self.playbackRightsData!.url!))
+                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
@@ -1439,7 +1439,7 @@
                                         
                                         if selectedItemFromViewController == VideoType.Search || selectedItemFromViewController == VideoType.Music
                                         {
-                                            self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                                            self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                             let url = metadataUrl.appending(data.id!)
                                             if !data.isPlaylist! {
                                             self.callWebServiceForMoreLikeData(url: url)
@@ -1447,7 +1447,7 @@
                                         }
                                         else  if selectedItemFromViewController == VideoType.Clip || selectedItemFromViewController == VideoType.Home || selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
                                         {
-                                            self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                                            self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                         }
                                    }
                                 
@@ -1687,11 +1687,11 @@
         }
         else if let data = self.item as? Item
         {
-            if data.isPlaylist!     // If Playlist exist
+            if data.isPlaylist != nil, data.isPlaylist!     // If Playlist exist
             {
                 if playlistData != nil
                 {
-                    return (playlistData?.more?.count)!
+                    return (playlistData?.more?.count) ?? 0
                 }
             }
             else

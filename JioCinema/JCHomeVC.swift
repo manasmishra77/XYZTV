@@ -50,7 +50,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     override func viewDidAppear(_ animated: Bool)
     {
-        //Crashlytics.sharedInstance().crash()
+       // Crashlytics.sharedInstance().crash()
         screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Home","Platform": "TVOS","Metadata Page": ""]
@@ -164,12 +164,16 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         //For autorotate carousel
         let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
         let carouselView = carouselViews?.first as! InfinityScrollView
-        carouselView.carouselArray = (JCDataStore.sharedDataStore.homeData?.data?[0].items)!
-        carouselView.loadViews()
-        uiviewCarousel = carouselView
-        selectedItemFromViewController = VideoType.Home
-        collectionIndex = 0
-        return carouselView
+        if let items = (JCDataStore.sharedDataStore.homeData?.data?[0].items){
+            carouselView.carouselArray = items
+                carouselView.loadViews()
+            uiviewCarousel = carouselView
+            selectedItemFromViewController = VideoType.Home
+            collectionIndex = 0
+            return carouselView
+        }
+        return UIView()
+      
         
     }
     

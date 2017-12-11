@@ -289,7 +289,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         collectionIndex = collectionView.tag
-        categoryTitle = (languageGenreDetailModel?.data?.items?[indexPath.row].name!)!
+        categoryTitle = (languageGenreDetailModel?.data?.items?[indexPath.row].name) ?? ""
         
         if item?.app?.type == VideoType.Language.rawValue {
             selectedItemFromViewController = VideoType.Language
@@ -298,7 +298,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             selectedItemFromViewController = VideoType.Genre
         }
         
-        let videoType = item?.list![currentType].id
+        let videoType = item?.list?[currentType].id
         
         if let playableItem = (languageGenreDetailModel?.data?.items?[indexPath.row]){
             currentPlayableItem = playableItem
