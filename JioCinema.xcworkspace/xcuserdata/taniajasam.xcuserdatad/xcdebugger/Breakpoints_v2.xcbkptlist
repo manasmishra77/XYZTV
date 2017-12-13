@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCPlayerVC.swift"
-            timestampString = "534347253.59044"
+            timestampString = "534693214.963754"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "805"
-            endingLineNumber = "805"
-            landmarkName = "swipeGestureHandler(gesture:)"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "playVideoWithPlayerItem()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
