@@ -230,7 +230,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                 {
                     self.searchModel = SearchDataModel(JSONString: responseString)
                     
-                    let array = (self.searchModel?.searchData?.categoryItems)!
+                    let array = (self.searchModel?.searchData?.categoryItems) ?? [SearchedCategoryItem]()
                     if array.count > 0
                     {
                         DispatchQueue.main.async {

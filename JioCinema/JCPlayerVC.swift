@@ -451,7 +451,7 @@
         imageMetadataItem.locale = NSLocale.current
         imageMetadataItem.key = AVMetadataCommonKeyArtwork as NSCopying & NSObjectProtocol
         imageMetadataItem.keySpace = AVMetadataKeySpaceCommon
-        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(bannerUrlString))!
+        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(bannerUrlString)) ?? ""
         
         RJILImageDownloader.shared.downloadImage(urlString: imageUrl, shouldCache: false){
             image in
@@ -498,7 +498,7 @@
             Log.DLog(message: newDuration as AnyObject)
         }
         else if keyPath == #keyPath(JCPlayerVC.player.rate) {
-            let newRate = (change?[NSKeyValueChangeKey.newKey] as! NSNumber).doubleValue
+            let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
             
             if newRate == 0
             {
@@ -728,8 +728,8 @@
                 t1 = t1 - 1
             })
             
-            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner)
-            let url = URL(string: imageUrl!)
+            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner) ?? ""
+            let url = URL(string: imageUrl)
             self.nextVideoThumbnail.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
@@ -1002,7 +1002,7 @@
                                 if (weakSelf?.isPlayListFirstItemToBePlayed)!{
                                     weakSelf?.isPlayListFirstItemToBePlayed = false
                                     let playlistFirstItem = mores[0]
-                                    weakSelf?.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: (weakSelf?.playListId)!, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (weakSelf?.fromScreen)!, fromCategory: (weakSelf?.fromCategory)!, fromCategoryIndex: (weakSelf?.fromCategoryIndex)!)
+                                    weakSelf?.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: weakSelf?.playListId ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: weakSelf?.fromScreen ?? "", fromCategory: weakSelf?.fromCategory ?? "", fromCategoryIndex: weakSelf?.fromCategoryIndex ?? 0)
                                     weakSelf?.preparePlayerVC()
                                 }
                                 else{
@@ -1288,7 +1288,7 @@
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC{
                             self.dismiss(animated: true, completion: {
-                                metaDataVC.callWebServiceForMetadata(id: newItem.id!, newAppType: newAppType)
+                                metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
                             })
                         }
                     }

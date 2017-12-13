@@ -219,10 +219,10 @@ class JCSplashVC: UIViewController {
                             if resultData != nil{
                                 let versionString = resultData!["version"] as? String ?? "0"
                                 checkModelData.version = Float(versionString)
-                                checkModelData.description = resultData!["description"] as? String
-                                checkModelData.heading = resultData!["heading"] as? String
-                                checkModelData.url = resultData!["url"] as? String
-                                checkModelData.mandatory = resultData!["mandatory"] as? Bool
+                                checkModelData.description = resultData!["description"] as? String ?? ""
+                                checkModelData.heading = resultData!["heading"] as? String ?? ""
+                                checkModelData.url = resultData!["url"] as? String ?? ""
+                                checkModelData.mandatory = resultData!["mandatory"] as? Bool ?? false
                                 checkModelData.buildNumber = resultData!["buildnumber"] as? Int ?? 0
                                 checkModel.result = CheckVersionResult(data: [checkModelData])
                                 return checkModel

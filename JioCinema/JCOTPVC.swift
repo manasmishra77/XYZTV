@@ -235,7 +235,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 }
                 else
                 {
-                    let errorString = responseError.userInfo["NSLocalizedDescription"]! as! String
+                    let errorString = responseError.userInfo["NSLocalizedDescription"]! as? String ?? ""
                     let data = errorString.data(using: .utf8)
                     _ = try? JSONSerialization.jsonObject(with: data!)
                     
@@ -305,12 +305,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     {
         JCLoginManager.sharedInstance.loggingInViaSubId = true
         
-        let sessionAttributes = info["sessionAttributes"] as! [String:Any]
-        let userData = sessionAttributes["user"] as! [String:Any]
-        let subId = userData["subscriberId"] as! String
+        let sessionAttributes = info["sessionAttributes"] as? [String:Any]
+        let userData = sessionAttributes!["user"] as? [String:Any]
+        let subId = userData!["subscriberId"] as? String ?? ""
         let params = [subscriberIdKey:subId]
-        JCAppUser.shared.lbCookie = info["lbCookie"] as! String
-        JCAppUser.shared.ssoToken = info["ssoToken"] as! String
+        JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
+        JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
         
         let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
@@ -332,7 +332,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as! Int
+                let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
                     

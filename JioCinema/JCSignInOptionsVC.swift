@@ -69,7 +69,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 
                 if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
                 {
-                    let code = parsedResponse["code"] as? Int
+                    let code = parsedResponse["code"] as? Int ?? 0
                     if(code == 200)
                     {
                         weakSelf?.setUserData(userData: parsedResponse)
@@ -141,11 +141,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     }
                     else if(code == 400)
                     {
-                        self.showAlert(alertString: parsedResponse["message"]! as! String)
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        self.showAlert(alertString: parsedResponse["message"]! as? String ?? "")
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as? String ?? "")
                     }
                     else{
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as! String)
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as? String ?? "")
                     }
                 }
             }
