@@ -446,9 +446,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         JCDataStore.sharedDataStore.genreData?.data?[0].title = "Genres"
         
     }
-    
-    
-    
 }
 
 
