@@ -170,7 +170,7 @@ class JCSplashVC: UIViewController {
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
                 
                 // If build number is coming from back-end
-                if let currentBuildNumber = Int(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].buildNumber, upComingBuildNumber != 0{
+                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version, upComingBuildNumber != 0{
                     if upComingBuildNumber > currentBuildNumber{
                         if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
                             weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
@@ -179,19 +179,6 @@ class JCSplashVC: UIViewController {
                         }
                     }
                     else{
-                        weakSelf?.callWebServiceForConfigData()
-                    }
-                }
-                    
-                    //If version string is coming from back-end
-                else if let currentVersion = Float(versionString), let upComingVersion = checkModel?.result?.data?[0].version{
-                    if currentVersion < upComingVersion{
-                        if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
-                            weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
-                        }else{
-                            weakSelf?.showUpdateAlert(isMandatory: false, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
-                        }
-                    }else{
                         weakSelf?.callWebServiceForConfigData()
                     }
                 }

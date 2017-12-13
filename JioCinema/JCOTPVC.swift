@@ -172,7 +172,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        enteredJioNumber = jioNumberTFLabel.text// searchController?.searchBar.text!
+        jioNumberTFLabel.text = "8356903414"
+        enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.count != 10)
         {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
@@ -332,7 +333,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as! Int
+                let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
                     

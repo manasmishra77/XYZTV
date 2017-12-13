@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -921,28 +921,28 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
                                 <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
+                                        <rect key="frame" x="0.0" y="-60" width="1920" height="800"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="20" y="620" width="1880" height="400"/>
+                                        <rect key="frame" x="20" y="740" width="1880" height="280"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="280" id="mRi-gD-I8C"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="1hA-3Y-GlB" id="GjC-CG-mV3"/>
                                             <outlet property="delegate" destination="1hA-3Y-GlB" id="9EG-KA-hvZ"/>
                                         </connections>
                                     </tableView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uz9-6i-hkZ">
-                                        <rect key="frame" x="0.0" y="-60" width="1920" height="800"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="800" id="DYQ-fl-2h2"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="uz9-6i-hkZ" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="8rM-Oz-TFq"/>
                                     <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="20" id="9nR-NA-SzZ"/>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="uz9-6i-hkZ" secondAttribute="bottom" constant="-120" id="FJE-Cb-wkk"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="uz9-6i-hkZ" secondAttribute="bottom" id="FJE-Cb-wkk"/>
                                     <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" constant="20" id="QPw-9Y-Ve8"/>
                                     <constraint firstItem="uz9-6i-hkZ" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="hfX-1k-F5C"/>
                                     <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" constant="-60" id="lcl-Sv-aTx"/>
@@ -970,7 +970,6 @@
                         <outlet property="loaderContainerView" destination="MVl-t3-UwF" id="Pgg-uh-Htd"/>
                         <outlet property="loadingLabel" destination="Uyr-Yb-QCy" id="Qes-TU-jmL"/>
                         <outlet property="metaDataHeaderContainer" destination="uz9-6i-hkZ" id="ReO-Vc-5rU"/>
-                        <outlet property="metaDataHeaderHeight" destination="DYQ-fl-2h2" id="bxJ-tx-LTV"/>
                         <outlet property="metadataContainerView" destination="v2z-Ee-E5k" id="q3b-HW-cmr"/>
                         <outlet property="metadataTableView" destination="1dP-RB-Mav" id="Ubu-9X-YyY"/>
                         <outlet property="tableViewBottomConstraint" destination="lcl-Sv-aTx" id="8Uf-fF-cjN"/>

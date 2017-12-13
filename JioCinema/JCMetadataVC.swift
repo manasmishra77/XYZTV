@@ -332,7 +332,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         headerView = prepareHeaderView()
         metadataContainerView.addSubview(headerView!)
         if metadata?.type == VideoType.Movie.rawValue{
-            tableViewTopConstraint.constant = -175
+            //tableViewTopConstraint.constant = -175
         }
         
         headerCell.seasonCollectionView.reloadData()
@@ -343,14 +343,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             
         }else{
             //headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
-             tableViewTopConstraint.constant = -65
+             //tableViewTopConstraint.constant = -65
             if metadata?.type == VideoType.Movie.rawValue{
-                tableViewTopConstraint.constant = -100
+                //tableViewTopConstraint.constant = -100
             }
             
-            tableViewBottomConstraint.constant = 0
+            //tableViewBottomConstraint.constant = 0
         }
-        metaDataHeaderHeight.constant = headerHeight
+        //metaDataHeaderHeight.constant = headerHeight
     }
 
     func presentLoginVC()
