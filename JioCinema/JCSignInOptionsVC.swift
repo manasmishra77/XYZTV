@@ -180,7 +180,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             
             let searchViewController = UISearchController.init(searchResultsController: searchVC)
             searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-            searchViewController.view.backgroundColor = .clear
+            //searchViewController.view.backgroundColor = .clear
+            let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage")!)
+            imageView.frame = searchViewController.view.frame
+            searchViewController.view.addSubview(imageView)
+            searchViewController.view.sendSubview(toBack: imageView)
             searchViewController.searchBar.placeholder = "Search"
             searchViewController.searchBar.tintColor = UIColor.white
             searchViewController.searchBar.barTintColor = UIColor.black
