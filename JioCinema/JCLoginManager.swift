@@ -66,7 +66,7 @@ class JCLoginManager:UIViewController
             {
                 let result = networkResponse["result"] as? [String:Any]
                 let data = result?["data"] as? [String:Any]
-                let isOnJioNetwork = data?["isJio"]! as! Bool
+                let isOnJioNetwork = data?["isJio"]! as? Bool ?? false
                 if isOnJioNetwork == true
                 {
                     let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)
@@ -105,11 +105,11 @@ class JCLoginManager:UIViewController
         JCLoginManager.sharedInstance.loggingInViaSubId = true
         
         let sessionAttributes = info["sessionAttributes"] as? [String:Any]
-        let user = sessionAttributes?["user"] as! [String:Any]
+        let user = sessionAttributes?["user"] as? [String:Any]
         
-        JCAppUser.shared.lbCookie = info["lbCookie"] as! String
-        JCAppUser.shared.ssoToken = info["ssoToken"] as! String
-        let subId = user["subscriberId"] as! String
+        JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
+        JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
+        let subId = user!["subscriberId"] as? String ?? ""
         
         let params = [subscriberIdKey:subId]
         
@@ -128,7 +128,7 @@ class JCLoginManager:UIViewController
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as! Int
+                let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
                     weakSelf?.setUserData(data: parsedResponse)

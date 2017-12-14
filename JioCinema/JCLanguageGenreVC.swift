@@ -208,12 +208,12 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
-                currentTypeId = item?.list?[filter].id
+                currentTypeId = item?.list?[filter].id ?? 0
                 currentParamString = "All Genres"
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
-                currentTypeId = item?.list?[currentType].id
-                currentParamString = languageGenreDetailModel?.data?.genres?[filter].name
+                currentTypeId = item?.list?[currentType].id ?? 0
+                currentParamString = languageGenreDetailModel?.data?.genres?[filter].name ?? ""
                 callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
         }
@@ -223,12 +223,12 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             switch currentFilter! {
             case .VideoCategory:
                 currentType = filter
-                currentTypeId = item?.list?[filter].id
+                currentTypeId = item?.list?[filter].id ?? 0
                 currentParamString = "All Languages"
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             case .LanguageGenre:
-                currentTypeId = item?.list?[currentType].id
-                currentParamString = languageGenreDetailModel?.data?.languages?[filter].name
+                currentTypeId = item?.list?[currentType].id ?? 0
+                currentParamString = languageGenreDetailModel?.data?.languages?[filter].name ?? ""
                 callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
             }
         }
