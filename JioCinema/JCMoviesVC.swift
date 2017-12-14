@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 
 class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
@@ -348,6 +349,8 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     }
     //MARK:- Carousel Delegate Methods
     func didTapOnCarouselItem(_ item: Any?) {
+       // Crashlytics.sharedInstance().crash()
+
         didTapOnItemCell(nil, item, 0)
     }
 }

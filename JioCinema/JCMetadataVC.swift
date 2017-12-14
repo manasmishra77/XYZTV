@@ -35,6 +35,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     @IBOutlet weak var metaDataHeaderContainer: UIView!
     @IBOutlet weak var metaDataHeaderHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var metadataTableHeight: NSLayoutConstraint!
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
@@ -337,20 +338,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
-        let headerHeight = screenHeight * (4/5)
-        if #available(tvOS 11.0, *){
-            //headerView?.frame = CGRect(x: 0, y: -60, width: metadataTableView.frame.size.width, height: headerHeight)
-            
-        }else{
-            //headerView?.frame = CGRect(x: 0, y: 0, width: metadataTableView.frame.size.width, height: headerHeight)
-             //tableViewTopConstraint.constant = -65
-            if metadata?.type == VideoType.Movie.rawValue{
-                //tableViewTopConstraint.constant = -100
-            }
-            
-            //tableViewBottomConstraint.constant = 0
+        if itemAppType == .Movie{
+            metadataTableHeight.constant = metadataTableHeight.constant + 100
         }
-        //metaDataHeaderHeight.constant = headerHeight
     }
 
     func presentLoginVC()

@@ -17,11 +17,25 @@
 	<key>CFBundleShortVersionString</key>
 	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>22</string>
+	<string>19</string>
 	<key>CleverTapAccountID</key>
 	<string>WW5-K94-874Z</string>
 	<key>CleverTapToken</key>
 	<string>4c3-500</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>b2cb0240a920ed8ea4e35d61f43735ece69b3fd2</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,19 +51,5 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>b2cb0240a920ed8ea4e35d61f43735ece69b3fd2</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 </dict>
 </plist>

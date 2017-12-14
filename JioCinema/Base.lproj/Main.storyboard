@@ -971,6 +971,7 @@
                         <outlet property="loadingLabel" destination="Uyr-Yb-QCy" id="Qes-TU-jmL"/>
                         <outlet property="metaDataHeaderContainer" destination="uz9-6i-hkZ" id="ReO-Vc-5rU"/>
                         <outlet property="metadataContainerView" destination="v2z-Ee-E5k" id="q3b-HW-cmr"/>
+                        <outlet property="metadataTableHeight" destination="mRi-gD-I8C" id="RYG-aC-QyS"/>
                         <outlet property="metadataTableView" destination="1dP-RB-Mav" id="Ubu-9X-YyY"/>
                         <outlet property="tableViewBottomConstraint" destination="lcl-Sv-aTx" id="8Uf-fF-cjN"/>
                         <outlet property="tableViewTopConstraint" destination="FJE-Cb-wkk" id="jEo-4H-R4P"/>
