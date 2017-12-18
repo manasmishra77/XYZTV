@@ -256,7 +256,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         }
     }
     
-    //For after login function
+    //MARK:- For after login function
     fileprivate var itemAfterLogin: Item? = nil
     fileprivate var categoryIndexAfterLogin: Int? = nil
     fileprivate var categoryNameAfterLogin: String? = nil

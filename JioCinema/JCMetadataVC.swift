@@ -240,7 +240,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             }
         }
     }
-    
+    /*
     func callWebserviceForWatchListStatus(id:String)
     {
         let urlId = (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)! + "/" + id
@@ -281,6 +281,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             }
         }
     }
+ */
     
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
     {
@@ -433,16 +434,16 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         {
             if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
             {
-                return (metadata?.filter?.count)!
+                return (metadata?.filter?.count) ?? 0
                
             }
             else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
             {
-                return (metadata?.filter?.count)!
+                return (metadata?.filter?.count) ?? 0
             }
             else if collectionView == headerCell.monthsCollectionView  //months, in case of episodes
             {
-                if  (metadata?.filter?.count)! > selectedYearIndex
+                if  (metadata?.filter?.count) ?? 0 > selectedYearIndex
                {
                     if let count = (metadata?.filter![selectedYearIndex].month?.count)
                     {
@@ -467,28 +468,21 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
-            cell.seasonNumberLabel.text = String(describing: metadata!.filter![indexPath.row].season!)
+            cell.seasonNumberLabel.text = String(describing: metadata?.filter?[indexPath.row].season)
             return cell
            
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
-            if let text = metadata!.filter![indexPath.row].filter
-            {
-                cell.yearLabel.text = text
-            }
-            else
-            {
-                cell.yearLabel.text = ""
-            }
+            cell.yearLabel.text = metadata?.filter?[indexPath.row].filter ?? ""
             return cell
         }
         else if collectionView == headerCell.monthsCollectionView
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: monthCellIdentifier, for: indexPath) as! JCMonthCell
             var text = ""
-            switch metadata!.filter![selectedYearIndex].month![indexPath.row]
+            switch metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""
             {
             case "01":
                 text = "Jan"
@@ -537,21 +531,21 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return
         }
         
-        if (metadata?.isSeason!)!,collectionView == headerCell.seasonCollectionView     //seasons
+        if (metadata?.isSeason ?? false),collectionView == headerCell.seasonCollectionView     //seasons
         {
-            let filter = String(metadata!.filter![indexPath.row].season!)
+            let filter = String(describing: metadata?.filter?[indexPath.row].season)
             callWebServiceForSelectedFilter(filter: filter)
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
             headerCell.monthsCollectionView.reloadData()
-            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![0]))")
+            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter).appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0]))")
             callWebServiceForSelectedFilter(filter: filter)
         }
         else    //months
         {
-            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![indexPath.row]))")
+            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter).appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row]))")
             callWebServiceForSelectedFilter(filter: filter)
         }
         
@@ -586,7 +580,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 let indexPath = IndexPath.init(row: 0, section: 0)
                 DispatchQueue.main.async {
-                    weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    if weakSelf?.metadataTableView.numberOfRows(inSection: 0) == 0{
+                        self.metadataTableView.reloadData()
+                    }else{
+                        weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    }
+                    
                 }
                 
                 return
