@@ -25,8 +25,8 @@ class JCAnalyticsManager
     {
         self.tid = googleAnalyticsTId
         self.appName = Bundle.main.infoDictionary!["CFBundleName"] as? String
-        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
-        self.appVersion = nsObject as? String
+        let appVsn: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
+        self.appVersion = appVsn as? String
         self.ua = "Mozilla/5.0 (Apple TV; CPU iPhone OS 9_0 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13T534YI"
        // self.MPVersion = "1"
         let defaults = UserDefaults.standard
@@ -39,7 +39,7 @@ class JCAnalyticsManager
         }
         
         let language = NSLocale.preferredLanguages.first
-        if (language?.characters.count)! > 0 {
+        if (language?.count)! > 0 {
             self.ul = language!
         } else {
             self.ul = "(not set)"

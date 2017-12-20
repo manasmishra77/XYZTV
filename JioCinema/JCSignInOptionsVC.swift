@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-       // jioIdTextField.text     = "pallavtrivedi-4"
-        //passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
         //     jioIdTextField.text     = "poonam2016"
         //     passwordTextField.text  = "poonam@12"
         
@@ -234,6 +234,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // For Internal Analytics Event
         let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
+        
+        //For Google Analytics Event
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: LOGGEDIN_SUCCESSFUL, customParameters: nil)
         
     }
     

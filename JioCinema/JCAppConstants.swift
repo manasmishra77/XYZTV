@@ -131,7 +131,7 @@ let isAutoPlayOnKey = "isAutoPlayOn"
 
 
 //Google Analytics
-let googleAnalyticsTId = "UA-106863966-2"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
+let googleAnalyticsTId = "UA-106863966-14"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
 let googleAnalyticsEndPoint = "https://www.google-analytics.com/collect?"
 
 //App Delegate
@@ -171,7 +171,15 @@ let WATCH_NOW_BUTTON = "Watch-now button"
 let ADD_TO_WATCHLIST = "Add to watchlist"
 let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
 
-//Screen Navigation Constants
-//var previousScreenName = ""
-//var currentScreenName = ""
+
+//MARK:- Google Analytics Constants
+
+//Event Category
+let LOGIN_EVENT = "Login"
+let HOME_SCREEN_EVENT = "Home Screen"
+//Event Action
+let SUCCESS_ACTION = "Success"
+//Event Comment
+let LOGGEDIN_SUCCESSFUL = "Logged in successfully"
+
 
