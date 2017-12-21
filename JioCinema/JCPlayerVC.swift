@@ -475,6 +475,12 @@
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
+        
+        //For reference hide
+        UIView.animate(withDuration: 5.0) {
+            self.view_Recommendation.alpha = 0.0
+            self.isRecommendationViewVisible = false
+        }
         if isResumed != nil, isResumed!{
            player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
         }
@@ -1072,6 +1078,7 @@
     //MARK:- Swipe Up Recommendation View
     func swipeUpRecommendationView()
     {
+         self.view_Recommendation.alpha = 1.0
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -1087,6 +1094,7 @@
     //MARK:- Swipe Down Recommendation View
     func swipeDownRecommendationView()
     {
+         self.view_Recommendation.alpha = 0.0
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -1098,6 +1106,21 @@
                 self.setCustomRecommendationViewSetting(state: false)
                 
             })
+        }
+    }
+    //MARK:- Touches began event 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        for touch in touches {
+            
+            if touch.type == .indirect
+            {
+                self.view_Recommendation.alpha = 1.0
+                UIView.animate(withDuration: 5.0) {
+                    self.view_Recommendation.alpha = 0.0
+                    self.isRecommendationViewVisible = false
+                }
+            }
         }
     }
    
