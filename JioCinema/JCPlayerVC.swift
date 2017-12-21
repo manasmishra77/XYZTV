@@ -1300,11 +1300,44 @@
         let url = String(format:"%@%@/%@",playbackDataURL,JCAppUser.shared.userGroup,id)
         let params = ["id":id,"contentId":""]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             if let responseError = error
             {
                 //TODO: handle error
                 print(responseError)
+                //Sending media error event
+                let failureType = "Play list data error"
+                var type = ""
+                var title = ""
+                var episodeDetail = ""
+                if weakSelf?.metadata == nil
+                {
+                    if let data = self.item as? Item
+                    {
+                        if (data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.Episode.rawValue)
+                        {
+                            //failureType = "FPS"
+                            type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
+                            title = data.name!
+                            if data.description != nil{
+                                episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (weakSelf?.metadata?.app?.type == VideoType.Movie.rawValue || weakSelf?.metadata?.app?.type == VideoType.Episode.rawValue)
+                    {
+                        //failureType = "AES"
+                        type = (weakSelf?.metadata?.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
+                        title = (weakSelf?.metadata?.name)!
+                        episodeDetail = (weakSelf?.metadata?.app?.type == VideoType.Episode.rawValue) ? (weakSelf?.metadata?.description)! : ""
+                    }
+                }
+                let eventProperties = ["Error Code":"-1","Error Message":String(describing: responseError.localizedDescription),"Type":type, "Title":title, "Content ID": weakSelf?.playerId ?? "", "Bitrate":"0","Episode":episodeDetail,"Platform":"TVOS","Failure":failureType] as [String : Any]
+                weakSelf?.sendPlaybackFailureEvent(eventProperties: eventProperties)
                 return
             }
             if let responseData = data
@@ -1358,6 +1391,7 @@
         let url = playbackRightsURL.appending(id)
         let params = ["id":id,"showId":"","uniqueId":JCAppUser.shared.unique,"deviceType":"stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
@@ -1373,6 +1407,40 @@
                     self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
                 }
+                
+                //Sending media error event
+                let failureType = "Play back rights error"
+                var type = ""
+                var title = ""
+                var episodeDetail = ""
+                if weakSelf?.metadata == nil
+                {
+                    if let data = self.item as? Item
+                    {
+                        if (data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.Episode.rawValue)
+                        {
+                            //failureType = "FPS"
+                            type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
+                            title = data.name!
+                            if data.description != nil{
+                                episodeDetail = (data.app?.type == VideoType.Episode.rawValue) ? data.description! : ""
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (weakSelf?.metadata?.app?.type == VideoType.Movie.rawValue || weakSelf?.metadata?.app?.type == VideoType.Episode.rawValue)
+                    {
+                        //failureType = "AES"
+                        type = (weakSelf?.metadata?.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
+                        title = (weakSelf?.metadata?.name)!
+                        episodeDetail = (weakSelf?.metadata?.app?.type == VideoType.Episode.rawValue) ? (weakSelf?.metadata?.description)! : ""
+                    }
+                }
+                
+                let eventProperties = ["Error Code":"-1","Error Message":String(describing: responseError.localizedDescription),"Type":type, "Title":title, "Content ID": weakSelf?.playerId ?? "", "Bitrate":"0","Episode":episodeDetail,"Platform":"TVOS","Failure":failureType] as [String : Any]
+                weakSelf?.sendPlaybackFailureEvent(eventProperties: eventProperties)
                 return
             }
             if let responseData = data
@@ -2210,8 +2278,6 @@
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
-    
-    
  }
  
  
