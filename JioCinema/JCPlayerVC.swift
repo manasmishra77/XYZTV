@@ -88,6 +88,7 @@
     
     fileprivate var playBackRightsTappedAt = Date()
     fileprivate var videoStartingDuration = 0
+    fileprivate var isRecommendationViewVisible = true
     
     static let assetKeysRequiredToPlay = [
         "playable",
@@ -1067,6 +1068,10 @@
                 self.swipeUpRecommendationView()
                 break
             case UISwipeGestureRecognizerDirection.down:
+                UIView.animate(withDuration: 5.0) {
+                    self.view_Recommendation.alpha = 0.0
+                    self.isRecommendationViewVisible = false
+                }
                 self.swipeDownRecommendationView()
                 break
             default:
@@ -1094,7 +1099,7 @@
     //MARK:- Swipe Down Recommendation View
     func swipeDownRecommendationView()
     {
-         self.view_Recommendation.alpha = 0.0
+        
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -1120,6 +1125,17 @@
                     self.view_Recommendation.alpha = 0.0
                     self.isRecommendationViewVisible = false
                 }
+            }
+        }
+    }
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        print("q")
+        if let press = presses.first, press.type == .playPause{
+            self.view_Recommendation.alpha = 1.0
+            UIView.animate(withDuration: 5.0) {
+                self.view_Recommendation.alpha = 0.0
+                self.isRecommendationViewVisible = false
             }
         }
     }
@@ -2300,6 +2316,17 @@
     func playerViewController(_ playerViewController: AVPlayerViewController, willResumePlaybackAfterUserNavigatedFrom oldTime: CMTime, to targetTime: CMTime) {
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
+    }
+    func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
+        if visible{
+            //Handling visibility of recommendation
+            isRecommendationViewVisible = true
+            view_Recommendation.alpha = 1.0
+            UIView.animate(withDuration: 5.0) {
+                self.view_Recommendation.alpha = 0.0
+                self.isRecommendationViewVisible = false
+            }
+        }
     }
  }
  
