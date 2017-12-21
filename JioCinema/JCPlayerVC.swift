@@ -89,6 +89,7 @@
     fileprivate var playBackRightsTappedAt = Date()
     fileprivate var videoStartingDuration = 0
     fileprivate var isRecommendationViewVisible = true
+    fileprivate var isSwipedUp = false
     
     static let assetKeysRequiredToPlay = [
         "playable",
@@ -1068,10 +1069,14 @@
                 self.swipeUpRecommendationView()
                 break
             case UISwipeGestureRecognizerDirection.down:
-                UIView.animate(withDuration: 5.0) {
-                    self.view_Recommendation.alpha = 0.0
-                    self.isRecommendationViewVisible = false
+                if isSwipedUp
+                {
+                    UIView.animate(withDuration: 3.0) {
+                        self.view_Recommendation.alpha = 0.0
+                        self.isRecommendationViewVisible = false
+                    }
                 }
+                isSwipedUp = false
                 self.swipeDownRecommendationView()
                 break
             default:
@@ -1088,6 +1093,7 @@
         DispatchQueue.main.async {
             
             UIView.animate(withDuration: 0.5, animations: {
+                self.isSwipedUp = true
                 let tempFrame = self.nextVideoView.frame
                 self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-300, width: screenWidth, height: self.view_Recommendation.frame.height)
@@ -1117,30 +1123,25 @@
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         for touch in touches {
-            
+
             if touch.type == .indirect
             {
-                self.view_Recommendation.alpha = 1.0
-                UIView.animate(withDuration: 5.0) {
-                    self.view_Recommendation.alpha = 0.0
-                    self.isRecommendationViewVisible = false
-                }
+                callViewAnimatorToHide()
+                
             }
         }
     }
-    
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        print("q")
-        if let press = presses.first, press.type == .playPause{
-            self.view_Recommendation.alpha = 1.0
-            UIView.animate(withDuration: 5.0) {
+   
+    func callViewAnimatorToHide() {
+        self.view_Recommendation.alpha = 1.0
+        if !isSwipedUp
+        {
+            UIView.animate(withDuration: 3.0) {
                 self.view_Recommendation.alpha = 0.0
                 self.isRecommendationViewVisible = false
             }
         }
     }
-   
-    
     
     //MARK:- Show Alert
     func showAlert(alertTitle:String,alertMessage:String,completionHandler:(()->Void)?)
@@ -2317,17 +2318,17 @@
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
+    
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
-        if visible{
-            //Handling visibility of recommendation
-            isRecommendationViewVisible = true
-            view_Recommendation.alpha = 1.0
-            UIView.animate(withDuration: 5.0) {
-                self.view_Recommendation.alpha = 0.0
-                self.isRecommendationViewVisible = false
+        if view_Recommendation.alpha > 0.0, !visible {
+            if self.view_Recommendation.frame.origin.y == screenHeight - 60{
+                self.isSwipedUp = false
             }
+            callViewAnimatorToHide()
         }
     }
+
+    
  }
  
  
