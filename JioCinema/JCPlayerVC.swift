@@ -78,6 +78,7 @@
     //fileprivate var lastItemId = ""
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var isItemToBeAddedInResumeWatchList = true
+    fileprivate var isMediaStartEventSent = false
     fileprivate var isMediaEndAnalyticsEventNotSent = true
     fileprivate var startTime_BufferDuration    :Date?
     fileprivate var episodeNumber :Int? = nil
@@ -528,6 +529,7 @@
                 self.seekPlayer()
                 isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
+                
                 self.sendMediaStartAnalyticsEvent()
                 
                 break
@@ -600,10 +602,14 @@
     //MARK:- Analytics Events
     func sendMediaStartAnalyticsEvent()
     {
-        let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+        if !isMediaStartEventSent{
+            let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+            
+            let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
+            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
+            isMediaStartEventSent = true
+        }
         
-        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
-        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
     }
     
     func sendBufferingEvent(eventProperties:[String:Any])
@@ -1170,6 +1176,7 @@
     //MARK:- Player Methods
     func preparePlayerVC() {
         isMediaEndAnalyticsEventNotSent = true
+        isMediaStartEventSent = false
         if appType == VideoType.Movie
         {
             currentDuration = checkInResumeWatchList(id)
