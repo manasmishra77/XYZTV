@@ -80,7 +80,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell
                         
                         //Updates after login
-                        if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
+                        if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
                             if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
                                 homevc.callWebServiceForResumeWatchData()
                                 homevc.callWebServiceForUserRecommendationList()
@@ -121,13 +121,13 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                         vc.playItemAfterLogin()
                                     }
                                 }
-                                if presentedFromAddToWatchList!{
+                                else if presentedFromAddToWatchList!{
                                     if let vc = vc as? JCMetadataVC{
                                         //Change Add to watchlist button status
                                         
                                     }
                                 }
-                                if presentedFromPlayNowButtonOfMetadata!{
+                                else if presentedFromPlayNowButtonOfMetadata!{
                                     if let vc = vc as? JCMetadataVC{
                                         //Play after login
                                         vc.didClickOnWatchNowButton(nil)

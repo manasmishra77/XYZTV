@@ -216,7 +216,6 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         }
     }
     
- 
     func callWebServiceForMoreLikeData(id:String)
     {
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) :metadataUrl.appending(id + "/0/0")
@@ -344,9 +343,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         }
     }
 
-    func presentLoginVC()
+    func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false)
     {
-        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: fromAddToWatchList, fromPlayNowBotton: fromPlayNowButton, fromItemCell: fromItemCell, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
 
@@ -367,7 +366,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             self.itemAfterLogin = itemToBePlayed
             self.categoryNameAfterLogin = categoryName
             self.categoryIndexAfterLogin = categoryIndex
-            presentLoginVC()
+            presentLoginVC(fromAddToWatchList: false, fromItemCell: true)
         }
     }
     func playItemAfterLogin() {
@@ -468,7 +467,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
-            cell.seasonNumberLabel.text = String(describing: metadata?.filter?[indexPath.row].season)
+            cell.seasonNumberLabel.text = String(describing: metadata?.filter?[indexPath.row].season ?? 0)
             return cell
            
         }
@@ -531,21 +530,21 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return
         }
         
-        if (metadata?.isSeason ?? false),collectionView == headerCell.seasonCollectionView     //seasons
+        if (metadata?.isSeason ?? false), collectionView == headerCell.seasonCollectionView     //seasons
         {
-            let filter = String(describing: metadata?.filter?[indexPath.row].season)
+            let filter = String(describing: metadata?.filter?[indexPath.row].season ?? 0)
             callWebServiceForSelectedFilter(filter: filter)
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
             headerCell.monthsCollectionView.reloadData()
-            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter).appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0]))")
+            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0] ?? ""))")
             callWebServiceForSelectedFilter(filter: filter)
         }
         else    //months
         {
-            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter).appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row]))")
+            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""))")
             callWebServiceForSelectedFilter(filter: filter)
         }
         
@@ -564,7 +563,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func callWebServiceForSelectedFilter(filter:String)
     {
-        let url = metadataUrl.appending((metadata?.id)!).appending("/\(filter)")
+        let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -581,13 +580,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 let indexPath = IndexPath.init(row: 0, section: 0)
                 DispatchQueue.main.async {
                     if weakSelf?.metadataTableView.numberOfRows(inSection: 0) == 0{
-                        self.metadataTableView.reloadData()
-                    }else{
-                        weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                        weakSelf?.metadataTableView.reloadData()
                     }
-                    
+                    else
+                    {
+                       weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: .fade)
+                    }
                 }
-                
                 return
             }
         }
@@ -634,8 +633,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             playVideo()
         }
         else{
-            let loginVc = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: true, fromItemCell: false, presentingVC: self)
-            self.present(loginVc, animated: false, completion: nil)
+            presentLoginVC(fromAddToWatchList: false, fromItemCell: false, fromPlayNowButton: true)
         }
     }
     
@@ -657,7 +655,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         else
         {
-            presentLoginVC()
+            presentLoginVC(fromAddToWatchList: true, fromItemCell: false)
         }
     }
 

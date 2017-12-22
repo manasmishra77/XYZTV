@@ -75,7 +75,7 @@
     fileprivate var didSeek :Bool = false
     
     //For Resume watch update
-    fileprivate var lastItemId = ""
+    //fileprivate var lastItemId = ""
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var isItemToBeAddedInResumeWatchList = true
     fileprivate var isMediaEndAnalyticsEventNotSent = true
@@ -222,18 +222,18 @@
     func updateResumeWatchList() {
         if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration
         {
-            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             
             let timeDifference = CMTimeGetSeconds(currentTime)
-            let totalDuration = "\((CMTimeGetSeconds(totalTime)))"
+            let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
             if timeDifference < 300
             {
-                self.callWebServiceForRemovingResumedWatchlist(lastItemId)
+                self.callWebServiceForRemovingResumedWatchlist(id)
             }
             else
             {
-                self.callWebServiceForAddToResumeWatchlist(lastItemId, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
                 
             }
         }
@@ -1115,7 +1115,7 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
-                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
             }
@@ -1126,15 +1126,15 @@
     {
         let url = addToResumeWatchlistUrl
         let id = itemId
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalduration": totalDuration]
+        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = 10
         params["json"] = json
         params["id"] = id
         params["duration"] = currentTimeDuration
-        params["totalduration"] = totalDuration
-        
+        params["totalDuration"] = totalDuration
+        weak var weakSelf = self
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
@@ -1147,7 +1147,7 @@
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 
-                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
                 return

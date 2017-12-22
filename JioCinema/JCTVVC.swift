@@ -46,6 +46,13 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let eventProperties = ["Screen Name": "TV", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
+        //Removing watchlist when user loggedout
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isTVWatchlistAvailable{
+            isTVWatchlistAvailable = false
+            dataItemsForTableview.remove(at: 0)
+            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
          Utility.sharedInstance.handleScreenNavigation(screenName: SEARCH_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
