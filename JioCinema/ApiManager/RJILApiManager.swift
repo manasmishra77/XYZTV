@@ -186,14 +186,18 @@ class RJILApiManager {
     }
     
     
-    private func getRequest(forPath path:String) -> URLRequest
+    private func getRequest(forPath path:String) -> URLRequest?
     {
         //make macros here for prod/preprod etc
         
         //TODO:
-        urlString = path.contains("http") ? path : basePath.appending("common/v3/") + path
+        urlString = path.contains("http") ? path.removingWhitespaces() : basePath.appending("common/v3/") + path.removingWhitespaces()
         
-        return URLRequest(url: URL(string: urlString!)!)
+        if let url = URL(string: urlString!){
+            return URLRequest(url: url)
+        }
+        return nil
+        
     }
     
     func prepareRequest(path:String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
