@@ -268,6 +268,10 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Music Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
             print(tappedItem)
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             if tappedItem.app?.type == VideoType.Music.rawValue{
@@ -279,6 +283,10 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     func didTapOnCarouselItem(_ item: Any?) {
         if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Music Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
             if tappedItem.app?.type == VideoType.Music.rawValue{
                 print("At Music")
                 checkLoginAndPlay(tappedItem, categoryName: "Carousel", categoryIndex: 0)

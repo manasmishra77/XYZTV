@@ -179,6 +179,7 @@ let LOGIN_EVENT = "Login"
 let HOME_SCREEN_EVENT = "Home Screen"
 //Event Action
 let SUCCESS_ACTION = "Success"
+let FAILURE_ACTION = "Failure"
 //Event Comment
 let LOGGEDIN_SUCCESSFUL = "Logged in successfully"
 

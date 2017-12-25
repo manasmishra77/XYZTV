@@ -250,6 +250,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // For Internal Analytics Event
         let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text!, errorMessage: errorMessage)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
+        
+        //For Google Analytics Event
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: errorMessage, customParameters: nil)
     }
     
 }

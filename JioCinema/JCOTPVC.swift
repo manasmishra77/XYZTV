@@ -454,6 +454,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         let eventDict = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "OTP", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventDict)
         
+        //For Google Analytics Event
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: LOGGEDIN_SUCCESSFUL, customParameters: nil)
         
     }
     
@@ -472,6 +474,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioNumberTFLabel.text!, errorMessage: errorMessage)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
+        //For Google Analytics Event
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: errorMessage, customParameters: nil)
         
     }
     

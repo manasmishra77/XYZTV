@@ -429,6 +429,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item{
+            
+            // Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Home Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             print(tappedItem)
             if tappedItem.app?.type == VideoType.Home.rawValue{

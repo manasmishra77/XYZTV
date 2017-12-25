@@ -95,6 +95,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Search Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
             print(tappedItem)
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             if tappedItem.app?.type == VideoType.Music.rawValue{

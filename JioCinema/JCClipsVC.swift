@@ -267,6 +267,10 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Clips Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
             print(tappedItem)
             
             if tappedItem.app?.type == VideoType.Clip.rawValue{
@@ -278,6 +282,10 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     func didTapOnCarouselItem(_ item: Any?) {
         if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: "Clips Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            
              if tappedItem.app?.type == VideoType.Clip.rawValue{
                 print("At Clip")
                 checkLoginAndPlay(tappedItem, categoryName: "Carousel", categoryIndex: 0)
