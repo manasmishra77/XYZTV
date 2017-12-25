@@ -75,9 +75,10 @@
     fileprivate var didSeek :Bool = false
     
     //For Resume watch update
-    fileprivate var lastItemId = ""
+    //fileprivate var lastItemId = ""
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var isItemToBeAddedInResumeWatchList = true
+    fileprivate var isMediaStartEventSent = false
     fileprivate var isMediaEndAnalyticsEventNotSent = true
     fileprivate var startTime_BufferDuration    :Date?
     fileprivate var episodeNumber :Int? = nil
@@ -94,7 +95,7 @@
     fileprivate var isRecommendationView        = false
     fileprivate var currentPlayingIndex         = -1
     fileprivate var bufferCount                 = 0
-    fileprivate var isRecommendationViewVisible = true
+    fileprivate var isRecommendationViewVisible = false
     
     
     static let assetKeysRequiredToPlay = [
@@ -222,18 +223,18 @@
     func updateResumeWatchList() {
         if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration
         {
-            let currentTimeDuration = "\(CMTimeGetSeconds(currentTime))"
+            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             
             let timeDifference = CMTimeGetSeconds(currentTime)
-            let totalDuration = "\((CMTimeGetSeconds(totalTime)))"
+            let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
             if timeDifference < 300
             {
-                self.callWebServiceForRemovingResumedWatchlist(lastItemId)
+                self.callWebServiceForRemovingResumedWatchlist(id)
             }
             else
             {
-                self.callWebServiceForAddToResumeWatchlist(lastItemId, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
                 
             }
         }
@@ -249,7 +250,6 @@
             self.removePlayerObserver()
             playerController?.delegate = nil
             self.playerController = nil
-            
             
         }
     }
@@ -349,10 +349,10 @@
         player?.play()
         handleForPlayerReference()
         
-        UIView.animate(withDuration: 5.0) {
-            self.view_Recommendation.alpha = 0.1
-            self.isRecommendationViewVisible = false
-        }
+//        UIView.animate(withDuration: 5.0) {
+//            self.view_Recommendation.alpha = 0.1
+//            //self.isRecommendationViewVisible = false
+//        }
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)      
@@ -529,6 +529,7 @@
                 self.seekPlayer()
                 isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
+                
                 self.sendMediaStartAnalyticsEvent()
                 
                 break
@@ -601,10 +602,14 @@
     //MARK:- Analytics Events
     func sendMediaStartAnalyticsEvent()
     {
-        let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+        if !isMediaStartEventSent{
+            let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+            
+            let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
+            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
+            isMediaStartEventSent = true
+        }
         
-        let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
-        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
     }
     
     func sendBufferingEvent(eventProperties:[String:Any])
@@ -780,14 +785,9 @@
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.up:
-                self.view_Recommendation.alpha = 1.0
                 self.swipeUpRecommendationView()
                 break
             case UISwipeGestureRecognizerDirection.down:
-                UIView.animate(withDuration: 5.0) {
-                    self.view_Recommendation.alpha = 0.1
-                    self.isRecommendationViewVisible = false
-                }
                 self.swipeDownRecommendationView()
                 break
             default:
@@ -799,6 +799,7 @@
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
+        /*
         for touch in touches {
             
             if touch.type == .indirect
@@ -806,16 +807,19 @@
                 self.view_Recommendation.alpha = 1.0
                 UIView.animate(withDuration: 5.0) {
                     self.view_Recommendation.alpha = 0.1
-                    self.isRecommendationViewVisible = false
+                    //self.isRecommendationViewVisible = false
                 }
             }
         }
+  */
     }
     
     
     //MARK:- Swipe Up Recommendation View
     func swipeUpRecommendationView()
     {
+        recommendationViewchangeTo(1.0, visibility: true, animationDuration: 0.0)
+        
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -831,7 +835,6 @@
     //MARK:- Swipe Down Recommendation View
     func swipeDownRecommendationView()
     {
-        //        self.view_Recommendation.alpha = 0.1
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         collectionView_Recommendation.isScrollEnabled = false
         DispatchQueue.main.async {
@@ -842,7 +845,7 @@
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
-                
+                self.recommendationViewchangeTo(0.1, visibility: false, animationDuration: 4.0)
             })
         }
     }
@@ -1115,7 +1118,7 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
-                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
             }
@@ -1126,15 +1129,15 @@
     {
         let url = addToResumeWatchlistUrl
         let id = itemId
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalduration": totalDuration]
+        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = 10
         params["json"] = json
         params["id"] = id
         params["duration"] = currentTimeDuration
-        params["totalduration"] = totalDuration
-        
+        params["totalDuration"] = totalDuration
+        weak var weakSelf = self
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
@@ -1147,7 +1150,7 @@
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 
-                if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
                 return
@@ -1173,6 +1176,7 @@
     //MARK:- Player Methods
     func preparePlayerVC() {
         isMediaEndAnalyticsEventNotSent = true
+        isMediaStartEventSent = false
         if appType == VideoType.Movie
         {
             currentDuration = checkInResumeWatchList(id)
@@ -1256,6 +1260,14 @@
     func dismissPlayerVC()
     {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK:- Change recommendation view voisibility
+    func recommendationViewchangeTo(_ alpha: Double, visibility: Bool, animationDuration: TimeInterval) {
+        isRecommendationViewVisible = visibility
+     UIView.animate(withDuration: animationDuration) {
+        self.view_Recommendation.alpha = CGFloat(alpha)
+        }
     }
  }
  
@@ -1627,4 +1639,20 @@
         videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
     
+    func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
+        if visible, !isRecommendationViewVisible{
+        recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
+        recommendationViewchangeTo(0.1, visibility: false, animationDuration: 4.0)
+        }
+    }
  }
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

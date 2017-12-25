@@ -56,6 +56,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         screenAppearTiming = Date()
         
+        //Removing watchlist when user loggedout
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isMoviesWatchlistAvailable{
+            isMoviesWatchlistAvailable = false
+            dataItemsForTableview.remove(at: 0)
+            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
         Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
