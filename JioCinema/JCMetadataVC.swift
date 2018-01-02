@@ -77,6 +77,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         let eventProperties = ["Screen Name": fromScreen, "Platform": "TVOS", "Metadata Page": metadataType] as [String : Any]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
+        //Google Analytics for MetaData Screen
+        JCAnalyticsManager.sharedInstance.event(category: METADATA_SCREEN, action: "Click", label: metadata?.name ?? "", customParameters: nil)
         
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -651,7 +653,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
             //let url = isStatusAdd ? removeFromWatchListUrl : addToResumeWatchlistUrl
             let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
-            callWebServiceToUpdateWatchlist(withUrl: url, andParameters: params)
+            callWebServiceToUpdateWatchlist(withUrl: url, watchlistStatus: isStatusAdd, andParameters: params)
         }
         else
         {
@@ -659,7 +661,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
 
-    func callWebServiceToUpdateWatchlist(withUrl url:String, andParameters params: Dictionary<String, Any>)
+    func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>)
     {
         self.headerCell.addToWatchListButton.isEnabled = false
         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
@@ -672,6 +674,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 //TODO: handle error
                 print(responseError)
                 
+                self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: responseError.localizedDescription)
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
@@ -688,6 +691,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 let code = parsedResponse["code"] as? Int
                 if(code == 200)
                 {
+                    self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
                     DispatchQueue.main.async {
                         if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST{
                             self.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
@@ -702,6 +706,18 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             }
         }
         
+    }
+    
+    func sendGoogleAnalyticsForWatchlist(with watchlistStatus: Bool, andErrorMesage errorMsg: String)
+    {
+        
+        let customParams: [String:Any] = ["Video Id": metadata?.videoId ?? "", "Type": metadata?.app?.type ?? 0, "Language": metadata?.language ?? "", "Bitrate" : metadata?.bitrate ?? "", "General Data": errorMsg]
+        if watchlistStatus {
+            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Add to Watchlist", label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
+        }
+        else{
+            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Remove from Watchlist", label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
+        }
     }
     //ChangingTheDataSourceForWatchListItems
     func changingDataSourceForWatchList() {
@@ -803,6 +819,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             print("In Artist")
             //changingSearchNCRootVC()
             //present search from here
+            
+            //Google Analytics for Artist Click
+            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: nil)
+            
             let superNav = self.presentingViewController as? UINavigationController
             if let tabController = superNav?.viewControllers[0] as? JCTabBarController{
                 let metaDataTabBarIndex = tabController.selectedIndex

@@ -97,7 +97,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: "Search Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            JCAnalyticsManager.sharedInstance.event(category: SEARCH_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
             
             print(tappedItem)
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"

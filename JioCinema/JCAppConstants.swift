@@ -176,10 +176,16 @@ let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
 
 //Event Category
 let LOGIN_EVENT = "Login"
-let HOME_SCREEN_EVENT = "Home Screen"
+let PLAYER_OPTIONS = "Player Options"
+
+
 //Event Action
 let SUCCESS_ACTION = "Success"
 let FAILURE_ACTION = "Failure"
+let VIDEO_ACTION = "Video Play"
+let VIDEO_START_EVENT = "Video Start"
+let VIDEO_END_EVENT = "Video End"
+
 //Event Comment
 let LOGGEDIN_SUCCESSFUL = "Logged in successfully"
 

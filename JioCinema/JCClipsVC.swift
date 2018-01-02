@@ -269,7 +269,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: "Clips Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
             
             print(tappedItem)
             
@@ -284,7 +284,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: "Clips Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
             
              if tappedItem.app?.type == VideoType.Clip.rawValue{
                 print("At Clip")

@@ -339,7 +339,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: "TV Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            JCAnalyticsManager.sharedInstance.event(category: TV_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
             
             print(tappedItem)
             if tappedItem.app?.type == VideoType.TVShow.rawValue{
@@ -353,8 +353,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     func didTapOnCarouselItem(_ item: Any?) {
         if let tappedItem = item as? Item{
             
-            // Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: "TV Screen", action: "Video Play", label: tappedItem.name, customParameters: nil)
+            //Screenview event to Google Analytics
+            JCAnalyticsManager.sharedInstance.event(category: TV_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
             
             if tappedItem.app?.type == VideoType.TVShow.rawValue{
                 print("At TvShow")
