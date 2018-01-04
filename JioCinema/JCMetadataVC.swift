@@ -711,20 +711,27 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         
         if (metadata?.isSeason ?? false),collectionView == headerCell.seasonCollectionView     //seasons
         {
-            let filter = String(metadata!.filter![indexPath.row].season!)
-            callWebServiceForSelectedFilter(filter: filter)
+            if let seasonNum = metadata?.filter?[indexPath.row].season{
+                let filter = String(seasonNum)
+                callWebServiceForSelectedFilter(filter: filter)
+            }
+       
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
             headerCell.monthsCollectionView.reloadData()
-            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![0]))")
-            callWebServiceForSelectedFilter(filter: filter)
+            if let yearValue = metadata?.filter?[selectedYearIndex].filter?.floatValue(){
+                let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![0]))")
+                callWebServiceForSelectedFilter(filter: filter)
+            }
         }
         else    //months
         {
-            let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![indexPath.row]))")
-            callWebServiceForSelectedFilter(filter: filter)
+            if let yearValue = metadata?.filter?[selectedYearIndex].filter?.floatValue(){
+                let filter = String(describing: metadata!.filter![selectedYearIndex].filter!).appending("/\(String(describing: metadata!.filter![selectedYearIndex].month![indexPath.row]))")
+                callWebServiceForSelectedFilter(filter: filter)
+            }
         }
         
     }
@@ -756,11 +763,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let responseData = data
             {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                let indexPath = IndexPath.init(row: 0, section: 0)
                 DispatchQueue.main.async {
-                    weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    weakSelf?.metadataTableView.reloadData()
                 }
-                
                 return
             }
         }
