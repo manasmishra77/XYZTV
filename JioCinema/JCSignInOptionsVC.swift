@@ -236,7 +236,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
         
         //For Google Analytics Event
-        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: LOGGEDIN_SUCCESSFUL, customParameters: nil)
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "Jio ID", customParameters: customParams)
         
     }
     
@@ -252,7 +253,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
         //For Google Analytics Event
-        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: errorMessage, customParameters: nil)
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "Type: Jio ID" + errorMessage, customParameters: customParams)
     }
     
 }

@@ -269,7 +269,8 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
             print(tappedItem)
             
@@ -284,7 +285,8 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: nil)
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
              if tappedItem.app?.type == VideoType.Clip.rawValue{
                 print("At Clip")

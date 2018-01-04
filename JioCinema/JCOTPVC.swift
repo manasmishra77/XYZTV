@@ -455,7 +455,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventDict)
         
         //For Google Analytics Event
-        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: LOGGEDIN_SUCCESSFUL, customParameters: nil)
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "OTP", customParameters: customParams)
         
     }
     
@@ -475,7 +476,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
         //For Google Analytics Event
-        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: errorMessage, customParameters: nil)
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label:"Type: OTP" + errorMessage, customParameters: customParams)
         
     }
     
