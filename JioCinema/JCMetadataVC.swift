@@ -535,20 +535,28 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         
         if (metadata?.isSeason ?? false), collectionView == headerCell.seasonCollectionView     //seasons
         {
-            let filter = String(describing: metadata?.filter?[indexPath.row].season ?? 0)
-            callWebServiceForSelectedFilter(filter: filter)
+            if let seasonNum = metadata?.filter?[indexPath.row].season{
+                callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
+            }
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
             headerCell.monthsCollectionView.reloadData()
-            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0] ?? ""))")
-            callWebServiceForSelectedFilter(filter: filter)
+            if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0]{
+                callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
+            }
+            
+ //          let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0] ?? ""))")
+//            callWebServiceForSelectedFilter(filter: filter)
         }
         else    //months
         {
-            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""))")
-            callWebServiceForSelectedFilter(filter: filter)
+            if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[indexPath.row]{
+                callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
+            }
+//            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""))")
+//            callWebServiceForSelectedFilter(filter: filter)
         }
         
     }
@@ -580,15 +588,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let responseData = data
             {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                let indexPath = IndexPath.init(row: 0, section: 0)
                 DispatchQueue.main.async {
-                    if weakSelf?.metadataTableView.numberOfRows(inSection: 0) == 0{
                         weakSelf?.metadataTableView.reloadData()
-                    }
-                    else
-                    {
-                       weakSelf?.metadataTableView.reloadRows(at: [indexPath], with: .fade)
-                    }
                 }
                 return
             }
