@@ -96,12 +96,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             if isResumeWatchCell
             {
                 let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
-                if let imageUrl = data?[indexPath.row].banner!
+                if let imageUrl = data?[indexPath.row].banner
                 {
                     resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
                     
                     let progress:Float?
-                    if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
+                    if let duration = data?[indexPath.row].duration, let totalDuration = data?[indexPath.row].totalDuration
                     {
                         progress = Float(duration)! / Float(totalDuration)!
                         resumeWatchCell.progressBar.setProgress(progress!, animated: false)
@@ -121,9 +121,16 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             else
             {
                 
-                if let imageUrl = data?[indexPath.row].banner!
+                var thumbnailTitle = ""
+                if let nameOfThumbnail = data?[indexPath.row].name, nameOfThumbnail != ""{
+                    thumbnailTitle = nameOfThumbnail
+                }else if let shownameOfThumbnail = data?[indexPath.row].showname{
+                    thumbnailTitle = shownameOfThumbnail
+                }
+                
+                if let imageUrl = data?[indexPath.row].banner
                 {
-                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
+                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
                     cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {

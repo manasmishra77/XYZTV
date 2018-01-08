@@ -342,7 +342,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
         if itemAppType == .Movie{
-            metadataTableHeight.constant = metadataTableHeight.constant + 100
+            metadataTableHeight.constant = 100 + 280 //metadataTableHeight.constant + 100
         }
     }
 
