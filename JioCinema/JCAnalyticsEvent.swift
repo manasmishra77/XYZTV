@@ -27,14 +27,27 @@ class JCAnalyticsEvent: NSObject {
     
     func getFinalEventDictionary(proDictionary: Dictionary<String, Any>, eventKey:String) -> Dictionary<String, Any>
     {
+//        let sid = Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+//
+//        let hash = convertStringToMD5Hash(artistName: sid)
+//        let hexEncodedHash = hash.hexEncodedString()
+//
+//        let rtcEpoch = String(describing:Date().timeIntervalSince1970)
+//
+//        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001", "uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique, "profileid":JCAppUser.shared.profileId, "idamid":JCAppUser.shared.unique, "rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString, "pf":"O", "nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
+//        return finalDictionary
         let sid = Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
         
         let hash = convertStringToMD5Hash(artistName: sid)
         let hexEncodedHash = hash.hexEncodedString()
         
-        let rtcEpoch = String(describing:Date().timeIntervalSince1970)
+        let rtcEpoch = String(describing:Int(Date().timeIntervalSince1970))
+        let avnString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        //        if let avnValue = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String{
+        //            avnString = avnValue
+        //        }
         
-        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001", "uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique, "profileid":JCAppUser.shared.profileId, "idamid":JCAppUser.shared.unique, "rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString, "pf":"O", "nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
+        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid, "crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk": "WIFI","dtpe":"B","osv": UIDevice.current.systemVersion,"mnu":"apple","avn": avnString,"key":eventKey,"pro": proDictionary] as [String : Any]
         return finalDictionary
     }
     

@@ -129,13 +129,12 @@
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if player != nil{
-            resetPlayer()
-        }
         if isMediaEndAnalyticsEventNotSent{
             sendMediaEndAnalyticsEvent()
         }
-        
+        if player != nil{
+            resetPlayer()
+        }
     }
     override func viewDidLayoutSubviews() {
         if self.view_Recommendation.frame.origin.y >= screenHeight - 30
