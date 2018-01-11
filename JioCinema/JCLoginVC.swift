@@ -37,8 +37,6 @@ class JCLoginVC: UIViewController {
         self.present(otpVC, animated: true, completion: nil)
     }
     
-    
-    
     @IBAction func didClickOnJioIdSignIn(_ sender: Any)
     {
         let singInOptionsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: signInOptionsStoryBoardId)
@@ -48,7 +46,6 @@ class JCLoginVC: UIViewController {
 
         self.present(singInOptionsVC, animated: true, completion: {
             self.changingSearchNCRootVC()
-            
         })
     }
  
