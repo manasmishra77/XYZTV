@@ -374,8 +374,8 @@ class RJILApiManager {
                                     JCAppUser.shared.ssoToken = refreshTupple.1
                                     for each in RJILApiManager.defaultManager.pendingTasks{
                                         each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-                                        //completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
-                                        self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
+                                        completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                        //self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
                                     }
                                 }
                                 else{
@@ -432,5 +432,21 @@ class RJILApiManager {
         dataTask.resume()
         
         
+    }
+    
+    func parseRefreshTokenData(_ responseData: Data) -> (Int, String) {
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
+            if let responseDict = jsonDict as? [String: Any]{
+                var refreshTupple = (0, "")
+                refreshTupple.0 = responseDict["code"] as? Int ?? 0
+                refreshTupple.1 = responseDict["ssotoken"] as? String ?? ""
+                return refreshTupple
+            }
+            
+        } catch {
+            //print("Error deserializing JSON: \(error)")
+        }
+        return (0, "")
     }
 }
