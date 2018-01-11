@@ -1342,10 +1342,23 @@
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                 print(responseError)
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.dismiss(animated: false, completion: {
+                            self.presentLoginVC()
+                        })
+                        return
+                    }
+                }
+                
                 //Sending media error event
                 let failureType = "Play list data error"
                 var type = ""
@@ -1437,7 +1450,7 @@
                 self.activityIndicatorOfLoaderView.stopAnimating()
                 
             }
-            if let responseError = error
+            if let responseError = error as NSError?
             {
                 //TODO: handle error
                // print(responseError)
@@ -1447,6 +1460,20 @@
                     self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
                 }
+                
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.dismiss(animated: false, completion: {
+                            self.presentLoginVC()
+                        })
+                        return
+                    }
+                }
+
                 
                 //Sending media error event
                 let failureType = "Play back rights error"
@@ -2326,6 +2353,16 @@
             }
             callViewAnimatorToHide()
         }
+    }
+    
+    func presentLoginVC()
+    {
+        let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
+        loginVC.modalPresentationStyle = .overFullScreen
+        loginVC.modalTransitionStyle = .coverVertical
+        loginVC.view.layer.speed = 0.7
+        let topVC = UIApplication.topViewController()
+        topVC?.present(loginVC, animated: true, completion: nil)
     }
 
     

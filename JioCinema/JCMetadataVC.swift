@@ -310,11 +310,18 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
             
-            if let responseError = error
+            if let responseError = error as NSError?
             {
-                //TODO: handle error
-               // print(responseError)
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    DispatchQueue.main.async {
+                        //JCLoginManager.sharedInstance.logoutUser()
+                        //self.presentLoginVC()
+                    }
+                }
                 return
+                
             }
             if let responseData = data
             {
