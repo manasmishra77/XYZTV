@@ -30,10 +30,7 @@ class JCAppUser:NSObject,NSCoding
     var uid:String = ""
     var unique:String = ""
     var userGroup:String = ""
-    
-    
-    
-
+    var mToken: String = ""
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -51,6 +48,8 @@ class JCAppUser:NSObject,NSCoding
         self.uid = aDecoder.decodeObject(forKey: "uid") as? String ?? ""
         self.unique = aDecoder.decodeObject(forKey: "unique") as? String ?? ""
         self.userGroup = aDecoder.decodeObject(forKey: "userGroup") as? String ?? ""
+        self.mToken = aDecoder.decodeObject(forKey: "mToken") as? String ?? ""
+
     }
     
     func encode(with aCoder: NSCoder)
@@ -69,6 +68,7 @@ class JCAppUser:NSObject,NSCoding
         aCoder.encode(uid, forKey: "uid")
         aCoder.encode(unique, forKey: "unique")
         aCoder.encode(userGroup, forKey: "userGroup")
+        aCoder.encode(mToken, forKey: "mToken")
     }
     
 }

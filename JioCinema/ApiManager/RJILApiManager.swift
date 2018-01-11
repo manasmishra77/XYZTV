@@ -339,125 +339,68 @@ class RJILApiManager {
             self.httpStatusCode = httpResponse.statusCode
             
             
-            /*
+            
             //TODO: will I come across this scenario
             /*//This condition is added to simulate refresh toke scenario
              if gSimulateRefreshTokenScenario { self.httpStatusCode = 400 }
              */
             
-             if self.httpStatusCode == 419 { //Authentication Failed Refresh Token
-             //Authentication Failed
-             //Check if token is getting refreshed
-             if RJILApiManager.defaultManager.isRefreshingToken == false{
-             //Put the currentTask in queue
-             let currentTask:RJILPendingTask = RJILPendingTask()
-             currentTask.request = originalRequest
-             currentTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(currentTask)
-             //Update the flag so that other requests will start coming in queue
-             RJILApiManager.defaultManager.isRefreshingToken = true
-             DispatchQueue.global().async(execute: {
-             DispatchQueue.main.sync {
-             //Refresh Token
-             if let freshToken:String = JMSSOController.getInstance().refreshSessionToken(){
-             print("Refreshed SSO Token " + freshToken)
-             //Token is refreshed : Now starting completing tasks
-             for pendingTask:RJILPendingTask in RJILApiManager.defaultManager.pendingTasks{
-             pendingTask.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-             RJILApiManager.defaultManager.createDataTask(withRequest: pendingTask.request!, httpMethod: (pendingTask.request?.httpMethod)!, completion: pendingTask.completionHandler!)
-             }
-             self.pendingTasks.removeAll()
-             RJILApiManager.defaultManager.isRefreshingToken = false
-             }
-             else {
-             //Logout user
-             self.errorMessage = "Invalid session token, You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             }
-             
-             }
-             })
-             }
-             else{
-             //Token refresh is in progres put the task in queue to finish later
-             let pendingTask:RJILPendingTask = RJILPendingTask()
-             pendingTask.request = originalRequest
-             pendingTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(pendingTask)
-             }
-             }
-             
-             else if self.httpStatusCode == 400
-             {
-             var errorInfo:[String:String] = [String:String]()
-             var errorDescription = "Bad Request : "
-             //let testData = "{\"errors\":[{\"code\":\"01001\",\"details\":{},\"message\":\"SSO token used in the request is not valid\"}]}".data(using: .utf8)
-             
-             if let responseData = data, let errorDetails:[String:Any] = RJILApiManager.parse(data: responseData),let errors = errorDetails["errors"] as? [[String:Any]], errors.count > 0 , let message = errors[0]["message"] as? String{
-             //let message = ""
-             errorDescription = errorDescription + message
-             if message.contains("SSO")
-             {
-             
-             if RJILApiManager.defaultManager.isRefreshingToken == false{
-             //Put the currentTask in queue
-             let currentTask:RJILPendingTask = RJILPendingTask()
-             currentTask.request = originalRequest
-             currentTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(currentTask)
-             //Update the flag so that other requests will start coming in queue
-             RJILApiManager.defaultManager.isRefreshingToken = true
-             DispatchQueue.global().async(execute: {
-             DispatchQueue.main.sync {
-             //Refresh Token
-             if let freshToken:String = JMSSOController.getInstance().refreshSessionToken(){
-             print("Refreshed SSO Token " + freshToken)
-             //Token is refreshed : Now starting completing tasks
-             for pendingTask:RJILPendingTask in RJILApiManager.defaultManager.pendingTasks{
-             pendingTask.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-             RJILApiManager.defaultManager.createDataTask(withRequest: pendingTask.request!, httpMethod: (pendingTask.request?.httpMethod)!, completion: pendingTask.completionHandler!)
-             }
-             self.pendingTasks.removeAll()
-             RJILApiManager.defaultManager.isRefreshingToken = false
-             }
-             else {
-             //Logout user
-             self.errorMessage = "Invalid session token, You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             return
-             }
-             
-             }
-             })
-             }
-             else{
-             //Token refresh is in progres put the task in queue to finish later
-             let pendingTask:RJILPendingTask = RJILPendingTask()
-             pendingTask.request = originalRequest
-             pendingTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(pendingTask)
-             }
-             
-             
-             }else if message == "User Validation Failed"{
-             self.errorMessage = errorDescription + ", You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             return
-             }
-             }
-             errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
-             completion(nil, nil, NSError(domain: kApplicationErrorDomain, code: 400, userInfo: errorInfo))
-             } */
-            
-            
-            
-            
-            
-            
-            
-            
+            if self.httpStatusCode == 419 {
+                if JCAppUser.shared.mToken != ""{
+                    
+                    //Put the currentTask in queue
+                    let currentTask:RJILPendingTask = RJILPendingTask()
+                    currentTask.request = originalRequest
+                    currentTask.completionHandler = completion
+                    RJILApiManager.defaultManager.pendingTasks.append(currentTask)
+                    if !RJILApiManager.defaultManager.isRefreshingToken{
+                        
+                        RJILApiManager.defaultManager.isRefreshingToken = true
+                        //Do the refreshing-task work
+                        let params = ["mtoken": JCAppUser.shared.mToken]
+                        
+                        let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
+                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
+                            guard error == nil else{
+                                var errorInfo:[String:String] = [String:String]()
+                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+                                return
+                            }
+                            if let responseData = data{
+                                //parse response Data
+                                let refreshTupple = RJILApiManager.defaultManager.parseRefreshTokenData(responseData)
+                                if refreshTupple.0 == 200{
+                                    JCAppUser.shared.ssoToken = refreshTupple.1
+                                    for each in RJILApiManager.defaultManager.pendingTasks{
+                                        each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
+                                        //completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                        self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
+                                    }
+                                }
+                                else{
+                                    self.isRefreshingToken = false
+                                    //LogOutUser and show login page
+                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                }
+                            }
+                            self.pendingTasks.removeAll()
+                            self.isRefreshingToken = false
+                        })
+                        
+                    }
+                }
+                else
+                {
+                    //Present Login Page
+                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                    
+                }
+
+            }
+                
             //TODO: error domain
-            if self.httpStatusCode == 504{
+            else if self.httpStatusCode == 504{
                 var errorInfo:[String:String] = [String:String]()
                 self.errorMessage = "Server Timeout : Please try again in some time"
                 errorInfo[NSLocalizedDescriptionKey] = self.errorMessage

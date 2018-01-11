@@ -159,7 +159,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         JCAppUser.shared.profileId = result?["profileId"] as? String ?? ""
         JCAppUser.shared.uid = result?["uId"] as? String ?? ""
         JCAppUser.shared.unique = result?["uniqueId"] as? String ?? ""
+        JCAppUser.shared.mToken = result?["mToken"] as? String ?? ""
         JCAppUser.shared.userGroup = userData["userGrp"] as? String ?? ""
+        
     }
     
     func navigateToHomeVC()

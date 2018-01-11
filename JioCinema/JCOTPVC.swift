@@ -403,6 +403,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAppUser.shared.subscriberId = data["subscriberId"] as? String ?? ""
         JCAppUser.shared.unique = data["uniqueId"] as? String ?? ""
         JCAppUser.shared.uid = data["username"] as? String ?? ""
+        JCAppUser.shared.mToken = data["mToken"] as? String ?? ""
         //print(data["uniqueId"] as! String)
     }
     
