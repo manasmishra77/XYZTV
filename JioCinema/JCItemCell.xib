@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13196" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13771" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -26,25 +26,9 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                     </imageView>
-                    <view hidden="YES" alpha="0.6666666" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bik-wl-s7S">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingImage" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Fy-pS-cD7">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEb-Uc-ikZ">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="wEb-Uc-ikZ" firstAttribute="top" secondItem="Bik-wl-s7S" secondAttribute="top" id="0cY-1W-DTk"/>
-                            <constraint firstAttribute="trailing" secondItem="wEb-Uc-ikZ" secondAttribute="trailing" id="47R-8q-tzz"/>
-                            <constraint firstAttribute="bottom" secondItem="wEb-Uc-ikZ" secondAttribute="bottom" id="Tgx-0F-IIi"/>
-                            <constraint firstItem="wEb-Uc-ikZ" firstAttribute="leading" secondItem="Bik-wl-s7S" secondAttribute="leading" id="lbF-zT-ni6"/>
-                        </constraints>
-                    </view>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
                         <rect key="frame" x="15" y="224" width="377" height="36"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
@@ -55,29 +39,29 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="Bik-wl-s7S" secondAttribute="bottom" constant="24" id="7b3-UO-Xcs"/>
                 <constraint firstAttribute="bottom" secondItem="da6-is-0b4" secondAttribute="bottom" id="7qn-4f-WnT"/>
+                <constraint firstItem="9Fy-pS-cD7" firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="BuG-Fk-Pba"/>
                 <constraint firstAttribute="trailing" secondItem="da6-is-0b4" secondAttribute="trailing" id="Eo9-jQ-Hlq"/>
+                <constraint firstItem="9Fy-pS-cD7" firstAttribute="leading" secondItem="lX4-Jx-2Fq" secondAttribute="leading" id="FWg-Ug-6fu"/>
                 <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="24" id="ICz-15-wga"/>
-                <constraint firstAttribute="trailing" secondItem="Bik-wl-s7S" secondAttribute="trailing" constant="15" id="SuG-kD-ffF"/>
+                <constraint firstItem="9Fy-pS-cD7" firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="K88-Kp-Lef"/>
                 <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="60" id="ZsR-1P-11D"/>
                 <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" constant="15" id="cLy-gq-NOw"/>
-                <constraint firstItem="Bik-wl-s7S" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="drb-px-RIf"/>
                 <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="f4W-U2-6Ff"/>
                 <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="fSF-31-6yh"/>
+                <constraint firstItem="9Fy-pS-cD7" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="top" id="ihk-Jd-m4Q"/>
                 <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="mFs-wD-PHh"/>
-                <constraint firstItem="Bik-wl-s7S" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="v3t-Si-3zs"/>
             </constraints>
             <connections>
                 <outlet property="itemImageView" destination="lX4-Jx-2Fq" id="kwm-0Y-z5X"/>
                 <outlet property="nameLabel" destination="da6-is-0b4" id="scW-la-eDm"/>
-                <outlet property="nowPlayingLabel" destination="wEb-Uc-ikZ" id="2n2-wT-dMX"/>
-                <outlet property="view_NowPlaying" destination="Bik-wl-s7S" id="LjA-fA-Tsg"/>
+                <outlet property="nowPlayingImageView" destination="9Fy-pS-cD7" id="kc0-lk-d2T"/>
             </connections>
             <point key="canvasLocation" x="52" y="101"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="ItemPlaceHolder" width="224" height="126"/>
+        <image name="NowPlayingImage" width="224" height="126"/>
     </resources>
 </document>

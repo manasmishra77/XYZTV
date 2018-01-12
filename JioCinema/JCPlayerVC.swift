@@ -719,7 +719,7 @@
     func hideUnhideNowPlayingView(cell:JCItemCell,state:Bool)
     {
         DispatchQueue.main.async {
-            cell.view_NowPlaying.isHidden = state
+            cell.nowPlayingImageView.isHidden = state
         }
     }
     //MARK:- Show Next Video View
@@ -1368,10 +1368,10 @@
             
         }
         if indexPath.row == currentPlayingIndex{
-            cell.view_NowPlaying.isHidden = !isPlayList
+            cell.nowPlayingImageView.isHidden = !isPlayList
             
         }else{
-            cell.view_NowPlaying.isHidden = true
+            cell.nowPlayingImageView.isHidden = true
         }
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
