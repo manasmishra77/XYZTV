@@ -166,6 +166,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
+            /*
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
@@ -216,6 +217,47 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 //            let artistName = artistDict?[indexPath.row].key
 //            cell.artistNameLabel.text = artistName
             
+            cell.backgroundColor = .clear
+            return cell*/
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
+            DispatchQueue.main.async {
+                cell.artistImageView.clipsToBounds = true
+                let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
+                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
+                cell.artistImageView.frame = newFrame
+                cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
+                
+                cell.artistNameLabel.textAlignment = .center
+                let artistNameKey = Array(self.artistImages!.keys)[indexPath.row]
+                let imageUrl = self.artistImages?[artistNameKey] ?? ""
+                
+                cell.artistNameLabel.text = artistNameKey
+                let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+                var artistInitial = ""
+                for each in artistNameSubGroup{
+                    if each.first != nil{
+                        artistInitial = artistInitial + String(describing: each.first!)
+                    }
+                }
+                cell.artistImageView.isHidden = true
+                cell.artistNameInitialButton.isHidden = false
+                let url = URL(string: imageUrl)
+                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    
+                    if error != nil{
+                        cell.artistImageView.isHidden = true
+                        cell.artistNameInitialButton.isHidden = false
+                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+                    }
+                    else{
+                        cell.artistNameInitialButton.isHidden = true
+                        cell.artistImageView.isHidden = false
+                    }
+                });
+            }
+            
+            cell.isOpaque = true
             cell.backgroundColor = .clear
             return cell
         }

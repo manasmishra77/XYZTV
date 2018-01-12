@@ -89,20 +89,19 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         return 350
     }
     
+    var moreTableViewDatasource = [Any]()
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if metadata != nil, metadata?.app?.type == VideoType.Movie.rawValue
-        {
-            return 2
+        moreTableViewDatasource.removeAll()
+        if let moreArray = ((itemAppType == .TVShow) ? (metadata?.episodes) as? [Any] : metadata?.more as? [Any]) , moreArray.count > 0{
+            moreTableViewDatasource.append(moreArray)
         }
-        else if metadata?.episodes != nil , metadata?.app?.type == VideoType.TVShow.rawValue
-        {
-            return 2
+        if let artistArray = metadata?.artist, artistArray.count > 0{
+            moreTableViewDatasource.append(artistArray)
         }
-        else
-        {
-            return 0
-        }
+        return moreTableViewDatasource.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,16 +120,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         
         if itemAppType == VideoType.Movie
         {
-            if indexPath.row == 0
-            {
+            if let moreArray = moreTableViewDatasource[indexPath.row] as? [More]{
                 cell.categoryTitleLabel.text = metadata?.displayText
-                cell.moreLikeData = metadata?.more
+                cell.moreLikeData = moreArray
                 cell.tableCellCollectionView.reloadData()
             }
-            else if indexPath.row == 1
-            {
+            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String]{
                 cell.categoryTitleLabel.text = "Cast & Crew"
-                let dict = getStarCastImagesUrl(artists: (metadata?.artist) ?? [""])
+                let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
             }
@@ -139,22 +136,16 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         // Metadata for TV
         else if itemAppType == VideoType.TVShow
         {
-            if indexPath.row == 0
-            {
+            if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode]{
                 cell.categoryTitleLabel.text = "Latest Episodes"
-                cell.episodes = metadata?.episodes
+                cell.episodes = episodeArray
                 cell.tableCellCollectionView.reloadData()
             }
-
-            if indexPath.row == 1
-            {
-                if let artists = metadata?.artist
-                {
-                let dict = getStarCastImagesUrl(artists: artists)
-                cell.categoryTitleLabel.text = (dict.count != 0) ? "Cast & Crew" : ""
+            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String]{
+                cell.categoryTitleLabel.text = "Cast & Crew"
+                let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
-                }
             }
         }
         return cell
@@ -242,48 +233,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             }
         }
     }
-    /*
-    func callWebserviceForWatchListStatus(id:String)
-    {
-        let urlId = (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)! + "/" + id
-        let showId: String = (metadata?.app?.type)! == VideoType.Movie.rawValue ? "" : id
-        let url = playbackRightsURL.appending(urlId)
-        let params = ["id" : (metadata?.app?.type)! == VideoType.Movie.rawValue ? id : (self.metadata?.latestEpisodeId)!,"showId" : showId, "uniqueId" : JCAppUser.shared.unique, "deviceType" : "stb"]
-        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
-            if let responseError = error
-            {
-                //TODO: handle error
-                print(responseError)
-              
-                return
-            }
-            if let responseData = data
-            {
-                if let responseString = String(data: responseData, encoding: .utf8)
-                {
-                    let playbackRightsData = PlaybackRightsModel(JSONString: responseString)
-                    
-                    DispatchQueue.main.async {
-                        weakSelf?.metadata?.inQueue = playbackRightsData?.inqueue
-                        if weakSelf?.metadata?.inQueue != nil{
-                            if (weakSelf?.metadata?.inQueue)!{
-                                weakSelf?.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
-                            }
-                            else{
-                                weakSelf?.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
-                            }
-                        }
-                        else{
-                            weakSelf?.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
-                        }
-                    }
-                }
-            }
-        }
-    }
- */
+   
     
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
     {
@@ -549,17 +499,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0]{
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
-            
- //          let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[0] ?? ""))")
-//            callWebServiceForSelectedFilter(filter: filter)
+
         }
         else    //months
         {
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[indexPath.row]{
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
-//            let filter = String(describing: metadata?.filter?[selectedYearIndex].filter ?? "").appending("/\(String(describing: metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""))")
-//            callWebServiceForSelectedFilter(filter: filter)
+
         }
         
     }
