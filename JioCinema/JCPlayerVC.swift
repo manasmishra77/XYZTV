@@ -1004,7 +1004,7 @@
     func hideUnhideNowPlayingView(cell:JCItemCell,state:Bool)
     {
         DispatchQueue.main.async {
-            cell.view_NowPlaying.isHidden = state
+            cell.nowPlayingImageView.isHidden = state
         }
     }
     //MARK:- Show Next Video View
