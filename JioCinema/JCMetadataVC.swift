@@ -132,15 +132,31 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         return 350
     }
     
+    var moreTableviewDataSource = [Any]()
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if metadata != nil, metadata?.app?.type == VideoType.Movie.rawValue
         {
-            return 2
+            moreTableviewDataSource.removeAll()
+            if let moreArray = metadata?.more, moreArray.count > 0{
+                moreTableviewDataSource.append(moreArray)
+            }
+            if let artistArray = metadata?.artist, artistArray.count > 0{
+                moreTableviewDataSource.append(artistArray)
+            }
+            return moreTableviewDataSource.count
         }
         else if metadata?.episodes != nil , metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            return 2
+            moreTableviewDataSource.removeAll()
+            if let moreArray = metadata?.episodes, moreArray.count > 0{
+                moreTableviewDataSource.append(moreArray)
+            }
+            if let artistArray = metadata?.artist, artistArray.count > 0{
+                moreTableviewDataSource.append(artistArray)
+            }
+            return moreTableviewDataSource.count
         }
         else
         {
@@ -164,40 +180,63 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         if item?.app?.type == VideoType.Movie.rawValue
         {
-            if indexPath.row == 0
-            {
+            if let moreArray = moreTableviewDataSource[indexPath.row] as? [More]{
                 cell.categoryTitleLabel.text = metadata?.displayText
-                cell.moreLikeData = metadata?.more
+                cell.moreLikeData = moreArray
                 cell.tableCellCollectionView.reloadData()
             }
-            else if indexPath.row == 1
-            {
+            if let artistArray = moreTableviewDataSource[indexPath.row] as? [String]{
                 cell.categoryTitleLabel.text = "Cast & Crew"
-                let dict = getStarCastImagesUrl(artists: (metadata?.artist) ?? [""])
+                let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
             }
+            
+//            if indexPath.row == 0
+//            {
+//                cell.categoryTitleLabel.text = metadata?.displayText
+//                cell.moreLikeData = metadata?.more
+//                cell.tableCellCollectionView.reloadData()
+//            }
+//            else if indexPath.row == 1
+//            {
+//                cell.categoryTitleLabel.text = "Cast & Crew"
+//                let dict = getStarCastImagesUrl(artists: (metadata?.artist) ?? [""])
+//                cell.artistImages = dict
+//                cell.tableCellCollectionView.reloadData()
+//            }
         }
             
             // Metadata for TV
         else if item?.app?.type == VideoType.TVShow.rawValue
         {
-            if indexPath.row == 0
-            {
+//            if indexPath.row == 0
+//            {
+//                cell.categoryTitleLabel.text = "Latest Episodes"
+//                cell.episodes = metadata?.episodes
+//                cell.tableCellCollectionView.reloadData()
+//            }
+//
+//            if indexPath.row == 1
+//            {
+//                if let artists = metadata?.artist
+//                {
+//                let dict = getStarCastImagesUrl(artists: artists)
+//                cell.categoryTitleLabel.text = (dict.count != 0) ? "Cast & Crew" : ""
+//                cell.artistImages = dict
+//                cell.tableCellCollectionView.reloadData()
+//                }
+//            }
+            if let episodeArray = moreTableviewDataSource[indexPath.row] as? [Episode]{
                 cell.categoryTitleLabel.text = "Latest Episodes"
-                cell.episodes = metadata?.episodes
+                cell.episodes = episodeArray
                 cell.tableCellCollectionView.reloadData()
             }
-
-            if indexPath.row == 1
-            {
-                if let artists = metadata?.artist
-                {
-                let dict = getStarCastImagesUrl(artists: artists)
-                cell.categoryTitleLabel.text = (dict.count != 0) ? "Cast & Crew" : ""
+            if let artistArray = moreTableviewDataSource[indexPath.row] as? [String]{
+                cell.categoryTitleLabel.text = "Cast & Crew"
+                let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
-                }
             }
         }
         return cell
@@ -558,8 +597,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func getStarCastImagesUrl(artists:[String]) -> [String:String]
     {
+        let modifiedArtists = artists.filter { (artistName) -> Bool in
+            artistName != ""
+        }
         var artistImages = [String:String]()
-        for artist in artists
+        for artist in modifiedArtists
         {
             let processedName = artist.replacingOccurrences(of: " ", with: "").lowercased()
             let encryptedData = convertStringToMD5Hash(artistName: processedName)

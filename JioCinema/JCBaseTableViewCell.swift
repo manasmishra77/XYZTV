@@ -96,7 +96,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
                     
                     let progress:Float?
-                    if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
+                    if let duration = data?[indexPath.row].duration, let totalDuration = data?[indexPath.row].totalDuration
                     {
                         progress = Float(duration)! / Float(totalDuration)!
                         resumeWatchCell.progressBar.setProgress(progress!, animated: false)
@@ -164,57 +164,41 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
                 let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
-                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
+                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height, height: cell.artistImageView.frame.size.height)
                 cell.artistImageView.frame = newFrame
                 cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
                 
                 cell.artistNameLabel.textAlignment = .center
-                //let keys = Array(self.artistImages!.keys)
-//                let key = keys[indexPath.row]
-//                let imageUrl = self.artistImages?[key] ?? ""
-                self.artistImages?.removeValue(forKey: "")
+                let artistNameKey = Array(self.artistImages!.keys)[indexPath.row]
+                let imageUrl = self.artistImages?[artistNameKey] ?? ""
                 
-                if let artistDict = self.artistImages?.filter({$0.key != ""}){
-                    if artistDict.count > 0, indexPath.row < artistDict.count{
-                        let keys = Array(self.artistImages!.keys)
-                        let key = keys[indexPath.row]
-                        let imageUrl = self.artistImages?[key] ?? ""
-                        
-                        let artistName = artistDict[indexPath.row].key
-                        cell.artistNameLabel.text = artistName
-                        let artistNameSubGroup = artistName.components(separatedBy: " ")
-                        var artistInitial = ""
-                        for each in artistNameSubGroup{
-                            if each.first != nil{
-                               artistInitial = artistInitial + String(describing: each.first!)
-                            }
-                        } 
+                cell.artistNameLabel.text = artistNameKey
+                let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+                var artistInitial = ""
+                for each in artistNameSubGroup{
+                    if each.first != nil{
+                        artistInitial = artistInitial + String(describing: each.first!)
+                    }
+                }
+                cell.artistImageView.isHidden = true
+                cell.artistNameInitialButton.isHidden = false
+                let url = URL(string: imageUrl)
+                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    
+                    if error != nil{
                         cell.artistImageView.isHidden = true
                         cell.artistNameInitialButton.isHidden = false
-                        let url = URL(string: imageUrl)
-                        cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                            
-                            if error != nil{
-                                cell.artistImageView.isHidden = true
-                                cell.artistNameInitialButton.isHidden = false
-                                cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
-                            }
-                            else
-                            {
-                                cell.artistNameInitialButton.isHidden = true
-                                cell.artistImageView.isHidden = false
-                            }
-                        });
+                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
                     }
-                    
-                }
-                
-                
+                    else{
+                        cell.artistNameInitialButton.isHidden = true
+                        cell.artistImageView.isHidden = false
+                    }
+                });
             }
-            cell.isOpaque = true
-          
             
+            cell.isOpaque = true
             cell.backgroundColor = .clear
             return cell
         }
@@ -300,10 +284,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             {
                 if artistDict.count > 0{
                     isSearchOpenFromMetaData = true
-                    if indexPath.row < artistDict.count{
-                        let artistName = artistDict[indexPath.row].key
-                        NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
-                    }
+                   
+                    let artistName = artistDict[indexPath.row].key
+                    NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
                     
                 }
                 
