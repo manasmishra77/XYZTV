@@ -169,12 +169,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
                 
                 cell.artistNameLabel.textAlignment = .center
-                let keys = Array(self.artistImages!.keys)
-                let key = keys[indexPath.row]
-                let imageUrl = self.artistImages?[key] ?? ""
+                //let keys = Array(self.artistImages!.keys)
+//                let key = keys[indexPath.row]
+//                let imageUrl = self.artistImages?[key] ?? ""
+                self.artistImages?.removeValue(forKey: "")
                 
                 if let artistDict = self.artistImages?.filter({$0.key != ""}){
-                    if artistDict.count > 0{
+                    if artistDict.count > 0, indexPath.row < artistDict.count{
+                        let keys = Array(self.artistImages!.keys)
+                        let key = keys[indexPath.row]
+                        let imageUrl = self.artistImages?[key] ?? ""
+                        
                         let artistName = artistDict[indexPath.row].key
                         cell.artistNameLabel.text = artistName
                         let artistNameSubGroup = artistName.components(separatedBy: " ")
@@ -295,8 +300,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             {
                 if artistDict.count > 0{
                     isSearchOpenFromMetaData = true
-                    let artistName = artistDict[indexPath.row].key
-                    NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
+                    if indexPath.row < artistDict.count{
+                        let artistName = artistDict[indexPath.row].key
+                        NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
+                    }
+                    
                 }
                 
             }

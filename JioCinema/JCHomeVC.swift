@@ -441,7 +441,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                             self.isGenereDataAvailable = true
                             self.baseTableView.reloadData()
                         }
-                        }
+                    }
                 }
             }
         }

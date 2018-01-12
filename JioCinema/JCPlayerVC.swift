@@ -961,7 +961,7 @@
     func scrollCollectionViewToRow(row:Int)
     {
       //  print("Scroll to Row is = \(row)")
-        if row >= 0 {
+        if row >= 0, row < arr_RecommendationList.count {
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
                 self.collectionView_Recommendation.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
@@ -1201,11 +1201,16 @@
                     
                     if selectedItemFromViewController == VideoType.Clip
                     {
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items) ?? [Item]()
+                         if collectionIndex >= 0, let arrRecommendationCount = JCDataStore.sharedDataStore.clipsData?.data?.count, collectionIndex < arrRecommendationCount{
+                            arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items) ?? [Item]()
+                         }
                     }
                     else if selectedItemFromViewController == VideoType.Home
                     {
-                        arr_RecommendationList = (JCDataStore.sharedDataStore.homeData?.data?[collectionIndex].items) ?? [Item]()
+                        if collectionIndex >= 0, let arrRecommendationCount = JCDataStore.sharedDataStore.homeData?.data?.count, collectionIndex < arrRecommendationCount{
+                            arr_RecommendationList = (JCDataStore.sharedDataStore.homeData?.data?[collectionIndex].items) ?? [Item]()
+                        }
+                        
                     }
 
                     else if selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
