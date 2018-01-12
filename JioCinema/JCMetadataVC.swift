@@ -130,7 +130,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             else if indexPath.row == 1
             {
                 cell.categoryTitleLabel.text = "Cast & Crew"
-                let dict = getStarCastImagesUrl(artists: (metadata?.artist)!)
+                let dict = getStarCastImagesUrl(artists: (metadata?.artist) ?? [""])
                 cell.artistImages = dict
                 cell.tableCellCollectionView.reloadData()
             }
@@ -382,8 +382,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     
     func getStarCastImagesUrl(artists:[String]) -> [String:String]
     {
+        let modifiedArtists = artists.filter { (artistName) -> Bool in
+            artistName != ""
+        }
         var artistImages = [String:String]()
-        for artist in artists
+        for artist in modifiedArtists
         {
             let processedName = artist.replacingOccurrences(of: " ", with: "").lowercased()
             let encryptedData = convertStringToMD5Hash(artistName: processedName)
