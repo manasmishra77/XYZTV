@@ -146,6 +146,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Home
         cell.cellDelgate = self
+        cell.tag = indexPath.row
         cell.isResumeWatchCell = false
         if isResumeWatchDataAvailable, indexPath.row == 0 {
             cell.isResumeWatchCell = true

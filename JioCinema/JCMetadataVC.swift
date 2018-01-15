@@ -115,6 +115,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         cell.data = nil
         cell.artistImages = nil
         cell.cellDelgate = self
+        cell.tag = indexPath.row
         
         //Metadata for Movies
         
@@ -705,7 +706,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.starringStaticLabel.isHidden = true
         }
         if metadata?.artist != nil{
-            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ",").count)! > 55 ? (metadata?.artist?.joined(separator: ",").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ",")
+            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
         }
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
@@ -726,7 +727,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.ratingLabel.isHidden = true
             headerCell.subtitleLabel.isHidden = true
             headerCell.tvShowSubtitleLabel.isHidden = false
-            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle
+            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle?.capitalized
             
             if (metadata?.isSeason) != nil
             {

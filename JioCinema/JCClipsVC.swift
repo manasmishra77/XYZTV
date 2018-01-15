@@ -86,6 +86,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         
         cell.itemFromViewController = VideoType.Clip
         cell.cellDelgate = self
+        cell.tag = indexPath.row
 
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
@@ -324,9 +325,19 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
     {
+        var moreArray: [More]? = nil
+        var isMoreDataAvailable = false
+        if itemToBePlayed.isPlaylist ?? false{
+            let recommendationArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal ?? false) ? JCDataStore.sharedDataStore.clipsData?.data?[categoryIndex + 1].items : JCDataStore.sharedDataStore.clipsData?.data?[categoryIndex].items
+            moreArray = Utility.sharedInstance.convertingItemArrayToMoreArray(recommendationArray ?? [Item]())
+            if moreArray?.count ?? 0 > 0{
+                isMoreDataAvailable = true
+            }
+        }
+        
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: CLIP_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "" )
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: CLIP_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "" )
                 self.present(playerVC, animated: true, completion: nil)
             }
         }

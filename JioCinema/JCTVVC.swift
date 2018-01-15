@@ -114,11 +114,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.TVShow
-
+        
         cell.data = dataItemsForTableview[indexPath.row].items
         cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
+        cell.tag = indexPath.row
         if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)

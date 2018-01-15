@@ -104,6 +104,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
+        cell.tag = indexPath.row
         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)

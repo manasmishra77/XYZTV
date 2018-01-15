@@ -269,21 +269,21 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         if let items = data{
-            cellDelgate?.didTapOnItemCell!(self, items[indexPath.row], indexPath.row)
+            cellDelgate?.didTapOnItemCell!(self, items[indexPath.row], self.tag)
         }
         else if let moreItems = moreLikeData{
-            cellDelgate?.didTapOnItemCell!(self, moreItems[indexPath.row], indexPath.row)
+            cellDelgate?.didTapOnItemCell!(self, moreItems[indexPath.row], self.tag)
         }
         else if let artistImageArray = artistImages{
             let artistNameArray = artistImageArray.filter({$0.key != ""})
             
-            cellDelgate?.didTapOnItemCell!(self, artistNameArray[indexPath.row].key, indexPath.row)
+            cellDelgate?.didTapOnItemCell!(self, artistNameArray[indexPath.row].key, self.tag)
         }
         else if let artistArray = artistImages?.filter({$0.key != ""}){
-            cellDelgate?.didTapOnItemCell!(self, artistArray[indexPath.row], indexPath.row)
+            cellDelgate?.didTapOnItemCell!(self, artistArray[indexPath.row], self.tag)
         }
         else if let episodes = episodes{
-            cellDelgate?.didTapOnItemCell!(self, episodes[indexPath.row], indexPath.row)
+            cellDelgate?.didTapOnItemCell!(self, episodes[indexPath.row], self.tag)
         }
 
     }

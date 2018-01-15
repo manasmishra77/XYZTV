@@ -171,6 +171,27 @@ class Utility
         searchVC.searchViewController = searchViewController
         return searchViewController
     }
+    //MARK:- Converting Item array to More Array
+    func convertingItemArrayToMoreArray(_ itemArray: [Item]) -> [More] {
+        var moreArray = [More]()
+        for each in itemArray{
+            let more = More()
+            more.id = each.id
+            more.name = each.name
+            more.subtitle = each.subtitle
+            more.format = each.format
+            more.banner = each.banner
+            more.language = each.language
+            more.app = each.app
+            more.description = each.description
+            more.totalDuration = each.totalDurationInt
+            more.srt = ""
+            more.totalDurationString = each.totalDuration
+            more.image = each.image
+            moreArray.append(more)
+        }
+        return moreArray
+    }
 }
 
 extension Date

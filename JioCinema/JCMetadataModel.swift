@@ -307,7 +307,9 @@ class More: Mappable
     var totalDurationString:String?
     var image:String?
     
-    
+    init() {
+        
+    }
     required init(map:Map) {
         
     }
