@@ -96,12 +96,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             if isResumeWatchCell
             {
                 let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
-                if let imageUrl = data?[indexPath.row].banner!
+                if let imageUrl = data?[indexPath.row].banner
                 {
                     resumeWatchCell.nameLabel.text = data?[indexPath.row].name!
                     
                     let progress:Float?
-                    if let duration = data![indexPath.row].duration, let totalDuration = data![indexPath.row].totalDuration
+                    if let duration = data?[indexPath.row].duration, let totalDuration = data?[indexPath.row].totalDuration
                     {
                         progress = Float(duration)! / Float(totalDuration)!
                         resumeWatchCell.progressBar.setProgress(progress!, animated: false)
@@ -121,9 +121,16 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             else
             {
                 
-                if let imageUrl = data?[indexPath.row].banner!
+                var thumbnailTitle = ""
+                if let nameOfThumbnail = data?[indexPath.row].name, nameOfThumbnail != ""{
+                    thumbnailTitle = nameOfThumbnail
+                }else if let shownameOfThumbnail = data?[indexPath.row].showname{
+                    thumbnailTitle = shownameOfThumbnail
+                }
+                
+                if let imageUrl = data?[indexPath.row].banner
                 {
-                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : data?[indexPath.row].name
+                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
                     cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
@@ -159,6 +166,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
+            /*
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
@@ -209,6 +217,47 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 //            let artistName = artistDict?[indexPath.row].key
 //            cell.artistNameLabel.text = artistName
             
+            cell.backgroundColor = .clear
+            return cell*/
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
+            DispatchQueue.main.async {
+                cell.artistImageView.clipsToBounds = true
+                let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
+                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
+                cell.artistImageView.frame = newFrame
+                cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
+                
+                cell.artistNameLabel.textAlignment = .center
+                let artistNameKey = Array(self.artistImages!.keys)[indexPath.row]
+                let imageUrl = self.artistImages?[artistNameKey] ?? ""
+                
+                cell.artistNameLabel.text = artistNameKey
+                let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+                var artistInitial = ""
+                for each in artistNameSubGroup{
+                    if each.first != nil{
+                        artistInitial = artistInitial + String(describing: each.first!)
+                    }
+                }
+                cell.artistImageView.isHidden = true
+                cell.artistNameInitialButton.isHidden = false
+                let url = URL(string: imageUrl)
+                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                    
+                    if error != nil{
+                        cell.artistImageView.isHidden = true
+                        cell.artistNameInitialButton.isHidden = false
+                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+                    }
+                    else{
+                        cell.artistNameInitialButton.isHidden = true
+                        cell.artistImageView.isHidden = false
+                    }
+                });
+            }
+            
+            cell.isOpaque = true
             cell.backgroundColor = .clear
             return cell
         }

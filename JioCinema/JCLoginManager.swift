@@ -123,6 +123,8 @@ class JCLoginManager:UIViewController
                 //TODO: handle error
                 print(responseError)
                 completion(false)
+                let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "4G", customParameters: customParams)
                 return
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
@@ -155,7 +157,8 @@ class JCLoginManager:UIViewController
                     // For Internal Analytics Event
                     let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
-                    
+                    let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                    JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "4G", customParameters: customParams)
                     JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
                     
@@ -168,6 +171,10 @@ class JCLoginManager:UIViewController
                     // For Internal Analytics Event
                     let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: "", errorMessage: "")
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
+                    
+                    let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                    JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "4G", customParameters: customParams)
+                    
                     completion(false)
                 }
             }

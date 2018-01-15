@@ -31,6 +31,7 @@ let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
 let basePath = prodBase
+//let basePath = qaBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"

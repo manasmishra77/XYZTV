@@ -129,13 +129,12 @@
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if player != nil{
-            resetPlayer()
-        }
         if isMediaEndAnalyticsEventNotSent{
             sendMediaEndAnalyticsEvent()
         }
-        
+        if player != nil{
+            resetPlayer()
+        }
     }
     override func viewDidLayoutSubviews() {
         if self.view_Recommendation.frame.origin.y >= screenHeight - 30
@@ -608,7 +607,7 @@
             let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
             
-            let customParams: [String:Any] = ["Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : currentDuration]
+            let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : currentDuration]
             JCAnalyticsManager.sharedInstance.event(category: VIDEO_START_EVENT, action: VIDEO_ACTION, label: itemTitle, customParameters: customParams as? Dictionary<String, String>)
             isMediaStartEventSent = true
         }
@@ -617,6 +616,10 @@
     
     func sendBufferingEvent(eventProperties:[String:Any])
     {
+        let bufferCountForGA = eventProperties["Buffer Count"] as? String
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Buffering", label: bufferCountForGA, customParameters: customParams)
+        
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Buffering", properties: eventProperties)
     }
     
@@ -637,7 +640,7 @@
             let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(Int(currentDuration))", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount/2)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex), categoryTitle: fromCategory)
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
-            let customParams: [String:Any] = ["Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : currentDuration]
+            let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : timeSpent]
             JCAnalyticsManager.sharedInstance.event(category: VIDEO_END_EVENT, action: VIDEO_ACTION, label: itemTitle, customParameters: customParams as? Dictionary<String, String>)
             
             bufferCount = 0
@@ -1295,7 +1298,9 @@
                 let newItem = moreArray[indexPath.row]
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                 
+                
                 preparePlayerVC()
+                sendRecommendationEvent(videoName: newItem.name ?? "")
             }
             else{
                 let newItem = moreArray[indexPath.row]
@@ -1313,6 +1318,7 @@
                         changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                         preparePlayerVC()
                     }
+                    sendRecommendationEvent(videoName: newItem.name ?? "")
                 }
             }
         }
@@ -1321,6 +1327,7 @@
             changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: false, isEpisodeAvailable: true, recommendationArray: episodeArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
             
             preparePlayerVC()
+            sendRecommendationEvent(videoName: newItem.name ?? "")
         }
     }
  }
@@ -1649,6 +1656,12 @@
         recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
         recommendationViewchangeTo(0.1, visibility: false, animationDuration: 4.0)
         }
+    }
+    
+    func sendRecommendationEvent(videoName: String)
+    {
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Recommendation", label: videoName, customParameters: customParams)
     }
  }
 
