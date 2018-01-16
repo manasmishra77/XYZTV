@@ -287,8 +287,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         metadataContainerView.addSubview(headerView!)
         if metadata?.type == VideoType.Movie.rawValue{
             //tableViewTopConstraint.constant = -175
-        }
-        
+        }        
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
         if itemAppType == .Movie{
