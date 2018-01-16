@@ -1442,7 +1442,7 @@
     {
         playBackRightsTappedAt = Date()
         DispatchQueue.main.async {
-            //self.activityIndicatorOfLoaderView.startAnimating()
+            self.activityIndicatorOfLoaderView.startAnimating()
         }
         print("Playback rights id is === \(id)")
         playerId = id
@@ -1458,18 +1458,9 @@
             if let responseError = error as NSError?
             {
                 //TODO: handle error
-               // print(responseError)
-                DispatchQueue.main.async {
-                    self.activityIndicatorOfLoaderView.stopAnimating()
-                    self.activityIndicatorOfLoaderView.isHidden = true
-                    self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
-                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
-                }
-                
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
-                    let vc = self.presentingViewController
                     DispatchQueue.main.async {
                         JCLoginManager.sharedInstance.logoutUser()
                         self.dismiss(animated: false, completion: {
@@ -1477,6 +1468,14 @@
                         })
                         return
                     }
+                }
+                
+               // print(responseError)
+                DispatchQueue.main.async {
+                    self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
                 }
 
                 
