@@ -651,7 +651,7 @@
     
     func sendVideoViewedEventToCleverTap()
     {
-        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": currentDuration, "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS"]
+        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties)
         
         let bufferEventProperties = ["Buffer Count": String(Int(bufferCount/2)),"Buffer Duration": Int(totalBufferDurationTime),"Content ID":id,"Type":appType.rawValue,"Title":itemTitle,"Episode":episodeNumber ?? -1,"Bitrate":bitrate, "Platform":"TVOS"] as [String : Any]
@@ -853,7 +853,7 @@
                 self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
-                self.recommendationViewchangeTo(0.1, visibility: false, animationDuration: 4.0)
+                self.recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
             })
         }
     }
@@ -1654,7 +1654,7 @@
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
         if visible, !isRecommendationViewVisible{
         recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
-        recommendationViewchangeTo(0.1, visibility: false, animationDuration: 4.0)
+        recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
         }
     }
     
