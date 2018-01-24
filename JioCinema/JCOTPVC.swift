@@ -424,7 +424,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if resendOTPButton.isHidden == true {
-            if (searchBar.text?.characters.count)! < 10 {
+            if (searchBar.text?.count)! < 10 {
                 getOTPButton.isUserInteractionEnabled = false
             }
             else
@@ -434,7 +434,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         }
         else
         {
-            if (searchBar.text?.characters.count)! < 6 {
+            if (searchBar.text?.count)! < 6 {
                 signInButton.isUserInteractionEnabled = false
             }
             else

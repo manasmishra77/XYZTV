@@ -102,7 +102,6 @@ class JCSplashVC: UIViewController {
                 //TODO: handle error
                 weakSelf?.isHomeDataAvailable = false
                 weakSelf?.dispatchGroup.leave()
-                
                 return
             }
             if let responseData = data

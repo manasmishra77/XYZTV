@@ -679,7 +679,7 @@
     func scrollCollectionViewToRow(row:Int)
     {
         print("Scroll to Row is = \(row)")
-        if row >= 0 {
+        if row > 0 {
             DispatchQueue.main.async {
                 self.collectionView_Recommendation.isScrollEnabled = true
                 let path = IndexPath(row: row, section: 0)
@@ -1324,6 +1324,9 @@
         }
         else if isEpisodeDataAvailable{
             let newItem = episodeArray[indexPath.row]
+            if id == newItem.id{
+                return
+            }
             changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: false, isEpisodeAvailable: true, recommendationArray: episodeArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
             
             preparePlayerVC()
@@ -1336,7 +1339,6 @@
  extension JCPlayerVC: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if isEpisodeDataAvailable{
             return episodeArray.count
         }

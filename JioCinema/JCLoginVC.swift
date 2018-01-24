@@ -23,7 +23,7 @@ class JCLoginVC: UIViewController {
     var isLoginPresentedFromAddToWatchlist = false
     var isLoginPresentedFromPlayNowButtonOfMetaData = false
     var isLoginPresentedFromItemCell = false
-    var presentingVCOfLoginVc: Any = false
+    var presentingVCOfLoginVc: Any? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +64,7 @@ class JCLoginVC: UIViewController {
         singInOptionsVC.isLoginPresentedFromAddToWatchlist = isLoginPresentedFromAddToWatchlist
         singInOptionsVC.isLoginPresentedFromItemCell = isLoginPresentedFromItemCell
         singInOptionsVC.isLoginPresentedFromPlayNowButtonOfMetaData = isLoginPresentedFromPlayNowButtonOfMetaData
+        
         singInOptionsVC.presentingVCOfLoginVc = presentingVCOfLoginVc
         singInOptionsVC.modalPresentationStyle = .overFullScreen
         singInOptionsVC.modalTransitionStyle = .coverVertical

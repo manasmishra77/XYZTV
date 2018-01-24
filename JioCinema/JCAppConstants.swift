@@ -163,11 +163,13 @@ let METADATA_SCREEN = "Metadata Screen"
 let PLAYER_SCREEN = "Player Screen"
 let LANGUAGE_SCREEN = "Language Screen"
 let GENRE_SCREEN = "Genre Screen"
+let TVOS_HOME_SCREEN = "tvOS Home Screen"
 
 //Category Name
 let RECOMMENDATION = "Recommendation"
 let MORELIKE = "More Like"
 let WATCH_NOW_BUTTON = "Watch-now button"
+let TVOS_HOME_SCREEN_CAROUSEL = "tvOS Home Screen Carousel"
 
 let ADD_TO_WATCHLIST = "Add to watchlist"
 let REMOVE_FROM_WATCHLIST = "Remove from watchlist"

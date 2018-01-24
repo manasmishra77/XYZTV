@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         
@@ -75,9 +75,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
                         let vc = weakSelf?.presentingVCOfLoginVc
-                        let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist
-                        let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData
-                        let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell
+                        let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist ?? false
+                        let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData ?? false
+                        let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell ?? false
                         
                         //Updates after login
                         if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
@@ -95,7 +95,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                                if loginPresentedFromItemCell!{
+                                if loginPresentedFromItemCell{
                                     if let vc = vc as? JCHomeVC {
                                         vc.playItemAfterLogin()
                                     }
@@ -121,13 +121,13 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                         vc.playItemAfterLogin()
                                     }
                                 }
-                                else if presentedFromAddToWatchList!{
+                                else if presentedFromAddToWatchList{
                                     if let vc = vc as? JCMetadataVC{
                                         //Change Add to watchlist button status
                                         
                                     }
                                 }
-                                else if presentedFromPlayNowButtonOfMetadata!{
+                                else if presentedFromPlayNowButtonOfMetadata{
                                     if let vc = vc as? JCMetadataVC{
                                         //Play after login
                                         vc.didClickOnWatchNowButton(nil)

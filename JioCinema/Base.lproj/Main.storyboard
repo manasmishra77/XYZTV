@@ -602,8 +602,8 @@
                                         </collectionViewFlowLayout>
                                         <cells/>
                                         <connections>
-                                            <outlet property="dataSource" destination="XTY-lV-J6s" id="2ag-Ry-UGW"/>
-                                            <outlet property="delegate" destination="XTY-lV-J6s" id="nGW-x6-dbk"/>
+                                            <outlet property="dataSource" destination="XTY-lV-J6s" id="5Jw-tA-LNn"/>
+                                            <outlet property="delegate" destination="XTY-lV-J6s" id="pFA-Hz-HHB"/>
                                         </connections>
                                     </collectionView>
                                 </subviews>
@@ -753,7 +753,7 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicatorOfLoaderView" destination="M96-XT-G9E" id="IVw-Po-Rmf"/>
-                        <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="dpq-BY-oY7"/>
+                        <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="1dJ-5w-5Ya"/>
                         <outlet property="loaderCoverView" destination="Xym-mI-ik0" id="e2B-3D-V4V"/>
                         <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
                         <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>

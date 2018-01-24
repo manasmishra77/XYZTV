@@ -25,8 +25,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     override func viewDidLoad()
     {
+        
         super.viewDidLoad()
         isFirstLoaded = true
+        
         super.activityIndicator.isHidden = true
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -49,10 +51,18 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.handleTopShelfCalls), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        handleTopShelfCalls()
+        if baseTableView.numberOfRows(inSection: 0) == 0{
+            baseTableView.reloadData()
+        }
+    }
     override func viewDidDisappear(_ animated: Bool) {
         Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
+    
     override func viewDidAppear(_ animated: Bool)
     {
         screenAppearTiming = Date()
@@ -76,7 +86,30 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         // Dispose of any resources that can be recreated.
     }
     
-    
+    //MARK: Top Shelf interatcion
+    func handleTopShelfCalls()
+    {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        if let modal = delegate.topShelfContentModel {
+            let videoType = Utility.checkType(modal.type ?? "")
+            switch videoType{
+                case .Movie,.TVShow :
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(modal.contentId ?? "", appType: videoType, fromScreen: TVOS_HOME_SCREEN_CAROUSEL, categoryName: TVOS_HOME_SCREEN_CAROUSEL, categoryIndex: 0, tabBarIndex: 0)
+                    self.present(metadataVC, animated: true, completion: nil)
+                case .Music,.Trailer,.Clip :
+                    let tappedItem = Item()
+                    tappedItem.id = modal.contentId
+                    let app = App()
+                    app.type = videoType.rawValue
+                    tappedItem.app = app
+                    checkLoginAndPlay(tappedItem, categoryName: TVOS_HOME_SCREEN_CAROUSEL, categoryIndex: 0)
+                default:
+                print(videoType.name)
+           
+            }
+            delegate.topShelfContentModel = nil
+        }
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
@@ -527,11 +560,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     {
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (categoryName == TVOS_HOME_SCREEN_CAROUSEL ? TVOS_HOME_SCREEN : HOME_SCREEN), fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 
                 self.present(playerVC, animated: true, completion: nil)
             }

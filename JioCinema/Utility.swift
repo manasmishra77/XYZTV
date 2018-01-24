@@ -86,6 +86,24 @@ class Utility
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: snavInternalEvent)
     }
     
+    //MARK:- Check Video type
+    class func checkType(_ typeString: String) -> VideoType {
+        switch typeString.capitalized {
+        case "Movies":
+            return .Movie
+        case "TV Shows":
+            return .TVShow
+        case "Music":
+            return .Music
+        case "Trailer":
+            return .Trailer
+        case "Clip":
+            return .Clip
+        default:
+            return .None
+        }
+    }
+    
     //MARK:- Player View Controller Preparation method
     func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String) -> JCPlayerVC  {
         

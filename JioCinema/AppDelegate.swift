@@ -16,7 +16,8 @@ import Fabric
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -44,7 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication)
+    {
+        if let _ = topShelfContentModel{
+            if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
+                    tabVc.selectedIndex = 0
+            }
+        }
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
@@ -55,6 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let playerVc = UIApplication.topViewController() as? JCPlayerVC{
             playerVc.viewWillDisappear(true)
         }
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        let urlString = url.absoluteString
+        
+        //TODO: Top-shelf item tapped
+        if urlString.contains("jCApp:?identifier="){
+            if let urlSubString = urlString.dropFirst(18).removingPercentEncoding{
+                topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
+            }
+        }
+        return true
     }
     
     func handlerUncaughtException() -> Void {
