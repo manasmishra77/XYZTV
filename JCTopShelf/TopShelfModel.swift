@@ -48,7 +48,7 @@ struct VODTopShelfModel: Codable{
     }
 }
 struct ContentModel: Codable{
-    var name: String? = nil
+    var name: String?
     var type: String? = nil
     var contentId: String? = nil
     

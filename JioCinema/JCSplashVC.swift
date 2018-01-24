@@ -20,7 +20,7 @@ class JCSplashVC: UIViewController {
         Utility.sharedInstance.startNetworkNotifier()
 
         //Call config service
-        callWebServiceForConfigData()
+        callWebServiceToCheckVersion()
 
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
@@ -169,7 +169,7 @@ class JCSplashVC: UIViewController {
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
                 
                 // If build number is coming from back-end
-                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version, upComingBuildNumber != 0{
+                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version?.floatValue(), upComingBuildNumber != 0{
                     if upComingBuildNumber > currentBuildNumber{
                         if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
                             weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
@@ -193,33 +193,10 @@ class JCSplashVC: UIViewController {
     
     func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
         do {
-            let jsonDict = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
-            if let responseDict = jsonDict as? [String: Any]{
-                var checkModel = CheckVersionModel(messageCode: nil, result: nil)
-                checkModel.messageCode = responseDict["messageCode"] as? Int
-                if let resultDict = jsonDict as? [String: Any]{
-                    if let resultDataDict = resultDict["result"] as? [String: Any]{
-                        if let resultDataArray = resultDataDict["data"] as? [[String: Any]]{
-                            let resultData = resultDataArray.first
-                            var checkModelData = CheckVersionData(version: nil, url: nil, mandatory: nil, description: nil, heading: nil, buildNumber: nil)
-                            if resultData != nil{
-                                let versionString = resultData!["version"] as? String ?? "0"
-                                checkModelData.version = Float(versionString)
-                                checkModelData.description = resultData!["description"] as? String ?? ""
-                                checkModelData.heading = resultData!["heading"] as? String ?? ""
-                                checkModelData.url = resultData!["url"] as? String ?? ""
-                                checkModelData.mandatory = resultData!["mandatory"] as? Bool ?? false
-                                checkModelData.buildNumber = resultData!["buildnumber"] as? Int ?? 0
-                                checkModel.result = CheckVersionResult(data: [checkModelData])
-                                return checkModel
-                            }
-                        }
-                    }
-                }
-            }
-            
+                let t =  try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
+            return t
         } catch {
-            //print("Error deserializing JSON: \(error)")
+            print("Error deserializing JSON: \(error)")
         }
         return nil
     }
