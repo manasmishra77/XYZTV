@@ -27,8 +27,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     {
         
         super.viewDidLoad()
-        isFirstLoaded = true
         
+        isFirstLoaded = true
+        self.baseTableView.isHidden = true
         super.activityIndicator.isHidden = true
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -50,17 +51,18 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             callWebServiceForResumeWatchData()
         }
         
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.handleTopShelfCalls), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.hideTableView), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         handleTopShelfCalls()
-        if baseTableView.numberOfRows(inSection: 0) == 0{
-            baseTableView.reloadData()
-        }
     }
     override func viewDidDisappear(_ animated: Bool) {
         Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -85,7 +87,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    func hideTableView() {
+        self.baseTableView.isHidden = !self.baseTableView.isHidden
+    }
     //MARK: Top Shelf interatcion
     func handleTopShelfCalls()
     {
@@ -108,6 +112,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
            
             }
             delegate.topShelfContentModel = nil
+            self.perform(#selector(JCHomeVC.hideTableView), with: nil, afterDelay: 1.0)
+        }
+        else{
+            baseTableView.isHidden = false
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -26,13 +26,18 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
     
     var topShelfStyle: TVTopShelfContentStyle {
         // Return desired Top Shelf style.
-        return .inset
+        return .sectioned
     }
-    
     var topShelfItems: [TVContentItem] {
-        
+        let topShelfIdentifier = TVContentIdentifier(identifier:
+            "Featured", container: nil)!
+        let topShelfSection = TVContentItem(contentIdentifier:
+            topShelfIdentifier)!
+        topShelfSection.title = "Featured"
+   
         var topShelfItemArray = [TVContentItem]()
-        if let shelfModelArray = self.webServiceCallForTopShelfItems(){
+        
+        if let shelfModelArray = self.webServiceCallForTopShelfItems() {
             
             for eachShelfModel in shelfModelArray{
                 if let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.title ?? "", container: nil){
@@ -40,6 +45,7 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
                     topShelfItem?.imageURL = URL(string: eachShelfModel.image_url ?? "")
                     if let displayUrl = self.urlFor(identifier: eachShelfModel.action_data ?? ""){
                         topShelfItem?.displayURL = displayUrl
+                        topShelfItem?.imageShape = .HDTV
                     }
                     if let topShelfItem = topShelfItem{
                         topShelfItemArray.append(topShelfItem)
@@ -47,7 +53,8 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
                 }
             }
         }
-        return topShelfItemArray
+        topShelfSection.topShelfItems = topShelfItemArray
+        return [topShelfSection]
     }
     
     private func urlFor(identifier: String) -> URL? {

@@ -188,13 +188,11 @@ class JCSplashVC: UIViewController {
                 return
             }
         }
-        
     }
     
     func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
         do {
-                let t =  try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
-            return t
+               return try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
         } catch {
             print("Error deserializing JSON: \(error)")
         }
@@ -203,7 +201,6 @@ class JCSplashVC: UIViewController {
     
     func showUpdateAlert(isMandatory: Bool, alertMessage: String, title: String)
     {
-        
         weak var weakSelf = self
         let alert = UIAlertController(title: title,
                                       message: alertMessage,

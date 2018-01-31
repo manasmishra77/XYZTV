@@ -94,9 +94,7 @@ class JCLoginManager:UIViewController
                     completion(false)
                     //self.navigateToLoginVC()
                 }
-                
             }
-            
         }
     }
     
