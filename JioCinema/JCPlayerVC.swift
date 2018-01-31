@@ -368,38 +368,35 @@
         }
     }
     
-    func instantiatePlayer(with url:String)
-    {
-        self.resetPlayer()
+    func instantiatePlayer(with url:String) {
+        //self.resetPlayer()
+        player = nil
         didSeek = true
-        if metadata != nil  // For Handling FPS URL
-        {
-            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
-            {
-                handleFairPlayStreamingUrl(videoUrl: url)
-            }
-            else
-            {
-                handleAESStreamingUrl(videoUrl: url)
-            }
-        }
-        else
-        {
-            if let data = self.item as? Item
-            {
-               // if !data.isPlaylist! {
-                    
-                    if data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.TVShow.rawValue || data.app?.type == VideoType.Episode.rawValue
-                    {
-                        handleFairPlayStreamingUrl(videoUrl: url)
-                    }
-                    else
-                    {
-                        handleAESStreamingUrl(videoUrl: url)
-                    }
-               // }
-        }
-    }
+        handleFairPlayStreamingUrl(videoUrl: url)
+        return
+//        if metadata != nil  // For Handling FPS URL
+//        {
+//            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
+//            {
+//                handleFairPlayStreamingUrl(videoUrl: url)
+//            }
+//            else
+//            {
+//                handleAESStreamingUrl(videoUrl: url)
+//            }
+//        }
+//        else
+//        {
+//            if let data = self.item as? Item
+//            {
+//                    if data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.TVShow.rawValue || data.app?.type == VideoType.Episode.rawValue
+//                    {
+//                        handleFairPlayStreamingUrl(videoUrl: url)
+//                    } else {
+//                        handleAESStreamingUrl(videoUrl: url)
+//                    }
+//            }
+//        }
     }
     
     //MARK:- Handle AES Video Url
@@ -466,7 +463,7 @@
     func playVideoWithPlayerItem()
     {
         self.addMetadataToPlayer()
-        player = AVPlayer(playerItem: playerItem)
+       
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -474,7 +471,14 @@
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
         }
-        addPlayerNotificationObserver()
+        if let player = player {
+            player.replaceCurrentItem(with: playerItem)
+            
+        } else {
+            resetPlayer()
+            player = AVPlayer(playerItem: playerItem)
+           addPlayerNotificationObserver()
+        }
         playerController?.player = player
         player?.play()
         
@@ -612,17 +616,49 @@
             case .failed:
                 
                 Log.DLog(message: "Failed" as AnyObject)
-                var failureType = "FPS"
+                var failureType = ""
                 var type = ""
                 var title = ""
                 var episodeDetail = ""
+                var dismissPlayer = false
+                
+                if isVideoUrlFailedCount == 0
+                {
+                    isVideoUrlFailedCount = 1
+                    //self.resetPlayer()
+                    if let aesUrl = self.playbackRightsData?.aesUrl, (self.playbackRightsData?.url != nil) {
+                        failureType = "FPS"
+                        self.handleAESStreamingUrl(videoUrl: aesUrl)
+                    } else {
+                        failureType = "FPS"
+                        dismissPlayer = true
+                    }
+                }
+                else
+                {
+                    failureType = "AES"
+                    let alert = UIAlertController(title: "Unable to process your request right now",
+                                                  message: "",
+                                                  preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                        self.dismissPlayerVC()
+                    }
+                    alert.addAction(cancelAction)
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+                
+                
+                
                 if metadata == nil
                 {
                     if let data = self.item as? Item
                     {
                         if (data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.Episode.rawValue), isVideoUrlFailedCount == 0
                         {
-                            failureType = "FPS"
+                            //failureType = "FPS"
                             type = (data.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                             title = data.name!
                             if data.description != nil{
@@ -636,7 +672,7 @@
                 {
                     if (metadata?.app?.type == VideoType.Movie.rawValue || metadata?.app?.type == VideoType.Episode.rawValue), isVideoUrlFailedCount == 0
                     {
-                        failureType = "AES"
+                        //failureType = "AES"
                         type = (metadata?.app?.type == VideoType.Movie.rawValue) ? VideoType.Movie.name : VideoType.TVShow.name
                         title = (metadata?.name)!
                         episodeDetail = (metadata?.app?.type == VideoType.Episode.rawValue) ? (metadata?.description)! : ""
@@ -646,39 +682,14 @@
                 let eventProperties = ["Error Code":"-1","Error Message":String(describing: playerItem?.error?.localizedDescription),"Type":type,"Title":title,"Content ID":playerId!,"Bitrate":bitrate,"Episode":episodeDetail,"Platform":"TVOS","Failure":failureType] as [String : Any]
                 
                 sendPlaybackFailureEvent(eventProperties: eventProperties)
-                
-                if isVideoUrlFailedCount == 0
-                {
-                    isVideoUrlFailedCount = 1
-                    self.resetPlayer()
-                    self.handleAESStreamingUrl(videoUrl: (self.playbackRightsData?.aesUrl)!)
-                  //  print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+                if dismissPlayer {
+                    self.dismissPlayerVC()
                 }
-                else
-                {
-                    
-                    let alert = UIAlertController(title: "Unable to process your request right now",
-                                                  message: "",
-                                                  preferredStyle: UIAlertControllerStyle.alert)
-                    
-                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                        DispatchQueue.main.async {
-                            print("dismiss")
-                            self.dismissPlayerVC()
-                        }
-                    }
-                    
-                    alert.addAction(cancelAction)
-                    DispatchQueue.main.async {
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                }
-            default:
-                print("unknown")
+            case .unknown:
+                print("Status: Unknown")
             }
             
-            if newStatus == .failed {
-            }
+
         }
     }
     //MARK:- AVPlayer Finish Playing Item
@@ -1260,7 +1271,6 @@
             {
                 DispatchQueue.main.async {
                     weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                    
                     weakSelf?.collectionView_Recommendation.reloadData()
                     weakSelf?.scrollCollectionViewToRow(row: (weakSelf?.currentPlayingIndex) ?? 0)
                     
@@ -1278,23 +1288,7 @@
             let tempMetadata = MetadataModel(JSONString: responseString)
             self.metadata = tempMetadata
             
-            
-            
-//            if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
-//            {
-//                print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
-//                self.instantiatePlayer(with: (self.playbackRightsData?.url)!)
-//
-//                //For simulator
-//                //print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-//                //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl)!)
-//            }
-//            else
-//            {
-//                print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-//                self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
-//            }
-            
+        
             
             
             if let data = self.item as? Item
@@ -1523,57 +1517,75 @@
                         
                         if((self.player) != nil) {
                             self.player?.pause()
-                            self.resetPlayer()
+                            //self.resetPlayer()
                         }
                         
                         if self.metadata != nil  // For Handling FPS URL
                         {
-                            if self.metadata?.app?.type == VideoType.TVShow.rawValue || self.metadata?.app?.type == VideoType.Movie.rawValue
-                            {
-                                //print("FPS URL Hit ==== \(String(describing: self.playbackRightsData?.url))")
-                                self.instantiatePlayer(with: (self.playbackRightsData?.url)!)
+                            if let fpsUrl = weakSelf?.playbackRightsData?.url {
+                                weakSelf?.instantiatePlayer(with: fpsUrl)
+                            } else if let aesUrl = weakSelf?.playbackRightsData?.aesUrl {
+                                weakSelf?.instantiatePlayer(with: aesUrl)
+                            } else {
+                                let alert = UIAlertController(title: "Failed",
+                                                              message: "No url!",
+                                                              preferredStyle: UIAlertControllerStyle.alert)
                                 
-                                //For simulator
-                                //print("AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-                                //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl)!)
-                            }
-                            else
-                            {
-                                //print("123 AES URL Hit ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-                                
-                                self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
+                                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                                    weakSelf?.dismissPlayerVC()
+                                }
+                                alert.addAction(cancelAction)
+                                DispatchQueue.main.async {
+                                    self.present(alert, animated: true, completion: nil)
+                                }
                             }
                         }
                         else
                         {
-                            //self.instantiatePlayer(with: (self.playbackRightsData!.aesUrl!))
-                            
                             if let data = self.item as? Item
                             {
                               //  if !data.isPlaylist! {
                                    // print("data id is == \(data.id)")
                                     //print("data App type is == \(data.app?.type)")
+                                
+                                if let fpsUrl = weakSelf?.playbackRightsData?.url {
+                                    weakSelf?.instantiatePlayer(with: fpsUrl)
+                                } else if let aesUrl = weakSelf?.playbackRightsData?.aesUrl {
+                                    weakSelf?.instantiatePlayer(with: aesUrl)
+                                } else {
+                                    let alert = UIAlertController(title: "Failed",
+                                                                  message: "No url!",
+                                                                  preferredStyle: UIAlertControllerStyle.alert)
                                     
+                                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                                       weakSelf?.dismissPlayerVC()
+                                    }
+                                    alert.addAction(cancelAction)
+                                    DispatchQueue.main.async {
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                }
+                                
                                     if data.app?.type == VideoType.Movie.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.TVShow.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!).appending("/0/0")
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.Trailer.rawValue
                                     {
-                                        self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
+                                        //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
                                     else if data.app?.type == VideoType.Episode.rawValue {
-                                        self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
                                         let url = metadataUrl.appending(data.id!)
                                         self.callWebServiceForMoreLikeData(url: url)
                                     }
@@ -1583,7 +1595,7 @@
                                         
                                         if selectedItemFromViewController == VideoType.Search || selectedItemFromViewController == VideoType.Music
                                         {
-                                            self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
+                                            //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                             let url = metadataUrl.appending(data.id!)
                                             if !data.isPlaylist! {
                                             self.callWebServiceForMoreLikeData(url: url)
@@ -1591,7 +1603,7 @@
                                         }
                                         else  if selectedItemFromViewController == VideoType.Clip || selectedItemFromViewController == VideoType.Home || selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
                                         {
-                                            self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
+                                            //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                         }
                                    }
                                 
@@ -1741,43 +1753,12 @@
                 }
                 else
                 {
-                    
                     self.presentingViewController?.dismiss(animated: false, completion: {
                         DispatchQueue.main.async {
                             self.openMetaDataVC(model: model!)
                         }
                     })
-                
-                
-//                if isResumed == true{
-//                    self.dismiss(animated: true, completion: {
-//                         self.openMetaDataVC(model: model!)
-//                    })
-//
-//                }
-//                else
-//                {
-//                    if let vc = self.presentingViewController?.presentingViewController as? JCMetadataVC{
-//                        vc.dismiss(animated: true, completion: {
-//                            DispatchQueue.main.async {
-//                                self.openMetaDataVC(model: model!)
-//                            }
-//                        })
-//                    }
-//                    else
-//                    {
-//                            self.openMetaDataVC(model: model!)
-//                    }
-//
-//                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-//                        DispatchQueue.main.async {
-//                            self.openMetaDataVC(model: model!)
-//                        }
-//                    })
                 }
-                
-                // self.callWebServiceForPlaybackRights(id: (model?.id)!)
-                // url = metadataUrl.appending((model?.id!)!)
                 return
             }
         }

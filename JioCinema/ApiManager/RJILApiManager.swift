@@ -362,6 +362,7 @@ class RJILApiManager {
                         let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
                         RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
                             guard error == nil else{
+                                self.isRefreshingToken = false
                                 var errorInfo:[String:String] = [String:String]()
                                 errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
                                 completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
@@ -378,7 +379,7 @@ class RJILApiManager {
                                         self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
                                     }
                                 }
-                                else{
+                                else {
                                     self.isRefreshingToken = false
                                     //LogOutUser and show login page
                                     completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
