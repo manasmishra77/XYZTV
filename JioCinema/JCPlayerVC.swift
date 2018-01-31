@@ -255,18 +255,10 @@
     
     func instantiatePlayer(with url:String)
     {
-        self.resetPlayer()
+        //self.resetPlayer()
+        player = nil
         didSeek = true
-        
-        if appType == .Movie || appType == .Episode
-        {
-            handleFairPlayStreamingUrl(videoUrl: url)
-        }
-        else
-        {
-            handleAESStreamingUrl(videoUrl: url)
-        }
-        
+        handleFairPlayStreamingUrl(videoUrl: url)
     }
     
     //MARK:- Handle AES Video Url
@@ -333,7 +325,7 @@
     func playVideoWithPlayerItem()
     {
         self.addMetadataToPlayer()
-        player = AVPlayer(playerItem: playerItem)
+        
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -343,15 +335,17 @@
             playerController?.view.frame = self.view.frame
             
         }
+        if let player = player{
+            player.replaceCurrentItem(with: playerItem)
+        } else {
+            resetPlayer()
+            player = AVPlayer(playerItem: playerItem)
+            addPlayerNotificationObserver()
+        }
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
-        
-//        UIView.animate(withDuration: 5.0) {
-//            self.view_Recommendation.alpha = 0.1
-//            //self.isRecommendationViewVisible = false
-//        }
         
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)      
@@ -535,14 +529,13 @@
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
                 var failureType = "FPS"
-                if (appType == .Movie || appType == .Episode), !isVideoUrlFailedOnce{
+                //If video failed once and valid fps url is there
+                if !isVideoUrlFailedOnce, let fpsUrl = self.playbackRightsData?.url{
                     isVideoUrlFailedOnce = true
-                    isItemToBeAddedInResumeWatchList = false
-                    print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-                    self.resetPlayer()
+                    failureType = "FPS"
                     self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
-                }
-                else{
+                } else {
+                    //AES url failed
                     failureType = "AES"
                     let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
                     
@@ -557,6 +550,30 @@
                         self.present(alert, animated: false, completion: nil)
                     }
                 }
+                
+                
+//                if (appType == .Movie || appType == .Episode), !isVideoUrlFailedOnce{
+//                    isVideoUrlFailedOnce = true
+//                    isItemToBeAddedInResumeWatchList = false
+//                    print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
+//                    self.resetPlayer()
+//                    self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
+//                }
+//                else{
+//                    failureType = "AES"
+//                    let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
+//
+//                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+//                        DispatchQueue.main.async {
+//                            print("dismiss")
+//                            self.dismissPlayerVC()
+//                        }
+//                    }
+//                    alert.addAction(cancelAction)
+//                    DispatchQueue.main.async {
+//                        self.present(alert, animated: false, completion: nil)
+//                    }
+//                }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: playerItem?.error?.localizedDescription), errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
@@ -1083,14 +1100,22 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
-                        if self.appType == .Movie || self.appType == .Episode{
-                            if let fpsUrl = self.playbackRightsData?.url{
-                                self.instantiatePlayer(with: fpsUrl)
+                        if let fpsUrl = self.playbackRightsData?.url {
+                            self.instantiatePlayer(with: fpsUrl)
+                        } else if let aesUrl = self.playbackRightsData?.aesUrl {
+                            self.instantiatePlayer(with: aesUrl)
+                        } else {
+                            let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                            
+                            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                                DispatchQueue.main.async {
+                                    print("dismiss")
+                                    self.dismissPlayerVC()
+                                }
                             }
-                        }
-                        else{
-                            if let aesUrl = self.playbackRightsData?.aesUrl{
-                                self.instantiatePlayer(with: aesUrl)
+                            alert.addAction(cancelAction)
+                            DispatchQueue.main.async {
+                                self.present(alert, animated: false, completion: nil)
                             }
                         }
                     }
@@ -1383,8 +1408,7 @@
         return cell
     }
  }
- 
- 
+
  //MARK:- AVAssetResourceLoaderDelegate Methods
  
  extension JCPlayerVC: AVAssetResourceLoaderDelegate, AVPlayerViewControllerDelegate
