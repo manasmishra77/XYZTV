@@ -75,7 +75,7 @@
     var totalBufferDurationTime      = 0.0
     
     var videoViewingLapsedTime = 0.0
-
+    
     var currentPlayingIndex         = -1
     
     var duration                    = 0.0
@@ -90,6 +90,7 @@
     fileprivate var videoStartingDuration = 0
     fileprivate var isRecommendationViewVisible = true
     fileprivate var isSwipedUp = false
+    fileprivate var isFpsUrl = false
     
     static let assetKeysRequiredToPlay = [
         "playable",
@@ -100,20 +101,14 @@
         get{
             var bitrateString:String = ""
             //var unit = "kBps"
-            if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate as? Double
+            if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate
             {
-                
-                let bitrate : Int =  Int(observedBitrate / (8*1024))
-//            if bitrate > 1000 {
-//                //Make it Mbps
-//                bitrate = bitrate / 1024
-//                    unit = "MBps"
-//                }
-            bitrateString = bitrate > 0 ? String(bitrate) : "0"
+                let bitrate : Int64 = Int64(observedBitrate / (8*1024))
+                bitrateString = bitrate > 0 ? String(bitrate) : "0"
             }
-         return bitrateString
-            }
+            return bitrateString
         }
+    }
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -129,8 +124,8 @@
             
             if metadata?.app?.type == VideoType.TVShow.rawValue
             {
-               // print("metadata id = \(metadata?.id)")
-               // print("player id = \(playerId)")
+                // print("metadata id = \(metadata?.id)")
+                // print("player id = \(playerId)")
                 self.callWebServiceForPlaybackRights(id: playerId!)
                 if metadata?.episodes != nil
                 {
@@ -175,15 +170,15 @@
         if isResumed == true
         {
             dismissPlayerVC()
-//            self.dismiss(animated: true, completion: {
-////                DispatchQueue.main.async {
-////                    if self.moreModal != nil
-////                    {
-////                        self.isResumed = false
-////                        self.openMetaDataVC(model: self.moreModal!)
-////                    }
-////                }
-//            })
+            //            self.dismiss(animated: true, completion: {
+            ////                DispatchQueue.main.async {
+            ////                    if self.moreModal != nil
+            ////                    {
+            ////                        self.isResumed = false
+            ////                        self.openMetaDataVC(model: self.moreModal!)
+            ////                    }
+            ////                }
+            //            })
             // self.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: nil)
         }
         
@@ -368,35 +363,41 @@
         }
     }
     
-    func instantiatePlayer(with url:String) {
+    func instantiatePlayer(with url:String, isFps: Bool) {
         //self.resetPlayer()
         player = nil
         didSeek = true
-        handleFairPlayStreamingUrl(videoUrl: url)
+        isFpsUrl = isFps
+        if isFps {
+            handleFairPlayStreamingUrl(videoUrl: url)
+        } else {
+            handleAESStreamingUrl(videoUrl: url)
+        }
+        
         return
-//        if metadata != nil  // For Handling FPS URL
-//        {
-//            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
-//            {
-//                handleFairPlayStreamingUrl(videoUrl: url)
-//            }
-//            else
-//            {
-//                handleAESStreamingUrl(videoUrl: url)
-//            }
-//        }
-//        else
-//        {
-//            if let data = self.item as? Item
-//            {
-//                    if data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.TVShow.rawValue || data.app?.type == VideoType.Episode.rawValue
-//                    {
-//                        handleFairPlayStreamingUrl(videoUrl: url)
-//                    } else {
-//                        handleAESStreamingUrl(videoUrl: url)
-//                    }
-//            }
-//        }
+        //        if metadata != nil  // For Handling FPS URL
+        //        {
+        //            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
+        //            {
+        //                handleFairPlayStreamingUrl(videoUrl: url)
+        //            }
+        //            else
+        //            {
+        //                handleAESStreamingUrl(videoUrl: url)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if let data = self.item as? Item
+        //            {
+        //                    if data.app?.type == VideoType.Movie.rawValue || data.app?.type == VideoType.TVShow.rawValue || data.app?.type == VideoType.Episode.rawValue
+        //                    {
+        //                        handleFairPlayStreamingUrl(videoUrl: url)
+        //                    } else {
+        //                        handleAESStreamingUrl(videoUrl: url)
+        //                    }
+        //            }
+        //        }
     }
     
     //MARK:- Handle AES Video Url
@@ -463,7 +464,7 @@
     func playVideoWithPlayerItem()
     {
         self.addMetadataToPlayer()
-       
+        
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -477,7 +478,7 @@
         } else {
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
-           addPlayerNotificationObserver()
+            addPlayerNotificationObserver()
         }
         playerController?.player = player
         player?.play()
@@ -488,7 +489,7 @@
             self.isRecommendationViewVisible = false
         }
         if isResumed != nil, isResumed!{
-           player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
+            player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
         }
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)
@@ -628,14 +629,25 @@
                     //self.resetPlayer()
                     if let aesUrl = self.playbackRightsData?.aesUrl, (self.playbackRightsData?.url != nil) {
                         failureType = "FPS"
+                        isFpsUrl = false
                         self.handleAESStreamingUrl(videoUrl: aesUrl)
                     } else {
                         failureType = "FPS"
                         dismissPlayer = true
+                        let alert = UIAlertController(title: "Unable to process your request right now!",
+                                                      message: "",
+                                                      preferredStyle: UIAlertControllerStyle.alert)
+                        
+                        let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                            self.dismissPlayerVC()
+                        }
+                        alert.addAction(cancelAction)
+                        DispatchQueue.main.async {
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
-                else
-                {
+                else {
                     failureType = "AES"
                     let alert = UIAlertController(title: "Unable to process your request right now",
                                                   message: "",
@@ -683,13 +695,13 @@
                 
                 sendPlaybackFailureEvent(eventProperties: eventProperties)
                 if dismissPlayer {
-                    self.dismissPlayerVC()
+                   // self.dismissPlayerVC()
                 }
             case .unknown:
                 print("Status: Unknown")
             }
             
-
+            
         }
     }
     //MARK:- AVPlayer Finish Playing Item
@@ -740,7 +752,6 @@
     //MARK:- Handle Next Item
     func handleTrailerOrMusicNextItem()
     {
-        
         self.currentPlayingIndex = self.currentPlayingIndex + 1
         if self.currentPlayingIndex != self.metadata?.more?.count
         {
@@ -841,7 +852,7 @@
     {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Media Error", properties: eventProperties)
         self.sendMediaErrorAnalyticsEvent()
-
+        
     }
     
     func sendMediaEndAnalyticsEvent()
@@ -915,9 +926,9 @@
         if let currentTime = player?.currentItem?.currentTime()
         {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
-//            if categoryTitle == ""{
-//                setCategoryTitle()
-//            }
+            //            if categoryTitle == ""{
+            //                setCategoryTitle()
+            //            }
             
             //sendMediaEndAnalyticsEvent()
             let eventProperties:[String:Any] = ["Content ID":playerId!,"Type": type.rawValue,"Threshold Duration": currentTimeDuration,"Title":title,"Episode": episodeNum,"Language":language,"Source": categoryTitle,"screenName":selectedItemFromViewController.name,"Bitrate":bitrate,"Playlist":isPlaylist,"Row Position":String(collectionIndex),"Error Message":"","Genre":"","Platform":"TVOS"]
@@ -951,7 +962,7 @@
         else if let vc = vc as? JCMusicVC{
             categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[collectionIndex].title ?? "")
         }
-       
+        
     }
     
     //MARK:- Scroll Collection View To Row
@@ -971,7 +982,7 @@
     
     func scrollCollectionViewToRow(row:Int)
     {
-      //  print("Scroll to Row is = \(row)")
+        //  print("Scroll to Row is = \(row)")
         if row >= 0, row < arr_RecommendationList.count {
             DispatchQueue.main.async {
                 let path = IndexPath(row: row, section: 0)
@@ -1099,7 +1110,7 @@
     //MARK:- Swipe Up Recommendation View
     func swipeUpRecommendationView()
     {
-         self.view_Recommendation.alpha = 1.0
+        self.view_Recommendation.alpha = 1.0
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
@@ -1134,7 +1145,7 @@
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         for touch in touches {
-
+            
             if touch.type == .indirect
             {
                 callViewAnimatorToHide()
@@ -1142,7 +1153,7 @@
             }
         }
     }
-   
+    
     func callViewAnimatorToHide() {
         self.view_Recommendation.alpha = 1.0
         if !isSwipedUp
@@ -1182,27 +1193,27 @@
             else
             {
                 //print("data id is == \(data.id)")
-               // print("data App type is == \(data.app?.type)")
+                // print("data App type is == \(data.app?.type)")
                 
                 if data.app?.type == VideoType.Movie.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: data.id!)
-                   // let url = metadataUrl.appending(data.id!)
+                    // let url = metadataUrl.appending(data.id!)
                 }
                 else if data.app?.type == VideoType.TVShow.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: playerId!)
-                   // let url = metadataUrl.appending(data.id!).appending("/0/0")
+                    // let url = metadataUrl.appending(data.id!).appending("/0/0")
                 }
                 else if data.app?.type == VideoType.Trailer.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: data.id!)
-                  //  let url = metadataUrl.appending(data.id!)
+                    //  let url = metadataUrl.appending(data.id!)
                 }
                 else if data.app?.type == VideoType.Episode.rawValue
                 {
                     self.callWebServiceForPlaybackRights(id: data.id!)
-                   // let url = metadataUrl.appending(data.id!)
+                    // let url = metadataUrl.appending(data.id!)
                 }
                 else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
                 {
@@ -1212,9 +1223,9 @@
                     
                     if selectedItemFromViewController == VideoType.Clip
                     {
-                         if collectionIndex >= 0, let arrRecommendationCount = JCDataStore.sharedDataStore.clipsData?.data?.count, collectionIndex < arrRecommendationCount{
+                        if collectionIndex >= 0, let arrRecommendationCount = JCDataStore.sharedDataStore.clipsData?.data?.count, collectionIndex < arrRecommendationCount{
                             arr_RecommendationList = (JCDataStore.sharedDataStore.clipsData?.data?[collectionIndex].items) ?? [Item]()
-                         }
+                        }
                     }
                     else if selectedItemFromViewController == VideoType.Home
                     {
@@ -1223,7 +1234,7 @@
                         }
                         
                     }
-
+                        
                     else if selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
                     {
                         arr_RecommendationList = (JCDataStore.sharedDataStore.languageGenreDetailModel?.data?.items) ?? [Item]()
@@ -1288,7 +1299,7 @@
             let tempMetadata = MetadataModel(JSONString: responseString)
             self.metadata = tempMetadata
             
-        
+            
             
             
             if let data = self.item as? Item
@@ -1322,10 +1333,10 @@
                 }
                 
                 
-               // print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
+                // print("### self.currentPlayingIndex is == \(self.currentPlayingIndex )")
                 DispatchQueue.main.async {
                     self.collectionView_Recommendation.reloadData()
-                   self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
+                    self.scrollCollectionViewToRow(row: self.currentPlayingIndex)
                 }
             }
             
@@ -1464,14 +1475,14 @@
                     }
                 }
                 
-               // print(responseError)
+                // print(responseError)
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.textOnLoaderCoverView.text = "Some problem occured!!"//, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: true)
                 }
-
+                
                 
                 //Sending media error event
                 let failureType = "Play back rights error"
@@ -1523,12 +1534,12 @@
                         if self.metadata != nil  // For Handling FPS URL
                         {
                             if let fpsUrl = weakSelf?.playbackRightsData?.url {
-                                weakSelf?.instantiatePlayer(with: fpsUrl)
+                                weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
                             } else if let aesUrl = weakSelf?.playbackRightsData?.aesUrl {
-                                weakSelf?.instantiatePlayer(with: aesUrl)
+                                weakSelf?.instantiatePlayer(with: aesUrl, isFps: false)
                             } else {
-                                let alert = UIAlertController(title: "Failed",
-                                                              message: "No url!",
+                                let alert = UIAlertController(title: "Unable to process your request right now",
+                                                              message: "",
                                                               preferredStyle: UIAlertControllerStyle.alert)
                                 
                                 let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
@@ -1544,21 +1555,21 @@
                         {
                             if let data = self.item as? Item
                             {
-                              //  if !data.isPlaylist! {
-                                   // print("data id is == \(data.id)")
-                                    //print("data App type is == \(data.app?.type)")
+                                //  if !data.isPlaylist! {
+                                // print("data id is == \(data.id)")
+                                //print("data App type is == \(data.app?.type)")
                                 
                                 if let fpsUrl = weakSelf?.playbackRightsData?.url {
-                                    weakSelf?.instantiatePlayer(with: fpsUrl)
+                                    weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
                                 } else if let aesUrl = weakSelf?.playbackRightsData?.aesUrl {
-                                    weakSelf?.instantiatePlayer(with: aesUrl)
+                                    weakSelf?.instantiatePlayer(with: aesUrl, isFps: false)
                                 } else {
-                                    let alert = UIAlertController(title: "Failed",
-                                                                  message: "No url!",
+                                    let alert = UIAlertController(title: "Unable to process your request right now",
+                                                                  message: "",
                                                                   preferredStyle: UIAlertControllerStyle.alert)
                                     
                                     let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                                       weakSelf?.dismissPlayerVC()
+                                        weakSelf?.dismissPlayerVC()
                                     }
                                     alert.addAction(cancelAction)
                                     DispatchQueue.main.async {
@@ -1566,46 +1577,46 @@
                                     }
                                 }
                                 
-                                    if data.app?.type == VideoType.Movie.rawValue
-                                    {
-                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
-                                        let url = metadataUrl.appending(data.id!)
-                                        self.callWebServiceForMoreLikeData(url: url)
-                                    }
-                                    else if data.app?.type == VideoType.TVShow.rawValue
-                                    {
-                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
-                                        let url = metadataUrl.appending(data.id!).appending("/0/0")
-                                        self.callWebServiceForMoreLikeData(url: url)
-                                    }
-                                    else if data.app?.type == VideoType.Trailer.rawValue
+                                if data.app?.type == VideoType.Movie.rawValue
+                                {
+                                    //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                    let url = metadataUrl.appending(data.id!)
+                                    self.callWebServiceForMoreLikeData(url: url)
+                                }
+                                else if data.app?.type == VideoType.TVShow.rawValue
+                                {
+                                    //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                    let url = metadataUrl.appending(data.id!).appending("/0/0")
+                                    self.callWebServiceForMoreLikeData(url: url)
+                                }
+                                else if data.app?.type == VideoType.Trailer.rawValue
+                                {
+                                    //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
+                                    let url = metadataUrl.appending(data.id!)
+                                    self.callWebServiceForMoreLikeData(url: url)
+                                }
+                                else if data.app?.type == VideoType.Episode.rawValue {
+                                    //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
+                                    let url = metadataUrl.appending(data.id!)
+                                    self.callWebServiceForMoreLikeData(url: url)
+                                }
+                                else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
+                                {
+                                    //print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
+                                    
+                                    if selectedItemFromViewController == VideoType.Search || selectedItemFromViewController == VideoType.Music
                                     {
                                         //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
                                         let url = metadataUrl.appending(data.id!)
-                                        self.callWebServiceForMoreLikeData(url: url)
-                                    }
-                                    else if data.app?.type == VideoType.Episode.rawValue {
-                                        //self.instantiatePlayer(with: (self.playbackRightsData?.url) ?? "")
-                                        let url = metadataUrl.appending(data.id!)
-                                        self.callWebServiceForMoreLikeData(url: url)
-                                    }
-                                    else if data.app?.type == VideoType.Music.rawValue || data.app?.type == VideoType.Clip.rawValue
-                                    {
-                                        //print("Item From View Controller is \(selectedItemFromViewController.rawValue)")
-                                        
-                                        if selectedItemFromViewController == VideoType.Search || selectedItemFromViewController == VideoType.Music
-                                        {
-                                            //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
-                                            let url = metadataUrl.appending(data.id!)
-                                            if !data.isPlaylist! {
+                                        if !data.isPlaylist! {
                                             self.callWebServiceForMoreLikeData(url: url)
-                                            }
                                         }
-                                        else  if selectedItemFromViewController == VideoType.Clip || selectedItemFromViewController == VideoType.Home || selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
-                                        {
-                                            //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
-                                        }
-                                   }
+                                    }
+                                    else  if selectedItemFromViewController == VideoType.Clip || selectedItemFromViewController == VideoType.Home || selectedItemFromViewController == VideoType.Language || selectedItemFromViewController == VideoType.Genre
+                                    {
+                                        //self.instantiatePlayer(with: (self.playbackRightsData?.aesUrl) ?? "")
+                                    }
+                                }
                                 
                             }
                         }
@@ -1635,7 +1646,7 @@
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 let code = parsedResponse["code"]
-               // print("Removed from Resume Watchlist \(String(describing: code))")
+                // print("Removed from Resume Watchlist \(String(describing: code))")
                 //JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
                 if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
                     homeVC.callWebServiceForResumeWatchData()
@@ -1745,9 +1756,9 @@
                 
                 if let vc = self.presentingViewController as? JCMetadataVC{
                     vc.presentingViewController?.dismiss(animated: false, completion: {
-                    DispatchQueue.main.async {
-                    self.openMetaDataVC(model: model!)
-                    }
+                        DispatchQueue.main.async {
+                            self.openMetaDataVC(model: model!)
+                        }
                     })
                     
                 }
@@ -1878,7 +1889,7 @@
                     }else if let thumb = model.image{
                         imageUrl = thumb
                     }
-                   
+                    
                     cell.nameLabel.text = model.name
                 }
             }
@@ -2039,7 +2050,7 @@
                 CC_MD5(stringBytes, CC_LONG((stringData?.count)!), UnsafeMutablePointer<UInt8>(mutating: MD5Bytes))
             })
         })
-       // print("MD5Hex: \(MD5Data.map {String(format: "%02hhx", $0)}.joined())")
+        // print("MD5Hex: \(MD5Data.map {String(format: "%02hhx", $0)}.joined())")
         return MD5Data.base64EncodedString()
     }
     
@@ -2098,8 +2109,6 @@
         
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
-            //print("error: \(error!)")
-            //print("data: \(data!)")
             if (data != nil)
             {
                 if let decodedData = Data(base64Encoded: data!, options: []){
@@ -2131,7 +2140,7 @@
             
             if (data != nil)
             {
-               // print("ASYNC Certificate data: \(data!)")
+                // print("ASYNC Certificate data: \(data!)")
                 let decodedData = Data(base64Encoded: data!, options: [])
                 completionHandler(decodedData!)
             }
@@ -2147,88 +2156,80 @@
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool
     {
-        if metadata != nil  // For Handling FPS URL
+        if isFpsUrl
         {
-            if metadata?.app?.type == VideoType.TVShow.rawValue || metadata?.app?.type == VideoType.Movie.rawValue
-            {
-                let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
-                let url: URL? = loadingRequest.request.url
-                let error: Error? = nil
-                var handled: Bool = false
+            let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
+            let url: URL? = loadingRequest.request.url
+            let error: Error? = nil
+            var handled: Bool = false
+            
+            // Must be a non-standard URI scheme for AVFoundation to invoke your AVAssetResourceLoader delegate
+            // for help in loading it.
+            
+            if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
+                return false
+            }
+            
+            let assetStr: String = url!.host!
+            var assetId: Data?
+            var requestBytes: Data?
+            
+            assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as Data
+            if (assetId == nil) {
+                return handled
+            }
+            
+            self.getAppCertificateData { (certificate) in
                 
-                // Must be a non-standard URI scheme for AVFoundation to invoke your AVAssetResourceLoader delegate
-                // for help in loading it.
                 
-                if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
-                    return false
-                }
-                
-                let assetStr: String = url!.host!
-                var assetId: Data?
-                var requestBytes: Data?
-                
-                assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as Data
-                if (assetId == nil) {
-                    return handled
-                }
-                
-                self.getAppCertificateData { (certificate) in
+                do {
+                    requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate!, contentIdentifier: assetId!, options: nil)
+                    
+                    // print("Request Bytes is \(String(describing: requestBytes))")
+                    //var responseData: Data? = nil
+                    let expiryDuration = 0.0
                     
                     
-                    do {
-                        requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate!, contentIdentifier: assetId!, options: nil)
-                        
-                       // print("Request Bytes is \(String(describing: requestBytes))")
-                        //var responseData: Data? = nil
-                        let expiryDuration = 0.0
+                    self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes!, contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration, error: error, completionHandler: { (responseData) in
+                        //  print("Key  is \(String(describing: responseData))")
                         
                         
-                        self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes!, contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration, error: error, completionHandler: { (responseData) in
-                          //  print("Key  is \(String(describing: responseData))")
-                            
-                            
-                            if (responseData != nil){
-                                dataRequest?.respond(with: responseData!)
-                                if expiryDuration != 0.0
+                        if (responseData != nil){
+                            dataRequest?.respond(with: responseData!)
+                            if expiryDuration != 0.0
+                            {
+                                let infoRequest: AVAssetResourceLoadingContentInformationRequest? = loadingRequest.contentInformationRequest
+                                if (infoRequest != nil)
                                 {
-                                    let infoRequest: AVAssetResourceLoadingContentInformationRequest? = loadingRequest.contentInformationRequest
-                                    if (infoRequest != nil)
-                                    {
-                                        infoRequest?.renewalDate = Date(timeIntervalSinceNow: expiryDuration)
-                                        infoRequest?.contentType = "application/octet-stream"
-                                        infoRequest?.contentLength = Int64(responseData!.count)
-                                        infoRequest?.isByteRangeAccessSupported = false
-                                    }
-                                    
+                                    infoRequest?.renewalDate = Date(timeIntervalSinceNow: expiryDuration)
+                                    infoRequest?.contentType = "application/octet-stream"
+                                    infoRequest?.contentLength = Int64(responseData!.count)
+                                    infoRequest?.isByteRangeAccessSupported = false
                                 }
+                                
+                            }
+                            loadingRequest.finishLoading()
+                        } else {
+                            if error != nil {
+                                try? loadingRequest.finishLoading()
+                            } else {
                                 loadingRequest.finishLoading()
                             }
-                            else{
-                                if error != nil {                                
-                                        try? loadingRequest.finishLoading()
-                 
-                                }
-                                else {
-                                    loadingRequest.finishLoading()
-                                }
-                            }
-                            
-                            handled = true;	// Request has been handled regardless of whether server returned an error.
-                            // completionHandler(responseData)
-                            //  return handled
-                        })
+                        }
                         
-                    }
-                    catch {
-                    }
+                        handled = true;	// Request has been handled regardless of whether server returned an error.
+                        // completionHandler(responseData)
+                        //  return handled
+                    })
+                    
                 }
-                return true
-                
+                catch {
+                }
             }
+            return true
         }
-        
         var url = loadingRequest.request.url?.absoluteString
-       // print(url!)
+        // print(url!)
         let contentRequest = loadingRequest.contentInformationRequest
         let dataRequest = loadingRequest.dataRequest
         //Check if the it is a content request or data request, we have to check for data request and do the m3u8 file manipulation
@@ -2319,8 +2320,8 @@
     
     func seekPlayer() {
         if duration >= (self.player?.currentItem?.currentTime().seconds)!, didSeek!{
-                self.player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
-            }
+            self.player?.seek(to: CMTimeMakeWithSeconds(duration, 1))
+        }
         else{
             didSeek = false
         }
@@ -2349,19 +2350,4 @@
         let topVC = UIApplication.topViewController()
         topVC?.present(loginVC, animated: true, completion: nil)
     }
-
-    
  }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
