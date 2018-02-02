@@ -673,7 +673,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     //ChangingTheDataSourceForWatchListItems
     func changingDataSourceForWatchList() {
-        if let navVc = self.presentingViewController as? UINavigationController{
+        if let navVc = (self.presentingViewController?.presentingViewController ?? self.presentingViewController) as? UINavigationController {
             if let tabVC = navVc.viewControllers[0] as? UITabBarController{
                 if self.itemAppType == VideoType.TVShow{
                     if let vc = tabVC.viewControllers![2] as? JCTVVC{

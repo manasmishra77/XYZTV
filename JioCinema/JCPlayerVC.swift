@@ -96,6 +96,7 @@
     fileprivate var currentPlayingIndex         = -1
     fileprivate var bufferCount                 = 0
     fileprivate var isRecommendationViewVisible = false
+    fileprivate var isFpsUrl = false
     
     
     static let assetKeysRequiredToPlay = [
@@ -253,12 +254,18 @@
         }
     }
     
-    func instantiatePlayer(with url:String)
+    func instantiatePlayer(with url:String, isFps: Bool)
     {
         //self.resetPlayer()
         player = nil
         didSeek = true
-        handleFairPlayStreamingUrl(videoUrl: url)
+        isFpsUrl = isFps
+        if isFps {
+            handleFairPlayStreamingUrl(videoUrl: url)
+        } else{
+            handleAESStreamingUrl(videoUrl: url)
+        }
+        
     }
     
     //MARK:- Handle AES Video Url
@@ -530,9 +537,10 @@
                 Log.DLog(message: "Failed" as AnyObject)
                 var failureType = "FPS"
                 //If video failed once and valid fps url is there
-                if !isVideoUrlFailedOnce, let fpsUrl = self.playbackRightsData?.url{
+                if !isVideoUrlFailedOnce, let _ = self.playbackRightsData?.url{
                     isVideoUrlFailedOnce = true
                     failureType = "FPS"
+                    isFpsUrl = false
                     self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
                 } else {
                     //AES url failed
@@ -550,30 +558,6 @@
                         self.present(alert, animated: false, completion: nil)
                     }
                 }
-                
-                
-//                if (appType == .Movie || appType == .Episode), !isVideoUrlFailedOnce{
-//                    isVideoUrlFailedOnce = true
-//                    isItemToBeAddedInResumeWatchList = false
-//                    print("AES URL Hit From Failed Case ==== \(String(describing: self.playbackRightsData?.aesUrl))")
-//                    self.resetPlayer()
-//                    self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
-//                }
-//                else{
-//                    failureType = "AES"
-//                    let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
-//
-//                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-//                        DispatchQueue.main.async {
-//                            print("dismiss")
-//                            self.dismissPlayerVC()
-//                        }
-//                    }
-//                    alert.addAction(cancelAction)
-//                    DispatchQueue.main.async {
-//                        self.present(alert, animated: false, completion: nil)
-//                    }
-//                }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: playerItem?.error?.localizedDescription), errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
@@ -1101,9 +1085,9 @@
                             self.resetPlayer()
                         }
                         if let fpsUrl = self.playbackRightsData?.url {
-                            self.instantiatePlayer(with: fpsUrl)
+                            self.instantiatePlayer(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
-                            self.instantiatePlayer(with: aesUrl)
+                            self.instantiatePlayer(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
                             
@@ -1151,7 +1135,7 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
             }
@@ -1183,7 +1167,7 @@
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
                 return
@@ -1526,7 +1510,7 @@
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool
     {
-        if appType == .Movie || appType == .Episode
+        if isFpsUrl
         {
             let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
             let url: URL? = loadingRequest.request.url
