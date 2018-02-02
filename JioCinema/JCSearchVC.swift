@@ -158,8 +158,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                             JCAppReference.shared.searchText = self.searchViewController?.searchBar.text
                         }
                     }
-                    
-                    
                 }
             }
         }
