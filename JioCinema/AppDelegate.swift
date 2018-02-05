@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
             }
         }
-        return true
+        return false
     }
     
     func handlerUncaughtException() -> Void {

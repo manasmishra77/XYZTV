@@ -62,7 +62,7 @@ class JCSplashVC: UIViewController {
     
     func callWebServiceForConfigData()
     {
-        let params = [kAppKey:kAppKeyValue]
+        let params = [kAppKey: kAppKeyValue]
         
         let configDataRequest = RJILApiManager.defaultManager.prepareRequest(path: configUrl, params: params, encoding: .URL)
         weak var weakSelf = self

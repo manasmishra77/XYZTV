@@ -132,28 +132,28 @@ class JCLoginManager:UIViewController
                 if(code == 200)
                 {
                     weakSelf?.setUserData(data: parsedResponse)
-                    //Updates after login
-                    DispatchQueue.main.async {
-                        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-                        if let navVc = appDelegate?.window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
-                            if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-                                homevc.callWebServiceForResumeWatchData()
-                            }
-                            if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
-                                movieVC.callWebServiceForMoviesWatchlist()
-                            }
-                            if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
-                                tvVc.callWebServiceForTVWatchlist()
-                            }
-                        }
-                    }
+//                    //Updates after login
+//                    DispatchQueue.main.async {
+//                        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+//                        if let navVc = appDelegate?.window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
+//                            if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
+//                                homevc.callWebServiceForResumeWatchData()
+//                            }
+//                            if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
+//                                movieVC.callWebServiceForMoviesWatchlist()
+//                            }
+//                            if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
+//                                tvVc.callWebServiceForTVWatchlist()
+//                            }
+//                        }
+//                    }
                     
                     
-                    let eventProperties = ["Source": "4G","Platform": "TVOS","Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
+                    let eventProperties = ["Source": "4G", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
                     
                     // For Internal Analytics Event
-                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "4G", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
                     let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
                     JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "4G", customParameters: customParams)

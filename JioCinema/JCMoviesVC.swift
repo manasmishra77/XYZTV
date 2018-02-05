@@ -15,6 +15,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     var isMoviesWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
     fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String? = nil
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -39,9 +40,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         if JCLoginManager.sharedInstance.isUserLoggedIn()
         {
             self.callWebServiceForMoviesWatchlist()
-        }
-        else
-        {
+        } else {
             isMoviesWatchlistAvailable = false
         }
         
@@ -50,7 +49,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     override func viewDidAppear(_ animated: Bool)
     {
         self.tabBarController?.delegate = self
-        
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
@@ -65,7 +63,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -355,6 +359,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             print(tappedItem)
             if tappedItem.app?.type == VideoType.Movie.rawValue{
                 print("At Movie")
+                toScreenName = METADATA_SCREEN
                 let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1)
                 self.present(metadataVC, animated: true, completion: nil)
             }

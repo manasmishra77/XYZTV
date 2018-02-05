@@ -12,6 +12,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
 {
     var loadedPage = 0
     fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -48,7 +49,13 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        Utility.sharedInstance.handleScreenNavigation(screenName: CLIP_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: CLIP_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: CLIP_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
     }
 
     override func didReceiveMemoryWarning() {

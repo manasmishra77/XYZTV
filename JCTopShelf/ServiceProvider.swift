@@ -29,6 +29,7 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
         return .sectioned
     }
     var topShelfItems: [TVContentItem] {
+        return []
         let topShelfIdentifier = TVContentIdentifier(identifier:
             "Featured", container: nil)!
         let topShelfSection = TVContentItem(contentIdentifier:

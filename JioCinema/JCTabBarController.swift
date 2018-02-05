@@ -12,7 +12,7 @@ import UIKit
 class JCTabBarController: UITabBarController {
     
       
-    var settingsVC:JCSettingsVC?
+    var settingsVC: JCSettingsVC?
     
     override func viewDidLoad() {
         super.viewDidLoad()

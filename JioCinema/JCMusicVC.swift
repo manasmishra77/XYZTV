@@ -13,6 +13,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
 
     fileprivate var loadedPage = 0
     fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String? = nil
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -47,7 +48,13 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         screenAppearTiming = Date()
     }
     override func viewDidDisappear(_ animated: Bool) {
-        Utility.sharedInstance.handleScreenNavigation(screenName: MUSIC_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: MUSIC_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: MUSIC_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
 
     }
     
@@ -327,6 +334,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
     {
+        toScreenName = PLAYER_SCREEN
         var moreArray: [More]? = nil
         var isMoreDataAvailable = false
         if itemToBePlayed.isPlaylist ?? false{
@@ -347,6 +355,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     func presentLoginVC()
     {
+        toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }

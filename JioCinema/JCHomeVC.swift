@@ -17,6 +17,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     var isUserRecommendationAvailable = false
     var dataItemsForTableview = [DataContainer]()
     fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String? = nil
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -59,7 +60,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         handleTopShelfCalls()
     }
     override func viewDidDisappear(_ animated: Bool) {
-        Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
+        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
 
@@ -68,7 +76,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     override func viewDidAppear(_ animated: Bool)
     {
         screenAppearTiming = Date()
-        
         self.tabBarController?.delegate = self
         if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable{
             isResumeWatchDataAvailable = false
@@ -324,7 +331,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 weakSelf?.evaluateResumeWatchData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     self.isResumeWatchDataAvailable = false
-                    if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
+                    if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
                         if resumeItems.count > 0{
                             self.isResumeWatchDataAvailable = true
                         }
@@ -335,6 +342,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             }
         }
     }
+  
     
     func evaluateResumeWatchData(dictionaryResponseData responseData:Data)
     {
@@ -473,7 +481,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics
-            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: HOME_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
@@ -487,20 +495,21 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             }
             else if tappedItem.app?.type == VideoType.Movie.rawValue{
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
-                self.present(metadataVC, animated: true, completion: nil)
+                if let duration = tappedItem.duration?.floatValue(), duration > 0 {
+                    checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+                } else {
+                    toScreenName = METADATA_SCREEN
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                    self.present(metadataVC, animated: false, completion: nil)
+                }
             }
-            else if tappedItem.app?.type == VideoType.TVShow.rawValue{
+            else if tappedItem.app?.type == VideoType.TVShow.rawValue {
                 print("At TvShow")
-                if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
-                    if drn > 0{
-                        tappedItem.app?.type = VideoType.Episode.rawValue
-                        checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-                    }else{
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
-                        self.present(metadataVC, animated: true, completion: nil)
-                    }
-                }else{
+                if let duration = tappedItem.duration?.floatValue(), duration > 0 {
+                    tappedItem.app?.type = VideoType.Episode.rawValue
+                    checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+                } else {
+                    toScreenName = METADATA_SCREEN
                     let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
                     self.present(metadataVC, animated: true, completion: nil)
                 }
@@ -566,27 +575,37 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
     {
-        if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
-            if appType == .Clip || appType == .Music || appType == .Trailer{
+        toScreenName = PLAYER_SCREEN
+        if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
+            switch appType {
+            case .Clip, .Music, .Trailer:
                 let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (categoryName == TVOS_HOME_SCREEN_CAROUSEL ? TVOS_HOME_SCREEN : HOME_SCREEN), fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
-            }
-            else if appType == .Episode{
+            case .Episode:
                 let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 
                 self.present(playerVC, animated: true, completion: nil)
+            case .Movie:
+                print("Play Movie")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+                self.present(playerVC, animated: true, completion: nil)
+            default:
+                print("No Item")
+                toScreenName = nil
             }
         }
     }
     
     func presentLoginVC()
     {
+        toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
     
     func presentLanguageGenreController(item: Item)
     {
+        toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
         self.present(languageGenreVC, animated: false, completion: nil)

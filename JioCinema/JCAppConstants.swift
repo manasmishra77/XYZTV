@@ -163,6 +163,7 @@ let METADATA_SCREEN = "Metadata Screen"
 let PLAYER_SCREEN = "Player Screen"
 let LANGUAGE_SCREEN = "Language Screen"
 let GENRE_SCREEN = "Genre Screen"
+let LOGIN_SCREEN = "Login Screen"
 let TVOS_HOME_SCREEN = "tvOS Home Screen"
 
 //Category Name

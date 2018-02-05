@@ -97,6 +97,8 @@
     fileprivate var bufferCount                 = 0
     fileprivate var isRecommendationViewVisible = false
     fileprivate var isFpsUrl = false
+    fileprivate var videoStartingTime = Date()
+    fileprivate var videoStartingTimeDuration = 0
     
     
     static let assetKeysRequiredToPlay = [
@@ -342,7 +344,7 @@
             playerController?.view.frame = self.view.frame
             
         }
-        if let player = player{
+        if let player = player {
             player.replaceCurrentItem(with: playerItem)
         } else {
             resetPlayer()
@@ -526,7 +528,9 @@
             }
             switch newStatus {
             case .readyToPlay:
+                
                 self.seekPlayer()
+                videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
                 
@@ -605,7 +609,7 @@
         if !isMediaStartEventSent{
             let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
             
-            let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex))
+            let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex + 1))
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
             
             let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : currentDuration]
@@ -638,13 +642,15 @@
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - totalBufferDurationTime - videoViewingLapsedTime
             
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(Int(currentDuration))", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount/2)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex), categoryTitle: fromCategory)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent))", videoStartPlayingTime: "\(-videoStartingTimeDuration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount/2)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory)
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : timeSpent]
             JCAnalyticsManager.sharedInstance.event(category: VIDEO_END_EVENT, action: VIDEO_ACTION, label: itemTitle, customParameters: customParams as? Dictionary<String, String>)
             
             bufferCount = 0
+            videoStartingTimeDuration = 0
+            videoStartingTime = Date()
         }
         self.sendVideoViewedEventToCleverTap()
     }
@@ -677,10 +683,10 @@
         }
     }
     
-    func scrollCollectionViewToRow(row:Int)
+    func scrollCollectionViewToRow(row: Int)
     {
         print("Scroll to Row is = \(row)")
-        if row > 0 {
+        if row >= 0, collectionView_Recommendation.numberOfItems(inSection: 0) > 0 {
             DispatchQueue.main.async {
                 self.collectionView_Recommendation.isScrollEnabled = true
                 let path = IndexPath(row: row, section: 0)
@@ -752,7 +758,7 @@
     }
     
     //MARK:- Custom Setting
-    func setCustomRecommendationViewSetting(state:Bool)
+    func setCustomRecommendationViewSetting(state: Bool)
     {
         
         self.isRecommendationView = state
@@ -773,7 +779,6 @@
     //MARK:- Add Swipe Gesture
     func addSwipeGesture()
     {
-        
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
         swipeUp.direction = UISwipeGestureRecognizerDirection.up
         self.view.addGestureRecognizer(swipeUp)
@@ -781,13 +786,9 @@
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
         self.view.addGestureRecognizer(swipeDown)
-        
-        
     }
     
     func swipeGestureHandler(gesture: UIGestureRecognizer) {
-        
-        
         if !isSwipingAllowed_RecommendationView{
             return
         }
@@ -1252,7 +1253,7 @@
     }
     //Seek player
     func seekPlayer() {
-        if Double(currentDuration) >= (self.player?.currentItem?.currentTime().seconds)!, didSeek{
+        if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
             self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
         }
         else{

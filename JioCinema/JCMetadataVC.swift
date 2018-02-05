@@ -23,12 +23,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     //New metadata model
     var itemId = ""
     var itemAppType = VideoType.Movie
-    var categoryName = ""
-    var categoryIndex = 0
-    var fromScreen = ""
+    var categoryName: String?
+    var categoryIndex: Int?
+    var fromScreen: String?
     var tabBarIndex: Int? = nil
     var shouldUseTabBarIndex = false
     var isMetaDataAvailable = false
+    fileprivate var toScreenName: String? = nil
+    fileprivate var screenAppearTiming = Date()
     
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -58,7 +60,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             showMetadata()
             metadataTableView.reloadData()
             
-        }else{
+        } else {
              callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
        
@@ -83,6 +85,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         
     }
     override func viewDidDisappear(_ animated: Bool) {
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: METADATA_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: METADATA_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -298,6 +308,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
 
     func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false)
     {
+        toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: fromAddToWatchList, fromPlayNowBotton: fromPlayNowButton, fromItemCell: fromItemCell, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
@@ -662,7 +673,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func sendGoogleAnalyticsForWatchlist(with watchlistStatus: Bool, andErrorMesage errorMsg: String)
     {
-        
         let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": metadata?.videoId ?? "", "Type": metadata?.app?.type ?? 0, "Language": metadata?.language ?? "", "Bitrate" : metadata?.bitrate ?? "", "General Data": errorMsg]
         if watchlistStatus {
             JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Add to Watchlist", label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
@@ -783,7 +793,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController{
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController{
                         if let searchVc = sc.searchController.searchResultsController as? JCSearchVC{
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen, metaDataCategoryName: categoryName, metaDataCategoryIndex: categoryIndex, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata)
+                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata)
                         }
                     }
                 }
@@ -831,6 +841,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         return tempItem
     }
     func playVideo() {
+        toScreenName = PLAYER_SCREEN
         if itemAppType == VideoType.Movie{
             var isMoreDataAvailable = false
             var recommendationArray: Any = false
@@ -838,7 +849,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 isMoreDataAvailable = true
                 recommendationArray = moreArray
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: METADATA_SCREEN, fromCategory: WATCH_NOW_BUTTON, fromCategoryIndex: 0, fromLanguage: metadata?.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
             
             self.present(playerVC, animated: true, completion: nil)
         }
@@ -849,7 +860,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 isEpisodeAvailable = true
                 recommendationArray = episodes
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: METADATA_SCREEN, fromCategory: WATCH_NOW_BUTTON, fromCategoryIndex: 0, fromLanguage: metadata?.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
             self.present(playerVC, animated: true, completion: nil)
         }
     }

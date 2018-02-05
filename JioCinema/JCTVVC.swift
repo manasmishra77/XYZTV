@@ -15,6 +15,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     var isTVWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
     fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -33,6 +34,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         self.baseTableView.dataSource = self
         
         // Do any additional setup after loading the view.
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
+            self.callWebServiceForTVWatchlist()
+        } else {
+            isTVWatchlistAvailable = false
+        }
         
     }
     
@@ -55,7 +61,13 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-         Utility.sharedInstance.handleScreenNavigation(screenName: SEARCH_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: TV_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: TV_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
     }
   
     
@@ -73,11 +85,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     {
         
         //dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.tvData?.data) != nil
-        {
+        if (JCDataStore.sharedDataStore.tvData?.data) != nil {
            changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
-            
         }
         else
         {
@@ -346,6 +356,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             print(tappedItem)
             if tappedItem.app?.type == VideoType.TVShow.rawValue{
                 print("At Tvshow")
+                toScreenName = METADATA_SCREEN
                 let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: TV_SCREEN, categoryName: (baseCell?.categoryTitleLabel.text!)!, categoryIndex: indexFromArray, tabBarIndex: 1)
                 self.present(metadataVC, animated: true, completion: nil)
             }
