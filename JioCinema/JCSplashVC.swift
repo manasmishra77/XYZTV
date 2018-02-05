@@ -20,16 +20,22 @@ class JCSplashVC: UIViewController {
         Utility.sharedInstance.startNetworkNotifier()
 
         //Call config service
-        callWebServiceToCheckVersion()
+        weak var weakSelf = self
 
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            callWebServiceToCheckVersion()
         }
         else
         {
             JCLoginManager.sharedInstance.performNetworkCheck(completion: { (isOnJioNetwork) in
                 //user has been set in user defaults
+                if isOnJioNetwork {
+                    weakSelf?.callWebServiceToCheckVersion()
+                } else {
+                    weakSelf?.callWebServiceToCheckVersion()
+                }
             })
         }
         
