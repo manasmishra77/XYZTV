@@ -52,7 +52,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         }
         else
         {
-            let params:[String:String]? = ["os": "Android","username":jioIdTextField.text!, "password":passwordTextField.text!, "deviceId":"12345"]
+            let params:[String:String]? = ["os": "Android","username": jioIdTextField.text!, "password": passwordTextField.text!, "deviceId":"12345"]
             let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
             weak var weakSelf = self
             
