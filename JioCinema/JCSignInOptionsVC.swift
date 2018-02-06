@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         
@@ -245,7 +245,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     func sendLoggedInAnalyticsEventWithFailure(errorMessage:String) {
         
         // For Clever Tap Event
-        let eventProperties = ["Userid": Utility.sharedInstance.encodeStringWithBase64(aString: self.jioIdTextField.text!),"Reason":"Jio ID","Platform":"TVOS","Error Code":"400","Message":errorMessage]
+        let eventProperties = ["Userid": Utility.sharedInstance.encodeStringWithBase64(aString: self.jioIdTextField.text!),"Reason": "Jio ID","Platform":"TVOS","Error Code":"400","Message":errorMessage]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
         
         // For Internal Analytics Event

@@ -429,8 +429,8 @@
 				7BE0EA501F30695700151D23 /* JCClipsVC.swift */,
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
-				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */,
+				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
 			);

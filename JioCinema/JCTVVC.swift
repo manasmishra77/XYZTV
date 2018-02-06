@@ -262,7 +262,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
-            
             if let responseError = error as NSError?
             {
                 //TODO: handle error

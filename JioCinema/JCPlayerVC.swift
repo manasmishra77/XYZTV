@@ -533,7 +533,6 @@
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
-                
                 self.sendMediaStartAnalyticsEvent()
                 
                 break
@@ -1136,7 +1135,7 @@
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
             }
