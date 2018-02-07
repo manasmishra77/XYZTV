@@ -136,7 +136,7 @@ class Utility
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil) -> JCMetadataVC
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil) -> JCMetadataVC
     {
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
@@ -150,6 +150,9 @@ class Utility
         metadataVC.isMetaDataAvailable = isMetaDataAvailable
         if let metaData = metaData as? MetadataModel{
             metadataVC.metadata = metaData
+        }
+        if let langData = languageData as? Item {
+            metadataVC.languageModel = langData
         }
        // metadataVC.modalPresentationStyle = .overFullScreen
         //metadataVC.modalTransitionStyle = .coverVertical
@@ -169,6 +172,24 @@ class Utility
         loginVC.view.layer.speed = 0.7
         return loginVC
     }
+    //MARK:- LanguageGenre View Controller Preparation method
+    func prepareLanguageGenreVC(languageModel: Item, metadataToBePlayedId: String, metadataAppType: VideoType, metadataFromScreen: String, metadataCategoryName: String, metadataCategoryIndex: Int, metadataTabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil) -> JCLanguageGenreVC {
+        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        languageGenreVC.item = languageModel
+        languageGenreVC.metadataToBePlayedId = metadataToBePlayedId
+        languageGenreVC.metadataAppType = metadataAppType
+        languageGenreVC.metadataCategoryName = metadataCategoryName
+        languageGenreVC.metadataCategoryIndex = metadataCategoryIndex
+        languageGenreVC.metadataFromScreen = metadataFromScreen
+        languageGenreVC.metadataTabBarIndex = metadataTabBarIndex
+        languageGenreVC.shouldUseTabBarIndex = shouldUseTabBarIndex
+        languageGenreVC.isMetaDataAvailable = isMetaDataAvailable
+        if let metaData = metaData as? MetadataModel{
+            languageGenreVC.metaData = metaData
+        }
+        return languageGenreVC
+    }
+    
     
     //MARK:- Search container View Controller Preparation method
     func prepareSearchViewController(searchText: String, jcSearchVc: JCSearchVC?) -> UISearchController {

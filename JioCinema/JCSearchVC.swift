@@ -23,6 +23,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     fileprivate var isOnSearchScreen = true
     fileprivate var screenAppearTiming = Date()
     fileprivate var metaDataForArtist: Any? = nil
+    fileprivate var languageModelForArtistSearch: Any?
     
     fileprivate var searchModel:SearchDataModel?
     fileprivate var searchResultArray = [SearchedCategoryItem]()
@@ -118,11 +119,11 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                     if drn > 0{
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-                    }else{
+                    } else {
                         let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
-                }else{
+                } else {
                     let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                     self.present(metadataVC, animated: true, completion: nil)
                 }
@@ -258,7 +259,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     
     //MARK:- Artist search preparation methods
-    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any) {
+    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any, languageModel: Any? = nil) {
         isForArtistSearch = true
         searchViewController?.searchBar.text = searchText
         searchResultForkey(with: searchText)
@@ -269,15 +270,20 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         self.metaDataCategoryIndex = metaDataCategoryIndex
         self.metaDataTabBarIndex = metaDataTabBarIndex
         self.metaDataForArtist = metaData
+        self.languageModelForArtistSearch = languageModel
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu, isForArtistSearch{
             isForArtistSearch = false
-            let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
-            self.present(metaDataVC, animated: true, completion: nil)
+            if let languageModel = languageModelForArtistSearch as? Item {
+                let langVc = Utility.sharedInstance.prepareLanguageGenreVC(languageModel: languageModel, metadataToBePlayedId: metaDataItemId, metadataAppType: metaDataAppType, metadataFromScreen: metaDataFromScreen, metadataCategoryName: metaDataCategoryName, metadataCategoryIndex: metaDataCategoryIndex, metadataTabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist)
+                 self.present(langVc, animated: true, completion: nil)
+            } else {
+                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
+                self.present(metaDataVC, animated: true, completion: nil)
+            }
         }
-       
     }
     
     //MARK:- Tabbarcontroller delegate methods
@@ -296,16 +302,13 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         if tabBarController.selectedIndex == 5, isOnSearchScreen{
             isOnSearchScreen = true
             screenAppearTiming = Date()
-        }
-        else if tabBarController.selectedIndex != 5, isOnSearchScreen{
+        } else if tabBarController.selectedIndex != 5, isOnSearchScreen{
             isOnSearchScreen = false
             //Clevertap Navigation Event
-            let eventProperties = ["Screen Name":"Search","Platform":"TVOS","Metadata Page":""]
+            let eventProperties = ["Screen Name": "Search","Platform": "TVOS","Metadata Page": ""]
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
             Utility.sharedInstance.handleScreenNavigation(screenName: SEARCH_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
-        
-        
     }
     
 }

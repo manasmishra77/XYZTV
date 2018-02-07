@@ -29,6 +29,8 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     var tabBarIndex: Int? = nil
     var shouldUseTabBarIndex = false
     var isMetaDataAvailable = false
+    
+    var languageModel: Item?
     fileprivate var toScreenName: String? = nil
     fileprivate var screenAppearTiming = Date()
     
@@ -59,6 +61,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         if isMetaDataAvailable{
             showMetadata()
             metadataTableView.reloadData()
+            changeAddWatchlistButtonStatus(itemId, itemAppType)
             
         } else {
              callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
@@ -234,8 +237,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
                 print(responseError)
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 //let data1 = self.metadata?.episodes
                 DispatchQueue.main.async {
@@ -786,20 +788,32 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
             
-            let superNav = self.presentingViewController as? UINavigationController
-            if let tabController = superNav?.viewControllers[0] as? JCTabBarController{
+            if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController{
                 let metaDataTabBarIndex = tabController.selectedIndex
                 tabController.selectedIndex = 5
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController{
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController{
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchVC{
+                        if let searchVc = sc.searchController.searchResultsController as? JCSearchVC {
                             searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata)
                         }
                     }
                 }
+                self.dismiss(animated: true, completion: nil)
+            } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
+                tabController.selectedIndex = 5
+                if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                    if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                        if let searchVc = sc.searchController.searchResultsController as? JCSearchVC {
+                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata, languageModel: languageModel)
+                        }
+                    }
+                }
+                if let langVC = superNav.presentedViewController as? JCLanguageGenreVC {
+                    self.dismiss(animated: false, completion: {
+                        langVC.dismiss(animated: false, completion: nil)
+                    })
+                }
             }
-            self.dismiss(animated: true, completion: nil)
-
         }
     }
     
@@ -831,13 +845,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         tempItem.latestId = ""
         tempItem.layout = -1
         
-//        tempItem.genre = currentItem.genre
-//        tempItem.duration = currentItem.duration
-//        tempItem.isPlaylist = currentItem.isPlaylist
-//        tempItem.playlistId = currentItem.playlistId
-//        tempItem.totalDuration = currentItem.totalDuration
-//        tempItem.list = currentItem.list
-        
         return tempItem
     }
     func playVideo() {
@@ -867,9 +874,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if  presses.first?.type == .menu, shouldUseTabBarIndex, (tabBarIndex != nil){
-            let superNav = self.presentingViewController as? UINavigationController
-            if let tabc = superNav?.viewControllers[0] as? JCTabBarController{
+            
+            if let superNav = self.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
                 tabc.selectedIndex = tabBarIndex!
+            } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
+                tabc.selectedIndex = 0
             }
         }
     }

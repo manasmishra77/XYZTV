@@ -42,7 +42,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCLoginManager.swift"
-                  timestampString = "539618007.546671"
+                  timestampString = "539688765.913256"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "84"
@@ -57,7 +57,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCLoginManager.swift"
-                  timestampString = "539618007.548238"
+                  timestampString = "539688765.9155951"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "85"
@@ -106,7 +106,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCLoginManager.swift"
-                  timestampString = "539618007.55486"
+                  timestampString = "539688765.933099"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "117"
@@ -121,7 +121,7 @@
                   moduleName = "JioCinema"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCLoginManager.swift"
-                  timestampString = "539618007.556751"
+                  timestampString = "539688765.935115"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "116"
@@ -144,134 +144,6 @@
             startingLineNumber = "119"
             endingLineNumber = "119"
             landmarkName = "callWebServiceToLoginViaSubId(info:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "539607887.286445"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "631"
-            endingLineNumber = "631"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:watchlistStatus:andParameters:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCMetadataVC.swift"
-                  timestampString = "539618007.5629981"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "631"
-                  endingLineNumber = "631"
-                  offsetFromSymbolStart = "500">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__ObjC.URLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCMetadataVC.swift"
-                  timestampString = "539618007.564571"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "632"
-                  endingLineNumber = "632"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "539607888.0739191"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:watchlistStatus:andParameters:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__ObjC.URLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCMetadataVC.swift"
-                  timestampString = "539618007.568257"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "632"
-                  endingLineNumber = "632"
-                  offsetFromSymbolStart = "48">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__ObjC.URLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manas/Desktop/JioIOS/JioCinemaTvOs/JioCinema/JCMetadataVC.swift"
-                  timestampString = "539618007.570035"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "633"
-                  endingLineNumber = "633"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCPlayerVC.swift"
-            timestampString = "539618007.507058"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1087"
-            endingLineNumber = "1087"
-            landmarkName = "callWebServiceForPlaybackRights(id:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JioCinema/JCPlayerVC.swift"
-            timestampString = "539618007.50712"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
-            landmarkName = "observeValue(forKeyPath:of:change:context:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

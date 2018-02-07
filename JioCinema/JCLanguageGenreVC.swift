@@ -23,8 +23,19 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     var currentType = 0
     var currentParamString:String?
     var currentFilter:FilterType?
-    var languageGenreDetailModel:LanguageGenreDetailModel?
+    var languageGenreDetailModel: LanguageGenreDetailModel?
     
+    //If metadata available for metadatavc
+    var metadataToBePlayedId: String?
+    var metadataAppType: VideoType?
+    var metadataFromScreen: String?
+    var metadataCategoryName: String?
+    var metadataCategoryIndex: Int?
+    var metadataTabBarIndex: Int?
+    var shouldUseTabBarIndex: Bool = false
+    var isMetaDataAvailable: Bool = false
+    var metaData: Any?
+
     @IBOutlet weak var noVideosAvailableLabel: UILabel!
     @IBOutlet weak var languageGenreCollectionView: UICollectionView!
     
@@ -34,7 +45,6 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
     override func viewDidLoad()
     {
-        
         super.viewDidLoad()
         self.languageGenreCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
         
@@ -51,7 +61,13 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             headerLabel.text = item?.genre
         }
         noVideosAvailableLabel.isHidden = true
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if isMetaDataAvailable {
+            let metaDataVC = Utility.sharedInstance.prepareMetadata(metadataToBePlayedId ?? "", appType: metadataAppType ?? .None, fromScreen: metadataFromScreen ?? "", categoryName: metadataCategoryName ?? "", categoryIndex: metadataCategoryIndex ?? 0, tabBarIndex: metadataTabBarIndex ?? 0, shouldUseTabBarIndex: shouldUseTabBarIndex, isMetaDataAvailable: isMetaDataAvailable, metaData: metaData)
+            isMetaDataAvailable = false
+            self.present(metaDataVC, animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -126,9 +142,6 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                                 weakself?.prepareView()
                             }
                         }
-//                        DispatchQueue.main.async {
-//                            weakself?.prepareView()
-//                        }
                     }
                     else
                     {
@@ -342,7 +355,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         if let tappedItem = languageGenreDetailModel?.data?.items?[indexPath.row]{
             if tappedItem.app?.type == VideoType.Movie.rawValue{
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
                 self.present(metadataVC, animated: true, completion: nil)
             }
             else if tappedItem.app?.type == VideoType.Music.rawValue{

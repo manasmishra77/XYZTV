@@ -609,7 +609,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
         self.present(languageGenreVC, animated: false, completion: nil)
-        
     }
     func callWebServiceForUserRecommendationList()
     {
