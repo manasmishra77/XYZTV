@@ -127,8 +127,7 @@ class JCSplashVC: UIViewController {
     }
     
     
-    func navigateToHomeVC()
-    {
+    func navigateToHomeVC() {
         DispatchQueue.main.async {
             
             let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
@@ -138,7 +137,7 @@ class JCSplashVC: UIViewController {
         }
     }
     
-    func showAlert(alertString:String)
+    func showAlert(alertString: String)
     {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",

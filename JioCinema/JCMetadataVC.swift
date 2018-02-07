@@ -873,14 +873,26 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if  presses.first?.type == .menu, shouldUseTabBarIndex, (tabBarIndex != nil){
-            
+        if  presses.first?.type == .menu, shouldUseTabBarIndex, (tabBarIndex != nil) {
             if let superNav = self.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
                 tabc.selectedIndex = tabBarIndex!
+                if let languageModel = languageModel {
+                    let vc = self.presentLanguageGenreController(item: languageModel)
+                    self.dismiss(animated: false, completion: {
+                        superNav.present(vc, animated: false, completion: nil)
+                    })
+                }
             } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
                 tabc.selectedIndex = 0
             }
         }
+    }
+    func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC
+    {
+        toScreenName = LANGUAGE_SCREEN
+        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        languageGenreVC.item = item
+        return languageGenreVC
     }
     
 }

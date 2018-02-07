@@ -277,8 +277,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         if presses.first?.type == UIPressType.menu, isForArtistSearch{
             isForArtistSearch = false
             if let languageModel = languageModelForArtistSearch as? Item {
-                let langVc = Utility.sharedInstance.prepareLanguageGenreVC(languageModel: languageModel, metadataToBePlayedId: metaDataItemId, metadataAppType: metaDataAppType, metadataFromScreen: metaDataFromScreen, metadataCategoryName: metaDataCategoryName, metadataCategoryIndex: metaDataCategoryIndex, metadataTabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist)
-                 self.present(langVc, animated: true, completion: nil)
+//                let langVc = Utility.sharedInstance.prepareLanguageGenreVC(languageModel: languageModel, metadataToBePlayedId: metaDataItemId, metadataAppType: metaDataAppType, metadataFromScreen: metaDataFromScreen, metadataCategoryName: metaDataCategoryName, metadataCategoryIndex: metaDataCategoryIndex, metadataTabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist)
+//                 self.present(langVc, animated: true, completion: nil)
+                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, languageData: languageModel)
+                self.present(metaDataVC, animated: true, completion: nil)
             } else {
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
                 self.present(metaDataVC, animated: true, completion: nil)

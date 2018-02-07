@@ -42,7 +42,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
         jioIdTextField.text     = "pallavtrivedi-4"
-        passwordTextField.text  = "pallav@1010"
+        passwordTextField.text  = "pallav@101"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         
@@ -249,7 +249,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
         
         // For Internal Analytics Event
-        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text!, errorMessage: errorMessage)
+        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text ?? "", errorMessage: errorMessage)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
         //For Google Analytics Event

@@ -138,7 +138,7 @@ class JCAnalyticsEvent: NSObject {
                 return
             }
             
-            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            if let responseData = data, let parsedResponse:[String: Any] = RJILApiManager.parse(data: responseData)
             {
                 print(parsedResponse)
                 let code = parsedResponse["code"] as? Int
