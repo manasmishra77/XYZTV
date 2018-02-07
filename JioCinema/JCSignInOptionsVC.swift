@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
     {
-        jioIdTextField.text     = "pallavtrivedi-4"
-        passwordTextField.text  = "pallav@101"
+//        jioIdTextField.text     = "pallavtrivedi-4"
+//        passwordTextField.text  = "pallav@1010"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         
@@ -141,11 +141,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     }
                     else if(code == 400)
                     {
-                        self.showAlert(alertString: parsedResponse["message"]! as? String ?? "")
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as? String ?? "")
+                        self.showAlert(alertString: parsedResponse["message"] as? String ?? "")
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
                     }
                     else{
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"]! as? String ?? "")
+                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
                     }
                 }
             }

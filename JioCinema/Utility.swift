@@ -12,12 +12,11 @@ import ReachabilitySwift
 class Utility
 {
     static let sharedInstance = Utility()
-    var reachability:Reachability?
+    var reachability: Reachability?
     var isNetworkAvailable = false
 
     // MARK:- Network Notifier
-    func startNetworkNotifier()
-    {
+    func startNetworkNotifier() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
         reachability = Reachability.init()
         do{
@@ -31,12 +30,11 @@ class Utility
         let r = note.object as! Reachability
         if r.isReachable {
             isNetworkAvailable = true
-            if (reachability?.isReachableViaWiFi)! {
+            if let isRechable = (reachability?.isReachableViaWiFi), isRechable {
                 print("Reachable via WiFi")
                 
             } else {
                 print("Reachable via Cellular")
-                
             }
         } else {
             isNetworkAvailable = false
@@ -45,7 +43,6 @@ class Utility
             alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { (action) in
                 exit(0)
             }))
-            
             appDelegate?.window?.rootViewController?.present(alertController, animated: false, completion: nil)
         }
     }
@@ -65,7 +62,7 @@ class Utility
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-               // topVC?.dismiss(animated: true, completion: nil)
+               //exit(0)
             }))
             topVC?.present(alert, animated: true, completion: nil)
         }

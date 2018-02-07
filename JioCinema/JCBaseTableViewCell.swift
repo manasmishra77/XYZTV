@@ -276,7 +276,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
         else if let artistImageArray = artistImages{
             let artistNameArray = artistImageArray.filter({$0.key != ""})
-            
             cellDelgate?.didTapOnItemCell!(self, artistNameArray[indexPath.row].key, self.tag)
         }
         else if let artistArray = artistImages?.filter({$0.key != ""}){
@@ -285,9 +284,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if let episodes = episodes{
             cellDelgate?.didTapOnItemCell!(self, episodes[indexPath.row], self.tag)
         }
-
     }
-    
 }
 
 

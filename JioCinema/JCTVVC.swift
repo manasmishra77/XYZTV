@@ -363,6 +363,10 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     func didTapOnCarouselItem(_ item: Any?) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            return
+        }
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics

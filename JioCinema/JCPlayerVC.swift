@@ -519,6 +519,8 @@
             if (difference > 1) {
                 totalBufferDurationTime = difference + totalBufferDurationTime
                 bufferCount = bufferCount + 1
+            } else {
+                startTime_BufferDuration = Date()
             }
             
         }

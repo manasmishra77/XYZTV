@@ -274,6 +274,10 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            return
+        }
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics

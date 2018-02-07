@@ -42,7 +42,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let eventProperties = ["Screen Viewed": "Home", "Platform": "TVOS"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Screen View", properties: eventProperties)
         
-        
         // Do any additional setup after loading the view.
         callWebServiceForLanguageList()
         callWebServiceForGenreList()
@@ -478,6 +477,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            return
+        }
         if let tappedItem = item as? Item{
             
             //Screenview event to Google Analytics

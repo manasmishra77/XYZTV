@@ -11,6 +11,8 @@ import UIKit
 
 class JCSplashVC: UIViewController {
     
+    fileprivate  var tryAgainCount = 0
+    
     @IBOutlet weak var splashImage: UIImageView!
     
     let dispatchGroup = DispatchGroup()
@@ -145,7 +147,14 @@ class JCSplashVC: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
-                weakSelf?.callWebServiceForConfigData()
+            weakSelf?.tryAgainCount += 1
+            if let count = weakSelf?.tryAgainCount {
+                if count < 4 {
+                    weakSelf?.callWebServiceForConfigData()
+                } else {
+                    exit(0)
+                }
+            }
         }
         
         alert.addAction(cancelAction)
@@ -157,8 +166,9 @@ class JCSplashVC: UIViewController {
     //MARK:- Version check and update
     func callWebServiceToCheckVersion() {
         let url = checkVersionUrl
-        let checkVersionRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+        var checkVersionRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
+        checkVersionRequest.timeoutInterval = 5
         //dispatchGroup.enter()
         RJILApiManager.defaultManager.get(request: checkVersionRequest) { (data, response, error) in
             if error != nil
@@ -212,8 +222,6 @@ class JCSplashVC: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         let skipAction = UIAlertAction(title: "Skip", style: .default) { (action) in
-            
-            
             weakSelf?.callWebServiceForConfigData()
             
         }
@@ -236,8 +244,7 @@ class JCSplashVC: UIViewController {
         
     }
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu
-        {
+        if presses.first?.type == UIPressType.menu {
             exit(0)
         }
     }
