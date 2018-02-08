@@ -975,6 +975,7 @@
             {
                 //TODO: handle error
                 //Refresh sso token call fails
+                var failureType = ""
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     let vc = self.presentingViewController
@@ -986,6 +987,7 @@
                         })
                         return
                     }
+                    failureType = "Referesh SSO fails"
                 }
                 print(responseError)
                 DispatchQueue.main.async {
@@ -994,6 +996,11 @@
                     self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
+                failureType = "Playlist service failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                
+                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             
@@ -1049,6 +1056,7 @@
         let url = playbackRightsURL.appending(id)
         let params = ["id":id, "showId":"", "uniqueId":JCAppUser.shared.unique, "deviceType": "stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
@@ -1057,7 +1065,7 @@
             if let responseError = error as NSError?
             {
                 //TODO: handle error
-                
+                var failuretype = ""
                 switch responseError.code {
                 case 143:
                     //Refresh sso token call fails
@@ -1071,15 +1079,17 @@
                         })
                         return
                     }
+                    failuretype = "Refresh SSO failed"
                 case 451:
                     //Content not available
                     print(responseError)
                     DispatchQueue.main.async {
                         //self.activityIndicatorOfLoaderView.stopAnimating()
                         self.activityIndicatorOfLoaderView.isHidden = true
-                        self.textOnLoaderCoverView.text = "Content not available!!"
+                        self.textOnLoaderCoverView.text = ContentNotAvailable_msg
                         Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                     }
+                    failuretype = ContentNotAvailable_msg
                 default:
                     print(responseError)
                     DispatchQueue.main.async {
@@ -1088,28 +1098,12 @@
                         self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                         Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                     }
+                    failuretype = "Playbackrights failed"
                 }
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
-                /*
-                if responseError.code == 143{
-                    print("Refresh sso token call fails")
-                    let vc = self.presentingViewController
-                    DispatchQueue.main.async {
-                        JCLoginManager.sharedInstance.logoutUser()
-                        self.dismiss(animated: false, completion: {
-                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
-                            vc?.present(loginVc, animated: false, completion: nil)
-                        })
-                        return
-                    }
-                }
-                print(responseError)
-                DispatchQueue.main.async {
-                    //self.activityIndicatorOfLoaderView.stopAnimating()
-                    self.activityIndicatorOfLoaderView.isHidden = true
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
-                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
-                }*/
+                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             if let responseData = data
