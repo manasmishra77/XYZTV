@@ -1057,7 +1057,40 @@
             if let responseError = error as NSError?
             {
                 //TODO: handle error
-                //Refresh sso token call fails
+                
+                switch responseError.code {
+                case 143:
+                    //Refresh sso token call fails
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.dismiss(animated: false, completion: {
+                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+                            vc?.present(loginVc, animated: false, completion: nil)
+                        })
+                        return
+                    }
+                case 451:
+                    //Content not available
+                    print(responseError)
+                    DispatchQueue.main.async {
+                        //self.activityIndicatorOfLoaderView.stopAnimating()
+                        self.activityIndicatorOfLoaderView.isHidden = true
+                        self.textOnLoaderCoverView.text = "Content not available!!"
+                        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                    }
+                default:
+                    print(responseError)
+                    DispatchQueue.main.async {
+                        //self.activityIndicatorOfLoaderView.stopAnimating()
+                        self.activityIndicatorOfLoaderView.isHidden = true
+                        self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                    }
+                }
+                
+                /*
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     let vc = self.presentingViewController
@@ -1076,7 +1109,7 @@
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
-                }
+                }*/
                 return
             }
             if let responseData = data
