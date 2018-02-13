@@ -282,6 +282,7 @@
             {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme!)!, with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
+                let subtitleValue = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey" : headerValues]
                 videoAsset = AVURLAsset(url: URL.init(string: changedUrl)!, options: header)
                 videoAsset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
@@ -678,14 +679,10 @@
     
     override var preferredFocusEnvironments: [UIFocusEnvironment]
     {
-        if myPreferredFocusView != nil
-        {
-            return [myPreferredFocusView!]
+        if let preferredView = myPreferredFocusView {
+            return [preferredView]
         }
-        else
-        {
-            return []
-        }
+        return []
     }
     
     func scrollCollectionViewToRow(row: Int)
@@ -702,6 +699,7 @@
                 self.myPreferredFocusView = cell
                 self.setNeedsFocusUpdate()
                 self.updateFocusIfNeeded()
+                
             }
         }
     }
@@ -728,8 +726,7 @@
         }
     }
     //MARK:- Hide/Unhide Now Playing
-    func hideUnhideNowPlayingView(cell:JCItemCell,state:Bool)
-    {
+    func hideUnhideNowPlayingView(cell: JCItemCell, state: Bool) {
         DispatchQueue.main.async {
             cell.nowPlayingImageView.isHidden = state
         }
@@ -810,25 +807,6 @@
             }
         }
     }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
-        /*
-        for touch in touches {
-            
-            if touch.type == .indirect
-            {
-                self.view_Recommendation.alpha = 1.0
-                UIView.animate(withDuration: 5.0) {
-                    self.view_Recommendation.alpha = 0.1
-                    //self.isRecommendationViewVisible = false
-                }
-            }
-        }
-  */
-    }
-    
     
     //MARK:- Swipe Up Recommendation View
     func swipeUpRecommendationView()
@@ -1400,21 +1378,22 @@
             if let bannerUrl = model.banner{
                 imageUrl = bannerUrl
             }
-            
+            if appType == .Episode {
+                isPlayList = true
+            }
         }
         else if isMoreDataAvailable{
             let model = moreArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner
-            {
+            if let bannerUrl = model.banner {
                 imageUrl = bannerUrl
             }
             
         }
-        if indexPath.row == currentPlayingIndex{
+        if indexPath.row == currentPlayingIndex {
             cell.nowPlayingImageView.isHidden = !isPlayList
             
-        }else{
+        } else {
             cell.nowPlayingImageView.isHidden = true
         }
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
