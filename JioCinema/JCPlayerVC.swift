@@ -845,7 +845,7 @@
     
     
     //MARK:- Show Alert
-    func showAlert(alertTitle:String,alertMessage:String,completionHandler:(()->Void)?)
+    func showAlert(alertTitle:String, alertMessage:String, completionHandler:(()->Void)?)
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,

@@ -47,7 +47,7 @@ class Utility
         }
     }
     // MARK:- Show Alert
-     func showAlert(viewController: UIViewController,title: String,message: String)
+     func showAlert(viewController: UIViewController, title: String, message: String)
     {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -56,13 +56,13 @@ class Utility
         }
     }
     
-    func showDismissableAlert(title: String,message: String)
+    func showDismissableAlert(title: String, message: String)
     {
         let topVC = UIApplication.topViewController()
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-               //exit(0)
+               exit(0)
             }))
             topVC?.present(alert, animated: true, completion: nil)
         }

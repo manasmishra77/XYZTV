@@ -767,7 +767,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //MARK:- JCBaseTableViewCellDelegate methods, More tableview cell delegate methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if !Utility.sharedInstance.isNetworkAvailable {
-            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
         if let tappedItem = item as? More{
@@ -853,7 +853,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     func playVideo() {
         if !Utility.sharedInstance.isNetworkAvailable {
-            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
         toScreenName = PLAYER_SCREEN

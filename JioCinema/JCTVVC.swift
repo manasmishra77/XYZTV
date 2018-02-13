@@ -364,11 +364,10 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     func didTapOnCarouselItem(_ item: Any?) {
         if !Utility.sharedInstance.isNetworkAvailable {
-            Utility.sharedInstance.showAlert(viewController: self, title: "", message: networkErrorMessage)
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        if let tappedItem = item as? Item{
-            
+        if let tappedItem = item as? Item {
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: TV_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
