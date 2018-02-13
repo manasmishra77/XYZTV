@@ -178,7 +178,7 @@
                     if remainingTime <= 5
                     {
                         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
-                        if autoPlayOn, (self?.isPlayList)!, (self?.nextVideoView.isHidden)!{
+                        if autoPlayOn, (self?.isPlayList ?? false), (self?.nextVideoView.isHidden ?? false){
                             if self?.appType == .Music || self?.appType == .Clip || self?.appType == .Trailer{
                                 if (self?.currentPlayingIndex)! + 1 < (self?.moreArray.count)! {
                                     let nextItem = self?.moreArray[(self?.currentPlayingIndex)! + 1]
@@ -205,14 +205,13 @@
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
         //sendMediaEndAnalyticsEvent()
-        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList{
+        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
             updateResumeWatchList()
         }
         if let timeObserverToken = playerTimeObserverToken {
             self.player?.removeTimeObserver(timeObserverToken)
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-        
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), context: &playerViewControllerKVOContext)
@@ -223,19 +222,15 @@
     }
     
     func updateResumeWatchList() {
-        if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration
-        {
+        if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
-            if timeDifference < 300
-            {
+            if timeDifference < 300 {
                 self.callWebServiceForRemovingResumedWatchlist(id)
-            }
-            else
-            {
+            } else {
                 self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
                 
             }
@@ -244,15 +239,13 @@
     
     //MARK:- AVPlayerViewController Methods
     
-    func resetPlayer()
-    {
+    func resetPlayer() {
         //self.loaderCoverView.isHidden = true
-        if((self.player) != nil) {
-            self.player?.pause()
+        if let player = player {
+            player.pause()
             self.removePlayerObserver()
             playerController?.delegate = nil
             self.playerController = nil
-            
         }
     }
     
@@ -264,10 +257,9 @@
         isFpsUrl = isFps
         if isFps {
             handleFairPlayStreamingUrl(videoUrl: url)
-        } else{
+        } else {
             handleAESStreamingUrl(videoUrl: url)
         }
-        
     }
     
     //MARK:- Handle AES Video Url
@@ -275,11 +267,9 @@
     func handleAESStreamingUrl(videoUrl:String)
     {
         var videoAsset:AVURLAsset?
-        if JCDataStore.sharedDataStore.cdnEncryptionFlag
-        {
+        if JCDataStore.sharedDataStore.cdnEncryptionFlag {
             let videoUrl = URL.init(string: videoUrl)
-            if let absoluteUrlString = videoUrl?.absoluteString
-            {
+            if let absoluteUrlString = videoUrl?.absoluteString {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme!)!, with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
                 let subtitleValue = playbackRightsData?.isSubscribed
@@ -473,10 +463,12 @@
         playerItem?.externalMetadata.append(imageMetadataItem)
         
     }
+    
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
         return CMTimeGetSeconds(currentItem.duration)
     }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
         guard context == &playerViewControllerKVOContext else {
@@ -579,6 +571,7 @@
             
         }
     }
+    
     //MARK:- AVPlayer Finish Playing Item
     func playerDidFinishPlaying(note: NSNotification) {
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList{
@@ -604,7 +597,7 @@
                     dismissPlayerVC()
                 }
             }
-        }else{
+        } else {
             dismissPlayerVC()
         }
     }
@@ -612,7 +605,7 @@
     //MARK:- Analytics Events
     func sendMediaStartAnalyticsEvent()
     {
-        if !isMediaStartEventSent{
+        if !isMediaStartEventSent {
             let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
             
             let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex + 1))
@@ -625,8 +618,7 @@
         
     }
     
-    func sendBufferingEvent(eventProperties:[String:Any])
-    {
+    func sendBufferingEvent(eventProperties: [String:Any]) {
         let bufferCountForGA = eventProperties["Buffer Count"] as? String
         let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Buffering", label: bufferCountForGA, customParameters: customParams)
@@ -642,13 +634,12 @@
     
     func sendMediaEndAnalyticsEvent()
     {
-        if let currentTime = player?.currentItem?.currentTime()
-        {
+        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
             
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
             
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent > 0 ? timeSpent : 0))", videoStartPlayingTime: "\(-videoStartingTimeDuration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent > 0 ? timeSpent : 0))", videoStartPlayingTime: "\(-videoStartingTimeDuration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory/*, director: "", starcast: "", contentp: ""*/)
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : timeSpent]
@@ -664,7 +655,7 @@
     
     func sendVideoViewedEventToCleverTap()
     {
-        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS"]
+        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS"/*, "Director": "", "Starcast": "", "Content Partner": ""*/]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties)
         
         let bufferEventProperties = ["Buffer Count": String(Int(bufferCount/2)),"Buffer Duration": Int(totalBufferDurationTime),"Content ID":id,"Type":appType.rawValue,"Title":itemTitle,"Episode":episodeNumber ?? -1,"Bitrate":bitrate, "Platform":"TVOS"] as [String : Any]
@@ -791,7 +782,7 @@
     }
     
     func swipeGestureHandler(gesture: UIGestureRecognizer) {
-        if !isSwipingAllowed_RecommendationView{
+        if !isSwipingAllowed_RecommendationView {
             return
         }
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -1261,6 +1252,7 @@
         self.isPlayList = isPlayList
         self.playListId = playListId
     }
+    
     //Seek player
     func seekPlayer() {
         if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
@@ -1270,8 +1262,9 @@
             didSeek = false
         }
     }
+    
     //Check in resume watchlist
-    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float{
+    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
         if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
         {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
@@ -1284,9 +1277,9 @@
         }
         return 0.0
     }
+    
     //MARK:- Dismiss Viewcontroller
-    func dismissPlayerVC()
-    {
+    func dismissPlayerVC() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -1356,7 +1349,7 @@
  }
  //MARK:- UICOLLECTIONVIEW DATASOURCE
  
- extension JCPlayerVC: UICollectionViewDataSource{
+ extension JCPlayerVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isEpisodeDataAvailable{
@@ -1590,6 +1583,7 @@
                     })
                 }
                 catch {
+                    print(error)
                 }
             }
             return true

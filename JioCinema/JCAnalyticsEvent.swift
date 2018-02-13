@@ -82,7 +82,7 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIASTART )
     }
     
-    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds:String, ts:String,  videoStartPlayingTime:String, bufferDuration:String, bufferCount:String, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String) -> Dictionary<String, Any>
+    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds:String, ts:String,  videoStartPlayingTime:String, bufferDuration:String, bufferCount:String, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String/*, director: String, starcast: String, contentp: String*/) -> [String : Any]
     {
         let eventDictionary = ["platform":"TVOS",
                                "cid":contentId,
@@ -96,8 +96,12 @@ class JCAnalyticsEvent: NSObject {
                                "Bitrate":bitrate,
                                "Playlist":playList,
                                "Row Position":rowPosition,
-                               "Source":categoryTitle]
-        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIAEND )
+                               "Source":categoryTitle/*,
+                               "director": director,
+                               "starcast": starcast,
+                               "contentp": contentp*/
+                                ]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_MEDIAEND)
     }
     
     
@@ -142,8 +146,7 @@ class JCAnalyticsEvent: NSObject {
             {
                 print(parsedResponse)
                 let code = parsedResponse["code"] as? Int
-                if(code == 200)
-                {
+                if(code == 200) {
                     
                 }
                 
