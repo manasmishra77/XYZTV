@@ -36,8 +36,7 @@ class BaseDataModel:Mappable
     }
 }
 
-class WatchListDataModel:Mappable
-{
+class WatchListDataModel: Mappable {
     var code:Int?
     var message:String?
     var data:DataContainer?
@@ -247,8 +246,7 @@ class Item:Mappable
     }
 }
 
-class List:Mappable
-{
+class List: Mappable {
     var id:Int?
     var name:String?
     
@@ -256,8 +254,7 @@ class List:Mappable
         
     }
     
-    func mapping(map:Map)
-    {
+    func mapping(map: Map) {
         id <- map["id"]
         name <- map["name"]
     }
@@ -265,28 +262,25 @@ class List:Mappable
 }
 
 
-class App:Mappable
-{
+class App: Mappable {
     var resolution:Int?
     var isNew:Bool?
     var type:Int?
-    init()
-    {}
-    
-    required init(map:Map) {
+    init() {
         
     }
     
-    func mapping(map:Map)
-    {
+    required init(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
         resolution <- map["resolution"]
         isNew <- map["isNew"]
         type <- map["type"]
     }
-    
 }
-enum VideoType:Int
-{
+enum VideoType: Int {
     case Search             = -2
     case Home               = -1
     case Movie              = 0

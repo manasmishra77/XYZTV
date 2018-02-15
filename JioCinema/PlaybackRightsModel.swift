@@ -26,6 +26,7 @@ class PlaybackRightsModel: Mappable
     var text:String?
     var contentName:String?
     var thumb:String?
+    var vendor: String?
     
     required init(map:Map) {
         
@@ -47,6 +48,7 @@ class PlaybackRightsModel: Mappable
         text <- map["text"]
         contentName <- map["contentName"]
         thumb <- map["thumb"]
+        vendor <- map["vendorName"]
         
     }
 }

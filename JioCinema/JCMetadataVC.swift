@@ -101,6 +101,9 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 900
+    }
     
     var moreTableViewDatasource = [Any]()
     
@@ -168,7 +171,11 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
     }
-    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = prepareMetadataView()
+        return headerView
+    }
+   
     func prepareHeaderView() -> UIView
     {
         //headerCell.item = item
@@ -193,8 +200,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         
     }
     
-    func callWebServiceForMetadata(id: String, newAppType: VideoType)
-    {
+    func callWebServiceForMetadata(id: String, newAppType: VideoType) {
         self.itemId = id
         self.itemAppType = newAppType
         
@@ -292,20 +298,20 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     {
         loaderContainerView.isHidden = true
         metadataContainerView.isHidden = false
-        if headerView != nil
-        {
-            headerView = resetHeaderView()
-        }
-        headerView = prepareHeaderView()
-        metadataContainerView.addSubview(headerView!)
-        if metadata?.type == VideoType.Movie.rawValue{
-            //tableViewTopConstraint.constant = -175
-        }        
+//        if headerView != nil
+//        {
+//            headerView = resetHeaderView()
+//        }
+        //headerView = prepareHeaderView()
+        //metadataContainerView.addSubview(headerView!)
+//        if metadata?.type == VideoType.Movie.rawValue{
+//            //tableViewTopConstraint.constant = -175
+//        }
         headerCell.seasonCollectionView.reloadData()
         headerCell.monthsCollectionView.reloadData()
-        if itemAppType == .Movie{
-            metadataTableHeight.constant = 100 + 280 //metadataTableHeight.constant + 100
-        }
+//        if itemAppType == .Movie{
+//            metadataTableHeight.constant = 100 + 280 //metadataTableHeight.constant + 100
+//        }
     }
 
     func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false)
@@ -760,7 +766,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         else
         {
-            return UIView.init()
+            return UIView()
         }
     }
     
@@ -827,8 +833,23 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if let episeodes = metadata?.episodes, episeodes.count > 0{
             isEpisodeAvailable = true
         }
+        var directors = ""
+        if let directorArray = metadata?.directors {
+//            for each in directorArray {
+//                directors += each
+//            }
+            directors = directorArray.reduce("", +)
+        }
+        var artists = ""
+        if let artistArray = metadata?.artist {
+//            for each in artistArray {
+//                artists += each
+//            }
+            artists = artistArray.reduce("", +)
+        }
         
-        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "")
+        
+        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
         self.present(playerVC, animated: true, completion: nil)
     }
     
@@ -857,6 +878,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return
         }
         toScreenName = PLAYER_SCREEN
+        let artists = metadata?.artist?.reduce("", { (res, str) in
+            res + "," + str
+        })
+        let directors = metadata?.directors?.reduce("", { (res, str) in
+            res + "," + str
+        })
         if itemAppType == VideoType.Movie{
             var isMoreDataAvailable = false
             var recommendationArray: Any = false
@@ -864,7 +891,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 isMoreDataAvailable = true
                 recommendationArray = moreArray
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
+           
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
             
             self.present(playerVC, animated: true, completion: nil)
         }
@@ -875,7 +903,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 isEpisodeAvailable = true
                 recommendationArray = episodes
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
             self.present(playerVC, animated: true, completion: nil)
         }
     }

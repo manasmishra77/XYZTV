@@ -168,7 +168,7 @@ class RJILApiManager {
         //TODO:
         urlString = path.contains("http") ? path.removingWhitespaces() : basePath.appending("common/v3/") + path.removingWhitespaces()
         
-        if let url = URL(string: urlString!){
+        if let url = URL(string: urlString!) {
             return URLRequest(url: url)
         }
         return nil

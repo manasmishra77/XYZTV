@@ -104,7 +104,7 @@ class Utility
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -130,7 +130,10 @@ class Utility
         }
         else if isMoreDataAvailable{
             playerVC.moreArray = recommendationArray as! [More]
-        }        
+        }
+        playerVC.director = director ?? ""
+        playerVC.starCast = starCast ?? ""
+        playerVC.vendor = vendor ?? ""
         return playerVC
     }
     

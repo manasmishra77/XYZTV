@@ -82,7 +82,7 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIASTART )
     }
     
-    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds:String, ts:String,  videoStartPlayingTime:String, bufferDuration:String, bufferCount:String, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String/*, director: String, starcast: String, contentp: String*/) -> [String : Any]
+    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds:String, ts:String,  videoStartPlayingTime:String, bufferDuration:String, bufferCount:String, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String, director: String, starcast: String, contentp: String) -> [String : Any]
     {
         let eventDictionary = ["platform":"TVOS",
                                "cid":contentId,
@@ -96,10 +96,10 @@ class JCAnalyticsEvent: NSObject {
                                "Bitrate":bitrate,
                                "Playlist":playList,
                                "Row Position":rowPosition,
-                               "Source":categoryTitle/*,
+                               "Source":categoryTitle,
                                "director": director,
                                "starcast": starcast,
-                               "contentp": contentp*/
+                               "contentp": contentp
                                 ]
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_MEDIAEND)
     }
