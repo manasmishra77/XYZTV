@@ -33,6 +33,8 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
+    @IBOutlet weak var descriptionContainerViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var descriptionContainerview: UIView!
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
@@ -41,17 +43,9 @@ class MetadataHeaderView: UIView {
         super.awakeFromNib()
         // Initialization code
         print(self)
-        if #available(tvOS 11.0, *) {
-           // constarintForContainer.constant = -60
-            
-        } else {
-            
-        }
-        
     }
     
-    func resetView() -> UIView
-    {
+    func resetView() -> UIView {
         titleLabel.text = ""
         ratingLabel.text = ""
         subtitleLabel.text = ""
@@ -60,15 +54,12 @@ class MetadataHeaderView: UIView {
         return self
     }
     
-    @IBAction func didClickOnWatchNowButton(_ sender: Any)
-    {
+    @IBAction func didClickOnWatchNowButton(_ sender: Any) {
         delegate?.didClickOnWatchNowButton!(self)
-        
     }
     
     
-    @IBAction func didClickOnAddToWatchListButton(_ sender: Any)
-    {
+    @IBAction func didClickOnAddToWatchListButton(_ sender: Any) {
         if watchlistLabel.text == ADD_TO_WATCHLIST{
             delegate?.didClickOnAddOrRemoveWatchListButton!(self, isStatusAdd: true)
         }

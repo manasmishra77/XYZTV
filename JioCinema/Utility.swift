@@ -266,5 +266,17 @@ extension String {
     func removingWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
+    //Height of the label according to the textlength
+    func heightForWithFont(font: UIFont, width: CGFloat, insets: UIEdgeInsets) -> CGFloat {
+        let rect = CGRect(x: 0, y: 0, width: width + insets.left + insets.right, height: .greatestFiniteMagnitude)
+        let label:UILabel = UILabel(frame: rect)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = self
+        
+        label.sizeToFit()
+        return label.frame.height + insets.top + insets.bottom
+    }
     
 }

@@ -11,6 +11,7 @@
     <customFonts key="customFonts">
         <array key="HelveticaNeue.ttc">
             <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
             <string>HelveticaNeue-Medium</string>
         </array>
     </customFonts>
@@ -56,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DIRECTOR:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTO-oj-fuY">
-                            <rect key="frame" x="8" y="147" width="184" height="41"/>
+                            <rect key="frame" x="8" y="285" width="184" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="184" id="dMC-JX-6eQ"/>
                             </constraints>
@@ -65,13 +66,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvY-ef-buL">
-                            <rect key="frame" x="212" y="168" width="560" height="0.0"/>
+                            <rect key="frame" x="212" y="306" width="560" height="0.0"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STARRING:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIt-OS-2qO">
-                            <rect key="frame" x="8" y="196" width="179" height="41"/>
+                            <rect key="frame" x="8" y="334" width="179" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="179" id="QzC-za-7mT"/>
                             </constraints>
@@ -80,19 +81,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdM-i7-rsk">
-                            <rect key="frame" x="207" y="217" width="555" height="0.0"/>
+                            <rect key="frame" x="207" y="355" width="555" height="0.0"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njs-Mn-ow6">
-                            <rect key="frame" x="8" y="287" width="0.0" height="0.0"/>
+                            <rect key="frame" x="8" y="425" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVi-bc-1rd" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="8" y="302" width="150" height="88"/>
+                            <rect key="frame" x="8" y="440" width="150" height="88"/>
                             <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="150" id="kJa-bF-czq"/>
@@ -109,7 +110,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56R-tw-AWf" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="218" y="302" width="150" height="88"/>
+                            <rect key="frame" x="218" y="440" width="150" height="88"/>
                             <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" image="AddtoWatchlist"/>
@@ -123,25 +124,25 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch Now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-Um-m5H">
-                            <rect key="frame" x="8" y="398" width="150" height="26"/>
+                            <rect key="frame" x="8" y="536" width="150" height="26"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to watchlist" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDi-mf-e5u">
-                            <rect key="frame" x="213" y="398" width="160" height="26"/>
+                            <rect key="frame" x="213" y="536" width="160" height="26"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
-                            <rect key="frame" x="8" y="454" width="133" height="38"/>
+                            <rect key="frame" x="8" y="592" width="133" height="38"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Gzi-Za-KRX" userLabel="seasonCollectionView">
-                            <rect key="frame" x="8" y="522" width="1852" height="62"/>
+                            <rect key="frame" x="8" y="660" width="1852" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="62" id="NvZ-pB-x6a"/>
@@ -154,7 +155,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
-                            <rect key="frame" x="8" y="596" width="1852" height="62"/>
+                            <rect key="frame" x="8" y="734" width="1852" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="30" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
                                 <size key="itemSize" width="92" height="36"/>
@@ -163,6 +164,42 @@
                                 <inset key="sectionInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </collectionViewFlowLayout>
                         </collectionView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYF-NG-moE" userLabel="DescriptionContainerview">
+                            <rect key="frame" x="8" y="127" width="804" height="128"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VC-pE-Oqm">
+                                    <rect key="frame" x="0.0" y="0.0" width="804" height="128"/>
+                                    <mutableString key="text">"Today is yours", I have sent InMails to so many candidates. Out of 100 candidates 70 will read the mail and 10 will reply saying Interested or not. What about other 60 candidates.......?  They are not even bothered to reply saying Interested or Not. Guys yes today is yours, but remember one-day you will be sending the messages to 100 recruiters saying you are looking for job. Let see how you feel when you are not getting any replies.  I know, then you gonna write a big essay saying, recruiters are useless, jobless, never responds, bla bla bla...... </mutableString>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07s-vs-pDy">
+                                    <rect key="frame" x="0.0" y="0.0" width="804" height="128"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEp-5g-7vi">
+                                    <rect key="frame" x="706" y="106" width="98" height="22"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="07s-vs-pDy" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="leading" id="Bl7-ZW-QAh"/>
+                                <constraint firstAttribute="height" constant="128" id="DnL-rJ-G7F"/>
+                                <constraint firstAttribute="trailing" secondItem="07s-vs-pDy" secondAttribute="trailing" id="Kqb-jN-Lro"/>
+                                <constraint firstAttribute="trailing" secondItem="bEp-5g-7vi" secondAttribute="trailing" id="bM3-w5-92d"/>
+                                <constraint firstAttribute="bottom" secondItem="bEp-5g-7vi" secondAttribute="bottom" id="bb1-cO-6Yb"/>
+                                <constraint firstItem="4VC-pE-Oqm" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="top" id="eQJ-wi-dfJ"/>
+                                <constraint firstAttribute="trailing" secondItem="4VC-pE-Oqm" secondAttribute="trailing" id="hqM-Br-RkD"/>
+                                <constraint firstAttribute="bottom" secondItem="07s-vs-pDy" secondAttribute="bottom" id="lzc-8H-b0M"/>
+                                <constraint firstAttribute="bottom" secondItem="4VC-pE-Oqm" secondAttribute="bottom" id="tPh-mD-4eY"/>
+                                <constraint firstItem="4VC-pE-Oqm" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="leading" id="u1e-8U-J4U"/>
+                                <constraint firstItem="07s-vs-pDy" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="top" id="yER-xM-GgN"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -172,7 +209,6 @@
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="leading" secondItem="oog-7o-H3Y" secondAttribute="leading" constant="8" id="7mo-Wa-NT6"/>
                         <constraint firstItem="Njs-Mn-ow6" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="bottom" constant="50" id="819-dm-9AV"/>
                         <constraint firstItem="56R-tw-AWf" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="trailing" constant="60" id="9mP-QF-knK"/>
-                        <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="wcJ-FL-KxV" secondAttribute="bottom" constant="40" id="Blj-2p-TcY"/>
                         <constraint firstItem="wcJ-FL-KxV" firstAttribute="top" secondItem="gX0-yh-ge7" secondAttribute="bottom" constant="50" id="CkX-Mn-19l"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="trailing" secondItem="SVi-bc-1rd" secondAttribute="trailing" id="DmP-fj-KmV"/>
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="centerY" secondItem="Gee-Um-m5H" secondAttribute="centerY" id="ESy-0f-AQO"/>
@@ -183,6 +219,7 @@
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="trailing" constant="20" id="Re4-VL-nEZ"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="leading" secondItem="Gzi-Za-KRX" secondAttribute="leading" id="W0G-yq-w1w"/>
                         <constraint firstItem="56R-tw-AWf" firstAttribute="centerY" secondItem="SVi-bc-1rd" secondAttribute="centerY" id="W6h-E2-mq4"/>
+                        <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="bottom" constant="30" id="Z0D-f7-BIh"/>
                         <constraint firstItem="SVi-bc-1rd" firstAttribute="top" secondItem="Njs-Mn-ow6" secondAttribute="bottom" constant="15" id="Z5u-6S-7gt"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="top" secondItem="SVi-bc-1rd" secondAttribute="bottom" constant="8" id="fU8-c2-YsK"/>
                         <constraint firstItem="bwB-9k-LOD" firstAttribute="leading" secondItem="MCj-Y8-Tdb" secondAttribute="trailing" constant="8" id="gCu-xV-VOy"/>
@@ -192,6 +229,8 @@
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="centerY" secondItem="PIt-OS-2qO" secondAttribute="centerY" id="inj-dN-x8D"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="height" secondItem="Gzi-Za-KRX" secondAttribute="height" id="j0f-CT-T2o"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="kiN-PF-Lqy"/>
+                        <constraint firstItem="rYF-NG-moE" firstAttribute="top" secondItem="wcJ-FL-KxV" secondAttribute="bottom" constant="20" id="kzi-AX-QFl"/>
+                        <constraint firstItem="rYF-NG-moE" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="miM-T4-ObK"/>
                         <constraint firstItem="CSY-Bj-9Od" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="leading" id="nSF-ww-A08"/>
                         <constraint firstItem="wcJ-FL-KxV" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="pNb-Ae-1sU"/>
                         <constraint firstAttribute="trailing" secondItem="Gzi-Za-KRX" secondAttribute="trailing" constant="20" id="pS4-YV-fh4"/>
@@ -219,11 +258,14 @@
                 <constraint firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="ehh-kK-oej"/>
                 <constraint firstItem="oog-7o-H3Y" firstAttribute="leading" secondItem="3YS-bd-bkv" secondAttribute="leading" constant="40" id="fp9-SJ-HG7"/>
                 <constraint firstItem="1EK-sy-bqA" firstAttribute="leading" secondItem="L7P-Yq-xJD" secondAttribute="leading" id="qAS-St-tnr"/>
+                <constraint firstItem="1EK-sy-bqA" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="trailing" constant="-30" id="uRg-ig-RI0"/>
                 <constraint firstItem="1EK-sy-bqA" firstAttribute="bottom" secondItem="L7P-Yq-xJD" secondAttribute="bottom" id="ykq-LM-pQR"/>
             </constraints>
             <connections>
                 <outlet property="addToWatchListButton" destination="56R-tw-AWf" id="Znf-U4-kcw"/>
                 <outlet property="bannerImageView" destination="L7P-Yq-xJD" id="e5a-DM-uRN"/>
+                <outlet property="descriptionContainerViewHeight" destination="DnL-rJ-G7F" id="oX5-fV-VUb"/>
+                <outlet property="descriptionContainerview" destination="rYF-NG-moE" id="btF-yu-wc3"/>
                 <outlet property="directorLabel" destination="JvY-ef-buL" id="d4i-mF-8CK"/>
                 <outlet property="directorStaticLabel" destination="FTO-oj-fuY" id="KwM-Xs-elo"/>
                 <outlet property="imdbImageLogo" destination="wcJ-FL-KxV" id="5z5-xb-cBb"/>
@@ -239,7 +281,7 @@
                 <outlet property="tvShowSubtitleLabel" destination="Njs-Mn-ow6" id="Vcb-jQ-nHe"/>
                 <outlet property="watchlistLabel" destination="RDi-mf-e5u" id="wfS-xl-yPo"/>
             </connections>
-            <point key="canvasLocation" x="-4500" y="-896"/>
+            <point key="canvasLocation" x="-4189" y="-1748"/>
         </view>
     </objects>
     <resources>

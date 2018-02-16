@@ -172,7 +172,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         cell.contentView.backgroundColor = UIColor.clear
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = prepareMetadataView()
+        let headerView = prepareHeaderView()
         return headerView
     }
    
@@ -725,12 +725,18 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if metadata?.artist != nil{
             headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
         }
+        let text = "'Today is yours', I have sent InMails to so many candidates. Out of 100 candidates 70 will read the mail and 10 will reply saying Interested or not. What about other 60 candidates.......?  They are not even bothered to reply saying Interested or Not. Guys yes today is yours, but remember one-day you will be sending the messages to 100 recruiters saying you are looking for job. Let see how you feel when you are not getting any replies.  I know, then you gonna write a big essay saying, recruiters are useless, jobless, never responds, bla bla bla......"
+        
+        
+        getSizeofDescriptionContainerView(text, widthOfView: 500, font: UIFont(name: "Helvetica-Bold", size: 28)!)
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         DispatchQueue.main.async {
             self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
+        
+        
         
         if itemAppType == .Movie, metadata != nil
         {
@@ -929,6 +935,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
         return languageGenreVC
+    }
+    
+    //DescriptionContainerview size fixing
+    func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
+        let inset = UIEdgeInsets(top: 4, left: 4, bottom: 6, right: 4)
+        let heightOfTheSting = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
+        return heightOfTheSting
     }
     
 }
