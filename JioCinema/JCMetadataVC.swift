@@ -10,7 +10,7 @@
 import UIKit
 import SDWebImage
 
-class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, MetadataHeaderCellDelegate, JCBaseTableViewCellDelegate
+class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MetadataHeaderCellDelegate, JCBaseTableViewCellDelegate
 {
     
     var item:Item?
@@ -33,19 +33,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     var languageModel: Item?
     fileprivate var toScreenName: String? = nil
     fileprivate var screenAppearTiming = Date()
+    fileprivate var actualHeightOfTheDescContainerView: CGFloat?
     
-    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var metaDataHeaderContainer: UIView!
-    @IBOutlet weak var metaDataHeaderHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var metadataTableHeight: NSLayoutConstraint!
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loaderContainerView: UIView!
-  //  @IBOutlet weak var backgroundImageView: UIImageView!
-    var headerView:UIView?
+
+    var headerView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,15 +54,12 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
 
         loadingLabel.text = "Loading"
         if isMetaDataAvailable{
-            showMetadata()
+            //showMetadata()
             metadataTableView.reloadData()
             changeAddWatchlistButtonStatus(itemId, itemAppType)
-            
         } else {
              callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
-       
-        
         // Do any additional setup after loading the view.
     }
     
@@ -95,14 +87,18 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
             let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
             Utility.sharedInstance.handleScreenNavigation(screenName: METADATA_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
-
     }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 900
+        let hh = headerCell.frame.size.height
+        return headerCell.frame.size.height
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     var moreTableViewDatasource = [Any]()
@@ -110,14 +106,13 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         moreTableViewDatasource.removeAll()
-        if let moreArray = ((itemAppType == .TVShow) ? (metadata?.episodes) as? [Any] : metadata?.more as? [Any]) , moreArray.count > 0{
+        if let moreArray = ((itemAppType == .TVShow) ? (metadata?.episodes) as? [Any] : metadata?.more as? [Any]) , moreArray.count > 0 {
             moreTableViewDatasource.append(moreArray)
         }
         if let artistArray = metadata?.artist, artistArray.count > 0{
             moreTableViewDatasource.append(artistArray)
         }
         return moreTableViewDatasource.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -186,8 +181,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         return self.prepareMetadataView()
     }
     
-    func resetHeaderView() -> UIView
-    {
+    func resetHeaderView() -> UIView {
         return headerCell.resetView()
     }
     
@@ -203,10 +197,7 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     func callWebServiceForMetadata(id: String, newAppType: VideoType) {
         self.itemId = id
         self.itemAppType = newAppType
-        
         self.changeAddWatchlistButtonStatus(id, newAppType)
-        
-       
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
@@ -230,15 +221,14 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         }
     }
     
-    func callWebServiceForMoreLikeData(id:String)
+    func callWebServiceForMoreLikeData(id: String)
     {
-        let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) :metadataUrl.appending(id + "/0/0")
+        let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
             
-            if let responseError = error
-            {
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
@@ -290,32 +280,30 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
         
             DispatchQueue.main.async {
                 //weakSelf?.showMetadata()
-                weakSelf?.metadataTableView.reloadData()
+                //weakSelf?.metadataTableView.reloadData()
             }
     }
     
-    func showMetadata()
-    {
+    func showMetadata() {
         loaderContainerView.isHidden = true
         metadataContainerView.isHidden = false
 //        if headerView != nil
 //        {
 //            headerView = resetHeaderView()
 //        }
-        //headerView = prepareHeaderView()
-        //metadataContainerView.addSubview(headerView!)
+//        headerView = prepareHeaderView()
+//        metadataContainerView.addSubview(headerView!)
 //        if metadata?.type == VideoType.Movie.rawValue{
 //            //tableViewTopConstraint.constant = -175
 //        }
-        headerCell.seasonCollectionView.reloadData()
-        headerCell.monthsCollectionView.reloadData()
+//        headerCell.seasonCollectionView.reloadData()
+//        headerCell.monthsCollectionView.reloadData()
 //        if itemAppType == .Movie{
 //            metadataTableHeight.constant = 100 + 280 //metadataTableHeight.constant + 100
 //        }
     }
 
-    func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false)
-    {
+    func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false) {
         toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: fromAddToWatchList, fromPlayNowBotton: fromPlayNowButton, fromItemCell: fromItemCell, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
@@ -456,8 +444,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: monthCellIdentifier, for: indexPath) as! JCMonthCell
             var text = ""
-            switch metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? ""
-            {
+            switch metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? "" {
             case "01":
                 text = "Jan"
             case "02":
@@ -609,16 +596,45 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             presentLoginVC(fromAddToWatchList: false, fromItemCell: false, fromPlayNowButton: true)
         }
     }
+    func didClickOnShowMoreDescriptionButton(_ headerView: MetadataHeaderView, toShowMore: Bool) {
+        if toShowMore {
+            metadataTableView.setNeedsLayout()
+            headerCell.showMoreDescriptionLabel.text = SHOW_LESS
+            let text = metadata?.description ?? ""
+            let widthofView = headerCell.descriptionContainerview.frame.size.width
+            let font = UIFont(name: "Helvetica", size: 28)!
+            let newHeight = getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font)
+            //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
+            headerCell.frame.size.height += newHeight
+            headerCell.descriptionContainerViewHeight.constant = newHeight
+            headerCell.descriptionLabel.text = text
+            headerCell.descriptionLabel.numberOfLines = 0
+            metadataTableView.layoutSubviews()
+        } else {
+            let text = metadata?.description ?? ""
+            let widthofView = headerCell.descriptionContainerview.frame.size.width
+            let font = UIFont(name: "Helvetica", size: 28)!
+            metadataTableView.setNeedsLayout()
+            let newHeight = getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font)
+            //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant - newHeight
+            headerCell.frame.size.height -= newHeight
+            headerCell.showMoreDescriptionLabel.text = SHOW_MORE
+            headerCell.descriptionContainerViewHeight.constant = actualHeightOfTheDescContainerView ?? 0
+            headerCell.descriptionLabel.numberOfLines = 0
+            viewDidLayoutSubviews()
+            metadataTableView.layoutSubviews()
+        }
+    }
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String:Any]()
         if itemAppType == .TVShow
         {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json":["id":metadata?.contentId ?? itemId]]
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json": ["id": metadata?.contentId ?? itemId]]
         }
         else if itemAppType == .Movie
         {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json":["id": metadata?.contentId ?? itemId]]
+            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json": ["id": metadata?.contentId ?? itemId]]
         }
         
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
@@ -632,8 +648,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
 
-    func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>)
-    {
+    func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>) {
         self.headerCell.addToWatchListButton.isEnabled = false
         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
@@ -709,38 +724,37 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     //prepare metadata view
-    func prepareMetadataView() ->UIView
-    {
+    func prepareMetadataView() -> UIView {
         headerCell.frame.size.width = metadataContainerView.frame.size.width
         headerCell.frame.size.height = metadataContainerView.frame.size.height
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
-            headerCell.directorStaticLabel.isHidden = true
+            //headerCell.directorStaticLabel.isHidden = true
         }
         if metadata?.artist?.count == 0 || metadata?.artist == nil{
-            headerCell.starringStaticLabel.isHidden = true
+            //headerCell.starringStaticLabel.isHidden = true
         }
         if metadata?.artist != nil{
             headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
         }
         let text = "'Today is yours', I have sent InMails to so many candidates. Out of 100 candidates 70 will read the mail and 10 will reply saying Interested or not. What about other 60 candidates.......?  They are not even bothered to reply saying Interested or Not. Guys yes today is yours, but remember one-day you will be sending the messages to 100 recruiters saying you are looking for job. Let see how you feel when you are not getting any replies.  I know, then you gonna write a big essay saying, recruiters are useless, jobless, never responds, bla bla bla......"
+        headerCell.descriptionLabel.text = text
+        actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
-        
-        getSizeofDescriptionContainerView(text, widthOfView: 500, font: UIFont(name: "Helvetica-Bold", size: 28)!)
+        //getSizeofDescriptionContainerView(text, widthOfView: 500, font: UIFont(name: "Helvetica-Bold", size: 28)!)
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         DispatchQueue.main.async {
             self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
-        
-        
-        
+
         if itemAppType == .Movie, metadata != nil
         {
             headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
+            headerCell.monthCollectionViewHeight.constant = 0
             return headerCell
         }
         else if itemAppType == VideoType.TVShow, metadata != nil
@@ -939,7 +953,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     //DescriptionContainerview size fixing
     func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
-        let inset = UIEdgeInsets(top: 4, left: 4, bottom: 6, right: 4)
+        let inset = UIEdgeInsets(top: 4, left: 4, bottom: 50, right: 4)
         let heightOfTheSting = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
         return heightOfTheSting
     }
