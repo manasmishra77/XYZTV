@@ -33,6 +33,10 @@ class JCMetadataVC: UIViewController,UITableViewDelegate,UITableViewDataSource, 
     var languageModel: Item?
     fileprivate var toScreenName: String? = nil
     fileprivate var screenAppearTiming = Date()
+    fileprivate var cellSelected = false
+    fileprivate var selectedRowCell: Int?
+    fileprivate var isMonthSelected = false
+
     
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -442,14 +446,37 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
-            cell.seasonNumberLabel.text = String(describing: metadata?.filter?[indexPath.row].season ?? 0)
-            return cell
-           
+            cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
+            if cellSelected, selectedRowCell == indexPath.row
+            {
+                cell.layer.borderWidth = 2.0
+                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+                cell.layer.cornerRadius = 15.0
+            }
+            else
+            {
+                cell.layer.borderWidth = 0.0
+                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+                cell.layer.cornerRadius = 0.0
+            }
+            return cell           
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
             cell.yearLabel.text = metadata?.filter?[indexPath.row].filter ?? ""
+            if cellSelected, selectedRowCell == indexPath.row
+            {
+                cell.layer.borderWidth = 2.0
+                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+                cell.layer.cornerRadius = 15.0
+            }
+            else
+            {
+                cell.layer.borderWidth = 0.0
+                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+                cell.layer.cornerRadius = 0.0
+            }
             return cell
         }
         else if collectionView == headerCell.monthsCollectionView
@@ -488,6 +515,18 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             }
             
             cell.monthLabel.text = text
+            if cellSelected, selectedRowCell == indexPath.row, isMonthSelected
+            {
+                cell.layer.borderWidth = 2.0
+                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+                cell.layer.cornerRadius = 15.0
+            }
+            else
+            {
+                cell.layer.borderWidth = 0.0
+                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+                cell.layer.cornerRadius = 0.0
+            }
             return cell
         }
         else
@@ -504,16 +543,21 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
+        cellSelected = true
+        selectedRowCell = indexPath.row
         
         if (metadata?.isSeason ?? false), collectionView == headerCell.seasonCollectionView     //seasons
         {
             if let seasonNum = metadata?.filter?[indexPath.row].season{
+                headerCell.seasonCollectionView.reloadData()
                 callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
             }
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
+            isMonthSelected = false
+            headerCell.seasonCollectionView.reloadData()
             headerCell.monthsCollectionView.reloadData()
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0]{
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
@@ -523,6 +567,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         else    //months
         {
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[indexPath.row]{
+                isMonthSelected = true
+                headerCell.monthsCollectionView.reloadData()
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
 
@@ -540,6 +586,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return true
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize.init(width: 150, height: 50)
+    }
+    
+    
     
     func callWebServiceForSelectedFilter(filter:String)
     {
@@ -717,10 +770,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
-            headerCell.directorStaticLabel.isHidden = true
+//            headerCell.directorStaticLabel.isHidden = true
         }
         if metadata?.artist?.count == 0 || metadata?.artist == nil{
-            headerCell.starringStaticLabel.isHidden = true
+//            headerCell.starringStaticLabel.isHidden = true
         }
         if metadata?.artist != nil{
             headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
