@@ -67,18 +67,16 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYF-NG-moE" userLabel="DescriptionContainerview">
                             <rect key="frame" x="8" y="127" width="814" height="90"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VC-pE-Oqm">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VC-pE-Oqm">
                                     <rect key="frame" x="0.0" y="0.0" width="814" height="90"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07s-vs-pDy" customClass="ShowMoreTextbutton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="814" height="90"/>
+                                    <rect key="frame" x="-10" y="0.0" width="834" height="90"/>
+                                    <color key="backgroundColor" red="0.28099222715736039" green="0.26938102215634346" blue="0.27969359213539463" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="highlighted">
-                                        <color key="titleShadowColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
                                     <connections>
                                         <action selector="didClickOnShowMoreDescriptionButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="98S-rs-2ZY"/>
                                     </connections>
@@ -92,9 +90,9 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="07s-vs-pDy" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="leading" id="Bl7-ZW-QAh"/>
+                                <constraint firstItem="07s-vs-pDy" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="leading" constant="-10" id="Bl7-ZW-QAh"/>
                                 <constraint firstAttribute="height" constant="90" id="DnL-rJ-G7F"/>
-                                <constraint firstAttribute="trailing" secondItem="07s-vs-pDy" secondAttribute="trailing" id="Kqb-jN-Lro"/>
+                                <constraint firstAttribute="trailing" secondItem="07s-vs-pDy" secondAttribute="trailing" constant="-10" id="Kqb-jN-Lro"/>
                                 <constraint firstAttribute="trailing" secondItem="bEp-5g-7vi" secondAttribute="trailing" id="bM3-w5-92d"/>
                                 <constraint firstAttribute="bottom" secondItem="bEp-5g-7vi" secondAttribute="bottom" id="bb1-cO-6Yb"/>
                                 <constraint firstItem="4VC-pE-Oqm" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="top" id="eQJ-wi-dfJ"/>

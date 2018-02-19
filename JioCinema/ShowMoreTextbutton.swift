@@ -20,13 +20,11 @@ class ShowMoreTextbutton: UIButton {
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
-            self.alpha = 1.0
-            
+            self.alpha = 0.3
+            self.backgroundColor = #colorLiteral(red: 0.2809922272, green: 0.2693810222, blue: 0.2796935921, alpha: 1)
         } else {
-            self.alpha = 0.5
+            self.alpha = 0.01
             self.backgroundColor = .clear
         }
-        
     }
-
 }

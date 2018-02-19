@@ -37,6 +37,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     fileprivate var cellSelected = false
     fileprivate var selectedRowCell: Int?
     fileprivate var isMonthSelected = false
+    fileprivate var myPreferredFocusView: UIView?
     
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
@@ -92,6 +93,13 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
 
+    override var preferredFocusEnvironments: [UIFocusEnvironment]
+    {
+        if let preferredView = myPreferredFocusView {
+            return [preferredView]
+        }
+        return []
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
@@ -648,13 +656,20 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if toShowMore {
             headerCell.showMoreDescriptionLabel.text = SHOW_LESS
             let text = (metadata?.description ?? "") + " " + SHOW_LESS
+            
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
             //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
             headerCell.frame.size.height += newHeight
             headerCell.descriptionContainerViewHeight.constant = newHeight
-            headerCell.descriptionLabel.text = text
+            
+//            let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
+//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: fontChangedText.length))
+//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: fontChangedText.length - 10, length: 10))
+//            fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: fontChangedText.length - 10, length: 10))
+            
+            headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell
         } else {
@@ -666,7 +681,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
             headerCell.descriptionContainerViewHeight.constant = actualHeightOfTheDescContainerView ?? 0
             headerCell.descriptionLabel.numberOfLines = 0
-            headerCell.descriptionLabel.text = textTopple.1
+            headerCell.descriptionLabel.attributedText = textTopple.1
             metadataTableView.tableHeaderView = headerCell
         }
     }
@@ -784,9 +799,16 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
-            headerCell.descriptionLabel.text = trimTextTopple.1
+           // if let stringA = trimTextTopple.1{
+            print(trimTextTopple.1)
+                headerCell.descriptionLabel.attributedText = trimTextTopple.1
+            //}
+            
         } else {
-            headerCell.descriptionLabel.text = trimTextTopple.1
+            headerCell.descriptionLabel.attributedText = trimTextTopple.1
+            if trimTextTopple.1.length == 0 {
+                headerCell.showMoreDescription.isEnabled = false
+            }
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
@@ -797,15 +819,15 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
+        myPreferredFocusView = headerCell.playButton
+        self.setNeedsFocusUpdate()
+        self.updateFocusIfNeeded()
 
-        if itemAppType == .Movie, metadata != nil
-        {
+        if itemAppType == .Movie, metadata != nil {
             headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
             headerCell.monthCollectionViewHeight.constant = 0
             return headerCell
-        }
-        else if itemAppType == VideoType.TVShow, metadata != nil
-        {
+        } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
             headerCell.imdbImageLogo.isHidden = true
             headerCell.ratingLabel.isHidden = true
@@ -815,16 +837,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
 //            headerCell.tvShowSubtitleLabel.isHidden = true
 //            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle?.capitalized
             
-            if (metadata?.isSeason) != nil
-            {
-                if (metadata?.isSeason)!
-                {
+            if (metadata?.isSeason) != nil {
+                if (metadata?.isSeason)! {
                     headerCell.seasonsLabel.isHidden = false
                     headerCell.seasonCollectionView.isHidden = false
                     headerCell.monthsCollectionView.isHidden = true
-                }
-                else
-                {
+                } else {
                     headerCell.seasonsLabel.isHidden = false
                     headerCell.seasonsLabel.text = "More Episodes"
                     headerCell.seasonCollectionView.isHidden = false
@@ -832,9 +850,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 }
             }
             return headerCell
-        }
-        else
-        {
+        } else {
             return UIView()
         }
     }
@@ -1008,15 +1024,26 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     //Trim description text
-    func getShorterText(_ text: String) -> (Bool, String) {
+    func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
         if text.count > 105 {
-            let trimText = text.subString(start: 0, end: 104) + "..." + SHOW_MORE
-            return (true, trimText)
+            let trimText = text.subString(start: 0, end: 104) + "... " + SHOW_MORE
+            let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
+            return (true, fontChangedText)
         } else {
-            return (false, text)
+            let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
+            return (false, fontChangedText)
         }
     }
     
+    func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
+        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
+        fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
+        if colorChange{
+            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: text.count - range, length: range))
+        }
+        return fontChangedText
+    }
     //Height of the table header container
     func getHeaderContainerHeight() -> CGFloat {
         switch itemAppType {
