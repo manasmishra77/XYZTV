@@ -518,6 +518,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         if !Utility.sharedInstance.isNetworkAvailable
@@ -571,7 +572,15 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize.init(width: 150, height: 50)
+        if collectionView == headerCell.seasonCollectionView
+        {
+            return CGSize.init(width: 150, height: 40)
+        }
+        else
+        {
+            return CGSize.init(width: 100, height: 40)
+        }       
+
     }
     
     
