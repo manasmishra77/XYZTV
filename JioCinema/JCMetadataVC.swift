@@ -539,7 +539,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         
         if (metadata?.isSeason ?? false), collectionView == headerCell.seasonCollectionView     //seasons
         {
-            if let seasonNum = metadata?.filter?[indexPath.row].season{
+            if let seasonNum = metadata?.filter?[indexPath.row].season {
                 headerCell.seasonCollectionView.reloadData()
                 callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
             }
@@ -582,32 +582,31 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         
         if collectionView == headerCell.seasonCollectionView
         {
-            return CGSize.init(width: 150, height: 40)
+            if metadata?.isSeason ?? false {
+                return CGSize(width: 190, height: 50)
+            } else {
+                return CGSize(width: 100, height: 40)
+            }
         }
         else
         {
-            return CGSize.init(width: 100, height: 40)
+            return CGSize(width: 80, height: 40)
         }       
 
     }
     
-    
-    
-    func callWebServiceForSelectedFilter(filter:String)
-    {
+    func callWebServiceForSelectedFilter(filter:String) {
         let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
             
-            if let responseError = error
-            {
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                         weakSelf?.metadataTableView.reloadData()
@@ -617,11 +616,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
-    func evaluateFilteredData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateFilteredData(dictionaryResponseData responseData:Data) {
         //Success
-        if let responseString = String(data: responseData, encoding: .utf8)
-        {
+        if let responseString = String(data: responseData, encoding: .utf8) {
             let tempMetadata = MetadataModel(JSONString: responseString)
             self.metadata?.episodes = tempMetadata?.episodes
         }
@@ -631,10 +628,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //MARK:- Change watchlist button status locally
     func changeAddWatchlistButtonStatus(_ itemIdToBeChecked: String, _ appType: VideoType) {
         self.headerCell.addToWatchListButton.isEnabled = true
-        if checkIfItemIsInWatchList(itemIdToBeChecked, appType){
+        if checkIfItemIsInWatchList(itemIdToBeChecked, appType) {
             headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
-        }
-        else{
+        } else {
             headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
         }
     }
@@ -834,7 +830,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
 
         if itemAppType == .Movie, metadata != nil {
             headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
-            headerCell.monthCollectionViewHeight.constant = 0
+            //headerCell.monthCollectionViewHeight.constant = 0
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
@@ -1034,8 +1030,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 105 {
-            let trimText = text.subString(start: 0, end: 104) + "... " + SHOW_MORE
+        if text.count > 95 {
+            let trimText = text.subString(start: 0, end: 94) + "... " + SHOW_MORE
             let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
             return (true, fontChangedText)
         } else {
@@ -1058,10 +1054,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         switch itemAppType {
         case .Movie:
             //To be changed to dynamic one
-            return 809 - 128
+            return 809 - 120
         case .TVShow:
             //To be changed to dynamic one
-            return 850
+            return 970
         default:
             return 0
         }

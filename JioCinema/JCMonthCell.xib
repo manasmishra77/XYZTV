@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apr" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hub-Sp-0Mt">
-                        <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
+                        <rect key="frame" x="5" y="0.0" width="87" height="36"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="26"/>
                         <color key="textColor" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -33,7 +33,7 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Hub-Sp-0Mt" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="63O-tR-Xp5"/>
+                <constraint firstItem="Hub-Sp-0Mt" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="5" id="63O-tR-Xp5"/>
                 <constraint firstAttribute="bottom" secondItem="Hub-Sp-0Mt" secondAttribute="bottom" id="G4J-qc-xrc"/>
                 <constraint firstAttribute="trailing" secondItem="Hub-Sp-0Mt" secondAttribute="trailing" id="jrv-aF-Kxb"/>
                 <constraint firstItem="Hub-Sp-0Mt" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="prQ-y5-yMh"/>

@@ -66,8 +66,7 @@ class MetadataHeaderView: UIView {
     @IBAction func didClickOnWatchNowButton(_ sender: Any) {
         delegate?.didClickOnWatchNowButton!(self)
     }
-    
-    
+
     @IBAction func didClickOnAddToWatchListButton(_ sender: Any) {
         if watchlistLabel.text == ADD_TO_WATCHLIST{
             delegate?.didClickOnAddOrRemoveWatchListButton!(self, isStatusAdd: true)
