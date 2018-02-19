@@ -96,13 +96,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let hh = headerCell.frame.size.height
-        return headerCell.frame.size.height
-    }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+  
     
     var moreTableViewDatasource = [Any]()
     
@@ -152,7 +146,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         else if itemAppType == VideoType.TVShow
         {
             if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode]{
-                cell.categoryTitleLabel.text = "Latest Episodes"
+                cell.categoryTitleLabel.text = "Episodes"
                 cell.episodes = episodeArray
                 cell.tableCellCollectionView.reloadData()
             }
@@ -169,10 +163,10 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
     }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = prepareHeaderView()
-        return headerView
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerView = prepareHeaderView()
+//        return headerView
+//    }
    
     func prepareHeaderView() -> UIView
     {
@@ -217,6 +211,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
+                    let headerView = weakSelf?.prepareHeaderView()
+                    weakSelf?.metadataTableView.tableHeaderView = headerView
                 }
                 weakSelf?.callWebServiceForMoreLikeData(id: id)
                 return
@@ -650,39 +646,36 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     func didClickOnShowMoreDescriptionButton(_ headerView: MetadataHeaderView, toShowMore: Bool) {
         if toShowMore {
-            metadataTableView.setNeedsLayout()
             headerCell.showMoreDescriptionLabel.text = SHOW_LESS
-            let text = metadata?.description ?? ""
+            let text = (metadata?.description ?? "") + " " + SHOW_LESS
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
-            let newHeight = getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font)
+            let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
             //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
             headerCell.frame.size.height += newHeight
             headerCell.descriptionContainerViewHeight.constant = newHeight
             headerCell.descriptionLabel.text = text
             headerCell.descriptionLabel.numberOfLines = 0
-            metadataTableView.layoutSubviews()
+            metadataTableView.tableHeaderView = headerCell
         } else {
-            let text = metadata?.description ?? ""
+            let textTopple = getShorterText(metadata?.description ?? "")
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
-            metadataTableView.setNeedsLayout()
-            let newHeight = getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font)
-            //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant - newHeight
+            let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
             headerCell.frame.size.height -= newHeight
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
             headerCell.descriptionContainerViewHeight.constant = actualHeightOfTheDescContainerView ?? 0
             headerCell.descriptionLabel.numberOfLines = 0
-            viewDidLayoutSubviews()
-            metadataTableView.layoutSubviews()
+            headerCell.descriptionLabel.text = textTopple.1
+            metadataTableView.tableHeaderView = headerCell
         }
     }
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
-        var params = [String:Any]()
+        var params = [String: Any]()
         if itemAppType == .TVShow
         {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"13" ,"json": ["id": metadata?.contentId ?? itemId]]
+            params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId]]
         }
         else if itemAppType == .Movie
         {
@@ -778,7 +771,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //prepare metadata view
     func prepareMetadataView() -> UIView {
         headerCell.frame.size.width = metadataContainerView.frame.size.width
-        headerCell.frame.size.height = metadataContainerView.frame.size.height
+        headerCell.frame.size.height = getHeaderContainerHeight()
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
@@ -789,8 +782,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if metadata?.artist != nil{
             headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
         }
-        let text = "'Today is yours', I have sent InMails to so many candidates. Out of 100 candidates 70 will read the mail and 10 will reply saying Interested or not. What about other 60 candidates.......?  They are not even bothered to reply saying Interested or Not. Guys yes today is yours, but remember one-day you will be sending the messages to 100 recruiters saying you are looking for job. Let see how you feel when you are not getting any replies.  I know, then you gonna write a big essay saying, recruiters are useless, jobless, never responds, bla bla bla......"
-        headerCell.descriptionLabel.text = text
+        let trimTextTopple = getShorterText(metadata?.description ?? "")
+        if trimTextTopple.0 {
+            headerCell.descriptionLabel.text = trimTextTopple.1
+        } else {
+            headerCell.descriptionLabel.text = trimTextTopple.1
+        }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
         //getSizeofDescriptionContainerView(text, widthOfView: 500, font: UIFont(name: "Helvetica-Bold", size: 28)!)
@@ -812,9 +809,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.titleLabel.text = metadata?.name
             headerCell.imdbImageLogo.isHidden = true
             headerCell.ratingLabel.isHidden = true
+            headerCell.tvShowLabel.text = metadata?.newSubtitle?.capitalized
+            headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
-            headerCell.tvShowSubtitleLabel.isHidden = false
-            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle?.capitalized
+//            headerCell.tvShowSubtitleLabel.isHidden = true
+//            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle?.capitalized
             
             if (metadata?.isSeason) != nil
             {
@@ -827,7 +826,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 else
                 {
                     headerCell.seasonsLabel.isHidden = false
-                    headerCell.seasonsLabel.text = "Previous Episodes"
+                    headerCell.seasonsLabel.text = "More Episodes"
                     headerCell.seasonCollectionView.isHidden = false
                     headerCell.monthsCollectionView.isHidden = false
                 }
@@ -1004,8 +1003,32 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     //DescriptionContainerview size fixing
     func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
         let inset = UIEdgeInsets(top: 4, left: 4, bottom: 50, right: 4)
-        let heightOfTheSting = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
-        return heightOfTheSting
+        let heightOfTheString = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
+        return heightOfTheString
+    }
+    
+    //Trim description text
+    func getShorterText(_ text: String) -> (Bool, String) {
+        if text.count > 105 {
+            let trimText = text.subString(start: 0, end: 104) + "..." + SHOW_MORE
+            return (true, trimText)
+        } else {
+            return (false, text)
+        }
+    }
+    
+    //Height of the table header container
+    func getHeaderContainerHeight() -> CGFloat {
+        switch itemAppType {
+        case .Movie:
+            //To be changed to dynamic one
+            return 809 - 128
+        case .TVShow:
+            //To be changed to dynamic one
+            return 850
+        default:
+            return 0
+        }
     }
     
 }

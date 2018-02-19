@@ -20,6 +20,7 @@ class MetadataHeaderView: UIView {
     
     var delegate: MetadataHeaderCellDelegate? = nil
     
+    @IBOutlet weak var tvShowLabel: UILabel!
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
     @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!
@@ -35,6 +36,7 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
     
+    @IBOutlet weak var imdbLogoWidth: NSLayoutConstraint!
     @IBOutlet weak var monthCollectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var heightOfContainerView: NSLayoutConstraint!
     @IBOutlet weak var descriptionLabel: UILabel!

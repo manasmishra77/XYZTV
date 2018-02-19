@@ -13,6 +13,7 @@
 		19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 19491EDA2018522600870794 /* JCTopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		19491EE92018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		19491EEA2018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
+		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
 		198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */; };
 		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
@@ -138,6 +139,7 @@
 		19491EDE2018522600870794 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
 		19491EE02018522600870794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19491EE82018528100870794 /* TopShelfModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopShelfModel.swift; sourceTree = "<group>"; };
+		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
 		198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
 		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */,
+				196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */,
 				B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */,
 				B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */,
 				7BFEC4C21F174ACA001DFE6D /* JCButton.swift */,
@@ -771,6 +774,7 @@
 				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
 				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
+				196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */,
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
