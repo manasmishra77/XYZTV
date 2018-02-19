@@ -13,7 +13,7 @@ class JCMonthCell: UICollectionViewCell
     @IBOutlet weak var monthLabel: UILabel!
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        self.layer.cornerRadius = 15.0
+        self.layer.cornerRadius = 5.0
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)

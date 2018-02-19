@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "540472525.9891239"
+            timestampString = "540720086.859049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "769"
-            endingLineNumber = "769"
-            landmarkName = "prepareMetadataView()"
+            startingLineNumber = "778"
+            endingLineNumber = "778"
+            landmarkName = "changingDataSourceForWatchList()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "540472525.9894969"
+            timestampString = "540720086.859347"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JioCinema/JCMetadataVC.swift"
-            timestampString = "540472525.989754"
+            timestampString = "540720086.859535"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
-            landmarkName = "collectionView(_:cellForItemAt:)"
+            startingLineNumber = "1014"
+            endingLineNumber = "1014"
+            landmarkName = "getSizeofDescriptionContainerView(_:widthOfView:font:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
