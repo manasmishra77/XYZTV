@@ -112,8 +112,8 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvY-ef-buL">
-                            <rect key="frame" x="143" y="297" width="639" height="0.0"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvY-ef-buL">
+                            <rect key="frame" x="143" y="283" width="639" height="0.0"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="22"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -129,7 +129,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdM-i7-rsk">
-                            <rect key="frame" x="143" y="332" width="629" height="0.0"/>
+                            <rect key="frame" x="143" y="318" width="629" height="0.0"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="22"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -237,9 +237,11 @@
                         <constraint firstItem="PIt-OS-2qO" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="bottom" constant="8" id="NuG-xJ-zh2"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="top" secondItem="5UE-Yr-tQb" secondAttribute="bottom" constant="12" id="P6g-UV-rQp"/>
                         <constraint firstItem="Njs-Mn-ow6" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="leading" id="PkI-XD-aXW"/>
+                        <constraint firstItem="JvY-ef-buL" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="top" id="Pok-TR-UpT"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="leading" secondItem="5UE-Yr-tQb" secondAttribute="leading" id="Psg-cc-hvO"/>
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="trailing" constant="5" id="Re4-VL-nEZ"/>
                         <constraint firstItem="56R-tw-AWf" firstAttribute="centerY" secondItem="SVi-bc-1rd" secondAttribute="centerY" id="W6h-E2-mq4"/>
+                        <constraint firstItem="CdM-i7-rsk" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="top" id="WTI-KG-y3T"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="height" secondItem="5UE-Yr-tQb" secondAttribute="height" id="XJY-ZG-kZV"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="bottom" constant="48" id="Z0D-f7-BIh"/>
                         <constraint firstItem="SVi-bc-1rd" firstAttribute="top" secondItem="Njs-Mn-ow6" secondAttribute="bottom" constant="48" id="Z5u-6S-7gt"/>
@@ -249,10 +251,8 @@
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="top" secondItem="SVi-bc-1rd" secondAttribute="bottom" constant="8" id="fU8-c2-YsK"/>
                         <constraint firstItem="bwB-9k-LOD" firstAttribute="leading" secondItem="MCj-Y8-Tdb" secondAttribute="trailing" constant="8" id="gCu-xV-VOy"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="trailing" secondItem="5UE-Yr-tQb" secondAttribute="trailing" id="gUS-Am-bnJ"/>
-                        <constraint firstItem="JvY-ef-buL" firstAttribute="centerY" secondItem="FTO-oj-fuY" secondAttribute="centerY" id="h8H-oo-jhc"/>
                         <constraint firstItem="MCj-Y8-Tdb" firstAttribute="centerY" secondItem="wcJ-FL-KxV" secondAttribute="centerY" id="hjg-Ke-Zco"/>
                         <constraint firstItem="5UE-Yr-tQb" firstAttribute="leading" secondItem="oog-7o-H3Y" secondAttribute="leading" constant="8" id="ifS-tS-Zbw"/>
-                        <constraint firstItem="CdM-i7-rsk" firstAttribute="centerY" secondItem="PIt-OS-2qO" secondAttribute="centerY" id="inj-dN-x8D"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="kiN-PF-Lqy"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="top" secondItem="wcJ-FL-KxV" secondAttribute="bottom" constant="48" id="kzi-AX-QFl"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="miM-T4-ObK"/>

@@ -672,13 +672,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
             //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
-            headerCell.frame.size.height += newHeight
+            headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 0)
             headerCell.descriptionContainerViewHeight.constant = newHeight
-            
-//            let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
-//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: fontChangedText.length))
-//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: fontChangedText.length - 10, length: 10))
-//            fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: fontChangedText.length - 10, length: 10))
             
             headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
@@ -688,7 +683,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
-            headerCell.frame.size.height -= newHeight
+            headerCell.frame.size.height -= newHeight - (itemAppType == .Movie ? 80 : 0)
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
             headerCell.descriptionContainerViewHeight.constant = actualHeightOfTheDescContainerView ?? 0
             headerCell.descriptionLabel.numberOfLines = 0
@@ -804,10 +799,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
             //headerCell.directorStaticLabel.isHidden = true
         }
-        
-        if metadata?.artist != nil{
-            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
-        }
+        headerCell.starringLabel.text =  metadata?.artist?.joined(separator: ", ")
+//        if metadata?.artist != nil{
+//            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
+//        }
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
            // if let stringA = trimTextTopple.1{
@@ -817,9 +812,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             
         } else {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
-            if trimTextTopple.1.length == 0 {
                 headerCell.showMoreDescription.isEnabled = false
-            }
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
@@ -1029,7 +1022,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     //DescriptionContainerview size fixing
     func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
-        let inset = UIEdgeInsets(top: 4, left: 4, bottom: 50, right: 4)
+        let inset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         let heightOfTheString = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
         return heightOfTheString
     }
@@ -1038,8 +1031,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
         if text.count > 95 {
             let trimText = text.subString(start: 0, end: 94) + "... " + SHOW_MORE
-            let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
-            return (true, fontChangedText)
+            if trimText.count <= text.count {
+                let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
+                return (true, fontChangedText)
+            } else {
+                let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
+                return (false, fontChangedText)
+            }
+            
         } else {
             let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
             return (false, fontChangedText)
@@ -1049,7 +1048,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
         fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
-        if colorChange{
+        if colorChange {
             fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
             fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: text.count - range, length: range))
         }
