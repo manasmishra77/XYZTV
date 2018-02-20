@@ -58,7 +58,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
         loadingLabel.text = "Loading"
         if isMetaDataAvailable{
-            //showMetadata()
+            showMetadata()
+            let headerView = prepareHeaderView()
+            metadataTableView.tableHeaderView = headerView
             metadataTableView.reloadData()
             changeAddWatchlistButtonStatus(itemId, itemAppType)
         } else {
@@ -212,6 +214,10 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             {
                 //TODO: handle error
                 print(responseError)
+                DispatchQueue.main.async {
+                    weakSelf?.showMetadata()
+                    Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
+                }
                 return
             }
             if let responseData = data
