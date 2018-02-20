@@ -49,7 +49,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
-        metadataTableView.register(UINib(nibName: "MetadataHeaderTableViewCell", bundle: nil), forCellReuseIdentifier: "MetadataHeaderTableViewCell")
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
@@ -58,8 +57,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         headerCell.delegate = self
 
         loadingLabel.text = "Loading"
-        if isMetaDataAvailable {
-            showMetadata()
+        if isMetaDataAvailable{
+            //showMetadata()
             metadataTableView.reloadData()
             changeAddWatchlistButtonStatus(itemId, itemAppType)
         } else {
@@ -122,13 +121,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MetadataHeaderTableViewCell", for: indexPath)
-            cell.contentView.addSubview(headerCell)
-            return cell
-        }
-        
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
@@ -228,7 +220,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
                     let headerView = weakSelf?.prepareHeaderView()
-                    //weakSelf?.metadataTableView.tableHeaderView = headerView
+                    weakSelf?.metadataTableView.tableHeaderView = headerView
                 }
                 weakSelf?.callWebServiceForMoreLikeData(id: id)
                 return
@@ -660,7 +652,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?) {
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
             playVideo()
-        } else {
+        }
+        else{
             presentLoginVC(fromAddToWatchList: false, fromItemCell: false, fromPlayNowButton: true)
         }
     }
@@ -675,6 +668,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
             headerCell.frame.size.height += newHeight
             headerCell.descriptionContainerViewHeight.constant = newHeight
+            
+//            let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
+//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: fontChangedText.length))
+//            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: fontChangedText.length - 10, length: 10))
+//            fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: fontChangedText.length - 10, length: 10))
+            
             headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell

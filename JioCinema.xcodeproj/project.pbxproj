@@ -14,8 +14,6 @@
 		19491EE92018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		19491EEA2018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
-		196291CF203B15B60064927E /* MetadataHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CD203B15B60064927E /* MetadataHeaderTableViewCell.swift */; };
-		196291D0203B15B60064927E /* MetadataHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 196291CE203B15B60064927E /* MetadataHeaderTableViewCell.xib */; };
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
 		198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */; };
 		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
@@ -142,8 +140,6 @@
 		19491EE02018522600870794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19491EE82018528100870794 /* TopShelfModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopShelfModel.swift; sourceTree = "<group>"; };
 		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
-		196291CD203B15B60064927E /* MetadataHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataHeaderTableViewCell.swift; sourceTree = "<group>"; };
-		196291CE203B15B60064927E /* MetadataHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MetadataHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
 		198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
 		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
@@ -404,8 +400,6 @@
 				7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */,
 				7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */,
 				7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */,
-				196291CD203B15B60064927E /* MetadataHeaderTableViewCell.swift */,
-				196291CE203B15B60064927E /* MetadataHeaderTableViewCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -615,7 +609,6 @@
 				2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */,
 				2025F4571F3B513A00C3B609 /* FAQ.png in Resources */,
 				7BB0E20F1F1DFF8E00A1DB0B /* JCCarouselCell.xib in Resources */,
-				196291D0203B15B60064927E /* MetadataHeaderTableViewCell.xib in Resources */,
 				2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */,
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
 				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
@@ -767,7 +760,6 @@
 				7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */,
 				7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */,
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
-				196291CF203B15B60064927E /* MetadataHeaderTableViewCell.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
 				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
