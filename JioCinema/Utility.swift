@@ -235,6 +235,35 @@ class Utility
         
     }
     
+    //MARK: Getting customized string
+    struct StringAttribute {
+        var fontName = "HelveticaNeue-Bold"
+        var fontSize: CGFloat?
+        var initialIndexOftheText = 0
+        var lastIndexOftheText: Int?
+        var color: UIColor = .black
+        
+        var fontOfText: UIFont {
+            if let font = UIFont(name: fontName, size: fontSize!) {
+                return font
+            } else {
+                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+            }
+            
+        }
+    }
+    
+    class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        for eachPartText in partTexts {
+            let lastIndex = eachPartText.lastIndexOftheText ?? text.count
+            let attrs = [NSFontAttributeName : eachPartText.fontOfText, NSForegroundColorAttributeName: eachPartText.color]
+            let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
+            fontChangedtext.addAttributes(attrs, range: range)
+        }
+        return fontChangedtext
+    }
+    
 }
 
 extension Date
@@ -278,5 +307,33 @@ extension String {
         label.sizeToFit()
         return label.frame.height + insets.top + insets.bottom
     }
+    
+    //MARK: Getting customized string
+    struct StringAttribute {
+        var fontName = "HelveticaNeue-Bold"
+        var fontSize: CGFloat?
+        var initialIndexOftheText = 0
+        var lastIndexOftheText: Int?
+        var color: UIColor = .black
+        
+        var fontOfText: UIFont {
+            if let font = UIFont(name: fontName, size: fontSize!) {
+                return font
+            } else {
+                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+            }
+        }
+    }
+    func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        for eachPartText in partTexts {
+            let lastIndex = eachPartText.lastIndexOftheText ?? self.count
+            let attrs = [NSFontAttributeName : eachPartText.fontOfText, NSForegroundColorAttributeName: eachPartText.color]
+            let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
+            fontChangedtext.addAttributes(attrs, range: range)
+        }
+        return fontChangedtext
+    }
+    
     
 }

@@ -1054,6 +1054,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         return fontChangedText
     }
+    
     //Height of the table header container
     func getHeaderContainerHeight() -> CGFloat {
         switch itemAppType {
