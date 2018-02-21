@@ -76,8 +76,7 @@ class JCSplashVC: UIViewController {
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: configDataRequest) { (data, response, error) in
             
-            if let responseError = error
-            {
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 weakSelf?.showAlert(alertString: networkErrorMessage)
@@ -92,28 +91,25 @@ class JCSplashVC: UIViewController {
         }
     }
     
-    func evaluateConfigData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateConfigData(dictionaryResponseData responseData:Data) {
         //Success
         JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
     }
     
-    func callWebServiceForHomeData(page:Int)
+    func callWebServiceForHomeData(page: Int)
     {
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         dispatchGroup.enter()
         RJILApiManager.defaultManager.post(request: homeDataRequest) { (data, response, error) in
-            if error != nil
-            {
+            if error != nil {
                 //TODO: handle error
                 weakSelf?.isHomeDataAvailable = false
                 weakSelf?.dispatchGroup.leave()
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
                 weakSelf?.isHomeDataAvailable = true
                 weakSelf?.dispatchGroup.leave()
@@ -122,8 +118,7 @@ class JCSplashVC: UIViewController {
         }
     }
     
-    func evaluateHomeData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateHomeData(dictionaryResponseData responseData:Data) {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
     }
@@ -171,20 +166,18 @@ class JCSplashVC: UIViewController {
         checkVersionRequest.timeoutInterval = 5
         //dispatchGroup.enter()
         RJILApiManager.defaultManager.get(request: checkVersionRequest) { (data, response, error) in
-            if error != nil
-            {
+            if error != nil {
                 //print(error)
                 weakSelf?.callWebServiceForConfigData()
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 let checkModel = weakSelf?.parseCheckVersionData(responseData)
                 let versionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1000"
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
                 
                 // If build number is coming from back-end
-                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version?.floatValue(), upComingBuildNumber != 0{
+                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version?.floatValue(), upComingBuildNumber != 0 {
                     if upComingBuildNumber > currentBuildNumber{
                         if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
                             weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
@@ -192,7 +185,7 @@ class JCSplashVC: UIViewController {
                             weakSelf?.showUpdateAlert(isMandatory: false, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
                         }
                     }
-                    else{
+                    else {
                         weakSelf?.callWebServiceForConfigData()
                     }
                 }

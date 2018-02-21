@@ -48,7 +48,7 @@ class JCLoginVC: UIViewController {
     
     @IBAction func didClickOnOTPSignIn(_ sender: UIButton)
     {
-        let otpVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: otpVCStoryBoardId) as! JCOTPVC
+        let otpVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: otpVCStoryBoardId) as! JCOTPVC
         otpVC.isLoginPresentedFromAddToWatchlist = isLoginPresentedFromAddToWatchlist
         otpVC.isLoginPresentedFromItemCell = isLoginPresentedFromItemCell
         otpVC.isLoginPresentedFromPlayNowButtonOfMetaData = isLoginPresentedFromPlayNowButtonOfMetaData

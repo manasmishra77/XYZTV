@@ -231,7 +231,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                         weakSelf?.signInButton.isHidden = false
                         weakSelf?.jioNumberTFLabel.text = "Enter OTP"
                         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
-                        
                     }
                 }
                 else
@@ -287,9 +286,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 //TODO: handle error
                 print(responseError)
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-                
-                
-                //                return
                 DispatchQueue.main.async {
                     self.activityIndicator?.stopAnimating()
                 }
@@ -480,6 +476,17 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label:"Type: OTP" + errorMessage, customParameters: customParams)
         
     }
+    
+    func handleAlertForOTPFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
+    }
+
     
     
 }

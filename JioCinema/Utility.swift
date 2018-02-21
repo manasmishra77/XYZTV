@@ -55,6 +55,21 @@ class Utility
             viewController.present(alert, animated: true, completion: nil)
         }
     }
+    struct AlertAction {
+        var title: String
+        var style: UIAlertActionStyle
+    }
+    
+    class func getCustomizedAlertController(with title: String, message: String, actions: [AlertAction]?, _ responseHandlerForAction: (( UIAlertAction) -> Swift.Void)? = nil) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        if let actions = actions {
+            for each in actions {
+                let newAction = UIAlertAction(title: each.title, style: each.style, handler: responseHandlerForAction)
+                alertController.addAction(newAction)
+            }
+        }
+        return alertController
+    }
     
     func showDismissableAlert(title: String, message: String)
     {

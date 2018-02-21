@@ -855,8 +855,7 @@
     
     
     //MARK:- Web service methods
-    func callWebServiceForMoreLikeData(id:String)
-    {
+    func callWebServiceForMoreLikeData(id: String) {
         let url = metadataUrl.appending(id)
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
@@ -1116,8 +1115,7 @@
     }
     
     
-    func callWebServiceForRemovingResumedWatchlist(_ itemId: String)
-    {
+    func callWebServiceForRemovingResumedWatchlist(_ itemId: String) {
         let json = ["id": id]
         let params = ["uniqueId": JCAppUser.shared.unique,"listId": "10","json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
@@ -1474,24 +1472,28 @@
         req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
         req.httpBody = jsonData
         
+        weak var weakSelf = self
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
-            print("data: \(data!)")
-            if (data != nil)
-            {
+            if error != nil {
+//                DispatchQueue.main.async {
+//                    weakSelf?.handleAPIFailure("Unable to show content!")
+//                }
+                return
+            }
+            print("data: \(data)")
+            if (data != nil) {
                 let decodedData = Data(base64Encoded: data!, options: [])
                 completionHandler(decodedData!)
-            }
-            else
-            {
+            } else {
                 completionHandler(data)
             }
         })
         task.resume()
     }
     
-    func getAppCertificateData(completionHandler:@escaping (Data?)->Void) {
+    func getAppCertificateData(completionHandler: @escaping (Data?)->Void) {
         let url = URL(string: URL_GET_CERT)
         let req = NSMutableURLRequest(url: url!)
         req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
@@ -1499,7 +1501,9 @@
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
             if error != nil {
-                print(error)
+//                DispatchQueue.main.async {
+//                    weakSelf?.handleAPIFailure("Unable to show content!")
+//                }
                 return
             }
             
@@ -1574,7 +1578,6 @@
                         else{
                             if error != nil {
                                 try? loadingRequest.finishLoading()
-                                
                             }
                             else {
                                 loadingRequest.finishLoading()
@@ -1683,6 +1686,17 @@
         let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Recommendation", label: videoName, customParameters: customParams)
     }
+    
+    func handleAPIFailure(_ text: String) {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: text, message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
+    }
+
  }
 
  

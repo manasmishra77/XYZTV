@@ -9,13 +9,14 @@
 import UIKit
 import Crashlytics
 
-class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
+class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
+    fileprivate var isMovieWebServiceTriedOnce = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -25,7 +26,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        callWebServiceForMoviesData(page: loadedPage)
+        //callWebServiceForMoviesData(page: loadedPage)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
@@ -37,8 +38,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         {
             callWebServiceForMoviesData(page: loadedPage)
         }
-        if JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
             self.callWebServiceForMoviesWatchlist()
         } else {
             isMoviesWatchlistAvailable = false
@@ -48,9 +48,13 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     
     override func viewDidAppear(_ animated: Bool)
     {
+        if JCDataStore.sharedDataStore.moviesData?.data == nil
+        {
+            callWebServiceForMoviesData(page: loadedPage)
+        }
         self.tabBarController?.delegate = self
         //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
+        let eventProperties = ["Screen Name": "Movies", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         screenAppearTiming = Date()
         
@@ -63,6 +67,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         
     }
     override func viewDidDisappear(_ animated: Bool) {
+        isMovieWebServiceTriedOnce = false
         if let toScreen = toScreenName {
             Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
             toScreenName = nil
@@ -206,22 +211,27 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         
     }
     
-    func callWebServiceForMoviesData(page:Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    func callWebServiceForMoviesData(page: Int) {
+        
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
         
+        guard !isMovieWebServiceTriedOnce else {
+            return
+        }
         let url = moviesDataUrl.appending(String(page))
         let moviesDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: moviesDataRequest) { (data, response, error) in
-            if let responseError = error
-            {
+            weakSelf?.isMovieWebServiceTriedOnce = true
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
+                DispatchQueue.main.async {
+                    weakSelf?.handleAlertForMoviesDataFailure()
+                }
                 return
             }
             if let responseData = data
@@ -231,6 +241,19 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             }
         }
     }
+    
+    func handleAlertForMoviesDataFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                //self.tabBarController?.selectedIndex = 2
+            }
+        }
+        present(alertVC, animated: false) {
+            self.tabBarController?.selectedIndex = 0
+        }
+    }
+    
     
     func evaluateMoviesData(dictionaryResponseData responseData:Data)
     {

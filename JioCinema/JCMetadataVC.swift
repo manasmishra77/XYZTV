@@ -202,6 +202,10 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func callWebServiceForMetadata(id: String, newAppType: VideoType) {
+        guard Utility.sharedInstance.isNetworkAvailable else {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
         self.itemId = id
         self.itemAppType = newAppType
         self.changeAddWatchlistButtonStatus(id, newAppType)
@@ -216,7 +220,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 print(responseError)
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
-                    Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
+                    //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
+                    weakSelf?.handleAlertForMetaDataDataFailure()
                 }
                 return
             }
@@ -630,6 +635,16 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
+    func handleAlertForMetaDataDataFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
+    }
+    
     
     //MARK:- Change watchlist button status locally
     func changeAddWatchlistButtonStatus(_ itemIdToBeChecked: String, _ appType: VideoType) {
@@ -672,7 +687,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
             //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
-            headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 0)
+            headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
             
             headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
@@ -683,7 +698,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
-            headerCell.frame.size.height -= newHeight - (itemAppType == .Movie ? 80 : 0)
+            headerCell.frame.size.height -= newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
             headerCell.descriptionContainerViewHeight.constant = actualHeightOfTheDescContainerView ?? 0
             headerCell.descriptionLabel.numberOfLines = 0

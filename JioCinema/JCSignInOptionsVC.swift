@@ -39,10 +39,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
-    {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+    @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         
@@ -62,6 +61,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 if let responseError = error
                 {
                     print(responseError)
+                    DispatchQueue.main.async {
+                        weakSelf?.handleAlertForSignInFailure()
+                    }
                     //Analytics for Login Fail
                     self.sendLoggedInAnalyticsEventWithFailure(errorMessage: (error?.localizedDescription)!)
                     return
@@ -255,6 +257,16 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         //For Google Analytics Event
         let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "Type: Jio ID" + errorMessage, customParameters: customParams)
+    }
+    
+    func handleAlertForSignInFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
     }
     
 }

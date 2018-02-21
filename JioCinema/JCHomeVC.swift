@@ -24,8 +24,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         
         super.viewDidLoad()
         
@@ -46,8 +45,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         callWebServiceForLanguageList()
         callWebServiceForGenreList()
         callWebServiceForUserRecommendationList()
-        if JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
             callWebServiceForResumeWatchData()
         }
         
@@ -263,7 +261,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     
-    func callWebServiceForHomeData(page:Int)
+    func callWebServiceForHomeData(page: Int)
     {
         if !Utility.sharedInstance.isNetworkAvailable
         {
@@ -299,8 +297,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     
-    func callWebServiceForResumeWatchData()
-    {
+    func callWebServiceForResumeWatchData() {
         guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
             isResumeWatchDataAvailable = false
             return
@@ -351,8 +348,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
     }
     
-    func callResumeWatchWebServiceOnPlayerDismiss()
-    {
+    func callResumeWatchWebServiceOnPlayerDismiss() {
         //callWebServiceForResumeWatchData()
     }
     
@@ -655,8 +651,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     
-    func evaluateUserRecommendationList(dictionaryResponseData responseData:Data)
-    {
+    func evaluateUserRecommendationList(dictionaryResponseData responseData: Data) {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .UserRecommendation)
     }
