@@ -48,6 +48,12 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
     @IBOutlet weak var seasonsLabel: UILabel!
+    
+    
+    //Constraints for all the view
+    @IBOutlet weak var sseparationBetweenDirectorStaticAndDescView: NSLayoutConstraint!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

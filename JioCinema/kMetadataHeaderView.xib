@@ -134,26 +134,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njs-Mn-ow6">
-                            <rect key="frame" x="8" y="395" width="0.0" height="0.0"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVi-bc-1rd" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="8" y="443" width="160" height="92"/>
-                            <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
-                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                            <state key="normal" image="WatchNow"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="didClickOnWatchNowButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="pfQ-Ik-8T5"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56R-tw-AWf" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
                             <rect key="frame" x="240" y="443" width="160" height="92"/>
                             <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
@@ -219,15 +199,27 @@
                                 <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                             </collectionViewFlowLayout>
                         </collectionView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVi-bc-1rd" customClass="JCMetadataButton" customModule="JioCinema" customModuleProvider="target">
+                            <rect key="frame" x="8" y="443" width="160" height="92"/>
+                            <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.93333333330000001" alpha="0.35257369240000003" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" image="WatchNow"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didClickOnWatchNowButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="pfQ-Ik-8T5"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="MCj-Y8-Tdb" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="trailing" constant="5" id="2B1-hc-zNv"/>
                         <constraint firstItem="PIt-OS-2qO" firstAttribute="leading" secondItem="FTO-oj-fuY" secondAttribute="leading" id="4Sy-eY-fQn"/>
-                        <constraint firstItem="SVi-bc-1rd" firstAttribute="leading" secondItem="Njs-Mn-ow6" secondAttribute="leading" id="5hF-c2-Ttl"/>
                         <constraint firstAttribute="trailing" secondItem="5UE-Yr-tQb" secondAttribute="trailing" constant="20" id="6zF-Z2-INh"/>
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="leading" secondItem="oog-7o-H3Y" secondAttribute="leading" constant="8" id="7mo-Wa-NT6"/>
-                        <constraint firstItem="Njs-Mn-ow6" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="bottom" constant="50" id="819-dm-9AV"/>
                         <constraint firstItem="56R-tw-AWf" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="trailing" constant="72" id="9mP-QF-knK"/>
                         <constraint firstItem="wcJ-FL-KxV" firstAttribute="top" secondItem="gX0-yh-ge7" secondAttribute="bottom" constant="48" id="CkX-Mn-19l"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="trailing" secondItem="SVi-bc-1rd" secondAttribute="trailing" id="DmP-fj-KmV"/>
@@ -236,7 +228,6 @@
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="leading" id="NfM-ga-SZg"/>
                         <constraint firstItem="PIt-OS-2qO" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="bottom" constant="8" id="NuG-xJ-zh2"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="top" secondItem="5UE-Yr-tQb" secondAttribute="bottom" constant="12" id="P6g-UV-rQp"/>
-                        <constraint firstItem="Njs-Mn-ow6" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="leading" id="PkI-XD-aXW"/>
                         <constraint firstItem="JvY-ef-buL" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="top" id="Pok-TR-UpT"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="leading" secondItem="5UE-Yr-tQb" secondAttribute="leading" id="Psg-cc-hvO"/>
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="trailing" constant="5" id="Re4-VL-nEZ"/>
@@ -244,15 +235,16 @@
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="top" id="WTI-KG-y3T"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="height" secondItem="5UE-Yr-tQb" secondAttribute="height" id="XJY-ZG-kZV"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="bottom" constant="48" id="Z0D-f7-BIh"/>
-                        <constraint firstItem="SVi-bc-1rd" firstAttribute="top" secondItem="Njs-Mn-ow6" secondAttribute="bottom" constant="48" id="Z5u-6S-7gt"/>
                         <constraint firstItem="sMj-A9-xJv" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="cnP-NG-KeR"/>
                         <constraint firstItem="SVi-bc-1rd" firstAttribute="width" secondItem="56R-tw-AWf" secondAttribute="width" id="dGi-Zo-ij0"/>
                         <constraint firstItem="SVi-bc-1rd" firstAttribute="height" secondItem="56R-tw-AWf" secondAttribute="height" id="dIc-Sc-mcQ"/>
+                        <constraint firstItem="SVi-bc-1rd" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="bottom" constant="98" id="dou-N8-4VB"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="top" secondItem="SVi-bc-1rd" secondAttribute="bottom" constant="8" id="fU8-c2-YsK"/>
                         <constraint firstItem="bwB-9k-LOD" firstAttribute="leading" secondItem="MCj-Y8-Tdb" secondAttribute="trailing" constant="8" id="gCu-xV-VOy"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="trailing" secondItem="5UE-Yr-tQb" secondAttribute="trailing" id="gUS-Am-bnJ"/>
                         <constraint firstItem="MCj-Y8-Tdb" firstAttribute="centerY" secondItem="wcJ-FL-KxV" secondAttribute="centerY" id="hjg-Ke-Zco"/>
                         <constraint firstItem="5UE-Yr-tQb" firstAttribute="leading" secondItem="oog-7o-H3Y" secondAttribute="leading" constant="8" id="ifS-tS-Zbw"/>
+                        <constraint firstItem="SVi-bc-1rd" firstAttribute="leading" secondItem="PIt-OS-2qO" secondAttribute="leading" id="kIl-9c-mPa"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="kiN-PF-Lqy"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="top" secondItem="wcJ-FL-KxV" secondAttribute="bottom" constant="48" id="kzi-AX-QFl"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="leading" secondItem="wcJ-FL-KxV" secondAttribute="leading" id="miM-T4-ObK"/>
@@ -302,12 +294,12 @@
                 <outlet property="seasonsLabel" destination="CSY-Bj-9Od" id="Dkc-P2-IcJ"/>
                 <outlet property="showMoreDescription" destination="07s-vs-pDy" id="2Py-gv-nxb"/>
                 <outlet property="showMoreDescriptionLabel" destination="bEp-5g-7vi" id="lZK-ai-LPj"/>
+                <outlet property="sseparationBetweenDirectorStaticAndDescView" destination="Z0D-f7-BIh" id="kjV-1q-sFT"/>
                 <outlet property="starringLabel" destination="CdM-i7-rsk" id="w8Z-OK-Pc5"/>
                 <outlet property="starringStaticLabel" destination="PIt-OS-2qO" id="HFn-rn-7xz"/>
                 <outlet property="subtitleLabel" destination="bwB-9k-LOD" id="UF2-ZL-iPp"/>
                 <outlet property="titleLabel" destination="gX0-yh-ge7" id="fNO-Vd-Kf8"/>
                 <outlet property="tvShowLabel" destination="sMj-A9-xJv" id="B0S-rP-oGC"/>
-                <outlet property="tvShowSubtitleLabel" destination="Njs-Mn-ow6" id="Vcb-jQ-nHe"/>
                 <outlet property="watchlistLabel" destination="RDi-mf-e5u" id="wfS-xl-yPo"/>
             </connections>
             <point key="canvasLocation" x="-4242" y="-1928.5"/>

@@ -816,19 +816,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
             //headerCell.directorStaticLabel.isHidden = true
         }
-        //        if metadata?.artist != nil{
-//            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
-//        }
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
-           // if let stringA = trimTextTopple.1{
-            print(trimTextTopple.1)
-                headerCell.descriptionLabel.attributedText = trimTextTopple.1
-            //}
-            
+            headerCell.descriptionLabel.attributedText = trimTextTopple.1
         } else {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
-                headerCell.showMoreDescription.isEnabled = false
+            headerCell.showMoreDescription.isEnabled = false
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
@@ -854,8 +847,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.tvShowLabel.text = metadata?.newSubtitle?.capitalized
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
-//            headerCell.tvShowSubtitleLabel.isHidden = true
-//            headerCell.tvShowSubtitleLabel.text = metadata?.newSubtitle?.capitalized
+            headerCell.directorLabel.isHidden = true
+            headerCell.directorStaticLabel.isHidden = true
+            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
+            headerCell.frame.size.height -= headerCell.directorStaticLabel.frame.height + 8
             
             if (metadata?.isSeason) != nil {
                 if (metadata?.isSeason)! {
