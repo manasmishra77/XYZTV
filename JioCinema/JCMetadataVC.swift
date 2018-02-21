@@ -256,6 +256,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 //let data1 = self.metadata?.episodes
                 DispatchQueue.main.async {
                     weakSelf?.metadataTableView.reloadData()
+                    weakSelf?.prepareMetdataArtistLabel()
                 }
             }
         }
@@ -277,6 +278,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             {
                 self.metadata?.episodes = tempMetadata?.episodes
                 self.metadata?.artist = tempMetadata?.artist
+                
             }
             self.metadata?.displayText = tempMetadata?.displayText
         }
@@ -814,8 +816,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
             //headerCell.directorStaticLabel.isHidden = true
         }
-        headerCell.starringLabel.text =  metadata?.artist?.joined(separator: ", ")
-//        if metadata?.artist != nil{
+        //        if metadata?.artist != nil{
 //            headerCell.starringLabel.text = (metadata?.artist?.joined(separator: ", ").count)! > 55 ? (metadata?.artist?.joined(separator: ", ").subString(start: 0, end: 51))! + "...." : metadata?.artist?.joined(separator: ", ")
 //        }
         let trimTextTopple = getShorterText(metadata?.description ?? "")
@@ -872,6 +873,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         } else {
             return UIView()
         }
+    }
+    
+    func prepareMetdataArtistLabel() {
+        headerCell.starringLabel.text =  metadata?.artist?.joined(separator: ", ")
     }
     
     //MARK:- JCBaseTableViewCellDelegate methods, More tableview cell delegate methods
