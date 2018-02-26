@@ -53,6 +53,7 @@ class MetadataHeaderView: UIView {
     //Constraints for all the view
     @IBOutlet weak var sseparationBetweenDirectorStaticAndDescView: NSLayoutConstraint!
     
+    @IBOutlet weak var sseparationBetweenSeasonLabelAndSeasonCollView: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

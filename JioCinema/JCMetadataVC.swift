@@ -837,7 +837,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         self.updateFocusIfNeeded()
 
         if itemAppType == .Movie, metadata != nil {
-            headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
+           // headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
             //headerCell.monthCollectionViewHeight.constant = 0
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
@@ -857,6 +857,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                     headerCell.seasonsLabel.isHidden = false
                     headerCell.seasonCollectionView.isHidden = false
                     headerCell.monthsCollectionView.isHidden = true
+                    headerCell.seasonsLabel.isHidden = true
+                    headerCell.sseparationBetweenSeasonLabelAndSeasonCollView.constant = 0
+                    headerCell.seasonsLabel.frame.size.height = 0
                 } else {
                     headerCell.seasonsLabel.isHidden = false
                     headerCell.seasonsLabel.text = "More Episodes"
@@ -1061,7 +1064,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
-        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 28.0)!])
+        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 28.0)!])
         fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
             fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
@@ -1078,7 +1081,11 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             return 809 - 120
         case .TVShow:
             //To be changed to dynamic one
-            return 970
+            if metadata?.isSeason ?? false {
+                let heightOfView = 810
+                return CGFloat(heightOfView)
+            }
+            return 920
         default:
             return 0
         }
