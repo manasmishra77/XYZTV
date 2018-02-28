@@ -166,12 +166,15 @@
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
                             <rect key="frame" x="8" y="579" width="136" height="39"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="39" id="dpG-gM-dH3"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="32"/>
                             <color key="textColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
-                            <rect key="frame" x="8" y="752" width="1862" height="62"/>
+                            <rect key="frame" x="8" y="740" width="1862" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
                                 <size key="itemSize" width="92" height="36"/>
@@ -187,7 +190,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5UE-Yr-tQb">
-                            <rect key="frame" x="8" y="678" width="1862" height="62"/>
+                            <rect key="frame" x="8" y="666" width="1862" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="62" id="J2n-hf-aJ5"/>
@@ -224,7 +227,7 @@
                         <constraint firstItem="wcJ-FL-KxV" firstAttribute="top" secondItem="gX0-yh-ge7" secondAttribute="bottom" constant="48" id="CkX-Mn-19l"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="trailing" secondItem="SVi-bc-1rd" secondAttribute="trailing" id="DmP-fj-KmV"/>
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="centerY" secondItem="Gee-Um-m5H" secondAttribute="centerY" id="ESy-0f-AQO"/>
-                        <constraint firstItem="5UE-Yr-tQb" firstAttribute="top" secondItem="CSY-Bj-9Od" secondAttribute="bottom" constant="60" id="M9k-GA-m05"/>
+                        <constraint firstItem="5UE-Yr-tQb" firstAttribute="top" secondItem="CSY-Bj-9Od" secondAttribute="bottom" constant="48" id="M9k-GA-m05"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="leading" id="NfM-ga-SZg"/>
                         <constraint firstItem="PIt-OS-2qO" firstAttribute="top" secondItem="FTO-oj-fuY" secondAttribute="bottom" constant="8" id="NuG-xJ-zh2"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="top" secondItem="5UE-Yr-tQb" secondAttribute="bottom" constant="12" id="P6g-UV-rQp"/>
@@ -285,6 +288,7 @@
                 <outlet property="descriptionLabel" destination="4VC-pE-Oqm" id="MMb-vk-0bO"/>
                 <outlet property="directorLabel" destination="JvY-ef-buL" id="d4i-mF-8CK"/>
                 <outlet property="directorStaticLabel" destination="FTO-oj-fuY" id="KwM-Xs-elo"/>
+                <outlet property="heightOfSeasonStaticLabel" destination="dpG-gM-dH3" id="O9l-hX-kE2"/>
                 <outlet property="imdbImageLogo" destination="wcJ-FL-KxV" id="5z5-xb-cBb"/>
                 <outlet property="imdbLogoWidth" destination="22B-1g-5WJ" id="3hh-Vk-ro7"/>
                 <outlet property="monthsCollectionView" destination="ek5-ew-j1E" id="qNW-vC-L09"/>

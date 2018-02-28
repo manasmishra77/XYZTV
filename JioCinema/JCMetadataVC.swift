@@ -859,7 +859,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                     headerCell.monthsCollectionView.isHidden = true
                     headerCell.seasonsLabel.isHidden = true
                     headerCell.sseparationBetweenSeasonLabelAndSeasonCollView.constant = 0
-                    headerCell.seasonsLabel.frame.size.height = 0
+                    headerCell.heightOfSeasonStaticLabel.constant = 0
                 } else {
                     headerCell.seasonsLabel.isHidden = false
                     headerCell.seasonsLabel.text = "More Episodes"
@@ -1082,10 +1082,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 810
+                let heightOfView = 750
                 return CGFloat(heightOfView)
             }
-            return 920
+            return 880
         default:
             return 0
         }

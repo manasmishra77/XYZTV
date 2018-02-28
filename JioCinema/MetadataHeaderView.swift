@@ -55,6 +55,7 @@ class MetadataHeaderView: UIView {
     
     @IBOutlet weak var sseparationBetweenSeasonLabelAndSeasonCollView: NSLayoutConstraint!
     
+    @IBOutlet weak var heightOfSeasonStaticLabel: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -56,6 +56,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.hideTableView), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         handleTopShelfCalls()
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         if let toScreen = toScreenName {
             Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
