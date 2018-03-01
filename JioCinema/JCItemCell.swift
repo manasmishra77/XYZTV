@@ -20,8 +20,7 @@ class JCItemCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 1.0
             }
 
@@ -29,11 +28,8 @@ class JCItemCell: UICollectionViewCell {
         else
         {
             self.nameLabel.font = self.nameLabel.font.withSize(24)
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
-                
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 0.5
-                
             }
         }
 
