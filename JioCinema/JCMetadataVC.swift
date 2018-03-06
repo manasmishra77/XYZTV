@@ -887,12 +887,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let itemToBePlayed = self.convertingMoreToItem(tappedItem, currentItem: Item())
             if let itemId = itemToBePlayed.id{
                 self.item = itemToBePlayed
-                if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
+                if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
+                    self.didClickOnShowMoreDescriptionButton(self.headerCell, toShowMore: false)
                     self.callWebServiceForMetadata(id: itemId, newAppType: appType)
                 }
             }
         }
-        else if let tappedItem = item as? Episode{
+        else if let tappedItem = item as? Episode {
             print("In episode")
             checkLoginAndPlay(tappedItem, categoryName: MORELIKE, categoryIndex: 0)
         }
@@ -1003,7 +1004,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             
             self.present(playerVC, animated: true, completion: nil)
         }
-        else if itemAppType == VideoType.TVShow{
+        else if itemAppType == VideoType.TVShow {
             var isEpisodeAvailable = false
             var recommendationArray: Any = false
             if let episodes = metadata?.episodes, episodes.count > 0{
@@ -1030,8 +1031,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             }
         }
     }
-    func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC
-    {
+    func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
