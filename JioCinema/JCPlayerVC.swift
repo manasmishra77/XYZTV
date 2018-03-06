@@ -196,14 +196,11 @@
                             }
                         }
                     }
-                }
-                else
-                {
+                } else {
                     self?.playerTimeObserverToken = nil
                 }
         }
     }
-    
     
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
@@ -1521,10 +1518,8 @@
         task.resume()
     }
     
-    func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool
-    {
-        if isFpsUrl
-        {
+    func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
+        if isFpsUrl {
             let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
             let url: URL? = loadingRequest.request.url
             let error: Error? = nil
@@ -1561,11 +1556,9 @@
                         
                         if (responseData != nil){
                             dataRequest?.respond(with: responseData!)
-                            if expiryDuration != 0.0
-                            {
+                            if expiryDuration != 0.0 {
                                 let infoRequest: AVAssetResourceLoadingContentInformationRequest? = loadingRequest.contentInformationRequest
-                                if (infoRequest != nil)
-                                {
+                                if (infoRequest != nil) {
                                     infoRequest?.renewalDate = Date(timeIntervalSinceNow: expiryDuration)
                                     infoRequest?.contentType = "application/octet-stream"
                                     infoRequest?.contentLength = Int64(responseData!.count)
@@ -1574,12 +1567,10 @@
                                 
                             }
                             loadingRequest.finishLoading()
-                        }
-                        else{
+                        } else {
                             if error != nil {
                                 try? loadingRequest.finishLoading()
-                            }
-                            else {
+                            } else {
                                 loadingRequest.finishLoading()
                             }
                         }

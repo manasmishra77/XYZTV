@@ -96,23 +96,17 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     func changingDataSourceForBaseTableView(){
         dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.tvData?.data) != nil
-        {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
+        if let tvData = JCDataStore.sharedDataStore.tvData?.data {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
                 isTVWatchlistAvailable = false
             }
-            dataItemsForTableview = (JCDataStore.sharedDataStore.tvData?.data)!
-            if let isCarousal = dataItemsForTableview[0].isCarousal {
-                if isCarousal{
-                    dataItemsForTableview.remove(at: 0)
-                }
+            dataItemsForTableview = tvData
+            if dataItemsForTableview[0].isCarousal ?? false {
+                dataItemsForTableview.remove(at: 0)
             }
             if isTVWatchlistAvailable{
-                if let items = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
-                    if items.count > 0 {
-                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.tvWatchList?.data)!, at: 0)
-                    }
+                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+                    dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
         }
@@ -143,24 +137,21 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
-        {
+        if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true) {
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            if let carouselItems = JCDataStore.sharedDataStore.tvData?.data?[0].items, carouselItems.count > 0{
+            if let carouselItems = JCDataStore.sharedDataStore.tvData?.data?[0].items, carouselItems.count > 0 {
                 carouselView.carouselArray = carouselItems
                 carouselView.loadViews()
                 carouselView.carouselDelegate = self
                 uiviewCarousel = carouselView
                 return carouselView
-            }else{
+            } else {
                 return UIView()
             }
-        }
-        else
-        {
-            return UIView.init()
+        } else {
+            return UIView()
         }
     }
     

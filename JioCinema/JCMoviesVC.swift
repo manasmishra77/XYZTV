@@ -188,23 +188,17 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
     
     func changingDataSourceForBaseTableView(){
         dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.moviesData?.data) != nil
-        {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
+        if let moviesData = JCDataStore.sharedDataStore.moviesData?.data {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
                 isMoviesWatchlistAvailable = false
             }
-            dataItemsForTableview = (JCDataStore.sharedDataStore.moviesData?.data)!
-            if let isCarousal = dataItemsForTableview[0].isCarousal {
-                if isCarousal{
-                    dataItemsForTableview.remove(at: 0)
-                }
+            dataItemsForTableview = moviesData
+            if dataItemsForTableview[0].isCarousal ?? false {
+                dataItemsForTableview.remove(at: 0)
             }
-            if isMoviesWatchlistAvailable{
-                if let items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
-                    if items.count > 0 {
-                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
-                    }
+            if isMoviesWatchlistAvailable {
+                if let watchListData = JCDataStore.sharedDataStore.moviesWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+                    dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
         }
