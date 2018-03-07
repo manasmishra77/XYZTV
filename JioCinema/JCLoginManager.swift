@@ -184,6 +184,7 @@ class JCLoginManager:UIViewController
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
+        JCDataStore.sharedDataStore.userRecommendationList = nil
     }
     
     

@@ -55,9 +55,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.metadataTableView.tableFooterView = UIView()
         headerCell.addToWatchListButton.isEnabled = false
         headerCell.delegate = self
-
         loadingLabel.text = "Loading"
-        if isMetaDataAvailable{
+        if isMetaDataAvailable {
             showMetadata()
             let headerView = prepareHeaderView()
             metadataTableView.tableHeaderView = headerView
@@ -77,6 +76,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewDidAppear(_ animated: Bool) {        
         //Clevertap Navigation Event
         let metadataType = itemAppType.rawValue
+        metadataTableView.delegate = self
+        metadataTableView.dataSource = self
+        metadataTableView.reloadData()
         let eventProperties = ["Screen Name": fromScreen, "Platform": "TVOS", "Metadata Page": metadataType] as [String : Any]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
@@ -95,8 +97,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
 
-    override var preferredFocusEnvironments: [UIFocusEnvironment]
-    {
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
             return [preferredView]
         }
@@ -110,13 +111,19 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var moreTableViewDatasource = [Any]()
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         moreTableViewDatasource.removeAll()
-        if let moreArray = ((itemAppType == .TVShow) ? (metadata?.episodes) as? [Any] : metadata?.more as? [Any]) , moreArray.count > 0 {
-            moreTableViewDatasource.append(moreArray)
+        if self.itemAppType == .TVShow {
+            if let episodeArray =  metadata?.episodes , episodeArray.count > 0 {
+                moreTableViewDatasource.append(episodeArray)
+            }
+        } else {
+            if let moreArray =  metadata?.more , moreArray.count > 0 {
+                moreTableViewDatasource.append(moreArray)
+            }
         }
-        if let artistArray = metadata?.artist, artistArray.count > 0{
+        
+        if let artistArray = metadata?.artist, artistArray.count > 0 {
             moreTableViewDatasource.append(artistArray)
         }
         return moreTableViewDatasource.count
@@ -137,14 +144,13 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         //Metadata for Movies
         
-        if itemAppType == VideoType.Movie
-        {
-            if let moreArray = moreTableViewDatasource[indexPath.row] as? [More]{
+        if itemAppType == .Movie {
+            if let moreArray = moreTableViewDatasource[indexPath.row] as? [More] {
                 cell.categoryTitleLabel.text = metadata?.displayText
                 cell.moreLikeData = moreArray
                 cell.tableCellCollectionView.reloadData()
             }
-            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String]{
+            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String] {
                 cell.categoryTitleLabel.text = "Cast & Crew"
                 let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
@@ -153,8 +159,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
             
         // Metadata for TV
-        else if itemAppType == VideoType.TVShow
-        {
+        else if itemAppType == .TVShow {
             if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode]{
                 cell.categoryTitleLabel.text = "Episodes"
                 cell.episodes = episodeArray
@@ -173,14 +178,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
     }
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerView = prepareHeaderView()
-//        return headerView
-//    }
-   
+
     func prepareHeaderView() -> UIView
     {
-        //headerCell.item = item
         headerCell.seasonCollectionView.delegate = self
         headerCell.seasonCollectionView.dataSource = self
         headerCell.monthsCollectionView.delegate = self
@@ -210,6 +210,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.itemAppType = newAppType
         self.changeAddWatchlistButtonStatus(id, newAppType)
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
+   
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -225,8 +226,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
@@ -239,13 +239,12 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func callWebServiceForMoreLikeData(id: String)
-    {
+    func callWebServiceForMoreLikeData(id: String) {
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-            
+
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
@@ -253,18 +252,22 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             if let responseData = data {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                //let data1 = self.metadata?.episodes
                 DispatchQueue.main.async {
-                    weakSelf?.metadataTableView.reloadData()
+                    if let metatableView = weakSelf?.metadataTableView {
+                        metatableView.reloadData()
+                        metatableView.layoutIfNeeded()
+                    }
                     weakSelf?.prepareMetdataArtistLabel()
+                    weakSelf?.myPreferredFocusView = weakSelf?.headerCell.playButton
+                    weakSelf?.setNeedsFocusUpdate()
+                    weakSelf?.updateFocusIfNeeded()
                 }
             }
         }
     }
    
     
-    func evaluateMoreLikeData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateMoreLikeData(dictionaryResponseData responseData:Data) {
         //Success
         if let responseString = String(data: responseData, encoding: .utf8)
         {
@@ -274,8 +277,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             {
                 self.metadata?.more = tempMetadata?.more
             }
-            else if itemAppType == VideoType.TVShow
-            {
+            else if itemAppType == VideoType.TVShow {
                 self.metadata?.episodes = tempMetadata?.episodes
                 self.metadata?.artist = tempMetadata?.artist
                 
@@ -284,43 +286,20 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func evaluateMetaData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateMetaData(dictionaryResponseData responseData:Data) {
         //Success
-        if let responseString = String(data: responseData, encoding: .utf8)
-        {
-            self.metadata = MetadataModel(JSONString: responseString)
+        if let responseString = String(data: responseData, encoding: .utf8) {
+            let metaDataModel = MetadataModel(JSONString: responseString)
+            self.metadata = metaDataModel
+            self.metadata?.more = nil
+            self.metadata?.episodes = nil
             print("\(metadata) + 123")
         }
-    }
-    
-    func prepareMetadataScreen()
-    {
-        weak var weakSelf = self
-        
-            DispatchQueue.main.async {
-                //weakSelf?.showMetadata()
-                //weakSelf?.metadataTableView.reloadData()
-            }
     }
     
     func showMetadata() {
         loaderContainerView.isHidden = true
         metadataContainerView.isHidden = false
-//        if headerView != nil
-//        {
-//            headerView = resetHeaderView()
-//        }
-//        headerView = prepareHeaderView()
-//        metadataContainerView.addSubview(headerView!)
-//        if metadata?.type == VideoType.Movie.rawValue{
-//            //tableViewTopConstraint.constant = -175
-//        }
-//        headerCell.seasonCollectionView.reloadData()
-//        headerCell.monthsCollectionView.reloadData()
-//        if itemAppType == .Movie{
-//            metadataTableHeight.constant = 100 + 280 //metadataTableHeight.constant + 100
-//        }
     }
 
     func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false) {
@@ -451,36 +430,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
-            if cellSelected, selectedRowCell == indexPath.row
-            {
-                cell.layer.borderWidth = 2.0
-                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-                cell.layer.cornerRadius = 15.0
-            }
-            else
-            {
-                cell.layer.borderWidth = 0.0
-                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-                cell.layer.cornerRadius = 0.0
-            }
             return cell           
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
             cell.yearLabel.text = metadata?.filter?[indexPath.row].filter ?? ""
-            if cellSelected, selectedRowCell == indexPath.row
-            {
-                cell.layer.borderWidth = 2.0
-                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-                cell.layer.cornerRadius = 15.0
-            }
-            else
-            {
-                cell.layer.borderWidth = 0.0
-                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-                cell.layer.cornerRadius = 0.0
-            }
             return cell
         }
         else if collectionView == headerCell.monthsCollectionView
@@ -516,24 +471,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 break
                 
             }
-            
             cell.monthLabel.text = text
-            if cellSelected, selectedRowCell == indexPath.row, isMonthSelected
-            {
-                cell.layer.borderWidth = 2.0
-                cell.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-                cell.layer.cornerRadius = 15.0
-            }
-            else
-            {
-                cell.layer.borderWidth = 0.0
-                cell.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-                cell.layer.cornerRadius = 0.0
-            }
             return cell
-        }
-        else
-        {
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             return cell
         }
@@ -547,62 +487,51 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        cellSelected = true
-        selectedRowCell = indexPath.row
+        //cellSelected = true
+        //selectedRowCell = indexPath.row
         
         if (metadata?.isSeason ?? false), collectionView == headerCell.seasonCollectionView     //seasons
         {
             if let seasonNum = metadata?.filter?[indexPath.row].season {
-                headerCell.seasonCollectionView.reloadData()
+                self.myPreferredFocusView = collectionView.cellForItem(at: indexPath)
+                self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
                 callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
             }
-        }
-        else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
+        } else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             selectedYearIndex = indexPath.row
-            isMonthSelected = false
-            headerCell.seasonCollectionView.reloadData()
-            headerCell.monthsCollectionView.reloadData()
-            if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0]{
+            self.myPreferredFocusView = collectionView.cellForItem(at: indexPath)
+            self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
+            
+            if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0] {
+                self.changeCollectionViewCellStyle(self.headerCell.monthsCollectionView, indexPath: IndexPath(row: 0, section: 0))
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
 
-        }
-        else    //months
+        } else    //months
         {
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[indexPath.row]{
-                isMonthSelected = true
-                headerCell.monthsCollectionView.reloadData()
+                self.myPreferredFocusView = collectionView.cellForItem(at: indexPath)
+                self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
-
         }
         
     }
     
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
-        if collectionView == headerCell.seasonCollectionView
-        {
-            return true
-        }
-        else
-        {
-            return true
-        }
+        return true
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if collectionView == headerCell.seasonCollectionView
-        {
+        if collectionView == headerCell.seasonCollectionView {
             if metadata?.isSeason ?? false {
                 return CGSize(width: 190, height: 50)
             } else {
                 return CGSize(width: 100, height: 40)
             }
-        }
-        else
-        {
+        } else {
             return CGSize(width: 80, height: 40)
         }       
 
@@ -622,7 +551,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let responseData = data {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                        weakSelf?.metadataTableView.reloadData()
+                    weakSelf?.metadataTableView.reloadData()
+                    weakSelf?.metadataTableView.layoutIfNeeded()
+                    weakSelf?.setNeedsFocusUpdate()
+                    weakSelf?.updateFocusIfNeeded()
                 }
                 return
             }
@@ -673,14 +605,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     //MARK:- Metadata header cell delegate methods
     func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?) {
-        if JCLoginManager.sharedInstance.isUserLoggedIn(){
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
             playVideo()
-        }
-        else{
+        } else {
             presentLoginVC(fromAddToWatchList: false, fromItemCell: false, fromPlayNowButton: true)
         }
     }
     func didClickOnShowMoreDescriptionButton(_ headerView: MetadataHeaderView, toShowMore: Bool) {
+        
         if toShowMore {
             headerCell.showMoreDescriptionLabel.text = SHOW_LESS
             let text = (metadata?.description ?? "") + " " + SHOW_LESS
@@ -688,10 +620,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
-            //headerCell.heightOfContainerView.constant = headerCell.heightOfContainerView.constant + newHeight
             headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
-            
+
             headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell
@@ -711,12 +642,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String: Any]()
-        if itemAppType == .TVShow
-        {
+        if itemAppType == .TVShow {
             params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId]]
-        }
-        else if itemAppType == .Movie
-        {
+        } else if itemAppType == .Movie {
             params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json": ["id": metadata?.contentId ?? itemId]]
         }
         
@@ -724,9 +652,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             //let url = isStatusAdd ? removeFromWatchListUrl : addToResumeWatchlistUrl
             let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
             callWebServiceToUpdateWatchlist(withUrl: url, watchlistStatus: isStatusAdd, andParameters: params)
-        }
-        else
-        {
+        } else {
             presentLoginVC(fromAddToWatchList: true, fromItemCell: false)
         }
     }
@@ -813,9 +739,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
-        if metadata?.directors?.count == 0 || metadata?.directors == nil{
-            //headerCell.directorStaticLabel.isHidden = true
-        }
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
@@ -825,7 +748,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
-        //getSizeofDescriptionContainerView(text, widthOfView: 500, font: UIFont(name: "Helvetica-Bold", size: 28)!)
         let imageUrl = metadata?.banner ?? ""
         let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
         DispatchQueue.main.async {
@@ -837,8 +759,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         self.updateFocusIfNeeded()
 
         if itemAppType == .Movie, metadata != nil {
-           // headerCell.ratingLabel.text = metadata?.rating?.appending("/10 |")
-            //headerCell.monthCollectionViewHeight.constant = 0
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
@@ -899,7 +819,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         else if let tappedItem = item as? String{
             print("In Artist")
-            //changingSearchNCRootVC()
             //present search from here
             
             //Google Analytics for Artist Click
@@ -935,27 +854,19 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     
-    func prepareToPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int)
-    {
+    func prepareToPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int) {
         var isEpisodeAvailable = false
         if let episeodes = metadata?.episodes, episeodes.count > 0{
             isEpisodeAvailable = true
         }
         var directors = ""
         if let directorArray = metadata?.directors {
-//            for each in directorArray {
-//                directors += each
-//            }
             directors = directorArray.reduce("", +)
         }
         var artists = ""
         if let artistArray = metadata?.artist {
-//            for each in artistArray {
-//                artists += each
-//            }
             artists = artistArray.reduce("", +)
         }
-        
         
         let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
         self.present(playerVC, animated: true, completion: nil)
@@ -1089,6 +1000,23 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         default:
             return 0
         }
+    }
+    
+    //Changing collectionview border color(month, season collection view)
+    func changeCollectionViewCellStyle(_ collectionView: UICollectionView, indexPath: IndexPath) {
+        for each in collectionView.visibleCells {
+            if each == collectionView.cellForItem(at: indexPath) {
+                self.changeBorderColorOfCell(each, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+            } else {
+                self.changeBorderColorOfCell(each, toColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0))
+            }
+        }
+    }
+    
+    func changeBorderColorOfCell(_ cell: UICollectionViewCell, toColor: UIColor) {
+        cell.layer.borderWidth = 2.0
+        cell.layer.borderColor = toColor.cgColor
+        cell.layer.cornerRadius = 15.0
     }
     
 }

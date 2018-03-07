@@ -220,25 +220,6 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             {
                 let loginVc = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: false, presentingVC: self)
                 self.present(loginVc, animated: true, completion: nil)
-                /*
-                JCLoginManager.sharedInstance.performNetworkCheck { (isOnJioNetwork) in
-                    if(isOnJioNetwork == false)
-                    {
-                        print("Not on jio network")
-                        JCLoginManager.sharedInstance.isLoginFromSettingsScreen = true
-                        DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: nil)
-                        }
-                    }
-                    else
-                    {
-                        DispatchQueue.main.async {
-                            weakSelf?.settingsTableView.reloadData()
-                        }
-                        
-                    }
-            
-                }*/
             }
         }
         else

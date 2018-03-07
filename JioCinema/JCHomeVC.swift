@@ -77,8 +77,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.tabBarController?.delegate = self
         if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable{
             isResumeWatchDataAvailable = false
-            dataItemsForTableview.remove(at: 0)
-            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            isUserRecommendationAvailable = false
+            baseTableView.reloadData()
         }
         
         //Clevertap Navigation Event
@@ -153,7 +153,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             }
             if isGenereDataAvailable{
                 let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition) ?? 6
-                if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0]{
+                if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0] {
                     if pos < dataItemsForTableview.count{
                         dataItemsForTableview.insert(genreData, at: pos)
                     }
@@ -166,17 +166,16 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 }
             }
             if isUserRecommendationAvailable{
-                if let recommendationDataArray = JCDataStore.sharedDataStore.userRecommendationList?.data{
+                if let recommendationDataArray = JCDataStore.sharedDataStore.userRecommendationList?.data {
                     var i = 0
-                    for recommendationData in recommendationDataArray{
+                    for recommendationData in recommendationDataArray {
                         let pos = recommendationData.position ?? 4+i
-                        if pos < dataItemsForTableview.count{
+                        if pos < dataItemsForTableview.count {
                             dataItemsForTableview.insert(recommendationData, at: pos)
                         }
                         i = i + 1
                     }
-                }
-                
+                }                
             }
             return dataItemsForTableview.count
         }
@@ -223,7 +222,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             carouselView.carouselDelegate = self
             uiviewCarousel = carouselView
             return carouselView
-        }else{
+        } else {
             return UIView()
         }
         
@@ -255,17 +254,13 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         return 650
     }
     
-    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
-    {
-        
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
     
-    func callWebServiceForHomeData(page: Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    func callWebServiceForHomeData(page: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
@@ -478,7 +473,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
             return
         }
-        if let tappedItem = item as? Item{
+        if let tappedItem = item as? Item {
             
             //Screenview event to Google Analytics
             let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
@@ -486,14 +481,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             print(tappedItem)
-            if tappedItem.app?.type == VideoType.Home.rawValue{
-                print("At Home")
+            guard let itemAppType = VideoType(rawValue: tappedItem.app?.type ?? -111) else {
+                return
             }
-            else if tappedItem.app?.type == VideoType.Music.rawValue{
-                print("At Music")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Movie.rawValue{
+            switch itemAppType {
+            case .Movie:
                 print("At Movie")
                 if let duration = tappedItem.duration?.floatValue(), duration > 0 {
                     checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
@@ -502,8 +494,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
                     self.present(metadataVC, animated: false, completion: nil)
                 }
-            }
-            else if tappedItem.app?.type == VideoType.TVShow.rawValue {
+            case .Music, .Episode, .Clip, .Trailer:
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+            case .TVShow:
                 print("At TvShow")
                 if let duration = tappedItem.duration?.floatValue(), duration > 0 {
                     tappedItem.app?.type = VideoType.Episode.rawValue
@@ -513,29 +506,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
                     self.present(metadataVC, animated: true, completion: nil)
                 }
-            }
-            else if tappedItem.app?.type == VideoType.Episode.rawValue{
-                print("At Episode")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Clip.rawValue{
-                print("At Clip")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Trailer.rawValue{
-                print("At Trailer")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Language.rawValue{
-                print("At Language")
+            case .Genre, .Language:
                 presentLanguageGenreController(item: tappedItem)
-            }
-            else if tappedItem.app?.type == VideoType.Genre.rawValue{
-                print("At Genre")
-                presentLanguageGenreController(item: tappedItem)
-            }
-            else if tappedItem.app?.type == VideoType.Search.rawValue{
-                print("At Search")
+            default:
+                print("Default")
             }
         }
     }
@@ -573,8 +547,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.categoryNameAfterLogin = nil
     }
     
-    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
-    {
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         toScreenName = PLAYER_SCREEN
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
             switch appType {
@@ -596,23 +569,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     
-    func presentLoginVC()
-    {
+    func presentLoginVC() {
         toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
     
-    func presentLanguageGenreController(item: Item)
-    {
+    func presentLanguageGenreController(item: Item) {
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
         self.present(languageGenreVC, animated: false, completion: nil)
     }
-    func callWebServiceForUserRecommendationList()
-    {
-        guard JCLoginManager.sharedInstance.isUserLoggedIn() else{
+    func callWebServiceForUserRecommendationList() {
+        guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
             isUserRecommendationAvailable = false
             return
         }
@@ -621,13 +591,12 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let recommendationListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: recommendationListRequest) { (data, response, error) in
-            if let responseError = error as NSError?
-            {
+            if let responseError = error as NSError? {
                 //TODO: handle error
                 print(responseError)
                 
                 //Refresh sso token call fails
-                if responseError.code == 143{
+                if responseError.code == 143 {
                     print("Refresh sso token call fails")
                     DispatchQueue.main.async {
                         //JCLoginManager.sharedInstance.logoutUser()
@@ -636,15 +605,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 }
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateUserRecommendationList(dictionaryResponseData: responseData)
                 //weakSelf?.dispatchGroup.leave()
                 DispatchQueue.main.async {
-                    if let recommendationData = JCDataStore.sharedDataStore.userRecommendationList?.data, recommendationData.count > 0{
+                    if let recommendationData = JCDataStore.sharedDataStore.userRecommendationList?.data, recommendationData.count > 0 {
                         self.isUserRecommendationAvailable = true
                         self.baseTableView.reloadData()
-                    }else{
+                    } else {
                         self.isUserRecommendationAvailable = false
                     }
                 }

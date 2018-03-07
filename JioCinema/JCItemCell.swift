@@ -24,9 +24,7 @@ class JCItemCell: UICollectionViewCell {
                 self.superview?.alpha = 1.0
             }
 
-        }
-        else
-        {
+        } else {
             self.nameLabel.font = self.nameLabel.font.withSize(24)
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 0.5

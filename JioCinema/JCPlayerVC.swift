@@ -109,12 +109,11 @@
         "hasProtectedContent"
     ]
     
-    var bitrate:String{
-        get{
+    var bitrate: String {
+        get {
             var bitrateString:String = ""
             //var unit = "kBps"
-            if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate
-            {
+            if let observedBitrate = playerItem?.accessLog()?.events.last?.observedBitrate {
                 let bitrate =  observedBitrate / (8*1024)
                 bitrateString = bitrate > 0 ? String(Int(bitrate)) : "0"
             }
@@ -132,21 +131,6 @@
         preparePlayerVC()
         addSwipeGesture()
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        if isMediaEndAnalyticsEventNotSent{
-            sendMediaEndAnalyticsEvent()
-        }
-        if player != nil{
-            resetPlayer()
-        }
-    }
-    override func viewDidLayoutSubviews() {
-        if self.view_Recommendation.frame.origin.y >= screenHeight - 30
-        {
-            //self.setCustomRecommendationViewSetting(state: false)
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -632,8 +616,7 @@
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
     }
     
-    func sendMediaEndAnalyticsEvent()
-    {
+    func sendMediaEndAnalyticsEvent() {
         vendor = playbackRightsData?.vendor ?? ""
         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
             
@@ -654,8 +637,7 @@
     }
     
     
-    func sendVideoViewedEventToCleverTap()
-    {
+    func sendVideoViewedEventToCleverTap() {
         let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS", "Director": director, "Starcast": starCast, "Content Partner": vendor]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties)
         
@@ -669,16 +651,14 @@
     //MARK:- Scroll Collection View To Row
     var myPreferredFocusView:UIView? = nil
     
-    override var preferredFocusEnvironments: [UIFocusEnvironment]
-    {
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
             return [preferredView]
         }
         return []
     }
     
-    func scrollCollectionViewToRow(row: Int)
-    {
+    func scrollCollectionViewToRow(row: Int) {
         print("Scroll to Row is = \(row)")
         if row >= 0, collectionView_Recommendation.numberOfItems(inSection: 0) > 0 {
             DispatchQueue.main.async {
@@ -697,8 +677,7 @@
     }
     
     //MARK:- Open MetaDataVC
-    func openMetaDataVC(model:More)
-    {
+    func openMetaDataVC(model:More) {
         Log.DLog(message: "openMetaDataVC" as AnyObject)
         if let topController = UIApplication.topViewController() {
             Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
@@ -725,8 +704,7 @@
     }
     //MARK:- Show Next Video View
     
-    func showNextVideoView(videoName: String, remainingTime: Int, banner: String)
-    {
+    func showNextVideoView(videoName: String, remainingTime: Int, banner: String) {
         DispatchQueue.main.async {
             self.nextVideoView.isHidden = false
             self.nextVideoNameLabel.text = videoName
@@ -752,16 +730,14 @@
     }
     
     //MARK:- Custom Setting
-    func setCustomRecommendationViewSetting(state: Bool)
-    {
+    func setCustomRecommendationViewSetting(state: Bool) {
         
         self.isRecommendationView = state
         self.collectionView_Recommendation.reloadData()
         if state
         {
             self.scrollCollectionViewToRow(row: currentPlayingIndex)
-        }
-        else{
+        } else {
             DispatchQueue.main.async {
                 self.myPreferredFocusView = nil
                 self.setNeedsFocusUpdate()
@@ -1279,14 +1255,24 @@
     
     //MARK:- Dismiss Viewcontroller
     func dismissPlayerVC() {
+        self.resetPlayer()
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK:- Change recommendation view voisibility
+    //MARK:- Change recommendation view visibility
     func recommendationViewchangeTo(_ alpha: Double, visibility: Bool, animationDuration: TimeInterval) {
         isRecommendationViewVisible = visibility
-     UIView.animate(withDuration: animationDuration) {
-        self.view_Recommendation.alpha = CGFloat(alpha)
+        UIView.animate(withDuration: animationDuration) {
+            self.view_Recommendation.alpha = CGFloat(alpha)
+        }
+    }
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if let press = presses.first, press.type == .menu {
+            if isMediaEndAnalyticsEventNotSent {
+                sendMediaEndAnalyticsEvent()
+            }
+            self.dismissPlayerVC()
         }
     }
  }
@@ -1396,7 +1382,7 @@
         return cell
     }
  }
-
+ 
  //MARK:- AVAssetResourceLoaderDelegate Methods
  
  extension JCPlayerVC: AVAssetResourceLoaderDelegate, AVPlayerViewControllerDelegate
@@ -1474,9 +1460,9 @@
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
             if error != nil {
-//                DispatchQueue.main.async {
-//                    weakSelf?.handleAPIFailure("Unable to show content!")
-//                }
+                //                DispatchQueue.main.async {
+                //                    weakSelf?.handleAPIFailure("Unable to show content!")
+                //                }
                 return
             }
             print("data: \(data)")
@@ -1498,9 +1484,9 @@
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
             if error != nil {
-//                DispatchQueue.main.async {
-//                    weakSelf?.handleAPIFailure("Unable to show content!")
-//                }
+                //                DispatchQueue.main.async {
+                //                    weakSelf?.handleAPIFailure("Unable to show content!")
+                //                }
                 return
             }
             
@@ -1667,13 +1653,12 @@
     
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
         if visible, !isRecommendationViewVisible{
-        recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
-        recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
+            recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
+            recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
         }
     }
     
-    func sendRecommendationEvent(videoName: String)
-    {
+    func sendRecommendationEvent(videoName: String) {
         let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Recommendation", label: videoName, customParameters: customParams)
     }
@@ -1687,9 +1672,9 @@
         }
         present(alertVC, animated: false, completion: nil)
     }
-
+    
  }
-
+ 
  
  
  

@@ -9,8 +9,7 @@
 import UIKit
 import Crashlytics
 
-class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
-{
+class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
@@ -23,8 +22,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
     }
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         //callWebServiceForMoviesData(page: loadedPage)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)

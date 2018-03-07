@@ -530,7 +530,7 @@
         <scene sceneID="FPJ-C5-E7U">
             <objects>
                 <tabBarController storyboardIdentifier="kTabBarController" id="IVy-sS-KEV" customClass="JCTabBarController" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Mrk-WF-368">
+                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" translucent="NO" itemPositioning="fill" id="Mrk-WF-368">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -925,10 +925,6 @@
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="960"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="1hA-3Y-GlB" id="GjC-CG-mV3"/>
-                                            <outlet property="delegate" destination="1hA-3Y-GlB" id="9EG-KA-hvZ"/>
-                                        </connections>
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
