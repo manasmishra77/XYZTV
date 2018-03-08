@@ -114,11 +114,11 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         moreTableViewDatasource.removeAll()
         if self.itemAppType == .TVShow {
-            if let episodeArray =  metadata?.episodes , episodeArray.count > 0 {
+            if let episodeArray =  metadata?.episodes, episodeArray.count > 0 {
                 moreTableViewDatasource.append(episodeArray)
             }
         } else {
-            if let moreArray =  metadata?.more , moreArray.count > 0 {
+            if let moreArray =  metadata?.more, moreArray.count > 0 {
                 moreTableViewDatasource.append(moreArray)
             }
         }
@@ -143,7 +143,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         cell.tag = indexPath.row
         
         //Metadata for Movies
-        
         if itemAppType == .Movie {
             if let moreArray = moreTableViewDatasource[indexPath.row] as? [More] {
                 cell.categoryTitleLabel.text = metadata?.displayText
@@ -179,8 +178,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         cell.contentView.backgroundColor = UIColor.clear
     }
 
-    func prepareHeaderView() -> UIView
-    {
+    func prepareHeaderView() -> UIView {
         headerCell.seasonCollectionView.delegate = self
         headerCell.seasonCollectionView.dataSource = self
         headerCell.monthsCollectionView.delegate = self
@@ -426,7 +424,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
+        if let season = metadata?.isSeason, season, collectionView == headerCell.seasonCollectionView     //seasons
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
@@ -441,37 +439,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         else if collectionView == headerCell.monthsCollectionView
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: monthCellIdentifier, for: indexPath) as! JCMonthCell
-            var text = ""
-            switch metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? "" {
-            case "01":
-                text = "Jan"
-            case "02":
-                text = "Feb"
-            case "03":
-                text = "Mar"
-            case "04":
-                text = "Apr"
-            case "05":
-                text = "May"
-            case "06":
-                text = "Jun"
-            case "07":
-                text = "Jul"
-            case "08":
-                text = "Aug"
-            case "09":
-                text = "Sep"
-            case "10":
-                text = "Oct"
-            case "11":
-                text = "Nov"
-            case "12":
-                text = "Dec"
-            default:
-                break
-                
+            let intValueOfMonth = metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? "0"
+            if let enumOfMonth = self.getMonthEnum(intValueOfMonth) {
+                cell.monthLabel.text = enumOfMonth.name
             }
-            cell.monthLabel.text = text
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
@@ -480,8 +451,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
-    {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !Utility.sharedInstance.isNetworkAvailable
         {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
@@ -645,7 +615,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         if itemAppType == .TVShow {
             params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId]]
         } else if itemAppType == .Movie {
-            params = ["uniqueId":JCAppUser.shared.unique,"listId":"12" ,"json": ["id": metadata?.contentId ?? itemId]]
+            params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId]]
         }
         
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
@@ -742,6 +712,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
+            headerCell.showMoreDescription.isEnabled = true
         } else {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
             headerCell.showMoreDescription.isEnabled = false
@@ -803,9 +774,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        if let tappedItem = item as? More{
+        if let tappedItem = item as? More {
             let itemToBePlayed = self.convertingMoreToItem(tappedItem, currentItem: Item())
-            if let itemId = itemToBePlayed.id{
+            if let itemId = itemToBePlayed.id {
                 self.item = itemToBePlayed
                 if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
                     self.didClickOnShowMoreDescriptionButton(self.headerCell, toShowMore: false)
@@ -903,7 +874,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let directors = metadata?.directors?.reduce("", { (res, str) in
             res + "," + str
         })
-        if itemAppType == VideoType.Movie{
+        if itemAppType == .Movie{
             var isMoreDataAvailable = false
             var recommendationArray: Any = false
             if let moreArray = metadata?.more, moreArray.count > 0{
@@ -915,7 +886,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             
             self.present(playerVC, animated: true, completion: nil)
         }
-        else if itemAppType == VideoType.TVShow {
+        else if itemAppType == .TVShow {
             var isEpisodeAvailable = false
             var recommendationArray: Any = false
             if let episodes = metadata?.episodes, episodes.count > 0{
@@ -967,7 +938,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
                 return (false, fontChangedText)
             }
-            
         } else {
             let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
             return (false, fontChangedText)
@@ -989,7 +959,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         switch itemAppType {
         case .Movie:
             //To be changed to dynamic one
-            return 809 - 120
+            return 689
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
@@ -1019,6 +989,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         cell.layer.cornerRadius = 15.0
     }
     
+    //Get Month enum
+    func getMonthEnum(_ text: String) -> Month? {
+        let intOfMonth = Int(text)
+        let enumOfMonth = Month(rawValue: intOfMonth ?? 0)
+        return enumOfMonth
+    }
+
 }
 
 
