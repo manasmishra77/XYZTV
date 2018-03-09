@@ -159,12 +159,12 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             
         // Metadata for TV
         else if itemAppType == .TVShow {
-            if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode]{
+            if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode] {
                 cell.categoryTitleLabel.text = "Episodes"
                 cell.episodes = episodeArray
                 cell.tableCellCollectionView.reloadData()
             }
-            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String]{
+            if let artistArray = moreTableViewDatasource[indexPath.row] as? [String] {
                 cell.categoryTitleLabel.text = "Cast & Crew"
                 let dict = getStarCastImagesUrl(artists: artistArray)
                 cell.artistImages = dict
@@ -428,12 +428,19 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
+            if indexPath.row == 0 {
+                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+            }
+            
             return cell           
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
             cell.yearLabel.text = metadata?.filter?[indexPath.row].filter ?? ""
+            if indexPath.row == 0 {
+                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+            }
             return cell
         }
         else if collectionView == headerCell.monthsCollectionView
@@ -442,6 +449,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let intValueOfMonth = metadata?.filter?[selectedYearIndex].month?[indexPath.row] ?? "0"
             if let enumOfMonth = self.getMonthEnum(intValueOfMonth) {
                 cell.monthLabel.text = enumOfMonth.name
+            }
+            if indexPath.row == 0 {
+                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
             }
             return cell
         } else {
@@ -474,6 +484,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
             
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0] {
+                self.headerCell.monthsCollectionView.reloadData()
+                self.headerCell.monthsCollectionView.layoutIfNeeded()
                 self.changeCollectionViewCellStyle(self.headerCell.monthsCollectionView, indexPath: IndexPath(row: 0, section: 0))
                 callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
             }
@@ -997,21 +1009,3 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

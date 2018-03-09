@@ -71,8 +71,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
 
     }
     
-    override func viewDidAppear(_ animated: Bool)
-    {
+    override func viewDidAppear(_ animated: Bool) {
         screenAppearTiming = Date()
         self.tabBarController?.delegate = self
         if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable{
@@ -96,8 +95,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.baseTableView.isHidden = !self.baseTableView.isHidden
     }
     //MARK: Top Shelf interatcion
-    func handleTopShelfCalls()
-    {
+    func handleTopShelfCalls() {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         if let modal = delegate.topShelfContentModel {
             let videoType = Utility.checkType(modal.type ?? "")
@@ -118,8 +116,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             }
             delegate.topShelfContentModel = nil
             self.perform(#selector(JCHomeVC.hideTableView), with: nil, afterDelay: 1.0)
-        }
-        else{
+        } else {
             baseTableView.isHidden = false
         }
     }
@@ -141,7 +138,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     dataItemsForTableview.remove(at: 0)
                 }
             }
-            if isLanguageDataAvailable{
+            if isLanguageDataAvailable {
                 let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition) ?? 4
                 if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0]
                 {
@@ -151,7 +148,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     
                 }
             }
-            if isGenereDataAvailable{
+            if isGenereDataAvailable {
                 let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.genrePosition) ?? 6
                 if let genreData = JCDataStore.sharedDataStore.genreData?.data?[0] {
                     if pos < dataItemsForTableview.count{
@@ -201,10 +198,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         cell.tableCellCollectionView.reloadData()
         
         
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2)
-        {
-            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
-            {
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1) {
                 callWebServiceForHomeData(page: loadedPage + 1)
                 loadedPage += 1
             }
@@ -283,8 +278,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     
-    func evaluateHomeData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateHomeData(dictionaryResponseData responseData:Data) {
         //Success
         JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Home)
         weak var weakSelf = self
@@ -393,8 +387,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     
     //TBC
-    func callWebServiceForLanguageList()
-    {
+    func callWebServiceForLanguageList() {
         let url = languageListUrl
         print(url)
         let languageListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
@@ -423,16 +416,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     
-    func evaluateLanguageList(dictionaryResponseData responseData:Data)
-    {
+    func evaluateLanguageList(dictionaryResponseData responseData:Data) {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Language)
         JCDataStore.sharedDataStore.languageData?.data?[0].title = "Languages"
         
     }
     
-    func callWebServiceForGenreList()
-    {
+    func callWebServiceForGenreList() {
         let url = genreListUrl
         let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
@@ -444,8 +435,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 //weakSelf?.dispatchGroup.leave()
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateGenreList(dictionaryResponseData: responseData)
                 //weakSelf?.dispatchGroup.leave()
                 DispatchQueue.main.async {

@@ -23,7 +23,6 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
     }
     
     // MARK: - TVTopShelfProvider protocol
-    
     var topShelfStyle: TVTopShelfContentStyle {
         // Return desired Top Shelf style.
         return .sectioned

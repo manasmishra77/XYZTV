@@ -42,19 +42,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool)
-    {
-
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        self.sendSearchAnalyticsEvent()
     }
     
     override func didReceiveMemoryWarning() {
@@ -63,8 +54,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     //MARK:- UITableView Delegate
 
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
@@ -75,7 +65,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-        cell.itemFromViewController = VideoType.Search
+        cell.itemFromViewController = .Search
         cell.tag = indexPath.row
 
         cell.categoryTitleLabel.text = searchResultArray[indexPath.row].categoryName
@@ -128,15 +118,15 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                     self.present(metadataVC, animated: true, completion: nil)
                 }
             }
-            else if tappedItem.app?.type == VideoType.Episode.rawValue{
+            else if tappedItem.app?.type == VideoType.Episode.rawValue {
                 print("At Episode")
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
             }
-            else if tappedItem.app?.type == VideoType.Clip.rawValue{
+            else if tappedItem.app?.type == VideoType.Clip.rawValue {
                 print("At Clip")
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
             }
-            else if tappedItem.app?.type == VideoType.Trailer.rawValue{
+            else if tappedItem.app?.type == VideoType.Trailer.rawValue {
                 print("At Trailer")
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
             }
@@ -158,13 +148,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         //weak var weakSelf = self
-        if(JCLoginManager.sharedInstance.isUserLoggedIn())
-        {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
-        }
-        else
-        {
+        } else {
             self.itemAfterLogin = itemToBePlayed
             self.categoryNameAfterLogin = categoryName
             self.categoryIndexAfterLogin = categoryIndex
@@ -173,8 +160,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     
     
-    func presentLoginVC()
-    {
+    func presentLoginVC() {
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
@@ -196,50 +182,40 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     //MARK:- UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        if searchText.count > 0
-        {
+        if searchText.count > 0 {
             searchResultForkey(with: searchText)
-        }
-        else
-        {
-            DispatchQueue.main.async {
-                self.searchResultArray.removeAll()
-                self.baseTableView.reloadData()
-            }
+        } else {
+        self.searchResultArray.removeAll()
+        self.baseTableView.reloadData()
         }
     }
     
     //MARK:-  UISearchResultsUpdating Methods
     func updateSearchResults(for searchController: UISearchController) {
-        searchResultForkey(with: searchController.searchBar.text!)
+        searchResultForkey(with: searchController.searchBar.text ?? "")
     }
     
-    fileprivate func searchResultForkey(with key:String)
-    {
+    fileprivate func searchResultForkey(with key: String) {
         let url = preditiveSearchURL
         let params:[String:String]? = ["q": key]
         let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakself = self
         
         RJILApiManager.defaultManager.post(request: searchRequest) { (data, response, error) in
-            if error != nil
-            {
+            if error != nil {
                 DispatchQueue.main.async {
                     weakself?.searchResultArray.removeAll()
                     weakself?.baseTableView.reloadData()
                 }
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 if let responseString = String(data: responseData, encoding: .utf8)
                 {
                     self.searchModel = SearchDataModel(JSONString: responseString)
                     
                     let array = (self.searchModel?.searchData?.categoryItems) ?? [SearchedCategoryItem]()
-                    if array.count > 0
-                    {
+                    if array.count > 0 {
                         DispatchQueue.main.async {
                             weakself?.searchResultArray = array
                             weakself?.baseTableView.reloadData()
@@ -250,9 +226,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         }
     }
    
-    //MARK:-  Analytics Event Methods
-    func sendSearchAnalyticsEvent()
-    {
+    //MARK:- Analytics Event Methods
+    func sendSearchAnalyticsEvent() {
         // For Internal Analytics Event
         let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text!)!, isvoice: "false", queryResultCount: String(self.searchResultArray.count))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: searchInternalEvent)
@@ -277,8 +252,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         if presses.first?.type == UIPressType.menu, isForArtistSearch{
             isForArtistSearch = false
             if let languageModel = languageModelForArtistSearch as? Item {
-//                let langVc = Utility.sharedInstance.prepareLanguageGenreVC(languageModel: languageModel, metadataToBePlayedId: metaDataItemId, metadataAppType: metaDataAppType, metadataFromScreen: metaDataFromScreen, metadataCategoryName: metaDataCategoryName, metadataCategoryIndex: metaDataCategoryIndex, metadataTabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist)
-//                 self.present(langVc, animated: true, completion: nil)
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, languageData: languageModel)
                 self.present(metaDataVC, animated: true, completion: nil)
             } else {
@@ -290,7 +263,6 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
         //ChangingTheAlpha when tab bar item selected
         if tabBarController.selectedIndex != 5{
             isForArtistSearch = false
