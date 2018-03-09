@@ -167,6 +167,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
         if (JCDataStore.sharedDataStore.tvData?.totalPages) == nil
         {
             return UIView.init()

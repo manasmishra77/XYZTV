@@ -158,6 +158,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
         if (JCDataStore.sharedDataStore.clipsData?.totalPages) == nil
         {
             return UIView()

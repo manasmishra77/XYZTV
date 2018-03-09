@@ -158,6 +158,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
         if (JCDataStore.sharedDataStore.moviesData?.totalPages) == nil
         {
             return UIView()

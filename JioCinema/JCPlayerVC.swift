@@ -224,7 +224,7 @@
     //MARK:- AVPlayerViewController Methods
     
     func resetPlayer() {
-        //self.loaderCoverView.isHidden = true
+        
         if let player = player {
             player.pause()
             self.removePlayerObserver()
@@ -926,6 +926,7 @@
                     let vc = self.presentingViewController
                     DispatchQueue.main.async {
                         JCLoginManager.sharedInstance.logoutUser()
+                        self.resetPlayer()
                         self.dismiss(animated: false, completion: {
                             let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
                             vc?.present(loginVc, animated: false, completion: nil)
@@ -1018,6 +1019,7 @@
                     let vc = self.presentingViewController
                     DispatchQueue.main.async {
                         JCLoginManager.sharedInstance.logoutUser()
+                        self.resetPlayer()
                         self.dismiss(animated: false, completion: {
                             let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
                             vc?.present(loginVc, animated: false, completion: nil)
@@ -1291,7 +1293,7 @@
             isMediaEndAnalyticsEventNotSent = false
             sendMediaEndAnalyticsEvent()
         }
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             if isPlayList {
                 let newItem = moreArray[indexPath.row]
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
@@ -1306,7 +1308,8 @@
                     if newAppType == .Movie{
                         
                         //Present Metadata
-                        if let metaDataVC = self.presentingViewController as? JCMetadataVC{
+                        if let metaDataVC = self.presentingViewController as? JCMetadataVC {
+                            self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
                             })
@@ -1353,7 +1356,7 @@
         {
             let model = episodeArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner{
+            if let bannerUrl = model.banner {
                 imageUrl = bannerUrl
             }
             if appType == .Episode {
@@ -1374,11 +1377,12 @@
         } else {
             cell.nowPlayingImageView.isHidden = true
         }
-        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-        });
-        
+        if let urlString = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl) {
+            let url = URL(string: urlString)
+            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
+        }
         return cell
     }
  }
@@ -1395,7 +1399,7 @@
         
         _ = MD5Data.withUnsafeBytes({ MD5Bytes in
             stringData?.withUnsafeBytes({ stringBytes in
-                CC_MD5(stringBytes, CC_LONG((stringData?.count)!), UnsafeMutablePointer<UInt8>(mutating: MD5Bytes))
+                CC_MD5(stringBytes, CC_LONG(stringData?.count ?? 0), UnsafeMutablePointer<UInt8>(mutating: MD5Bytes))
             })
         })
         print("MD5Hex: \(MD5Data.map {String(format: "%02hhx", $0)}.joined())")
@@ -1405,13 +1409,12 @@
     
     func getJCTKeyValue(with expiryTime:String) -> String
     {
-        let jctToken = self.MD5Hash(string: JCDataStore.sharedDataStore.secretCdnTokenKey! + self.getSTKeyValue() + expiryTime)
+        let jctToken = self.MD5Hash(string: (JCDataStore.sharedDataStore.secretCdnTokenKey ?? "") + self.getSTKeyValue() + expiryTime)
         return filterMD5HashedStringFromSpecialCharacters(md5String:jctToken)
     }
     
-    func getSTKeyValue() -> String
-    {
-        let stKeyValue = JCDataStore.sharedDataStore.secretCdnTokenKey! + JCAppUser.shared.ssoToken
+    func getSTKeyValue() -> String {
+        let stKeyValue = (JCDataStore.sharedDataStore.secretCdnTokenKey ?? "") + JCAppUser.shared.ssoToken
         let md5StValue = self.MD5Hash(string: stKeyValue)
         let stKey = self.filterMD5HashedStringFromSpecialCharacters(md5String: md5StValue)
         return stKey
@@ -1428,13 +1431,15 @@
     
     func getExpireTime() -> String {
         let deviceTime = Date()
-        let currentTimeInSeconds: Int = Int(ceil(deviceTime.timeIntervalSince1970)) + JCDataStore.sharedDataStore.cdnUrlExpiryDuration!
+        let currentTimeInSeconds: Int = Int(ceil(deviceTime.timeIntervalSince1970)) + (JCDataStore.sharedDataStore.cdnUrlExpiryDuration ?? 0)
         return "\(currentTimeInSeconds)"
     }
     func generateRedirectURL(sourceURL: String)-> URLRequest? {
-        
-        let redirect = URLRequest(url: URL(string: sourceURL)!)
-        return redirect
+        if let url = URL(string: sourceURL) {
+            let redirect = URLRequest(url: url)
+            return redirect
+        }
+        return nil
     }
     
     func getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest requestBytes: Data, contentIdentifierHost assetStr: String, leaseExpiryDuration expiryDuration: TimeInterval, error errorOut: Error?,completionHandler: @escaping(Data?)->Void)
@@ -1447,10 +1452,12 @@
         
         var jsonData: Data? = try? JSONSerialization.data(withJSONObject: dict, options: [])
         
-        let url = URL(string: URL_GET_KEY)
-        let req = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: URL_GET_KEY) else {
+            return
+        }
+        let req = NSMutableURLRequest(url: url)
         req.httpMethod = "POST"
-        req.setValue("\(UInt((jsonData?.count)!))", forHTTPHeaderField: "Content-Length")
+        req.setValue("\(UInt((jsonData?.count ?? 0)))", forHTTPHeaderField: "Content-Length")
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
         req.httpBody = jsonData
@@ -1465,10 +1472,8 @@
                 //                }
                 return
             }
-            print("data: \(data)")
-            if (data != nil) {
-                let decodedData = Data(base64Encoded: data!, options: [])
-                completionHandler(decodedData!)
+            if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {
+                completionHandler(decodedData)
             } else {
                 completionHandler(data)
             }
@@ -1477,8 +1482,10 @@
     }
     
     func getAppCertificateData(completionHandler: @escaping (Data?)->Void) {
-        let url = URL(string: URL_GET_CERT)
-        let req = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: URL_GET_CERT) else {
+            return
+        }
+        let req = NSMutableURLRequest(url: url)
         req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
@@ -1490,14 +1497,10 @@
                 return
             }
             
-            if (data != nil)
-            {
-                print("ASYNC Certificate data: \(data!)")
-                let decodedData = Data(base64Encoded: data!, options: [])
-                completionHandler(decodedData!)
-            }
-            else
-            {
+            print("data: \(data)")
+            if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {
+                completionHandler(decodedData)
+            } else {
                 completionHandler(data)
             }
         })
@@ -1513,23 +1516,25 @@
             
             // Must be a non-standard URI scheme for AVFoundation to invoke your AVAssetResourceLoader delegate
             // for help in loading it.
-            
-            if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
+            if let urlScheme = url?.scheme, (urlScheme !=  URL_SCHEME_NAME) {
                 return false
             }
             
-            let assetStr: String = url!.host!
-            var assetId: Data?
+//            if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
+//                return false
+//            }
+            
+            let assetStr: String = url?.host ?? ""
             var requestBytes: Data?
             
-            assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as Data
-            if (assetId == nil) {
+            guard let assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as? Data else {
                 return handled
             }
             
             self.getAppCertificateData { (certificate) in
+                
                 do {
-                    requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate!, contentIdentifier: assetId!, options: nil)
+                    requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate ?? Data(), contentIdentifier: assetId, options: nil)
                     
                     print("Request Bytes is \(String(describing: requestBytes))")
                     //var responseData: Data? = nil
@@ -1574,59 +1579,66 @@
             
         }
         
-        var url = loadingRequest.request.url?.absoluteString
-        print(url!)
+        var urlString = loadingRequest.request.url?.absoluteString ?? ""
         let contentRequest = loadingRequest.contentInformationRequest
         let dataRequest = loadingRequest.dataRequest
         //Check if the it is a content request or data request, we have to check for data request and do the m3u8 file manipulation
         
         if (contentRequest != nil) {
-            
             contentRequest?.isByteRangeAccessSupported = true
         }
         if (dataRequest != nil) {
             //this is data request so processing the url. change the scheme to http
-            if (url?.contains("fakeHttp"))!, (url?.contains("token"))! {
-                url = url?.replacingOccurrences(of: "fakeHttp", with: "http")
+            
+            if (urlString.contains("fakeHttp")), (urlString.contains("token")) {
+                urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
+                guard let url = URL(string: urlString) else {
+                    return false
+                }
                 do{
-                    let data = try Data(contentsOf: URL(string: url!)!)
+                    let data = try Data(contentsOf: url)
                     dataRequest?.respond(with: data)
                     loadingRequest.finishLoading()
                     
                 }catch{
+                    return false
                 }
                 return true
             }
-            if (url?.contains(".m3u8"))!
+            if (urlString.contains(".m3u8"))
             {
                 let expiryTime:String = self.getExpireTime()
-                url = url?.replacingOccurrences(of: "fakeHttp", with: "http")
-                let punctuation = (url?.contains(".m3u8?"))! ? "&" : "?"
+                urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
+                let punctuation = (urlString.contains(".m3u8?")) ? "&" : "?"
                 let stkeyValue = self.getSTKeyValue()
-                let urlString = url! + "\(punctuation)jct=\(self.getJCTKeyValue(with: expiryTime))&pxe=\(expiryTime)&st=\(stkeyValue)"
+                let urlString = urlString + "\(punctuation)jct=\(self.getJCTKeyValue(with: expiryTime))&pxe=\(expiryTime)&st=\(stkeyValue)"
+                guard let url = URL(string: urlString) else {
+                    return false
+                }
                 print("printing value of url \(urlString)")
-                do{
-                    let data = try Data(contentsOf: URL(string: urlString)!)
+                do {
+                    let data = try Data(contentsOf: url)
                     dataRequest?.respond(with: data)
                     loadingRequest.finishLoading()
                     
-                }catch{
+                } catch {
+                    return false
                 }
                 return true
             }
-            if(url?.contains(".ts"))!{
-                url = url?.replacingOccurrences(of: "fakeHttp", with: "http")
-                let redirect = self.generateRedirectURL(sourceURL: url!)
-                if (redirect != nil) {
+            if(urlString.contains(".ts")) {
+                urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
+                if let redirect = self.generateRedirectURL(sourceURL: urlString), let url = URL(string: urlString) {
                     //Step 9 and 10:-
-                    loadingRequest.redirect = redirect!
-                    let response = HTTPURLResponse(url: URL(string: url!)!, statusCode: 302, httpVersion: nil, headerFields: nil)
+                    loadingRequest.redirect = redirect
+                    let response = HTTPURLResponse(url: url, statusCode: 302, httpVersion: nil, headerFields: nil)
                     loadingRequest.response = response
                     loadingRequest.finishLoading()
+                    return true
                 }
-                return true
+                return false
             }
-            return true
+            return false
         }
         return true
     }
@@ -1667,12 +1679,11 @@
         let action = Utility.AlertAction(title: "Dismiss", style: .default)
         let alertVC = Utility.getCustomizedAlertController(with: text, message: "", actions: [action]) { (alertAction) in
             if alertAction.title == action.title {
-                self.dismiss(animated: false, completion: nil)
+                self.dismissPlayerVC()
             }
         }
         present(alertVC, animated: false, completion: nil)
     }
-    
  }
  
  
