@@ -51,13 +51,13 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         if item?.app?.type == VideoType.Language.rawValue
         {
             currentParamString = "All Genres"
-            callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage,paramString: currentParamString!, type: currentType)
+            callWebServiceForLanguageGenreData(isLanguage: true, pageNo: loadedPage,paramString: currentParamString ?? "", type: currentType)
             headerLabel.text = item?.language
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
             currentParamString = "All Languages"
-            callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage,paramString: currentParamString!, type: currentType)
+            callWebServiceForLanguageGenreData(isLanguage: false, pageNo: loadedPage,paramString: currentParamString ?? "", type: currentType)
             headerLabel.text = item?.genre
         }
         noVideosAvailableLabel.isHidden = true
@@ -88,7 +88,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         if isLanguage
         {
             var langArray = [String]()
-            langArray.append((item!.name)!)
+            langArray.append((item?.name ?? ""))
             params["lang"] = langArray
             params["genres"] = [paramString]
             params["type"] = type
@@ -99,7 +99,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         else
         {
             var genreArray = [String]()
-            genreArray.append((item?.genre)!)
+            genreArray.append((item?.genre ?? ""))
             params["lang"] = [paramString]
             params["genres"] = genreArray
             params["type"] = type
@@ -110,6 +110,10 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         weak var weakself = self
         
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
+            DispatchQueue.main.async {
+                weakself?.videoCategoryButton.isEnabled = true
+                weakself?.languageGenreButton.isEnabled = true
+            }
             if let responseError = error
             {
                 print(responseError.localizedDescription)
@@ -168,20 +172,21 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.normal)
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.focused)
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.selected)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.normal)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.focused)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.selected)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.normal)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.focused)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.selected)
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.normal)
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.focused)
             videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.selected)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.normal)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.focused)
-            languageGenreButton.setTitle(currentParamString!.appending("  ▼"), for: UIControlState.selected)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.normal)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.focused)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.selected)
         }
         languageGenreCollectionView.reloadData()
+        languageGenreCollectionView.layoutIfNeeded()
         
     }
     
@@ -215,35 +220,46 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
     func selectedFilter(filter: Int)
     {
+        self.videoCategoryButton.isEnabled = false
+        self.languageGenreButton.isEnabled = false
         if item?.app?.type == VideoType.Language.rawValue
         {
             var currentTypeId:Int?
-            switch currentFilter! {
-            case .VideoCategory:
-                currentType = filter
-                currentTypeId = item?.list?[filter].id ?? 0
-                currentParamString = "All Genres"
-                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
-            case .LanguageGenre:
-                currentTypeId = item?.list?[currentType].id ?? 0
-                currentParamString = languageGenreDetailModel?.data?.genres?[filter].name ?? ""
-                callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
+            if let currentFilter = currentFilter {
+                switch currentFilter {
+                case .VideoCategory:
+                    currentType = filter
+                    currentTypeId = item?.list?[filter].id ?? 0
+                    currentParamString = "All Genres"
+                    callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString ?? "", type: currentTypeId ?? -1)
+                case .LanguageGenre:
+                    currentTypeId = item?.list?[currentType].id ?? 0
+                    currentParamString = languageGenreDetailModel?.data?.genres?[filter].name ?? ""
+                    callWebServiceForLanguageGenreData(isLanguage: true, pageNo: 0, paramString: currentParamString ?? "", type: currentTypeId ?? -1)
+                }
+            } else {
+                self.videoCategoryButton.isEnabled = true
+                self.languageGenreButton.isEnabled = true
             }
+            
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
             var currentTypeId:Int?
-            switch currentFilter! {
-            case .VideoCategory:
-                currentType = filter
-                currentTypeId = item?.list?[filter].id ?? 0
-                currentParamString = "All Languages"
-                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
-            case .LanguageGenre:
-                currentTypeId = item?.list?[currentType].id ?? 0
-                currentParamString = languageGenreDetailModel?.data?.languages?[filter].name ?? ""
-                callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString!, type: currentTypeId!)
+            if let currentFilter = currentFilter {
+                switch currentFilter {
+                case .VideoCategory:
+                    currentType = filter
+                    currentTypeId = item?.list?[filter].id ?? 0
+                    currentParamString = "All Languages"
+                    callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString ?? "", type: currentTypeId ?? -1)
+                case .LanguageGenre:
+                    currentTypeId = item?.list?[currentType].id ?? 0
+                    currentParamString = languageGenreDetailModel?.data?.languages?[filter].name ?? ""
+                    callWebServiceForLanguageGenreData(isLanguage: false, pageNo: 0, paramString: currentParamString ?? "", type: currentTypeId ?? -1)
+                }
             }
+            
         }
         loadedPage = 0
     }
@@ -305,40 +321,39 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        if languageGenreDetailModel?.data?.items?.count != nil
-        {
-            return (languageGenreDetailModel?.data?.items?.count)!
+        if let count = languageGenreDetailModel?.data?.items?.count {
+            return count
         }
-        else
-        {
-            return 0
-        }
+        return 0
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
 
-        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner!
+        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner
         {
-            cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name!
-            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+            cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
+            if let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image {
+                let url = URL(string: baseImageUrl + imageUrl)
+                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                });
+            }
         }
         
         DispatchQueue.main.async {
-        if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count)! - 1)
+        if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count ?? 0) - 1)
         {
-            if(self.loadedPage < (self.languageGenreDetailModel?.pageCount)! - 1)
+            if(self.loadedPage < (self.languageGenreDetailModel?.pageCount ?? 0) - 1)
             {
                 if self.item?.app?.type == VideoType.Language.rawValue {
-                    self.callWebServiceForLanguageGenreData(isLanguage: true, pageNo: self.loadedPage+1,paramString: self.currentParamString!, type: self.currentType)
+                    self.callWebServiceForLanguageGenreData(isLanguage: true, pageNo: self.loadedPage+1,paramString: self.currentParamString ?? "", type: self.currentType)
                 }
                 else
                 {
-                    self.callWebServiceForLanguageGenreData(isLanguage: false, pageNo: self.loadedPage+1,paramString: self.currentParamString!, type: self.currentType)
+                    self.callWebServiceForLanguageGenreData(isLanguage: false, pageNo: self.loadedPage+1,paramString: self.currentParamString ?? "", type: self.currentType)
                 }
                 
                 self.loadedPage += 1
@@ -348,49 +363,26 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
-    {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let categoryName = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
         let fromScreen = (item?.app?.type == VideoType.Language.rawValue) ? LANGUAGE_SCREEN : GENRE_SCREEN
-        if let tappedItem = languageGenreDetailModel?.data?.items?[indexPath.row]{
-            if tappedItem.app?.type == VideoType.Movie.rawValue{
+        if let tappedItem = languageGenreDetailModel?.data?.items?[indexPath.row], let appTypeInt = tappedItem.app?.type, let videoType = VideoType(rawValue: appTypeInt) {
+            switch videoType {
+            case .Movie:
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
                 self.present(metadataVC, animated: true, completion: nil)
-            }
-            else if tappedItem.app?.type == VideoType.Music.rawValue{
-                print("At Music")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
-            }
-            else if tappedItem.app?.type == VideoType.TVShow.rawValue{
+            case .TVShow:
                 print("At TvShow")
-                if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
-                    if drn > 0{
-                        tappedItem.app?.type = VideoType.Episode.rawValue
-                        //checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-                    }else{
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
-                        self.present(metadataVC, animated: true, completion: nil)
-                    }
-                }else{
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
+                if let drn = tappedItem.duration?.floatValue(), drn == 0 {
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
                     self.present(metadataVC, animated: true, completion: nil)
                 }
-            }
-            else if tappedItem.app?.type == VideoType.Episode.rawValue{
-                print("At Episode")
+            case .Music, .Clip, .Episode, .Trailer:
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
-            }
-            else if tappedItem.app?.type == VideoType.Clip.rawValue{
-                print("At Clip")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
-            }
-            else if tappedItem.app?.type == VideoType.Trailer.rawValue{
-                print("At Trailer")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
+            default:
+                print("Default")
             }
         }
-        
     }
-    
 }

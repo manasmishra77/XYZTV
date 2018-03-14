@@ -21,7 +21,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     var data:[Item]?
     var moreLikeData:[More]?
     var episodes:[Episode]?
-    var artistImages:[String:String]?
+    var artistImages:[String: String]?
     var isResumeWatchCell = false
     var itemFromViewController: VideoType?
     var cellDelgate: JCBaseTableViewCellDelegate? = nil
@@ -31,9 +31,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         tableCellCollectionView.delegate = self
         tableCellCollectionView.dataSource = self
         //self.alpha = 0.5
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
         
         //tvOS11 adjustment
@@ -166,7 +166,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             
         else if(artistImages != nil)
         {
-            /*
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
@@ -176,85 +175,35 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
                 
                 cell.artistNameLabel.textAlignment = .center
-                let keys = Array(self.artistImages!.keys)
-                let key = keys[indexPath.row]
-                let imageUrl = self.artistImages?[key]
-                
-                if let artistDict = self.artistImages?.filter({$0.key != ""}){
-                    if artistDict.count > 0{
-                        let artistName = artistDict[indexPath.row].key
-                        cell.artistNameLabel.text = artistName
-                        let artistNameSubGroup = artistName.components(separatedBy: " ")
-                        var artistInitial = ""
-                        for each in artistNameSubGroup{
-                            if each.first != nil{
-                                artistInitial = artistInitial + String(describing: each.first!)
-                            }
+                if let artistImagesDict = self.artistImages {
+                    let artistNameKey = Array(artistImagesDict.keys)[indexPath.row]
+                    let imageUrl = artistImagesDict[artistNameKey] ?? ""
+                    
+                    cell.artistNameLabel.text = artistNameKey
+                    let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+                    var artistInitial = ""
+                    for each in artistNameSubGroup{
+                        if each.first != nil{
+                            artistInitial = artistInitial + String(describing: each.first!)
                         }
-                        cell.artistImageView.isHidden = true
-                        cell.artistNameInitialButton.isHidden = false
-                        let url = URL(string: imageUrl!)
-                        cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                            
-                            if error != nil{
-                                cell.artistImageView.isHidden = true
-                                cell.artistNameInitialButton.isHidden = false
-                                cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
-                            }
-                            else
-                            {
-                                cell.artistNameInitialButton.isHidden = true
-                                cell.artistImageView.isHidden = false
-                            }
-                        });
                     }
-                    
+                    cell.artistImageView.isHidden = true
+                    cell.artistNameInitialButton.isHidden = false
+                    let url = URL(string: imageUrl)
+                    cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                        (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                        
+                        if error != nil{
+                            cell.artistImageView.isHidden = true
+                            cell.artistNameInitialButton.isHidden = false
+                            cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+                        }
+                        else{
+                            cell.artistNameInitialButton.isHidden = true
+                            cell.artistImageView.isHidden = false
+                        }
+                    })
                 }
-            }
-            cell.isOpaque = true
-//            let artistDict = artistImages?.filter({$0.key != ""})
-//            let artistName = artistDict?[indexPath.row].key
-//            cell.artistNameLabel.text = artistName
-            
-            cell.backgroundColor = .clear
-            return cell*/
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
-            DispatchQueue.main.async {
-                cell.artistImageView.clipsToBounds = true
-                let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
-                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
-                cell.artistImageView.frame = newFrame
-                cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
-                
-                cell.artistNameLabel.textAlignment = .center
-                let artistNameKey = Array(self.artistImages!.keys)[indexPath.row]
-                let imageUrl = self.artistImages?[artistNameKey] ?? ""
-                
-                cell.artistNameLabel.text = artistNameKey
-                let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
-                var artistInitial = ""
-                for each in artistNameSubGroup{
-                    if each.first != nil{
-                        artistInitial = artistInitial + String(describing: each.first!)
-                    }
-                }
-                cell.artistImageView.isHidden = true
-                cell.artistNameInitialButton.isHidden = false
-                let url = URL(string: imageUrl)
-                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                    
-                    if error != nil{
-                        cell.artistImageView.isHidden = true
-                        cell.artistNameInitialButton.isHidden = false
-                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
-                    }
-                    else{
-                        cell.artistNameInitialButton.isHidden = true
-                        cell.artistImageView.isHidden = false
-                    }
-                });
             }
             
             cell.isOpaque = true

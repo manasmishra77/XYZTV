@@ -29,6 +29,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var tabBarIndex: Int? = nil
     var shouldUseTabBarIndex = false
     var isMetaDataAvailable = false
+    var isUserComingFromPlayerScreen = false
     
     var languageModel: Item?
     fileprivate var toScreenName: String? = nil
@@ -43,7 +44,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var metadataContainerView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loaderContainerView: UIView!
-
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var headerView: UIView?
     
     override func viewDidLoad() {
@@ -66,11 +68,21 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
              callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
         // Do any additional setup after loading the view.
+        
+    
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if isUserComingFromPlayerScreen {
+            isUserComingFromPlayerScreen = false
+            self.loaderContainerView.isHidden = false
+            self.metadataContainerView.isHidden = true
+            self.activityIndicator.startAnimating()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {        
@@ -79,6 +91,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         metadataTableView.delegate = self
         metadataTableView.dataSource = self
         metadataTableView.reloadData()
+        print("2222222222222...............")
         let eventProperties = ["Screen Name": fromScreen, "Platform": "TVOS", "Metadata Page": metadataType] as [String : Any]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
@@ -212,6 +225,12 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+            DispatchQueue.main.async {
+                weakSelf?.isUserComingFromPlayerScreen = false
+                weakSelf?.loaderContainerView.isHidden = true
+                weakSelf?.metadataContainerView.isHidden = false
+                weakSelf?.activityIndicator.stopAnimating()
+            }
             
             if let responseError = error
             {
@@ -225,6 +244,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 return
             }
             if let responseData = data {
+                
                 weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     weakSelf?.showMetadata()
@@ -587,6 +607,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     //MARK:- Metadata header cell delegate methods
     func didClickOnWatchNowButton(_ headerView: MetadataHeaderView?) {
+        self.didClickOnShowMoreDescriptionButton(headerCell, toShowMore: false)
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
             playVideo()
         } else {
@@ -594,7 +615,6 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
     }
     func didClickOnShowMoreDescriptionButton(_ headerView: MetadataHeaderView, toShowMore: Bool) {
-        
         if toShowMore {
             headerCell.showMoreDescriptionLabel.text = SHOW_LESS
             let text = (metadata?.description ?? "") + " " + SHOW_LESS
@@ -609,6 +629,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell
         } else {
+            guard headerCell.showMoreDescriptionLabel.text == SHOW_LESS else {
+                return
+            }
             let textTopple = getShorterText(metadata?.description ?? "")
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
@@ -721,6 +744,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
+        
         let trimTextTopple = getShorterText(metadata?.description ?? "")
         if trimTextTopple.0 {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
@@ -731,12 +755,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
-        let imageUrl = metadata?.banner ?? ""
-        let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
+        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
+        let url = URL(string: imageUrl)
         DispatchQueue.main.async {
             self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
+        self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
@@ -1006,6 +1031,27 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let intOfMonth = Int(text)
         let enumOfMonth = Month(rawValue: intOfMonth ?? 0)
         return enumOfMonth
+    }
+    
+    func applyGradient(_ view: UIView) {
+        /*
+        let colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        
+        let layer = CAGradientLayer()
+        layer.colors = colors
+        layer.frame = view.bounds
+        layer.startPoint = CGPoint(x: 0, y: 0)
+        layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
+        
+        view.layer.addSublayer(layer)
+        
+        let layer2 = CAGradientLayer()
+        layer2.colors = colors
+        layer2.frame = view.bounds
+        layer2.startPoint = CGPoint(x: 0, y: 1)
+        layer2.endPoint = CGPoint(x: 0, y: 0)
+        view.layer.addSublayer(layer2)
+ */
     }
 
 }

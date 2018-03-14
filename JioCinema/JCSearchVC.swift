@@ -25,7 +25,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     fileprivate var metaDataForArtist: Any? = nil
     fileprivate var languageModelForArtistSearch: Any?
     
-    fileprivate var searchModel:SearchDataModel?
+    fileprivate var searchModel: SearchDataModel?
     fileprivate var searchResultArray = [SearchedCategoryItem]()
     
     
@@ -212,10 +212,9 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             if let responseData = data {
                 if let responseString = String(data: responseData, encoding: .utf8)
                 {
-                    self.searchModel = SearchDataModel(JSONString: responseString)
+                    weakself?.searchModel = SearchDataModel(JSONString: responseString)
                     
-                    let array = (self.searchModel?.searchData?.categoryItems) ?? [SearchedCategoryItem]()
-                    if array.count > 0 {
+                    if let array = (weakself?.searchModel?.searchData?.categoryItems), array.count > 0 {
                         DispatchQueue.main.async {
                             weakself?.searchResultArray = array
                             weakself?.baseTableView.reloadData()
@@ -264,19 +263,19 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //ChangingTheAlpha when tab bar item selected
-        if tabBarController.selectedIndex != 5{
+        if tabBarController.selectedIndex != 5 {
             isForArtistSearch = false
             searchViewController?.searchBar.text = ""
             searchResultArray.removeAll()
             self.baseTableView.reloadData()
         }
-        
+                                
       //Sending analytics event
         //When screen appears
-        if tabBarController.selectedIndex == 5, isOnSearchScreen{
+        if tabBarController.selectedIndex == 5, isOnSearchScreen {
             isOnSearchScreen = true
             screenAppearTiming = Date()
-        } else if tabBarController.selectedIndex != 5, isOnSearchScreen{
+        } else if tabBarController.selectedIndex != 5, isOnSearchScreen {
             isOnSearchScreen = false
             //Clevertap Navigation Event
             let eventProperties = ["Screen Name": "Search","Platform": "TVOS","Metadata Page": ""]

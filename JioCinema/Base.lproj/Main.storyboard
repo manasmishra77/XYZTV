@@ -896,13 +896,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVl-t3-UwF" userLabel="Loader View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uyr-Yb-QCy">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uyr-Yb-QCy">
                                         <rect key="frame" x="960" y="480" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
                                         <color key="textColor" red="0.94194585210210213" green="0.94194585210210213" blue="0.94194585210210213" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="gDf-Qd-yvt">
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gDf-Qd-yvt">
                                         <rect key="frame" x="940" y="585" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="LDU-dI-a2d"/>
@@ -919,10 +919,10 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
-                                <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="960"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableView>
@@ -943,15 +943,16 @@
                             <constraint firstItem="MVl-t3-UwF" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="LTH-Kl-2wq"/>
                             <constraint firstAttribute="trailing" secondItem="MVl-t3-UwF" secondAttribute="trailing" id="Sao-nC-y7S"/>
                             <constraint firstItem="fH9-Ef-IIE" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="VH6-Rm-vgk"/>
-                            <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="bottom" id="WLV-oQ-aaq"/>
-                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="bottom" secondItem="v2z-Ee-E5k" secondAttribute="bottom" constant="60" id="YLC-LO-4gN"/>
-                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" constant="-60" id="cyN-Um-oDh"/>
+                            <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="bottom" constant="-60" id="WLV-oQ-aaq"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="bottom" secondItem="v2z-Ee-E5k" secondAttribute="bottom" id="YLC-LO-4gN"/>
+                            <constraint firstItem="fH9-Ef-IIE" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" id="cyN-Um-oDh"/>
                             <constraint firstItem="Kta-mR-7sz" firstAttribute="top" secondItem="MVl-t3-UwF" secondAttribute="bottom" constant="-60" id="gvR-am-2QF"/>
                             <constraint firstItem="v2z-Ee-E5k" firstAttribute="leading" secondItem="W1H-6v-pVq" secondAttribute="leading" id="q5b-FR-NN0"/>
                             <constraint firstItem="fH9-Ef-IIE" firstAttribute="trailing" secondItem="v2z-Ee-E5k" secondAttribute="trailing" id="xdi-iX-IIw"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="gDf-Qd-yvt" id="zpL-LZ-bQq"/>
                         <outlet property="loaderContainerView" destination="MVl-t3-UwF" id="Pgg-uh-Htd"/>
                         <outlet property="loadingLabel" destination="Uyr-Yb-QCy" id="Qes-TU-jmL"/>
                         <outlet property="metadataContainerView" destination="v2z-Ee-E5k" id="q3b-HW-cmr"/>

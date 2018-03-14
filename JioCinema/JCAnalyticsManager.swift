@@ -112,7 +112,7 @@ class JCAnalyticsManager
             let url = URL.init(string: urlString)
             
             #if DEBUG
-                print(urlString)
+                //print(urlString)
             #endif
             
             let task = URLSession.shared.dataTask(with: url!) { (data, response, error)  in

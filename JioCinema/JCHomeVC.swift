@@ -16,6 +16,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     var isFirstLoaded = false
     var isUserRecommendationAvailable = false
     var dataItemsForTableview = [DataContainer]()
+    
+    var isMetadataScreenToBePresentedFromResumeWatchCategory = false
+    
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
     
@@ -29,11 +32,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         super.viewDidLoad()
         
         isFirstLoaded = true
-        self.baseTableView.isHidden = true
         super.activityIndicator.isHidden = true
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
-        self.baseTableView.register(UINib.init(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
+        self.baseTableView.register(UINib(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
         self.baseTableView.delegate = self
         self.baseTableView.dataSource = self
         
@@ -52,9 +54,16 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.handleTopShelfCalls), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(JCHomeVC.hideTableView), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        handleTopShelfCalls()
+        if isMetadataScreenToBePresentedFromResumeWatchCategory {
+            isMetadataScreenToBePresentedFromResumeWatchCategory = false
+            super.activityIndicator.isHidden = false
+            self.baseTableView.isHidden = true
+            super.activityIndicator.startAnimating()
+        } else {
+            super.activityIndicator.isHidden = true
+            self.baseTableView.isHidden = false
+            super.activityIndicator.stopAnimating()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -287,6 +296,15 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             weakSelf?.baseTableView.reloadData()
         }
     }
+    /*
+    var myPreferredFocusView:UIView? = nil
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferredView = myPreferredFocusView {
+            return [preferredView]
+        }
+        return []
+    }
+    */
     
     func callWebServiceForResumeWatchData() {
         guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
@@ -318,12 +336,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 weakSelf?.evaluateResumeWatchData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
                     self.isResumeWatchDataAvailable = false
-                    if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
-                        if resumeItems.count > 0{
-                            self.isResumeWatchDataAvailable = true
-                        }
-                        self.baseTableView.reloadData()
+                    if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?.items, resumeItems.count > 0 {
+                        weakSelf?.isResumeWatchDataAvailable = true
                     }
+                    weakSelf?.baseTableView.reloadData()
+                    weakSelf?.baseTableView.layoutIfNeeded()
                 }
                 return
             }
@@ -408,8 +425,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 DispatchQueue.main.async {
                     if let languageData = JCDataStore.sharedDataStore.languageData?.data{
                         if languageData.count > 0{
-                            self.isLanguageDataAvailable = true
-                            self.baseTableView.reloadData()
+                            weakSelf?.isLanguageDataAvailable = true
+                            weakSelf?.baseTableView.reloadData()
                         }
                     }
                 }
@@ -442,8 +459,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 DispatchQueue.main.async {
                     if let genreData = JCDataStore.sharedDataStore.genreData?.data{
                         if genreData.count > 0{
-                            self.isGenereDataAvailable = true
-                            self.baseTableView.reloadData()
+                            weakSelf?.isGenereDataAvailable = true
+                            weakSelf?.baseTableView.reloadData()
                         }
                     }
                 }

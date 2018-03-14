@@ -102,6 +102,7 @@
     fileprivate var isFpsUrl = false
     fileprivate var videoStartingTime = Date()
     fileprivate var videoStartingTimeDuration = 0
+    fileprivate var isRecommendationCollectionViewEnabled = false
     
     
     static let assetKeysRequiredToPlay = [
@@ -136,6 +137,9 @@
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    deinit {
+        print("ff")
     }
     //MARK:- Add Player Observer
     func addPlayerNotificationObserver () {
@@ -224,7 +228,6 @@
     //MARK:- AVPlayerViewController Methods
     
     func resetPlayer() {
-        
         if let player = player {
             player.pause()
             self.removePlayerObserver()
@@ -459,6 +462,9 @@
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
+        guard self.player != nil else {
+            return
+        }
         
         if keyPath == #keyPath(JCPlayerVC.player.currentItem.duration) {
             // Update timeSlider and enable/disable controls when duration > 0.0
@@ -511,16 +517,17 @@
             }
             switch newStatus {
             case .readyToPlay:
-                
                 self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 isItemToBeAddedInResumeWatchList = true
+                self.isRecommendationCollectionViewEnabled = true
                 self.addPlayerPeriodicTimeObserver()
                 self.sendMediaStartAnalyticsEvent()
                 
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
+                self.isRecommendationCollectionViewEnabled = false
                 var failureType = "FPS"
                 //If video failed once and valid fps url is there
                 if !isVideoUrlFailedOnce, let _ = self.playbackRightsData?.url{
@@ -1133,7 +1140,7 @@
         params["id"] = id
         params["duration"] = currentTimeDuration
         params["totalDuration"] = totalDuration
-        weak var weakSelf = self
+        weak var weakSelf = self.presentingViewController
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
@@ -1146,7 +1153,7 @@
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
                 
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
                     vc.callWebServiceForResumeWatchData()
                 }
                 return
@@ -1172,6 +1179,7 @@
     //MARK:- Player Methods
     func preparePlayerVC() {
         isMediaEndAnalyticsEventNotSent = true
+        isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
         if appType == VideoType.Movie
         {
@@ -1288,30 +1296,52 @@
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.swipeDownRecommendationView()
-        //Send Media-end analytics event
-        if isMediaEndAnalyticsEventNotSent{
-            isMediaEndAnalyticsEventNotSent = false
-            sendMediaEndAnalyticsEvent()
+        guard isRecommendationCollectionViewEnabled else {
+            return
         }
+        isRecommendationCollectionViewEnabled = false
         if isMoreDataAvailable {
             if isPlayList {
                 let newItem = moreArray[indexPath.row]
+                if (newItem.id ?? "") == id {
+                    return
+                }
+                //Send Media-end analytics event
+                if isMediaEndAnalyticsEventNotSent {
+                    isMediaEndAnalyticsEventNotSent = false
+                    sendMediaEndAnalyticsEvent()
+                    sendRecommendationEvent(videoName: newItem.name ?? "")
+                }
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
-                
-                
                 preparePlayerVC()
-                sendRecommendationEvent(videoName: newItem.name ?? "")
             }
             else{
                 let newItem = moreArray[indexPath.row]
+                if (newItem.id ?? "") == id {
+                    return
+                }
+                //Send Media-end analytics event
+                if isMediaEndAnalyticsEventNotSent {
+                    isMediaEndAnalyticsEventNotSent = false
+                    sendMediaEndAnalyticsEvent()
+                    sendRecommendationEvent(videoName: newItem.name ?? "")
+                }
+                
                 if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt){
-                    if newAppType == .Movie{
-                        
+                    if newAppType == .Movie {
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
+                            metaDataVC.isUserComingFromPlayerScreen = true
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
+                            })
+                        } else if let navVc = self.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers.first as? JCTabBarController, let homeVc = tabVc.viewControllers?.first as? JCHomeVC {
+                            homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
+                            self.resetPlayer()
+                            self.dismiss(animated: true, completion: {
+                                let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0)
+                                tabVc.present(metaVc, animated: false, completion: nil)
                             })
                         }
                     }
@@ -1319,19 +1349,24 @@
                         changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                         preparePlayerVC()
                     }
-                    sendRecommendationEvent(videoName: newItem.name ?? "")
                 }
             }
         }
         else if isEpisodeDataAvailable{
             let newItem = episodeArray[indexPath.row]
-            if id == newItem.id{
+            if id == newItem.id {
                 return
+            }
+            //Send Media-end analytics event
+            if isMediaEndAnalyticsEventNotSent {
+                isMediaEndAnalyticsEventNotSent = false
+                sendMediaEndAnalyticsEvent()
+                sendRecommendationEvent(videoName: newItem.name ?? "")
             }
             changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: false, isEpisodeAvailable: true, recommendationArray: episodeArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
             
             preparePlayerVC()
-            sendRecommendationEvent(videoName: newItem.name ?? "")
+            
         }
     }
  }
@@ -1519,10 +1554,6 @@
             if let urlScheme = url?.scheme, (urlScheme !=  URL_SCHEME_NAME) {
                 return false
             }
-            
-//            if !(url?.scheme?.isEqual(URL_SCHEME_NAME))! {
-//                return false
-//            }
             
             let assetStr: String = url?.host ?? ""
             var requestBytes: Data?
