@@ -91,7 +91,7 @@
     //For player controller
     @objc fileprivate var player                      :AVPlayer?
     fileprivate var playerItem                  :AVPlayerItem?
-    fileprivate var playerController            :AVPlayerViewController?
+    fileprivate weak var playerController            :AVPlayerViewController?
     
     fileprivate var playbackRightsData          :PlaybackRightsModel?
     fileprivate var playlistData                :PlaylistDataModel?
@@ -125,7 +125,6 @@
     //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        playerVC_Global = self
         
         resumeWatchView.isHidden = true
         loaderCoverView.isHidden = true
@@ -139,7 +138,7 @@
         // Dispose of any resources that can be recreated.
     }
     deinit {
-        print("ff")
+        resetPlayer()
     }
     //MARK:- Add Player Observer
     func addPlayerNotificationObserver () {
@@ -232,6 +231,8 @@
             player.pause()
             self.removePlayerObserver()
             playerController?.delegate = nil
+            playerController?.willMove(toParentViewController: nil)
+            playerController?.removeFromParentViewController()
             self.playerController = nil
         }
     }
@@ -257,27 +258,38 @@
         if JCDataStore.sharedDataStore.cdnEncryptionFlag {
             let videoUrl = URL.init(string: videoUrl)
             if let absoluteUrlString = videoUrl?.absoluteString {
-                let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme!)!, with: "fakeHttp")
+                let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
                 let subtitleValue = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey" : headerValues]
-                videoAsset = AVURLAsset(url: URL.init(string: changedUrl)!, options: header)
+                guard let assetUrl = URL(string: changedUrl) else {
+                    return
+                }
+                videoAsset = AVURLAsset(url: assetUrl, options: header)
                 videoAsset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
             }
         }
         else
         {
-            videoAsset = AVURLAsset(url:URL.init(string: videoUrl)!)
+            guard let assetUrl = URL(string: videoUrl) else {
+                return
+            }
+            videoAsset = AVURLAsset(url: assetUrl)
         }
-        playerItem = AVPlayerItem.init(asset: videoAsset!)
+        guard let asset = videoAsset else {
+            return
+        }
+        playerItem = AVPlayerItem(asset: asset)
         self.playVideoWithPlayerItem()
     }
     
     //MARK:- Handle Fairplay Video Url
     func handleFairPlayStreamingUrl(videoUrl:String)
     {
-        let url = URL(string: videoUrl)
-        let asset = AVURLAsset(url: url!, options: nil)
+        guard let url = URL(string: videoUrl) else {
+            return
+        }
+        let asset = AVURLAsset(url: url, options: nil)
         asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
         let requestedKeys: [Any] = [PLAYABLE_KEY]
         // Tells the asset to load the values of any of the specified keys that are not already loaded.
@@ -316,7 +328,10 @@
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
-            player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), (player?.currentItem?.asset.duration.timescale)!))
+            if let player = player, let timeScale = player.currentItem?.asset.duration.timescale {
+                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), timeScale))
+            }
+            
             self.addChildViewController(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
@@ -498,7 +513,10 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
-            let difference =  Date().timeIntervalSince(startTime_BufferDuration!)
+            guard let startDuration = startTime_BufferDuration else {
+                return
+            }
+            let difference =  Date().timeIntervalSince(startDuration)
             if (difference > 1) {
                 totalBufferDurationTime = difference + totalBufferDurationTime
                 bufferCount = bufferCount + 1
@@ -510,7 +528,7 @@
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
             let newStatus: AVPlayerItemStatus
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue)!
+                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue) ?? .unknown
             }
             else {
                 newStatus = .unknown
@@ -597,7 +615,7 @@
     func sendMediaStartAnalyticsEvent()
     {
         if !isMediaStartEventSent {
-            let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+            let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + (UIDevice.current.identifierForVendor?.uuidString ?? "")
             
             let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex + 1))
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
@@ -887,7 +905,7 @@
                         weakSelf?.moreArray = mores
                     }
                 }
-                if (weakSelf?.isMoreDataAvailable)! || (weakSelf?.isEpisodeDataAvailable)!{
+                if (weakSelf?.isMoreDataAvailable ?? false) || (weakSelf?.isEpisodeDataAvailable ?? false){
                     DispatchQueue.main.async {
                         weakSelf?.collectionView_Recommendation.reloadData()
                         weakSelf?.scrollCollectionViewToRow(row: i)
@@ -977,7 +995,7 @@
                                     i = i - 1
                                 }
                                 weakSelf?.moreArray = mores
-                                if (weakSelf?.isPlayListFirstItemToBePlayed)!{
+                                if (weakSelf?.isPlayListFirstItemToBePlayed ?? false){
                                     weakSelf?.isPlayListFirstItemToBePlayed = false
                                     let playlistFirstItem = mores[0]
                                     weakSelf?.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: weakSelf?.playListId ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: weakSelf?.fromScreen ?? "", fromCategory: weakSelf?.fromCategory ?? "", fromCategoryIndex: weakSelf?.fromCategoryIndex ?? 0)
@@ -1067,26 +1085,26 @@
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
                         
-                        if((self.player) != nil) {
-                            self.player?.pause()
-                            self.resetPlayer()
+                        if((weakSelf?.player) != nil) {
+                            weakSelf?.player?.pause()
+                            weakSelf?.resetPlayer()
                         }
                         if let fpsUrl = self.playbackRightsData?.url {
-                            self.instantiatePlayer(with: fpsUrl, isFps: true)
+                            weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
-                            self.instantiatePlayer(with: aesUrl, isFps: false)
+                            weakSelf?.instantiatePlayer(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
                             
                             let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                                 DispatchQueue.main.async {
                                     print("dismiss")
-                                    self.dismissPlayerVC()
+                                    weakSelf?.dismissPlayerVC()
                                 }
                             }
                             alert.addAction(cancelAction)
                             DispatchQueue.main.async {
-                                self.present(alert, animated: false, completion: nil)
+                                weakSelf?.present(alert, animated: false, completion: nil)
                             }
                         }
                     }
@@ -1253,12 +1271,10 @@
         if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
         {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
-            if itemMatched != nil
-            {
-                if let drn = itemMatched?.duration?.floatValue(){
+            if let drn = itemMatched?.duration?.floatValue() {
                     return drn
-                }
             }
+            
         }
         return 0.0
     }
@@ -1360,6 +1376,7 @@
             //Send Media-end analytics event
             if isMediaEndAnalyticsEventNotSent {
                 isMediaEndAnalyticsEventNotSent = false
+                updateResumeWatchList()
                 sendMediaEndAnalyticsEvent()
                 sendRecommendationEvent(videoName: newItem.name ?? "")
             }
@@ -1567,23 +1584,24 @@
                 do {
                     requestBytes = try loadingRequest.streamingContentKeyRequestData(forApp: certificate ?? Data(), contentIdentifier: assetId, options: nil)
                     
+                    
                     print("Request Bytes is \(String(describing: requestBytes))")
                     //var responseData: Data? = nil
                     let expiryDuration = 0.0
                     
                     
-                    self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes!, contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration, error: error, completionHandler: { (responseData) in
+                    self.getContentKeyAndLeaseExpiryfromKeyServerModule(withRequest: requestBytes ?? Data(), contentIdentifierHost: assetStr, leaseExpiryDuration: expiryDuration, error: error, completionHandler: { (responseData) in
                         print("Key  is \(String(describing: responseData))")
                         
                         
-                        if (responseData != nil){
-                            dataRequest?.respond(with: responseData!)
+                        if let responseData = responseData {
+                            dataRequest?.respond(with: responseData)
                             if expiryDuration != 0.0 {
                                 let infoRequest: AVAssetResourceLoadingContentInformationRequest? = loadingRequest.contentInformationRequest
                                 if (infoRequest != nil) {
                                     infoRequest?.renewalDate = Date(timeIntervalSinceNow: expiryDuration)
                                     infoRequest?.contentType = "application/octet-stream"
-                                    infoRequest?.contentLength = Int64(responseData!.count)
+                                    infoRequest?.contentLength = Int64(responseData.count)
                                     infoRequest?.isByteRangeAccessSupported = false
                                 }
                                 
