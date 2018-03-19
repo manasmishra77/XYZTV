@@ -256,7 +256,7 @@
     {
         var videoAsset:AVURLAsset?
         if JCDataStore.sharedDataStore.cdnEncryptionFlag {
-            let videoUrl = URL.init(string: videoUrl)
+            let videoUrl = URL(string: videoUrl)
             if let absoluteUrlString = videoUrl?.absoluteString {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
@@ -1265,6 +1265,20 @@
             didSeek = false
         }
     }
+    func sendRecommendationEvent(videoName: String) {
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Recommendation", label: videoName, customParameters: customParams)
+    }
+    
+    func handleAPIFailure(_ text: String) {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: text, message: "", actions: [action]) {[weak self] (alertAction) in
+            if alertAction.title == action.title {
+                self?.dismissPlayerVC()
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
+    }
     
     //Check in resume watchlist
     func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
@@ -1644,12 +1658,12 @@
                 guard let url = URL(string: urlString) else {
                     return false
                 }
-                do{
+                do {
                     let data = try Data(contentsOf: url)
                     dataRequest?.respond(with: data)
                     loadingRequest.finishLoading()
                     
-                }catch{
+                } catch {
                     return false
                 }
                 return true
@@ -1717,21 +1731,6 @@
             recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
             recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
         }
-    }
-    
-    func sendRecommendationEvent(videoName: String) {
-        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
-        JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Recommendation", label: videoName, customParameters: customParams)
-    }
-    
-    func handleAPIFailure(_ text: String) {
-        let action = Utility.AlertAction(title: "Dismiss", style: .default)
-        let alertVC = Utility.getCustomizedAlertController(with: text, message: "", actions: [action]) { (alertAction) in
-            if alertAction.title == action.title {
-                self.dismissPlayerVC()
-            }
-        }
-        present(alertVC, animated: false, completion: nil)
     }
  }
  

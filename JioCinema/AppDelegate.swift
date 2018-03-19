@@ -80,7 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NSSetUncaughtExceptionHandler { (exception) in
             Log.DLog(message: Thread.callStackSymbols as AnyObject)
-
         }
         
         signal(SIGABRT) { (_) in

@@ -242,8 +242,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
-        if(artistImages != nil)
-        {
+        if(artistImages != nil) {
             return 15
         }
         
@@ -258,10 +257,19 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         }
         
         return CGSize(width: 392, height: collectionView.frame.height)
-        
-        //        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
-        //        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
     }
+    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if context.nextFocusedIndexPath != nil {
+            if let tableCell = collectionView.superview?.superview as? JCBaseTableViewCell {
+                tableCell.categoryTitleLabel.textColor = .white
+            }
+        } else if context.previouslyFocusedIndexPath != nil {
+            if let tableCell = collectionView.superview?.superview as? JCBaseTableViewCell {
+                tableCell.categoryTitleLabel.textColor = #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1)
+            }
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
