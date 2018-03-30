@@ -8,23 +8,19 @@
 import UIKit
 import Foundation
 
-class JCLoginManager:UIViewController
-{
+class JCLoginManager: UIViewController {
     static let sharedInstance = JCLoginManager()
     
     var loggingInViaSubId = false
     var isLoginFromSettingsScreen = false
-    func isUserLoggedIn() -> Bool
-    {
-        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)
-        {
+    func isUserLoggedIn() -> Bool {
+        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil) {
             return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
         }
         return false
     }
     
-    func setUserToDefaults()
-    {
+    func setUserToDefaults() {
         UserDefaults.standard.setValue(true, forKeyPath: isUserLoggedInKey)
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: JCAppUser.shared)
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
@@ -64,9 +60,9 @@ class JCLoginManager:UIViewController
             
             if let responseData = data, let networkResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                let result = networkResponse["result"] as? [String:Any]
-                let data = result?["data"] as? [String:Any]
-                let isOnJioNetwork = data?["isJio"]! as? Bool ?? false
+                let result = networkResponse["result"] as? [String: Any]
+                let data = result?["data"] as? [String: Any]
+                let isOnJioNetwork = data?["isJio"] as? Bool ?? false
                 if isOnJioNetwork == true
                 {
                     let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)

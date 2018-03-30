@@ -617,22 +617,32 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func didClickOnShowMoreDescriptionButton(_ headerView: MetadataHeaderView, toShowMore: Bool) {
         if toShowMore {
             headerCell.showMoreDescriptionLabel.text = SHOW_LESS
-            let text = (metadata?.description ?? "") + " " + SHOW_LESS
-            
+            var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
+            if itemAppType == .TVShow {
+                descText = (metadata?.descriptionForTVShow ?? "") + " " + SHOW_LESS
+            } else {
+                descText = (metadata?.description ?? "") + " " + SHOW_LESS
+            }
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
-            let newHeight = (getSizeofDescriptionContainerView(text, widthOfView: widthofView, font: font))
+            let newHeight = (getSizeofDescriptionContainerView(descText, widthOfView: widthofView, font: font))
             headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
 
-            headerCell.descriptionLabel.attributedText = getAttributedString(text, colorChange: true, range: SHOW_LESS.count)
+            headerCell.descriptionLabel.attributedText = getAttributedString(descText, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell
         } else {
             guard headerCell.showMoreDescriptionLabel.text == SHOW_LESS else {
                 return
             }
-            let textTopple = getShorterText(metadata?.description ?? "")
+            var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
+            if itemAppType == .TVShow {
+                descText = (metadata?.descriptionForTVShow ?? "") + " " + SHOW_LESS
+            } else {
+                descText = (metadata?.description ?? "") + " " + SHOW_LESS
+            }
+            let textTopple = getShorterText(descText)
             let widthofView = headerCell.descriptionContainerview.frame.size.width
             let font = UIFont(name: "Helvetica", size: 28)!
             let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
@@ -745,7 +755,13 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         headerCell.subtitleLabel.text = metadata?.newSubtitle
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         
-        let trimTextTopple = getShorterText(metadata?.description ?? "")
+        var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
+        if itemAppType == .TVShow {
+            descText = (metadata?.descriptionForTVShow ?? "") + " " + SHOW_LESS
+        } else {
+            descText = (metadata?.description ?? "") + " " + SHOW_LESS
+        }
+        let trimTextTopple = getShorterText(descText)
         if trimTextTopple.0 {
             headerCell.descriptionLabel.attributedText = trimTextTopple.1
             headerCell.showMoreDescription.isEnabled = true

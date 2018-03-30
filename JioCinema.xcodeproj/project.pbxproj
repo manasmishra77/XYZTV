@@ -826,8 +826,8 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -835,7 +835,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a54049c5-3b16-48a3-94d3-efa3c42d6b81";
+				PROVISIONING_PROFILE = "83ad8c78-9f08-484f-a972-9734b820c1aa";
 				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf Dev";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -973,8 +973,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -986,7 +986,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "efdeb393-abfe-407f-b4c6-4c5bf53517de";
+				PROVISIONING_PROFILE = "cebfd95d-1508-497a-80a5-c13cdf6f7dd0";
 				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

@@ -155,7 +155,7 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path:String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
         var request:URLRequest?
         
         if let params = params {
