@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="14109" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-            <string>HelveticaNeue-Bold</string>
-            <string>HelveticaNeue-Medium</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--SplashVC-->
         <scene sceneID="fhQ-9S-g0b">
@@ -975,6 +968,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="dUz-0B-oaX">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bh8-fC-U61" userLabel="ContainerView">
                                 <rect key="frame" x="0.0" y="60" width="1920" height="1020"/>
                                 <subviews>
@@ -1071,10 +1067,14 @@
                             </view>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="6xU-q8-4MI" firstAttribute="top" secondItem="dUz-0B-oaX" secondAttribute="bottom" constant="-60" id="3fD-kd-f1A"/>
                             <constraint firstItem="bh8-fC-U61" firstAttribute="leading" secondItem="YVa-Fj-BSN" secondAttribute="leading" id="ELU-m0-mi4"/>
                             <constraint firstItem="bh8-fC-U61" firstAttribute="top" secondItem="r3a-hi-NoU" secondAttribute="bottom" id="Guy-DX-wJV"/>
                             <constraint firstAttribute="bottom" secondItem="bh8-fC-U61" secondAttribute="bottom" id="Lh4-R9-PhM"/>
                             <constraint firstAttribute="trailing" secondItem="bh8-fC-U61" secondAttribute="trailing" id="TD8-qu-gzb"/>
+                            <constraint firstItem="dUz-0B-oaX" firstAttribute="top" secondItem="r3a-hi-NoU" secondAttribute="bottom" constant="-60" id="fvA-Yv-yBR"/>
+                            <constraint firstAttribute="trailing" secondItem="dUz-0B-oaX" secondAttribute="trailing" id="hYW-u7-8IQ"/>
+                            <constraint firstItem="dUz-0B-oaX" firstAttribute="leading" secondItem="YVa-Fj-BSN" secondAttribute="leading" id="vNH-hK-goC"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1101,6 +1101,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="F2y-kv-W9q">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="pPm-gB-ruG">
                                 <rect key="frame" x="786" y="170" width="349" height="890"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1150,9 +1153,13 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="6rR-xw-boL" firstAttribute="top" secondItem="L2M-uy-BSa" secondAttribute="bottom" constant="10" id="4zm-Pj-Hd6"/>
+                            <constraint firstAttribute="trailing" secondItem="F2y-kv-W9q" secondAttribute="trailing" id="Cas-pO-ECC"/>
                             <constraint firstItem="6rR-xw-boL" firstAttribute="centerX" secondItem="kJa-yI-h2k" secondAttribute="centerX" id="KHP-BA-dEH"/>
+                            <constraint firstItem="F2y-kv-W9q" firstAttribute="top" secondItem="kJa-yI-h2k" secondAttribute="top" id="OTZ-jU-ILO"/>
                             <constraint firstItem="pPm-gB-ruG" firstAttribute="top" secondItem="L2M-uy-BSa" secondAttribute="bottom" constant="110" id="fEw-LT-Eeu"/>
                             <constraint firstItem="pPm-gB-ruG" firstAttribute="centerX" secondItem="kJa-yI-h2k" secondAttribute="centerX" id="hCv-3n-7Qp"/>
+                            <constraint firstAttribute="bottom" secondItem="F2y-kv-W9q" secondAttribute="bottom" id="pZj-cK-d2M"/>
+                            <constraint firstItem="F2y-kv-W9q" firstAttribute="leading" secondItem="kJa-yI-h2k" secondAttribute="leading" id="sYl-SN-Tbx"/>
                         </constraints>
                     </view>
                     <connections>
