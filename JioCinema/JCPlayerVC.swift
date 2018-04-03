@@ -74,7 +74,7 @@
     
     fileprivate var isPlayListFirstItemToBePlayed = false
     fileprivate var videoViewingLapsedTime = 0.0
-    fileprivate var totalBufferDurationTime      = 0.0
+    fileprivate var totalBufferDurationTime = 0.0
     fileprivate var didSeek :Bool = false
     
     //For Resume watch update
@@ -138,6 +138,12 @@
         // Dispose of any resources that can be recreated.
     }
     deinit {
+        print("In Player deinit")
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        if isMediaEndAnalyticsEventNotSent {
+            sendMediaEndAnalyticsEvent()
+        }
         resetPlayer()
     }
     //MARK:- Add Player Observer
@@ -237,8 +243,7 @@
         }
     }
     
-    func instantiatePlayer(with url:String, isFps: Bool)
-    {
+    func instantiatePlayer(with url:String, isFps: Bool) {
         //self.resetPlayer()
         player = nil
         didSeek = true
@@ -819,8 +824,7 @@
         }
     }
     //MARK:- Swipe Down Recommendation View
-    func swipeDownRecommendationView()
-    {
+    func swipeDownRecommendationView() {
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         collectionView_Recommendation.isScrollEnabled = false
         DispatchQueue.main.async {
@@ -925,7 +929,7 @@
                 if let mores = tempMetadata.more{
                     return mores
                 }
-                if let episodes = tempMetadata.episodes{
+                if let episodes = tempMetadata.episodes {
                     return episodes
                 }
             }
@@ -1309,10 +1313,10 @@
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if let press = presses.first, press.type == .menu {
-            if isMediaEndAnalyticsEventNotSent {
-                sendMediaEndAnalyticsEvent()
-            }
-            self.dismissPlayerVC()
+//            if isMediaEndAnalyticsEventNotSent {
+//                sendMediaEndAnalyticsEvent()
+//            }
+//            self.dismissPlayerVC()
         }
     }
  }
@@ -1334,6 +1338,7 @@
             if isPlayList {
                 let newItem = moreArray[indexPath.row]
                 if (newItem.id ?? "") == id {
+                    isRecommendationCollectionViewEnabled = true
                     return
                 }
                 //Send Media-end analytics event
@@ -1348,6 +1353,7 @@
             else{
                 let newItem = moreArray[indexPath.row]
                 if (newItem.id ?? "") == id {
+                    isRecommendationCollectionViewEnabled = true
                     return
                 }
                 //Send Media-end analytics event
@@ -1385,6 +1391,7 @@
         else if isEpisodeDataAvailable{
             let newItem = episodeArray[indexPath.row]
             if id == newItem.id {
+                isRecommendationCollectionViewEnabled = true
                 return
             }
             //Send Media-end analytics event
@@ -1730,6 +1737,9 @@
             recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
             recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
         }
+    }
+    func playerViewController(_ playerViewController: AVPlayerViewController, didPresent interstitial: AVInterstitialTimeRange) {
+        print("Gotit")
     }
  }
  
