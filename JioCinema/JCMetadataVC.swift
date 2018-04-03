@@ -999,7 +999,8 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 return (false, fontChangedText)
             }
         } else {
-            let fontChangedText = getAttributedString(text, colorChange: false, range: 0)
+            let newerText = text.dropLast(SHOW_LESS.count)
+            let fontChangedText = getAttributedString(String(newerText), colorChange: false, range: 0)
             return (false, fontChangedText)
         }
     }

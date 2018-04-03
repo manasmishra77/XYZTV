@@ -257,7 +257,7 @@
     
     //MARK:- Handle AES Video Url
     
-    func handleAESStreamingUrl(videoUrl:String)
+    func handleAESStreamingUrl(videoUrl: String)
     {
         var videoAsset:AVURLAsset?
         if JCDataStore.sharedDataStore.cdnEncryptionFlag {
