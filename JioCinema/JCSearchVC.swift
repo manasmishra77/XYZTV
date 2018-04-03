@@ -252,14 +252,23 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             isForArtistSearch = false
             if let languageModel = languageModelForArtistSearch as? Item {
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, languageData: languageModel)
+                self.resetLanguageScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             } else {
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
+                self.resetMetdataScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             }
         }
     }
     
+    fileprivate func resetMetdataScreenRelatedVars() {
+        metaDataForArtist = nil
+    }
+    fileprivate func resetLanguageScreenRelatedVars() {
+        languageModelForArtistSearch = nil
+        resetMetdataScreenRelatedVars()
+    }
     //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //ChangingTheAlpha when tab bar item selected
@@ -267,6 +276,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             isForArtistSearch = false
             searchViewController?.searchBar.text = ""
             searchResultArray.removeAll()
+            resetLanguageScreenRelatedVars()
             self.baseTableView.reloadData()
         }
                                 

@@ -70,6 +70,9 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         }
     }
     
+    deinit {
+        print("veverver")
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -374,10 +377,8 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
                 self.present(metadataVC, animated: true, completion: nil)
             case .TVShow:
                 print("At TvShow")
-                if let drn = tappedItem.duration?.floatValue(), drn == 0 {
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0)
-                    self.present(metadataVC, animated: true, completion: nil)
-                }
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
+                self.present(metadataVC, animated: true, completion: nil)
             case .Music, .Clip, .Episode, .Trailer:
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
             default:

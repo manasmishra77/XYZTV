@@ -10,15 +10,12 @@
 import UIKit
 import SDWebImage
 
-class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MetadataHeaderCellDelegate, JCBaseTableViewCellDelegate
-{
+class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MetadataHeaderCellDelegate, JCBaseTableViewCellDelegate {
     
-    var item:Item?
+    var item: Item?
     var metadata: MetadataModel?
-    var selectedYearIndex = 0
-    var userComingAfterLogin: Bool = false
-    let headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
-    var presentingScreen = ""
+    fileprivate var selectedYearIndex = 0
+    fileprivate let headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
     
     //New metadata model
     var itemId = ""
@@ -46,7 +43,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var loaderContainerView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var headerView: UIView?
+    fileprivate var headerView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +62,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             metadataTableView.reloadData()
             changeAddWatchlistButtonStatus(itemId, itemAppType)
         } else {
+            
              callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
         // Do any additional setup after loading the view.
@@ -72,6 +70,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     }
     
+    deinit {
+        print("In Metadata Screen Deinit")
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -85,7 +86,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {        
+    override func viewDidAppear(_ animated: Bool) {
         //Clevertap Navigation Event
         let metadataType = itemAppType.rawValue
         metadataTableView.delegate = self
@@ -963,7 +964,12 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 }
             } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
                 tabc.selectedIndex = 0
+                //self.dismiss(animated: true, completion: nil)
+            } else {
+                self.dismiss(animated: true, completion: nil)
             }
+        } else {
+            self.dismiss(animated: true, completion: nil)
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {
