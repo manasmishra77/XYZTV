@@ -1,24 +1,22 @@
 
 
 import Foundation
-struct CheckVersionData {
-	var version : Float?
+struct CheckVersionData: Codable {
+	var version : String?
 	var url : String?
 	var mandatory : Bool?
 	var description : String?
-	var heading : String?
-    var buildNumber: Int? = nil
-    
+	var heading : String?    
     
 
-//    enum CodingKeys: String, CodingKey {
-//
-//        case version = "version"
-//        case url = "url"
-//        case mandatory = "mandatory"
-//        case description = "description"
-//        case heading = "heading"
-//    }
+    enum CodingKeys: String, CodingKey {
+
+        case version = "version"
+        case url = "url"
+        case mandatory = "mandatory"
+        case description = "description"
+        case heading = "heading"
+    }
 //
 //    init(from decoder: Decoder) throws {
 //        let values = try decoder.container(keyedBy: CodingKeys.self)

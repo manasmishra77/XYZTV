@@ -8,10 +8,12 @@
 
 import UIKit
 
-class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
+class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
 
-    var loadedPage = 0
+    fileprivate var loadedPage = 0
+    fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String? = nil
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -34,22 +36,30 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Music")
-        screenAppearTime = Date()
-
+        
+//        if !Utility.sharedInstance.isNetworkAvailable {
+//            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+//        }
+        
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.musicData?.data == nil
         {
             callWebServiceForMusicData(page: loadedPage)
         }
-
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name":"Music","Platform":"TVOS","Metadata Page":""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        screenAppearTiming = Date()
     }
     override func viewDidDisappear(_ animated: Bool) {
-        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: MUSIC_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: MUSIC_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,7 +95,8 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = VideoType.Music
-        cell.categoryTitleLabel.tag = indexPath.row + 500000
+        cell.cellDelgate = self
+        cell.tag = indexPath.row
 
         if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
         {
@@ -116,28 +127,23 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
         {
-            /*
-             let headerCell = tableView.dequeueReusableCell(withIdentifier: baseHeaderTableViewCellIdentifier) as! JCBaseTableViewHeaderCell
-             headerCell.carousalData = JCDataStore.sharedDataStore.homeData?.data?[0].items
-             headerCell.itemFromViewController = VideoType.Music
-             headerCell.headerCollectionView.tag = 0
-             return headerCell
-             */
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            if let items = (JCDataStore.sharedDataStore.musicData?.data?[0].items){
-                carouselView.carouselArray = items
+            if let carouselItems = JCDataStore.sharedDataStore.musicData?.data?[0].items, carouselItems.count > 0{
+                carouselView.carouselArray = carouselItems
                 carouselView.loadViews()
+                carouselView.carouselDelegate = self
                 uiviewCarousel = carouselView
-                selectedItemFromViewController = VideoType.Music
-                collectionIndex = 0
                 return carouselView
+            }else{
+                return UIView()
             }
-        
         }
-        return UIView.init()
-        
+        else
+        {
+            return UIView.init()
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -194,7 +200,7 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
             if let responseError = error
             {
                 //TODO: handle error
-             //   print(responseError)
+                print(responseError)
                 return
             }
             if let responseData = data
@@ -262,7 +268,105 @@ class JCMusicVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarCon
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
         }
+        //Making tab bar delegate searchvc
+        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
+            if let searchVc = svc.searchController.searchResultsController as? JCSearchVC{
+                tabBarController.delegate = searchVc
+            }
+        }
     }
     
+
+    //MARK:- JCBaseTableCell Delegate Methods
+    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
+            return
+        }
+        if let tappedItem = item as? Item{
+            
+            print(tappedItem)
+            let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
+            if tappedItem.app?.type == VideoType.Music.rawValue{
+                print("At Music")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+            }
+            
+            //Screenview event to Google Analytics
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: MUSIC_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
+        }
+    }
+    
+    func didTapOnCarouselItem(_ item: Any?) {
+        if let tappedItem = item as? Item{
+            
+            if tappedItem.app?.type == VideoType.Music.rawValue{
+                print("At Music")
+                checkLoginAndPlay(tappedItem, categoryName: "Carousel", categoryIndex: 0)
+            }
+            
+            //Screenview event to Google Analytics
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: MUSIC_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
+        }
+    }
+    
+    
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        //weak var weakSelf = self
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
+        }
+        else
+        {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
+    {
+        toScreenName = PLAYER_SCREEN
+        var moreArray: [More]? = nil
+        var isMoreDataAvailable = false
+        if itemToBePlayed.isPlaylist ?? false{
+            let recommendationArray = (JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal ?? false) ? JCDataStore.sharedDataStore.musicData?.data?[categoryIndex + 1].items : JCDataStore.sharedDataStore.musicData?.data?[categoryIndex].items
+            moreArray = Utility.sharedInstance.convertingItemArrayToMoreArray(recommendationArray ?? [Item]())
+            if moreArray?.count ?? 0 > 0{
+                isMoreDataAvailable = true
+            }
+        }
+       
+        if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
+            if appType == .Clip || appType == .Music || appType == .Trailer{
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: MUSIC_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                self.present(playerVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func presentLoginVC()
+    {
+        toScreenName = LOGIN_SCREEN
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        self.present(loginVC, animated: true, completion: nil)
+    }
+
 
 }

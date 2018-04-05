@@ -1,13 +1,13 @@
 
 
 import Foundation
-struct CheckVersionResult {
+struct CheckVersionResult: Codable {
 	var data : [CheckVersionData]?
 
-//    enum CodingKeys: String, CodingKey {
-//
-//        case data = "data"
-//    }
+    enum CodingKeys: String, CodingKey {
+
+        case data = "data"
+    }
 
 //    init(from decoder: Decoder) throws {
 //        let values = try decoder.container(keyedBy: CodingKeys.self)

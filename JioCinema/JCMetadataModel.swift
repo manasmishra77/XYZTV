@@ -68,6 +68,7 @@ class MetadataModel:Mappable
     var artistObj:[ArtistObj]?
     var directors:[String]?
     var description:String?
+    var descriptionForTVShow: String?
     var rating:String?
     var review:[String]?
     var image:String?
@@ -189,6 +190,8 @@ class MetadataModel:Mappable
         artistObj <- map["artistObj"]
         directors <- map["directors"]
         description <- map["description"]
+        descriptionForTVShow <- map["desc"]
+        
         rating <- map["rating"]
         review <- map["review"]
         image <- map["image"]
@@ -307,7 +310,9 @@ class More: Mappable
     var totalDurationString:String?
     var image:String?
     
-    
+    init() {
+        
+    }
     required init(map:Map) {
         
     }

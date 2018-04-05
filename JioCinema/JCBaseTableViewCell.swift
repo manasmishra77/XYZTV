@@ -9,6 +9,10 @@
 import UIKit
 import SDWebImage
 
+@objc protocol JCBaseTableViewCellDelegate {
+    @objc optional func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int)
+}
+
 class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
     
     @IBOutlet weak var overlayView: UIView!
@@ -17,20 +21,22 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     var data:[Item]?
     var moreLikeData:[More]?
     var episodes:[Episode]?
-    var artistImages:[String:String]?
+    var artistImages:[String: String]?
     var isResumeWatchCell = false
-    var itemFromViewController:VideoType?
+    var itemFromViewController: VideoType?
+    var cellDelgate: JCBaseTableViewCellDelegate? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()
         tableCellCollectionView.delegate = self
         tableCellCollectionView.dataSource = self
         //self.alpha = 0.5
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
-        self.tableCellCollectionView.register(UINib.init(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
         
+        //tvOS11 adjustment
         if #available(tvOS 11.0, *) {
             let collectionFrame = CGRect.init(x: tableCellCollectionView.frame.origin.x - 70, y: tableCellCollectionView.frame.origin.y, width: tableCellCollectionView.frame.size.width, height: tableCellCollectionView.frame.size.height)
             tableCellCollectionView.frame = collectionFrame
@@ -43,8 +49,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         } else {
             // or use some work around
         }
-        
-        
+
     }
     
     
@@ -72,7 +77,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
         else if let artistsCount = artistImages?.count
         {
-            
             return artistsCount
         }
             
@@ -84,6 +88,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         //For Home, Movies, Music etc
         if(data?[indexPath.row].banner != nil)
@@ -116,15 +121,16 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             else
             {
                 
+                var thumbnailTitle = ""
+                if let nameOfThumbnail = data?[indexPath.row].name, nameOfThumbnail != ""{
+                    thumbnailTitle = nameOfThumbnail
+                }else if let shownameOfThumbnail = data?[indexPath.row].showname{
+                    thumbnailTitle = shownameOfThumbnail
+                }
+                
                 if let imageUrl = data?[indexPath.row].banner
                 {
-                    var titleText = ""
-                    if let titleName = data?[indexPath.row].name, titleName != ""{
-                        titleText = titleName
-                    }else if let showName = data?[indexPath.row].showname{
-                        titleText = showName
-                    }
-                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : titleText
+                    cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
                     cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
@@ -151,8 +157,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if(moreLikeData?[indexPath.row].banner != nil)
         {
             cell.nameLabel.text = moreLikeData?[indexPath.row].name
-            let imageUrl = moreLikeData?[indexPath.row].banner!
-            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl!))!)
+            let imageUrl = moreLikeData?[indexPath.row].banner ?? ""
+            let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)
             cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
@@ -164,38 +170,40 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
                 let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
-                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height, height: cell.artistImageView.frame.size.height)
+                let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
                 cell.artistImageView.frame = newFrame
                 cell.artistImageView.layer.cornerRadius = cell.artistImageView.frame.size.height / 2
                 
                 cell.artistNameLabel.textAlignment = .center
-                let artistNameKey = Array(self.artistImages!.keys)[indexPath.row]
-                let imageUrl = self.artistImages?[artistNameKey] ?? ""
-                
-                cell.artistNameLabel.text = artistNameKey
-                let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
-                var artistInitial = ""
-                for each in artistNameSubGroup{
-                    if each.first != nil{
-                        artistInitial = artistInitial + String(describing: each.first!)
-                    }
-                }
-                cell.artistImageView.isHidden = true
-                cell.artistNameInitialButton.isHidden = false
-                let url = URL(string: imageUrl)
-                cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                if let artistImagesDict = self.artistImages {
+                    let artistNameKey = Array(artistImagesDict.keys)[indexPath.row]
+                    let imageUrl = artistImagesDict[artistNameKey] ?? ""
                     
-                    if error != nil{
-                        cell.artistImageView.isHidden = true
-                        cell.artistNameInitialButton.isHidden = false
-                        cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+                    cell.artistNameLabel.text = artistNameKey
+                    let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+                    var artistInitial = ""
+                    for each in artistNameSubGroup{
+                        if each.first != nil{
+                            artistInitial = artistInitial + String(describing: each.first!)
+                        }
                     }
-                    else{
-                        cell.artistNameInitialButton.isHidden = true
-                        cell.artistImageView.isHidden = false
-                    }
-                });
+                    cell.artistImageView.isHidden = true
+                    cell.artistNameInitialButton.isHidden = false
+                    let url = URL(string: imageUrl)
+                    cell.artistImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+                        (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                        
+                        if error != nil{
+                            cell.artistImageView.isHidden = true
+                            cell.artistNameInitialButton.isHidden = false
+                            cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
+                        }
+                        else{
+                            cell.artistNameInitialButton.isHidden = true
+                            cell.artistImageView.isHidden = false
+                        }
+                    })
+                }
             }
             
             cell.isOpaque = true
@@ -209,130 +217,23 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        collectionIndex = collectionView.tag
-        selectedItemFromViewController = self.itemFromViewController!
-        
-        if UIApplication.topViewController() != nil {
-            categoryTitle = ""
+        if let items = data{
+            cellDelgate?.didTapOnItemCell!(self, items[indexPath.row], self.tag)
         }
-        
-        if data != nil
-        {
-            if isSearchOpenFromMetaData
-            {
-                let item = self.data?[indexPath.row]
-                if item?.app?.type == VideoType.Movie.rawValue || item?.app?.type == VideoType.TVShow.rawValue
-                {
-                    isSearchOpenFromMetaData = false
-                    if let topController = UIApplication.topViewController() {
-                        topController.presentingViewController?.presentingViewController?.dismiss(animated: false, completion: {
-                            DispatchQueue.main.async {
-                                self.openMetaDataVC(item: item!)
-                            }
-                        })
-                    }
-                }
-                else
-                {
-                    //print("$$$$ Handle Player")
-                    if JCLoginManager.sharedInstance.isUserLoggedIn()
-                    {
-                        self.openPlayerVC(item: item!)
-                    }
-                    else
-                    {
-                        currentPlayableItem = item
-                        let loginVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId)
-                        loginVC.modalPresentationStyle = .overFullScreen
-                        loginVC.modalTransitionStyle = .coverVertical
-                        loginVC.view.layer.speed = 0.7
-                        UIApplication.topViewController()?.present(loginVC, animated: false, completion: nil)
-                    }
-                    
-                }
-            }
-            else
-            {
-                var itemToPlay = ["item":(data?[indexPath.row])!]
-                if isResumeWatchCell
-                {
-                    let dataTemp = data?[indexPath.row]
-                    if dataTemp?.app?.type == 1{
-                        dataTemp?.app?.type = 7
-                    }
-                    
-                    itemToPlay = ["item":dataTemp!]
-                }
-                NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
-            }
+        else if let moreItems = moreLikeData{
+            cellDelgate?.didTapOnItemCell!(self, moreItems[indexPath.row], self.tag)
         }
-        else if moreLikeData != nil
-        {
-            let itemToPlay = ["item":(moreLikeData?[indexPath.row])!]
-            categoryTitle = "More like data from Metadata"
-            NotificationCenter.default.post(name: metadataCellTapNotificationName, object: nil, userInfo: itemToPlay)
+        else if let artistImageArray = artistImages{
+            let artistNameArray = artistImageArray.filter({$0.key != ""})
+            cellDelgate?.didTapOnItemCell!(self, artistNameArray[indexPath.row].key, self.tag)
         }
-        else if episodes != nil
-        {
-            let itemToPlay = ["item":(episodes?[indexPath.row])!]
-            NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
+        else if let artistArray = artistImages?.filter({$0.key != ""}){
+            cellDelgate?.didTapOnItemCell!(self, artistArray[indexPath.row], self.tag)
         }
-        else if artistImages != nil
-        {
-            //open search screen
-            if let artistDict = artistImages?.filter({$0.key != ""})
-            {
-                if artistDict.count > 0{
-                    isSearchOpenFromMetaData = true
-                   
-                    let artistName = artistDict[indexPath.row].key
-                    NotificationCenter.default.post(name: openSearchVCNotificationName, object: nil, userInfo: ["artist":artistName])
-                    
-                }
-                
-            }
+        else if let episodes = episodes{
+            cellDelgate?.didTapOnItemCell!(self, episodes[indexPath.row], self.tag)
         }
     }
-    
-    //MARK:- Custom Methods
-    
-    //MARK:- Open MetaDataVC
-    func openMetaDataVC(item:Item)
-    {
-        Log.DLog(message: "openMetaDataVC" as AnyObject)
-        if let topController = UIApplication.topViewController() {
-            let metadataVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = item
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
-            topController.present(metadataVC, animated: true, completion: nil)
-        }
-    }
-    //MARK:- Open PlayerVC
-    func openPlayerVC(item:Item)
-    {
-        Log.DLog(message: "openPlayerVC" as AnyObject)
-        if playerVC_Global != nil {
-            return
-        }
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        playerVC.currentItemImage = item.banner
-        playerVC.currentItemTitle = item.name
-        playerVC.currentItemDuration = String(describing: item.totalDuration)
-        playerVC.currentItemDescription = item.subtitle
-        //OPTIMIZATION PLAYERVC
-        // playerVC.callWebServiceForPlaybackRights(id: item.id!)
-        playerVC.modalPresentationStyle = .overFullScreen
-        playerVC.modalTransitionStyle = .coverVertical
-        playerVC.playerId = item.id
-        playerVC.item = item
-        
-        if let topController = UIApplication.topViewController() {
-            topController.present(playerVC, animated: false, completion: nil)
-        }
-    }
-    
-    
 }
 
 
@@ -341,12 +242,11 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
-        if(artistImages != nil)
-        {
+        if(artistImages != nil) {
             return 15
         }
         
-        return 10
+        return 30
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -357,10 +257,19 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         }
         
         return CGSize(width: 392, height: collectionView.frame.height)
-        
-        //        self.cellWidth = self.headerCollectionView.frame.width - (spaceBetweenCells * 2) - 80
-        //        return CGSize(width: self.cellWidth, height: self.headerCollectionView.frame.height)
     }
+    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if context.nextFocusedIndexPath != nil {
+            if let tableCell = collectionView.superview?.superview as? JCBaseTableViewCell {
+                tableCell.categoryTitleLabel.textColor = .white
+            }
+        } else if context.previouslyFocusedIndexPath != nil {
+            if let tableCell = collectionView.superview?.superview as? JCBaseTableViewCell {
+                tableCell.categoryTitleLabel.textColor = #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1)
+            }
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)

@@ -8,27 +8,19 @@
 import UIKit
 import Foundation
 
-class JCLoginManager:UIViewController
-{
+class JCLoginManager: UIViewController {
     static let sharedInstance = JCLoginManager()
     
     var loggingInViaSubId = false
     var isLoginFromSettingsScreen = false
-    func isUserLoggedIn() -> Bool
-    {
-        
-        if let isLoggedIn = UserDefaults.standard.value(forKey: isUserLoggedInKey) as? Bool{
-            return isLoggedIn
+    func isUserLoggedIn() -> Bool {
+        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil) {
+            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
         }
-//        if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil)
-//        {
-//            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
-//        }
         return false
     }
     
-    func setUserToDefaults()
-    {
+    func setUserToDefaults() {
         UserDefaults.standard.setValue(true, forKeyPath: isUserLoggedInKey)
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: JCAppUser.shared)
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
@@ -45,7 +37,7 @@ class JCLoginManager:UIViewController
             }
             else
             {
-               // print("There is an issue")
+                print("There is an issue")
             }
             
         }
@@ -61,26 +53,16 @@ class JCLoginManager:UIViewController
             //non jio network
             if let responseError = error
             {
-                //check isUserLoggedIn
-                
-                //else
-                //self.navigateToLoginVC()
-               // print(responseError)
+                print(responseError)
                 completion(false)
                 return
             }
             
             if let responseData = data, let networkResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                let result = networkResponse["result"] as? [String:Any]
-                let data = result?["data"] as? [String:Any]
-                //let isOnJioNetwork = data?["isJio"]! as! Bool
-                guard let isOnJioNetwork = data?["isJio"] as? Bool else {
-                    completion(false)
-                    return
-                }
-                
-                
+                let result = networkResponse["result"] as? [String: Any]
+                let data = result?["data"] as? [String: Any]
+                let isOnJioNetwork = data?["isJio"] as? Bool ?? false
                 if isOnJioNetwork == true
                 {
                     let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)
@@ -88,7 +70,7 @@ class JCLoginManager:UIViewController
                         if let responseError = error
                         {
                             //self.navigateToLoginVC()
-                            //print(responseError)
+                            print(responseError)
                             completion(false)
                             return
                         }
@@ -96,11 +78,9 @@ class JCLoginManager:UIViewController
                         if let responseData = data, let userData:[String:Any] = RJILApiManager.parse(data: responseData)
                         {
                             self.callWebServiceToLoginViaSubId(info: userData, completion: { (isLoginSuccessful) in
-                                isUserLoggedOutHimself = false
                                 completion(isLoginSuccessful)
                                 
                             })
-                            
                         }
                         
                     })
@@ -110,9 +90,7 @@ class JCLoginManager:UIViewController
                     completion(false)
                     //self.navigateToLoginVC()
                 }
-                
             }
-            
         }
     }
     
@@ -125,7 +103,7 @@ class JCLoginManager:UIViewController
         
         JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
         JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
-        let subId = user?["subscriberId"] as? String ?? ""
+        let subId = user!["subscriberId"] as? String ?? ""
         
         let params = [subscriberIdKey:subId]
         
@@ -137,36 +115,29 @@ class JCLoginManager:UIViewController
             if let responseError = error
             {
                 //TODO: handle error
-              //  print(responseError)
+                print(responseError)
                 completion(false)
+                let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "4G", customParameters: customParams)
                 return
             }
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as! Int
+                let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
-                    weakSelf?.setUserData(data: parsedResponse)
-                    JCLoginManager.sharedInstance.setUserToDefaults()
-                    if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
-                        homevc.callWebServiceForResumeWatchData()
-                    }
-                    if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
-                        movieVC.callWebServiceForMoviesWatchlist()
-                    }
-                    if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
-                        tvVC.callWebServiceForTVWatchlist()
-                    }
+                    weakSelf?.setUserData(data: parsedResponse) 
+                    
                     let eventProperties = ["Source": "4G", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
-                   
                     
                     // For Internal Analytics Event
-                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "4G", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
+                    let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "4G", source: "Skip", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
-                    
-                    
+                    let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                    JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "4G", customParameters: customParams)
+                    JCLoginManager.sharedInstance.setUserToDefaults()
                     completion(true)
                     
                 }
@@ -178,6 +149,10 @@ class JCLoginManager:UIViewController
                     // For Internal Analytics Event
                     let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: "", errorMessage: "")
                     JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
+                    
+                    let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+                    JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "4G", customParameters: customParams)
+                    
                     completion(false)
                 }
             }
@@ -194,21 +169,19 @@ class JCLoginManager:UIViewController
         JCAppUser.shared.unique = data["uniqueId"] as? String ?? ""
         JCAppUser.shared.uid = data["username"] as? String ?? ""
         JCAppUser.shared.mToken = data["mToken"] as? String ?? ""
-
     }
     
     func logoutUser()
     {
         UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
         JCAppUser.shared = JCAppUser()
-        isUserLoggedOutHimself = true
-         let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
+        JCDataStore.sharedDataStore.userRecommendationList = nil
     }
-
     
     
 }

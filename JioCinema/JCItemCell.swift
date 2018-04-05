@@ -12,35 +12,23 @@ class JCItemCell: UICollectionViewCell {
     
     @IBOutlet weak var itemImageView: UIImageView!
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var view_NowPlaying: UIView!
-    @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var nowPlayingImageView: UIImageView!
-    
+    @IBOutlet weak var nameLabel: UILabel!
     override func prepareForReuse() {
        // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
-        
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 1.0
             }
-            self.nameLabel.font = self.nameLabel.font.withSize(30)
 
-        }
-        else
-        {
+        } else {
             self.nameLabel.font = self.nameLabel.font.withSize(24)
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
-                
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 0.5
-                
             }
-            self.view_NowPlaying.frame = itemImageView.frame
         }
 
     }

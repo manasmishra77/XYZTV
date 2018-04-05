@@ -16,6 +16,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBOutlet weak var jioIdTextField: JCTextField!
     @IBOutlet weak var signInButton: JCButton!
     
+    var isLoginPresentedFromAddToWatchlist = false
+    var isLoginPresentedFromPlayNowButtonOfMetaData = false
+    var isLoginPresentedFromItemCell = false
+    var presentingVCOfLoginVc: Any = false
+    
     
     override func viewDidLoad()
     {
@@ -26,7 +31,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
     }
     override func viewWillDisappear(_ animated: Bool) {
-        self.changingSearchNCRootVC()
+      //self.changingSearchNCRootVC()
     }
     
     override func didReceiveMemoryWarning() {
@@ -34,25 +39,19 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func didClickOnJioIDSignInButton(_ sender: Any)
-    {
-//       jioIdTextField.text     = "pallavtrivedi-4"
-//       passwordTextField.text  = "pallav@1010"
-//        jioIdTextField.text     = "poonam2016"
-//        passwordTextField.text  = "poonam@12"
-//                jioIdTextField.text     = "digambarbhat-236"
-//                passwordTextField.text  = "Digu@1991"
-//        jioIdTextField.text     = "satya.samal"
-//        passwordTextField.text  = "satya1987"
+    @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
+//        jioIdTextField.text     = "pallavtrivedi-4"
+//        passwordTextField.text  = "pallav@1010"
+//             jioIdTextField.text     = "poonam2016"
+//             passwordTextField.text  = "poonam@12"
         
-        
-        if(jioIdTextField.text?.characters.count == 0 || passwordTextField.text?.characters.count == 0)
+        if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0)
         {
             self.showAlert(alertString: "Jio ID/Password cannot be empty")
         }
         else
         {
-            let params:[String:String]? = ["os": "Android", "username": jioIdTextField.text!, "password": passwordTextField.text!, "deviceId": "12345"]
+            let params:[String:String]? = ["os": "Android","username": jioIdTextField.text!, "password": passwordTextField.text!, "deviceId":"12345"]
             let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
             weak var weakSelf = self
             
@@ -61,7 +60,10 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 (data, response, error) in
                 if let responseError = error
                 {
-                    //print(responseError)
+                    print(responseError)
+                    DispatchQueue.main.async {
+                        weakSelf?.handleAlertForSignInFailure()
+                    }
                     //Analytics for Login Fail
                     self.sendLoggedInAnalyticsEventWithFailure(errorMessage: (error?.localizedDescription)!)
                     return
@@ -69,38 +71,74 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 
                 if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
                 {
-                    let code = parsedResponse["code"] as? Int
+                    let code = parsedResponse["code"] as? Int ?? 0
                     if(code == 200)
                     {
                         weakSelf?.setUserData(userData: parsedResponse)
                         JCLoginManager.sharedInstance.setUserToDefaults()
-                        isUserLoggedOutHimself = false
+                        let vc = weakSelf?.presentingVCOfLoginVc
+                        let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist ?? false
+                        let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData ?? false
+                        let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell ?? false
+                        
+                        //Updates after login
+                        if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
+                            if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
+                                homevc.callWebServiceForResumeWatchData()
+                                homevc.callWebServiceForUserRecommendationList()
+                            }
+                            if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
+                                movieVC.callWebServiceForMoviesWatchlist()
+                            }
+                            if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
+                                tvVc.callWebServiceForTVWatchlist()
+                            }
+                        }
                         
                         DispatchQueue.main.async {
                             weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                                
-                                if !isLoginPresentedFromAddToWatchlist
-                                {
-                                NotificationCenter.default.post(name: readyToPlayNotificationName, object: nil)
+                                if loginPresentedFromItemCell{
+                                    if let vc = vc as? JCHomeVC {
+                                        vc.playItemAfterLogin()
+                                    }
+                                    else if (vc as? JCMoviesVC) != nil {
+                                        //vc.playItemAfterLogin()
+                                    }
+                                    else if (vc as? JCTVVC) != nil {
+                                        //vc.playItemAfterLogin()
+                                    }
+                                    else if let vc = vc as? JCMusicVC {
+                                        vc.playItemAfterLogin()
+                                    }
+                                    else if let vc = vc as? JCClipsVC {
+                                        vc.playItemAfterLogin()
+                                    }
+                                    else if let vc = vc as? JCSearchVC {
+                                        vc.playItemAfterLogin()
+                                    }
+                                    else if let vc = vc as? JCMetadataVC {
+                                        vc.playItemAfterLogin()
+                                    }
+                                    else if let vc = vc as? JCLanguageGenreVC {
+                                        vc.playItemAfterLogin()
+                                    }
                                 }
-                                if let metaDataVC = JCAppReference.shared.metaDataVc as? JCMetadataVC{
-                                    metaDataVC.callToReloadWatchListStatusWhenJustLoggedIn()
+                                else if presentedFromAddToWatchList {
+                                    if let vc = vc as? JCMetadataVC{
+                                        //Change Add to watchlist button status
+                                        
+                                    }
                                 }
-                                isLoginPresentedFromAddToWatchlist = false
-                                if let homevc = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
-                                    homevc.callWebServiceForResumeWatchData()
+                                else if presentedFromPlayNowButtonOfMetadata{
+                                    if let vc = vc as? JCMetadataVC{
+                                        //Play after login
+                                        vc.didClickOnWatchNowButton(nil)
+                                    }
                                 }
-                                if let movieVC = JCAppReference.shared.tabBarCotroller?.viewControllers![1] as? JCMoviesVC{
-                                    movieVC.callWebServiceForMoviesWatchlist()
-                                }
-                                if let tvVC = JCAppReference.shared.tabBarCotroller?.viewControllers![2] as? JCTVVC{
-                                    tvVC.callWebServiceForTVWatchlist()
-                                }
-                                
                             })
                         }
                         self.sendLoggedInAnalyticsEventWithSuccess()
-                       
+                        
                         
                     }
                     else if(code == 400)
@@ -146,10 +184,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         }
     }
     
-        
+    
     func setUserData(userData: [String:Any])
     {
-        
         let result = userData["result"] as? [String:Any]
         
         JCAppUser.shared.lbCookie = result?["lbCookie"] as? String ?? ""
@@ -164,52 +201,19 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         JCAppUser.shared.unique = result?["uniqueId"] as? String ?? ""
         JCAppUser.shared.mToken = result?["mToken"] as? String ?? ""
         JCAppUser.shared.userGroup = userData["userGrp"] as? String ?? ""
-        
     }
     
     func navigateToHomeVC()
     {
-        DispatchQueue.main.async {            
+        DispatchQueue.main.async {
             let tabBarController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
             let navController = UINavigationController.init(rootViewController: tabBarController)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
         }
     }
-    //Removing seasarch container from search navigation controller
-    func changingSearchNCRootVC(){
-        if JCAppReference.shared.isTempVCRootVCInSearchNC!{
-            JCAppReference.shared.isTempVCRootVCInSearchNC = false
-            let searchVC = JCSearchVC(nibName: "JCBaseVC", bundle: nil)
-            searchVC.view.backgroundColor = .clear
-            
-            let searchViewController = UISearchController.init(searchResultsController: searchVC)
-            searchViewController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-            //searchViewController.view.backgroundColor = .clear
-            let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage")!)
-            imageView.frame = searchViewController.view.frame
-            searchViewController.view.addSubview(imageView)
-            searchViewController.view.sendSubview(toBack: imageView)
-            searchViewController.searchBar.placeholder = "Search"
-            searchViewController.searchBar.tintColor = UIColor.white
-            searchViewController.searchBar.barTintColor = UIColor.black
-            searchViewController.searchBar.tintColor = UIColor.gray
-            searchViewController.hidesNavigationBarDuringPresentation = true
-            searchViewController.obscuresBackgroundDuringPresentation = false
-            searchViewController.searchBar.delegate = searchVC
-            searchViewController.searchBar.searchBarStyle = .minimal
-            searchVC.searchViewController = searchViewController
-            let searchContainerController = UISearchContainerViewController(searchController: searchViewController)
-            searchContainerController.view.backgroundColor = UIColor.clear
-            if let navVcForSearchContainer = JCAppReference.shared.tabBarCotroller?.viewControllers![5] as? UINavigationController{
-                navVcForSearchContainer.setViewControllers([searchContainerController], animated: false)
-            }
-        }
-        
-        
-    }
     
-   fileprivate func showAlert(alertString:String)
+    fileprivate func showAlert(alertString:String)
     {
         let alert = UIAlertController(title: "Alert",
                                       message: alertString,
@@ -233,23 +237,37 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         let loginSuccessInternalEvent = JCAnalyticsEvent.sharedInstance.getLoggedInEventForInternalAnalytics(methodOfLogin: "JIOID", source: "Manual", jioIdValue: Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginSuccessInternalEvent)
         
+        //For Google Analytics Event
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: SUCCESS_ACTION, label: "Jio ID", customParameters: customParams)
+        
     }
     
     //MARK:- Send Logged In Analytics Event With Failure
     func sendLoggedInAnalyticsEventWithFailure(errorMessage:String) {
         
         // For Clever Tap Event
-        let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.jioIdTextField.text!),"Reason":"Jio ID","Platform":"TVOS","Error Code":"400","Message":errorMessage]
+        let eventProperties = ["Userid": Utility.sharedInstance.encodeStringWithBase64(aString: self.jioIdTextField.text!),"Reason": "Jio ID","Platform":"TVOS","Error Code":"400","Message":errorMessage]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
         
         // For Internal Analytics Event
-        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text!, errorMessage: errorMessage)
+        let loginFailedInternalEvent = JCAnalyticsEvent.sharedInstance.getLoginFailedEventForInternalAnalytics(jioID: self.jioIdTextField.text ?? "", errorMessage: errorMessage)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
-        
+        //For Google Analytics Event
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label: "Type: Jio ID" + errorMessage, customParameters: customParams)
     }
     
+    func handleAlertForSignInFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
+    }
     
-    
-
 }
+

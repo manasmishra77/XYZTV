@@ -5,7 +5,7 @@
 //  Created by Pallav Trivedi on 27/07/17.
 //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
-
+/*
 import UIKit
 import SDWebImage
 
@@ -17,7 +17,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
     var horizontalInset = CGFloat()
     var cellWidth = CGFloat()
     var carousalData:[Item]?
-    var itemFromViewController: VideoType?
+    var itemFromViewController:VideoType?
 
     
     @IBOutlet weak var headerCollectionView: UICollectionView!
@@ -89,4 +89,4 @@ extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
-
+*/

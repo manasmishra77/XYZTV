@@ -18,21 +18,20 @@ public enum JCParameterEncoding
 let screenHeight:CGFloat = UIScreen.main.bounds.height
 let screenWidth:CGFloat = UIScreen.main.bounds.width
 let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
-let networkErrorMessage = "No network available"
+let networkErrorMessage = "Please check your device's network and retry!"
 
-var collectionIndex = -1
-var selectedItemFromViewController:VideoType = VideoType.Home
-var categoryTitle = ""
-var referenceFromPlayerVC = ""
+//var collectionIndex = -1
+//var selectedItemFromViewController:VideoType = VideoType.Home
+//var categoryTitle = ""
+//var referenceFromPlayerVC = ""
 
-var screenAppearTime: Date! = Date()
-var screenDisAppearTime: Double! = 0.0
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-let basePath = qaBase
+let basePath = prodBase
+//let basePath = qaBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
@@ -52,13 +51,11 @@ let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls
-let versionApi = "v3.1"
-
-let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/1/")
-let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/6/")
-let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/33/")
-let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/9/")
-let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/\(versionApi)/home/get/35/")
+let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/1/")
+let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/6/")
+let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/33/")
+let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/9/")
+let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/35/")
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
@@ -74,8 +71,8 @@ let languageListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c5
 let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593ed8/29")
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
+let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
 let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
-
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -89,8 +86,6 @@ let kAppKey = "appkey"
 
 //Values
 let kAppKeyValue = "06758e99be484fca56fb"
-
-var playerVC_Global: UIViewController?
 
 //StoryBoard Ids
 let loginVCStoryBoardId = "kLoginVC"
@@ -135,7 +130,7 @@ let isAutoPlayOnKey = "isAutoPlayOn"
 
 
 //Google Analytics
-let googleAnalyticsTId = "UA-106863966-2"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
+let googleAnalyticsTId = "UA-106863966-14"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
 let googleAnalyticsEndPoint = "https://www.google-analytics.com/collect?"
 
 //App Delegate
@@ -155,13 +150,49 @@ let returnSessionDetailsValue = "T"
 let subscriberIdKey = "subscriberId"
 
 
-//Variables
+//Screen Name
+let HOME_SCREEN = "Home Screen"
+let MOVIE_SCREEN = "Movie Screen"
+let TV_SCREEN = "TV Screen"
+let MUSIC_SCREEN = "Music Screen"
+let CLIP_SCREEN = "Clip Screen"
+let SEARCH_SCREEN = "Search Screen"
+let METADATA_SCREEN = "Metadata Screen"
+let PLAYER_SCREEN = "Player Screen"
+let LANGUAGE_SCREEN = "Language Screen"
+let GENRE_SCREEN = "Genre Screen"
+let LOGIN_SCREEN = "Login Screen"
+let TVOS_HOME_SCREEN = "tvOS Home Screen"
 
-var isLoginPresentedFromAddToWatchlist = false
-var isSearchOpenFromMetaData = false
-var isUserLoggedOutHimself = false
-var latestEpisodeId = "-1"
+//Category Name
+let RECOMMENDATION = "Recommendation"
+let MORELIKE = "More Like"
+let WATCH_NOW_BUTTON = "Watch-now button"
+let TVOS_HOME_SCREEN_CAROUSEL = "tvOS Home Screen Carousel"
 
-//Screen Navigation Constants
-var previousScreenName = ""
-var currentScreenName = ""
+let ADD_TO_WATCHLIST = "Add to watchlist"
+let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
+
+let SHOW_MORE = "Show More"
+let SHOW_LESS = "Show Less"
+
+
+//MARK:- Google Analytics Constants
+
+//Event Category
+let LOGIN_EVENT = "Login"
+let PLAYER_OPTIONS = "Player Options"
+
+
+//Event Action
+let SUCCESS_ACTION = "Success"
+let FAILURE_ACTION = "Failure"
+let VIDEO_ACTION = "Video Play"
+let VIDEO_START_EVENT = "Video Start"
+let VIDEO_END_EVENT = "Video End"
+
+//Event Comment
+let LOGGEDIN_SUCCESSFUL = "Logged in successfully"
+let ContentNotAvailable_msg = "#51 This content is unavailable."
+
+

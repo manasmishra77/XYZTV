@@ -7,22 +7,24 @@
 //
 
 import UIKit
+import Crashlytics
 
-class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate
-{
+class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
+    fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String? = nil
+    fileprivate var isMovieWebServiceTriedOnce = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
-        callWebServiceForMoviesData(page: loadedPage)
+        //callWebServiceForMoviesData(page: loadedPage)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewFooterCell", bundle: nil), forCellReuseIdentifier: baseFooterTableViewCellIdentifier)
@@ -30,42 +32,47 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         self.baseTableView.dataSource = self
         
         // Do any additional setup after loading the view.
+        if JCDataStore.sharedDataStore.moviesData?.data == nil
+        {
+            callWebServiceForMoviesData(page: loadedPage)
+        }
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
+            self.callWebServiceForMoviesWatchlist()
+        } else {
+            isMoviesWatchlistAvailable = false
+        }
         
     }
     
     override func viewDidAppear(_ animated: Bool)
     {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-        
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
-        screenAppearTime = Date()
-
-        self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.moviesData?.data == nil
         {
             callWebServiceForMoviesData(page: loadedPage)
         }
-        if JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            self.callWebServiceForMoviesWatchlist()
-        }
-        else
-        {
-            isMoviesWatchlistAvailable = false
-        }
-        baseTableView.reloadData()
+        self.tabBarController?.delegate = self
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name": "Movies", "Platform": "TVOS", "Metadata Page": ""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        screenAppearTiming = Date()
         
-//        //Clevertap Navigation Event
-//        let eventProperties = ["Screen Name":"Movies","Platform":"TVOS","Metadata Page":""]
-//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-//        Utility.sharedInstance.handleScreenNavigation(screenName: "Movies")
+        //Removing watchlist when user loggedout
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isMoviesWatchlistAvailable{
+            isMoviesWatchlistAvailable = false
+            dataItemsForTableview.remove(at: 0)
+            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
-        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-
+        isMovieWebServiceTriedOnce = false
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,11 +106,12 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Movie
-        cell.categoryTitleLabel.tag = indexPath.row + 500000
 
         cell.data = dataItemsForTableview[indexPath.row].items
         cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
         cell.tableCellCollectionView.reloadData()
+        cell.cellDelgate = self
+        cell.tag = indexPath.row
         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
@@ -122,18 +130,20 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            if let items = (JCDataStore.sharedDataStore.moviesData?.data?[0].items){
-                carouselView.carouselArray = items
-                    carouselView.loadViews()
+            if let carouselItems = JCDataStore.sharedDataStore.moviesData?.data?[0].items, carouselItems.count > 0{
+                carouselView.carouselArray = carouselItems
+                carouselView.loadViews()
+                carouselView.carouselDelegate = self
                 uiviewCarousel = carouselView
-                selectedItemFromViewController = VideoType.Movie
-                collectionIndex = 0
                 return carouselView
+            }else{
+                return UIView()
             }
-           
         }
+        else
+        {
             return UIView()
-        
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -148,6 +158,7 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
         if (JCDataStore.sharedDataStore.moviesData?.totalPages) == nil
         {
             return UIView()
@@ -176,45 +187,44 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
     
     func changingDataSourceForBaseTableView(){
         dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.moviesData?.data) != nil
-        {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
+        if let moviesData = JCDataStore.sharedDataStore.moviesData?.data {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
                 isMoviesWatchlistAvailable = false
             }
-            dataItemsForTableview = (JCDataStore.sharedDataStore.moviesData?.data)!
-            if let isCarousal = dataItemsForTableview[0].isCarousal {
-                if isCarousal{
-                    dataItemsForTableview.remove(at: 0)
-                }
+            dataItemsForTableview = moviesData
+            if dataItemsForTableview[0].isCarousal ?? false {
+                dataItemsForTableview.remove(at: 0)
             }
-            if isMoviesWatchlistAvailable{
-                if let items = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
-                    if items.count > 0 {
-                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.moviesWatchList?.data)!, at: 0)
-                    }
+            if isMoviesWatchlistAvailable {
+                if let watchListData = JCDataStore.sharedDataStore.moviesWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+                    dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
         }
         
     }
     
-    func callWebServiceForMoviesData(page:Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    func callWebServiceForMoviesData(page: Int) {
+        
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
         
+        guard !isMovieWebServiceTriedOnce else {
+            return
+        }
         let url = moviesDataUrl.appending(String(page))
         let moviesDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: moviesDataRequest) { (data, response, error) in
-            if let responseError = error
-            {
+            weakSelf?.isMovieWebServiceTriedOnce = true
+            if let responseError = error {
                 //TODO: handle error
-                //print(responseError)
+                print(responseError)
+                DispatchQueue.main.async {
+                    weakSelf?.handleAlertForMoviesDataFailure()
+                }
                 return
             }
             if let responseData = data
@@ -224,6 +234,19 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             }
         }
     }
+    
+    func handleAlertForMoviesDataFailure() {
+        let action = Utility.AlertAction(title: "Dismiss", style: .default)
+        let alertVC = Utility.getCustomizedAlertController(with: "Server Error!", message: "", actions: [action]) { (alertAction) in
+            if alertAction.title == action.title {
+                //self.tabBarController?.selectedIndex = 2
+            }
+        }
+        present(alertVC, animated: false) {
+            self.tabBarController?.selectedIndex = 0
+        }
+    }
+    
     
     func evaluateMoviesData(dictionaryResponseData responseData:Data)
     {
@@ -257,10 +280,11 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
-            
             if let responseError = error as NSError?
             {
-                //print(responseError)
+                //TODO: handle error
+                print(responseError)
+                
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
@@ -281,7 +305,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
                 return
             }
         }
-        
     }
     
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
@@ -292,15 +315,12 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
             self.isMoviesWatchlistAvailable = true
              self.changingDataSourceForBaseTableView()
             DispatchQueue.main.async {
-                
                 JCDataStore.sharedDataStore.moviesWatchList?.data?.title = "Watch List"
                 if weakSelf?.baseTableView != nil{
                     weakSelf?.baseTableView.reloadData()
                 }
-                
             }
         }
-        
     }
     
     //ChangingTheAlpha
@@ -320,7 +340,6 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
                 if cells.count <= 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }
-                
             }
         }
     }
@@ -335,9 +354,41 @@ class JCMoviesVC:JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCon
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
         }
+        
+        //Making tab bar delegate searchvc
+        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
+            if let searchVc = svc.searchController.searchResultsController as? JCSearchVC{
+                tabBarController.delegate = searchVc
+            }
+        }
     }
     
-    
-    
-    
+    //MARK:- JCBaseTableCell Delegate Methods
+    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
+            return
+        }
+        if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: MOVIE_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
+            
+            let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
+            print(tappedItem)
+            if tappedItem.app?.type == VideoType.Movie.rawValue{
+                print("At Movie")
+                toScreenName = METADATA_SCREEN
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1)
+                self.present(metadataVC, animated: true, completion: nil)
+            }
+        }
+    }
+    //MARK:- Carousel Delegate Methods
+    func didTapOnCarouselItem(_ item: Any?) {
+       // Crashlytics.sharedInstance().crash()
+
+        didTapOnItemCell(nil, item, 0)
+    }
 }

@@ -9,20 +9,11 @@
 import UIKit
 import SDWebImage
 
-protocol JCChangeFocusForCarouselDelegate : class
-{
-    func setFocusEnvironments()
+@objc protocol JCCarouselCellDelegate {
+    @objc optional func didTapOnCarouselItem(_ item: Any?)
 }
 
 class InfinityScrollView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     @IBOutlet weak var extraLeftButton: UIButton!
     @IBOutlet weak var extraRightButton: UIButton!
@@ -32,7 +23,7 @@ class InfinityScrollView: UIView {
     var current = 1
     var newImageLoaded = true
     var myPreferredFocuseView: UIView? = nil
-    weak var changeFocusForCarouselDelegate : JCChangeFocusForCarouselDelegate?
+    weak var carouselDelegate : JCCarouselCellDelegate?
     var carouselArray = [Item]()
     //var carouselArray: [UIImage] = [UIImage(named: "T1")!, UIImage(named: "T2")!, UIImage(named: "T3")!, UIImage(named: "T4")!, UIImage(named: "T5")!]
     
@@ -71,7 +62,8 @@ class InfinityScrollView: UIView {
         //LeftButton
         let leftButtonImageUrlString = self.carouselArray[newImage.previous!].tvImage ?? ""
         let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!)
-        self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+        self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
+        
         //MiddleButton
         let middleButtonImageUrlString = self.carouselArray[newImage.current!].tvImage ?? ""
         let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!)
@@ -183,28 +175,20 @@ class InfinityScrollView: UIView {
                 
                 //LeftButton
                 let leftButtonImageUrlString = self.carouselArray[nextImage.previous!].tvImage ?? ""
-                if let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!){
-                    self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
-                }
-                
+                let leftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(leftButtonImageUrlString))!)
+                self.leftButton.sd_setBackgroundImage(with: leftButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //MiddleButton
                 let middleButtonImageUrlString = self.carouselArray[nextImage.current!].tvImage ?? ""
-                if let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!){
-                    self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
-                }
-                
+                let middleButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(middleButtonImageUrlString))!)
+                self.middleButton.sd_setBackgroundImage(with: middleButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //RightButton
                 let rightButtonImageUrlString = self.carouselArray[nextImage.next!].tvImage ?? ""
-                if let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString))!){
-                    self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
-                }
-                
+                let rightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(rightButtonImageUrlString))!)
+                self.rightButton.sd_setBackgroundImage(with: rightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 //ExtraRight
                 let extraRightButtonImageUrlString = self.carouselArray[nextImage.extraOne!].tvImage ?? ""
-                if let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString))!){
-                    self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
-                }
-                
+                let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString))!)
+                self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
                 
                 //CallToChangeTheFocusOfTheButton 
                 //self.changeFocusForCarouselDelegate?.setFocusEnvironments()
@@ -226,14 +210,7 @@ class InfinityScrollView: UIView {
         
     }
     @IBAction func didClickOnMiddleButton(_ sender: Any) {
-        let itemToPlay = ["item": (carouselArray[current])]
-        
-        if let type = carouselArray[current].app?.type{
-            if let videoType = VideoType(rawValue: type){
-               // selectedItemFromViewController = videoType
-            }
-        }
-        NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
+        carouselDelegate?.didTapOnCarouselItem!(carouselArray[current])
     }
     
     //Next Image call for headercell of table

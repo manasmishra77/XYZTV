@@ -1,15 +1,15 @@
 
 
 import Foundation
-struct CheckVersionModel {
+struct CheckVersionModel: Codable {
 	var messageCode : Int?
 	var result : CheckVersionResult?
 
-//    enum CodingKeys: String, CodingKey {
-//
-//        case messageCode = "messageCode"
-//        case result
-//    }
+    enum CodingKeys: String, CodingKey {
+
+        case messageCode = "messageCode"
+        case result
+    }
     
 
 //    init(from decoder: Decoder) throws {

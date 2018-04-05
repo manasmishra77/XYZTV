@@ -23,7 +23,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EWV-We-Zbi" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipa-bF-mxh" userLabel="Artist Name Initial Button" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="60"/>
@@ -43,24 +43,23 @@
             </view>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="FlV-9M-lJ4" secondAttribute="bottom" constant="50" id="2hN-fQ-YEr"/>
-                <constraint firstItem="EWV-We-Zbi" firstAttribute="top" secondItem="FlV-9M-lJ4" secondAttribute="top" id="4lT-gz-sXu"/>
-                <constraint firstItem="EWV-We-Zbi" firstAttribute="leading" secondItem="FlV-9M-lJ4" secondAttribute="leading" id="Btw-8J-91M"/>
+                <constraint firstItem="ipa-bF-mxh" firstAttribute="top" secondItem="FlV-9M-lJ4" secondAttribute="top" id="4iH-Vh-9Ke"/>
+                <constraint firstItem="ipa-bF-mxh" firstAttribute="leading" secondItem="FlV-9M-lJ4" secondAttribute="leading" id="9LO-4m-4ui"/>
                 <constraint firstItem="FlV-9M-lJ4" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="K05-ub-x1F"/>
                 <constraint firstItem="w3m-wi-yjz" firstAttribute="top" secondItem="FlV-9M-lJ4" secondAttribute="bottom" constant="10" id="NAx-po-ads"/>
                 <constraint firstItem="FlV-9M-lJ4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="Nvq-VJ-sAb"/>
+                <constraint firstItem="ipa-bF-mxh" firstAttribute="bottom" secondItem="FlV-9M-lJ4" secondAttribute="bottom" id="VLq-iG-umd"/>
                 <constraint firstAttribute="trailing" secondItem="w3m-wi-yjz" secondAttribute="trailing" id="WYH-rg-2o5"/>
-                <constraint firstItem="EWV-We-Zbi" firstAttribute="bottom" secondItem="FlV-9M-lJ4" secondAttribute="bottom" id="Xkq-gD-x6d"/>
                 <constraint firstAttribute="bottom" secondItem="w3m-wi-yjz" secondAttribute="bottom" id="d2u-jD-Kdy"/>
                 <constraint firstAttribute="trailing" secondItem="FlV-9M-lJ4" secondAttribute="trailing" constant="15" id="dL6-ts-ECm"/>
+                <constraint firstItem="ipa-bF-mxh" firstAttribute="trailing" secondItem="FlV-9M-lJ4" secondAttribute="trailing" id="jrF-Am-v6Y"/>
                 <constraint firstItem="w3m-wi-yjz" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="mex-jI-ZWG"/>
-                <constraint firstItem="EWV-We-Zbi" firstAttribute="trailing" secondItem="FlV-9M-lJ4" secondAttribute="trailing" id="sgR-zz-WSg"/>
             </constraints>
             <connections>
                 <outlet property="artistImageView" destination="FlV-9M-lJ4" id="bs9-2K-LE7"/>
-                <outlet property="artistNameInitialButton" destination="EWV-We-Zbi" id="SDS-6y-U5h"/>
+                <outlet property="artistNameInitialButton" destination="ipa-bF-mxh" id="cuQ-Qe-sbh"/>
                 <outlet property="artistNameLabel" destination="w3m-wi-yjz" id="Lwx-Fa-EIY"/>
             </connections>
-            <point key="canvasLocation" x="-719" y="-7"/>
         </collectionViewCell>
     </objects>
     <resources>

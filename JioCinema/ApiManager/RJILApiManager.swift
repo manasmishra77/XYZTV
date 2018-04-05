@@ -34,34 +34,14 @@ class RJILApiManager {
     
     func post(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "POST", completion: completion)
-
-//        if isNetworkAvailable
-//        {
-//        }
-//        else
-//        {
-//            if let topController = UIApplication.topViewController() {
-//                Utility.sharedInstance.showAlert(viewController: topController, title:networkMessage, message: "")
-//            }
-//        }
     }
     
-    func put(request:URLRequest, completion: @escaping RequestCompletionBlock) {
+    func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "PUT", completion: completion)
     }
     
-    func get(request:URLRequest, completion: @escaping RequestCompletionBlock) {
+    func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
         createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
-
-//        if isNetworkAvailable
-//        {
-//        }
-//        else
-//        {
-//            if let topController = UIApplication.topViewController() {
-//                Utility.sharedInstance.showAlert(viewController: topController, title:networkMessage, message: "")
-//            }
-//        }
     }
     
     
@@ -106,32 +86,7 @@ class RJILApiManager {
             return _commonHeaders
         }
     }
-    
-//    var commonHeaders:[String:String]{
-//        get{
-//            var _commonHeaders = [String:String]()
-//            _commonHeaders["os"] = "ios"
-//            _commonHeaders["deviceType"] = "stb"
-//            _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
-//            
-//            if JCLoginManager.sharedInstance.isUserLoggedIn()
-//            {
-//                _commonHeaders[kAppKey] = kAppKeyValue
-//                _commonHeaders["uniqueid"] = JCAppUser.shared.unique
-//                _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
-//                _commonHeaders["accesstoken"] = JCAppUser.shared.ssoToken
-//                _commonHeaders["lbcookie"] = JCAppUser.shared.lbCookie
-//                
-//                //_commonHeaders["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhoneOS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C89"
-//                if JCAppUser.shared.userGroup != "" {
-//                    _commonHeaders["usergroup"] = JCAppUser.shared.userGroup
-//                }
-//                
-//            }
-//            
-//            return _commonHeaders
-//        }
-//    }
+
     
     var otpHeaders:[String:String]{
         get{
@@ -178,25 +133,29 @@ class RJILApiManager {
             return json as? [String:Any]
             
         }catch let error {
-           // print(String(data: data, encoding: .utf8) ?? "")
-           // print(error.localizedDescription)
+            print(String(data: data, encoding: .utf8) ?? "")
+            print(error.localizedDescription)
         }
         
         return nil
     }
     
     
-    private func getRequest(forPath path:String) -> URLRequest
+    private func getRequest(forPath path:String) -> URLRequest?
     {
         //make macros here for prod/preprod etc
         
         //TODO:
-        urlString = path.contains("http") ? path : basePath.appending("common/v3/") + path
+        urlString = path.contains("http") ? path.removingWhitespaces() : basePath.appending("common/v3/") + path.removingWhitespaces()
         
-        return URLRequest(url: URL(string: urlString!)!)
+        if let url = URL(string: urlString!) {
+            return URLRequest(url: url)
+        }
+        return nil
+        
     }
     
-    func prepareRequest(path:String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
         var request:URLRequest?
         
         if let params = params {
@@ -210,7 +169,7 @@ class RJILApiManager {
                     request?.httpBody = jsonData
                 }
                 catch{
-                   // print(error)
+                    print(error)
                 }
                 break
             case .BODY:
@@ -243,7 +202,7 @@ class RJILApiManager {
                     paramString += escapedKey! + "=" + escapedValue! + "&"
                 }
                 
-                if paramString.characters.last == "&"{
+                if paramString.last == "&"{
                     paramString = paramString.substring(to: paramString.index(before: paramString.endIndex))
                 }
                 
@@ -266,7 +225,6 @@ class RJILApiManager {
             {
                 request?.allHTTPHeaderFields = subIdHeaders
             }
-                
             else
             {
                 request?.allHTTPHeaderFields = commonHeaders
@@ -288,11 +246,11 @@ class RJILApiManager {
             dataDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: { (location,response,error) in
                 if location != nil {
                     do{
-                        let responseData:Data = try Data(from: location! as! Decoder)
+                        let responseData:Data = try Data(contentsOf: location!)
                         completion(urlString, responseData)
                     }
                     catch{
-                        //print(error)
+                        print(error)
                         completion(urlString, nil)
                     }
                 }
@@ -336,16 +294,9 @@ class RJILApiManager {
                 //fatalError("Could not get response")
             }
             
+            //TODO: refreshing ssotoken
             self.httpStatusCode = httpResponse.statusCode
-            
-            
-            
-            //TODO: will I come across this scenario
-            /*//This condition is added to simulate refresh toke scenario
-             if gSimulateRefreshTokenScenario { self.httpStatusCode = 400 }
-             */
-            
-            if self.httpStatusCode == 419 {
+            if self.httpStatusCode == 419{
                 if JCAppUser.shared.mToken != ""{
                     
                     //Put the currentTask in queue
@@ -362,7 +313,6 @@ class RJILApiManager {
                         let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
                         RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
                             guard error == nil else{
-                                self.isRefreshingToken = false
                                 var errorInfo:[String:String] = [String:String]()
                                 errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
                                 completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
@@ -379,7 +329,7 @@ class RJILApiManager {
                                         self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
                                     }
                                 }
-                                else {
+                                else{
                                     self.isRefreshingToken = false
                                     //LogOutUser and show login page
                                     completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
@@ -397,10 +347,8 @@ class RJILApiManager {
                     completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
                     
                 }
-
             }
-                
-            //TODO: error domain
+                //TODO: error domain
             else if self.httpStatusCode == 504{
                 var errorInfo:[String:String] = [String:String]()
                 self.errorMessage = "Server Timeout : Please try again in some time"

@@ -21,26 +21,26 @@
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="Iw5-b2-S8Y">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetaDatBackGroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="aFd-np-UFP">
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="7je-qu-qFq">
-                    <rect key="frame" x="20" y="-20" width="1880" height="1100"/>
+                    <rect key="frame" x="20" y="-30" width="1880" height="1110"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="68x-KJ-ko0">
                     <rect key="frame" x="928" y="508" width="64" height="64"/>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Iw5-b2-S8Y" secondAttribute="trailing" id="5iE-tG-bZZ"/>
-                <constraint firstItem="Iw5-b2-S8Y" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="6P1-Pl-ULf"/>
                 <constraint firstAttribute="trailing" secondItem="7je-qu-qFq" secondAttribute="trailing" constant="20" id="AGA-PX-quy"/>
-                <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-20" id="Cc7-yd-11O"/>
+                <constraint firstItem="7je-qu-qFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-30" id="Cc7-yd-11O"/>
+                <constraint firstItem="aFd-np-UFP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="D55-AF-Xnh"/>
+                <constraint firstItem="aFd-np-UFP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="F9L-J3-rNq"/>
+                <constraint firstAttribute="bottom" secondItem="aFd-np-UFP" secondAttribute="bottom" id="G8q-h4-0o3"/>
+                <constraint firstAttribute="trailing" secondItem="aFd-np-UFP" secondAttribute="trailing" id="MQI-zy-Ebf"/>
                 <constraint firstItem="68x-KJ-ko0" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="QP5-AU-690"/>
-                <constraint firstItem="Iw5-b2-S8Y" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SEZ-gv-IKw"/>
-                <constraint firstAttribute="bottom" secondItem="Iw5-b2-S8Y" secondAttribute="bottom" id="mce-rl-VRr"/>
                 <constraint firstItem="68x-KJ-ko0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="nfl-ci-O0r"/>
                 <constraint firstItem="7je-qu-qFq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="p0j-qk-OeW"/>
                 <constraint firstAttribute="bottom" secondItem="7je-qu-qFq" secondAttribute="bottom" id="zV6-AR-lV7"/>

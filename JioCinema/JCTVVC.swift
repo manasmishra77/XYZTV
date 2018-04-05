@@ -8,12 +8,14 @@
 
 import UIKit
 
-class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate
+class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
 
     var loadedPage = 0
     var isTVWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
+    fileprivate var screenAppearTiming = Date()
+    fileprivate var toScreenName: String?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -32,39 +34,39 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         self.baseTableView.dataSource = self
         
         // Do any additional setup after loading the view.
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
+            self.callWebServiceForTVWatchlist()
+        } else {
+            isTVWatchlistAvailable = false
+        }
         
     }
     
-    override func viewDidAppear(_ animated: Bool)
-    {
-        screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-        //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"TV","Platform":"TVOS","Metadata Page":""]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        Utility.sharedInstance.handleScreenNavigation(screenName: "TV")
-        screenAppearTime = Date()
+    override func viewDidAppear(_ animated: Bool) {
+        screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
-        if JCDataStore.sharedDataStore.tvData?.data == nil
-        {
-            callWebServiceForTVData(page: loadedPage)
-        }
         
-        if JCLoginManager.sharedInstance.isUserLoggedIn()
-        {
-            self.callWebServiceForTVWatchlist()
-        }
-        else
-        {
+        //Clevertap Navigation Event
+        let eventProperties = ["Screen Name": "TV", "Platform": "TVOS", "Metadata Page": ""]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        
+        //Removing watchlist when user loggedout
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isTVWatchlistAvailable{
             isTVWatchlistAvailable = false
+            dataItemsForTableview.remove(at: 0)
+            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
-        baseTableView.reloadData()
         
-
     }
     override func viewDidDisappear(_ animated: Bool) {
-        //screenDisAppearTime = Date().timeIntervalSince(screenAppearTime)
-      
+        if let toScreen = toScreenName {
+            Utility.sharedInstance.handleScreenNavigation(screenName: TV_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+            toScreenName = nil
+        } else {
+            let toScreen = self.tabBarController?.selectedViewController?.tabBarItem.title ?? ""
+            Utility.sharedInstance.handleScreenNavigation(screenName: TV_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
+        }
     }
   
     
@@ -82,11 +84,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     {
         
         //dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.tvData?.data) != nil
-        {
+        if (JCDataStore.sharedDataStore.tvData?.data) != nil {
            changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
-            
         }
         else
         {
@@ -96,23 +96,17 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     func changingDataSourceForBaseTableView(){
         dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.tvData?.data) != nil
-        {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
+        if let tvData = JCDataStore.sharedDataStore.tvData?.data {
+            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
                 isTVWatchlistAvailable = false
             }
-            dataItemsForTableview = (JCDataStore.sharedDataStore.tvData?.data)!
-            if let isCarousal = dataItemsForTableview[0].isCarousal {
-                if isCarousal{
-                    dataItemsForTableview.remove(at: 0)
-                }
+            dataItemsForTableview = tvData
+            if dataItemsForTableview[0].isCarousal ?? false {
+                dataItemsForTableview.remove(at: 0)
             }
             if isTVWatchlistAvailable{
-                if let items = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
-                    if items.count > 0 {
-                        dataItemsForTableview.insert((JCDataStore.sharedDataStore.tvWatchList?.data)!, at: 0)
-                    }
+                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+                    dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
         }
@@ -123,11 +117,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.TVShow
-        cell.categoryTitleLabel.tag = indexPath.row + 500000
-
+        
         cell.data = dataItemsForTableview[indexPath.row].items
         cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
         cell.tableCellCollectionView.reloadData()
+        cell.cellDelgate = self
+        cell.tag = indexPath.row
         if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
         {
             if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
@@ -142,26 +137,21 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true)
-        {
+        if(JCDataStore.sharedDataStore.tvData?.data?[0].isCarousal == true) {
             //For autorotate carousel
             let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
             let carouselView = carouselViews?.first as! InfinityScrollView
-            if let items = (JCDataStore.sharedDataStore.tvData?.data?[0].items){
-                carouselView.carouselArray = items
+            if let carouselItems = JCDataStore.sharedDataStore.tvData?.data?[0].items, carouselItems.count > 0 {
+                carouselView.carouselArray = carouselItems
                 carouselView.loadViews()
+                carouselView.carouselDelegate = self
                 uiviewCarousel = carouselView
-                selectedItemFromViewController = VideoType.TVShow
-                collectionIndex = 0
                 return carouselView
-            }else{
-               return UIView.init()
+            } else {
+                return UIView()
             }
-            
-        }
-        else
-        {
-            return UIView.init()
+        } else {
+            return UIView()
         }
     }
     
@@ -177,6 +167,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
         if (JCDataStore.sharedDataStore.tvData?.totalPages) == nil
         {
             return UIView.init()
@@ -219,7 +210,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             if let responseError = error
             {
                 //TODO: handle error
-               // print(responseError)
+                print(responseError)
                 return
             }
             if let responseData = data
@@ -262,9 +253,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
-            
             if let responseError = error as NSError?
             {
+                //TODO: handle error
+                print(responseError)
+                
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
@@ -274,7 +267,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                     }
                 }
                 return
-                
             }
             
             if let responseData = data
@@ -295,15 +287,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             weakSelf?.isTVWatchlistAvailable = true
             weakSelf?.changingDataSourceForBaseTableView()
             DispatchQueue.main.async {
-    
                 JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
                 if weakSelf?.baseTableView != nil{
                     weakSelf?.baseTableView.reloadData()
                 }
-                
             }
         }
-        
     }
     
     //ChangingTheAlpha
@@ -337,7 +326,49 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
         }
+        //Making tab bar delegate searchvc
+        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
+            if let searchVc = svc.searchController.searchResultsController as? JCSearchVC{
+                tabBarController.delegate = searchVc
+            }
+        }
     }
     
+    //MARK:- JCBaseTableCell Delegate Methods
+
+    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+        if let tappedItem = item as? Item{
+            
+            //Screenview event to Google Analytics
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: TV_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
+            
+            print(tappedItem)
+            if tappedItem.app?.type == VideoType.TVShow.rawValue{
+                print("At Tvshow")
+                toScreenName = METADATA_SCREEN
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: TV_SCREEN, categoryName: (baseCell?.categoryTitleLabel.text!)!, categoryIndex: indexFromArray, tabBarIndex: 1)
+                self.present(metadataVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func didTapOnCarouselItem(_ item: Any?) {
+        if !Utility.sharedInstance.isNetworkAvailable {
+            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+            return
+        }
+        if let tappedItem = item as? Item {
+            //Screenview event to Google Analytics
+            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            JCAnalyticsManager.sharedInstance.event(category: TV_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
+            
+            if tappedItem.app?.type == VideoType.TVShow.rawValue{
+                print("At TvShow")
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: "Carousel", categoryIndex: 0, tabBarIndex: 1)
+                self.present(metadataVC, animated: true, completion: nil)
+            }
+        }
+    }
 
 }

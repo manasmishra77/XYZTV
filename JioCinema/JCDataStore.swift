@@ -26,13 +26,14 @@ class JCDataStore
     var tvWatchList:WatchListDataModel?
     var moviesWatchList:WatchListDataModel?
     var resumeWatchList:ResumeWatchListDataModel?
+    var userRecommendationList: UserRecommendationListDataModel?
     
     var languageGenreDetailModel:LanguageGenreDetailModel?
     
     var secretCdnTokenKey:String?
     var cdnEncryptionFlag:Bool = false
     var cdnUrlExpiryDuration:Int?
-
+    
     enum Category
     {
         case Home
@@ -45,12 +46,14 @@ class JCDataStore
         case ResumeWatchList
         case Language
         case Genre
+        case UserRecommendation
+        
     }
     
     
     private init()
     {
-    
+        
     }
     
     public func setConfigData(withResponseData responseData:Data)
@@ -95,6 +98,8 @@ class JCDataStore
                 self.moviesWatchList = WatchListDataModel(JSONString: responseString)
             case .ResumeWatchList:
                 self.resumeWatchList = ResumeWatchListDataModel(JSONString: responseString)
+            case .UserRecommendation:
+                self.userRecommendationList = UserRecommendationListDataModel(JSONString: responseString)
             case .Language:
                 self.languageData = BaseDataModel(JSONString: responseString)
             case .Genre:
@@ -122,11 +127,12 @@ class JCDataStore
                     self.tvData?.data?.append(data)
                 case .Clips:
                     self.clipsData?.data?.append(data)
-                case .TVWatchList: break                    
+                case .TVWatchList: break
                 case .MoviesWatchList: break
                 case .ResumeWatchList: break
                 case .Language: break
                 case .Genre: break
+                case .UserRecommendation: break
                 }
             }
         }
@@ -144,3 +150,4 @@ class JCDataStore
     }
     
 }
+

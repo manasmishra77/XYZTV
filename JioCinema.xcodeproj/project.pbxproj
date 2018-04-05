@@ -8,9 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
-		19E355131FBACDE6009C7E09 /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */; };
-		19E355141FBACDE6009C7E09 /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355111FBACDE4009C7E09 /* CheckVersionData.swift */; };
-		19E355151FBACDE6009C7E09 /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */; };
+		19491EDC2018522600870794 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19491EDB2018522600870794 /* TVServices.framework */; };
+		19491EDF2018522600870794 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EDE2018522600870794 /* ServiceProvider.swift */; };
+		19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 19491EDA2018522600870794 /* JCTopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		19491EE92018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
+		19491EEA2018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
+		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
+		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
+		198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */; };
+		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
+		19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */; };
+		19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */; };
 		2024C4871F3C38A8003A08C3 /* Terms.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4861F3C38A8003A08C3 /* Terms.png */; };
 		2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */; };
 		2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2024C48A1F3C9C34003A08C3 /* ArrowPink.png */; };
@@ -70,8 +78,8 @@
 		7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */; };
 		7BC1E7161F33044700D08E83 /* JioCinema-SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */; };
 		7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */; };
-		7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */; };
-		7BD39C921F419CE90014255C /* MetadataHeaderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */; };
+		7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */; };
+		7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */; };
 		7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C951F419E110014255C /* JCMetadataButton.swift */; };
 		7BD39C991F419F470014255C /* AddtoWatchlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C971F419F470014255C /* AddtoWatchlist.png */; };
 		7BD39C9A1F419F470014255C /* WatchNow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C981F419F470014255C /* WatchNow.png */; };
@@ -100,12 +108,43 @@
 		B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EADF071F9DC90D0069671B /* JCAnalyticsEvent.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		19491EE12018522600870794 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B78D7B61F13A91900F319BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 19491ED92018522600870794;
+			remoteInfo = JCTopShelf;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		19491EE72018522700870794 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
-		19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
-		19E355111FBACDE4009C7E09 /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
-		19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
-		19E355161FBB0C3A009C7E09 /* JioCinema.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JioCinema.entitlements; sourceTree = "<group>"; };
+		19491EDA2018522600870794 /* JCTopShelf.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JCTopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		19491EDB2018522600870794 /* TVServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TVServices.framework; path = System/Library/Frameworks/TVServices.framework; sourceTree = SDKROOT; };
+		19491EDE2018522600870794 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
+		19491EE02018522600870794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19491EE82018528100870794 /* TopShelfModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopShelfModel.swift; sourceTree = "<group>"; };
+		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
+		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
+		198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
+		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
+		19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
+		19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
 		2024C4861F3C38A8003A08C3 /* Terms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terms.png; sourceTree = "<group>"; };
 		2024C4881F3C9C2D003A08C3 /* ArrowGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowGrey.png; sourceTree = "<group>"; };
 		2024C48A1F3C9C34003A08C3 /* ArrowPink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowPink.png; sourceTree = "<group>"; };
@@ -169,8 +208,8 @@
 		7BB86E7A1F4C1FAD00610436 /* JCMonthCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCMonthCell.xib; sourceTree = "<group>"; };
 		7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JioCinema-SplashScreen.png"; sourceTree = "<group>"; };
 		7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataModel.swift; sourceTree = "<group>"; };
-		7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataHeaderViewCell.swift; sourceTree = "<group>"; };
-		7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataHeaderViewCell.xib; sourceTree = "<group>"; };
+		7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataHeaderView.swift; sourceTree = "<group>"; };
+		7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kMetadataHeaderView.xib; sourceTree = "<group>"; };
 		7BD39C941F419D150014255C /* JioCinema-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JioCinema-Bridging-Header.h"; sourceTree = "<group>"; };
 		7BD39C951F419E110014255C /* JCMetadataButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataButton.swift; sourceTree = "<group>"; };
 		7BD39C971F419F470014255C /* AddtoWatchlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddtoWatchlist.png; sourceTree = "<group>"; };
@@ -201,6 +240,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		19491ED72018522600870794 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19491EDC2018522600870794 /* TVServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B78D7BB1F13A91900F319BF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,14 +259,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		19E3550F1FBACDC1009C7E09 /* CheckVersionModel */ = {
+		19491EDD2018522600870794 /* JCTopShelf */ = {
 			isa = PBXGroup;
 			children = (
-				19E355101FBACDE4009C7E09 /* CheckVersionModel.swift */,
-				19E355111FBACDE4009C7E09 /* CheckVersionData.swift */,
-				19E355121FBACDE6009C7E09 /* CheckVersionResult.swift */,
+				19491EDE2018522600870794 /* ServiceProvider.swift */,
+				19491EE82018528100870794 /* TopShelfModel.swift */,
+				19491EE02018522600870794 /* Info.plist */,
 			);
-			name = CheckVersionModel;
+			path = JCTopShelf;
+			sourceTree = "<group>";
+		};
+		198E48711FCBD580006EEA27 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */,
+				797880F81F4ECB390032943E /* JCSearchVC.swift */,
+				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		19ED97ED1FD5405800E43CBE /* VersionModel */ = {
+			isa = PBXGroup;
+			children = (
+				19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */,
+				19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */,
+				19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */,
+			);
+			name = VersionModel;
 			sourceTree = "<group>";
 		};
 		7B78D7B51F13A91900F319BF = {
@@ -227,6 +294,7 @@
 			children = (
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
+				19491EDD2018522600870794 /* JCTopShelf */,
 				7B78D7BF1F13A91900F319BF /* Products */,
 				B28F13A3B3AA96161C298489 /* Pods */,
 				991FCC032C29485454E4C5A0 /* Frameworks */,
@@ -237,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				7B78D7BE1F13A91900F319BF /* JioCinema.app */,
+				19491EDA2018522600870794 /* JCTopShelf.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -244,7 +313,6 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
-				19E355161FBB0C3A009C7E09 /* JioCinema.entitlements */,
 				B8EADF041F9DC42C0069671B /* Analytics */,
 				7BA1C6E71F2F0702002AB966 /* Common */,
 				7BB0E2031F1DEE6100A1DB0B /* CustomCells */,
@@ -289,7 +357,8 @@
 				7BFEC4A51F154223001DFE6D /* JCAppUser.swift */,
 				7BB0E2101F1E283B00A1DB0B /* JCBaseDataModel.swift */,
 				7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */,
-				19E3550F1FBACDC1009C7E09 /* CheckVersionModel */,
+				1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */,
+				19ED97ED1FD5405800E43CBE /* VersionModel */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -319,8 +388,8 @@
 				7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */,
 				2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */,
 				2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */,
-				7BD39C8F1F419CE30014255C /* MetadataHeaderViewCell.swift */,
-				7BD39C911F419CE90014255C /* MetadataHeaderViewCell.xib */,
+				7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */,
+				7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */,
 				7BABC1CE1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift */,
 				7BABC1CF1F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib */,
 				7BB86E751F4C1C4700610436 /* JCYearCell.swift */,
@@ -346,8 +415,7 @@
 		7BFEC4A71F154BDC001DFE6D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
-				797880F81F4ECB390032943E /* JCSearchVC.swift */,
+				198E48711FCBD580006EEA27 /* Search */,
 				7BFEC4AA1F154C42001DFE6D /* JCSplashVC.swift */,
 				7BFEC4B91F15C01A001DFE6D /* JCLoginVC.swift */,
 				7BFEC4BB1F15C647001DFE6D /* JCHomeVC.swift */,
@@ -363,8 +431,8 @@
 				7BE0EA501F30695700151D23 /* JCClipsVC.swift */,
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
-				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */,
+				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
 			);
@@ -398,6 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */,
+				196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */,
 				B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */,
 				B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */,
 				7BFEC4C21F174ACA001DFE6D /* JCButton.swift */,
@@ -413,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */,
+				19491EDB2018522600870794 /* TVServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -438,6 +508,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		19491ED92018522600870794 /* JCTopShelf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19491EE62018522700870794 /* Build configuration list for PBXNativeTarget "JCTopShelf" */;
+			buildPhases = (
+				19491ED62018522600870794 /* Sources */,
+				19491ED72018522600870794 /* Frameworks */,
+				19491ED82018522600870794 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JCTopShelf;
+			productName = JCTopShelf;
+			productReference = 19491EDA2018522600870794 /* JCTopShelf.appex */;
+			productType = "com.apple.product-type.tv-app-extension";
+		};
 		7B78D7BD1F13A91900F319BF /* JioCinema */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B78D7CD1F13A91A00F319BF /* Build configuration list for PBXNativeTarget "JioCinema" */;
@@ -448,11 +535,13 @@
 				7B78D7BC1F13A91900F319BF /* Resources */,
 				39E61D85B0043DB0C0A2ADC1 /* [CP] Embed Pods Frameworks */,
 				54A433EA7F6FAF8C6F69845E /* [CP] Copy Pods Resources */,
-				193695A71FD942EC00FDC728 /* ShellScript */,
+				198B90F21FE257E700F452FD /* ShellScript */,
+				19491EE72018522700870794 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				19491EE22018522600870794 /* PBXTargetDependency */,
 			);
 			name = JioCinema;
 			productName = JioCinema;
@@ -465,19 +554,21 @@
 		7B78D7B61F13A91900F319BF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Reliance Jio Infocomm. Ltd.";
 				TargetAttributes = {
+					19491ED92018522600870794 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 8PVH2NGH42;
+						ProvisioningStyle = Manual;
+					};
 					7B78D7BD1F13A91900F319BF = {
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = 8PVH2NGH42;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes.appletvos = {
-								enabled = 0;
-							};
-							com.apple.Push = {
 								enabled = 0;
 							};
 						};
@@ -498,11 +589,19 @@
 			projectRoot = "";
 			targets = (
 				7B78D7BD1F13A91900F319BF /* JioCinema */,
+				19491ED92018522600870794 /* JCTopShelf */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		19491ED82018522600870794 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B78D7BC1F13A91900F319BF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -531,7 +630,7 @@
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
-				7BD39C921F419CE90014255C /* MetadataHeaderViewCell.xib in Resources */,
+				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
@@ -545,7 +644,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		193695A71FD942EC00FDC728 /* ShellScript */ = {
+		198B90F21FE257E700F452FD /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -556,7 +655,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" b2cb0240a920ed8ea4e35d61f43735ece69b3fd2 8b19a31b41cf8f0ac31d753c3c2369ae8dc9e3b14697377bd9e587f9e03fcee2";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" b2cb0240a920ed8ea4e35d61f43735ece69b3fd2 8b19a31b41cf8f0ac31d753c3c2369ae8dc9e3b14697377bd9e587f9e03fcee2​";
 		};
 		39E61D85B0043DB0C0A2ADC1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -616,6 +715,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		19491ED62018522600870794 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19491EEA2018528100870794 /* TopShelfModel.swift in Sources */,
+				19491EDF2018522600870794 /* ServiceProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B78D7BA1F13A91900F319BF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -627,7 +735,6 @@
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
-				19E355131FBACDE6009C7E09 /* CheckVersionModel.swift in Sources */,
 				2025F44D1F3AEE3C00C3B609 /* JCSettingsVC.swift in Sources */,
 				7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */,
 				7B545E801F7A604C007C5004 /* JCAnalyticsManager.swift in Sources */,
@@ -636,7 +743,6 @@
 				7BE0EA4F1F30694100151D23 /* JCTVVC.swift in Sources */,
 				7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */,
 				797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */,
-				19E355141FBACDE6009C7E09 /* CheckVersionData.swift in Sources */,
 				7BFEC4BC1F15C647001DFE6D /* JCHomeVC.swift in Sources */,
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
@@ -644,7 +750,7 @@
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
-				19E355151FBACDE6009C7E09 /* CheckVersionResult.swift in Sources */,
+				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
@@ -656,23 +762,29 @@
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
+				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
-				7BD39C901F419CE30014255C /* MetadataHeaderViewCell.swift in Sources */,
+				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
 				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
+				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
+				196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */,
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
+				1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */,
 				B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */,
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
+				19491EE92018528100870794 /* TopShelfModel.swift in Sources */,
+				198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */,
 				7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */,
 				797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
@@ -682,6 +794,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		19491EE22018522600870794 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 19491ED92018522600870794 /* JCTopShelf */;
+			targetProxy = 19491EE12018522600870794 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7B78D7C51F13A91900F319BF /* Main.storyboard */ = {
@@ -695,6 +815,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		19491EE42018522700870794 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8PVH2NGH42;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = JCTopShelf/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "83ad8c78-9f08-484f-a972-9734b820c1aa";
+				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf Dev";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		19491EE52018522700870794 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8PVH2NGH42;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = JCTopShelf/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5f667e06-ecd6-47c9-80e2-ece52528a288";
+				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf appStore";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Release;
+		};
 		7B78D7CB1F13A91A00F319BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -792,11 +970,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Pushan Puri (5WBT2649NB)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -808,7 +986,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "efdeb393-abfe-407f-b4c6-4c5bf53517de";
+				PROVISIONING_PROFILE = "cebfd95d-1508-497a-80a5-c13cdf6f7dd0";
 				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -820,11 +998,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pushan Puri (5WBT2649NB)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -846,6 +1024,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		19491EE62018522700870794 /* Build configuration list for PBXNativeTarget "JCTopShelf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19491EE42018522700870794 /* Debug */,
+				19491EE52018522700870794 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7B78D7B91F13A91900F319BF /* Build configuration list for PBXProject "JioCinema" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
