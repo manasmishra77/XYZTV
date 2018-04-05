@@ -135,6 +135,7 @@ class JCResumeWatchingVC: UIViewController
                                 homeVC.baseTableView.reloadRows(at: [index], with: .fade)
                             }else{
                                 homeVC.isResumeWatchDataAvailable = false
+                                homeVC.baseTableView.deleteRows(at: [index], with: .fade)
                             }
                         }else{
                             homeVC.isResumeWatchDataAvailable = true
