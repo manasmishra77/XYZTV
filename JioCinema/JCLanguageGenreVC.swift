@@ -71,7 +71,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     }
     
     deinit {
-        print("veverver")
+        print("In LanguageGenre Screen Deinit")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

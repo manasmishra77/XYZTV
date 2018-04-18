@@ -9,7 +9,7 @@ import UIKit
 
 protocol JCLanguageGenreSelectionDelegate : class
 {
-    func selectedFilter(filter:Int)
+    func selectedFilter(filter: Int)
 }
 
 class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableViewDataSource
@@ -32,6 +32,9 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate,UITableVi
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    deinit {
+        print("In LanguageGenreSelectionVC Screen Deinit")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

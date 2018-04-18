@@ -19,15 +19,11 @@ class CarouselViewButton: UIButton {
     */
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        if (context.nextFocusedView == self)
-        {
+        if (context.nextFocusedView == self) {
       
             self.alpha = 1.0
             self.transform = CGAffineTransform.init(scaleX: 1.03, y: 1.05)
-        }
-        else
-        {
-          
+        } else {
             self.alpha = 0.5
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
         }

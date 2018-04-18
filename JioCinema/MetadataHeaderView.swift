@@ -18,7 +18,7 @@ import SDWebImage
 
 class MetadataHeaderView: UIView {
     
-    var delegate: MetadataHeaderCellDelegate? = nil
+    weak var delegate: MetadataHeaderCellDelegate? = nil
     
     @IBOutlet weak var tvShowLabel: UILabel!
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!

@@ -45,7 +45,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         //searchController?.searchBar.delegate = self
         addSwipeGesture()
     }
-    
+    deinit {
+        print("In OTPVC Screen Deinit")
+    }
     
     //MARK:- Add Swipe Gesture
     func addSwipeGesture()

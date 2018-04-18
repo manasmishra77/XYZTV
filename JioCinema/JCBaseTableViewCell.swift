@@ -24,7 +24,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     var artistImages:[String: String]?
     var isResumeWatchCell = false
     var itemFromViewController: VideoType?
-    var cellDelgate: JCBaseTableViewCellDelegate? = nil
+    weak var cellDelgate: JCBaseTableViewCellDelegate? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()

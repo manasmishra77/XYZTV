@@ -33,6 +33,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     override func viewWillDisappear(_ animated: Bool) {
       //self.changingSearchNCRootVC()
     }
+    deinit {
+        print("In SignInOptionVC Screen Deinit")
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -40,8 +43,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     }
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"
         

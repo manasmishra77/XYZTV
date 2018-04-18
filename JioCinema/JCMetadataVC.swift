@@ -77,7 +77,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-        
         if isUserComingFromPlayerScreen {
             isUserComingFromPlayerScreen = false
             self.loaderContainerView.isHidden = false
@@ -87,7 +86,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        
         //Clevertap Navigation Event
         let metadataType = itemAppType.rawValue
         metadataTableView.delegate = self

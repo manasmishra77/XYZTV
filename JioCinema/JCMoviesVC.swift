@@ -80,7 +80,9 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
         // Dispose of any resources that can be recreated.
     }
     
-    
+    deinit {
+        print("In Movie Screen Deinit")
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }

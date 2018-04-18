@@ -45,6 +45,9 @@ class JCLoginVC: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         
     }
+    deinit {
+        print("In LoginVC Deinit")
+    }
     
     @IBAction func didClickOnOTPSignIn(_ sender: UIButton)
     {

@@ -58,7 +58,9 @@ class JCSettingsDetailVC: UIViewController
         // Do any additional setup after loading the view.
     }
     
-   
+    deinit {
+        print("In Setting Detail Screen Deinit")
+    }
     
     @IBAction func didClickOnTurnOnButton(_ sender: Any)
     {

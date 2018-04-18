@@ -50,6 +50,9 @@ class JCSplashVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        print("In Splash Screen Deinit")
+    }
     func callWebservicesForHomeData()
     {
         callWebServiceForHomeData(page: 0)
@@ -219,20 +222,18 @@ class JCSplashVC: UIViewController {
             
         }
         let updateAction = UIAlertAction(title: "Update", style: .default) { (action) in
-            
             let urlString = "com.apple.TVAppStore://itunes.apple.com/in/app/jiocinema/id1067316596?mt=8"
             let url = URL(string: urlString)
             UIApplication.shared.open(url!, options: ["": ""], completionHandler: { (bool) in
                 exit(0)
             })
         }
-        if !isMandatory{
+        if !isMandatory {
             alert.addAction(skipAction)
         }
         alert.addAction(updateAction)
-        DispatchQueue.main.async
-            {
-                self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
         }
         
     }
