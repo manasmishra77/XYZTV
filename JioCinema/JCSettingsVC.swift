@@ -95,7 +95,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             }
             else
             {                
-                cell.textLabel?.text = "SignIn"
+                cell.textLabel?.text = "Sign In"
             }
             
         case 1:

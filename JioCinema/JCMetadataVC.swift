@@ -722,10 +722,10 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     {
         let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": metadata?.videoId ?? "", "Type": metadata?.app?.type ?? 0, "Language": metadata?.language ?? "", "Bitrate" : metadata?.bitrate ?? "", "General Data": errorMsg]
         if watchlistStatus {
-            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Add to Watchlist", label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
+            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: ADD_TO_WATCHLIST, label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
         }
         else{
-            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Remove from Watchlist", label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
+            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: REMOVE_FROM_WATCHLIST, label: metadata?.name, customParameters: customParams as? Dictionary<String, String>)
         }
     }
     //ChangingTheDataSourceForWatchListItems

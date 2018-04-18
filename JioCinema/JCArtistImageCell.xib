@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14109" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -23,7 +19,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipa-bF-mxh" userLabel="Artist Name Initial Button" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1N7-R5-QkS">
+                        <rect key="frame" x="104" y="15" width="185" height="185"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="1N7-R5-QkS" secondAttribute="height" multiplier="1:1" id="4WU-vF-sqv"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="95"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipa-bF-mxh" userLabel="Artist Name Initial Button" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="60"/>
@@ -44,7 +52,10 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="FlV-9M-lJ4" secondAttribute="bottom" constant="50" id="2hN-fQ-YEr"/>
                 <constraint firstItem="ipa-bF-mxh" firstAttribute="top" secondItem="FlV-9M-lJ4" secondAttribute="top" id="4iH-Vh-9Ke"/>
+                <constraint firstItem="1N7-R5-QkS" firstAttribute="centerX" secondItem="ipa-bF-mxh" secondAttribute="centerX" id="918-Ak-QHo"/>
                 <constraint firstItem="ipa-bF-mxh" firstAttribute="leading" secondItem="FlV-9M-lJ4" secondAttribute="leading" id="9LO-4m-4ui"/>
+                <constraint firstItem="1N7-R5-QkS" firstAttribute="centerY" secondItem="ipa-bF-mxh" secondAttribute="centerY" id="ASA-ah-I5H"/>
+                <constraint firstItem="1N7-R5-QkS" firstAttribute="height" secondItem="ipa-bF-mxh" secondAttribute="height" id="BmN-7g-D9F"/>
                 <constraint firstItem="FlV-9M-lJ4" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="K05-ub-x1F"/>
                 <constraint firstItem="w3m-wi-yjz" firstAttribute="top" secondItem="FlV-9M-lJ4" secondAttribute="bottom" constant="10" id="NAx-po-ads"/>
                 <constraint firstItem="FlV-9M-lJ4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="Nvq-VJ-sAb"/>

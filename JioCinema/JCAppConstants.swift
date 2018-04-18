@@ -170,8 +170,8 @@ let MORELIKE = "More Like"
 let WATCH_NOW_BUTTON = "Watch-now button"
 let TVOS_HOME_SCREEN_CAROUSEL = "tvOS Home Screen Carousel"
 
-let ADD_TO_WATCHLIST = "Add to watchlist"
-let REMOVE_FROM_WATCHLIST = "Remove from watchlist"
+let ADD_TO_WATCHLIST = "Add To Watchlist"
+let REMOVE_FROM_WATCHLIST = "Remove From Watchlist"
 
 let SHOW_MORE = "Show More"
 let SHOW_LESS = "Show Less"
