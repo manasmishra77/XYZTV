@@ -287,21 +287,29 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data) {
         //Success
-        if let responseString = String(data: responseData, encoding: .utf8)
-        {
+        if let responseString = String(data: responseData, encoding: .utf8) {
             let tempMetadata = MetadataModel(JSONString: responseString)
             print("\(tempMetadata?.episodes?.count) 1111")
-            if itemAppType == VideoType.Movie
-            {
+            if itemAppType == VideoType.Movie {
                 self.metadata?.more = tempMetadata?.more
-            }
-            else if itemAppType == VideoType.TVShow {
-                self.metadata?.episodes = tempMetadata?.episodes
+            } else if itemAppType == VideoType.TVShow {
+                if let episodes = tempMetadata?.episodes {
+                    let changedEpisodes = gettingEpisodesWithRequiredSequence(episodes)
+                    self.metadata?.episodes = changedEpisodes
+                }
                 self.metadata?.artist = tempMetadata?.artist
-                
             }
             self.metadata?.displayText = tempMetadata?.displayText
         }
+    }
+    
+    private func gettingEpisodesWithRequiredSequence(_ episodes: [Episode]) -> [Episode] {
+//        if (episodes.count > 1), (metadata?.isSeason ?? false) {
+//            if (episodes[0].episodeNo ?? 0) > (episodes[1].episodeNo ?? 1) {
+//                return Array(episodes.reversed())
+//            }
+//        }
+        return episodes
     }
     
     func evaluateMetaData(dictionaryResponseData responseData:Data) {
@@ -411,7 +419,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if metadata?.app?.type == VideoType.TVShow.rawValue
         {
-            if let season = metadata?.isSeason,season,collectionView == headerCell.seasonCollectionView     //seasons
+            if let season = metadata?.isSeason, season, collectionView == headerCell.seasonCollectionView     //seasons
             {
                 return (metadata?.filter?.count) ?? 0
                

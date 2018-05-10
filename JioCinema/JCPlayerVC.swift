@@ -35,8 +35,7 @@
  }
  
  
- class JCPlayerVC: UIViewController
- {
+ class JCPlayerVC: UIViewController {
     
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
     @IBOutlet weak var resumeWatchView: UIView!
@@ -181,10 +180,9 @@
                                     self?.showNextVideoView(videoName: nextItem?.name ?? "", remainingTime: Int(remainingTime), banner: nextItem?.banner ?? "")
                                 }
                             }
-                            else if self?.appType == .Episode{
-                                if (self?.currentPlayingIndex)! - 1 > -1 {
-                                    let nextItem = self?.episodeArray[(self?.currentPlayingIndex)! - 1]
-                                    self?.showNextVideoView(videoName: nextItem?.name ?? "", remainingTime: Int(remainingTime), banner: nextItem?.banner ?? "")
+                            else if self?.appType == .Episode {
+                                if let nextItem = self?.gettingNextEpisode(episodes: (self?.episodeArray ?? [Episode]()), index: (self?.currentPlayingIndex ?? -1)) {
+                                    self?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
                                 }
                             }
                         }
@@ -194,6 +192,24 @@
                 }
         }
     }
+    
+    private func gettingNextEpisode(episodes: [Episode], index: Int) -> Episode? {
+        guard episodes.count > 1 else {return nil}
+        if (episodes[0].episodeNo ?? 0) < (episodes[1].episodeNo ?? 1) {
+          //For handling Original Case
+            if index < episodes.count - 1 {
+                let nextEpisode = episodes[index + 1]
+                return nextEpisode
+            }
+        } else {
+            if (index - 1) > -1 {
+                let nextEpisode = episodes[index - 1]
+                return nextEpisode
+            }
+        }
+        return nil
+    }
+    
     
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
@@ -276,9 +292,7 @@
         }
         else
         {
-            guard let assetUrl = URL(string: videoUrl) else {
-                return
-            }
+            guard let assetUrl = URL(string: videoUrl) else { return }
             videoAsset = AVURLAsset(url: assetUrl)
         }
         guard let asset = videoAsset else {
@@ -602,12 +616,11 @@
                     dismissPlayerVC()
                 }
             }
-            else if self.appType == .Episode{
-                if self.currentPlayingIndex - 1 > -1 {
-                    let nextItem = self.episodeArray[(self.currentPlayingIndex) - 1]
+            else if self.appType == .Episode {
+                if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
                     changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                     preparePlayerVC()
-                }else{
+                } else {
                     dismissPlayerVC()
                 }
             }
@@ -616,9 +629,11 @@
         }
     }
     
+   
+    
+    
     //MARK:- Analytics Events
-    func sendMediaStartAnalyticsEvent()
-    {
+    func sendMediaStartAnalyticsEvent() {
         if !isMediaStartEventSent {
             let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + (UIDevice.current.identifierForVendor?.uuidString ?? "")
             
@@ -1733,7 +1748,7 @@
     }
     
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
-        if visible, !isRecommendationViewVisible{
+        if visible, !isRecommendationViewVisible {
             recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
             recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
         }

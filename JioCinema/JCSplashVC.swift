@@ -210,8 +210,7 @@ class JCSplashVC: UIViewController {
         return nil
     }
     
-    func showUpdateAlert(isMandatory: Bool, alertMessage: String, title: String)
-    {
+    func showUpdateAlert(isMandatory: Bool, alertMessage: String, title: String) {
         weak var weakSelf = self
         let alert = UIAlertController(title: title,
                                       message: alertMessage,
