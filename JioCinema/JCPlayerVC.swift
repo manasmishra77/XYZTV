@@ -136,6 +136,9 @@
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        
+    }
     deinit {
         print("In Player deinit")
     }
@@ -276,8 +279,7 @@
     
     //MARK:- Handle AES Video Url
     
-    func handleAESStreamingUrl(videoUrl: String)
-    {
+    func handleAESStreamingUrl(videoUrl: String) {
         var videoAsset:AVURLAsset?
         if JCDataStore.sharedDataStore.cdnEncryptionFlag {
             let videoUrl = URL(string: videoUrl)
@@ -1218,48 +1220,37 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
-        if appType == VideoType.Movie
-        {
+        switch appType {
+        case .Movie:
             currentDuration = checkInResumeWatchList(id)
-            if currentDuration > 0{
+            if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
-            }
-            else{
+            } else {
                 resumeWatchView.isHidden = true
                 callWebServiceForPlaybackRights(id: id)
             }
-        }
-        else if appType == VideoType.TVShow
-        {
-            
-        }
-        else if appType == VideoType.Episode
-        {
+        case .Episode:
             currentDuration = checkInResumeWatchList(id)
-            if currentDuration > 0{
+            if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
                 player?.pause()
                 self.view.bringSubview(toFront: self.resumeWatchView)
-            }
-            else{
+            } else {
                 resumeWatchView.isHidden = true
                 callWebServiceForPlaybackRights(id: id)
             }
-            
-        }
-        else if appType == .Music || appType == .Clip || appType == .Trailer
-        {
+        case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
                 self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlayListData(id: playListId)
-            }
-            else{
+            } else {
                 callWebServiceForPlaybackRights(id: id)
             }
+        default:
+            break
         }
-        return
     }
     
     //PlayerVc changing when an item is played from playervc recommendation
@@ -1279,8 +1270,7 @@
     func seekPlayer() {
         if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
             self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
-        }
-        else{
+        } else {
             didSeek = false
         }
     }
@@ -1301,13 +1291,11 @@
     
     //Check in resume watchlist
     func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
-        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items
-        {
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
             if let drn = itemMatched?.duration?.floatValue() {
-                    return drn
+                return drn
             }
-            
         }
         return 0.0
     }
@@ -1325,8 +1313,6 @@
             self.view_Recommendation.alpha = CGFloat(alpha)
         }
     }
-    
-
  }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
