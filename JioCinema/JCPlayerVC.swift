@@ -193,18 +193,21 @@
         }
     }
     
+    //MARK:- Autoplay handler
     private func gettingNextEpisode(episodes: [Episode], index: Int) -> Episode? {
         guard episodes.count > 1 else {return nil}
-        if (episodes[0].episodeNo ?? 0) < (episodes[1].episodeNo ?? 1) {
-          //For handling Original Case
-            if index < episodes.count - 1 {
-                let nextEpisode = episodes[index + 1]
-                return nextEpisode
-            }
-        } else {
-            if (index - 1) > -1 {
-                let nextEpisode = episodes[index - 1]
-                return nextEpisode
+        if let firstEpisodeNum = episodes[0].episodeNo, let seconEpisodeNum = episodes[1].episodeNo {
+            if firstEpisodeNum < seconEpisodeNum {
+                //For handling Original Case
+                if index < episodes.count - 1 {
+                    let nextEpisode = episodes[index + 1]
+                    return nextEpisode
+                }
+            } else {
+                if (index - 1) > -1 {
+                    let nextEpisode = episodes[index - 1]
+                    return nextEpisode
+                }
             }
         }
         return nil
@@ -303,7 +306,7 @@
     }
     
     //MARK:- Handle Fairplay Video Url
-    func handleFairPlayStreamingUrl(videoUrl:String)
+    func handleFairPlayStreamingUrl(videoUrl: String)
     {
         guard let url = URL(string: videoUrl) else {
             return
@@ -437,8 +440,7 @@
         
     }
     
-    func addMetadataToPlayer()
-    {
+    func addMetadataToPlayer() {
         let titleMetadataItem = AVMutableMetadataItem()
         titleMetadataItem.identifier = AVMetadataCommonIdentifierTitle
         titleMetadataItem.extendedLanguageTag = "und"
@@ -952,8 +954,7 @@
         return [More]()
     }
     
-    func callWebServiceForPlayListData(id:String)
-    {
+    func callWebServiceForPlayListData(id:String) {
         //playerId = id
         let url = String(format:"%@%@/%@",playbackDataURL,JCAppUser.shared.userGroup,id)
         let params = ["id": id,"contentId":""]
@@ -1035,8 +1036,7 @@
         }
     }
     
-    func callWebServiceForPlaybackRights(id:String)
-    {
+    func callWebServiceForPlaybackRights(id:String) {
         isSwipingAllowed_RecommendationView = true
         DispatchQueue.main.async {
             self.activityIndicatorOfLoaderView.startAnimating()
@@ -1326,14 +1326,7 @@
         }
     }
     
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if let press = presses.first, press.type == .menu {
-//            if isMediaEndAnalyticsEventNotSent {
-//                sendMediaEndAnalyticsEvent()
-//            }
-//            self.dismissPlayerVC()
-        }
-    }
+
  }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
@@ -1734,8 +1727,7 @@
     }
     
     func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForRenewalOfRequestedResource renewalRequest: AVAssetResourceRenewalRequest) -> Bool {
-        if appType == .Movie || appType == .Episode
-        {
+        if appType == .Movie || appType == .Episode {
             return self.resourceLoader(resourceLoader, shouldWaitForLoadingOfRequestedResource: renewalRequest)
         }
         return true
