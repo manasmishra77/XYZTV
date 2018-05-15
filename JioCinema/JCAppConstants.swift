@@ -8,8 +8,7 @@
 
 import UIKit
 
-public enum JCParameterEncoding
-{
+public enum JCParameterEncoding {
     case JSON
     case URL
     case BODY

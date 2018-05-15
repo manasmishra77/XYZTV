@@ -22,19 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        //handlerUncaughtException()
 
         //Sending event for Internal Analytics
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
         Fabric.with([Crashlytics.self])
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-        } catch {
-            print("Setting category to AVAudioSessionCategoryPlayback failed.")
-        }
-        
         return true
     }
 
@@ -88,7 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSSetUncaughtExceptionHandler { (exception) in
             Log.DLog(message: Thread.callStackSymbols as AnyObject)
         }
-        
         signal(SIGABRT) { (_) in
             Log.DLog(message: Thread.callStackSymbols as AnyObject)
         }
@@ -105,7 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         signal(SIGBUS) { (_) in
             Log.DLog(message: Thread.callStackSymbols as AnyObject)
         }
-        
         signal(SIGPIPE) { (_) in
             Log.DLog(message: Thread.callStackSymbols as AnyObject)
         }

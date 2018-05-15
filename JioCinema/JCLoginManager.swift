@@ -45,14 +45,12 @@ class JCLoginManager: UIViewController {
         return JCAppUser.shared
     }
     
-    func performNetworkCheck(completion:@escaping NetworkCheckCompletionBlock)
-    {
+    func performNetworkCheck(completion: @escaping NetworkCheckCompletionBlock) {
         let networkCheckRequest = RJILApiManager.defaultManager.prepareRequest(path: networkCheckUrl, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: networkCheckRequest) { (data, response, error) in
             
             //non jio network
-            if let responseError = error
-            {
+            if let responseError = error {
                 print(responseError)
                 completion(false)
                 return
@@ -67,8 +65,7 @@ class JCLoginManager: UIViewController {
                 {
                     let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)
                     RJILApiManager.defaultManager.get(request: zlaUserDataRequest, completion: { (data, response, error) in
-                        if let responseError = error
-                        {
+                        if let responseError = error {
                             //self.navigateToLoginVC()
                             print(responseError)
                             completion(false)

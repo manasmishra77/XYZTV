@@ -15,16 +15,6 @@
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1068"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
-                    <rect key="frame" x="822" y="-60" width="1098" height="615"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="1098" id="RDK-aM-gcq"/>
-                        <constraint firstAttribute="height" constant="615" id="cza-FJ-sAA"/>
-                    </constraints>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MetadataImageGradient" translatesAutoresizingMaskIntoConstraints="NO" id="1EK-sy-bqA" userLabel="GradientImage">
-                    <rect key="frame" x="822" y="-60" width="1098" height="615"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oog-7o-H3Y">
                     <rect key="frame" x="30" y="0.0" width="1890" height="1068"/>
                     <subviews>
@@ -56,16 +46,16 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYF-NG-moE" userLabel="DescriptionContainerview">
-                            <rect key="frame" x="8" y="145" width="814" height="90"/>
+                            <rect key="frame" x="8" y="145" width="764" height="90"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VC-pE-Oqm">
-                                    <rect key="frame" x="0.0" y="0.0" width="814" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="764" height="90"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" alpha="0.01" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07s-vs-pDy" customClass="ShowMoreTextbutton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="-10" y="0.0" width="834" height="90"/>
+                                    <rect key="frame" x="-10" y="0.0" width="784" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <connections>
@@ -73,7 +63,7 @@
                                     </connections>
                                 </button>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEp-5g-7vi">
-                                    <rect key="frame" x="716" y="68" width="98" height="22"/>
+                                    <rect key="frame" x="666" y="68" width="98" height="22"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -253,22 +243,25 @@
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="top" secondItem="oog-7o-H3Y" secondAttribute="top" id="xIt-d3-fzA"/>
                     </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
+                    <rect key="frame" x="822" y="-60" width="1098" height="615"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1098" id="RDK-aM-gcq"/>
+                        <constraint firstAttribute="height" constant="615" id="cza-FJ-sAA"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="L7P-Yq-xJD" firstAttribute="leading" secondItem="CdM-i7-rsk" secondAttribute="trailing" constant="20" id="3o3-X4-7fV"/>
+                <constraint firstItem="L7P-Yq-xJD" firstAttribute="leading" secondItem="07s-vs-pDy" secondAttribute="trailing" constant="10" id="6U7-1A-fId"/>
                 <constraint firstAttribute="trailing" secondItem="oog-7o-H3Y" secondAttribute="trailing" id="8zu-16-EwV"/>
                 <constraint firstItem="L7P-Yq-xJD" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" constant="-60" id="DP4-q5-UIb"/>
                 <constraint firstItem="L7P-Yq-xJD" firstAttribute="leading" secondItem="JvY-ef-buL" secondAttribute="trailing" constant="10" id="EF1-ax-tay"/>
                 <constraint firstItem="oog-7o-H3Y" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" id="F8o-Rr-FNQ"/>
-                <constraint firstItem="1EK-sy-bqA" firstAttribute="top" secondItem="L7P-Yq-xJD" secondAttribute="top" id="HWS-mT-08l"/>
-                <constraint firstItem="1EK-sy-bqA" firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="Yib-lZ-KHc"/>
                 <constraint firstAttribute="bottom" secondItem="oog-7o-H3Y" secondAttribute="bottom" id="efR-2O-tyZ"/>
                 <constraint firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="ehh-kK-oej"/>
                 <constraint firstItem="oog-7o-H3Y" firstAttribute="leading" secondItem="3YS-bd-bkv" secondAttribute="leading" constant="30" id="fp9-SJ-HG7"/>
-                <constraint firstItem="1EK-sy-bqA" firstAttribute="leading" secondItem="L7P-Yq-xJD" secondAttribute="leading" id="qAS-St-tnr"/>
-                <constraint firstItem="1EK-sy-bqA" firstAttribute="leading" secondItem="rYF-NG-moE" secondAttribute="trailing" constant="-30" id="uRg-ig-RI0"/>
-                <constraint firstItem="1EK-sy-bqA" firstAttribute="bottom" secondItem="L7P-Yq-xJD" secondAttribute="bottom" id="ykq-LM-pQR"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -303,7 +296,6 @@
     </objects>
     <resources>
         <image name="AddtoWatchlist" width="48" height="48"/>
-        <image name="MetadataImageGradient" width="1098" height="616"/>
         <image name="WatchNow" width="48" height="48"/>
         <image name="imdb_logo" width="100" height="49"/>
     </resources>

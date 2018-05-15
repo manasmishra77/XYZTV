@@ -308,11 +308,8 @@
     }
     
     //MARK:- Handle Fairplay Video Url
-    func handleFairPlayStreamingUrl(videoUrl: String)
-    {
-        guard let url = URL(string: videoUrl) else {
-            return
-        }
+    func handleFairPlayStreamingUrl(videoUrl: String) {
+        guard let url = URL(string: videoUrl) else {return}
         let asset = AVURLAsset(url: url, options: nil)
         asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
         let requestedKeys: [Any] = [PLAYABLE_KEY]
@@ -424,18 +421,12 @@
             }
             collectionView_Recommendation.reloadData()
             scrollCollectionViewToRow(row: i)
-        }
-        else{
-            if isPlayList, appType == .Episode
-            {
+        } else {
+            if isPlayList, appType == .Episode {
                 callWebServiceForMoreLikeData(id: playListId)
-            }
-            else if isPlayList
-            {
+            } else if isPlayList {
                 callWebServiceForPlayListData(id: playListId)
-            }
-            else
-            {
+            } else {
                 callWebServiceForMoreLikeData(id: id)
             }
         }

@@ -62,11 +62,11 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             metadataTableView.reloadData()
             changeAddWatchlistButtonStatus(itemId, itemAppType)
         } else {
-             callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
+            callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
         // Do any additional setup after loading the view.
         
-    
+        
     }
     
     deinit {
@@ -84,7 +84,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             self.activityIndicator.startAnimating()
         }
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         //Clevertap Navigation Event
         let metadataType = itemAppType.rawValue
@@ -109,7 +109,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             Utility.sharedInstance.handleScreenNavigation(screenName: METADATA_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
     }
-
+    
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
             return [preferredView]
@@ -120,7 +120,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 350
     }
-  
+    
     
     var moreTableViewDatasource = [Any]()
     
@@ -147,7 +147,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
         cell.itemFromViewController = itemAppType
-
+        
         cell.moreLikeData = nil
         cell.episodes = nil
         cell.data = nil
@@ -170,7 +170,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }
         }
             
-        // Metadata for TV
+            // Metadata for TV
         else if itemAppType == .TVShow {
             if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode] {
                 cell.categoryTitleLabel.text = "Episodes"
@@ -190,7 +190,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
     }
-
+    
     func prepareHeaderView() -> UIView {
         headerCell.seasonCollectionView.delegate = self
         headerCell.seasonCollectionView.dataSource = self
@@ -221,7 +221,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.itemAppType = newAppType
         self.changeAddWatchlistButtonStatus(id, newAppType)
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
-   
+        
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
@@ -258,11 +258,23 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func callWebServiceForMoreLikeData(id: String) {
+        if itemAppType == .TVShow {
+            if metadata?.isSeason ?? false {
+                fetchMoreDataForEpisode(seasonIndex: 0, isSeason: true, monthString: "", yearString: "")
+            } else {
+                if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0] {
+                    fetchMoreDataForEpisode(seasonIndex: 0, isSeason: false, monthString: monthString, yearString: yearString)
+                }
+                
+            }
+            return
+        }
+        
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-
+            
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
@@ -283,9 +295,11 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }
         }
     }
-   
     
-    func evaluateMoreLikeData(dictionaryResponseData responseData:Data) {
+    
+    
+    
+    func evaluateMoreLikeData(dictionaryResponseData responseData: Data) {
         //Success
         if let responseString = String(data: responseData, encoding: .utf8) {
             let tempMetadata = MetadataModel(JSONString: responseString)
@@ -304,11 +318,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     private func gettingEpisodesWithRequiredSequence(_ episodes: [Episode]) -> [Episode] {
-//        if (episodes.count > 1), (metadata?.isSeason ?? false) {
-//            if (episodes[0].episodeNo ?? 0) > (episodes[1].episodeNo ?? 1) {
-//                return Array(episodes.reversed())
-//            }
-//        }
         return episodes
     }
     
@@ -327,13 +336,13 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         loaderContainerView.isHidden = true
         metadataContainerView.isHidden = false
     }
-
+    
     func presentLoginVC(fromAddToWatchList: Bool = false, fromItemCell: Bool = false, fromPlayNowButton: Bool = false) {
         toScreenName = LOGIN_SCREEN
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: fromAddToWatchList, fromPlayNowBotton: fromPlayNowButton, fromItemCell: fromItemCell, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }
-
+    
     //For after login function
     fileprivate var itemAfterLogin: Episode? = nil
     fileprivate var categoryIndexAfterLogin: Int? = nil
@@ -341,13 +350,10 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func checkLoginAndPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int) {
         //weak var weakSelf = self
-        if(JCLoginManager.sharedInstance.isUserLoggedIn())
-        {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
-        }
-        else
-        {
+        } else {
             self.itemAfterLogin = itemToBePlayed
             self.categoryNameAfterLogin = categoryName
             self.categoryIndexAfterLogin = categoryIndex
@@ -360,16 +366,14 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.categoryIndexAfterLogin = nil
         self.categoryNameAfterLogin = nil
     }
-   
     
-    func getStarCastImagesUrl(artists:[String]) -> [String:String]
-    {
+    
+    func getStarCastImagesUrl(artists: [String]) -> [String:String] {
         let modifiedArtists = artists.filter { (artistName) -> Bool in
             artistName != ""
         }
         var artistImages = [String:String]()
-        for artist in modifiedArtists
-        {
+        for artist in modifiedArtists {
             let processedName = artist.replacingOccurrences(of: " ", with: "").lowercased()
             let encryptedData = convertStringToMD5Hash(artistName: processedName)
             let hexString = encryptedData.hexEncodedString()
@@ -392,8 +396,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         return artistImages
     }
     
-    func convertStringToMD5Hash(artistName:String) -> Data
-    {
+    func convertStringToMD5Hash(artistName:String) -> Data {
         let messageData = artistName.data(using:.utf8)!
         var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
         
@@ -402,7 +405,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
             }
         }
-        
         return digestData
     }
 }
@@ -413,16 +415,15 @@ extension Data {
     }
 }
 
-extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if metadata?.app?.type == VideoType.TVShow.rawValue
-        {
+        if metadata?.app?.type == VideoType.TVShow.rawValue {
             if let season = metadata?.isSeason, season, collectionView == headerCell.seasonCollectionView     //seasons
             {
                 return (metadata?.filter?.count) ?? 0
-               
+                
             }
             else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
             {
@@ -430,20 +431,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             }
             else if collectionView == headerCell.monthsCollectionView  //months, in case of episodes
             {
-                if  (metadata?.filter?.count) ?? 0 > selectedYearIndex
-               {
-                    if let count = (metadata?.filter![selectedYearIndex].month?.count)
-                    {
+                if  (metadata?.filter?.count) ?? 0 > selectedYearIndex {
+                    if let count = (metadata?.filter?[selectedYearIndex].month?.count) {
                         return count
                     }
-                }
-                else
-                {
+                } else {
                     return 0
                 }
-            }
-            else
-            {
+            } else {
                 return 0
             }
         }
@@ -457,17 +452,17 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
             if indexPath.row == 0 {
-                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                self.changeBorderColorOfCell(cell, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
             }
             
-            return cell           
+            return cell
         }
         else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: yearCellIdentifier, for: indexPath) as! JCYearCell
             cell.yearLabel.text = metadata?.filter?[indexPath.row].filter ?? ""
             if indexPath.row == 0 {
-                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                self.changeBorderColorOfCell(cell, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
             }
             return cell
         }
@@ -479,7 +474,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 cell.monthLabel.text = enumOfMonth.name
             }
             if indexPath.row == 0 {
-                self.changeBorderColorOfCell(cell, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                self.changeBorderColorOfCell(cell, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
             }
             return cell
         } else {
@@ -503,7 +498,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             if let seasonNum = metadata?.filter?[indexPath.row].season {
                 self.myPreferredFocusView = collectionView.cellForItem(at: indexPath)
                 self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
-                callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
+                fetchMoreDataForEpisode(seasonIndex: seasonNum, isSeason: true, monthString: "", yearString: "")
             }
         } else if collectionView == headerCell.seasonCollectionView       //years, in case of episodes
         {
@@ -515,15 +510,15 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 self.headerCell.monthsCollectionView.reloadData()
                 self.headerCell.monthsCollectionView.layoutIfNeeded()
                 self.changeCollectionViewCellStyle(self.headerCell.monthsCollectionView, indexPath: IndexPath(row: 0, section: 0))
-                callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
+                fetchMoreDataForEpisode(seasonIndex: 0, isSeason: false, monthString: monthString, yearString: yearString)
             }
-
+            
         } else    //months
         {
             if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[indexPath.row]{
                 self.myPreferredFocusView = collectionView.cellForItem(at: indexPath)
                 self.changeCollectionViewCellStyle(collectionView, indexPath: indexPath)
-                callWebServiceForSelectedFilter(filter: yearString + "/" + monthString)
+                fetchMoreDataForEpisode(seasonIndex: 0, isSeason: false, monthString: monthString, yearString: yearString)
             }
         }
         
@@ -543,11 +538,23 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             }
         } else {
             return CGSize(width: 80, height: 40)
-        }       
-
+        }
+        
     }
     
-    func callWebServiceForSelectedFilter(filter:String) {
+    
+    fileprivate func fetchMoreDataForEpisode(seasonIndex: Int, isSeason: Bool, monthString: String, yearString: String) {
+        if isSeason {
+            if let seasonNum = metadata?.filter?[seasonIndex].season {
+                callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
+            }
+            return
+        }
+        callWebServiceForSelectedFilter(filter: "\(yearString)/\(monthString)")
+    }
+    
+    
+    func callWebServiceForSelectedFilter(filter: String) {
         let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
@@ -606,8 +613,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
         }
         let itemMatched = watchListArray?.filter{ $0.id == itemIdToBeChecked}.first
-        if itemMatched != nil
-        {
+        if itemMatched != nil {
             return true
         }
         return false
@@ -636,7 +642,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             let newHeight = (getSizeofDescriptionContainerView(descText, widthOfView: widthofView, font: font))
             headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
-
+            
             headerCell.descriptionLabel.attributedText = getAttributedString(descText, colorChange: true, range: SHOW_LESS.count)
             headerCell.descriptionLabel.numberOfLines = 0
             metadataTableView.tableHeaderView = headerCell
@@ -679,7 +685,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
             presentLoginVC(fromAddToWatchList: true, fromItemCell: false)
         }
     }
-
+    
     func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>) {
         self.headerCell.addToWatchListButton.isEnabled = false
         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
@@ -782,14 +788,14 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let url = URL(string: imageUrl)
         DispatchQueue.main.async {
-            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
         self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
-
+        
         if itemAppType == .Movie, metadata != nil {
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
@@ -942,7 +948,7 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
                 isMoreDataAvailable = true
                 recommendationArray = moreArray
             }
-           
+            
             let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
             
             self.present(playerVC, animated: true, completion: nil)
@@ -1013,9 +1019,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 28.0)!])
-        fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
+        fontChangedText.addAttribute(NSForegroundColorAttributeName, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
-            fontChangedText.addAttribute(NSForegroundColorAttributeName, value: #colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSForegroundColorAttributeName, value:  UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
             fontChangedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: text.count - range, length: range))
         }
         return fontChangedText
@@ -1043,9 +1049,9 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
     func changeCollectionViewCellStyle(_ collectionView: UICollectionView, indexPath: IndexPath) {
         for each in collectionView.visibleCells {
             if each == collectionView.cellForItem(at: indexPath) {
-                self.changeBorderColorOfCell(each, toColor: #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                self.changeBorderColorOfCell(each, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
             } else {
-                self.changeBorderColorOfCell(each, toColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0))
+                self.changeBorderColorOfCell(each, toColor:  UIColor(red: 1, green: 1, blue: 1, alpha: 0))
             }
         }
     }
@@ -1056,32 +1062,35 @@ extension JCMetadataVC:UICollectionViewDelegate,UICollectionViewDataSource, UICo
         cell.layer.cornerRadius = 15.0
     }
     
-    //Get Month enum
+    //Get Month Enum
     func getMonthEnum(_ text: String) -> Month? {
         let intOfMonth = Int(text)
         let enumOfMonth = Month(rawValue: intOfMonth ?? 0)
         return enumOfMonth
     }
     
+    //MARK: Apply Gradient
     func applyGradient(_ view: UIView) {
-        /*
-        let colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        let initalColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor
+        let finalColor = UIColor.clear.cgColor
         
-        let layer = CAGradientLayer()
-        layer.colors = colors
-        layer.frame = view.bounds
-        layer.startPoint = CGPoint(x: 0, y: 0)
-        layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
+         let colors = [initalColor, finalColor, finalColor, finalColor]
+         
+         let layer = CAGradientLayer()
+         layer.colors = colors
+         layer.frame = view.bounds
+         layer.startPoint = CGPoint(x: 0, y: 0)
+         layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
         
-        view.layer.addSublayer(layer)
+         view.layer.insertSublayer(layer, at: 0)
         
-        let layer2 = CAGradientLayer()
-        layer2.colors = colors
-        layer2.frame = view.bounds
-        layer2.startPoint = CGPoint(x: 0, y: 1)
-        layer2.endPoint = CGPoint(x: 0, y: 0)
-        view.layer.addSublayer(layer2)
- */
-    }
+         let layer2 = CAGradientLayer()
+         layer2.colors = colors
+         layer2.frame = view.bounds
+         layer2.startPoint = CGPoint(x: 0, y: 1)
+         layer2.endPoint = CGPoint(x: 0, y: 0)
+         view.layer.insertSublayer(layer2, at: 0)
 
+    }
+    
 }
