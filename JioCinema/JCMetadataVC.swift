@@ -47,14 +47,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
-        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
-        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
-        headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
-        self.metadataTableView.tableFooterView = UIView()
-        headerCell.addToWatchListButton.isEnabled = false
-        headerCell.delegate = self
-        loadingLabel.text = "Loading"
+        configureViews()
+
         if isMetaDataAvailable {
             showMetadata()
             let headerView = prepareHeaderView()
@@ -115,6 +109,20 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             return [preferredView]
         }
         return []
+    }
+    
+    private func configureViews() {
+        self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        self.metadataTableView.tableFooterView = UIView()
+        self.loadingLabel.text = "Loading"
+        configureHeaderCell()
+    }
+    private func configureHeaderCell() {
+        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
+        headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
+        headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
+        headerCell.addToWatchListButton.isEnabled = false
+        headerCell.delegate = self
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -303,7 +311,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         //Success
         if let responseString = String(data: responseData, encoding: .utf8) {
             let tempMetadata = MetadataModel(JSONString: responseString)
-            print("\(tempMetadata?.episodes?.count) 1111")
+            print("\(String(describing: tempMetadata?.episodes?.count)) 1111")
             if itemAppType == VideoType.Movie {
                 self.metadata?.more = tempMetadata?.more
             } else if itemAppType == VideoType.TVShow {
@@ -321,14 +329,14 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         return episodes
     }
     
-    func evaluateMetaData(dictionaryResponseData responseData:Data) {
+    func evaluateMetaData(dictionaryResponseData responseData: Data) {
         //Success
         if let responseString = String(data: responseData, encoding: .utf8) {
             let metaDataModel = MetadataModel(JSONString: responseString)
             self.metadata = metaDataModel
             self.metadata?.more = nil
             self.metadata?.episodes = nil
-            print("\(metadata) + 123")
+            print("\(String(describing: metadata)) + 123")
         }
     }
     
@@ -485,8 +493,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
@@ -791,7 +798,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
         }
-        self.applyGradient(self.headerCell.bannerImageView)
+        //self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
@@ -1069,28 +1076,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         return enumOfMonth
     }
     
-    //MARK: Apply Gradient
-    func applyGradient(_ view: UIView) {
-        let initalColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor
-        let finalColor = UIColor.clear.cgColor
-        
-         let colors = [initalColor, finalColor, finalColor, finalColor]
-         
-         let layer = CAGradientLayer()
-         layer.colors = colors
-         layer.frame = view.bounds
-         layer.startPoint = CGPoint(x: 0, y: 0)
-         layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
-        
-         view.layer.insertSublayer(layer, at: 0)
-        
-         let layer2 = CAGradientLayer()
-         layer2.colors = colors
-         layer2.frame = view.bounds
-         layer2.startPoint = CGPoint(x: 0, y: 1)
-         layer2.endPoint = CGPoint(x: 0, y: 0)
-         view.layer.insertSublayer(layer2, at: 0)
-
-    }
+    
     
 }

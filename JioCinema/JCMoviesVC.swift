@@ -9,7 +9,7 @@
 import UIKit
 import Crashlytics
 
-class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
+class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var loadedPage = 0
     var isMoviesWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
@@ -371,18 +371,19 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
             Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
             return
         }
-        if let tappedItem = item as? Item{
-            
+        if let tappedItem = item as? Item {
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: MOVIE_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             print(tappedItem)
-            if tappedItem.app?.type == VideoType.Movie.rawValue{
+            if tappedItem.app?.type == VideoType.Movie.rawValue {
                 print("At Movie")
                 toScreenName = METADATA_SCREEN
                 let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1)
+//                self.tabBarController?.navigationController?.setNavigationBarHidden(true, animated: false)
+//                self.tabBarController?.navigationController?.pushViewController(metadataVC, animated: false)
                 self.present(metadataVC, animated: true, completion: nil)
             }
         }
@@ -390,7 +391,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource,UITableViewDelegate, UITabBarCo
     //MARK:- Carousel Delegate Methods
     func didTapOnCarouselItem(_ item: Any?) {
        // Crashlytics.sharedInstance().crash()
-
         didTapOnItemCell(nil, item, 0)
     }
 }

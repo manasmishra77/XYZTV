@@ -60,6 +60,11 @@ class MetadataHeaderView: UIView {
         super.awakeFromNib()
         // Initialization code
         print(self)
+        configureViews()
+    }
+    
+    func configureViews() {
+      Utility.applyGradient(self.bannerImageView)
     }
     
     func resetView() -> UIView {
@@ -90,5 +95,6 @@ class MetadataHeaderView: UIView {
             delegate?.didClickOnShowMoreDescriptionButton?(self, toShowMore: false)
         }
     }
+    
 }
 

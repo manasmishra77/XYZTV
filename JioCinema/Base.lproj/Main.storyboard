@@ -55,6 +55,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLY-s9-NYO" userLabel="LoginOptionView">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="zci-ga-evD">
+                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gm-mc-G4v" userLabel="SignIn Options Container">
                                         <rect key="frame" x="322" y="351" width="1276" height="679"/>
                                         <subviews>
@@ -122,7 +127,7 @@
                                     <constraint firstAttribute="bottom" secondItem="5Gm-mc-G4v" secondAttribute="bottom" constant="50" id="tV6-du-Q0h"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NFq-i3-4LS" userLabel="SignInWithJioIdView">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NFq-i3-4LS" userLabel="SignInWithJioIdView">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZE8-Hj-hR9" userLabel="signInJioID Container">
@@ -181,8 +186,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zud-WB-UwX" userLabel="OTPView">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zud-WB-UwX" userLabel="OTPView">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95t-kv-cAO" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
@@ -465,7 +471,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="A1e-0o-NZu" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="bottom" constant="-60" id="6J7-18-D7y"/>
                             <constraint firstItem="zud-WB-UwX" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" id="EIm-Ev-dGs"/>
@@ -1348,7 +1354,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBg" translatesAutoresizingMaskIntoConstraints="NO" id="TMZ-XE-kko">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="TMZ-XE-kko">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dss-Jh-kZK" userLabel="signInJioID Container">
@@ -1723,9 +1729,9 @@
     </scenes>
     <resources>
         <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
+        <image name="LoginBackground" width="1920" height="1080"/>
         <image name="MetaDatBackGroundImage" width="1920" height="1080"/>
         <image name="Settings" width="300" height="300"/>
         <image name="back_ic" width="60" height="60"/>
-        <image name="loginBg" width="3840" height="2160"/>
     </resources>
 </document>

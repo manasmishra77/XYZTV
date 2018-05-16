@@ -13,7 +13,6 @@ class JCLoginVC: UIViewController {
     @IBOutlet weak var otpView: UIView!
     @IBOutlet weak var signInWithJioIdView: UIView!
     @IBOutlet weak var LoginOptionView: UIView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var signInOptionsContainer: UIView!
     
     @IBOutlet weak var pleaseLoginMessageButton: UIButton!
@@ -27,7 +26,7 @@ class JCLoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        backgroundImageView.image = #imageLiteral(resourceName: "loginBg.jpg")
+        
         signInOTPButton.layer.cornerRadius = 8
         signInJioIDButton.layer.cornerRadius = 8
         // Do any additional setup after loading the view.
@@ -61,8 +60,7 @@ class JCLoginVC: UIViewController {
         self.present(otpVC, animated: true, completion: nil)
     }
     
-    @IBAction func didClickOnJioIdSignIn(_ sender: Any)
-    {
+    @IBAction func didClickOnJioIdSignIn(_ sender: Any) {
         let singInOptionsVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: signInOptionsStoryBoardId) as! JCSignInOptionsVC
         singInOptionsVC.isLoginPresentedFromAddToWatchlist = isLoginPresentedFromAddToWatchlist
         singInOptionsVC.isLoginPresentedFromItemCell = isLoginPresentedFromItemCell

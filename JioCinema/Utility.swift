@@ -59,6 +59,29 @@ class Utility
         var title: String
         var style: UIAlertActionStyle
     }
+    //MARK: Apply Gradient
+    class func applyGradient(_ view: UIView) {
+        let initalColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor
+        let finalColor = UIColor.clear.cgColor
+        
+        let colors2 = [initalColor, finalColor, finalColor, finalColor]
+        
+        let layer2 = CAGradientLayer()
+        layer2.colors = colors2
+        layer2.frame = view.bounds
+        layer2.startPoint = CGPoint(x: 0, y: 1)
+        layer2.endPoint = CGPoint(x: 0, y: 0)
+        view.layer.insertSublayer(layer2, at: 0)
+        
+        let layer = CAGradientLayer()
+        layer.colors = colors2
+        let newRect = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.bounds.width, height: view.bounds.height * 0.95)
+        layer.frame = newRect
+        layer.startPoint = CGPoint(x: 0, y: 0)
+        layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
+        view.layer.insertSublayer(layer, at: 1)
+        
+    }
     
     class func getCustomizedAlertController(with title: String, message: String, actions: [AlertAction]?, _ responseHandlerForAction: (( UIAlertAction) -> Swift.Void)? = nil) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -348,6 +371,8 @@ extension String {
         }
         return fontChangedtext
     }
+    
+    
     
     
 }
