@@ -141,20 +141,31 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             if !JCLoginManager.sharedInstance.isUserLoggedIn(){
                 isResumeWatchDataAvailable = false
             }
+            
             dataItemsForTableview = (JCDataStore.sharedDataStore.homeData?.data)!
             if let isCarousal = dataItemsForTableview[0].isCarousal{
                 if isCarousal{
                     dataItemsForTableview.remove(at: 0)
                 }
             }
+            if isUserRecommendationAvailable{
+                if let recommendationDataArray = JCDataStore.sharedDataStore.userRecommendationList?.data {
+                    var i = 0
+                    for recommendationData in recommendationDataArray {
+                        let pos = recommendationData.position ?? 4+i
+                        if pos < dataItemsForTableview.count {
+                            dataItemsForTableview.insert(recommendationData, at: pos)
+                        }
+                        i = i + 1
+                    }
+                }
+            }
             if isLanguageDataAvailable {
                 let pos = (JCDataStore.sharedDataStore.configData?.configDataUrls?.languagePosition) ?? 4
-                if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0]
-                {
-                    if pos < dataItemsForTableview.count{
+                if let languageData = JCDataStore.sharedDataStore.languageData?.data?[0] {
+                    if pos < dataItemsForTableview.count {
                         dataItemsForTableview.insert(languageData, at: pos)
                     }
-                    
                 }
             }
             if isGenereDataAvailable {
@@ -171,18 +182,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     dataItemsForTableview.insert(dataResume, at: 0)
                 }
             }
-            if isUserRecommendationAvailable{
-                if let recommendationDataArray = JCDataStore.sharedDataStore.userRecommendationList?.data {
-                    var i = 0
-                    for recommendationData in recommendationDataArray {
-                        let pos = recommendationData.position ?? 4+i
-                        if pos < dataItemsForTableview.count {
-                            dataItemsForTableview.insert(recommendationData, at: pos)
-                        }
-                        i = i + 1
-                    }
-                }                
-            }
+          
             return dataItemsForTableview.count
         }
         else
@@ -305,7 +305,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         return []
     }
     */
-    
     func callWebServiceForResumeWatchData() {
         guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
             isResumeWatchDataAvailable = false

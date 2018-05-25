@@ -78,10 +78,8 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func callWebServiceForLanguageGenreData(isLanguage:Bool,pageNo:Int,paramString:String,type:Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    func callWebServiceForLanguageGenreData(isLanguage: Bool, pageNo: Int, paramString: String, type: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }

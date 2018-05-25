@@ -70,9 +70,7 @@ class JCLanguageGenreSelectionPrototypeCell: UITableViewCell {
             //self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             self.layer.cornerRadius = 10
             self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-        }
-        else
-        {
+        } else {
             //self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
             self.titleLabel.textColor = UIColor.white
             self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)

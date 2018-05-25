@@ -8,14 +8,13 @@
 
 import UIKit
 
-class JCSettingsVC: UIViewController
-{
+class JCSettingsVC: UIViewController {
     
     @IBOutlet weak var settingsImageView: UIImageView!
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var headerLabel: UILabel!
     
-    let cellItemIdentifier = "kSettingsTableViewCell"
+    
     
     override func viewDidLoad()
     {
@@ -23,7 +22,7 @@ class JCSettingsVC: UIViewController
         
         JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
         headerLabel.isHidden = true
-        settingsTableView.register(UINib(nibName: "JCSettingsTableViewCell", bundle: nil), forCellReuseIdentifier: cellItemIdentifier)
+        settingsTableView.register(UINib(nibName: "JCSettingsTableViewCell", bundle: nil), forCellReuseIdentifier: SettingCellIdentifier)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         
@@ -68,7 +67,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = settingsTableView.dequeueReusableCell(withIdentifier: cellItemIdentifier, for: indexPath) as! JCSettingsTableViewCell
+        let cell = settingsTableView.dequeueReusableCell(withIdentifier: SettingCellIdentifier, for: indexPath) as! JCSettingsTableViewCell
         cell.textLabel?.textColor = #colorLiteral(red: 0.7233663201, green: 0.7233663201, blue: 0.7233663201, alpha: 1)
         cell.cellAccessoryImage.isHidden = false
         cell.settingsDetailLabel.isHidden = true

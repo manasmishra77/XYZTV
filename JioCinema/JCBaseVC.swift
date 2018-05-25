@@ -12,6 +12,13 @@ class JCBaseVC: UIViewController {
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var baseTableView: UITableView!
+    
+    @IBOutlet weak var searchRecommendationContainerView: UIView!
+    @IBOutlet weak var seaarchRecommendationLabel: UILabel!
+    @IBOutlet weak var searchRecommendationTableView: UITableView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

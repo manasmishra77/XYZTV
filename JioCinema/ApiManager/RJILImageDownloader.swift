@@ -94,6 +94,7 @@ class RJILImageDownloader {
         
         self.addToCurrentDownloads(urlString)
         
+        
         if let url = URL(string: urlString) {
             
             RJILApiManager.defaultManager.get(request: URLRequest(url: url)){(data, response, error) in

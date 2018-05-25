@@ -38,7 +38,7 @@ class JCTabBarController: UITabBarController {
         let searchVC = Utility.sharedInstance.prepareSearchViewController(searchText: "", jcSearchVc: nil)
         let searchContainerController = UISearchContainerViewController.init(searchController: searchVC)
         searchContainerController.view.backgroundColor = UIColor.black
-        let navControllerForSearchContainer = UINavigationController(rootViewController: searchContainerController)
+        let navControllerForSearchContainer = SearchNavigationController(rootViewController: searchContainerController)
         
         navControllerForSearchContainer.tabBarItem = UITabBarItem(title: "Search", image: nil, tag: 5)
         

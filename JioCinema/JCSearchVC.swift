@@ -10,7 +10,7 @@ import UIKit
 
 class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
 
-    var searchViewController:UISearchController? = nil
+    var searchViewController: UISearchController? = nil
     
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
@@ -26,7 +26,13 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     fileprivate var languageModelForArtistSearch: Any?
     
     fileprivate var searchModel: SearchDataModel?
-    fileprivate var searchResultArray = [SearchedCategoryItem]()
+    fileprivate var searchResultArray = [SearchedCategoryItem]() {
+        didSet {
+            handleWhenSearchResultArrayChanges()
+        }
+    }
+    
+     var trendingSearchResultViewModel: JCTrendingSearchResultViewModel?
     
     
     //MARK:- View Life Cycle
@@ -35,35 +41,38 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         view.backgroundColor = .black
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
+        self.searchRecommendationTableView.register(UINib(nibName: "JCSearchRecommendationTableViewCell", bundle: nil), forCellReuseIdentifier: SearchRecommendationCellIdentifier)
+
         baseTableView.delegate = self
         baseTableView.dataSource = self
         activityIndicator.isHidden = true
         // Do any additional setup after loading the view.
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+        
+         //Search Trending ViewModel Intialization
+        trendingSearchResultViewModel = JCTrendingSearchResultViewModel(self)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    //MARK:- UITableView Delegate
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func viewIsAppearing() {
+        if isForArtistSearch {
+            
+        } else {
+            trendingSearchResultViewModel?.callWebServiceForTrendingResult()
+        }
+    }
+    func viewIsDisappearing() {
+        
     }
     
+    //MARK:- UITableView Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResultArray.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = .Search
         cell.tag = indexPath.row
@@ -86,7 +95,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
-        if let tappedItem = item as? Item{
+        if let tappedItem = item as? Item {
             
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
@@ -94,7 +103,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             
             print(tappedItem)
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
-            if tappedItem.app?.type == VideoType.Music.rawValue{
+            if tappedItem.app?.type == VideoType.Music.rawValue {
                 print("At Music")
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
             }
@@ -106,7 +115,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
             else if tappedItem.app?.type == VideoType.TVShow.rawValue{
                 print("At TvShow")
                 if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
-                    if drn > 0{
+                    if drn > 0 {
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
@@ -166,8 +175,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     }
     
     //MARK:- Preparing playerVC
-    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
-    {
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
                 let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
@@ -185,8 +193,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         if searchText.count > 0 {
             searchResultForkey(with: searchText)
         } else {
-        self.searchResultArray.removeAll()
-        self.baseTableView.reloadData()
+            self.searchResultArray.removeAll()
+            self.baseTableView.reloadData()
         }
     }
     
@@ -195,7 +203,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         searchResultForkey(with: searchController.searchBar.text ?? "")
     }
     
-    fileprivate func searchResultForkey(with key: String) {
+    func searchResultForkey(with key: String) {
         let url = preditiveSearchURL
         let params:[String:String]? = ["q": key]
         let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -210,8 +218,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                 return
             }
             if let responseData = data {
-                if let responseString = String(data: responseData, encoding: .utf8)
-                {
+                if let responseString = String(data: responseData, encoding: .utf8) {
                     weakself?.searchModel = SearchDataModel(JSONString: responseString)
                     
                     if let array = (weakself?.searchModel?.searchData?.categoryItems), array.count > 0 {
@@ -269,6 +276,19 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         languageModelForArtistSearch = nil
         resetMetdataScreenRelatedVars()
     }
+    
+    func handleWhenSearchResultArrayChanges() {
+        if searchResultArray.count < 1 {
+            if let viewModel =  trendingSearchResultViewModel {
+                viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: true)
+            }
+        } else {
+            if let viewModel =  trendingSearchResultViewModel {
+                viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: false)
+            }
+        }
+    }
+    
     //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //ChangingTheAlpha when tab bar item selected

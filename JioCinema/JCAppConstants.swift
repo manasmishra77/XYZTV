@@ -72,6 +72,7 @@ let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
 let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
 let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
+let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -112,6 +113,9 @@ let resumeWatchCellIdentifier = "kResumeWatchCell"
 let itemCellIdentifier = "kJCItemCell"
 let artistImageCellIdentifier = "kJCArtistImageCell"
 let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell"
+let SettingCellIdentifier = "kSettingsTableViewCell"
+let SearchRecommendationCellIdentifier = "SearchRecommendationCellIdentifier"
+
 
 //Constant Values
 let heightOfCarouselSection = 600

@@ -13,8 +13,13 @@
 		19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 19491EDA2018522600870794 /* JCTopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		19491EE92018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		19491EEA2018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
+		194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */; };
+		194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */; };
+		194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */; };
 		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
+		197727B620B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */; };
+		197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */; };
 		198E48731FCBD5AC006EEA27 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */; };
 		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
 		19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */; };
@@ -138,8 +143,13 @@
 		19491EDE2018522600870794 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
 		19491EE02018522600870794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19491EE82018528100870794 /* TopShelfModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopShelfModel.swift; sourceTree = "<group>"; };
+		194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchRecommendationTableViewCell.swift; sourceTree = "<group>"; };
+		194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCSearchRecommendationTableViewCell.xib; sourceTree = "<group>"; };
+		194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationController.swift; sourceTree = "<group>"; };
 		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
+		197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchResultViewModel.swift; sourceTree = "<group>"; };
+		197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchTextSuperModel.swift; sourceTree = "<group>"; };
 		198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
 		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
 		19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
@@ -267,12 +277,22 @@
 			path = JCTopShelf;
 			sourceTree = "<group>";
 		};
+		197727B720B6A82B00D291A9 /* JCTRendingSearchTextsModel */ = {
+			isa = PBXGroup;
+			children = (
+				197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */,
+			);
+			name = JCTRendingSearchTextsModel;
+			sourceTree = "<group>";
+		};
 		198E48711FCBD580006EEA27 /* Search */ = {
 			isa = PBXGroup;
 			children = (
 				198E48721FCBD5AC006EEA27 /* JCSearchViewController.swift */,
 				797880F81F4ECB390032943E /* JCSearchVC.swift */,
 				797880FA1F4ECB810032943E /* SearchDataStore.swift */,
+				197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */,
+				194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -349,6 +369,7 @@
 		7B78D7D81F140D7300F319BF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				197727B720B6A82B00D291A9 /* JCTRendingSearchTextsModel */,
 				7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */,
 				7B78D7D91F140DA100F319BF /* JCConfigData.swift */,
 				7B78D7DB1F14752400F319BF /* JCDataStore.swift */,
@@ -398,6 +419,8 @@
 				7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */,
 				7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */,
 				7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */,
+				194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */,
+				194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -421,11 +444,11 @@
 				7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */,
 				7BB0E1FF1F1DECE600A1DB0B /* JCBaseVC.swift */,
 				7BB0E2001F1DECE600A1DB0B /* JCBaseVC.xib */,
-				7BB0E2081F1DF52500A1DB0B /* JCMoviesVC.swift */,
 				7BB0E20A1F1DF65900A1DB0B /* JCTabBarController.swift */,
 				7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */,
 				7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */,
 				7BE0EA4E1F30694100151D23 /* JCTVVC.swift */,
+				7BB0E2081F1DF52500A1DB0B /* JCMoviesVC.swift */,
 				7BE0EA501F30695700151D23 /* JCClipsVC.swift */,
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
@@ -622,6 +645,7 @@
 				7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */,
 				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
 				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
+				194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */,
 				7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */,
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
@@ -725,12 +749,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B78D7D71F13BE7800F319BF /* JCAppConstants.swift in Sources */,
+				197727B620B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift in Sources */,
 				2025F4531F3B44DB00C3B609 /* JCSettingsDetailVC.swift in Sources */,
 				B811ED421F56BC4600E55FAD /* Log.swift in Sources */,
 				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
+				194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */,
 				2025F44D1F3AEE3C00C3B609 /* JCSettingsVC.swift in Sources */,
 				7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */,
 				7B545E801F7A604C007C5004 /* JCAnalyticsManager.swift in Sources */,
@@ -754,9 +780,11 @@
 				7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */,
 				7BB0E2011F1DECE600A1DB0B /* JCBaseVC.swift in Sources */,
 				7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */,
+				194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */,
 				7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */,
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
+				197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
 				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,

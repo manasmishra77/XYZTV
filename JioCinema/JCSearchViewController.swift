@@ -9,7 +9,6 @@
 import UIKit
 
 class JCSearchViewController: UISearchController {
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +26,8 @@ class JCSearchViewController: UISearchController {
         // Dispose of any resources that can be recreated.
     }
     override func viewDidAppear(_ animated: Bool) {
-        print("123")
+       // print("123")
+        
     }
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         

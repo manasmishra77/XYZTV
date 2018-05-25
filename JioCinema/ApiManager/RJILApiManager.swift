@@ -398,4 +398,17 @@ class RJILApiManager {
         }
         return (0, "")
     }
+    
+    class func parseData<T: Codable>(_ data: Data?, modelType: T.Type) -> T? {
+        guard let data = data else {
+            return nil
+        }
+        do {
+            let model = try JSONDecoder().decode(T.self, from: data)
+            return model
+        } catch {
+            print(error)
+        }
+        return nil
+    }
 }

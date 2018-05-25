@@ -280,13 +280,13 @@
     //MARK:- Handle AES Video Url
     
     func handleAESStreamingUrl(videoUrl: String) {
-        var videoAsset:AVURLAsset?
+        var videoAsset: AVURLAsset?
         if JCDataStore.sharedDataStore.cdnEncryptionFlag {
             let videoUrl = URL(string: videoUrl)
             if let absoluteUrlString = videoUrl?.absoluteString {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
-                let subtitleValue = playbackRightsData?.isSubscribed
+                _ = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey" : headerValues]
                 guard let assetUrl = URL(string: changedUrl) else {
                     return
@@ -294,9 +294,7 @@
                 videoAsset = AVURLAsset(url: assetUrl, options: header)
                 videoAsset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
             }
-        }
-        else
-        {
+        } else {
             guard let assetUrl = URL(string: videoUrl) else { return }
             videoAsset = AVURLAsset(url: assetUrl)
         }
@@ -342,8 +340,7 @@
         self.playVideoWithPlayerItem()
     }
     //MARK:- Play Video
-    func playVideoWithPlayerItem()
-    {
+    func playVideoWithPlayerItem() {
         self.addMetadataToPlayer()
         
         if playerController == nil {
@@ -356,7 +353,6 @@
             self.addChildViewController(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
-            
         }
         if let player = player {
             player.replaceCurrentItem(with: playerItem)
@@ -787,8 +783,7 @@
     
     
     //MARK:- Add Swipe Gesture
-    func addSwipeGesture()
-    {
+    func addSwipeGesture() {
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
         swipeUp.direction = UISwipeGestureRecognizerDirection.up
         self.view.addGestureRecognizer(swipeUp)
@@ -806,10 +801,8 @@
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.up:
                 self.swipeUpRecommendationView()
-                break
             case UISwipeGestureRecognizerDirection.down:
                 self.swipeDownRecommendationView()
-                break
             default:
                 break
             }
