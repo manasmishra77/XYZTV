@@ -43,8 +43,6 @@ class JCSearchRecommendationTableViewCell: UITableViewCell {
         }
     }
     
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        
-    }
+  
 
 }
