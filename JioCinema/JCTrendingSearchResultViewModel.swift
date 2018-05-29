@@ -65,6 +65,7 @@ extension JCTrendingSearchResultViewModel: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = view.searchRecommendationTableView.dequeueReusableCell(withIdentifier: SearchRecommendationCellIdentifier, for: indexPath) as! JCSearchRecommendationTableViewCell
         cell.textLabel?.text = searchTextsModelArray?[indexPath.row].key
+        cell.selectionStyle = .none
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
