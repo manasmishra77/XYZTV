@@ -16,6 +16,7 @@ class JCSearchRecommendationTableViewCell: UITableViewCell {
         self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
         self.layer.cornerRadius = 10
         self.textLabel?.textAlignment = .center
+        self.textLabel?.textColor = #colorLiteral(red: 0.7233663201, green: 0.7233663201, blue: 0.7233663201, alpha: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,7 +38,7 @@ class JCSearchRecommendationTableViewCell: UITableViewCell {
             self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
         } else {
             //self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
-            self.textLabel?.textColor = UIColor.white
+            self.textLabel?.textColor = #colorLiteral(red: 0.7233663201, green: 0.7233663201, blue: 0.7233663201, alpha: 1)
             self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
