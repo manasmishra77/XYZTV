@@ -17,8 +17,9 @@ class JCSettingsDetailVC: UIViewController
     @IBOutlet weak var settingsDetailTextView: UITextView!
     @IBOutlet weak var feedBackView: UIView!
     @IBOutlet weak var autoPlayView: UIView!
-    @IBOutlet weak var onButton: UIButton!
-    @IBOutlet weak var offButton: UIButton!
+    
+    @IBOutlet weak var onButton: AutoplayButton!
+    @IBOutlet weak var offButton: AutoplayButton!
     
     var titleText = ""
     var textViewDetail = ""

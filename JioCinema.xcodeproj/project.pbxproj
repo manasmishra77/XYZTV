@@ -40,6 +40,7 @@
 		2025F4631F3B51D800C3B609 /* Version.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4621F3B51D800C3B609 /* Version.png */; };
 		203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */; };
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
+		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
 		797880F91F4ECB390032943E /* JCSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchVC.swift */; };
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
 		7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */; };
@@ -171,6 +172,7 @@
 		203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCResumeWatchingVC.swift; sourceTree = "<group>"; };
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		797880F81F4ECB390032943E /* JCSearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchVC.swift; sourceTree = "<group>"; };
 		797880FA1F4ECB810032943E /* SearchDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataStore.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */,
 				7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */,
 				7BD39C951F419E110014255C /* JCMetadataButton.swift */,
+				53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */,
 			);
 			name = CustomComponents;
 			sourceTree = "<group>";
@@ -798,6 +801,7 @@
 				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
 				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
+				53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */,
 				196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */,
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,

@@ -626,7 +626,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AlR-Xo-atm">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AlR-Xo-atm" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="640" y="400" width="640" height="60"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -650,7 +650,7 @@
                                             <action selector="didClickOnResumeWatchingButton:" destination="XTY-lV-J6s" eventType="primaryActionTriggered" id="iel-IQ-PYf"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7AY-xq-5J4">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7AY-xq-5J4" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="640" y="510" width="640" height="60"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -673,14 +673,13 @@
                                             <action selector="didClickOnStartWatchingButton:" destination="XTY-lV-J6s" eventType="primaryActionTriggered" id="147-5Z-tsx"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6s-6Y-fSV">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6s-6Y-fSV" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="640" y="620" width="640" height="60"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Vzu-xf-fi9"/>
                                             <constraint firstAttribute="width" constant="640" id="yyS-UO-Pm3"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Remove From Resume Watching">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -1557,9 +1556,9 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGc-Bl-1KC">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGc-Bl-1KC" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="710" y="507" width="500" height="50"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.36078431372549019" green="0.36862745098039218" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="500" id="ZYL-MY-iC8"/>
                                             <constraint firstAttribute="height" constant="50" id="fyF-vL-mmn"/>
@@ -1575,7 +1574,7 @@
                                             <action selector="didClickOnTurnOnButton:" destination="i9i-Rw-lfK" eventType="primaryActionTriggered" id="8ye-SW-NJK"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2o-wz-Ai8">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2o-wz-Ai8" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="710" y="577" width="500" height="50"/>
                                         <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -1627,8 +1626,8 @@
                         <outlet property="autoPlayView" destination="NYd-i4-Ssk" id="kGh-YW-hC2"/>
                         <outlet property="detailView" destination="TS9-Q3-Ob3" id="97O-cS-cCH"/>
                         <outlet property="feedBackView" destination="z5L-us-Wvx" id="PpS-OI-tdO"/>
-                        <outlet property="offButton" destination="C2o-wz-Ai8" id="AVF-q8-121"/>
-                        <outlet property="onButton" destination="RGc-Bl-1KC" id="a8v-Cj-xPO"/>
+                        <outlet property="offButton" destination="C2o-wz-Ai8" id="iR1-X4-bLG"/>
+                        <outlet property="onButton" destination="RGc-Bl-1KC" id="ZTP-EM-zpk"/>
                         <outlet property="settingsDetailTextView" destination="Xii-eV-DhO" id="7MG-H6-cvp"/>
                         <outlet property="settingsDetailTitleLabel" destination="8Ym-Kg-vmM" id="vNj-he-Qbg"/>
                     </connections>

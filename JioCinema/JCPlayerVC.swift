@@ -307,6 +307,7 @@
     
     //MARK:- Handle Fairplay Video Url
     func handleFairPlayStreamingUrl(videoUrl: String) {
+//                guard let url = URL(string: "http://sample.vodobox.com/planete_interdite/planete_interdite_alternate.m3u8") else {return}
         guard let url = URL(string: videoUrl) else {return}
         let asset = AVURLAsset(url: url, options: nil)
         asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
@@ -1094,6 +1095,7 @@
                             weakSelf?.player?.pause()
                             weakSelf?.resetPlayer()
                         }
+//                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
