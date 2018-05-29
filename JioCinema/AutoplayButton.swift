@@ -21,6 +21,7 @@ class AutoplayButton: UIButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setTitleColor(#colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1), for: .highlighted)
+        self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4431372549, blue: 0.4745098039, alpha: 1)
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
