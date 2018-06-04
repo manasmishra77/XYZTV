@@ -22,8 +22,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     var presentingVCOfLoginVc: Any = false
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         signInButton.layer.cornerRadius = 8
         // Do any additional setup after loading the view.
