@@ -33,7 +33,7 @@ class JCSearchViewController: UISearchController {
         
         //Sending event to the searchvc when menu button preesed
         if presses.first?.type == UIPressType.menu{
-            if let searchVc = self.searchResultsController as? JCSearchVC{
+            if let searchVc = self.searchResultsController as? JCSearchResultViewController{
                 searchVc.pressesBegan(presses, with: event)
             }
         }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
+class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
 
-    var searchViewController: UISearchController? = nil
+    weak var searchViewController: UISearchController? = nil
     
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
@@ -24,6 +24,8 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     fileprivate var screenAppearTiming = Date()
     fileprivate var metaDataForArtist: Any? = nil
     fileprivate var languageModelForArtistSearch: Any?
+    
+    fileprivate var isComminFromSelectingRecommend = false
     
     fileprivate var searchModel: SearchDataModel?
     fileprivate var searchResultArray = [SearchedCategoryItem]() {
@@ -59,14 +61,20 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     func viewIsAppearing() {
         if isForArtistSearch {
             
+        } else if isComminFromSelectingRecommend {
+            isComminFromSelectingRecommend = false
         } else {
             trendingSearchResultViewModel?.callWebServiceForTrendingResult()
         }
     }
+    
     func viewIsDisappearing() {
-        
+
     }
     
+    func viewDidDisappearedCalled() {
+        resetSearchScreen()
+    }
     //MARK:- UITableView Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResultArray.count
@@ -96,7 +104,7 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if let tappedItem = item as? Item {
-            
+            isComminFromSelectingRecommend = true
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: SEARCH_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
@@ -277,6 +285,13 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         resetMetdataScreenRelatedVars()
     }
     
+    fileprivate func resetSearchScreen() {
+        searchViewController?.searchBar.text = ""
+        searchResultArray.removeAll()
+        resetLanguageScreenRelatedVars()
+        self.baseTableView.reloadData()
+    }
+    
     func handleWhenSearchResultArrayChanges() {
         if searchResultArray.count < 1 {
             if let viewModel =  trendingSearchResultViewModel {
@@ -294,11 +309,9 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
         //ChangingTheAlpha when tab bar item selected
         if tabBarController.selectedIndex != 5 {
             isForArtistSearch = false
-            searchViewController?.searchBar.text = ""
-            searchResultArray.removeAll()
-            resetLanguageScreenRelatedVars()
-            self.baseTableView.reloadData()
         }
+        
+    
                                 
       //Sending analytics event
         //When screen appears

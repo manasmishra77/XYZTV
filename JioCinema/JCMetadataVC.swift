@@ -552,9 +552,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     fileprivate func fetchMoreDataForEpisode(seasonIndex: Int, isSeason: Bool, monthString: String, yearString: String) {
         if isSeason {
-            if let seasonNum = metadata?.filter?[seasonIndex].season {
-                callWebServiceForSelectedFilter(filter: String(describing: seasonNum))
-            }
+                callWebServiceForSelectedFilter(filter: String(describing: seasonIndex))
             return
         }
         callWebServiceForSelectedFilter(filter: "\(yearString)/\(monthString)")
@@ -875,7 +873,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 tabController.selectedIndex = 5
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController{
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController{
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchVC {
+                        if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
                             searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata)
                         }
                     }
@@ -885,7 +883,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 tabController.selectedIndex = 5
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController {
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchVC {
+                        if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
                             searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata, languageModel: languageModel)
                         }
                     }
@@ -989,7 +987,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
-            self.dismiss(animated: true, completion: nil)
+//            self.dismiss(animated: true, completion: nil)
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {

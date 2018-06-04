@@ -35,12 +35,14 @@ class JCTabBarController: UITabBarController {
         clipsVC.tabBarItem = UITabBarItem(title: "Clips", image: nil, tag: 4)
         
         
-        let searchVC = Utility.sharedInstance.prepareSearchViewController(searchText: "", jcSearchVc: nil)
-        let searchContainerController = UISearchContainerViewController.init(searchController: searchVC)
+        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
         let navControllerForSearchContainer = SearchNavigationController(rootViewController: searchContainerController)
         
         navControllerForSearchContainer.tabBarItem = UITabBarItem(title: "Search", image: nil, tag: 5)
+        
+        
         
 
         settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC

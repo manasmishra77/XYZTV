@@ -11,10 +11,10 @@ import UIKit
 class SearchNavigationController: UINavigationController {
     
     
-    var jCSearchVC: JCSearchVC? {
+    var jCSearchVC: JCSearchResultViewController? {
         let searchContainer = self.viewControllers.first as? UISearchContainerViewController
         let searchViewController = searchContainer?.searchController
-        if let searchResultVC = searchViewController?.searchResultsController as? JCSearchVC {
+        if let searchResultVC = searchViewController?.searchResultsController as? JCSearchResultViewController {
             return searchResultVC
         }
         return nil
@@ -37,8 +37,11 @@ class SearchNavigationController: UINavigationController {
         
     }
     override func viewWillDisappear(_ animated: Bool) {
-        jCSearchVC?.viewIsDisappearing()
+
     }
    
+    override func viewDidDisappear(_ animated: Bool) {
+        jCSearchVC?.viewDidDisappearedCalled()
+    }
 
 }

@@ -115,7 +115,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                     else if let vc = vc as? JCClipsVC {
                                         vc.playItemAfterLogin()
                                     }
-                                    else if let vc = vc as? JCSearchVC {
+                                    else if let vc = vc as? JCSearchResultViewController {
                                         vc.playItemAfterLogin()
                                     }
                                     else if let vc = vc as? JCMetadataVC {
