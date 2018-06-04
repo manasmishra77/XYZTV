@@ -12,9 +12,9 @@ import UIKit
 class JCTrendingSearchResultViewModel: NSObject {
     
     var searchTextsModelArray: [PopularSearches]?
-    let view: JCSearchVC
+    let view: JCSearchResultViewController
     
-    init(_ view: JCSearchVC) {
+    init(_ view: JCSearchResultViewController) {
         self.view = view
         super.init()
         self.view.searchRecommendationTableView.delegate = self
@@ -35,6 +35,7 @@ class JCTrendingSearchResultViewModel: NSObject {
             }
         }
     }
+    
     func updateTableView(_ models: [PopularSearches]) {
         searchTextsModelArray = models
         DispatchQueue.main.async {

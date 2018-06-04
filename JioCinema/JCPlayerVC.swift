@@ -270,6 +270,7 @@
         player = nil
         didSeek = true
         isFpsUrl = isFps
+//        var newUrl = "http://sample.vodobox.com/planete_interdite/planete_interdite_alternate.m3u8"
         if isFps {
             handleFairPlayStreamingUrl(videoUrl: url)
         } else {

@@ -232,8 +232,8 @@ class Utility
     
     
     //MARK:- Search container View Controller Preparation method
-    func prepareSearchViewController(searchText: String, jcSearchVc: JCSearchVC?) -> UISearchController {
-        let searchVC = jcSearchVc ?? JCSearchVC.init(nibName: "JCBaseVC", bundle: nil)
+    func prepareSearchViewController(searchText: String) -> UISearchController {
+        let searchVC = JCSearchResultViewController.init(nibName: "JCBaseVC", bundle: nil)
         searchVC.view.backgroundColor = .black
         
         let searchViewController = JCSearchViewController(searchResultsController: searchVC)

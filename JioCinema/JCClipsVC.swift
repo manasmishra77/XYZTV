@@ -267,7 +267,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
         //Making tab bar delegate searchvc
         if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-                if let searchVc = svc.searchController.searchResultsController as? JCSearchVC{
+                if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
                     tabBarController.delegate = searchVc
             }
         }
