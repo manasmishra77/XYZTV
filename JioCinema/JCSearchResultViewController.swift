@@ -73,6 +73,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func viewDidDisappearedCalled() {
+        if isComminFromSelectingRecommend {return}
         resetSearchScreen()
     }
     //MARK:- UITableView Delegate

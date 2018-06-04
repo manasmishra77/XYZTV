@@ -268,7 +268,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func callWebServiceForMoreLikeData(id: String) {
         if itemAppType == .TVShow {
             if metadata?.isSeason ?? false {
-                fetchMoreDataForEpisode(seasonIndex: 0, isSeason: true, monthString: "", yearString: "")
+                if let seasonNum = metadata?.filter?[0].season {
+                    fetchMoreDataForEpisode(seasonIndex: seasonNum, isSeason: true, monthString: "", yearString: "")
+                }
             } else {
                 if let _ = metadata?.filter?[selectedYearIndex].filter?.floatValue(), let yearString = metadata?.filter?[selectedYearIndex].filter, let monthString = metadata?.filter?[selectedYearIndex].month?[0] {
                     fetchMoreDataForEpisode(seasonIndex: 0, isSeason: false, monthString: monthString, yearString: yearString)
