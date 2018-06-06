@@ -9,9 +9,12 @@
 import Foundation
 import UIKit
 
+let SearchRefreshTiming: TimeInterval = 600
+
 class JCTrendingSearchResultViewModel: NSObject {
     
     var searchTextsModelArray: [PopularSearches]?
+    fileprivate var lastPopularSearchFetchedTime = Date()
     let view: JCSearchResultViewController
     
     init(_ view: JCSearchResultViewController) {
@@ -37,6 +40,7 @@ class JCTrendingSearchResultViewModel: NSObject {
     }
     
     func updateTableView(_ models: [PopularSearches]) {
+        lastPopularSearchFetchedTime = Date()
         searchTextsModelArray = models
         DispatchQueue.main.async {
             self.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: true)
@@ -47,7 +51,7 @@ class JCTrendingSearchResultViewModel: NSObject {
     
     func tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: Bool) {
         if toShowSearchRecommView {
-            if searchTextsModelArray == nil {
+            if searchTextsModelArray == nil || (Date().timeIntervalSince(lastPopularSearchFetchedTime) > SearchRefreshTiming) {
                 callWebServiceForTrendingResult()
             } else {
                 view.searchRecommendationTableView.reloadData()

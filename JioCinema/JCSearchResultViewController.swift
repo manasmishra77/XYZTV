@@ -20,7 +20,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     fileprivate var metaDataCategoryIndex = 0
     fileprivate var metaDataTabBarIndex = 0
     fileprivate var isForArtistSearch = false
-    fileprivate var isOnSearchScreen = true
     fileprivate var screenAppearTiming = Date()
     fileprivate var metaDataForArtist: Any? = nil
     fileprivate var languageModelForArtistSearch: Any?
@@ -59,6 +58,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func viewIsAppearing() {
+        sendEventToAnalytics(true)
         if isForArtistSearch {
             
         } else if isComminFromSelectingRecommend {
@@ -69,7 +69,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func viewIsDisappearing() {
-
+        sendEventToAnalytics(false)
     }
     
     func viewDidDisappearedCalled() {
@@ -85,10 +85,12 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = .Search
         cell.tag = indexPath.row
-
-        cell.categoryTitleLabel.text = searchResultArray[indexPath.row].categoryName
-        cell.cellDelgate = self
         cell.data = searchResultArray[indexPath.row].resultItems
+        let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.data?.count ?? 0))"
+        cell.categoryTitleLabel.text = categoryTitle
+        
+        cell.cellDelgate = self
+        
         cell.tableCellCollectionView.reloadData()
         return cell
     }
@@ -107,7 +109,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         if let tappedItem = item as? Item {
             isComminFromSelectingRecommend = true
             //Screenview event to Google Analytics
-            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            let customParams: [String : String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: SEARCH_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
             print(tappedItem)
@@ -165,7 +167,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
-        //weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
@@ -307,20 +308,15 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     //MARK:- Tabbarcontroller delegate methods
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        //ChangingTheAlpha when tab bar item selected
         if tabBarController.selectedIndex != 5 {
             isForArtistSearch = false
         }
-        
+    }
     
-                                
-      //Sending analytics event
-        //When screen appears
-        if tabBarController.selectedIndex == 5, isOnSearchScreen {
-            isOnSearchScreen = true
+    fileprivate func sendEventToAnalytics(_ isAppearing: Bool) {
+        if isAppearing {
             screenAppearTiming = Date()
-        } else if tabBarController.selectedIndex != 5, isOnSearchScreen {
-            isOnSearchScreen = false
+        } else {
             //Clevertap Navigation Event
             let eventProperties = ["Screen Name": "Search","Platform": "TVOS","Metadata Page": ""]
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)

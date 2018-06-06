@@ -100,14 +100,16 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             cell.tableCellCollectionView.tag = indexPath.row + 1
 
             cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].title
+            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "") + "(\(cell.data?.count ?? 0))"
+            cell.categoryTitleLabel.text = categoryTitle
         }
         else
         {
             cell.tableCellCollectionView.tag = indexPath.row
 
             cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title
+            let categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+            cell.categoryTitleLabel.text = categoryTitle
         }
         
         cell.tableCellCollectionView.reloadData()

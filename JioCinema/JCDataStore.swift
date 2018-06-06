@@ -8,31 +8,30 @@
 
 import Foundation
 
-class JCDataStore
-{
+class JCDataStore {
     static let sharedDataStore: JCDataStore = JCDataStore()
     
-    var homeData:BaseDataModel?
-    var moviesData:BaseDataModel?
-    var musicData:BaseDataModel?
-    var tvData:BaseDataModel?
-    var clipsData:BaseDataModel?
-    var searchMovies:BaseDataModel?
-    var languageData:BaseDataModel?
-    var genreData:BaseDataModel?
-    var mergedHomeData:[DataContainer]?
+    var homeData: BaseDataModel?
+    var moviesData: BaseDataModel?
+    var musicData: BaseDataModel?
+    var tvData: BaseDataModel?
+    var clipsData: BaseDataModel?
+    var searchMovies: BaseDataModel?
+    var languageData: BaseDataModel?
+    var genreData: BaseDataModel?
+    var mergedHomeData: [DataContainer]?
     
-    var configData:ConfigData?
-    var tvWatchList:WatchListDataModel?
-    var moviesWatchList:WatchListDataModel?
-    var resumeWatchList:ResumeWatchListDataModel?
+    var configData: ConfigData?
+    var tvWatchList: WatchListDataModel?
+    var moviesWatchList: WatchListDataModel?
+    var resumeWatchList: ResumeWatchListDataModel?
     var userRecommendationList: UserRecommendationListDataModel?
     
-    var languageGenreDetailModel:LanguageGenreDetailModel?
+    var languageGenreDetailModel: LanguageGenreDetailModel?
     
-    var secretCdnTokenKey:String?
-    var cdnEncryptionFlag:Bool = false
-    var cdnUrlExpiryDuration:Int?
+    var secretCdnTokenKey: String?
+    var cdnEncryptionFlag: Bool = false
+    var cdnUrlExpiryDuration: Int?
     
     enum Category
     {
@@ -109,10 +108,8 @@ class JCDataStore
         }
     }
     
-    public func appendData(withResponseData responseData:Data, category:Category)
-    {
-        if let responseString = String(data: responseData, encoding: .utf8)
-        {
+    public func appendData(withResponseData responseData: Data, category: Category) {
+        if let responseString = String(data: responseData, encoding: .utf8) {
             let newData = BaseDataModel(JSONString: responseString)
             for data in (newData?.data)! {
                 switch category {

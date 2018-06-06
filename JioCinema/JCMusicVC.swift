@@ -98,17 +98,16 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         cell.cellDelgate = self
         cell.tag = indexPath.row
 
-        if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
-        {
+        if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true) {
             cell.tableCellCollectionView.tag = indexPath.row + 1
             cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title
-        }
-        else
-        {
+            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "") + "(\(cell.data?.count ?? 0))"
+            cell.categoryTitleLabel.text = categoryTitle
+        } else {
             cell.tableCellCollectionView.tag = indexPath.row
             cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].items
-            cell.categoryTitleLabel.text = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title
+            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+            cell.categoryTitleLabel.text = categoryTitle
         }
         
         cell.tableCellCollectionView.reloadData()
@@ -267,12 +266,6 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
-        }
-        //Making tab bar delegate searchvc
-        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-            if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
-                tabBarController.delegate = searchVc
-            }
         }
     }
     

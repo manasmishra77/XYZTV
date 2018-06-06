@@ -119,12 +119,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.itemFromViewController = VideoType.TVShow
         
         cell.data = dataItemsForTableview[indexPath.row].items
-        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+        cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
-        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2)
-        {
+        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2) {
             if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
             {
                 callWebServiceForTVData(page: loadedPage + 1)
@@ -225,17 +225,14 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     {
         //Success
         
-        if(loadedPage == 0)
-        {
+        if(loadedPage == 0) {
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
-        }
-        else
-        {
+        }  else {
             JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
@@ -325,12 +322,6 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
-        }
-        //Making tab bar delegate searchvc
-        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-            if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
-                tabBarController.delegate = searchVc
-            }
         }
     }
     

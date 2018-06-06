@@ -16,8 +16,7 @@ class JCSettingsVC: UIViewController {
     
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()

@@ -34,10 +34,9 @@ class SearchNavigationController: UINavigationController {
 
     override func viewWillAppear(_ animated: Bool) {
        jCSearchVC?.viewIsAppearing()
-        
     }
     override func viewWillDisappear(_ animated: Bool) {
-
+        jCSearchVC?.viewIsDisappearing()
     }
    
     override func viewDidDisappear(_ animated: Bool) {

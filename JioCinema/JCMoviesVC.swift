@@ -110,7 +110,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         cell.itemFromViewController = VideoType.Movie
 
         cell.data = dataItemsForTableview[indexPath.row].items
-        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+        cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
@@ -355,13 +356,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
-        }
-        
-        //Making tab bar delegate searchvc
-        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-            if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
-                tabBarController.delegate = searchVc
-            }
         }
     }
     

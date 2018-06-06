@@ -203,7 +203,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             cell.isResumeWatchCell = true
         }
         cell.data = dataItemsForTableview[indexPath.row].items
-        cell.categoryTitleLabel.text = dataItemsForTableview[indexPath.row].title
+        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+        cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         
         
@@ -366,7 +367,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         //ChangingTheAlpha when focus shifted from tab bar item to view controller view
         if focusShiftedFromTabBarToVC{
             focusShiftedFromTabBarToVC = false
-            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
+            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell] {
                 for cell in cells{
                     if cell != cells.first {
                         cell.tableCellCollectionView.alpha = 0.5
@@ -375,7 +376,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 if cells.count < 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }else{
-                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView {
                         headerViewOfTableSection.middleButton.alpha = 0.5
                     }
                 }
@@ -392,12 +393,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
             each.tableCellCollectionView.alpha = 1
-        }
-        //Making tab bar delegate searchvc
-        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-            if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
-                tabBarController.delegate = searchVc
-            }
         }
     }
     
