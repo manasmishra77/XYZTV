@@ -1544,12 +1544,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYd-i4-Ssk">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AutoPlay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW3-wG-M7M">
-                                        <rect key="frame" x="832" y="300" width="256" height="72"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="60"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When autoplay is on, a suggested video plays next automatically a notification show which video is coming" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5IW-vi-iub">
                                         <rect key="frame" x="243" y="422" width="1434" height="35"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
@@ -1592,6 +1586,12 @@
                                             <action selector="didClickOnTurnOffButton:" destination="i9i-Rw-lfK" eventType="primaryActionTriggered" id="0R9-Zt-v4l"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="AutoPlay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW3-wG-M7M">
+                                        <rect key="frame" x="816" y="292" width="256" height="72"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="60"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1623,6 +1623,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="autoPlayDescLabel" destination="5IW-vi-iub" id="VdK-Gf-Swv"/>
+                        <outlet property="autoPlayOrSubtitleLabel" destination="DW3-wG-M7M" id="sSA-lL-ho3"/>
                         <outlet property="autoPlayView" destination="NYd-i4-Ssk" id="kGh-YW-hC2"/>
                         <outlet property="detailView" destination="TS9-Q3-Ob3" id="97O-cS-cCH"/>
                         <outlet property="feedBackView" destination="z5L-us-Wvx" id="PpS-OI-tdO"/>

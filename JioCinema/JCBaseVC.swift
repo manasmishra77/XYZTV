@@ -30,8 +30,7 @@ class JCBaseVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView)
-    {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
       
     }
 

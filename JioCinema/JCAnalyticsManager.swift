@@ -9,8 +9,7 @@
 import Foundation
 import CleverTapTVOS
 
-class JCAnalyticsManager
-{
+class JCAnalyticsManager {
     static let sharedInstance = JCAnalyticsManager()
     
     var tid : String?               //Google Analytics property id

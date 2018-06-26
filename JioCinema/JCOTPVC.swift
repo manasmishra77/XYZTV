@@ -465,7 +465,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     {
         
         // For Clever Tap Event
-        let eventProperties = ["Userid":Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
+        let eventProperties = ["Userid": Utility.sharedInstance.encodeStringWithBase64(aString: self.enteredNumber),"Reason":"OTP","Platform":"TVOS","Error Code":"01000","Message":"Authentication failed"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Login Failed", properties: eventProperties)
         
         // For Internal Analytics Event
@@ -474,7 +474,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: loginFailedInternalEvent)
         
         //For Google Analytics Event
-        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: LOGIN_EVENT, action: FAILURE_ACTION, label:"Type: OTP" + errorMessage, customParameters: customParams)
         
     }

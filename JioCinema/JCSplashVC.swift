@@ -24,8 +24,7 @@ class JCSplashVC: UIViewController {
         //Call config service
         weak var weakSelf = self
 
-        if(JCLoginManager.sharedInstance.isUserLoggedIn())
-        {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             callWebServiceToCheckVersion()
         }

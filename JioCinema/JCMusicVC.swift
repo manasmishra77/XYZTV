@@ -20,8 +20,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
        callWebServiceForMusicData(page: loadedPage)
         
@@ -36,10 +35,6 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-//        if !Utility.sharedInstance.isNetworkAvailable {
-//            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
-//        }
         
         self.tabBarController?.delegate = self
         if JCDataStore.sharedDataStore.musicData?.data == nil

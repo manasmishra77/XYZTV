@@ -34,7 +34,7 @@ class JCArtistImageCell: UICollectionViewCell {
                 self.superview?.alpha = 0.4
             }
             if !artistNameInitialButton.isHidden{
-                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(60)
+                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(70)
             }
         }
         

@@ -128,8 +128,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                     thumbnailTitle = shownameOfThumbnail
                 }
                 
-                if let imageUrl = data?[indexPath.row].banner
-                {
+                if let imageUrl = data?[indexPath.row].banner {
                     cell.nameLabel.text = (data?[indexPath.row].app?.type == VideoType.Language.rawValue || data?[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
                     
                     let url = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl))!)

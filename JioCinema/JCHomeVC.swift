@@ -237,22 +237,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
-//        if (JCDataStore.sharedDataStore.homeData?.totalPages) != nil
-//        {
-//            if(loadedPage == (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1)
-//            {
-//                return UIView()
-//            }
-//            else
-//            {
-//                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-//                return footerCell
-//            }
-//        }
-//        else
-//        {
-//            return UIView()
-//        }
     }
     
     

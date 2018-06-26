@@ -26,13 +26,10 @@ class JCLoginManager: UIViewController {
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
     }
     
-    func getUserFromDefaults() -> JCAppUser
-    {
-        if((UserDefaults.standard.value(forKey: savedUserKey)) != nil)
-        {
+    func getUserFromDefaults() -> JCAppUser {
+        if((UserDefaults.standard.value(forKey: savedUserKey)) != nil) {
             if let data = UserDefaults.standard.data(forKey: savedUserKey),
-                let user = NSKeyedUnarchiver.unarchiveObject(with: data) as? JCAppUser
-            {
+                let user = NSKeyedUnarchiver.unarchiveObject(with: data) as? JCAppUser {
                 JCAppUser.shared = user
             }
             else

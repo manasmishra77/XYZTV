@@ -109,34 +109,46 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         if let tappedItem = item as? Item {
             isComminFromSelectingRecommend = true
             //Screenview event to Google Analytics
-            let customParams: [String : String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+            let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: SEARCH_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
             print(tappedItem)
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
-            if tappedItem.app?.type == VideoType.Music.rawValue {
-                print("At Music")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Movie.rawValue{
-                print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
-                self.present(metadataVC, animated: true, completion: nil)
-            }
-            else if tappedItem.app?.type == VideoType.TVShow.rawValue{
-                print("At TvShow")
-                if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
-                    if drn > 0 {
-                        tappedItem.app?.type = VideoType.Episode.rawValue
-                        checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+            if let itemType = VideoType(rawValue: tappedItem.app?.type ?? -111) {
+                switch itemType {
+                case .Movie:
+                    print("At Movie")
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                    self.present(metadataVC, animated: true, completion: nil)
+                case .TVShow:
+                    print("At TvShow")
+                    if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
+                        if drn > 0 {
+                            tappedItem.app?.type = VideoType.Episode.rawValue
+                            checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+                        } else {
+                            let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                            self.present(metadataVC, animated: true, completion: nil)
+                        }
                     } else {
                         let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
-                } else {
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
-                    self.present(metadataVC, animated: true, completion: nil)
+                case .Music, .Episode, .Clip, .Trailer:
+                    checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+                default:
+                    break
                 }
+            }
+            /*
+            if tappedItem.app?.type == VideoType.Music.rawValue {
+                print("At Music")
+                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
+            }
+            else if tappedItem.app?.type == VideoType.Movie.rawValue {
+                
+            else if tappedItem.app?.type == VideoType.TVShow.rawValue {
+               
             }
             else if tappedItem.app?.type == VideoType.Episode.rawValue {
                 print("At Episode")
@@ -149,7 +161,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             else if tappedItem.app?.type == VideoType.Trailer.rawValue {
                 print("At Trailer")
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
+            }*/
         }
     }
     

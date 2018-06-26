@@ -9,14 +9,15 @@
 import UIKit
 
 
-class JCSettingsDetailVC: UIViewController
-{
+class JCSettingsDetailVC: UIViewController {
 
     @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var settingsDetailTitleLabel: UILabel!
     @IBOutlet weak var settingsDetailTextView: UITextView!
     @IBOutlet weak var feedBackView: UIView!
     @IBOutlet weak var autoPlayView: UIView!
+    @IBOutlet weak var autoPlayOrSubtitleLabel: UILabel!
+    @IBOutlet weak var autoPlayDescLabel: UILabel!
     
     @IBOutlet weak var onButton: AutoplayButton!
     @IBOutlet weak var offButton: AutoplayButton!
@@ -25,29 +26,35 @@ class JCSettingsDetailVC: UIViewController
     var textViewDetail = ""
     var isFeedBackView = false
     var isDetailView = false
+    var isForAutoPlay = false
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
-        if isFeedBackView
-        {
+        configureView()
+        // Do any additional setup after loading the view.
+    }
+    
+    deinit {
+        print("In Setting Detail Screen Deinit")
+    }
+    private func configureView() {
+        if isFeedBackView {
             feedBackView.isHidden = false
             detailView.isHidden = true
             autoPlayView.isHidden = true
-        }
-        else if isDetailView
-        {
+        } else if isDetailView {
             feedBackView.isHidden = true
             detailView.isHidden = false
             autoPlayView.isHidden = true
-
-        }
-        else
-        {
+            
+        } else {
             feedBackView.isHidden = true
             detailView.isHidden = true
             autoPlayView.isHidden = false
+            autoPlayView.backgroundColor = #colorLiteral(red: 0.08235294118, green: 0.09019607843, blue: 0.07843137255, alpha: 1)
+            autoPlayOrSubtitleLabel.text = isForAutoPlay ? AutoPlayHeading : Subtitleheading
+            autoPlayDescLabel.isHidden = !isForAutoPlay
         }
         onButton.layer.cornerRadius = 10.0
         offButton.layer.cornerRadius = 10.0
@@ -56,28 +63,28 @@ class JCSettingsDetailVC: UIViewController
         settingsDetailTextView.panGestureRecognizer.allowedTouchTypes = [NSNumber.init(value: UITouchType.indirect.rawValue)]
         settingsDetailTitleLabel.text = titleText
         settingsDetailTextView.text = textViewDetail
-        // Do any additional setup after loading the view.
     }
     
-    deinit {
-        print("In Setting Detail Screen Deinit")
-    }
-    
-    @IBAction func didClickOnTurnOnButton(_ sender: Any)
-    {
-        UserDefaults.standard.setValue(true, forKeyPath: isAutoPlayOnKey)
+    @IBAction func didClickOnTurnOnButton(_ sender: Any) {
+        if isForAutoPlay {
+            IsAutoPlayOn = true
+        } else {
+            IsAutoSubtitleOn = true
+        }
         self.dismiss(animated: false, completion: nil)
 
     }
  
-    @IBAction func didClickOnTurnOffButton(_ sender: Any)
-    {
-        UserDefaults.standard.setValue(false, forKeyPath: isAutoPlayOnKey)
+    @IBAction func didClickOnTurnOffButton(_ sender: Any) {
+        if isForAutoPlay {
+            IsAutoPlayOn = true
+        } else {
+            IsAutoSubtitleOn = true
+        }
         self.dismiss(animated: false, completion: nil)
     }
     
-    override func didReceiveMemoryWarning()
-    {
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }

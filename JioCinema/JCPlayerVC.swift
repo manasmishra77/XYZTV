@@ -288,7 +288,7 @@
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
                 _ = playbackRightsData?.isSubscribed
-                let header = ["AVURLAssetHTTPHeaderFieldsKey" : headerValues]
+                let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
                 guard let assetUrl = URL(string: changedUrl) else {
                     return
                 }
@@ -344,7 +344,7 @@
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
         self.addMetadataToPlayer()
-        
+        self.autoPlaySubtitle(IsAutoSubtitleOn)
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -372,6 +372,14 @@
         self.view.bringSubview(toFront: self.view_Recommendation)      
         
         self.nextVideoView.isHidden = true
+    }
+    
+    private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
+        guard isAutoPlaySubtitle else {return}
+        let subtitles = player?.currentItem?.tracks(type: .subtitle)
+        // Select track with displayName
+        guard (subtitles?.count ?? 0) > 0 else {return}
+        _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
     }
     
     func handleForPlayerReference() {
@@ -677,7 +685,7 @@
     
     func sendVideoViewedEventToCleverTap() {
         let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS", "Director": director, "Starcast": starCast, "Content Partner": vendor]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties:eventProperties)
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties: eventProperties)
         
         let bufferEventProperties = ["Buffer Count": String(Int(bufferCount/2)),"Buffer Duration": Int(totalBufferDurationTime),"Content ID":id,"Type":appType.rawValue,"Title":itemTitle,"Episode":episodeNumber ?? -1,"Bitrate":bitrate, "Platform":"TVOS"] as [String : Any]
         sendBufferingEvent(eventProperties: bufferEventProperties)
@@ -1096,7 +1104,7 @@
                             weakSelf?.player?.pause()
                             weakSelf?.resetPlayer()
                         }
-//                        self.playbackRightsData?.url = nil
+                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1722,6 +1730,50 @@
         print("Gotit")
     }
  }
+ 
+ 
+ //AVPlayerItem extension for subtitle and audio setting
+ extension AVPlayerItem {
+    enum TrackType {
+        case subtitle
+        case audio
+        /**                 Return valid AVMediaSelectionGroup is item is available.                 */
+        
+        fileprivate func characteristic(item:AVPlayerItem) -> AVMediaSelectionGroup? {
+            let str = self == .subtitle ? AVMediaCharacteristicLegible : AVMediaCharacteristicAudible
+            if item.asset.availableMediaCharacteristicsWithMediaSelectionOptions.contains(str) {
+                return item.asset.mediaSelectionGroup(forMediaCharacteristic: str)
+                
+            }
+            return nil
+        }
+        
+    }
+    func tracks(type:TrackType) -> [String] {
+        if let characteristic = type.characteristic(item: self) {
+            return characteristic.options.map { $0.displayName}
+        }
+        return [String]()
+    }
+    func selected(type:TrackType) -> String? {
+        guard let group = type.characteristic(item: self) else {
+            return nil
+        }
+        let selected = self.selectedMediaOption(in: group)
+        return selected?.displayName
+    }
+    func select(type:TrackType, name:String) -> Bool {
+        guard let group = type.characteristic(item: self) else {
+            return false
+        }
+        guard let matched = group.options.filter({ $0.displayName == name }).first else{
+            return false
+        }
+        self.select(matched, in: group)
+        return true
+    }
+ }
+
  
  
  

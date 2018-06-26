@@ -175,7 +175,7 @@ class RJILApiManager {
             case .BODY:
                 //POST BODY
                 request = getRequest(forPath: path)
-                var paramString:String = ""
+                var paramString: String = ""
                 for (key, value) in params {
                     guard let escapedKey:String = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
                         else { fatalError("Key should be of type string") }
