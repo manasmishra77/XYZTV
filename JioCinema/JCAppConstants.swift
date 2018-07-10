@@ -29,8 +29,8 @@ let networkErrorMessage = "Please check your device's network and retry!"
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-//let basePath = prodBase
-let basePath = qaBase
+let basePath = prodBase
+//let basePath = qaBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
@@ -50,7 +50,7 @@ let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls
-let homeDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/1/")//basePath + kAppKeyValue + "/v3.1/tvhome/get/70/0/" //
+let homeDataUrl = basePath + kAppKeyValue + "/v3.1/tvhome/getget/70/"//(basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/1/")//basePath + kAppKeyValue + "/v3.1/tvhome/getget/" //
 let moviesDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/6/")
 let musicDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/33/")
 let tvDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/9/")
