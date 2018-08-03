@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
+class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
 
     let verticalInset = CGFloat(10)
     let spaceBetweenCells = CGFloat(40)
@@ -74,7 +74,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
 }
 
 extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
-
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return minimumLineSpacing
@@ -90,4 +90,7 @@ extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 83613ea89f03eaac0a64fe281d24edd7710d95cd

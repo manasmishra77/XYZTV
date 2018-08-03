@@ -62,6 +62,10 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchViewController?.extendedLayoutIncludesOpaqueBars = false
+        if (searchViewController?.searchBar.text?.characters.count)! > 0
+        {
+            searchResultForkey(with: (searchViewController?.searchBar.text)!)
+        }
       
     }
     override func viewWillLayoutSubviews() {
@@ -139,12 +143,18 @@ class JCSearchVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearch
                 {
                     self.searchModel = SearchDataModel(JSONString: responseString)
                     let array = (self.searchModel?.searchData?.categoryItems)!
+                    let analyticsData = ["stest" : key, "isvoice": false, "scount" : array.count] as [String : Any]
+                    JCMediaAnalytics.manager.trackSearchEventfor(dataDict: analyticsData)
                     if array.count > 0
                     {
                         DispatchQueue.main.async {
                             self.searchResultArray = array
                             weakself?.baseTableView.reloadData()
                         }
+                    }
+                    else
+                    {
+                        
                     }
                }
             }

@@ -220,18 +220,18 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         
         if(loadedPage == 0)
         {
-            JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
             }
         }
         else
         {
-            JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
                 weakSelf?.baseTableView.reloadData()
             }
         }
