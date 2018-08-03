@@ -100,7 +100,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             cell.tableCellCollectionView.tag = indexPath.row + 1
 
             cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].items
-            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "") + "(\(cell.data?.count ?? 0))"
+            let categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].title ?? "") + "(\(cell.data?.count ?? 0))"
             cell.categoryTitleLabel.text = categoryTitle
         }
         else
