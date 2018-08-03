@@ -9,16 +9,24 @@
 //http://dev.media.jio.com/apidocSit/html/#api-Appkey-Resumewatch_Add
 
 import UIKit
+import Crashlytics
+import Fabric
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    
         // Override point for customization after application launch.
+
+        //Sending event for Internal Analytics
+        let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
+        Fabric.with([Crashlytics.self])
         return true
     }
 
@@ -36,12 +44,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication)
+    {
+        if let _ = topShelfContentModel{
+            if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
+                    tabVc.selectedIndex = 0
+            }
+        }
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        //Sending media_end analytics event when media_ends
+        if let playerVc = UIApplication.topViewController() as? JCPlayerVC{
+            playerVc.viewWillDisappear(true)
+        }
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        let urlString = url.absoluteString
+        
+        //TODO: Top-shelf item tapped
+        if urlString.contains("jCApp:?identifier="){
+            if let urlSubString = urlString.dropFirst(18).removingPercentEncoding{
+                topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
+            }
+        }
+        return false
+    }
+    
+    func handlerUncaughtException() -> Void {
+        
+        NSSetUncaughtExceptionHandler { (exception) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGABRT) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGILL) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        
+        signal(SIGSEGV) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGFPE) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGBUS) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
+        signal(SIGPIPE) { (_) in
+            Log.DLog(message: Thread.callStackSymbols as AnyObject)
+        }
     }
     
 }

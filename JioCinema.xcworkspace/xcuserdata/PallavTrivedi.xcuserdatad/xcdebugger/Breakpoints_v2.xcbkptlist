@@ -6,6 +6,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+<<<<<<< HEAD
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -80,6 +81,18 @@
             startingLineNumber = "70"
             endingLineNumber = "70"
             landmarkName = "playVideo()"
+=======
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "530605872.627821"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "didReceiveNotificationForCellTap(notification:)"
+>>>>>>> NewArchitecture
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,6 +102,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "JioCinema/JCResumeWatchingVC.swift"
             timestampString = "527515558.499662"
             startingColumnNumber = "9223372036854775807"
@@ -96,6 +110,15 @@
             startingLineNumber = "50"
             endingLineNumber = "50"
             landmarkName = "didClickOnResumeWatching(_:)"
+=======
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "530605872.62857"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
+            landmarkName = "checkLoginAndPlay()"
+>>>>>>> NewArchitecture
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,6 +128,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "JioCinema/JCHomeVC.swift"
             timestampString = "527521474.852382"
             startingColumnNumber = "9223372036854775807"
@@ -112,6 +136,15 @@
             startingLineNumber = "211"
             endingLineNumber = "211"
             landmarkName = "evaluateResumeWatchData(dictionaryResponseData:)"
+=======
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "530605872.629055"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "checkLoginAndPlay()"
+>>>>>>> NewArchitecture
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,6 +154,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "JioCinema/JCHomeVC.swift"
             timestampString = "527521475.924715"
             startingColumnNumber = "9223372036854775807"
@@ -128,6 +162,15 @@
             startingLineNumber = "217"
             endingLineNumber = "217"
             landmarkName = "evaluateResumeWatchData(dictionaryResponseData:)"
+=======
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "530605872.629433"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
+            landmarkName = "checkLoginAndPlay()"
+>>>>>>> NewArchitecture
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

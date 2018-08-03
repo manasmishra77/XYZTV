@@ -9,16 +9,14 @@
 import UIKit
 
 
-class JCSettingsTableViewCell: UITableViewCell
-{
+class JCSettingsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var settingsDetailLabel: UILabel!
     @IBOutlet weak var cellAccessoryImage: UIImageView!
     var cellIndexpath = 0
     
-    override func awakeFromNib()
-    {
+    override func awakeFromNib() {
         super.awakeFromNib()
         self.contentView.layer.cornerRadius = 10.0
         self.baseView.layer.cornerRadius = 10.0
@@ -28,13 +26,11 @@ class JCSettingsTableViewCell: UITableViewCell
         // Initialization code
     }
     
-    func setCellTag(forCell cellTag:Int)
-    {
+    func setCellTag(forCell cellTag: Int) {
         cellIndexpath = cellTag
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool)
-    {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

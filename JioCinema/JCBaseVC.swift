@@ -12,6 +12,13 @@ class JCBaseVC: UIViewController {
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var baseTableView: UITableView!
+    
+    @IBOutlet weak var searchRecommendationContainerView: UIView!
+    @IBOutlet weak var seaarchRecommendationLabel: UILabel!
+    @IBOutlet weak var searchRecommendationTableView: UITableView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,12 +30,8 @@ class JCBaseVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView)
-    {
-        if(self.tabBarController?.tabBar.isHidden == false)
-        {
-            self.tabBarController?.tabBar.alpha = 0.7
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      
     }
 
     /*

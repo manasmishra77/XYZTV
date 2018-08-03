@@ -22,12 +22,15 @@ class JCResumeWatchCell: UICollectionViewCell {
         if (context.nextFocusedView == self)
         {
             self.superview?.alpha = 1.0
+            self.nameLabel.font = self.nameLabel.font.withSize(30)
             let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.origin.x+15, y: progressBar.frame.origin.y + 20, width: itemImageView.focusedFrameGuide.layoutFrame.size.width, height: progressBar.frame.size.height)
             self.progressBar.frame = frame
         }
         else
         {
             self.superview?.alpha = 0.5
+          
+            self.nameLabel.font = self.nameLabel.font.withSize(24)
             let frame = CGRect.init(x: itemImageView.frame.origin.x, y: progressBar.frame.origin.y - 20, width: itemImageView.frame.size.width, height: progressBar.frame.size.height)
             self.progressBar.frame = frame
         }

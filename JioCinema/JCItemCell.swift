@@ -12,36 +12,23 @@ class JCItemCell: UICollectionViewCell {
     
     @IBOutlet weak var itemImageView: UIImageView!
     
+    @IBOutlet weak var nowPlayingImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var view_NowPlaying: UIView!
-    @IBOutlet weak var nowPlayingLabel: UILabel!
-
     override func prepareForReuse() {
        // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 1.0
             }
-                        self.view_NowPlaying.frame = itemImageView.focusedFrameGuide.layoutFrame
-            self.view_NowPlaying.frame.origin.x = self.view_NowPlaying.frame.origin.x + 15
-            self.view_NowPlaying.frame.size.height = self.view_NowPlaying.frame.size.height + 15
-            
-            let frame = CGRect.init(x: itemImageView.focusedFrameGuide.layoutFrame.width/2 - nowPlayingLabel.frame.width/2, y: itemImageView.focusedFrameGuide.layoutFrame.height/2 , width: nowPlayingLabel.frame.size.width, height: nowPlayingLabel.frame.size.height)
-            nowPlayingLabel.frame.origin.x = frame.origin.x + 15
-            nowPlayingLabel.frame.origin.y = frame.origin.y + 15
 
-        }
-        else
-        {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
+        } else {
+            self.nameLabel.font = self.nameLabel.font.withSize(24)
+            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 0.5
             }
-            self.view_NowPlaying.frame = itemImageView.frame
         }
 
     }

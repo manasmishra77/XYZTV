@@ -86,32 +86,7 @@ class RJILApiManager {
             return _commonHeaders
         }
     }
-    
-//    var commonHeaders:[String:String]{
-//        get{
-//            var _commonHeaders = [String:String]()
-//            _commonHeaders["os"] = "ios"
-//            _commonHeaders["deviceType"] = "stb"
-//            _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
-//            
-//            if JCLoginManager.sharedInstance.isUserLoggedIn()
-//            {
-//                _commonHeaders[kAppKey] = kAppKeyValue
-//                _commonHeaders["uniqueid"] = JCAppUser.shared.unique
-//                _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
-//                _commonHeaders["accesstoken"] = JCAppUser.shared.ssoToken
-//                _commonHeaders["lbcookie"] = JCAppUser.shared.lbCookie
-//                
-//                //_commonHeaders["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhoneOS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C89"
-//                if JCAppUser.shared.userGroup != "" {
-//                    _commonHeaders["usergroup"] = JCAppUser.shared.userGroup
-//                }
-//                
-//            }
-//            
-//            return _commonHeaders
-//        }
-//    }
+
     
     var otpHeaders:[String:String]{
         get{
@@ -121,6 +96,21 @@ class RJILApiManager {
             _otpHeaders["Content-Type"] = "application/json"
             
             return _otpHeaders
+        }
+    }
+    
+    var checkVersionHeaders: [String:String]{
+        get{
+            var _checkVersionHeaders = [String:String]()
+            //_checkVersionHeaders["appkey"] = kAppKeyValue
+            _checkVersionHeaders["deviceId"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+            _checkVersionHeaders["appversion"] = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+            _checkVersionHeaders["os"] = "ios"
+            _checkVersionHeaders["devicetype"] = "stb"
+            //_checkVersionHeaders["storetype"] = "0"
+            
+            
+            return _checkVersionHeaders
         }
     }
     
@@ -151,17 +141,21 @@ class RJILApiManager {
     }
     
     
-    private func getRequest(forPath path:String) -> URLRequest
+    private func getRequest(forPath path:String) -> URLRequest?
     {
         //make macros here for prod/preprod etc
         
         //TODO:
-        urlString = path.contains("http") ? path : basePath.appending("common/v3/") + path
+        urlString = path.contains("http") ? path.removingWhitespaces() : basePath.appending("common/v3/") + path.removingWhitespaces()
         
-        return URLRequest(url: URL(string: urlString!)!)
+        if let url = URL(string: urlString!) {
+            return URLRequest(url: url)
+        }
+        return nil
+        
     }
     
-    func prepareRequest(path:String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
         var request:URLRequest?
         
         if let params = params {
@@ -181,7 +175,7 @@ class RJILApiManager {
             case .BODY:
                 //POST BODY
                 request = getRequest(forPath: path)
-                var paramString:String = ""
+                var paramString: String = ""
                 for (key, value) in params {
                     guard let escapedKey:String = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
                         else { fatalError("Key should be of type string") }
@@ -208,7 +202,7 @@ class RJILApiManager {
                     paramString += escapedKey! + "=" + escapedValue! + "&"
                 }
                 
-                if paramString.characters.last == "&"{
+                if paramString.last == "&"{
                     paramString = paramString.substring(to: paramString.index(before: paramString.endIndex))
                 }
                 
@@ -221,7 +215,11 @@ class RJILApiManager {
             request = getRequest(forPath: path)
         }
         
-        if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
+        if path.contains(checkVersionUrl)
+        {
+            request?.allHTTPHeaderFields = checkVersionHeaders
+        }
+        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
         {
             if(JCLoginManager.sharedInstance.loggingInViaSubId)
             {
@@ -296,119 +294,62 @@ class RJILApiManager {
                 //fatalError("Could not get response")
             }
             
+            //TODO: refreshing ssotoken
             self.httpStatusCode = httpResponse.statusCode
-            
-            //TODO: will I come across this scenario
-            /*//This condition is added to simulate refresh toke scenario
-             if gSimulateRefreshTokenScenario { self.httpStatusCode = 400 }
-             */
-            
-            /* if self.httpStatusCode == 419 { //Authentication Failed Refresh Token
-             //Authentication Failed
-             //Check if token is getting refreshed
-             if RJILApiManager.defaultManager.isRefreshingToken == false{
-             //Put the currentTask in queue
-             let currentTask:RJILPendingTask = RJILPendingTask()
-             currentTask.request = originalRequest
-             currentTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(currentTask)
-             //Update the flag so that other requests will start coming in queue
-             RJILApiManager.defaultManager.isRefreshingToken = true
-             DispatchQueue.global().async(execute: {
-             DispatchQueue.main.sync {
-             //Refresh Token
-             if let freshToken:String = JMSSOController.getInstance().refreshSessionToken(){
-             print("Refreshed SSO Token " + freshToken)
-             //Token is refreshed : Now starting completing tasks
-             for pendingTask:RJILPendingTask in RJILApiManager.defaultManager.pendingTasks{
-             pendingTask.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-             RJILApiManager.defaultManager.createDataTask(withRequest: pendingTask.request!, httpMethod: (pendingTask.request?.httpMethod)!, completion: pendingTask.completionHandler!)
-             }
-             self.pendingTasks.removeAll()
-             RJILApiManager.defaultManager.isRefreshingToken = false
-             }
-             else {
-             //Logout user
-             self.errorMessage = "Invalid session token, You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             }
-             
-             }
-             })
-             }
-             else{
-             //Token refresh is in progres put the task in queue to finish later
-             let pendingTask:RJILPendingTask = RJILPendingTask()
-             pendingTask.request = originalRequest
-             pendingTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(pendingTask)
-             }
-             }
-             
-             else if self.httpStatusCode == 400
-             {
-             var errorInfo:[String:String] = [String:String]()
-             var errorDescription = "Bad Request : "
-             //let testData = "{\"errors\":[{\"code\":\"01001\",\"details\":{},\"message\":\"SSO token used in the request is not valid\"}]}".data(using: .utf8)
-             
-             if let responseData = data, let errorDetails:[String:Any] = RJILApiManager.parse(data: responseData),let errors = errorDetails["errors"] as? [[String:Any]], errors.count > 0 , let message = errors[0]["message"] as? String{
-             //let message = ""
-             errorDescription = errorDescription + message
-             if message.contains("SSO")
-             {
-             
-             if RJILApiManager.defaultManager.isRefreshingToken == false{
-             //Put the currentTask in queue
-             let currentTask:RJILPendingTask = RJILPendingTask()
-             currentTask.request = originalRequest
-             currentTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(currentTask)
-             //Update the flag so that other requests will start coming in queue
-             RJILApiManager.defaultManager.isRefreshingToken = true
-             DispatchQueue.global().async(execute: {
-             DispatchQueue.main.sync {
-             //Refresh Token
-             if let freshToken:String = JMSSOController.getInstance().refreshSessionToken(){
-             print("Refreshed SSO Token " + freshToken)
-             //Token is refreshed : Now starting completing tasks
-             for pendingTask:RJILPendingTask in RJILApiManager.defaultManager.pendingTasks{
-             pendingTask.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-             RJILApiManager.defaultManager.createDataTask(withRequest: pendingTask.request!, httpMethod: (pendingTask.request?.httpMethod)!, completion: pendingTask.completionHandler!)
-             }
-             self.pendingTasks.removeAll()
-             RJILApiManager.defaultManager.isRefreshingToken = false
-             }
-             else {
-             //Logout user
-             self.errorMessage = "Invalid session token, You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             return
-             }
-             
-             }
-             })
-             }
-             else{
-             //Token refresh is in progres put the task in queue to finish later
-             let pendingTask:RJILPendingTask = RJILPendingTask()
-             pendingTask.request = originalRequest
-             pendingTask.completionHandler = completion
-             RJILApiManager.defaultManager.pendingTasks.append(pendingTask)
-             }
-             
-             
-             }else if message == "User Validation Failed"{
-             self.errorMessage = errorDescription + ", You will be logged out of the application"
-             AppDelegate.sharedDelegate.invalidSessionLogoutUserAfter(displayingErrorMessage: self.errorMessage!)
-             return
-             }
-             }
-             errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
-             completion(nil, nil, NSError(domain: kApplicationErrorDomain, code: 400, userInfo: errorInfo))
-             }*/
-            
-            //TODO: error domain
-            if self.httpStatusCode == 504{
+            if self.httpStatusCode == 419{
+                if JCAppUser.shared.mToken != ""{
+                    
+                    //Put the currentTask in queue
+                    let currentTask:RJILPendingTask = RJILPendingTask()
+                    currentTask.request = originalRequest
+                    currentTask.completionHandler = completion
+                    RJILApiManager.defaultManager.pendingTasks.append(currentTask)
+                    if !RJILApiManager.defaultManager.isRefreshingToken{
+                        
+                        RJILApiManager.defaultManager.isRefreshingToken = true
+                        //Do the refreshing-task work
+                        let params = ["mtoken": JCAppUser.shared.mToken]
+                        
+                        let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
+                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
+                            guard error == nil else{
+                                var errorInfo:[String:String] = [String:String]()
+                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+                                return
+                            }
+                            if let responseData = data{
+                                //parse response Data
+                                let refreshTupple = RJILApiManager.defaultManager.parseRefreshTokenData(responseData)
+                                if refreshTupple.0 == 200{
+                                    JCAppUser.shared.ssoToken = refreshTupple.1
+                                    for each in RJILApiManager.defaultManager.pendingTasks{
+                                        each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
+                                        //completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                        self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
+                                    }
+                                }
+                                else{
+                                    self.isRefreshingToken = false
+                                    //LogOutUser and show login page
+                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                }
+                            }
+                            self.pendingTasks.removeAll()
+                            self.isRefreshingToken = false
+                        })
+                        
+                    }
+                }
+                else
+                {
+                    //Present Login Page
+                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                    
+                }
+            }
+                //TODO: error domain
+            else if self.httpStatusCode == 504{
                 var errorInfo:[String:String] = [String:String]()
                 self.errorMessage = "Server Timeout : Please try again in some time"
                 errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
@@ -440,5 +381,34 @@ class RJILApiManager {
         dataTask.resume()
         
         
+    }
+    
+    func parseRefreshTokenData(_ responseData: Data) -> (Int, String) {
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
+            if let responseDict = jsonDict as? [String: Any]{
+                var refreshTupple = (0, "")
+                refreshTupple.0 = responseDict["code"] as? Int ?? 0
+                refreshTupple.1 = responseDict["ssotoken"] as? String ?? ""
+                return refreshTupple
+            }
+            
+        } catch {
+            //print("Error deserializing JSON: \(error)")
+        }
+        return (0, "")
+    }
+    
+    class func parseData<T: Codable>(_ data: Data?, modelType: T.Type) -> T? {
+        guard let data = data else {
+            return nil
+        }
+        do {
+            let model = try JSONDecoder().decode(T.self, from: data)
+            return model
+        } catch {
+            print(error)
+        }
+        return nil
     }
 }

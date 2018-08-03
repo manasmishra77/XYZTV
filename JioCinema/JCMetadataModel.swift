@@ -68,6 +68,7 @@ class MetadataModel:Mappable
     var artistObj:[ArtistObj]?
     var directors:[String]?
     var description:String?
+    var descriptionForTVShow: String?
     var rating:String?
     var review:[String]?
     var image:String?
@@ -116,7 +117,17 @@ class MetadataModel:Mappable
     {
         appkey <- map["appkey"]
         type <- map["type"]
+        
+        var tmpStore: Double?
+        tmpStore <- map["contentId"]
+        
         contentId <- map["contentId"]
+        
+        if contentId == nil, tmpStore != nil {
+            contentId = "\(String(describing: Int(tmpStore!)))"
+        }
+        
+        //contentId <- map["contentId"]
         showdate <- map["showdate"]
         isTrailerAvailable <- map["isTrailerAvailable"]
         trailerId <- map["trailerId"]
@@ -179,6 +190,8 @@ class MetadataModel:Mappable
         artistObj <- map["artistObj"]
         directors <- map["directors"]
         description <- map["description"]
+        descriptionForTVShow <- map["desc"]
+        
         rating <- map["rating"]
         review <- map["review"]
         image <- map["image"]
@@ -279,7 +292,7 @@ class Meta:Mappable
     }
 }
 
-class More:Mappable
+class More: Mappable
 {
     var id:String?
     var name:String?
@@ -297,7 +310,9 @@ class More:Mappable
     var totalDurationString:String?
     var image:String?
     
-    
+    init() {
+        
+    }
     required init(map:Map) {
         
     }

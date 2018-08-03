@@ -5,7 +5,7 @@
 //  Created by Pallav Trivedi on 27/07/17.
 //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
-
+/*
 import UIKit
 import SDWebImage
 
@@ -64,6 +64,7 @@ class JCBaseTableViewHeaderCell: UITableViewCell,UICollectionViewDataSource {
     {
         collectionIndex = collectionView.tag
         selectedItemFromViewController = self.itemFromViewController!
+        categoryTitle = "Carousal"
         
         let itemToPlay = ["item":(carousalData?[indexPath.row])!]
         NotificationCenter.default.post(name: cellTapNotificationName, object: nil, userInfo: itemToPlay)
@@ -89,4 +90,4 @@ extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
-
+*/

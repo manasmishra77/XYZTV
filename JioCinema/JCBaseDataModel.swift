@@ -36,8 +36,7 @@ class BaseDataModel:Mappable
     }
 }
 
-class WatchListDataModel:Mappable
-{
+class WatchListDataModel: Mappable {
     var code:Int?
     var message:String?
     var data:DataContainer?
@@ -103,6 +102,23 @@ class ResumeWatchListDataModel:Mappable
     }
 }
 
+class UserRecommendationListDataModel:Mappable
+{
+    var code: Int?
+    var message: String?
+    var data: [DataContainer]?
+    required init(map:Map) {
+        
+    }
+    
+    func mapping(map:Map)
+    {
+        code <- map["code"]
+        message <- map["message"]
+        data <- map["data"]
+    }
+}
+
 class DataContainer:Mappable
 {
     var items:[Item]?
@@ -113,6 +129,7 @@ class DataContainer:Mappable
     var isCarousal:Bool?
     var id:Int?
     var layout:Int?
+    var position: Int? = nil
     
     required init(map:Map) {
         
@@ -128,6 +145,7 @@ class DataContainer:Mappable
         isCarousal <- map["isCarousal"]
         id <- map["id"]
         layout <- map["layout"]
+        position <- map["position"]
     }
 }
 
@@ -150,10 +168,11 @@ class Item:Mappable
     var layout:Int?
     var duration:String?
     var durationInt:Int?
-    var isPlaylist:Bool?
+    var isPlaylist:Bool? = false
     var playlistId:String?
     var totalDuration:String?
     var totalDurationInt:Int?
+    var episodeId: String?
     var list:[List]?
     
     
@@ -227,8 +246,7 @@ class Item:Mappable
     }
 }
 
-class List:Mappable
-{
+class List: Mappable {
     var id:Int?
     var name:String?
     
@@ -236,8 +254,7 @@ class List:Mappable
         
     }
     
-    func mapping(map:Map)
-    {
+    func mapping(map: Map) {
         id <- map["id"]
         name <- map["name"]
     }
@@ -245,23 +262,61 @@ class List:Mappable
 }
 
 
-class App:Mappable
-{
+class App: Mappable {
     var resolution:Int?
     var isNew:Bool?
     var type:Int?
-    init()
-    {}
-    
-    required init(map:Map) {
+    init() {
         
     }
     
-    func mapping(map:Map)
-    {
+    required init(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
         resolution <- map["resolution"]
         isNew <- map["isNew"]
         type <- map["type"]
     }
-    
 }
+enum VideoType: Int {
+    case Search             = -2
+    case Home               = -1
+    case Movie              = 0
+    case TVShow             = 1
+    case Music              = 2
+    case Trailer            = 3
+    case Clip               = 6
+    case Episode            = 7
+    case ResumeWatching     = 8
+    case Language           = 9
+    case Genre              = 10
+    case None               = -111
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
+}
+
+enum Month: Int {
+    case Jan = 1
+    case Feb = 2
+    case Mar = 3
+    case Apr = 4
+    case May = 5
+    case Jun = 6
+    case Jul = 7
+    case Aug  = 8
+    case Sep = 9
+    case Oct = 10
+    case Nov  = 11
+    case Dec  = 12
+    case None = 0
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
+}
+
+

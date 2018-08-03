@@ -17,7 +17,7 @@ class JCPasswordField: UITextField,UITextFieldDelegate
         {
             self.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
             self.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSForegroundColorAttributeName:#colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)])
-            //self.textColor = UIColor.black
+            self.textColor = UIColor.black
         }
         else
         {

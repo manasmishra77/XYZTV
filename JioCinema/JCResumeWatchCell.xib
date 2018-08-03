@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="13196" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="kResumeWatchCell" id="Rz2-K0-ksD" customClass="JCResumeWatchCell" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" tag="101" contentMode="center" reuseIdentifier="kResumeWatchCell" id="Rz2-K0-ksD" customClass="JCResumeWatchCell" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="392" height="250"/>
+                <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" highlighted="YES" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ri-7F-RAA" userLabel="Item Image View">
                         <rect key="frame" x="15" y="15" width="362" height="185"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSf-xZ-DEC" userLabel="titleLabel">
-                        <rect key="frame" x="15" y="210" width="362" height="40"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSf-xZ-DEC" userLabel="titleLabel">
+                        <rect key="frame" x="15" y="224" width="362" height="36"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                         <color key="textColor" red="0.80087509379999999" green="0.80087509379999999" blue="0.80087509379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -42,11 +47,11 @@
                 <constraint firstItem="oVx-Z5-1dR" firstAttribute="centerX" secondItem="Rz2-K0-ksD" secondAttribute="centerX" id="56o-qU-wUB"/>
                 <constraint firstAttribute="trailing" secondItem="8ri-7F-RAA" secondAttribute="trailing" constant="15" id="Bni-PI-tCA"/>
                 <constraint firstItem="8ri-7F-RAA" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="HLB-7H-qxB"/>
-                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="10" id="LmW-GB-8GL"/>
-                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="10" id="UpR-Sj-n1f"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="24" id="LmW-GB-8GL"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="24" id="UpR-Sj-n1f"/>
                 <constraint firstAttribute="trailing" secondItem="nSf-xZ-DEC" secondAttribute="trailing" constant="15" id="eaw-Sx-ZJg"/>
                 <constraint firstAttribute="bottom" secondItem="nSf-xZ-DEC" secondAttribute="bottom" id="fIg-lX-vWC"/>
-                <constraint firstAttribute="bottom" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="50" id="nYF-HU-jQk"/>
+                <constraint firstAttribute="bottom" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="60" id="nYF-HU-jQk"/>
                 <constraint firstItem="oVx-Z5-1dR" firstAttribute="width" secondItem="8ri-7F-RAA" secondAttribute="width" id="pBn-Vx-WWl"/>
                 <constraint firstItem="8ri-7F-RAA" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="qXy-xX-Fog"/>
             </constraints>

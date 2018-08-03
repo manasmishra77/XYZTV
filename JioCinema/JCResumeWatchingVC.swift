@@ -5,6 +5,7 @@
 //  Created by Tania Jasam on 8/21/17.
 //  Copyright © 2017 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
+/*
 
 import UIKit
 
@@ -19,8 +20,9 @@ class JCResumeWatchingVC: UIViewController
     var itemImage:String?
     var itemDuration:String?
     var isVideoResumed = false
+    var previousVC: UIViewController? = nil
     
-    var item                        :Any?
+    var item :Any?
 
 
     override func viewDidLoad()
@@ -58,7 +60,7 @@ class JCResumeWatchingVC: UIViewController
         self.playVideo()
 
     }
-    
+
     
     @IBAction func didClickOnRemoveButton(_ sender: Any)
     {
@@ -67,19 +69,39 @@ class JCResumeWatchingVC: UIViewController
     
     func playVideo()
     {
-        let playerVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+       /* if playerVC_Global != nil {
+            return
+        }
+        let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         playerVC.currentItemDescription = itemDescription
         playerVC.currentItemTitle = itemTitle
         playerVC.currentItemImage = itemImage
         playerVC.currentItemDuration = itemDuration
-        playerVC.callWebServiceForPlaybackRights(id: playerId!)
+       // playerVC.callWebServiceForPlaybackRights(id: playerId!)
         playerVC.modalPresentationStyle = .overFullScreen
         playerVC.modalTransitionStyle = .coverVertical
         playerVC.duration = Double(playableItemDuration)
         playerVC.isResumed = isVideoResumed
         
         playerVC.item = self.item
-        self.present(playerVC, animated: false, completion: nil)
+        self.dismiss(animated: false, completion: {
+            print(self.previousVC)
+            self.previousVC?.present(playerVC, animated: false, completion: nil)
+            
+        })*/
+//        if isVideoResumed{
+//            //self.present(playerVC, animated: false, completion: nil)
+//            self.dismiss(animated: false, completion: {
+//                self.previousVC?.present(playerVC, animated: false, completion: nil)
+//
+//            })
+//        }
+//        else{
+//            self.dismiss(animated: false, completion: {
+//                self.previousVC?.present(playerVC, animated: false, completion: nil)
+//            })
+//        }
+        
     }
     
     func callWebServiceForRemovingResumedWatchlist()
@@ -101,22 +123,31 @@ class JCResumeWatchingVC: UIViewController
             {
                 let code = parsedResponse["code"]
                 print("Removed from Resume Watchlist \(String(describing: code))")
+                //Removing data from resume wathching screen
+                JCDataStore.sharedDataStore.resumeWatchList?.data?.items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items?.filter() { $0.id != self.playerId }
+                
                 DispatchQueue.main.async {
+                    if let homeVC = JCAppReference.shared.tabBarCotroller?.viewControllers![0] as? JCHomeVC{
+                        let index = IndexPath(row: 0, section: 0)
+                        if let items = JCDataStore.sharedDataStore.resumeWatchList?.data?.items{
+                            if items.count > 0{
+                                homeVC.isResumeWatchDataAvailable = true
+                                homeVC.baseTableView.reloadRows(at: [index], with: .fade)
+                            }else{
+                                homeVC.isResumeWatchDataAvailable = false
+                                homeVC.baseTableView.deleteRows(at: [index], with: .fade)
+                            }
+                        }else{
+                            homeVC.isResumeWatchDataAvailable = true
+                        }
+                    }
                     weakSelf?.dismiss(animated: false, completion: nil)
                 }
             }
         }
 
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+   
 
 }
+*/
