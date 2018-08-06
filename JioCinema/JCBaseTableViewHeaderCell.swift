@@ -92,5 +92,5 @@ extension JCBaseTableViewHeaderCell: UICollectionViewDelegateFlowLayout {
 }
 <<<<<<< HEAD
 */
-=======
->>>>>>> 83613ea89f03eaac0a64fe281d24edd7710d95cd
+//=======
+//>>>>>>> 83613ea89f03eaac0a64fe281d24edd7710d95cd

@@ -81,9 +81,6 @@ typealias LoaderCompletionBlock = (() -> ())
 
 typealias NetworkCheckCompletionBlock = (Bool) -> ()
 
-//AppDelegate
-let appDelegate = UIApplication.shared.delegate as? AppDelegate
-
 //Keys
 let kAppKey = "appkey"
 
