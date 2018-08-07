@@ -125,7 +125,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                     }
                                 }
                                 else if presentedFromAddToWatchList {
-                                    if let vc = vc as? JCMetadataVC{
+                                    if (vc as? JCMetadataVC) != nil{
                                         //Change Add to watchlist button status
                                         
                                     }

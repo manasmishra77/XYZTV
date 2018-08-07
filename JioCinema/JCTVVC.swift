@@ -119,14 +119,14 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.TVShow
         
-        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.itemsArray = dataItemsForTableview[indexPath.row].items
         let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
-        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
+        if(indexPath.row == dataItemsForTableview.count - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages ?? 0) - 1)
             {
                 callWebServiceForTVData(page: loadedPage + 1)
                 loadedPage += 1
@@ -156,6 +156,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
+        /*
         if (JCDataStore.sharedDataStore.tvData?.totalPages) == nil
         {
             return UIView.init()
@@ -171,7 +172,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
                 return footerCell
             }
-        }
+        }*/
     }
 
     

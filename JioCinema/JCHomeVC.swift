@@ -204,9 +204,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         cell.isResumeWatchCell = false
         if isResumeWatchDataAvailable, indexPath.row == 0 {
 
-            cell.isResumeWatchCell = true
+            cell.itemArrayType = .resumeWatch
         }
-        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.itemsArray = dataItemsForTableview[indexPath.row].items
         let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()

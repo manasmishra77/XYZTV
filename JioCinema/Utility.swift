@@ -199,7 +199,7 @@ class Utility
     }
     
     //MARK:- Login View Controller Preparation method
-    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: Any) -> JCLoginVC
+    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: UIViewController?) -> JCLoginVC
     {
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId) as! JCLoginVC
         loginVC.isLoginPresentedFromItemCell = fromItemCell
@@ -329,8 +329,9 @@ extension String {
         let startIndex = self.index(self.startIndex, offsetBy: start)
         let endIndex = self.index(startIndex, offsetBy: end)
         
-        let finalString = self.substring(from: startIndex)
-        return finalString.substring(to: endIndex)
+        let finalString = self[startIndex...endIndex]
+        
+        return String(finalString)
     }
 
     //Converting String to float

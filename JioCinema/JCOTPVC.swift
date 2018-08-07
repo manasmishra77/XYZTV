@@ -130,8 +130,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         if sender.tag == -1{
             if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
                 let number = jioNumberTFLabel.text
-                let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
-                jioNumberTFLabel.text = truncatedNumber
+                //let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
+                let truncatedNumber = number?[..<(number?.index(before: (number?.endIndex)!))!]
+                jioNumberTFLabel.text = String(truncatedNumber!)
                 
                 if truncatedNumber == ""
                 {
@@ -385,7 +386,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                                 }
                             }
                             if presentedFromAddToWatchList!{
-                                if let vc = vc as? JCMetadataVC{
+                                if (vc as? JCMetadataVC) != nil{
                                     //Change Add to watchlist button status
                                     
                                 }

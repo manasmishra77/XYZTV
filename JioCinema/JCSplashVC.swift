@@ -175,7 +175,7 @@ class JCSplashVC: UIViewController {
             }
             if let responseData = data {
                 let checkModel = weakSelf?.parseCheckVersionData(responseData)
-                let versionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1000"
+                _ = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1000"
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
                 
                 // If build number is coming from back-end

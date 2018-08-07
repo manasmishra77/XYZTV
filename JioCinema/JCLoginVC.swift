@@ -53,7 +53,7 @@ class JCLoginVC: UIViewController {
         otpVC.isLoginPresentedFromAddToWatchlist = isLoginPresentedFromAddToWatchlist
         otpVC.isLoginPresentedFromItemCell = isLoginPresentedFromItemCell
         otpVC.isLoginPresentedFromPlayNowButtonOfMetaData = isLoginPresentedFromPlayNowButtonOfMetaData
-        otpVC.presentingVCOfLoginVc = presentingVCOfLoginVc
+        otpVC.presentingVCOfLoginVc = presentingVCOfLoginVc ?? false
         otpVC.modalPresentationStyle = .overFullScreen
         otpVC.modalTransitionStyle = .coverVertical
         self.present(otpVC, animated: true, completion: nil)
@@ -65,7 +65,7 @@ class JCLoginVC: UIViewController {
         singInOptionsVC.isLoginPresentedFromItemCell = isLoginPresentedFromItemCell
         singInOptionsVC.isLoginPresentedFromPlayNowButtonOfMetaData = isLoginPresentedFromPlayNowButtonOfMetaData
         
-        singInOptionsVC.presentingVCOfLoginVc = presentingVCOfLoginVc
+        singInOptionsVC.presentingVCOfLoginVc = presentingVCOfLoginVc ?? false
         singInOptionsVC.modalPresentationStyle = .overFullScreen
         singInOptionsVC.modalTransitionStyle = .coverVertical
         singInOptionsVC.view.layer.speed = 0.7

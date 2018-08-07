@@ -89,22 +89,21 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
+        
         cell.itemFromViewController = VideoType.Music
         cell.cellDelgate = self
         cell.tag = indexPath.row
-
-        if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true) {
-            cell.tableCellCollectionView.tag = indexPath.row + 1
-            cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].items
-            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "")
-            cell.categoryTitleLabel.text = categoryTitle
-        } else {
-            cell.tableCellCollectionView.tag = indexPath.row
-            cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].items
-            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title ?? "")
-            cell.categoryTitleLabel.text = categoryTitle
+        guard let dataArray = JCDataStore.sharedDataStore.musicData?.data else {
+            return cell
         }
+        let index = (dataArray[0].isCarousal ?? false) ? indexPath.row + 1 : indexPath.row
+        cell.tableCellCollectionView.tag = index
+        cell.itemsArray = dataArray[index].items
+        cell.itemArrayType = .item
+        
+        cell.categoryTitleLabel.text = dataArray[index].title ?? ""
         
         cell.tableCellCollectionView.reloadData()
         

@@ -8,21 +8,16 @@
 
 import UIKit
 
-class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
-{
+class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var loadedPage = 0
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String?
     
     fileprivate var carousalView: InfinityScrollView?
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
+
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         callWebServiceForClipsData(page: loadedPage)
         
@@ -40,13 +35,12 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
-        if JCDataStore.sharedDataStore.clipsData?.data == nil
-        {
+        if JCDataStore.sharedDataStore.clipsData?.data == nil {
             callWebServiceForClipsData(page: loadedPage)
         }
         
         //Clevertap Navigation Event
-        let eventProperties = ["Screen Name":"Clips","Platform":"TVOS","Metadata Page":""]
+        let eventProperties = ["Screen Name": "Clips", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
     }
@@ -70,24 +64,12 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         return 350
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if (JCDataStore.sharedDataStore.clipsData?.data) != nil
-        {
-            if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
-            {
-                return (JCDataStore.sharedDataStore.clipsData?.data?.count)! - 1
-            }
-            else
-            {
-                return (JCDataStore.sharedDataStore.clipsData?.data?.count)!
-            }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count = 0
+        if let dataArray = JCDataStore.sharedDataStore.clipsData?.data {
+            count = (dataArray[0].isCarousal ?? false) ? dataArray.count - 1 : dataArray.count
         }
-        else
-        {
-            return 0
-        }
-        
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -96,7 +78,19 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         cell.itemFromViewController = VideoType.Clip
         cell.cellDelgate = self
         cell.tag = indexPath.row
+        guard let dataArray = JCDataStore.sharedDataStore.clipsData?.data else {
+            return cell
+        }
+        let index = (dataArray[0].isCarousal ?? false) ? indexPath.row + 1 : indexPath.row
+        cell.tableCellCollectionView.tag = index
+        
+        //cell.data = dataArray[index].items
+        cell.itemsArray = dataArray[index].items
+        cell.itemArrayType = .item
 
+        cell.categoryTitleLabel.text = dataArray[index].title ?? ""
+
+        /*
         if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
         {
             cell.tableCellCollectionView.tag = indexPath.row + 1
@@ -113,11 +107,10 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             let categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title ?? "")
             cell.categoryTitleLabel.text = categoryTitle
         }
-        
+        */
         cell.tableCellCollectionView.reloadData()
         
-        if(indexPath.row == (JCDataStore.sharedDataStore.clipsData?.data?.count)! - 2)
-        {
+        if(indexPath.row == dataArray.count - 2) {
             if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
             {
                 callWebServiceForClipsData(page: loadedPage + 1)
@@ -138,14 +131,15 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal ?? false), let carouselItems = JCDataStore.sharedDataStore.clipsData?.data?[0].items, carouselItems.count > 0 {
-            return 650
+        guard let dataArray = JCDataStore.sharedDataStore.clipsData?.data, (dataArray[0].isCarousal ?? false), let carouselItems = dataArray[0].items, carouselItems.count > 0 else {
+            return 0
         }
-        return 0
+        return 650
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
+        /*
         if (JCDataStore.sharedDataStore.clipsData?.totalPages) == nil
         {
             return UIView()
@@ -161,11 +155,24 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
                 return footerCell
             }
-        }
+        }*/
     }
-    
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+    
+    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        
+        guard let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath else { return }
+        guard nextIndexPath != prevIndexPath else {return}
+        
+        let nextCell = tableView.cellForRow(at: nextIndexPath) as! JCBaseTableViewCell
+        nextCell.contentView.alpha = 1.0
+        nextCell.categoryTitleLabel.textColor = .white
+        
+        let previousCell = tableView.cellForRow(at: prevIndexPath) as! JCBaseTableViewCell
+        previousCell.categoryTitleLabel.textColor = #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1)
+        previousCell.contentView.alpha = 0.5
     }
     
     
@@ -199,22 +206,14 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     {
         //Success
         
-        if(loadedPage == 0)
-        {
-            weak var weakSelf = self
-            DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
-                super.activityIndicator.isHidden = true
-                weakSelf?.baseTableView.reloadData()
-            }
+        if(loadedPage == 0) {
+            JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
+        } else {
+            JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
         }
-        else
-        {
-            weak var weakSelf = self
-            DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
-                weakSelf?.baseTableView.reloadData()
-            }
+        DispatchQueue.main.async {
+            super.activityIndicator.isHidden = true
+            self.baseTableView.reloadData()
         }
     }
     
@@ -331,7 +330,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer {
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: CLIP_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "" )
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray  ?? false, fromScreen: CLIP_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "" )
                 self.present(playerVC, animated: true, completion: nil)
             }
         }
