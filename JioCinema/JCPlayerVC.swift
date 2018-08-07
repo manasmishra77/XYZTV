@@ -445,31 +445,31 @@
     
     func addMetadataToPlayer() {
         let titleMetadataItem = AVMutableMetadataItem()
-        titleMetadataItem.identifier = AVMetadataCommonIdentifierTitle
+        titleMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierTitle
         titleMetadataItem.extendedLanguageTag = "und"
         titleMetadataItem.locale = NSLocale.current
-        titleMetadataItem.key = AVMetadataCommonKeyTitle as NSCopying & NSObjectProtocol
-        titleMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        titleMetadataItem.key = AVMetadataKey.commonKeyTitle as NSCopying & NSObjectProtocol
+        titleMetadataItem.keySpace = AVMetadataKeySpace.common
         titleMetadataItem.value = itemTitle as NSCopying & NSObjectProtocol
         
         
         let descriptionMetadataItem = AVMutableMetadataItem()
-        descriptionMetadataItem.identifier = AVMetadataCommonIdentifierDescription
+        descriptionMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierDescription
         descriptionMetadataItem.extendedLanguageTag = "und"
         descriptionMetadataItem.locale = NSLocale.current
-        descriptionMetadataItem.key = AVMetadataCommonKeyDescription as NSCopying & NSObjectProtocol
-        descriptionMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        descriptionMetadataItem.key = AVMetadataKey.commonKeyDescription as NSCopying & NSObjectProtocol
+        descriptionMetadataItem.keySpace = AVMetadataKeySpace.common
         
         descriptionMetadataItem.value = itemDescription as NSCopying & NSObjectProtocol
         
         
         
         let imageMetadataItem = AVMutableMetadataItem()
-        imageMetadataItem.identifier = AVMetadataCommonIdentifierArtwork
+        imageMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierArtwork
         imageMetadataItem.extendedLanguageTag = "und"
         imageMetadataItem.locale = NSLocale.current
-        imageMetadataItem.key = AVMetadataCommonKeyArtwork as NSCopying & NSObjectProtocol
-        imageMetadataItem.keySpace = AVMetadataKeySpaceCommon
+        imageMetadataItem.key = AVMetadataKey.commonKeyArtwork as NSCopying & NSObjectProtocol
+        imageMetadataItem.keySpace = AVMetadataKeySpace.common
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(bannerUrlString)) ?? ""
         
         RJILImageDownloader.shared.downloadImage(urlString: imageUrl, shouldCache: false){
@@ -605,7 +605,7 @@
     }
     
     //MARK:- AVPlayer Finish Playing Item
-    func playerDidFinishPlaying(note: NSNotification) {
+    @objc func playerDidFinishPlaying(note: NSNotification) {
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList{
             if self.appType == .Music || self.appType == .Clip || self.appType == .Trailer{
                 if (self.currentPlayingIndex) + 1 < (self.moreArray.count) {
@@ -806,7 +806,7 @@
         self.view.addGestureRecognizer(swipeDown)
     }
     
-    func swipeGestureHandler(gesture: UIGestureRecognizer) {
+    @objc func swipeGestureHandler(gesture: UIGestureRecognizer) {
         if !isSwipingAllowed_RecommendationView {
             return
         }
@@ -1301,7 +1301,7 @@
     }
     
     //MARK:- Dismiss Viewcontroller
-    func dismissPlayerVC() {
+    @objc func dismissPlayerVC() {
         self.resetPlayer()
         self.dismiss(animated: true, completion: nil)
     }
@@ -1529,7 +1529,6 @@
         req.setValue(JCAppUser.shared.ssoToken, forHTTPHeaderField: "ssotoken")
         req.httpBody = jsonData
         
-        weak var weakSelf = self
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
@@ -1745,7 +1744,7 @@
         /**                 Return valid AVMediaSelectionGroup is item is available.                 */
         
         fileprivate func characteristic(item:AVPlayerItem) -> AVMediaSelectionGroup? {
-            let str = self == .subtitle ? AVMediaCharacteristicLegible : AVMediaCharacteristicAudible
+            let str = self == .subtitle ? AVMediaCharacteristic.legible : AVMediaCharacteristic.audible
             if item.asset.availableMediaCharacteristicsWithMediaSelectionOptions.contains(str) {
                 return item.asset.mediaSelectionGroup(forMediaCharacteristic: str)
                 

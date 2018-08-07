@@ -166,7 +166,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         else if(artistImages != nil)
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 cell.artistImageView.clipsToBounds = true
                 let xAxis = collectionView.frame.height - cell.artistImageView.frame.size.height
                 let newFrame = CGRect.init(x: xAxis/2, y: cell.artistImageView.frame.origin.y, width: cell.artistImageView.frame.size.height , height: cell.artistImageView.frame.size.height)
@@ -203,7 +203,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                         }
                     })
                 }
-            }
+//            }
             
             cell.isOpaque = true
             cell.backgroundColor = .clear
@@ -217,20 +217,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         if let items = data{
-            cellDelgate?.didTapOnItemCell!(self, items[indexPath.row], self.tag)
+            cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
         }
         else if let moreItems = moreLikeData{
-            cellDelgate?.didTapOnItemCell!(self, moreItems[indexPath.row], self.tag)
+            cellDelgate?.didTapOnItemCell?(self, moreItems[indexPath.row], self.tag)
         }
-        else if let artistImageArray = artistImages{
-            let artistNameArray = artistImageArray.filter({$0.key != ""})
-            cellDelgate?.didTapOnItemCell!(self, artistNameArray[indexPath.row].key, self.tag)
-        }
-        else if let artistArray = artistImages?.filter({$0.key != ""}){
-            cellDelgate?.didTapOnItemCell!(self, artistArray[indexPath.row], self.tag)
+        else if let artistImageDict = artistImages{
+            let artistNameDict = artistImageDict.filter({$0.key != ""})
+            cellDelgate?.didTapOnItemCell?(self, Array(artistNameDict.keys)[indexPath.row], self.tag)
         }
         else if let episodes = episodes{
-            cellDelgate?.didTapOnItemCell!(self, episodes[indexPath.row], self.tag)
+            cellDelgate?.didTapOnItemCell?(self, episodes[indexPath.row], self.tag)
         }
     }
 }

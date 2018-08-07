@@ -92,7 +92,7 @@ class InfinityScrollView: UIView {
         return [myPreferredFocuseView!]
     }
     
-    func autoRotate()
+    @objc func autoRotate()
     {
         let leftSwipe = UISwipeGestureRecognizer()
         leftSwipe.direction = .left

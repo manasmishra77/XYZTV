@@ -22,12 +22,14 @@ class JCItemCell: UICollectionViewCell {
         {
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 1.0
+                self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
             }
 
         } else {
             self.nameLabel.font = self.nameLabel.font.withSize(24)
             if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
                 self.superview?.alpha = 0.5
+                self.transform = CGAffineTransform(scaleX: 1, y: 1)
             }
         }
 

@@ -589,6 +589,7 @@
 					7B78D7BD1F13A91900F319BF = {
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = 8PVH2NGH42;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes.appletvos = {
@@ -1017,7 +1018,8 @@
 				PROVISIONING_PROFILE = "cebfd95d-1508-497a-80a5-c13cdf6f7dd0";
 				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TVOS_DEPLOYMENT_TARGET = 10.2;
 			};
 			name = Debug;
@@ -1044,7 +1046,8 @@
 				PROVISIONING_PROFILE = "9eeca810-cdaa-459d-82de-5c79cf63e710";
 				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TVOS_DEPLOYMENT_TARGET = 10.2;
 			};
 			name = Release;

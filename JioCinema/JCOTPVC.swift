@@ -60,7 +60,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         
     }
     
-    func swipeGestureHandler(gesture: UIGestureRecognizer) {
+    @objc func swipeGestureHandler(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.up:
@@ -170,7 +170,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         self.callWebServiceToGetOTP(number: enteredJioNumber!)
     }
     
-    func hideResendOTPLabelToast()
+    @objc func hideResendOTPLabelToast()
     {
         resendOTPLableToast.isHidden = true
     }
@@ -273,7 +273,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         }
     }
     
-    func enableResendButton()
+    @objc func enableResendButton()
     {
         resendOTPButton.isEnabled = true
     }

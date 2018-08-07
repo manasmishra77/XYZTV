@@ -14,6 +14,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     fileprivate var loadedPage = 0
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
+    fileprivate var carousalView: InfinityScrollView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -96,12 +97,12 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true) {
             cell.tableCellCollectionView.tag = indexPath.row + 1
             cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].items
-            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "") + "(\(cell.data?.count ?? 0))"
+            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row + 1].title ?? "")
             cell.categoryTitleLabel.text = categoryTitle
         } else {
             cell.tableCellCollectionView.tag = indexPath.row
             cell.data = JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].items
-            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+            let categoryTitle = (JCDataStore.sharedDataStore.musicData?.data?[indexPath.row].title ?? "")
             cell.categoryTitleLabel.text = categoryTitle
         }
         
@@ -119,36 +120,20 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
-        {
-            //For autorotate carousel
-            let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
-            let carouselView = carouselViews?.first as! InfinityScrollView
-            if let carouselItems = JCDataStore.sharedDataStore.musicData?.data?[0].items, carouselItems.count > 0{
-                carouselView.carouselArray = carouselItems
-                carouselView.loadViews()
-                carouselView.carouselDelegate = self
-                uiviewCarousel = carouselView
-                return carouselView
-            }else{
-                return UIView()
+        //For autorotate carousel
+        if carousalView == nil {
+            if let items = JCDataStore.sharedDataStore.musicData?.data?[0].items {
+                carousalView = Utility.getHeaderForTableView(for: self, with: items)
             }
         }
-        else
-        {
-            return UIView.init()
-        }
+        return carousalView
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        if(JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal == true)
-        {
-            return CGFloat(heightOfCarouselSection)
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal ?? false), let carouselItems = JCDataStore.sharedDataStore.musicData?.data?[0].items, carouselItems.count > 0 {
+            return 650
         }
-        else
-        {
-            return 0
-        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -168,10 +153,6 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 return footerCell
             }
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 650
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -228,7 +209,6 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     //ChangingTheAlpha
-    var uiviewCarousel: UIView? = nil
     var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -244,7 +224,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 if cells.count <= 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }else{
-                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+                    if let headerViewOfTableSection = carousalView {
                         headerViewOfTableSection.middleButton.alpha = 0.5
                     }
                 }
@@ -256,7 +236,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //ChangingTheAlpha when tab bar item selected
         focusShiftedFromTabBarToVC = true
-        if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+        if let headerViewOfTableSection = carousalView {
             headerViewOfTableSection.middleButton.alpha = 1
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
@@ -343,7 +323,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
        
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: MUSIC_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray ?? false, fromScreen: MUSIC_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
             }
         }

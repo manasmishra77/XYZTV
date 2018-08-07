@@ -22,6 +22,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
+    fileprivate var carousalView: InfinityScrollView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -101,7 +102,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func hideTableView() {
+    @objc func hideTableView() {
         self.baseTableView.isHidden = !self.baseTableView.isHidden
     }
     //MARK: Top Shelf interatcion
@@ -206,7 +207,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             cell.isResumeWatchCell = true
         }
         cell.data = dataItemsForTableview[indexPath.row].items
-        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         
@@ -224,32 +225,25 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //For autorotate carousel
-        let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
-        let carouselView = carouselViews?.first as! InfinityScrollView
-        if let carouselItems = JCDataStore.sharedDataStore.homeData?.data?[0].items, carouselItems.count > 0{
-            carouselView.carouselArray = carouselItems
-            carouselView.loadViews()
-            carouselView.carouselDelegate = self
-            uiviewCarousel = carouselView
-            return carouselView
-        } else {
-            return UIView()
+        if carousalView == nil {
+            if let items = JCDataStore.sharedDataStore.homeData?.data?[0].items {
+                carousalView = Utility.getHeaderForTableView(for: self, with: items)
+            }
         }
-        
-        
+        return carousalView
     }
 
-    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (JCDataStore.sharedDataStore.homeData?.data?[0].isCarousal ?? false), let carouselItems = JCDataStore.sharedDataStore.homeData?.data?[0].items, carouselItems.count > 0 {
+            return 650
+        }
+        return 0
+    }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
     }
-    
-    
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 650
-    }
+
 
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
@@ -351,7 +345,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     //ChangingTheAlpha
-    var uiviewCarousel: UIView? = nil
     var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -367,7 +360,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 if cells.count < 2{
                     cells.first?.tableCellCollectionView.alpha = 0.5
                 }else{
-                    if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView {
+                    if let headerViewOfTableSection = carousalView {
                         headerViewOfTableSection.middleButton.alpha = 0.5
                     }
                 }
@@ -379,7 +372,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //ChangingTheAlpha when tab bar item selected
         focusShiftedFromTabBarToVC = true
-        if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+        if let headerViewOfTableSection = carousalView {
             headerViewOfTableSection.middleButton.alpha = 1
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{

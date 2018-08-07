@@ -272,6 +272,18 @@ class Utility
         
     }
     
+    
+    //MARK: Getting Carousal View in TableViewHeader
+    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item]) -> InfinityScrollView {
+        let carousalView = Bundle.main.loadNibNamed("kInfinityScrollView", owner: delegate, options: nil)?.first as! InfinityScrollView
+            carousalView.carouselArray = carouselItems
+            carousalView.loadViews()
+            carousalView.carouselDelegate = delegate
+        return carousalView
+    }
+    
+    
+    
     //MARK: Getting customized string
     struct StringAttribute {
         var fontName = "HelveticaNeue-Bold"
@@ -291,10 +303,10 @@ class Utility
     }
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
-            let attrs = [NSFontAttributeName : eachPartText.fontOfText, NSForegroundColorAttributeName: eachPartText.color]
+            let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
             let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
             fontChangedtext.addAttributes(attrs, range: range)
         }
@@ -361,10 +373,10 @@ extension String {
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
-            let attrs = [NSFontAttributeName : eachPartText.fontOfText, NSForegroundColorAttributeName: eachPartText.color]
+            let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
             let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
             fontChangedtext.addAttributes(attrs, range: range)
         }

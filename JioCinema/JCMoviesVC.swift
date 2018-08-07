@@ -16,6 +16,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
     fileprivate var isMovieWebServiceTriedOnce = false
+    fileprivate var carousalView: InfinityScrollView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -110,7 +111,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         cell.itemFromViewController = VideoType.Movie
 
         cell.data = dataItemsForTableview[indexPath.row].items
-        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "") + "(\(cell.data?.count ?? 0))"
+        let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
@@ -128,36 +129,20 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
-        {
-            //For autorotate carousel
-            let carouselViews = Bundle.main.loadNibNamed("kInfinityScrollView", owner: self, options: nil)
-            let carouselView = carouselViews?.first as! InfinityScrollView
-            if let carouselItems = JCDataStore.sharedDataStore.moviesData?.data?[0].items, carouselItems.count > 0{
-                carouselView.carouselArray = carouselItems
-                carouselView.loadViews()
-                carouselView.carouselDelegate = self
-                uiviewCarousel = carouselView
-                return carouselView
-            }else{
-                return UIView()
+        //For autorotate carousel
+        if carousalView == nil {
+            if let items = JCDataStore.sharedDataStore.moviesData?.data?[0].items {
+                carousalView = Utility.getHeaderForTableView(for: self, with: items)
             }
         }
-        else
-        {
-            return UIView()
-        }
+        return carousalView
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        if(JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal == true)
-        {
-            return CGFloat(heightOfCarouselSection)
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (JCDataStore.sharedDataStore.moviesData?.data?[0].isCarousal ?? false), let carouselItems = JCDataStore.sharedDataStore.moviesData?.data?[0].items, carouselItems.count > 0 {
+            return 650
         }
-        else
-        {
-            return 0
-        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -178,10 +163,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 return footerCell
             }
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 650
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -327,7 +308,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     }
     
     //ChangingTheAlpha
-    var uiviewCarousel: UIView? = nil
     var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -351,7 +331,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         
         //ChangingTheAlpha when tab bar item selected
         focusShiftedFromTabBarToVC = true
-        if let headerViewOfTableSection = uiviewCarousel as? InfinityScrollView{
+        if let headerViewOfTableSection = carousalView{
             headerViewOfTableSection.middleButton.alpha = 1
         }
         for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
