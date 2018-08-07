@@ -68,7 +68,7 @@
                                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="68" id="ntB-ms-Zwr"/>
-                                                    <constraint firstAttribute="width" constant="480" id="sTL-ns-UFL"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="480" id="sTL-ns-UFL"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                                 <state key="normal" title="Sign In via Jio Number"/>
@@ -81,7 +81,7 @@
                                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="68" id="egL-gL-2p6"/>
-                                                    <constraint firstAttribute="width" constant="480" id="g7K-M1-G4o"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="480" id="g7K-M1-G4o"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                                 <state key="normal" title="Sign In via Jio ID"/>
@@ -98,7 +98,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ld1-x1-w91">
                                                 <rect key="frame" x="-91" y="523" width="1459" height="126"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="1459" id="1tl-pT-YxO"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="1459" id="1tl-pT-YxO"/>
                                                     <constraint firstAttribute="height" constant="126" id="idc-05-jjc"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
@@ -195,7 +195,7 @@
                                         <rect key="frame" x="848" y="377" width="224" height="86"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="224" id="987-xV-Pl8"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="224" id="987-xV-Pl8"/>
                                             <constraint firstAttribute="height" constant="86" id="VhE-6b-ZLk"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -209,7 +209,7 @@
                                         <rect key="frame" x="808" y="466" width="305" height="65"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="305" id="hnk-IF-Dv3"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="hnk-IF-Dv3"/>
                                             <constraint firstAttribute="height" constant="65" id="w47-8e-GPl"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
@@ -225,7 +225,7 @@
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="2iu-7B-cJW"/>
-                                            <constraint firstAttribute="width" constant="305" id="T8V-X8-bTl"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="T8V-X8-bTl"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Sign In"/>
@@ -248,7 +248,7 @@
                                         <rect key="frame" x="610" y="70" width="700" height="80"/>
                                         <color key="backgroundColor" red="0.27302397830000003" green="0.27302397830000003" blue="0.27302397830000003" alpha="0.376546204" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="700" id="dN5-5T-AfZ"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="700" id="dN5-5T-AfZ"/>
                                             <constraint firstAttribute="height" constant="80" id="yqc-CQ-Chj"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
@@ -538,14 +538,14 @@
                                             <constraint firstAttribute="width" constant="200" id="ma3-tS-1Uj"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qG8-AD-0fn">
-                                        <rect key="frame" x="230" y="30" width="62" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qG8-AD-0fn">
+                                        <rect key="frame" x="230" y="30" width="340" height="30"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
-                                        <rect key="frame" x="230" y="90" width="74" height="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
+                                        <rect key="frame" x="230" y="90" width="340" height="35"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -554,6 +554,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.4023705051369863" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="qG8-AD-0fn" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="1kE-R6-fhT"/>
+                                    <constraint firstAttribute="trailing" secondItem="qG8-AD-0fn" secondAttribute="trailing" constant="30" id="EDv-H3-Xt6"/>
+                                    <constraint firstAttribute="trailing" secondItem="VOU-lG-iud" secondAttribute="trailing" constant="30" id="Fgf-Kw-sU9"/>
                                     <constraint firstItem="VOU-lG-iud" firstAttribute="leading" secondItem="28g-LG-naa" secondAttribute="trailing" constant="30" id="LRS-gx-Apm"/>
                                     <constraint firstAttribute="height" constant="150" id="VbZ-uD-by1"/>
                                     <constraint firstItem="28g-LG-naa" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="top" id="iNY-nA-5Ta"/>
@@ -631,7 +633,7 @@
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Ix1-V9-FYS"/>
-                                            <constraint firstAttribute="width" constant="640" id="Ktp-X6-KDw"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="Ktp-X6-KDw"/>
                                         </constraints>
                                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -655,7 +657,7 @@
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="IWw-WS-Mxo"/>
-                                            <constraint firstAttribute="width" constant="640" id="ilQ-gB-hTq"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="ilQ-gB-hTq"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Start From Beginning">
@@ -678,7 +680,7 @@
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Vzu-xf-fi9"/>
-                                            <constraint firstAttribute="width" constant="640" id="yyS-UO-Pm3"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="yyS-UO-Pm3"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Remove From Resume Watching">
@@ -1045,7 +1047,7 @@
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="86" id="ik4-AO-abq"/>
-                                    <constraint firstAttribute="width" constant="224" id="zqL-ae-VT4"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="224" id="zqL-ae-VT4"/>
                                 </constraints>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Get OTP"/>
@@ -1057,7 +1059,7 @@
                                 <rect key="frame" x="808" y="489" width="305" height="65"/>
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="305" id="nY1-Oh-AIh"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="nY1-Oh-AIh"/>
                                     <constraint firstAttribute="height" constant="65" id="wXy-xU-7cp"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
@@ -1072,7 +1074,7 @@
                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="65" id="Wz4-Xn-l3i"/>
-                                    <constraint firstAttribute="width" constant="305" id="l5l-qG-jN5"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="l5l-qG-jN5"/>
                                 </constraints>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Sign In"/>
@@ -1095,7 +1097,7 @@
                                 <color key="backgroundColor" red="0.27302397832475156" green="0.27302397832475156" blue="0.27302397832475156" alpha="0.37654620398772998" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="JMy-Lc-McD"/>
-                                    <constraint firstAttribute="width" constant="700" id="hrL-cS-9kH"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="700" id="hrL-cS-9kH"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1545,7 +1547,7 @@
                                         <rect key="frame" x="710" y="507" width="500" height="50"/>
                                         <color key="backgroundColor" red="0.36078431372549019" green="0.36862745098039218" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="500" id="ZYL-MY-iC8"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="500" id="ZYL-MY-iC8"/>
                                             <constraint firstAttribute="height" constant="50" id="fyF-vL-mmn"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -1563,7 +1565,7 @@
                                         <rect key="frame" x="710" y="577" width="500" height="50"/>
                                         <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="500" id="FpD-l5-YTm"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="500" id="FpD-l5-YTm"/>
                                             <constraint firstAttribute="height" constant="50" id="T21-hQ-ceu"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -1577,8 +1579,8 @@
                                             <action selector="didClickOnTurnOffButton:" destination="i9i-Rw-lfK" eventType="primaryActionTriggered" id="0R9-Zt-v4l"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="AutoPlay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW3-wG-M7M">
-                                        <rect key="frame" x="816" y="292" width="256" height="72"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AutoPlay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW3-wG-M7M">
+                                        <rect key="frame" x="832" y="300" width="256" height="72"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="60"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
