@@ -19,20 +19,20 @@ class JCArtistImageCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
-                self.superview?.alpha = 1.0
-            }
+//            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
+//            {
+//                //self.superview?.alpha = 1.0
+//            }
             if !artistNameInitialButton.isHidden{
                 artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(80)
             }
         }
         else
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-            {
-                self.superview?.alpha = 0.4
-            }
+//            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
+//            {
+//                //self.superview?.alpha = 0.4
+//            }
             if !artistNameInitialButton.isHidden{
                 artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(70)
             }

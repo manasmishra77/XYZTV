@@ -86,7 +86,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         metadataTableView.dataSource = self
         metadataTableView.reloadData()
         print("2222222222222...............")
-        let eventProperties = ["Screen Name": fromScreen, "Platform": "TVOS", "Metadata Page": metadataType] as [String : Any]
+        let eventProperties = ["Screen Name": fromScreen ?? "", "Platform": "TVOS", "Metadata Page": metadataType] as [String : Any]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
         
         //Google Analytics for MetaData Screen
@@ -167,13 +167,16 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if itemAppType == .Movie {
             if let moreArray = moreTableViewDatasource[indexPath.row] as? [More] {
                 cell.categoryTitleLabel.text = metadata?.displayText
-                cell.moreLikeData = moreArray
+                cell.itemArrayType = .more
+                cell.itemsArray = moreArray
+                //cell.moreLikeData = moreArray
                 cell.tableCellCollectionView.reloadData()
             }
             if let artistArray = moreTableViewDatasource[indexPath.row] as? [String] {
                 cell.categoryTitleLabel.text = "Cast & Crew"
                 let dict = getStarCastImagesUrl(artists: artistArray)
-                cell.artistImages = dict
+                cell.itemArrayType = .artistImages
+                cell.itemsArray = convertingArtistDictToArray(dict)
                 cell.tableCellCollectionView.reloadData()
             }
         }
@@ -182,13 +185,16 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         else if itemAppType == .TVShow {
             if let episodeArray = moreTableViewDatasource[indexPath.row] as? [Episode] {
                 cell.categoryTitleLabel.text = "Episodes"
-                cell.episodes = episodeArray
+                //cell.episodes = episodeArray
+                cell.itemArrayType = .episode
+                cell.itemsArray = episodeArray
                 cell.tableCellCollectionView.reloadData()
             }
             if let artistArray = moreTableViewDatasource[indexPath.row] as? [String] {
                 cell.categoryTitleLabel.text = "Cast & Crew"
                 let dict = getStarCastImagesUrl(artists: artistArray)
-                cell.artistImages = dict
+                cell.itemArrayType = .artistImages
+                cell.itemsArray = convertingArtistDictToArray(dict)
                 cell.tableCellCollectionView.reloadData()
             }
         }
@@ -205,6 +211,15 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         headerCell.monthsCollectionView.delegate = self
         headerCell.monthsCollectionView.dataSource = self
         return self.prepareMetadataView()
+    }
+    
+    func convertingArtistDictToArray(_ dict: [String: String]) -> [(String, String)] {
+        var arr: [(String, String)] = []
+        for (eachKey, eachValue) in dict {
+            let element = (eachKey, eachValue)
+            arr.append(element)
+        }
+        return arr
     }
     
     func resetHeaderView() -> UIView {
@@ -378,11 +393,11 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     
-    func getStarCastImagesUrl(artists: [String]) -> [String:String] {
+    func getStarCastImagesUrl(artists: [String]) -> [String: String] {
         let modifiedArtists = artists.filter { (artistName) -> Bool in
             artistName != ""
         }
-        var artistImages = [String:String]()
+        var artistImages = [String: String]()
         for artist in modifiedArtists {
             let processedName = artist.replacingOccurrences(of: " ", with: "").lowercased()
             let encryptedData = convertStringToMD5Hash(artistName: processedName)
@@ -390,12 +405,14 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             
             let index = hexString.index(hexString.startIndex, offsetBy: 8)
             
-            let firstFolder =  hexString.substring(to: index)
+            //let firstFolder =  hexString.substring(to: index)
+            let firstFolder =  hexString[..<index]
             
             let start = hexString.index(hexString.startIndex, offsetBy: 8)
             let end = hexString.index(hexString.startIndex, offsetBy: 16)
             let range = start..<end
-            let secondFolder = hexString.substring(with: range)
+            //let secondFolder = hexString.substring(with: range)
+            let secondFolder = hexString[range]
             
             let firstFolderParsed = (Int(firstFolder, radix: 16))!%99
             let secondFolderParsed = (Int(secondFolder, radix: 16))!%99
@@ -876,7 +893,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController{
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController{
                         if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata)
+                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false)
                         }
                     }
                 }
@@ -886,7 +903,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 if let searchVcNav = tabController.selectedViewController as? UINavigationController {
                     if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
                         if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata, languageModel: languageModel)
+                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: languageModel)
                         }
                     }
                 }
@@ -913,7 +930,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             artists = artistArray.reduce("", +)
         }
         
-        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
+        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
         self.present(playerVC, animated: true, completion: nil)
     }
     

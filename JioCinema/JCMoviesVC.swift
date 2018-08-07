@@ -110,7 +110,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         cell.tableCellCollectionView.tag = indexPath.row
         cell.itemFromViewController = VideoType.Movie
 
-        cell.data = dataItemsForTableview[indexPath.row].items
+        cell.itemsArray = dataItemsForTableview[indexPath.row].items
         let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
@@ -147,6 +147,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
+        /*
         if (JCDataStore.sharedDataStore.moviesData?.totalPages) == nil
         {
             return UIView()
@@ -162,7 +163,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
                 return footerCell
             }
-        }
+        }*/
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {

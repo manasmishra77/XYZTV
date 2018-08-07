@@ -1562,7 +1562,7 @@
                 return
             }
             
-            print("data: \(data)")
+            //print("data: \(data)")
             if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {
                 completionHandler(decodedData)
             } else {
@@ -1577,7 +1577,7 @@
             let dataRequest: AVAssetResourceLoadingDataRequest? = loadingRequest.dataRequest
             let url: URL? = loadingRequest.request.url
             let error: Error? = nil
-            var handled: Bool = false
+           // var handled: Bool = false
             
             // Must be a non-standard URI scheme for AVFoundation to invoke your AVAssetResourceLoader delegate
             // for help in loading it.
@@ -1587,10 +1587,8 @@
             
             let assetStr: String = url?.host ?? ""
             var requestBytes: Data?
-            
-            guard let assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as? Data else {
-                return handled
-            }
+        
+            let assetId = NSData(bytes: assetStr.cString(using: String.Encoding.utf8), length: assetStr.lengthOfBytes(using: String.Encoding.utf8)) as Data
             
             self.getAppCertificateData { (certificate) in
                 
@@ -1621,14 +1619,10 @@
                             }
                             loadingRequest.finishLoading()
                         } else {
-                            if error != nil {
-                                try? loadingRequest.finishLoading()
-                            } else {
                                 loadingRequest.finishLoading()
-                            }
                         }
                         
-                        handled = true;	// Request has been handled regardless of whether server returned an error.
+                        //handled = true;	// Request has been handled regardless of whether server returned an error.
                         // completionHandler(responseData)
                         //  return handled
                     })

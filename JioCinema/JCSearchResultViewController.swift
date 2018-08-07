@@ -85,7 +85,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
         cell.itemFromViewController = .Search
         cell.tag = indexPath.row
-        cell.data = searchResultArray[indexPath.row].resultItems
+        cell.itemsArray = searchResultArray[indexPath.row].resultItems
         let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.data?.count ?? 0))"
         cell.categoryTitleLabel.text = categoryTitle
         

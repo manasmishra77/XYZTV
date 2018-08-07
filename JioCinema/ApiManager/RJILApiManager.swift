@@ -203,7 +203,8 @@ class RJILApiManager {
                 }
                 
                 if paramString.last == "&"{
-                    paramString = paramString.substring(to: paramString.index(before: paramString.endIndex))
+                    //paramString = paramString.substring(to: paramString.index(before: paramString.endIndex))
+                    paramString = String(paramString.dropLast())
                 }
                 
                 let pathWithParams = path + "?" + paramString
