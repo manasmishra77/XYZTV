@@ -175,19 +175,16 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             }
         }
         
-        if(textField.isEqual(passwordTextField))
-        {
+        if(textField.isEqual(passwordTextField)) {
             //textField.frame.size.width = passwordTextField.frame.size
-            if(textField.text?.count == 0)
-            {
+            if(textField.text?.count == 0) {
                 self.showAlert(alertString: "Password can't be empty")
             }
         }
     }
     
     
-    func setUserData(userData: [String:Any])
-    {
+    func setUserData(userData: [String:Any])  {
         let result = userData["result"] as? [String:Any]
         
         JCAppUser.shared.lbCookie = result?["lbCookie"] as? String ?? ""

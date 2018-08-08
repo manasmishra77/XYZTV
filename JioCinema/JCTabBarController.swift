@@ -68,8 +68,7 @@ class JCTabBarController: UITabBarController {
     }
     
     
-    func setTabBarTitle()
-    {
+    func setTabBarTitle() {
         let tabBarTitleLabel = UILabel.init(frame: CGRect(x: 50.0, y: 0.0, width: 300.0, height: 135.0))
         
         tabBarTitleLabel.text = ""

@@ -147,25 +147,10 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
-        /*
-        if (JCDataStore.sharedDataStore.moviesData?.totalPages) == nil
-        {
-            return UIView()
-        }
-        else
-        {
-            if(loadedPage == (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
-            {
-                return UIView()
-            }
-            else
-            {
-                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-                return footerCell
-            }
-        }*/
     }
-    
+    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        Utility.baseTableView(tableView, didUpdateFocusIn: context, with: coordinator)
+    }
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
@@ -312,33 +297,13 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        //ChangingTheAlpha when focus shifted from tab bar item to view controller view
-        if focusShiftedFromTabBarToVC{
-            focusShiftedFromTabBarToVC = false
-            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                for cell in cells{
-                    if cell != cells.first {
-                        cell.tableCellCollectionView.alpha = 0.5
-                    }
-                }
-                if cells.count <= 2{
-                    cells.first?.tableCellCollectionView.alpha = 0.5
-                }
-            }
-        }
+        Utility.changingAlphaTabAbrToVC(carousalView: carousalView, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
-        //ChangingTheAlpha when tab bar item selected
-        focusShiftedFromTabBarToVC = true
-        if let headerViewOfTableSection = carousalView{
-            headerViewOfTableSection.middleButton.alpha = 1
-        }
-        for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
-            each.tableCellCollectionView.alpha = 1
-        }
+        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: carousalView, toChange: &focusShiftedFromTabBarToVC)
     }
+
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {

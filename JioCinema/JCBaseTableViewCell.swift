@@ -103,7 +103,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         case .item:
             return itemCellLoading(collectionView, cellForItemAt: indexPath)
         case .more:
-            return moreLikeCellLading(collectionView, cellForItemAt: indexPath)
+            return moreLikeCellLoading(collectionView, cellForItemAt: indexPath)
         case .episode:
             return episodesCellLoading(collectionView, cellForItemAt: indexPath)
         case .artistImages:
@@ -239,7 +239,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         return cell
     }
     
-    func moreLikeCellLading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func moreLikeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         let moreArray = itemsArray as! [More]
         cell.nameLabel.text = moreArray[indexPath.row].name
@@ -298,15 +298,19 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let items = itemsArray as? [Item] {
+        switch itemArrayType {
+        case .item, .resumeWatch:
+            let items = itemsArray as! [Item]
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
-        } else if let moreItems = itemsArray as? [More] {
-            cellDelgate?.didTapOnItemCell?(self, moreItems[indexPath.row], self.tag)
-        } else if let artistImageDict = artistImages {
-            let artistNameDict = artistImageDict.filter({$0.key != ""})
-            cellDelgate?.didTapOnItemCell?(self, Array(artistNameDict.keys)[indexPath.row], self.tag)
-        } else if let episodes = itemsArray as? [Episode] {
-            cellDelgate?.didTapOnItemCell?(self, episodes[indexPath.row], self.tag)
+        case .more:
+            let items = itemsArray as! [More]
+            cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
+        case .episode:
+            let items = itemsArray as! [Episode]
+            cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
+        case .artistImages:
+            let items = itemsArray as! [(String, String)]
+            cellDelgate?.didTapOnItemCell?(self, items[indexPath.row].0, self.tag)
         }
     }
 }
