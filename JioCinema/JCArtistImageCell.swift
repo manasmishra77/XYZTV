@@ -9,33 +9,16 @@
 import UIKit
 
 class JCArtistImageCell: UICollectionViewCell {
-    
-    @IBOutlet weak var artistImageView: UIImageView!
     @IBOutlet weak var artistNameInitialButton: JCButton!
-    
-    
     @IBOutlet weak var artistNameLabel: UILabel!
-    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-//            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-//            {
-//                //self.superview?.alpha = 1.0
-//            }
-            if !artistNameInitialButton.isHidden{
-                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(80)
-            }
+            self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
         }
         else
         {
-//            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC)
-//            {
-//                //self.superview?.alpha = 0.4
-//            }
-            if !artistNameInitialButton.isHidden{
-                artistNameInitialButton.titleLabel?.font = artistNameInitialButton.titleLabel?.font.withSize(70)
-            }
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }
         
     }
