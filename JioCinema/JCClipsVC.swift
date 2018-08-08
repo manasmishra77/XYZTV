@@ -83,36 +83,14 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
         let index = (dataArray[0].isCarousal ?? false) ? indexPath.row + 1 : indexPath.row
         cell.tableCellCollectionView.tag = index
-        
-        //cell.data = dataArray[index].items
         cell.itemsArray = dataArray[index].items
         cell.itemArrayType = .item
 
         cell.categoryTitleLabel.text = dataArray[index].title ?? ""
-
-        /*
-        if(JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal == true)
-        {
-            cell.tableCellCollectionView.tag = indexPath.row + 1
-
-            cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].items
-            let categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row + 1].title ?? "")
-            cell.categoryTitleLabel.text = categoryTitle
-        }
-        else
-        {
-            cell.tableCellCollectionView.tag = indexPath.row
-
-            cell.data = JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].items
-            let categoryTitle = (JCDataStore.sharedDataStore.clipsData?.data?[indexPath.row].title ?? "")
-            cell.categoryTitleLabel.text = categoryTitle
-        }
-        */
         cell.tableCellCollectionView.reloadData()
         
         if(indexPath.row == dataArray.count - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
-            {
+            if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1) {
                 callWebServiceForClipsData(page: loadedPage + 1)
                 loadedPage += 1
             }
@@ -162,24 +140,13 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        
-        guard let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath else { return }
-        guard nextIndexPath != prevIndexPath else {return}
-        
-        let nextCell = tableView.cellForRow(at: nextIndexPath) as! JCBaseTableViewCell
-        nextCell.contentView.alpha = 1.0
-        nextCell.categoryTitleLabel.textColor = .white
-        
-        let previousCell = tableView.cellForRow(at: prevIndexPath) as! JCBaseTableViewCell
-        previousCell.categoryTitleLabel.textColor = #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1)
-        previousCell.contentView.alpha = 0.5
+        Utility.baseTableView(tableView, didUpdateFocusIn: context, with: coordinator)
     }
     
     
-    func callWebServiceForClipsData(page: Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    
+    func callWebServiceForClipsData(page: Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
@@ -188,8 +155,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         let clipsDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: clipsDataRequest) { (data, response, error) in
-            if let responseError = error
-            {
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
@@ -202,8 +168,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
     }
     
-    func evaluateClipsData(dictionaryResponseData responseData:Data)
-    {
+    func evaluateClipsData(dictionaryResponseData responseData: Data) {
         //Success
         
         if(loadedPage == 0) {
@@ -221,38 +186,19 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     var focusShiftedFromTabBarToVC = true
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        //ChangingTheAlpha when focus shifted from tab bar item to view controller view
-        if focusShiftedFromTabBarToVC{
-            focusShiftedFromTabBarToVC = false
-            if let cells = baseTableView.visibleCells as? [JCBaseTableViewCell]{
-                for cell in cells{
-                    if cell != cells.first {
-                        cell.tableCellCollectionView.alpha = 0.5
-                    }
-                }
-                if cells.count <= 2{
-                    cells.first?.tableCellCollectionView.alpha = 0.5
-                }
-            }
-        }
+        Utility.changingAlphaTabAbrToVC(carousalView: carousalView, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        //ChangingTheAlpha when tab bar item selected
-        focusShiftedFromTabBarToVC = true
-        if let headerViewOfTableSection = carousalView {
-            headerViewOfTableSection.middleButton.alpha = 1
-        }
-        for each in (self.baseTableView.visibleCells as? [JCBaseTableViewCell])!{
-            each.tableCellCollectionView.alpha = 1
-        }
+        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: carousalView, toChange: &focusShiftedFromTabBarToVC)
         //Making tab bar delegate searchvc
-        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController{
-                if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController{
+        if let searchNavVC = tabBarController.selectedViewController as? UINavigationController, let svc = searchNavVC.viewControllers[0] as? UISearchContainerViewController {
+                if let searchVc = svc.searchController.searchResultsController as? JCSearchResultViewController {
                     tabBarController.delegate = searchVc
             }
         }
     }
+
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
@@ -260,7 +206,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        if let tappedItem = item as? Item{
+        if let tappedItem = item as? Item {
             
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
@@ -276,13 +222,13 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     }
     
     func didTapOnCarouselItem(_ item: Any?) {
-        if let tappedItem = item as? Item{
+        if let tappedItem = item as? Item {
             
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: CLIP_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
             
-             if tappedItem.app?.type == VideoType.Clip.rawValue{
+             if tappedItem.app?.type == VideoType.Clip.rawValue {
                 print("At Clip")
                 checkLoginAndPlay(tappedItem, categoryName: "Carousel", categoryIndex: 0)
             }
@@ -316,14 +262,13 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         self.categoryNameAfterLogin = nil
     }
     
-    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
-    {
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         var moreArray: [More]? = nil
         var isMoreDataAvailable = false
         if itemToBePlayed.isPlaylist ?? false{
             let recommendationArray = (JCDataStore.sharedDataStore.clipsData?.data?[0].isCarousal ?? false) ? JCDataStore.sharedDataStore.clipsData?.data?[categoryIndex + 1].items : JCDataStore.sharedDataStore.clipsData?.data?[categoryIndex].items
             moreArray = Utility.sharedInstance.convertingItemArrayToMoreArray(recommendationArray ?? [Item]())
-            if moreArray?.count ?? 0 > 0{
+            if moreArray?.count ?? 0 > 0 {
                 isMoreDataAvailable = true
             }
         }
@@ -336,8 +281,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
     }
 
-    func presentLoginVC()
-    {
+    func presentLoginVC() {
         let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
         self.present(loginVC, animated: true, completion: nil)
     }

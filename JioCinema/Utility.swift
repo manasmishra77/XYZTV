@@ -282,7 +282,55 @@ class Utility
         return carousalView
     }
     
+    //MARK: Changing TableCell Alpha in focus
+    class func baseTableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath {
+            guard nextIndexPath != prevIndexPath else {return}
+            Utility.changeTableCellAlpha(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+            Utility.changeTableCellAlpha(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1))
+        } else if let nextIndexPath = context.nextFocusedIndexPath {
+            Utility.changeTableCellAlpha(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+        } else if let prevIndexPath = context.previouslyFocusedIndexPath {
+            Utility.changeTableCellAlpha(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: .white)
+        }
+    }
     
+    //MARK: ChangingTheAlpha when focus shifted from tab bar item to view controller view
+   class func changingAlphaTabAbrToVC(carousalView: InfinityScrollView?, tableView: UITableView, toChange: inout Bool) {
+        if toChange {
+            let cells = tableView.visibleCells
+            toChange = false
+            for cell in cells {
+                if cell != cells.first {
+                    cell.contentView.alpha = 0.5
+                }
+            }
+            if cells.count <= 2 {
+                cells.first?.contentView.alpha = 0.5
+            } else {
+                if let headerViewOfTableSection = carousalView {
+                    headerViewOfTableSection.middleButton.alpha = 0.5
+                }
+            }
+        }
+    }
+    
+    //MARK: ChangingTheAlpha when tab bar item selected
+    class func changeAlphaWhenTabBarSelected(_ tableView: UITableView, carousalView: InfinityScrollView?, toChange: inout Bool) {
+        toChange = true
+        if let headerViewOfTableSection = carousalView {
+            headerViewOfTableSection.middleButton.alpha = 1
+        }
+        for each in tableView.visibleCells {
+            each.contentView.alpha = 1
+        }
+    }
+    
+    class func changeTableCellAlpha(_ tableView: UITableView, indexpath: IndexPath, alpha: CGFloat, textColor: UIColor) {
+        let cell = tableView.cellForRow(at: indexpath) as! JCBaseTableViewCell
+        cell.categoryTitleLabel.textColor = textColor
+        cell.contentView.alpha = alpha
+    }
     
     //MARK: Getting customized string
     struct StringAttribute {
@@ -301,6 +349,7 @@ class Utility
             
         }
     }
+    
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
         let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])

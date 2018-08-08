@@ -140,28 +140,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                     break
                 }
             }
-            /*
-            if tappedItem.app?.type == VideoType.Music.rawValue {
-                print("At Music")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Movie.rawValue {
-                
-            else if tappedItem.app?.type == VideoType.TVShow.rawValue {
-               
-            }
-            else if tappedItem.app?.type == VideoType.Episode.rawValue {
-                print("At Episode")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Clip.rawValue {
-                print("At Clip")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }
-            else if tappedItem.app?.type == VideoType.Trailer.rawValue {
-                print("At Trailer")
-                checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-            }*/
         }
     }
     
@@ -277,7 +255,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu, isForArtistSearch{
+        if presses.first?.type == UIPressType.menu, isForArtistSearch {
             isForArtistSearch = false
             if let languageModel = languageModelForArtistSearch as? Item {
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, languageData: languageModel)
@@ -307,14 +285,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func handleWhenSearchResultArrayChanges() {
-        if searchResultArray.count < 1 {
-            if let viewModel =  trendingSearchResultViewModel {
-                viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: true)
-            }
-        } else {
-            if let viewModel =  trendingSearchResultViewModel {
-                viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: false)
-            }
+        if let viewModel =  trendingSearchResultViewModel {
+            viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: (searchResultArray.count < 1))
         }
     }
     
@@ -330,7 +302,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             screenAppearTiming = Date()
         } else {
             //Clevertap Navigation Event
-            let eventProperties = ["Screen Name": "Search","Platform": "TVOS","Metadata Page": ""]
+            let eventProperties = ["Screen Name": "Search","Platform": "TVOS", "Metadata Page": ""]
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
             Utility.sharedInstance.handleScreenNavigation(screenName: SEARCH_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
