@@ -15,24 +15,15 @@ class JCItemCell: UICollectionViewCell {
     @IBOutlet weak var nowPlayingImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     override func prepareForReuse() {
-       // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
+        // self.itemImageView.image = #imageLiteral(resourceName: "itemCellPlaceholder.png")
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
-               // self.superview?.alpha = 1.0
-                self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
-            }
-
+            self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
         } else {
-            //self.nameLabel.font = self.nameLabel.font.withSize(24)
-            if let topVC = UIApplication.topViewController(), !(topVC is JCPlayerVC) {
-                //self.superview?.alpha = 0.5
-                self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            }
+            self.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
-
     }
     
 }

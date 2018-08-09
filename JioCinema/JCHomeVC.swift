@@ -10,7 +10,7 @@ import UIKit
 class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
 {
     var isResumeWatchRowReloadNeeded = false
-    var loadedPage = 0
+    var loadedPage = 1
     var isResumeWatchDataAvailable = false
     var isLanguageDataAvailable = false
     var isGenereDataAvailable = false
@@ -23,6 +23,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
     fileprivate var carousalView: InfinityScrollView?
+    fileprivate var footerView: JCBaseTableViewFooterView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -205,6 +206,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         if isResumeWatchDataAvailable, indexPath.row == 0 {
 
             cell.itemArrayType = .resumeWatch
+        } else {
+            cell.itemArrayType = .item
         }
         cell.itemsArray = dataItemsForTableview[indexPath.row].items
         let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
@@ -212,16 +215,24 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         cell.tableCellCollectionView.reloadData()
         
 
-        
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)! - 1) {
-                callWebServiceForHomeData(page: loadedPage + 1)
-
-                loadedPage += 1
+        //Pagination call
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1) {
+            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
+                callWebServiceForHomeData(page: loadedPage)
             }
         }
         return cell
     }
+    
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if ((baseTableView.contentOffset.y + baseTableView.frame.size.height) >= (baseTableView.contentSize.height)) {
+//            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
+//                callWebServiceForHomeData(page: loadedPage)
+//            }
+//        }
+//    }
+
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //For autorotate carousel
@@ -240,8 +251,15 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         return 0
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Utility.getFooterHeight(JCDataStore.sharedDataStore.homeData, loadedPage: loadedPage)
+    }
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
+        if footerView == nil {
+            footerView = Utility.getFooterForTableView(for: self)
+        }
+        return footerView
     }
 
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -262,15 +280,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: homeDataRequest) { (data, response, error) in
-            if let responseError = error
-            {
+        RJILApiManager.defaultManager.get(request: homeDataRequest) { (data, response, error) in
+            if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
+                weakSelf?.loadedPage += 1
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
                 return
             }

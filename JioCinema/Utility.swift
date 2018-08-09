@@ -9,8 +9,7 @@
 import Foundation
 import ReachabilitySwift
 
-class Utility
-{
+class Utility {
     static let sharedInstance = Utility()
     var reachability: Reachability?
     var isNetworkAvailable = false
@@ -280,6 +279,22 @@ class Utility
             carousalView.loadViews()
             carousalView.carouselDelegate = delegate
         return carousalView
+    }
+    
+    class func getFooterForTableView(for controller: UIViewController) -> JCBaseTableViewFooterView {
+        let footerView = Bundle.main.loadNibNamed("JCBaseTableViewFooterView", owner: controller, options: nil)?.first as! JCBaseTableViewFooterView
+        return footerView
+    }
+    
+    class func getFooterHeight(_ data: BaseDataModel?, loadedPage: Int) -> CGFloat {
+        if let data = data {
+            if loadedPage >= ((data.totalPages ?? 0) ) {
+                return 0
+            } else {
+                return 60
+            }
+        }
+        return 0
     }
     
     //MARK: Changing TableCell Alpha in focus

@@ -15,6 +15,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
     fileprivate var carousalView: InfinityScrollView?
+    fileprivate var footerView: JCBaseTableViewFooterView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,26 +115,17 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         return 0
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
-        /*
-        if (JCDataStore.sharedDataStore.musicData?.totalPages) == nil
-        {
-            return UIView.init()
-        }
-        else
-        {
-            if(loadedPage == (JCDataStore.sharedDataStore.musicData?.totalPages)! - 1)
-            {
-                return UIView.init()
-            }
-            else
-            {
-                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-                return footerCell
-            }
-        }*/
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Utility.getFooterHeight(JCDataStore.sharedDataStore.musicData, loadedPage: loadedPage)
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if footerView == nil {
+            footerView = Utility.getFooterForTableView(for: self)
+        }
+        return footerView
+    }
+    
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         Utility.baseTableView(tableView, didUpdateFocusIn: context, with: coordinator)
     }

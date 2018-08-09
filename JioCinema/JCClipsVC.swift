@@ -14,6 +14,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     fileprivate var toScreenName: String?
     
     fileprivate var carousalView: InfinityScrollView?
+    fileprivate var footerView: JCBaseTableViewFooterView?
 
     
     
@@ -115,26 +116,17 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         return 650
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
-        /*
-        if (JCDataStore.sharedDataStore.clipsData?.totalPages) == nil
-        {
-            return UIView()
-        }
-        else
-        {
-            if(loadedPage == (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1)
-            {
-                return UIView()
-            }
-            else
-            {
-                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-                return footerCell
-            }
-        }*/
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Utility.getFooterHeight(JCDataStore.sharedDataStore.clipsData, loadedPage: loadedPage)
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if footerView == nil {
+            footerView = Utility.getFooterForTableView(for: self)
+        }
+        return footerView
+    }
+    
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }

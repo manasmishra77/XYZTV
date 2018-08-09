@@ -65,6 +65,7 @@ class JCSplashVC: UIViewController {
             }
             else
             {
+                print("*********home data failed**********")
                 weakSelf?.showAlert(alertString: networkErrorMessage)
             }
         }
@@ -81,6 +82,7 @@ class JCSplashVC: UIViewController {
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
+                print("*********config data failed**********")
                 weakSelf?.showAlert(alertString: networkErrorMessage)
                 return
             }
@@ -104,7 +106,7 @@ class JCSplashVC: UIViewController {
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         dispatchGroup.enter()
-        RJILApiManager.defaultManager.post(request: homeDataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: homeDataRequest) { (data, response, error) in
             if error != nil {
                 //TODO: handle error
                 weakSelf?.isHomeDataAvailable = false

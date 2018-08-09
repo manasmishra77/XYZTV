@@ -222,7 +222,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
 extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if(artistImages != nil) {
+        if(itemArrayType == .artistImages) {
             return 15
         }
         return 30

@@ -115,7 +115,6 @@ class JCDataStore {
                 switch category {
                 case .Home:
                     self.homeData?.data?.append(data)
-                    self.mergedHomeData?.append(data)
                 case .Movies:
                     self.moviesData?.data?.append(data)
                 case .Music:

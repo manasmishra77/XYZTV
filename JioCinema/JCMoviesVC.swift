@@ -17,6 +17,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     fileprivate var toScreenName: String? = nil
     fileprivate var isMovieWebServiceTriedOnce = false
     fileprivate var carousalView: InfinityScrollView?
+    fileprivate var footerView: JCBaseTableViewFooterView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -116,12 +117,11 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
-        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2)
-        {
-            if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)! - 1)
-            {
-                callWebServiceForMoviesData(page: loadedPage + 1)
-                loadedPage += 1
+        
+        //Pagination call
+        if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.moviesData?.totalPages)!) {
+                callWebServiceForMoviesData(page: loadedPage)
             }
         }
         return cell
@@ -145,9 +145,17 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         return 0
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Utility.getFooterHeight(JCDataStore.sharedDataStore.moviesData, loadedPage: loadedPage)
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if footerView == nil {
+            footerView = Utility.getFooterForTableView(for: self)
+        }
+        return footerView
+    }
+    
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         Utility.baseTableView(tableView, didUpdateFocusIn: context, with: coordinator)
     }
@@ -229,6 +237,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Movies)
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.loadedPage += 1
             }
         }
         else
@@ -237,6 +247,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             DispatchQueue.main.async {
                 JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Movies)
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.loadedPage += 1
             }
         }
     }
@@ -288,6 +300,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 JCDataStore.sharedDataStore.moviesWatchList?.data?.title = "Watch List"
                 if weakSelf?.baseTableView != nil{
                     weakSelf?.baseTableView.reloadData()
+                    weakSelf?.baseTableView.layoutIfNeeded()
                 }
             }
         }

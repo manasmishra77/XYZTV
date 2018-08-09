@@ -17,6 +17,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String?
     fileprivate var carousalView: InfinityScrollView?
+    fileprivate var footerView: JCBaseTableViewFooterView?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -154,25 +155,15 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         return 0
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Utility.getFooterHeight(JCDataStore.sharedDataStore.tvData, loadedPage: loadedPage)
+    }
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
-        /*
-        if (JCDataStore.sharedDataStore.tvData?.totalPages) == nil
-        {
-            return UIView.init()
+        if footerView == nil {
+            footerView = Utility.getFooterForTableView(for: self)
         }
-        else
-        {
-            if(loadedPage == (JCDataStore.sharedDataStore.tvData?.totalPages)! - 1)
-            {
-                return UIView.init()
-            }
-            else
-            {
-                let footerCell = tableView.dequeueReusableCell(withIdentifier: baseFooterTableViewCellIdentifier) as! JCBaseTableViewFooterCell
-                return footerCell
-            }
-        }*/
+        return footerView
     }
 
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

@@ -40,6 +40,7 @@
 		203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203C40A91F4EE80300D91108 /* JCResumeWatchingVC.swift */; };
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
 		5360F84920C11EE600F9FC25 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */; };
+		539D17BE211C23D500A0EABA /* JCBaseTableViewFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 539D17BD211C23D400A0EABA /* JCBaseTableViewFooterView.xib */; };
 		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
 		797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchResultViewController.swift */; };
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
@@ -48,8 +49,7 @@
 		7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */; };
 		7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */; };
 		7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */; };
-		7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */; };
-		7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */; };
+		7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterView.swift */; };
 		7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B3A43F81F4424F900EE3824 /* imdb_logo.png */; };
 		7B545E801F7A604C007C5004 /* JCAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B545E7F1F7A604C007C5004 /* JCAnalyticsManager.swift */; };
 		7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */; };
@@ -172,6 +172,7 @@
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
+		539D17BD211C23D400A0EABA /* JCBaseTableViewFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCBaseTableViewFooterView.xib; sourceTree = "<group>"; };
 		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		797880F81F4ECB390032943E /* JCSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchResultViewController.swift; sourceTree = "<group>"; };
@@ -181,8 +182,7 @@
 		7B1084FD1F54270F008BC7E9 /* JCResumeWatchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCResumeWatchCell.swift; sourceTree = "<group>"; };
 		7B1084FE1F54270F008BC7E9 /* JCResumeWatchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCResumeWatchCell.xib; sourceTree = "<group>"; };
 		7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCOTPVC.swift; sourceTree = "<group>"; };
-		7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewFooterCell.swift; sourceTree = "<group>"; };
-		7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JCBaseTableViewFooterCell.xib; sourceTree = "<group>"; };
+		7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewFooterView.swift; sourceTree = "<group>"; };
 		7B3A43F81F4424F900EE3824 /* imdb_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imdb_logo.png; sourceTree = "<group>"; };
 		7B545E7F1F7A604C007C5004 /* JCAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCAnalyticsManager.swift; sourceTree = "<group>"; };
 		7B61D4F11F7526CC001B081D /* JCArtistImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCArtistImageCell.swift; sourceTree = "<group>"; };
@@ -405,8 +405,6 @@
 				7BFE51371F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib */,
 				7BFE51401F29F47100C901C7 /* JCItemCell.swift */,
 				7BFE51411F29F47100C901C7 /* JCItemCell.xib */,
-				7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift */,
-				7B3373951F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib */,
 				2025F44E1F3AF58300C3B609 /* JCSettingsTableViewCell.swift */,
 				2025F44F1F3AF58300C3B609 /* JCSettingsTableViewCell.xib */,
 				7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */,
@@ -487,6 +485,8 @@
 		7BFEC4C11F174A84001DFE6D /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
+				7B3373941F2B2FED00FA1F90 /* JCBaseTableViewFooterView.swift */,
+				539D17BD211C23D400A0EABA /* JCBaseTableViewFooterView.xib */,
 				B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */,
 				196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */,
 				B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */,
@@ -650,7 +650,6 @@
 				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
 				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
 				194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */,
-				7B3373971F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.xib in Resources */,
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
@@ -659,6 +658,7 @@
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
+				539D17BE211C23D500A0EABA /* JCBaseTableViewFooterView.xib in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
@@ -800,7 +800,7 @@
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
-				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterCell.swift in Sources */,
+				7B3373961F2B2FED00FA1F90 /* JCBaseTableViewFooterView.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
 				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
 				53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */,
