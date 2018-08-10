@@ -185,11 +185,12 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let tvDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: tvDataRequest) { (data, response, error) in
-            weakSelf?.isTVDataBeingCalled = false
+            
             if let responseError = error
             {
                 //TODO: handle error
                 print(responseError)
+                weakSelf?.isTVDataBeingCalled = false
                 return
             }
             if let responseData = data
@@ -213,6 +214,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
                 weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.isTVDataBeingCalled = false
             }
         }  else {
             JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .TV)
@@ -221,6 +223,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                  weakSelf?.loadedPage += 1
                 weakSelf?.baseTableView.reloadData()
                 weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.isTVDataBeingCalled = false
             }
         }
     }

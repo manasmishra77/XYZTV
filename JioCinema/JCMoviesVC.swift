@@ -196,12 +196,13 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         let moviesDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: moviesDataRequest) { (data, response, error) in
-            weakSelf?.isMovieDataBeingCalled = false
+           
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 DispatchQueue.main.async {
                     weakSelf?.handleAlertForMoviesDataFailure()
+                     weakSelf?.isMovieDataBeingCalled = false
                 }
                 return
             }
@@ -239,6 +240,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 weakSelf?.loadedPage += 1
                 weakSelf?.baseTableView.reloadData()
                weakSelf?.baseTableView.layoutIfNeeded()
+                 weakSelf?.isMovieDataBeingCalled = false
                 
             }
         }
@@ -250,6 +252,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                  weakSelf?.loadedPage += 1
                 weakSelf?.baseTableView.reloadData()
                weakSelf?.baseTableView.layoutIfNeeded()
+                 weakSelf?.isMovieDataBeingCalled = false
                
             }
         }

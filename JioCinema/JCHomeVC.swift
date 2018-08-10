@@ -269,10 +269,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: homeDataRequest) { (data, response, error) in
-            weakSelf?.isHomeDatabeingCalled = false
+            
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
+                weakSelf?.isHomeDatabeingCalled = false
                 return
             }
             if let responseData = data {
@@ -290,6 +291,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
             weakSelf?.baseTableView.layoutIfNeeded()
+            weakSelf?.isHomeDatabeingCalled = false
             
         }
     }

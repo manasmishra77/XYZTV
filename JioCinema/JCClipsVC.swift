@@ -146,10 +146,11 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         let clipsDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: clipsDataRequest) { (data, response, error) in
-            weakSelf?.isClipsDataBeingCalled = false
+            
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
+                weakSelf?.isClipsDataBeingCalled = false
                 return
             }
             if let responseData = data
@@ -174,6 +175,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             super.activityIndicator.isHidden = true
             self.baseTableView.reloadData()
             self.baseTableView.layoutIfNeeded()
+            self.isClipsDataBeingCalled = false
         }
     }
     

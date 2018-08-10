@@ -153,11 +153,12 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         let musicDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: musicDataRequest) { (data, response, error) in
-            weakSelf?.isMusicDataBeingCalled = false
+            
             if let responseError = error
             {
                 //TODO: handle error
                 print(responseError)
+                weakSelf?.isMusicDataBeingCalled = false
                 return
             }
             if let responseData = data
@@ -180,6 +181,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
                 weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.isMusicDataBeingCalled = false
             }
         }
         else
@@ -192,6 +194,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
                 weakSelf?.baseTableView.layoutIfNeeded()
+                weakSelf?.isMusicDataBeingCalled = false
             }
         }
     }
