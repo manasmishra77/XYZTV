@@ -15,9 +15,9 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     var dataItemsForTableview = [DataContainer]()
     fileprivate var screenAppearTiming = Date()
     fileprivate var toScreenName: String? = nil
-    fileprivate var isMovieWebServiceTriedOnce = false
     fileprivate var carousalView: InfinityScrollView?
     fileprivate var footerView: JCBaseTableViewFooterView?
+    fileprivate var isMovieDataBeingCalled = false
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -34,8 +34,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         self.baseTableView.dataSource = self
         
         // Do any additional setup after loading the view.
-        if JCDataStore.sharedDataStore.moviesData?.data == nil
-        {
+        if JCDataStore.sharedDataStore.moviesData?.data == nil {
             callWebServiceForMoviesData(page: loadedPage)
         }
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
@@ -46,11 +45,10 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         
     }
     
-    override func viewDidAppear(_ animated: Bool)
-    {
+    override func viewDidAppear(_ animated: Bool) {
         if JCDataStore.sharedDataStore.moviesData?.data == nil
         {
-            callWebServiceForMoviesData(page: loadedPage)
+            //callWebServiceForMoviesData(page: loadedPage)
         }
         self.tabBarController?.delegate = self
         //Clevertap Navigation Event
@@ -59,7 +57,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         screenAppearTiming = Date()
         
         //Removing watchlist when user loggedout
-        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isMoviesWatchlistAvailable{
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isMoviesWatchlistAvailable {
             isMoviesWatchlistAvailable = false
             dataItemsForTableview.remove(at: 0)
             baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -67,7 +65,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        isMovieWebServiceTriedOnce = false
         if let toScreen = toScreenName {
             Utility.sharedInstance.handleScreenNavigation(screenName: MOVIE_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
             toScreenName = nil
@@ -93,8 +90,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     {
     
         //dataItemsForTableview.removeAll()
-        if (JCDataStore.sharedDataStore.moviesData?.data) != nil
-        {
+        if (JCDataStore.sharedDataStore.moviesData?.data) != nil {
             changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
         }
@@ -127,6 +123,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         return cell
         
     }
+    
+  
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //For autorotate carousel
@@ -163,7 +161,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         return false
     }
     
-    func changingDataSourceForBaseTableView(){
+    func changingDataSourceForBaseTableView() {
         dataItemsForTableview.removeAll()
         if let moviesData = JCDataStore.sharedDataStore.moviesData?.data {
             if !JCLoginManager.sharedInstance.isUserLoggedIn() {
@@ -189,14 +187,16 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             return
         }
         
-        guard !isMovieWebServiceTriedOnce else {
+        if isMovieDataBeingCalled {
             return
         }
+        isMovieDataBeingCalled = true
+        
         let url = moviesDataUrl.appending(String(page))
         let moviesDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: moviesDataRequest) { (data, response, error) in
-            weakSelf?.isMovieWebServiceTriedOnce = true
+            weakSelf?.isMovieDataBeingCalled = false
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
@@ -205,8 +205,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 }
                 return
             }
-            if let responseData = data
-            {
+            if let responseData = data {
                 weakSelf?.evaluateMoviesData(dictionaryResponseData: responseData)
                 return
             }
@@ -234,11 +233,13 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         {
             weak var weakSelf = self
             DispatchQueue.main.async {
+        
                 JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Movies)
                 super.activityIndicator.isHidden = true
-                weakSelf?.baseTableView.reloadData()
-                weakSelf?.baseTableView.layoutIfNeeded()
                 weakSelf?.loadedPage += 1
+                weakSelf?.baseTableView.reloadData()
+               weakSelf?.baseTableView.layoutIfNeeded()
+                
             }
         }
         else
@@ -246,9 +247,10 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             weak var weakSelf = self
             DispatchQueue.main.async {
                 JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Movies)
+                 weakSelf?.loadedPage += 1
                 weakSelf?.baseTableView.reloadData()
-                weakSelf?.baseTableView.layoutIfNeeded()
-                weakSelf?.loadedPage += 1
+               weakSelf?.baseTableView.layoutIfNeeded()
+               
             }
         }
     }

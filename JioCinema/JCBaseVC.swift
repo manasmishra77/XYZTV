@@ -23,6 +23,9 @@ class JCBaseVC: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        if #available(tvOS 10.2, *) {
+            baseTableView.indexDisplayMode =  .alwaysHidden
+        }
     }
 
     override func didReceiveMemoryWarning() {

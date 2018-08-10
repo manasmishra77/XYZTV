@@ -7,8 +7,7 @@
 //
 
 import UIKit
-class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate
-{
+class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var isResumeWatchRowReloadNeeded = false
     var loadedPage = 1
     var isResumeWatchDataAvailable = false
@@ -24,11 +23,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     fileprivate var toScreenName: String? = nil
     fileprivate var carousalView: InfinityScrollView?
     fileprivate var footerView: JCBaseTableViewFooterView?
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    
+    fileprivate var isHomeDatabeingCalled = false
     
     override func viewDidLoad() {
         
@@ -53,8 +48,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
             callWebServiceForResumeWatchData()
         }
-        
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         if isMetadataScreenToBePresentedFromResumeWatchCategory {
@@ -86,7 +79,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     override func viewDidAppear(_ animated: Bool) {
         screenAppearTiming = Date()
         self.tabBarController?.delegate = self
-        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable{
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable {
             isResumeWatchDataAvailable = false
             isUserRecommendationAvailable = false
             baseTableView.reloadData()
@@ -216,22 +209,13 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
 
         //Pagination call
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 1) {
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2) {
             if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
                 callWebServiceForHomeData(page: loadedPage)
             }
         }
         return cell
     }
-    
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if ((baseTableView.contentOffset.y + baseTableView.frame.size.height) >= (baseTableView.contentSize.height)) {
-//            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
-//                callWebServiceForHomeData(page: loadedPage)
-//            }
-//        }
-//    }
-
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -276,18 +260,22 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
+        if isHomeDatabeingCalled {
+            return
+        }
+        isHomeDatabeingCalled = true
         
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: homeDataRequest) { (data, response, error) in
+            weakSelf?.isHomeDatabeingCalled = false
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
             }
             if let responseData = data {
-                weakSelf?.loadedPage += 1
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
                 return
             }
@@ -297,9 +285,12 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     func evaluateHomeData(dictionaryResponseData responseData:Data) {
         //Success
         JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Home)
+        self.loadedPage += 1
         weak var weakSelf = self
         DispatchQueue.main.async {
             weakSelf?.baseTableView.reloadData()
+            weakSelf?.baseTableView.layoutIfNeeded()
+            
         }
     }
 

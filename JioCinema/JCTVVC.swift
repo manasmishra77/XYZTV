@@ -18,16 +18,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     fileprivate var toScreenName: String?
     fileprivate var carousalView: InfinityScrollView?
     fileprivate var footerView: JCBaseTableViewFooterView?
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
+    fileprivate var isTVDataBeingCalled = false
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
-        callWebServiceForTVData(page: loadedPage)
         
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -36,6 +31,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         self.baseTableView.dataSource = self
         
         // Do any additional setup after loading the view.
+        
+        callWebServiceForTVData(page: loadedPage)
+        
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
             self.callWebServiceForTVWatchlist()
         } else {
@@ -126,11 +124,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
-        if(indexPath.row == dataItemsForTableview.count - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages ?? 0) - 1)
-            {
-                callWebServiceForTVData(page: loadedPage + 1)
-                loadedPage += 1
+        
+        //Pagination call
+        if(indexPath.row == (JCDataStore.sharedDataStore.tvData?.data?.count)! - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.tvData?.totalPages)!) {
+                callWebServiceForTVData(page: loadedPage)
             }
         }
         return cell
@@ -174,18 +172,20 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     }
     
     
-    func callWebServiceForTVData(page:Int)
-    {
-        if !Utility.sharedInstance.isNetworkAvailable
-        {
+    func callWebServiceForTVData(page:Int) {
+        if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        
+        if isTVDataBeingCalled {
+            return
+        }
+        isTVDataBeingCalled = true
         let url = tvDataUrl.appending(String(page))
         let tvDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: tvDataRequest) { (data, response, error) in
+            weakSelf?.isTVDataBeingCalled = false
             if let responseError = error
             {
                 //TODO: handle error
@@ -205,17 +205,22 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         //Success
         
         if(loadedPage == 0) {
+            
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                 weakSelf?.loadedPage += 1
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
             }
         }  else {
             JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .TV)
             weak var weakSelf = self
             DispatchQueue.main.async {
+                 weakSelf?.loadedPage += 1
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
             }
         }
     }
@@ -266,6 +271,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
                 if weakSelf?.baseTableView != nil{
                     weakSelf?.baseTableView.reloadData()
+                    weakSelf?.baseTableView.layoutIfNeeded()
                 }
             }
         }

@@ -15,6 +15,7 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     fileprivate var carousalView: InfinityScrollView?
     fileprivate var footerView: JCBaseTableViewFooterView?
+    fileprivate var isClipsDataBeingCalled = false
 
     
     
@@ -36,10 +37,6 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
-        if JCDataStore.sharedDataStore.clipsData?.data == nil {
-            callWebServiceForClipsData(page: loadedPage)
-        }
-        
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Clips", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
@@ -91,9 +88,8 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         cell.tableCellCollectionView.reloadData()
         
         if(indexPath.row == dataArray.count - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages)! - 1) {
-                callWebServiceForClipsData(page: loadedPage + 1)
-                loadedPage += 1
+            if(loadedPage < (JCDataStore.sharedDataStore.clipsData?.totalPages ?? 0)) {
+                callWebServiceForClipsData(page: loadedPage)
             }
         }
         return cell
@@ -142,11 +138,15 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        
+        if isClipsDataBeingCalled {
+            return
+        }
+        isClipsDataBeingCalled = true
         let url = clipsDataUrl.appending(String(page))
         let clipsDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: clipsDataRequest) { (data, response, error) in
+            weakSelf?.isClipsDataBeingCalled = false
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
@@ -165,12 +165,15 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         
         if(loadedPage == 0) {
             JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Clips)
+            self.loadedPage += 1
         } else {
             JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Clips)
+            self.loadedPage += 1
         }
         DispatchQueue.main.async {
             super.activityIndicator.isHidden = true
             self.baseTableView.reloadData()
+            self.baseTableView.layoutIfNeeded()
         }
     }
     

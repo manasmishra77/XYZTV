@@ -16,6 +16,8 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     fileprivate var toScreenName: String? = nil
     fileprivate var carousalView: InfinityScrollView?
     fileprivate var footerView: JCBaseTableViewFooterView?
+    fileprivate var isMusicDataBeingCalled = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +92,9 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         cell.tableCellCollectionView.reloadData()
         
         if(indexPath.row == dataArray.count - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.musicData?.totalPages)! - 1) {
-                callWebServiceForMusicData(page: loadedPage + 1)
-                loadedPage += 1
+            if(loadedPage < (JCDataStore.sharedDataStore.musicData?.totalPages)!) {
+                callWebServiceForMusicData(page: loadedPage)
+                //loadedPage += 1
             }
         }
         return cell
@@ -142,11 +144,16 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
+        if isMusicDataBeingCalled {
+            return
+        }
+        isMusicDataBeingCalled = true
         
         let url = musicDataUrl.appending(String(page))
         let musicDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: musicDataRequest) { (data, response, error) in
+            weakSelf?.isMusicDataBeingCalled = false
             if let responseError = error
             {
                 //TODO: handle error
@@ -166,19 +173,25 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         //Success
         if(loadedPage == 0)
         {
+            JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Music)
             weak var weakSelf = self
             DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Music)
+                weakSelf?.loadedPage += 1
                 super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
             }
         }
         else
         {
+            JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Music)
             weak var weakSelf = self
             DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.appendData(withResponseData: responseData, category: .Music)
+                
+                weakSelf?.loadedPage += 1
+                super.activityIndicator.isHidden = true
                 weakSelf?.baseTableView.reloadData()
+                weakSelf?.baseTableView.layoutIfNeeded()
             }
         }
     }
