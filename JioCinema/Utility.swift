@@ -271,6 +271,13 @@ class Utility {
         
     }
     
+    //MARK:- Getting Xibs
+    class func getXib<T>(_ name: String, type: T.Type, owner: Any) -> T {
+        let viewArray = Bundle.main.loadNibNamed(name, owner: owner, options: nil)
+        let view = viewArray?.first as! T
+        return view
+    }
+    
     
     //MARK: Getting Carousal View in TableViewHeader
     class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item]) -> InfinityScrollView {

@@ -72,11 +72,13 @@ class RJILApiManager {
             if JCLoginManager.sharedInstance.isUserLoggedIn()
             {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
+                _commonHeaders["uniqueId"] = JCAppUser.shared.unique
                 _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
                 _commonHeaders["accesstoken"] = JCAppUser.shared.ssoToken
+                _commonHeaders["ssotoken"] = JCAppUser.shared.ssoToken
                 _commonHeaders["lbcookie"] = JCAppUser.shared.lbCookie
                 
-                //_commonHeaders["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhoneOS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C89"
+                _commonHeaders["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhoneOS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C89"
                 if JCAppUser.shared.userGroup != "" {
                     _commonHeaders["usergroup"] = JCAppUser.shared.userGroup
                 }

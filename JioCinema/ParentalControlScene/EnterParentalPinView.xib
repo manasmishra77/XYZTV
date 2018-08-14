@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EnterParentalPinView" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PZG-Xh-YwQ">
+                    <rect key="frame" x="458" y="210" width="1004" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter PIN to watch restricted content:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5B-Wf-dTM">
+                            <rect key="frame" x="0.0" y="0.0" width="792" height="64"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="47"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Maaya2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-Zb-RQD">
+                            <rect key="frame" x="792" y="0.0" width="212" height="64"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="53"/>
+                            <color key="textColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="yVJ-bB-4d0"/>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="JG7-ud-KGz">
+                    <rect key="frame" x="775" y="365" width="370" height="70"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZxV-Dp-Kbu">
+                            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Wl-Jm-GaX">
+                            <rect key="frame" x="100" y="0.0" width="70" height="70"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRD-ph-eCv">
+                            <rect key="frame" x="200" y="0.0" width="70" height="70"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekR-JL-BVS">
+                            <rect key="frame" x="300" y="0.0" width="70" height="70"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="92I-Zc-3Ak"/>
+                        <constraint firstAttribute="width" constant="370" id="WPQ-YW-zJS"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="Gob-Vp-Opp"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="1cw-J9-Oxd">
+                    <rect key="frame" x="560" y="495" width="800" height="90"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Uob-UX-kVY" userLabel="KeyboardStackView">
+                            <rect key="frame" x="0.0" y="0.0" width="800" height="90"/>
+                            <subviews>
+                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6m-Dw-mSG" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="1">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="t4a-2F-KEd"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOP-VI-Ed4" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="73" y="0.0" width="72" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="2">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Xdv-Ck-PeI"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xgZ-tH-c2n" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="145" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="3">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="oyQ-q1-cfu"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEX-Ma-ahI" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="218" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="4">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="8"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="nxS-gd-xuH"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R0D-W6-Rzg" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="291" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="5">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="wDL-dH-4mL"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iQ-S2-WBv" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="364" y="0.0" width="72" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="6">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="s5L-fI-h4k"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JTL-yi-fOw" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="436" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="7">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="rM1-IA-bHC"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5r-Ep-OsY" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="509" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="8">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="GO9-Cz-vaO"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBw-YN-dLB" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="582" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="9">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="xEN-50-yT1"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-kd-gCH" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="655" y="0.0" width="72" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
+                                    <state key="normal" title="0">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jEZ-ZQ-BLa"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f6Q-r8-wbk" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="727" y="0.0" width="73" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                    <state key="normal" image="back_ic">
+                                        <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                            <integer key="value" value="3"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onTapOfNumKeyboard:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="GmG-cH-dH9"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="90" id="PRs-Ld-Cn0"/>
+                                <constraint firstAttribute="width" constant="800" id="uoZ-hl-wEC"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="DiX-QH-YQ0"/>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="70" translatesAutoresizingMaskIntoConstraints="NO" id="7ne-kk-1DN">
+                    <rect key="frame" x="735" y="734" width="450" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfS-kA-jQt">
+                            <rect key="frame" x="0.0" y="0.0" width="190" height="75"/>
+                            <color key="backgroundColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" title="Cancel"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9L4-nK-pOu">
+                            <rect key="frame" x="260" y="0.0" width="190" height="75"/>
+                            <color key="backgroundColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" title="Play"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="gKe-fm-bv2"/>
+                        <constraint firstAttribute="width" constant="450" id="lXN-jJ-yAD"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="450" id="laU-5g-Okq"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="75" id="xkh-dj-kLg"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="3sh-UY-cBv"/>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wk0-w8-7Oe">
+                    <rect key="frame" x="472" y="909" width="975" height="41"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forget PIN or change Parental settings visit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZC-UA-1QT">
+                            <rect key="frame" x="0.0" y="0.0" width="687" height="41"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                            <color key="textColor" red="0.51973772659999995" green="0.51973772659999995" blue="0.51973772659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jiocinema.com/pin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDa-nL-NBk">
+                            <rect key="frame" x="687" y="0.0" width="288" height="41"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                            <color key="textColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="hRY-Ln-VfK"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="PZG-Xh-YwQ" firstAttribute="top" secondItem="nkI-NY-t1X" secondAttribute="top" constant="150" id="2SL-ld-lC3"/>
+                <constraint firstItem="wk0-w8-7Oe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8Az-hD-Vlk"/>
+                <constraint firstItem="7ne-kk-1DN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ATJ-OL-GpH"/>
+                <constraint firstItem="1cw-J9-Oxd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="DGy-uR-3if"/>
+                <constraint firstItem="nkI-NY-t1X" firstAttribute="bottom" secondItem="wk0-w8-7Oe" secondAttribute="bottom" constant="70" id="KVC-oh-J9N"/>
+                <constraint firstItem="1cw-J9-Oxd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ST9-gh-KCs"/>
+                <constraint firstItem="wk0-w8-7Oe" firstAttribute="top" secondItem="7ne-kk-1DN" secondAttribute="bottom" constant="100" id="b9f-E2-bhr"/>
+                <constraint firstItem="1cw-J9-Oxd" firstAttribute="top" secondItem="JG7-ud-KGz" secondAttribute="bottom" constant="60" id="iaW-V2-MjR"/>
+                <constraint firstItem="JG7-ud-KGz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="o2j-tc-NY3"/>
+                <constraint firstItem="PZG-Xh-YwQ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="tlg-rr-SW6"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="nkI-NY-t1X"/>
+            <connections>
+                <outlet property="playButton" destination="9L4-nK-pOu" id="zGL-TK-KzJ"/>
+                <outletCollection property="passwordLabelArray" destination="ZxV-Dp-Kbu" collectionClass="NSMutableArray" id="r1b-t0-ft5"/>
+                <outletCollection property="passwordLabelArray" destination="6Wl-Jm-GaX" collectionClass="NSMutableArray" id="UFn-yX-AIY"/>
+                <outletCollection property="passwordLabelArray" destination="KRD-ph-eCv" collectionClass="NSMutableArray" id="IUo-j0-0rR"/>
+                <outletCollection property="passwordLabelArray" destination="ekR-JL-BVS" collectionClass="NSMutableArray" id="G67-gi-oOq"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_ic" width="60" height="60"/>
+    </resources>
+</document>

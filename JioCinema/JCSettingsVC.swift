@@ -56,7 +56,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return 8
+        return 9
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -107,20 +107,29 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             } else {
                 cell.settingsDetailLabel.text = "OFF"
             }
-            
         case 3:
-            cell.textLabel?.text = "FAQs"
+            cell.textLabel?.text = ParentalHeading
+            cell.settingsDetailLabel.isHidden = false
+            
+            if IsAutoSubtitleOn {
+                cell.settingsDetailLabel.text = "ON"
+            } else {
+                cell.settingsDetailLabel.text = "OFF"
+            }
             
         case 4:
-            cell.textLabel?.text = "Feedback"
+            cell.textLabel?.text = "FAQs"
             
         case 5:
-            cell.textLabel?.text = "Privacy Policy"
+            cell.textLabel?.text = "Feedback"
             
         case 6:
-            cell.textLabel?.text = "Terms & Conditions"
+            cell.textLabel?.text = "Privacy Policy"
             
         case 7:
+            cell.textLabel?.text = "Terms & Conditions"
+            
+        case 8:
             cell.cellAccessoryImage.isHidden = true
             cell.textLabel?.text = "Version"
             cell.settingsDetailLabel.isHidden = false
@@ -161,15 +170,18 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
                 
             case 3:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
                 
             case 4:
-                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
                 
             case 5:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
                 
             case 6:
+                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
+                
+            case 7:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
             default:
@@ -217,22 +229,27 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isFeedBackView = false
             
         case 3:
+            let parentalControlVC = ParentalControlVC.init(with: .SetParentalControl)
+            self.present(parentalControlVC, animated: false, completion: nil)
+            return
+            
+        case 4:
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.isDetailView = true
             settingsDetailVC.titleText = "FAQs"
             settingsDetailVC.textViewDetail = FAQText
             
-        case 4:
+        case 5:
             settingsDetailVC.isDetailView  = false
             settingsDetailVC.isFeedBackView = true
             
-        case 5:
+        case 6:
             settingsDetailVC.isDetailView = true
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.titleText = "PRIVACY POLICY"
             settingsDetailVC.textViewDetail = PrivacyPolicyText
             
-        case 6:
+        case 7:
             settingsDetailVC.isDetailView = true
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.titleText = "TERMS & CONDITIONS"

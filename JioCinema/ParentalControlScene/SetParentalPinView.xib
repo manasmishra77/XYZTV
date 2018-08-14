@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SetParentalPinView" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To set Parental PIN, please go to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zb-iT-yCs">
+                    <rect key="frame" x="588" y="130" width="744" height="59"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jiocinema.com/pin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yba-VT-t5e">
+                    <rect key="frame" x="540" y="239" width="839" height="114"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="95"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and enter the code below:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8i-Xg-C85">
+                    <rect key="frame" x="691" y="513" width="538" height="54"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="46"/>
+                    <color key="textColor" red="0.45089191319999999" green="0.45089191319999999" blue="0.45089191319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZdP-X2-4DQ">
+                    <rect key="frame" x="626" y="572" width="668" height="239"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="200"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*your code will only be valid for the next 15 minutes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Noe-Bs-xVs">
+                    <rect key="frame" x="557" y="899" width="806" height="41"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                    <color key="textColor" red="0.45089191319999999" green="0.45089191319999999" blue="0.45089191319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="G8i-Xg-C85" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="1rc-g5-IIK"/>
+                <constraint firstItem="yba-VT-t5e" firstAttribute="top" secondItem="8Zb-iT-yCs" secondAttribute="bottom" constant="50" id="61W-i8-00Q"/>
+                <constraint firstItem="nkI-NY-t1X" firstAttribute="bottom" secondItem="Noe-Bs-xVs" secondAttribute="bottom" constant="80" id="6ia-mh-7Au"/>
+                <constraint firstItem="G8i-Xg-C85" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8eb-XY-y9O"/>
+                <constraint firstItem="ZdP-X2-4DQ" firstAttribute="top" secondItem="G8i-Xg-C85" secondAttribute="bottom" constant="5" id="AFF-L4-R23"/>
+                <constraint firstItem="ZdP-X2-4DQ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Pnm-JX-N7t"/>
+                <constraint firstItem="8Zb-iT-yCs" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="SQE-uU-fwm"/>
+                <constraint firstItem="8Zb-iT-yCs" firstAttribute="top" secondItem="nkI-NY-t1X" secondAttribute="top" constant="70" id="TOt-hg-QWY"/>
+                <constraint firstItem="Noe-Bs-xVs" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fRO-fI-4T8"/>
+                <constraint firstItem="yba-VT-t5e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fjl-wx-uZw"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="nkI-NY-t1X"/>
+            <connections>
+                <outlet property="pinLabel" destination="ZdP-X2-4DQ" id="0jL-2u-Utr"/>
+            </connections>
+        </view>
+    </objects>
+</document>
