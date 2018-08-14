@@ -62,7 +62,7 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="nkI-NY-t1X"/>
             <connections>
-                <outlet property="pinLabel" destination="ZdP-X2-4DQ" id="0jL-2u-Utr"/>
+                <outlet property="pinLabel" destination="ZdP-X2-4DQ" id="mND-B4-eSu"/>
             </connections>
         </view>
     </objects>
