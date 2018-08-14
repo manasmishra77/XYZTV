@@ -170,6 +170,7 @@ class JCLoginManager: UIViewController {
         UserDefaults.standard.setValue(false, forKeyPath: isUserLoggedInKey)
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: "")
         JCAppUser.shared = JCAppUser()
+        ParentalPinManager.shared.resetManager()
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
         JCDataStore.sharedDataStore.tvWatchList?.data = nil
         JCDataStore.sharedDataStore.moviesWatchList?.data = nil

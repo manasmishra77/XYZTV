@@ -13,7 +13,7 @@ extension RJILApiManager {
     func getPinFromServer(completion: @escaping (_ pin: String?) -> ()) -> () {
         let request = RJILApiManager.defaultManager.prepareRequest(path: SetParentalPinUrl, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: request) { (data, response, error) in
-            if let error = error {
+            if error != nil {
                 completion(nil)
                 return
             }
@@ -33,4 +33,26 @@ extension RJILApiManager {
             completion(nil)
         }
     }
+    
+    func getParentalPinForContentFromServer(completion: @escaping (_ pinModel: ParentalPinModel) -> ()) -> () {
+        var request = RJILApiManager.defaultManager.prepareRequest(path: GetParentalPinDetailUrl, encoding: .JSON)
+        let headerDict = ["uniqueId": JCAppUser.shared.unique]
+        request.allHTTPHeaderFields = headerDict
+        RJILApiManager.defaultManager.post(request: request) { (data, response, error) in
+
+            if let response = response as? HTTPURLResponse {
+                guard let data = data else {return}
+                switch response.statusCode {
+                case 200:
+                    if let pinModel = RJILApiManager.parseData(data, modelType: ParentalPinModel.self){
+                        completion(pinModel)
+                    }
+                default:
+                    print("Default")
+                }
+            }
+            
+        }
+    }
+    
 }

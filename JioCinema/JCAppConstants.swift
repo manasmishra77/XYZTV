@@ -73,7 +73,8 @@ let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
 let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
 let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
 let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
-let SetParentalPinUrl = basePath + "apis/\(kAppKeyValue)/v3.1/preferences/generatecode"
+let SetParentalPinUrl = basePath + kAppKeyValue + "/v3.1/preferences/generatecode"
+let GetParentalPinDetailUrl = basePath + kAppKeyValue + "/v3.1/preferences/get"
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

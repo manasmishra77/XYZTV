@@ -69,8 +69,7 @@ class RJILApiManager {
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
             
-            if JCLoginManager.sharedInstance.isUserLoggedIn()
-            {
+            if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
                 _commonHeaders["uniqueId"] = JCAppUser.shared.unique
                 _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
@@ -128,13 +127,13 @@ class RJILApiManager {
         }
     }
     
-    static func parse(data:Data) -> [String:Any]?{
+    static func parse(data:Data) -> [String:Any]? {
         
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: [])
-            return json as? [String:Any]
+            return json as? [String: Any]
             
-        }catch let error {
+        } catch let error {
             print(String(data: data, encoding: .utf8) ?? "")
             print(error.localizedDescription)
         }
@@ -299,7 +298,7 @@ class RJILApiManager {
             
             //TODO: refreshing ssotoken
             self.httpStatusCode = httpResponse.statusCode
-            if self.httpStatusCode == 419{
+            if self.httpStatusCode == 419 {
                 if JCAppUser.shared.mToken != ""{
                     
                     //Put the currentTask in queue
@@ -363,10 +362,11 @@ class RJILApiManager {
                 completion(data, response, error)
             }
             else {
-                var errorInfo:[String:String] = [String:String]()
+                var errorInfo: [String:String] = [String:String]()
                 let errorDescription = "Unexpected Response : HTTP Status Code :\(String(describing: self.httpStatusCode))"
                 if let receivedData = data {
-                    let responseString = String(data:receivedData, encoding:.utf8)
+                    let dict = RJILApiManager.parse(data: receivedData)
+                    let responseString = String(data: receivedData, encoding:.utf8)
                     self.errorMessage = errorDescription + " " + responseString!
                 }
                 
@@ -389,7 +389,7 @@ class RJILApiManager {
     func parseRefreshTokenData(_ responseData: Data) -> (Int, String) {
         do {
             let jsonDict = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
-            if let responseDict = jsonDict as? [String: Any]{
+            if let responseDict = jsonDict as? [String: Any] {
                 var refreshTupple = (0, "")
                 refreshTupple.0 = responseDict["code"] as? Int ?? 0
                 refreshTupple.1 = responseDict["ssotoken"] as? String ?? ""

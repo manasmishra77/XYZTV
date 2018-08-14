@@ -115,6 +115,7 @@ class JCSplashVC: UIViewController {
             }
             if let responseData = data {
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
+                ParentalPinManager.shared.setParentalPinModel()
                 weakSelf?.isHomeDataAvailable = true
                 weakSelf?.dispatchGroup.leave()
                 return

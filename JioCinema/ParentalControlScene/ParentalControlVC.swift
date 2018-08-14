@@ -24,16 +24,16 @@ class ParentalControlVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.setBaseView(parentalControlView: .SetParentalControl)
+        self.setBaseView(parentalControlType: .EnterParentalControl, for: "content")
     }
     
-    convenience init (with parentalControlView: ParentalConrtrolViewType) {
+    convenience init (with parentalControlType: ParentalConrtrolViewType, for content: String?) {
         self.init()
-        
+        self.setBaseView(parentalControlType: parentalControlType, for: content)
     }
     
-    private func setBaseView(parentalControlView: ParentalConrtrolViewType)  {
-        if parentalControlView == .SetParentalControl {
+    private func setBaseView(parentalControlType: ParentalConrtrolViewType, for content: String?)  {
+        if parentalControlType == .SetParentalControl {
             setParentalPinView = Utility.getXib("SetParentalPinView", type: SetParentalPinView.self, owner: self)
             self.view.addSubview(setParentalPinView!)
             setParentalViewModel = SetParentalViewModel()
@@ -44,6 +44,7 @@ class ParentalControlVC: UIViewController {
         else {
             enterParentalPinView = Utility.getXib("EnterParentalPinView", type: EnterParentalPinView.self, owner: self)
             self.view.addSubview(enterParentalPinView!)
+            enterPinViewModel = EnterPinViewModel(contentName: content ?? "")
         }
     }
     

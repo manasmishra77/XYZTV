@@ -229,7 +229,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isFeedBackView = false
             
         case 3:
-            let parentalControlVC = ParentalControlVC.init(with: .SetParentalControl)
+            let parentalControlVC = ParentalControlVC(with: .SetParentalControl, for: nil)
             self.present(parentalControlVC, animated: false, completion: nil)
             return
             
