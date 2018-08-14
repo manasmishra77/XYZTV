@@ -11,7 +11,7 @@ import Foundation
 struct ParentalPinModel : Codable {
     let emailId : String?
     let pin : String?
-    let isPinActive : Bool?
+    var isPinActive : Bool?
     let parentalSettings : ParentalSettings?
     let isEmailVerified : Bool?
     
@@ -27,9 +27,17 @@ struct ParentalPinModel : Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         emailId = try values.decodeIfPresent(String.self, forKey: .emailId)
         pin = try values.decodeIfPresent(String.self, forKey: .pin)
-        isPinActive = try values.decodeIfPresent(Bool.self, forKey: .isPinActive)
+        if let pinActive = try values.decodeIfPresent(String.self, forKey: .isPinActive) {
+            isPinActive = (pinActive == "Y")
+        } else {
+            isPinActive = false
+        }
         parentalSettings = try values.decodeIfPresent(ParentalSettings.self, forKey: .parentalSettings)
-        isEmailVerified = try values.decodeIfPresent(Bool.self, forKey: .isEmailVerified)
+        if let emailVerified = try values.decodeIfPresent(String.self, forKey: .isEmailVerified) {
+            isEmailVerified = (emailVerified == "Y")
+        } else {
+            isEmailVerified = false
+        }
     }
     
 }
@@ -40,6 +48,16 @@ struct ParentalSettings : Codable {
     let age7Plus : AgeCategory?
     let age13Plus : AgeCategory?
     let age18Plus : AgeCategory?
+    
+    var allowedAgeGrpCategory: AgeGroup {
+        let ageGrps = [age18Plus, age13Plus, age7Plus, age3Plus, allAge]
+        for each in ageGrps {
+            if each?.isAllowed == true {
+                return each?.ageGroup ?? .allAge
+            }
+        }
+        return .allAge
+    }
     
     enum CodingKeys: String, CodingKey {
         
@@ -64,6 +82,13 @@ struct AgeCategory : Codable {
     let label : String?
     let value : String?
     let order : Int?
+    let isAllowed: Bool?
+    var ageGroup: AgeGroup? {
+        if let value = self.value {
+            return AgeGroup(rawValue: value)
+        }
+        return nil
+    }
     
     enum CodingKeys: String, CodingKey {
         case label
@@ -78,4 +103,19 @@ struct AgeCategory : Codable {
         order = try values.decodeIfPresent(Int.self, forKey: .order)
     }
     
+}
+
+enum AgeGroup: String {
+    case allAge = "All"
+    case age3Plus = "3+"
+    case age7Plus = "7+"
+    case age13Plus = "13+"
+    case age18Plus = "18+"
+    
+    var ageIntValue: Int {
+        if let ageInt = Int(self.rawValue.dropLast()) {
+            return ageInt
+        }
+        return 0
+    }
 }

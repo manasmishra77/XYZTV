@@ -87,6 +87,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
                                 homevc.callWebServiceForResumeWatchData()
                                 homevc.callWebServiceForUserRecommendationList()
+                                ParentalPinManager.shared.setParentalPinModel()
                             }
                             if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
                                 movieVC.callWebServiceForMoviesWatchlist()

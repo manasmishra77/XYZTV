@@ -14,14 +14,37 @@ class ParentalPinManager: NSObject {
         super.init()
     }
     
-    var parentalPinModel: ParentalPinModel?
-    var sessionDuration = 0
-    var sessionStartTime: Date?
+    var parentalPinModel: ParentalPinModel? {
+        didSet {
+            if parentalPinModel != nil {
+                sessionStartTime = Date()
+            }
+        }
+    }
+    var sessionDuration: Int? {
+        get {
+            if let sessionString = JCDataStore.sharedDataStore.configData?.configDataUrls?.parentalSession, let sessionInt = Int(sessionString) {
+                return sessionInt
+            }
+            return nil
+        }
+        set {
+            //Setting when user logging out
+            JCDataStore.sharedDataStore.configData?.configDataUrls?.parentalSession = nil
+        }
+        
+    }
+    
+    private var sessionStartTime: Date?
+    
     var isPinActive: Bool {
         guard let sessionStartTime = sessionStartTime else {
             return false
         }
-        return (Int(sessionStartTime.timeIntervalSinceNow) < sessionDuration)
+        return (Int(sessionStartTime.timeIntervalSinceNow) < (sessionDuration ?? 0))
+    }
+    var allowedCategory: AgeGroup {
+         return ParentalPinManager.shared.parentalPinModel?.parentalSettings?.allowedAgeGrpCategory ?? .allAge
     }
     
     func setParentalPinModel() {
@@ -31,12 +54,14 @@ class ParentalPinManager: NSObject {
         })
     }
     
+    
+    
     func userLoggedOut() {
         resetManager()
     }
     func resetManager() {
         parentalPinModel = nil
-        sessionDuration = 0
+        sessionDuration = nil
         sessionStartTime = nil
     }
 

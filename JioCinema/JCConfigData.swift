@@ -27,8 +27,7 @@ class ConfigData: Mappable {
     }
 }
 
-class ConfigDataURLs: Mappable
-{
+class ConfigDataURLs: Mappable {
     var analytics:String?
     var api:String?
     var conflist:String?
@@ -52,6 +51,8 @@ class ConfigDataURLs: Mappable
     var cdnEncryptionFlag:Bool = false
     var cdnTokenKey:String?
     var cdnUrlExpiryDuration:Int?
+    var parentalSession: String?
+    var tvHomeUrl: String?
     
     required init?(map: Map) {
         
@@ -70,6 +71,7 @@ class ConfigDataURLs: Mappable
         feedbackSubmit <- map["feedbackSubmit"]
         genrePosition <- map["genrePosition"]
         home <- map["home"]
+        tvHomeUrl <- map["tvhome"]
         image <- map["image"]
         languagePosition <- map["languagePosition"]
         privacyPolicy <- map["privacyPolicy"]
@@ -82,5 +84,6 @@ class ConfigDataURLs: Mappable
         cdnEncryptionFlag <- map["cdnencryption_flag"]
         cdnTokenKey <- map["tid"]
         cdnUrlExpiryDuration <- map["cdnUrlExpiry"]
+        parentalSession <- map["parentalSession"]
     }
 }

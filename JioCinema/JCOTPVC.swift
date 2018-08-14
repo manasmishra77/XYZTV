@@ -348,11 +348,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     
                     //Updates after login
                     if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
-                        if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
+                        if let homevc = tabVc.viewControllers![0] as? JCHomeVC {
                             homevc.callWebServiceForResumeWatchData()
+                            ParentalPinManager.shared.setParentalPinModel()
                             homevc.callWebServiceForUserRecommendationList()
                         }
-                        if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
+                        if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {
                             movieVC.callWebServiceForMoviesWatchlist()
                         }
                         if let tvVc = tabVc.viewControllers![2] as? JCTVVC{

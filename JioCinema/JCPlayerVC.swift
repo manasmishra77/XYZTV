@@ -104,6 +104,7 @@
     fileprivate var isRecommendationCollectionViewEnabled = false
     
     
+    
     static let assetKeysRequiredToPlay = [
         "playable",
         "hasProtectedContent"
@@ -266,7 +267,11 @@
     }
     
     func instantiatePlayer(with url:String, isFps: Bool) {
-        //self.resetPlayer()
+        let ageGroup = playbackRightsData?.maturityAgeGrp ?? .age18Plus
+        if checkParentalPin(ageGroup) {
+            //Present ParentalPinView
+            let parentalPinView = Utility.getXib("EnterParentalPinView", type: EnterParentalPinView.self, owner: self)
+        }
         player = nil
         didSeek = true
         isFpsUrl = isFps
@@ -377,6 +382,19 @@
         self.view.bringSubview(toFront: self.view_Recommendation)      
         
         self.nextVideoView.isHidden = true
+    }
+    
+    //MARK:- Play video after Checking for parental pin
+    func checkParentalPin(_ maturityRating: AgeGroup) -> Bool {
+        if ParentalPinManager.shared.isPinActive {
+            
+            if maturityRating.ageIntValue > (ParentalPinManager.shared.allowedCategory.ageIntValue) {
+                return false
+            }
+            return true
+        } else {
+            return false
+        }
     }
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {

@@ -21,9 +21,8 @@ extension RJILApiManager {
                 guard let data = data else {return}
                 switch response.statusCode {
                 case 200:
-                    if let responseDict = RJILApiManager.parse(data: data) as? [String: String] {
-                        let uniqueCode = responseDict["uniqueCode"]
-                        completion(uniqueCode)
+                    if let responseDict = RJILApiManager.parse(data: data), let uniqueCode = responseDict["uniqueCode"] as? Int {
+                        completion("\(uniqueCode)")
                     }
                     
                 default:
@@ -36,7 +35,7 @@ extension RJILApiManager {
     
     func getParentalPinForContentFromServer(completion: @escaping (_ pinModel: ParentalPinModel) -> ()) -> () {
         var request = RJILApiManager.defaultManager.prepareRequest(path: GetParentalPinDetailUrl, encoding: .JSON)
-        let headerDict = ["uniqueId": JCAppUser.shared.unique]
+        let headerDict = ["uniqueId": "0a3ef12b-db83-489b-bb55-293883372ea4"]
         request.allHTTPHeaderFields = headerDict
         RJILApiManager.defaultManager.post(request: request) { (data, response, error) in
 

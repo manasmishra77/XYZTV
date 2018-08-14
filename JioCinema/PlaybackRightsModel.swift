@@ -27,6 +27,14 @@ class PlaybackRightsModel: Mappable
     var contentName:String?
     var thumb:String?
     var vendor: String?
+    var maturityRating: String?
+    
+    var maturityAgeGrp: AgeGroup {
+        if let value = self.maturityRating {
+            return AgeGroup(rawValue: value) ?? .allAge
+        }
+        return .allAge
+    }
     
     required init(map:Map) {
         
@@ -49,7 +57,8 @@ class PlaybackRightsModel: Mappable
         contentName <- map["contentName"]
         thumb <- map["thumb"]
         vendor <- map["vendorName"]
-        
+        maturityRating <- map["maturityRating"]
+
     }
 }
 //MARK:- Subscription Model
