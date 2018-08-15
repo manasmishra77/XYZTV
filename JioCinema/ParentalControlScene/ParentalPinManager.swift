@@ -35,13 +35,19 @@ class ParentalPinManager: NSObject {
         
     }
     
+    var isPinOnceVerifiedWithinTheSession: Bool = false
+    
     private var sessionStartTime: Date?
     
     var isPinActive: Bool {
         guard let sessionStartTime = sessionStartTime else {
             return false
         }
-        return (Int(sessionStartTime.timeIntervalSinceNow) < (sessionDuration ?? 0))
+        if (Int(sessionStartTime.timeIntervalSinceNow) < (sessionDuration ?? 0)) {
+         return true
+        }
+        isPinOnceVerifiedWithinTheSession = false
+        return false
     }
     var allowedCategory: AgeGroup {
          return ParentalPinManager.shared.parentalPinModel?.parentalSettings?.allowedAgeGrpCategory ?? .allAge
@@ -52,6 +58,20 @@ class ParentalPinManager: NSObject {
         RJILApiManager.defaultManager.getParentalPinForContentFromServer(completion: {[unowned self] (parentalPinModel) in
             self.parentalPinModel = parentalPinModel
         })
+    }
+    
+    func checkParentalPin(_ maturityRating: AgeGroup) -> Bool {
+        if ParentalPinManager.shared.isPinActive {
+            if isPinOnceVerifiedWithinTheSession {
+                return false
+            }
+            if maturityRating.ageIntValue > (ParentalPinManager.shared.allowedCategory.ageIntValue) {
+                return false
+            }
+            return true
+        } else {
+            return false
+        }
     }
     
     

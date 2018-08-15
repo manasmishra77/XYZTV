@@ -8,33 +8,39 @@
 
 import UIKit
 
+protocol EnterParentalPinViewDelegate {
+    func didClickOnSubmitButton(_ pin: String) -> Bool
+}
+
 class EnterParentalPinView: UIView {
 
-    var password : String = ""
+    var password: String = ""
+    var delegate: EnterParentalPinViewDelegate?
     
     @IBOutlet weak var playButton: UIButton!
+    
    
     @IBOutlet var passwordLabelArray: [UILabel]!
     
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {
         if(sender.tag == -1){
-            if(password.count == 0){
+            if(password.count == 0) {
                 return
-            } else{
+            } else {
                 let truncatedPass : String = password.substring(to: password.index(before: password.endIndex))
                 password = truncatedPass
                 setLabel(password)
                 returnPass()
             }
         } else {
-            if(password.count < 4){
+            if(password.count < 4) {
                 password = password + "\(sender.tag)"
                 setLabel(password)
                 returnPass()
             }
         }
     }
-    func setLabel(_ pass:String){
+    func setLabel(_ pass:String) {
         if(pass.count <= 4){
             playButton.isEnabled = false
             for i in 0...3{

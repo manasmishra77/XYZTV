@@ -117,6 +117,7 @@ let artistImageCellIdentifier = "kJCArtistImageCell"
 let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell"
 let SettingCellIdentifier = "kSettingsTableViewCell"
 let SearchRecommendationCellIdentifier = "SearchRecommendationCellIdentifier"
+let EnterParentalPinViewIdentifier = "EnterParentalPinView"
 
 
 //Constant Values

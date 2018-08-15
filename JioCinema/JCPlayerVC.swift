@@ -103,6 +103,9 @@
     fileprivate var videoStartingTimeDuration = 0
     fileprivate var isRecommendationCollectionViewEnabled = false
     
+    fileprivate var enterParentalPinView: EnterParentalPinView?
+    fileprivate var enterPinViewModel: EnterPinViewModel?
+    
     
     
     static let assetKeysRequiredToPlay = [
@@ -266,26 +269,23 @@
         }
     }
     
-    func instantiatePlayer(with url:String, isFps: Bool) {
-        let ageGroup = playbackRightsData?.maturityAgeGrp ?? .age18Plus
-        if checkParentalPin(ageGroup) {
-            //Present ParentalPinView
-            let parentalPinView = Utility.getXib("EnterParentalPinView", type: EnterParentalPinView.self, owner: self)
-        }
+
+   fileprivate func intantiatePlayerAfterParentalCheck(with url: String, isFps: Bool) {
         player = nil
         didSeek = true
         isFpsUrl = isFps
-       //var newUrl = "http://sample.vodobox.com/planete_interdite/planete_interdite_alternate.m3u8"
-//       var newUrl = "http://vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/92/57/5e3614904c4f11e89f355ddb50ec3dc2_HD_TESTANKIT.smil/playlist1.m3u8"
-//        newUrl = "http:///vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1530011632940.smil/playlist_SD_PHONE_HDP_H.m3u8"
-//        newUrl = "http://vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/92/57/5e3614904c4f11e89f355ddb50ec3dc2_HD_TEST2.smil/playlist.m3u8"
-//        newUrl = "http://rcpems02.cdnsrv.ril.com/vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/75/41/b52802404ce511e8a913515d9b91c49a_audio_1530176450916.smil/playlist.m3u8"
+        //var newUrl = "http://sample.vodobox.com/planete_interdite/planete_interdite_alternate.m3u8"
+        //       var newUrl = "http://vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/92/57/5e3614904c4f11e89f355ddb50ec3dc2_HD_TESTANKIT.smil/playlist1.m3u8"
+        //        newUrl = "http:///vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1530011632940.smil/playlist_SD_PHONE_HDP_H.m3u8"
+        //        newUrl = "http://vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/92/57/5e3614904c4f11e89f355ddb50ec3dc2_HD_TEST2.smil/playlist.m3u8"
+        //        newUrl = "http://rcpems02.cdnsrv.ril.com/vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/75/41/b52802404ce511e8a913515d9b91c49a_audio_1530176450916.smil/playlist.m3u8"
         //newUrl = "http://wvserver.jio.ril.com/live/_definst_/fpstest.stream/chunklist_w1266344597.m3u8"
         if isFps {
             handleFairPlayStreamingUrl(videoUrl: url)
         } else {
             handleAESStreamingUrl(videoUrl: url)
         }
+
     }
     
     //MARK:- Handle AES Video Url
@@ -383,19 +383,7 @@
         
         self.nextVideoView.isHidden = true
     }
-    
-    //MARK:- Play video after Checking for parental pin
-    func checkParentalPin(_ maturityRating: AgeGroup) -> Bool {
-        if ParentalPinManager.shared.isPinActive {
-            
-            if maturityRating.ageIntValue > (ParentalPinManager.shared.allowedCategory.ageIntValue) {
-                return false
-            }
-            return true
-        } else {
-            return false
-        }
-    }
+
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
         guard isAutoPlaySubtitle else {return}
@@ -590,7 +578,7 @@
                 self.isRecommendationCollectionViewEnabled = false
                 var failureType = "FPS"
                 //If video failed once and valid fps url is there
-                if !isVideoUrlFailedOnce, let _ = self.playbackRightsData?.url{
+                if !isVideoUrlFailedOnce, let _ = self.playbackRightsData?.url {
                     isVideoUrlFailedOnce = true
                     failureType = "FPS"
                     isFpsUrl = false
@@ -1128,9 +1116,9 @@
                         }
 //                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
-                            weakSelf?.instantiatePlayer(with: fpsUrl, isFps: true)
+                            weakSelf?.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
-                            weakSelf?.instantiatePlayer(with: aesUrl, isFps: false)
+                            weakSelf?.doParentalCheck(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
                             
@@ -1788,6 +1776,34 @@
         }
         self.select(matched, in: group)
         return true
+    }
+ }
+ 
+ extension JCPlayerVC: EnterPinViewModelDelegate {
+    func doParentalCheck(with url: String, isFps: Bool) {
+        let ageGroup = playbackRightsData?.maturityAgeGrp ?? .age18Plus
+        if ParentalPinManager.shared.checkParentalPin(ageGroup) {
+            //Present ParentalPinView
+            enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
+            enterPinViewModel = EnterPinViewModel(contentName: playbackRightsData?.contentName ?? "", delegate: self)
+            enterParentalPinView?.delegate = enterPinViewModel
+            self.view.addSubview(enterParentalPinView!)
+        } else {
+            intantiatePlayerAfterParentalCheck(with: url, isFps: isFps)
+        }
+    }
+    
+    func pinVerification(_ isSucceed: Bool) {
+        if isSucceed {
+            enterPinViewModel = nil
+            enterParentalPinView?.removeFromSuperview()
+            enterParentalPinView = nil
+            if let fpsUrl = self.playbackRightsData?.url {
+                intantiatePlayerAfterParentalCheck(with: fpsUrl, isFps: true)
+            } else if let aesUrl = self.playbackRightsData?.aesUrl {
+                intantiatePlayerAfterParentalCheck(with: aesUrl, isFps: false)
+            }
+        }
     }
  }
 
