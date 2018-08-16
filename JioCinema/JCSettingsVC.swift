@@ -36,8 +36,22 @@ class JCSettingsVC: UIViewController {
         let eventProperties = ["Screen Name": "Settings", "Platform": "TVOS","Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
-    override func viewDidDisappear(_ animated: Bool) {
 
+    
+    func checkAndPerformParentalControlGetPin() {
+        
+        if ParentalPinManager.shared.parentalControlStatus == "" {
+            Utility.sharedInstance.showAlert(viewController: self, title: "Login", message: "You are Not logged in")
+        }
+        else {
+            if !Utility.sharedInstance.isNetworkAvailable {
+                Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+                return
+            }
+            Utility.sharedInstance
+            let parentalControlVC = ParentalControlVC()
+            self.present(parentalControlVC, animated: false, completion: nil)
+        }
     }
    
     override func didReceiveMemoryWarning()
@@ -91,7 +105,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             
         case 1:
             cell.textLabel?.text = AutoPlayHeading
-            cell.settingsDetailLabel.isHidden = false
+//            cell.settingsDetailLabel.isHidden = false
             
             if IsAutoPlayOn {
                 cell.settingsDetailLabel.text = "ON"
@@ -110,12 +124,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         case 3:
             cell.textLabel?.text = ParentalHeading
             cell.settingsDetailLabel.isHidden = false
-            
-            if IsAutoSubtitleOn {
-                cell.settingsDetailLabel.text = "ON"
-            } else {
-                cell.settingsDetailLabel.text = "OFF"
-            }
+            cell.settingsDetailLabel.text = ParentalPinManager.shared.parentalControlStatus
             
         case 4:
             cell.textLabel?.text = "FAQs"
@@ -229,8 +238,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isFeedBackView = false
             
         case 3:
-            let parentalControlVC = ParentalControlVC(with: .SetParentalControl, for: nil)
-            self.present(parentalControlVC, animated: false, completion: nil)
+            self.checkAndPerformParentalControlGetPin()
             return
             
         case 4:

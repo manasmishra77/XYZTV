@@ -16,36 +16,30 @@ enum ParentalConrtrolViewType {
 class ParentalControlVC: UIViewController {
 
     var setParentalViewModel: SetParentalViewModel?
-    var enterPinViewModel: EnterPinViewModel?
-    
-    var enterParentalPinView: EnterParentalPinView?
     var setParentalPinView: SetParentalPinView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.setBaseView(parentalControlType: .EnterParentalControl, for: "content")
-    }
-    
-    convenience init (with parentalControlType: ParentalConrtrolViewType, for content: String?) {
-        self.init()
-        self.setBaseView(parentalControlType: parentalControlType, for: content)
-    }
-    
-    private func setBaseView(parentalControlType: ParentalConrtrolViewType, for content: String?)  {
-        if parentalControlType == .SetParentalControl {
-            setParentalPinView = Utility.getXib("SetParentalPinView", type: SetParentalPinView.self, owner: self)
-            self.view.addSubview(setParentalPinView!)
-            setParentalViewModel = SetParentalViewModel()
-            setParentalViewModel?.getPinForParentalControl(completion: {[unowned self] (pin) in
+        
+        setParentalPinView = Utility.getXib("SetParentalPinView", type: SetParentalPinView.self, owner: self)
+        self.view.addSubview(setParentalPinView!)
+        self.setPinInView("")
+        setParentalViewModel = SetParentalViewModel()
+        Utility.sharedInstance.showIndicator()
+        setParentalViewModel?.getPinForParentalControl(completion: {[unowned self] (pin) in
+        Utility.sharedInstance.hideIndicator()
+            
+            if let pin = pin {
                 self.setPinInView(pin)
-            })
-        }
-        else {
-            enterParentalPinView = Utility.getXib("EnterParentalPinView", type: EnterParentalPinView.self, owner: self)
-            self.view.addSubview(enterParentalPinView!)
-//            enterPinViewModel = EnterPinViewModel(contentName: content ?? "")
-        }
+            }
+            else {
+                Utility.sharedInstance.showAlert(viewController: self, title: "Server Error", message: "")
+            }
+                
+
+        })
+        
+        // Do any additional setup after loading the view.
     }
     
     func setPinInView(_ pin: String) {

@@ -28,8 +28,10 @@ extension RJILApiManager {
                 default:
                     print("Default")
                 }
+            } else {
+                completion(nil)
             }
-            completion(nil)
+            
         }
     }
     

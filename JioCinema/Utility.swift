@@ -13,6 +13,7 @@ class Utility {
     static let sharedInstance = Utility()
     var reachability: Reachability?
     var isNetworkAvailable = false
+    var activityIndicator = UIActivityIndicatorView()
 
     // MARK:- Network Notifier
     func startNetworkNotifier() {
