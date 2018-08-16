@@ -41,6 +41,7 @@
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
 		533F7020211C7609003EA167 /* JCBaseTableViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533F701F211C7609003EA167 /* JCBaseTableViewFooterView.swift */; };
 		533F7024211C78DD003EA167 /* JCBaseTableViewFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 533F7023211C78DD003EA167 /* JCBaseTableViewFooterView.xib */; };
+		535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */; };
 		5360F84920C11EE600F9FC25 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */; };
 		539618E221219B1500B576BF /* ParentalControlVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618E021219B1500B576BF /* ParentalControlVC.swift */; };
 		539618E321219B1500B576BF /* ParentalControlVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 539618E121219B1500B576BF /* ParentalControlVC.xib */; };
@@ -184,6 +185,7 @@
 		44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		533F701F211C7609003EA167 /* JCBaseTableViewFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCBaseTableViewFooterView.swift; sourceTree = "<group>"; };
 		533F7023211C78DD003EA167 /* JCBaseTableViewFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCBaseTableViewFooterView.xib; sourceTree = "<group>"; };
+		535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
 		539618E021219B1500B576BF /* ParentalControlVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalControlVC.swift; sourceTree = "<group>"; };
 		539618E121219B1500B576BF /* ParentalControlVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParentalControlVC.xib; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */,
 				B811ED411F56BC4600E55FAD /* Log.swift */,
 				B822EBDF1F84CE94002332B4 /* Utility.swift */,
+				535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -640,14 +643,14 @@
 				TargetAttributes = {
 					19491ED92018522600870794 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = SYLNKVDPN7;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 8PVH2NGH42;
+						ProvisioningStyle = Manual;
 					};
 					7B78D7BD1F13A91900F319BF = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = SYLNKVDPN7;
+						DevelopmentTeam = 8PVH2NGH42;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes.appletvos = {
 								enabled = 1;
@@ -835,6 +838,7 @@
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
+				535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
@@ -925,15 +929,15 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SYLNKVDPN7;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321.JCTopShelf321;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "83ad8c78-9f08-484f-a972-9734b820c1aa";
+				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf Dev";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -954,12 +958,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SYLNKVDPN7;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321.JCTopShelf321;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1072,8 +1076,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SYLNKVDPN7;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1082,10 +1086,10 @@
 					"$(PROJECT_DIR)/JioCinema/JioMediaAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "cebfd95d-1508-497a-80a5-c13cdf6f7dd0";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -1102,8 +1106,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SYLNKVDPN7;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1111,7 +1115,7 @@
 					"$(PROJECT_DIR)/JioCinema/ApiManager/JioMediaAnalytics",
 					"$(PROJECT_DIR)/JioCinema/JioMediaAnalytics",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

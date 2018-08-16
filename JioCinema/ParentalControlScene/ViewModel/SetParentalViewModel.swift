@@ -11,15 +11,14 @@ import Foundation
 
 class SetParentalViewModel: NSObject {
     
-    func getPinForParentalControl(completion: @escaping (_ pin: String) -> ()) {
+    func getPinForParentalControl(completion: @escaping (_ pin: String?) -> ()) {
         RJILApiManager.defaultManager.getPinFromServer { (pin) in
-            if let pin = pin {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let pin = pin {
                     completion(pin)
+                } else {
+                    completion(nil)
                 }
-                
-            } else {
-                //completion("Error")
             }
         }
     }

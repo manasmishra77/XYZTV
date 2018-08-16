@@ -48,8 +48,14 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
             callWebServiceForResumeWatchData()
         }
+        
+       
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if (ParentalPinManager.shouldShowFirstTimeParentalControlAlert) {
+            handleAlertForFirstTimeLaunchParentalControl()
+        }
         if isMetadataScreenToBePresentedFromResumeWatchCategory {
             isMetadataScreenToBePresentedFromResumeWatchCategory = false
             super.activityIndicator.isHidden = false
@@ -63,6 +69,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         if let toScreen = toScreenName {
             Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
             toScreenName = nil
@@ -77,6 +84,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         screenAppearTiming = Date()
         self.tabBarController?.delegate = self
         if !JCLoginManager.sharedInstance.isUserLoggedIn(), isResumeWatchDataAvailable {
@@ -88,7 +96,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Home", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        
     }
     
     
@@ -592,6 +599,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .UserRecommendation)
     }
     
+    func handleAlertForFirstTimeLaunchParentalControl() {
+        let actionOk = Utility.AlertAction(title: "Ok", style: .default)
+        let actionCancel = Utility.AlertAction(title: "Cancel", style: .cancel)
+        let alertVC = Utility.getCustomizedAlertController(with: "Parental Control Introduced", message: "", actions: [actionOk, actionCancel]) { (alertAction) in
+                if alertAction.title == actionOk.title {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                    self.tabBarController?.selectedIndex = 6
+                    })
+            }
+        }
+        DispatchQueue.main.async {
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
 }
 
 

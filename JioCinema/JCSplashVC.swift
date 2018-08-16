@@ -139,6 +139,8 @@ class JCSplashVC: UIViewController {
         }
     }
     
+
+    
     func showAlert(alertString: String)
     {
         weak var weakSelf = self

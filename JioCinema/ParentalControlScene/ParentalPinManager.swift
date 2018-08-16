@@ -44,13 +44,13 @@ class ParentalPinManager: NSObject {
             return false
         }
         if (Int(sessionStartTime.timeIntervalSinceNow) < (sessionDuration ?? 0)) {
-         return true
+            return true
         }
         isPinOnceVerifiedWithinTheSession = false
         return false
     }
     var allowedCategory: AgeGroup {
-         return ParentalPinManager.shared.parentalPinModel?.parentalSettings?.allowedAgeGrpCategory ?? .allAge
+        return ParentalPinManager.shared.parentalPinModel?.parentalSettings?.allowedAgeGrpCategory ?? .allAge
     }
     
     func setParentalPinModel() {
@@ -74,7 +74,27 @@ class ParentalPinManager: NSObject {
         }
     }
     
+    static var shouldShowFirstTimeParentalControlAlert: Bool {
+        if((UserDefaults.standard.value(forKey: isParentalControlShown)) != nil) {
+            return false
+        }
+        else {
+            UserDefaults.standard.setValue(true, forKeyPath: isParentalControlShown)
+            return true
+        }
+    }
     
+    var parentalControlStatus: String {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn()){
+            if isPinActive {
+                return "ON"
+            }
+            else {
+                return "OFF"
+            }
+        }
+        return ""
+    }
     
     func userLoggedOut() {
         resetManager()
@@ -84,5 +104,5 @@ class ParentalPinManager: NSObject {
         sessionDuration = nil
         sessionStartTime = nil
     }
-
+    
 }
