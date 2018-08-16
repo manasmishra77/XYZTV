@@ -44,7 +44,7 @@ class ParentalControlVC: UIViewController {
         else {
             enterParentalPinView = Utility.getXib("EnterParentalPinView", type: EnterParentalPinView.self, owner: self)
             self.view.addSubview(enterParentalPinView!)
-            enterPinViewModel = EnterPinViewModel(contentName: content ?? "")
+//            enterPinViewModel = EnterPinViewModel(contentName: content ?? "")
         }
     }
     

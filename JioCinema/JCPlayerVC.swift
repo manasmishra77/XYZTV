@@ -1781,9 +1781,10 @@
  
  extension JCPlayerVC: EnterPinViewModelDelegate {
     func doParentalCheck(with url: String, isFps: Bool) {
-        let ageGroup = playbackRightsData?.maturityAgeGrp ?? .age18Plus
+        let ageGroup = playbackRightsData?.maturityAgeGrp ?? .allAge
         if ParentalPinManager.shared.checkParentalPin(ageGroup) {
             //Present ParentalPinView
+            isSwipingAllowed_RecommendationView = false
             enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
             enterPinViewModel = EnterPinViewModel(contentName: playbackRightsData?.contentName ?? "", delegate: self)
             enterParentalPinView?.delegate = enterPinViewModel
@@ -1796,6 +1797,7 @@
     
     func pinVerification(_ isSucceed: Bool) {
         if isSucceed {
+            isSwipingAllowed_RecommendationView = true
             enterPinViewModel = nil
             enterParentalPinView?.removeFromSuperview()
             enterParentalPinView = nil

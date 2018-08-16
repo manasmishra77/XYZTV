@@ -24,9 +24,9 @@ class EnterParentalPinView: UIView {
     
     
     @IBAction func playButtonTapped(_ sender: Any) {
-//        if delegate?.didClickOnSubmitButton(password) ?? false {
-//            
-//        }
+        if delegate?.didClickOnSubmitButton(password) ?? false {
+
+        }
     }
     
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {

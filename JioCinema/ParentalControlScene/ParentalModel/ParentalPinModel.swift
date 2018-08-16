@@ -94,6 +94,7 @@ struct AgeCategory : Codable {
         case label
         case value
         case order
+        case isAllowed = "selected"
     }
     
     init(from decoder: Decoder) throws {
@@ -101,6 +102,7 @@ struct AgeCategory : Codable {
         label = try values.decodeIfPresent(String.self, forKey: .label)
         value = try values.decodeIfPresent(String.self, forKey: .value)
         order = try values.decodeIfPresent(Int.self, forKey: .order)
+        isAllowed = try values.decodeIfPresent(Bool.self, forKey: .isAllowed)
     }
     
 }
