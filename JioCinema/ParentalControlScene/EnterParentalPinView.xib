@@ -336,6 +336,9 @@
                                     <real key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Xp1-41-zBN"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>

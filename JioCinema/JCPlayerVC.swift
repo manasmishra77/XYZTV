@@ -1787,6 +1787,7 @@
             enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
             enterPinViewModel = EnterPinViewModel(contentName: playbackRightsData?.contentName ?? "", delegate: self)
             enterParentalPinView?.delegate = enterPinViewModel
+            enterParentalPinView?.frame = self.view.frame
             self.view.addSubview(enterParentalPinView!)
         } else {
             intantiatePlayerAfterParentalCheck(with: url, isFps: isFps)

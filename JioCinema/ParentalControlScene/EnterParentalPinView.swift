@@ -22,12 +22,19 @@ class EnterParentalPinView: UIView {
    
     @IBOutlet var passwordLabelArray: [UILabel]!
     
+    
+    @IBAction func playButtonTapped(_ sender: Any) {
+//        if delegate?.didClickOnSubmitButton(password) ?? false {
+//            
+//        }
+    }
+    
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {
         if(sender.tag == -1){
             if(password.count == 0) {
                 return
             } else {
-                let truncatedPass : String = password.substring(to: password.index(before: password.endIndex))
+                let truncatedPass: String = password.substring(to: password.index(before: password.endIndex))
                 password = truncatedPass
                 setLabel(password)
                 returnPass()
