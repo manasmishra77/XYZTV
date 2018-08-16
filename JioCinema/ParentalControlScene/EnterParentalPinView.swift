@@ -16,13 +16,15 @@ class EnterParentalPinView: UIView {
 
     var password: String = ""
     var delegate: EnterParentalPinViewDelegate?
-    
+
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
-   
     @IBOutlet var passwordLabelArray: [UILabel]!
-    
-    
+    override func awakeFromNib() {
+        cancelButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
+        playButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
+    }
     @IBAction func playButtonTapped(_ sender: Any) {
         if delegate?.didClickOnSubmitButton(password) ?? false {
 
@@ -34,6 +36,7 @@ class EnterParentalPinView: UIView {
             if(password.count == 0) {
                 return
             } else {
+                
                 let truncatedPass: String = password.substring(to: password.index(before: password.endIndex))
                 password = truncatedPass
                 setLabel(password)
