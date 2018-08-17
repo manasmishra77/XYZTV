@@ -54,6 +54,7 @@
 		539618F92122B80700B576BF /* SetParentalPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618F82122B80600B576BF /* SetParentalPinView.swift */; };
 		539AB2592122C4CB0003FF84 /* ParentalPinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */; };
 		539AB25B2122E2760003FF84 /* ParentalPinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB25A2122E2760003FF84 /* ParentalPinManager.swift */; };
+		539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */ = {isa = PBXBuildFile; fileRef = 539FC8B42126F53D0070D306 /* ParentalControlSetting.png */; };
 		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
 		797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchResultViewController.swift */; };
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
@@ -198,6 +199,7 @@
 		539618F82122B80600B576BF /* SetParentalPinView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetParentalPinView.swift; sourceTree = "<group>"; };
 		539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinModel.swift; sourceTree = "<group>"; };
 		539AB25A2122E2760003FF84 /* ParentalPinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinManager.swift; sourceTree = "<group>"; };
+		539FC8B42126F53D0070D306 /* ParentalControlSetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ParentalControlSetting.png; sourceTree = "<group>"; };
 		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		797880F81F4ECB390032943E /* JCSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchResultViewController.swift; sourceTree = "<group>"; };
@@ -524,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				7B3A43F81F4424F900EE3824 /* imdb_logo.png */,
+				539FC8B42126F53D0070D306 /* ParentalControlSetting.png */,
 				7BD39C971F419F470014255C /* AddtoWatchlist.png */,
 				7BD39C981F419F470014255C /* WatchNow.png */,
 				7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */,
@@ -721,6 +724,7 @@
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
+				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
