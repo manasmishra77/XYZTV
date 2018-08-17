@@ -134,7 +134,7 @@ let readyToPlayNotificationName = Notification.Name("readyToPlay")
 let openSearchVCNotificationName = Notification.Name("openSearchVC")
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
-let isParentalControlOnKey = "isParentalControlOn"
+let isParentalControlShown = "isParentalControlShown"
 
 
 //Google Analytics

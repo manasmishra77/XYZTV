@@ -40,7 +40,7 @@ class JCSettingsVC: UIViewController {
     
     func checkAndPerformParentalControlGetPin() {
         
-        if ParentalPinManager.shared.parentalControlStatus == "" {
+        if !JCLoginManager.sharedInstance.isUserLoggedIn() {
             Utility.sharedInstance.showAlert(viewController: self, title: "Login", message: "You are Not logged in")
         }
         else {
@@ -48,7 +48,6 @@ class JCSettingsVC: UIViewController {
                 Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
                 return
             }
-            Utility.sharedInstance
             let parentalControlVC = ParentalControlVC()
             self.present(parentalControlVC, animated: false, completion: nil)
         }
@@ -105,13 +104,12 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             
         case 1:
             cell.textLabel?.text = AutoPlayHeading
-//            cell.settingsDetailLabel.isHidden = false
-            
             if IsAutoPlayOn {
                 cell.settingsDetailLabel.text = "ON"
             } else {
                 cell.settingsDetailLabel.text = "OFF"
             }
+            
         case 2:
             cell.textLabel?.text = Subtitleheading
             cell.settingsDetailLabel.isHidden = false
@@ -121,6 +119,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             } else {
                 cell.settingsDetailLabel.text = "OFF"
             }
+            
         case 3:
             cell.textLabel?.text = ParentalHeading
             cell.settingsDetailLabel.isHidden = false
