@@ -784,13 +784,19 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         
     }
-    
+    func returnMaturityRating()-> String{
+        if let maturityRating = metadata?.maturityRating{
+            return " | Maturity Rating : \(maturityRating)"
+        } else {
+            return ""
+        }
+    }
     //prepare metadata view
     func prepareMetadataView() -> UIView {
         headerCell.frame.size.width = metadataContainerView.frame.size.width
         headerCell.frame.size.height = getHeaderContainerHeight()
         headerCell.titleLabel.text = metadata?.name
-        headerCell.subtitleLabel.text = metadata?.newSubtitle
+        headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS

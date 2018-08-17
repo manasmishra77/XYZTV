@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     }
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
         
 //             jioIdTextField.text     = "poonam2016"
 //             passwordTextField.text  = "poonam@12"

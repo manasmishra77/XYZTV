@@ -13,10 +13,12 @@ protocol EnterParentalPinViewDelegate {
 }
 
 class EnterParentalPinView: UIView {
-
+    
+    var myPreferdFocusedView : UIView?
+    
     var password: String = ""
     var delegate: EnterParentalPinViewDelegate?
-
+    
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
@@ -27,29 +29,30 @@ class EnterParentalPinView: UIView {
     }
     @IBAction func playButtonTapped(_ sender: Any) {
         if delegate?.didClickOnSubmitButton(password) ?? false {
-
+            
         }
     }
     
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {
+        myPreferdFocusedView = nil
         if(sender.tag == -1){
             if(password.count == 0) {
                 return
             } else {
                 
-                let truncatedPass: String = password.substring(to: password.index(before: password.endIndex))
+                let truncatedPass: String = password.substring(to: password.index(before: password.endIndex)) //String(password[..<password.endIndex])
+                //.substring(to: password.index(before: password.endIndex))
                 password = truncatedPass
                 setLabel(password)
-                returnPass()
             }
         } else {
             if(password.count < 4) {
                 password = password + "\(sender.tag)"
                 setLabel(password)
-                returnPass()
             }
         }
     }
+    
     func setLabel(_ pass:String) {
         if(pass.count <= 4){
             playButton.isEnabled = false
@@ -59,12 +62,19 @@ class EnterParentalPinView: UIView {
             for i in 0..<pass.count{
                 passwordLabelArray[i].text = "●"
             }
-            if(pass.count == 4){
+            if(pass.count == 4) {
                 playButton.isEnabled = true
+                myPreferdFocusedView = playButton
+                self.updateFocusIfNeeded()
+                self.setNeedsFocusUpdate()
             }
         }
     }
-    func returnPass(){
-        print(password)
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferedView = myPreferdFocusedView {
+            return [preferedView]
+        }
+        return []
     }
 }

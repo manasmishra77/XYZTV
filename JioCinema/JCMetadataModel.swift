@@ -107,6 +107,14 @@ class MetadataModel:Mappable
     var episodes:[Episode]?
     var inQueue:Bool?
     var filter:[Filter]?
+    var maturityRating: String?
+    
+    var maturityAgeGrp: AgeGroup {
+        if let value = self.maturityRating {
+            return AgeGroup(rawValue: value) ?? .allAge
+        }
+        return .allAge
+    }
     
 
     required init(map:Map) {
@@ -231,6 +239,8 @@ class MetadataModel:Mappable
         inQueue <- map["inQueue"]
         isSeason <- map["isSeason"]
         filter <- map["filter"]
+        maturityRating <- map["maturityRating"]
+        
         
     }
 }
