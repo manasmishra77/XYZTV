@@ -324,6 +324,9 @@
                                     <real key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="1lK-hn-94k"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9L4-nK-pOu">
                             <rect key="frame" x="260" y="0.0" width="190" height="75"/>
@@ -382,6 +385,7 @@
             <viewLayoutGuide key="safeArea" id="nkI-NY-t1X"/>
             <connections>
                 <outlet property="cancelButton" destination="lfS-kA-jQt" id="J81-hR-aOK"/>
+                <outlet property="contentTitle" destination="m2W-Zb-RQD" id="V4N-Yl-dfm"/>
                 <outlet property="playButton" destination="9L4-nK-pOu" id="zGL-TK-KzJ"/>
                 <outletCollection property="passwordLabelArray" destination="ZxV-Dp-Kbu" collectionClass="NSMutableArray" id="r1b-t0-ft5"/>
                 <outletCollection property="passwordLabelArray" destination="6Wl-Jm-GaX" collectionClass="NSMutableArray" id="UFn-yX-AIY"/>
