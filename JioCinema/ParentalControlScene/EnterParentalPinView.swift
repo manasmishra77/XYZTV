@@ -17,6 +17,7 @@ class EnterParentalPinView: UIView {
     var password: String = ""
     var delegate: EnterParentalPinViewDelegate?
 
+    @IBOutlet weak var contentTitle: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
@@ -27,10 +28,15 @@ class EnterParentalPinView: UIView {
     }
     @IBAction func playButtonTapped(_ sender: Any) {
         if delegate?.didClickOnSubmitButton(password) ?? false {
-
         }
+        password = ""
+        self.setLabel(password)
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        let topVC = UIApplication.topViewController()
+        topVC?.dismiss(animated: true, completion: nil)
+    }
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {
         if(sender.tag == -1){
             if(password.count == 0) {

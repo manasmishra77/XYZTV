@@ -1788,6 +1788,7 @@
             enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
             enterPinViewModel = EnterPinViewModel(contentName: playbackRightsData?.contentName ?? "", delegate: self)
             enterParentalPinView?.delegate = enterPinViewModel
+            enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
             enterParentalPinView?.frame = self.view.frame
             self.view.addSubview(enterParentalPinView!)
         } else {
