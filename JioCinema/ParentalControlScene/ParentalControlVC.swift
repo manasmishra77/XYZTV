@@ -31,8 +31,7 @@ class ParentalControlVC: UIViewController {
             
             if let pin = pin {
                 self.setPinInView(pin)
-            }
-            else {
+            } else {
                 Utility.sharedInstance.showAlert(viewController: self, title: "Server Error", message: "")
             }
                 
