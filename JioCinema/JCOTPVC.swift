@@ -22,7 +22,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     @IBOutlet weak var resendOTPLableToast: UILabel!
     var activityIndicator:UIActivityIndicatorView?
     var isRequestMadeForResend = false
-    //var searchController:UISearchController? = nil
     var myPreferredFocuseView: UIView? = nil
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
@@ -43,8 +42,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         signInButton.layer.cornerRadius = 8
         resendOTPButton.layer.cornerRadius = 8
         jioNumberTFLabel.layer.cornerRadius = 8
-        
-        //searchController?.searchBar.delegate = self
         addSwipeGesture()
     }
     deinit {
@@ -64,10 +61,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.up:
-                // self.swipeUpRecommendationView()
                 break
             case UISwipeGestureRecognizerDirection.down:
-                //self.swipeDownRecommendationView()
                 if signInButton.isHidden{
                     if getOTPButton.isFocused == false{
                         myPreferredFocuseView = getOTPButton
@@ -119,10 +114,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             view.addSubview(activityIndicator!)
             activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
             activityIndicator?.startAnimating()
-            
             self.callWebServiceToVerifyOTP(otp: enteredOTP!)
-            //searchController?.searchBar.text = ""
-            //searchController?.searchBar.placeholder = "Enter OTP"
         }
     }
     
@@ -133,12 +125,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 //let truncatedNumber = number?.substring(to: (number?.index(before: (number?.endIndex)!))!)
                 let truncatedNumber = number?[..<(number?.index(before: (number?.endIndex)!))!]
                 jioNumberTFLabel.text = String(truncatedNumber!)
-                
                 if truncatedNumber == ""
                 {
-
-                    jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"
-                    
+                    jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"                    
                 }
             }
         }

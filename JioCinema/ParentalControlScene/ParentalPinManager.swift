@@ -86,11 +86,13 @@ class ParentalPinManager: NSObject {
     
     var parentalControlStatus: String {
         if(JCLoginManager.sharedInstance.isUserLoggedIn()){
-            if isPinActive {
-                return "ON"
-            }
-            else {
-                return "OFF"
+            if parentalPinModel != nil {
+                if isPinActive {
+                    return "ON"
+                }
+                else {
+                    return "OFF"
+                }
             }
         }
         return ""
