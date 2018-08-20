@@ -336,10 +336,10 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell
                     
                     //Updates after login
+                    ParentalPinManager.shared.setParentalPinModel()
                     if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
                         if let homevc = tabVc.viewControllers![0] as? JCHomeVC {
                             homevc.callWebServiceForResumeWatchData()
-                            ParentalPinManager.shared.setParentalPinModel()
                             homevc.callWebServiceForUserRecommendationList()
                         }
                         if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {

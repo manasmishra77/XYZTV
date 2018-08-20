@@ -28,11 +28,6 @@ class ParentalPinManager: NSObject {
             }
             return nil
         }
-        set {
-            //Setting when user logging out
-            JCDataStore.sharedDataStore.configData?.configDataUrls?.parentalSession = nil
-        }
-        
     }
     
     var isPinOnceVerifiedWithinTheSession: Bool = false
@@ -40,6 +35,9 @@ class ParentalPinManager: NSObject {
     private var sessionStartTime: Date?
     
     var isPinActive: Bool {
+        guard ((parentalPinModel?.isPinActive ?? false) && (parentalPinModel?.isParentalLockEnabled ?? false)) else {
+            return false
+        }
         guard let sessionStartTime = sessionStartTime else {
             return false
         }
@@ -103,8 +101,8 @@ class ParentalPinManager: NSObject {
     }
     func resetManager() {
         parentalPinModel = nil
-        sessionDuration = nil
         sessionStartTime = nil
+        isPinOnceVerifiedWithinTheSession = false
     }
     
 }

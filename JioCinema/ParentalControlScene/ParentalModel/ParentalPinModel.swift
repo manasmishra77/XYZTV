@@ -12,6 +12,7 @@ struct ParentalPinModel : Codable {
     let emailId : String?
     let pin : String?
     var isPinActive : Bool?
+    let isParentalLockEnabled: Bool?
     let parentalSettings : ParentalSettings?
     let isEmailVerified : Bool?
     
@@ -20,6 +21,7 @@ struct ParentalPinModel : Codable {
         case pin
         case isPinActive
         case parentalSettings
+        case isParentalLockEnabled = "parentalLockEnabled"
         case isEmailVerified = "emailVerified"
     }
     
@@ -31,6 +33,12 @@ struct ParentalPinModel : Codable {
             isPinActive = (pinActive == "Y")
         } else {
             isPinActive = false
+        }
+        if let parentalEnable = try values.decodeIfPresent(String.self, forKey: .isParentalLockEnabled) {
+            isParentalLockEnabled = (parentalEnable == "Y")
+        }
+        else {
+            isParentalLockEnabled = false
         }
         parentalSettings = try values.decodeIfPresent(ParentalSettings.self, forKey: .parentalSettings)
         if let emailVerified = try values.decodeIfPresent(String.self, forKey: .isEmailVerified) {

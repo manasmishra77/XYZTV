@@ -240,6 +240,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
+       
         self.itemId = id
         self.itemAppType = newAppType
         self.changeAddWatchlistButtonStatus(id, newAppType)
@@ -249,6 +250,10 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
             DispatchQueue.main.async {
+                guard id != "" else {
+                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    return
+                }
                 weakSelf?.isUserComingFromPlayerScreen = false
                 weakSelf?.loaderContainerView.isHidden = true
                 weakSelf?.metadataContainerView.isHidden = false

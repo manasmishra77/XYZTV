@@ -83,12 +83,12 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData ?? false
                         let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell ?? false
                         
+                        ParentalPinManager.shared.setParentalPinModel()
                         //Updates after login
                         if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
                             if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
                                 homevc.callWebServiceForResumeWatchData()
                                 homevc.callWebServiceForUserRecommendationList()
-                                ParentalPinManager.shared.setParentalPinModel()
                             }
                             if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
                                 movieVC.callWebServiceForMoviesWatchlist()
