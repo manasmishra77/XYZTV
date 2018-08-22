@@ -584,6 +584,7 @@
                     isFpsUrl = false
                     self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
                 } else {
+                    /*
                     //AES url failed
                     failureType = "AES"
                     let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
@@ -597,7 +598,7 @@
                     alert.addAction(cancelAction)
                     DispatchQueue.main.async {
                         self.present(alert, animated: false, completion: nil)
-                    }
+                    }*/
                 }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
@@ -1114,7 +1115,7 @@
                             weakSelf?.player?.pause()
                             weakSelf?.resetPlayer()
                         }
-//                        self.playbackRightsData?.url = nil
+                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             weakSelf?.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1643,6 +1644,7 @@
         }
         
         var urlString = loadingRequest.request.url?.absoluteString ?? ""
+        print(urlString)
         let contentRequest = loadingRequest.contentInformationRequest
         let dataRequest = loadingRequest.dataRequest
         //Check if the it is a content request or data request, we have to check for data request and do the m3u8 file manipulation
@@ -1654,6 +1656,7 @@
             //this is data request so processing the url. change the scheme to http
             
             if (urlString.contains("fakeHttp")), (urlString.contains("token")) {
+                print(urlString)
                 urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
                 guard let url = URL(string: urlString) else {
                     return false
@@ -1670,23 +1673,46 @@
             }
             if (urlString.contains(".m3u8"))
             {
-                let expiryTime:String = self.getExpireTime()
-                urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
-                let punctuation = (urlString.contains(".m3u8?")) ? "&" : "?"
-                let stkeyValue = self.getSTKeyValue()
-                let urlString = urlString + "\(punctuation)jct=\(self.getJCTKeyValue(with: expiryTime))&pxe=\(expiryTime)&st=\(stkeyValue)"
-                guard let url = URL(string: urlString) else {
-                    return false
+//                if urlString.contains("subtitlelist"){
+//                    print("subtitlelist = = \(urlString)")
+//                    urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
+//                    guard let url = URL(string: urlString) else {
+//                        return false
+//                    }
+//                    do {
+//                        let data = try Data(contentsOf: url)
+//                        dataRequest?.respond(with: data)
+//                        loadingRequest.finishLoading()
+//
+//                    } catch {
+//                        print("error of subtitle = \(error.localizedDescription)")
+//                        return false
+//                    }
+//                }
+//                else{
+                if urlString.contains("subtitlelist"){
+                    print("m3u8 = \(urlString)")
                 }
-                print("printing value of url \(urlString)")
-                do {
-                    let data = try Data(contentsOf: url)
-                    dataRequest?.respond(with: data)
-                    loadingRequest.finishLoading()
-                    
-                } catch {
-                    return false
-                }
+                    let expiryTime:String = self.getExpireTime()
+                    urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
+                    let punctuation = (urlString.contains(".m3u8?")) ? "&" : "?"
+                    let stkeyValue = self.getSTKeyValue()
+                    let urlString = urlString + "\(punctuation)jct=\(self.getJCTKeyValue(with: expiryTime))&pxe=\(expiryTime)&st=\(stkeyValue)"
+                    guard let url = URL(string: urlString) else {
+                        return false
+                    }
+                    print("printing value of url \(urlString)")
+                    do {
+                        let data = try Data(contentsOf: url)
+                        dataRequest?.respond(with: data)
+                        loadingRequest.finishLoading()
+                        
+                    } catch {
+                        print("error of subtitle = \(error.localizedDescription)")
+                        return false
+                    }
+               // }
+                
                 return true
             }
             if(urlString.contains(".ts")) {

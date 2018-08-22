@@ -646,14 +646,14 @@
 				TargetAttributes = {
 					19491ED92018522600870794 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = 8PVH2NGH42;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = SYLNKVDPN7;
+						ProvisioningStyle = Automatic;
 					};
 					7B78D7BD1F13A91900F319BF = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = 8PVH2NGH42;
+						DevelopmentTeam = SYLNKVDPN7;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes.appletvos = {
 								enabled = 1;
@@ -933,15 +933,15 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8PVH2NGH42;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SYLNKVDPN7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321.JCTopShelf321;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "83ad8c78-9f08-484f-a972-9734b820c1aa";
-				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf Dev";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -962,12 +962,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SYLNKVDPN7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321.JCTopShelf321;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1080,8 +1080,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8PVH2NGH42;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SYLNKVDPN7;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1090,10 +1090,10 @@
 					"$(PROJECT_DIR)/JioCinema/JioMediaAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cebfd95d-1508-497a-80a5-c13cdf6f7dd0";
-				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Developer;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -1110,8 +1110,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SYLNKVDPN7;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1119,7 +1119,7 @@
 					"$(PROJECT_DIR)/JioCinema/ApiManager/JioMediaAnalytics",
 					"$(PROJECT_DIR)/JioCinema/JioMediaAnalytics",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand321;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
