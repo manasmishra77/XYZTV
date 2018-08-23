@@ -103,6 +103,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnSignInButton(_ sender: Any)
     {
+        //jioNumberTFLabel.text = "7977638229"
         let enteredOTP = jioNumberTFLabel.text//searchController?.searchBar.text!
         if(enteredOTP?.count == 0)
         {
@@ -119,6 +120,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     }
     
     @IBAction func didClickOnKeyBoardButton(_ sender: JCKeyboardButton) {
+        
         if sender.tag == -1{
             if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
                 let number = jioNumberTFLabel.text
@@ -132,7 +134,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             }
         }
         else{
-            var number = jioNumberTFLabel.text
+            var number: String? = jioNumberTFLabel.text
             if number == "Enter Jio Number" || number == "Enter OTP"{
                 number = ""
             }

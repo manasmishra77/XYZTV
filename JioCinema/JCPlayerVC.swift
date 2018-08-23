@@ -1115,7 +1115,7 @@
                             weakSelf?.player?.pause()
                             weakSelf?.resetPlayer()
                         }
-                        self.playbackRightsData?.url = nil
+                        //self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             weakSelf?.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
