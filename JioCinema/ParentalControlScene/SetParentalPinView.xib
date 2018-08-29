@@ -63,6 +63,7 @@
             <viewLayoutGuide key="safeArea" id="nkI-NY-t1X"/>
             <connections>
                 <outlet property="pinLabel" destination="ZdP-X2-4DQ" id="mND-B4-eSu"/>
+                <outlet property="setParentalPinHeading" destination="8Zb-iT-yCs" id="g1Q-aD-X4y"/>
             </connections>
         </view>
     </objects>
