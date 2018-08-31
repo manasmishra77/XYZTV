@@ -597,6 +597,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             if let responseData = data {
                 weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
+                    weakSelf?.prepareMetdataArtistLabel()
                     weakSelf?.metadataTableView.reloadData()
                     weakSelf?.metadataTableView.layoutIfNeeded()
                     weakSelf?.setNeedsFocusUpdate()
@@ -789,9 +790,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         
     }
-    func returnMaturityRating()-> String{
+    func returnMaturityRating() -> String {
         if let maturityRating = metadata?.maturityRating{
-            return " | Maturity Rating : \(maturityRating)"
+            return " | Maturity Rating: \(maturityRating)"
         } else {
             return ""
         }

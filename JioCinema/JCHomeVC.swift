@@ -602,7 +602,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     func handleAlertForFirstTimeLaunchParentalControl() {
         let actionOk = Utility.AlertAction(title: "Ok", style: .default)
         let actionCancel = Utility.AlertAction(title: "Cancel", style: .cancel)
-        let alertVC = Utility.getCustomizedAlertController(with: "Parental Control Introduced", message: "", actions: [actionOk, actionCancel]) { (alertAction) in
+        let alertVC = Utility.getCustomizedAlertController(with: "", message: ParentalControlAlertMsg, actions: [actionOk, actionCancel]) { (alertAction) in
                 if alertAction.title == actionOk.title {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
                     self.tabBarController?.selectedIndex = 6
