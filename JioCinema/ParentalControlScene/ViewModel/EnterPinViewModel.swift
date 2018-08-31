@@ -45,7 +45,7 @@ extension EnterPinViewModel: EnterParentalPinViewDelegate {
             return true
         }
         else {
-            Utility.sharedInstance.showAlert(viewController: nil, title: "JioCinema", message: "Please enter valid Parental PIN")
+            Utility.sharedInstance.showAlert(viewController: nil, title: "", message: ValidPinAlertMsg)
         }
         return false
     }
