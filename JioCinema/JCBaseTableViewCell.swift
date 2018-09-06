@@ -62,7 +62,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         } else {
             // or use some work around
         }
-
+        
     }
     
     
@@ -100,9 +100,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
         if let imageUrl = items[indexPath.row].banner {
             let progress: Float?
-            
-            if let duration = items[indexPath.row].duration, let floatDuration = Float(duration), let totalDuration = items[indexPath.row].totalDuration, let floatTotalDuration = Float(totalDuration) {
-                progress = floatDuration / floatTotalDuration
+            if let duration = items[indexPath.row].duration, let totalDuration = items[indexPath.row].totalDuration {
+                progress = Float(duration) / Float(totalDuration)
                 resumeWatchCell.progressBar.setProgress(progress ?? 0, animated: false)
             } else {
                 resumeWatchCell.progressBar.setProgress(0, animated: false)
@@ -160,7 +159,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
         return cell
-        }
+    }
     
     func artistImageCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: artistImageCellIdentifier, for: indexPath) as! JCArtistImageCell
@@ -174,17 +173,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let artistImagesArray = self.itemsArray as! [(String, String)]
         let artistNameKey = artistImagesArray[indexPath.row].0
         let imageUrl = artistImagesArray[indexPath.row].1
-            
-            cell.artistNameLabel.text = artistNameKey
-            let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
-            var artistInitial = ""
-            for each in artistNameSubGroup {
-                if each.first != nil{
-                    artistInitial = artistInitial + String(describing: each.first!)
-                }
+        
+        cell.artistNameLabel.text = artistNameKey
+        let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
+        var artistInitial = ""
+        for each in artistNameSubGroup {
+            if each.first != nil{
+                artistInitial = artistInitial + String(describing: each.first!)
             }
-            cell.artistNameInitialButton.isHidden = false
-            let url = URL(string: imageUrl)
+        }
+        cell.artistNameInitialButton.isHidden = false
+        let url = URL(string: imageUrl)
         cell.artistNameInitialButton.sd_setBackgroundImage(with: url, for: .normal, completed: { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             if error != nil{
                 cell.artistNameInitialButton.setTitle(String(describing: artistInitial), for: .normal)
@@ -193,7 +192,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
                 cell.artistNameInitialButton.setTitle("", for: .normal)
             }
         })
-
+        
         cell.isOpaque = true
         cell.backgroundColor = .clear
         return cell

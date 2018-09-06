@@ -9,7 +9,7 @@
 import UIKit
 
 class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
-
+    
     weak var searchViewController: UISearchController? = nil
     
     //For Search from artist name
@@ -33,7 +33,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         }
     }
     
-     var trendingSearchResultViewModel: JCTrendingSearchResultViewModel?
+    var trendingSearchResultViewModel: JCTrendingSearchResultViewModel?
     
     
     //MARK:- View Life Cycle
@@ -43,13 +43,13 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
         self.searchRecommendationTableView.register(UINib(nibName: "JCSearchRecommendationTableViewCell", bundle: nil), forCellReuseIdentifier: SearchRecommendationCellIdentifier)
-
+        
         baseTableView.delegate = self
         baseTableView.dataSource = self
         activityIndicator.isHidden = true
         // Do any additional setup after loading the view.
         
-         //Search Trending ViewModel Intialization
+        //Search Trending ViewModel Intialization
         trendingSearchResultViewModel = JCTrendingSearchResultViewModel(self)
     }
     
@@ -106,7 +106,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
-        if let tappedItem = item as? Item {
+        if let item = item as? Item {
+            var tappedItem = item
             isComminFromSelectingRecommend = true
             //Screenview event to Google Analytics
             let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
@@ -122,14 +123,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
-                    if tappedItem.duration != nil, let drn = Float(tappedItem.duration!){
-                        if drn > 0 {
-                            tappedItem.app?.type = VideoType.Episode.rawValue
-                            checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
-                        } else {
-                            let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
-                            self.present(metadataVC, animated: true, completion: nil)
-                        }
+                    let drn = Float(tappedItem.duration ?? 0)
+                    if drn > 0 {
+                        tappedItem.app?.type = VideoType.Episode.rawValue
+                        checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
                         let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                         self.present(metadataVC, animated: true, completion: nil)
@@ -205,33 +202,52 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     func searchResultForkey(with key: String) {
         let url = preditiveSearchURL
-        let params:[String:String]? = ["q": key]
-        let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakself = self
-        
-        RJILApiManager.defaultManager.post(request: searchRequest) { (data, response, error) in
-            if error != nil {
+        let params: [String:String]? = ["q": key]
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[unowned self](response) in
+            guard response.isSuccess else {
                 DispatchQueue.main.async {
-                    weakself?.searchResultArray.removeAll()
-                    weakself?.baseTableView.reloadData()
+                    self.searchResultArray.removeAll()
+                    self.baseTableView.reloadData()
                 }
                 return
             }
-            if let responseData = data {
-                if let responseString = String(data: responseData, encoding: .utf8) {
-                    weakself?.searchModel = SearchDataModel(JSONString: responseString)
-                    
-                    if let array = (weakself?.searchModel?.searchData?.categoryItems), array.count > 0 {
-                        DispatchQueue.main.async {
-                            weakself?.searchResultArray = array
-                            weakself?.baseTableView.reloadData()
-                        }
-                    }
+            self.searchModel = response.model
+            if let array = (self.searchModel?.searchData?.categoryItems), array.count > 0 {
+                DispatchQueue.main.async {
+                    self.searchResultArray = array
+                    self.baseTableView.reloadData()
                 }
             }
+            
         }
+        /*
+         RJILApiManager.getSearchData(key: key, <#T##completion: APISuccessBlock##APISuccessBlock##(Bool, String?) -> ()#>)
+         let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+         weak var weakself = self
+         
+         RJILApiManager.defaultManager.post(request: searchRequest) { (data, response, error) in
+         if error != nil {
+         DispatchQueue.main.async {
+         weakself?.searchResultArray.removeAll()
+         weakself?.baseTableView.reloadData()
+         }
+         return
+         }
+         if let responseData = data {
+         if let responseString = String(data: responseData, encoding: .utf8) {
+         weakself?.searchModel = SearchDataModel(JSONString: responseString)
+         
+         if let array = (weakself?.searchModel?.searchData?.categoryItems), array.count > 0 {
+         DispatchQueue.main.async {
+         weakself?.searchResultArray = array
+         weakself?.baseTableView.reloadData()
+         }
+         }
+         }
+         }
+         }*/
     }
-   
+    
     //MARK:- Analytics Event Methods
     func sendSearchAnalyticsEvent() {
         // For Internal Analytics Event

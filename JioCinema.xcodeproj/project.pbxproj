@@ -17,6 +17,11 @@
 		194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */; };
 		194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */; };
 		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
+		1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC58213FC45F00A98404 /* LoginModels.swift */; };
+		1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC5A213FC54700A98404 /* APIManager+Base.swift */; };
+		1966AC5D213FC58B00A98404 /* APIManager+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC5C213FC58B00A98404 /* APIManager+Common.swift */; };
+		1966AC5F213FC5B300A98404 /* APIManager+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC5E213FC5B300A98404 /* APIManager+Search.swift */; };
+		1966AC61213FDBD800A98404 /* APIManager+LanguageGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC60213FDBD800A98404 /* APIManager+LanguageGenre.swift */; };
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
 		197727B620B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */; };
 		197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */; };
@@ -50,7 +55,6 @@
 		539618EF2121A0F300B576BF /* EnterPinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618EE2121A0F300B576BF /* EnterPinViewModel.swift */; };
 		539618F22121A41F00B576BF /* EnterParentalPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618F02121A41E00B576BF /* EnterParentalPinView.swift */; };
 		539618F32121A41F00B576BF /* EnterParentalPinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 539618F12121A41F00B576BF /* EnterParentalPinView.xib */; };
-		539618F72121CB8700B576BF /* RJILApiManager+Parental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618F62121CB8700B576BF /* RJILApiManager+Parental.swift */; };
 		539618F92122B80700B576BF /* SetParentalPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618F82122B80600B576BF /* SetParentalPinView.swift */; };
 		539AB2592122C4CB0003FF84 /* ParentalPinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */; };
 		539AB25B2122E2760003FF84 /* ParentalPinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB25A2122E2760003FF84 /* ParentalPinManager.swift */; };
@@ -161,6 +165,11 @@
 		194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCSearchRecommendationTableViewCell.xib; sourceTree = "<group>"; };
 		194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationController.swift; sourceTree = "<group>"; };
 		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
+		1966AC58213FC45F00A98404 /* LoginModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModels.swift; sourceTree = "<group>"; };
+		1966AC5A213FC54700A98404 /* APIManager+Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Base.swift"; sourceTree = "<group>"; };
+		1966AC5C213FC58B00A98404 /* APIManager+Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Common.swift"; sourceTree = "<group>"; };
+		1966AC5E213FC5B300A98404 /* APIManager+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Search.swift"; sourceTree = "<group>"; };
+		1966AC60213FDBD800A98404 /* APIManager+LanguageGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIManager+LanguageGenre.swift"; sourceTree = "<group>"; };
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
 		197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchResultViewModel.swift; sourceTree = "<group>"; };
 		197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchTextSuperModel.swift; sourceTree = "<group>"; };
@@ -195,7 +204,6 @@
 		539618EE2121A0F300B576BF /* EnterPinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPinViewModel.swift; sourceTree = "<group>"; };
 		539618F02121A41E00B576BF /* EnterParentalPinView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterParentalPinView.swift; sourceTree = "<group>"; };
 		539618F12121A41F00B576BF /* EnterParentalPinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterParentalPinView.xib; sourceTree = "<group>"; };
-		539618F62121CB8700B576BF /* RJILApiManager+Parental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RJILApiManager+Parental.swift"; sourceTree = "<group>"; };
 		539618F82122B80600B576BF /* SetParentalPinView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetParentalPinView.swift; sourceTree = "<group>"; };
 		539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinModel.swift; sourceTree = "<group>"; };
 		539AB25A2122E2760003FF84 /* ParentalPinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinManager.swift; sourceTree = "<group>"; };
@@ -413,10 +421,13 @@
 		7B78D7D01F13B92900F319BF /* ApiManager */ = {
 			isa = PBXGroup;
 			children = (
+				1966AC5A213FC54700A98404 /* APIManager+Base.swift */,
 				7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */,
 				7B78D7D11F13B92900F319BF /* RJILApiManager.swift */,
-				539618F62121CB8700B576BF /* RJILApiManager+Parental.swift */,
+				1966AC5C213FC58B00A98404 /* APIManager+Common.swift */,
 				7B78D7D21F13B92900F319BF /* RJILPendingTask.swift */,
+				1966AC5E213FC5B300A98404 /* APIManager+Search.swift */,
+				1966AC60213FDBD800A98404 /* APIManager+LanguageGenre.swift */,
 			);
 			path = ApiManager;
 			sourceTree = "<group>";
@@ -440,6 +451,7 @@
 				7BB0E2101F1E283B00A1DB0B /* JCBaseDataModel.swift */,
 				7B6737121F5975920019610E /* JCLanguageGenreDetailModel.swift */,
 				1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */,
+				1966AC58213FC45F00A98404 /* LoginModels.swift */,
 				19ED97ED1FD5405800E43CBE /* VersionModel */,
 			);
 			name = Models;
@@ -826,6 +838,7 @@
 				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
+				1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
 				194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */,
 				5360F84920C11EE600F9FC25 /* JCSearchViewController.swift in Sources */,
@@ -842,6 +855,7 @@
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFE51421F29F47100C901C7 /* JCItemCell.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
+				1966AC5F213FC5B300A98404 /* APIManager+Search.swift in Sources */,
 				535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
@@ -862,6 +876,7 @@
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
 				197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */,
+				1966AC5D213FC58B00A98404 /* APIManager+Common.swift in Sources */,
 				539618E221219B1500B576BF /* ParentalControlVC.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
 				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
@@ -870,6 +885,7 @@
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
+				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
@@ -893,7 +909,7 @@
 				797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */,
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,
-				539618F72121CB8700B576BF /* RJILApiManager+Parental.swift in Sources */,
+				1966AC61213FDBD800A98404 /* APIManager+LanguageGenre.swift in Sources */,
 				7BB86E7B1F4C1FAD00610436 /* JCMonthCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

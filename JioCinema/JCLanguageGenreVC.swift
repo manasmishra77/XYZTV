@@ -107,9 +107,54 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             params["filter"] = 0
             params["key"] = "genre"
         }
-        let languageGenreDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        weak var weakself = self
-        
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: LanguageGenreDetailModel.self) {[unowned self] (response) in
+            DispatchQueue.main.async {
+                self.videoCategoryButton.isEnabled = true
+                self.languageGenreButton.isEnabled = true
+            }
+            guard response.isSuccess else {
+                print(response.errorMsg ?? "")
+                return
+            }
+            if self.loadedPage == 0
+            {
+                self.languageGenreDetailModel = response.model
+                if self.languageGenreDetailModel?.data?.items?.count != 0 && self.languageGenreDetailModel?.data?.items?.count != nil{
+                    DispatchQueue.main.async {
+                        JCDataStore.sharedDataStore.languageGenreDetailModel = self.languageGenreDetailModel
+                        
+                        self.languageGenreButton.isEnabled = true
+                        self.languageGenreCollectionView.isHidden = false
+                        self.noVideosAvailableLabel.isHidden = true
+                        self.prepareView()
+                    }
+                    
+                }
+                else{
+                    DispatchQueue.main.async {
+                        self.languageGenreButton.isEnabled = false
+                        self.languageGenreCollectionView.isHidden = true
+                        self.noVideosAvailableLabel.isHidden = false
+                        self.prepareView()
+                    }
+                }
+            }
+            else
+            {
+                let tempData = response.model
+                if let items = tempData?.data?.items{
+                    for item in items
+                    {
+                        self.languageGenreDetailModel?.data?.items?.append(item)
+                    }
+                    DispatchQueue.main.async {
+                       self.languageGenreCollectionView.reloadData()
+                    }
+                }
+                
+            }
+            
+        }/*
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 weakself?.videoCategoryButton.isEnabled = true
@@ -164,7 +209,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                     }
                 }
             }
-        }
+        }*/
     }
     
     func prepareView()

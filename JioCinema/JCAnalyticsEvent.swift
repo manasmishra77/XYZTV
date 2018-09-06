@@ -131,6 +131,12 @@ class JCAnalyticsEvent: NSObject {
     }
     
     func sendEventForInternalAnalytics(paramDict: [String: Any]) {
+        RJILApiManager.getReponse(path: JCANALYTICSEVENT_URL, params: paramDict, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+            guard response.isSuccess else {
+                return
+            }
+        }
+        /*
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: JCANALYTICSEVENT_URL, params: paramDict, encoding: .JSON)
         
         RJILApiManager.defaultManager.post(request: loginRequest)
@@ -151,7 +157,7 @@ class JCAnalyticsEvent: NSObject {
                 }
                 
             }
-        }
+        }*/
     }
     
     func convertStringToMD5Hash(artistName:String) -> Data

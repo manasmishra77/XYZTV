@@ -104,8 +104,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             if dataItemsForTableview[0].isCarousal ?? false {
                 dataItemsForTableview.remove(at: 0)
             }
-            if isTVWatchlistAvailable{
-                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+            if isTVWatchlistAvailable {
+                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
                     dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
@@ -181,6 +181,30 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             return
         }
         isTVDataBeingCalled = true
+        RJILApiManager.getBaseModel(pageNum: page, type: .tv) {[unowned self] (isSuccess, erroMsg) in
+            guard isSuccess else {
+                self.isTVDataBeingCalled = false
+                return
+            }
+            //Success
+            if(self.loadedPage == 0) {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isTVDataBeingCalled = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isTVDataBeingCalled = false
+                }
+            }
+        }/*
         let url = tvDataUrl.appending(String(page))
         let tvDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
@@ -198,7 +222,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 weakSelf?.evaluateTVData(dictionaryResponseData: responseData)
                 return
             }
-        }
+        }*/
     }
     
     func evaluateTVData(dictionaryResponseData responseData:Data)
@@ -230,6 +254,21 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
 
     func callWebServiceForTVWatchlist()
     {
+        RJILApiManager.getWatchListData(type: .tv) {[unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {return}
+            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
+                self.isTVWatchlistAvailable = true
+                self.changingDataSourceForBaseTableView()
+                DispatchQueue.main.async {
+                    JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "Watch List"
+                    if self.baseTableView != nil{
+                        self.baseTableView.reloadData()
+                        self.baseTableView.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+        /*
         let url = tvWatchListUrl
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
@@ -260,18 +299,18 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 }
                 return
             }
-        }
+        }*/
     }
     
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
-        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
             weak var weakSelf = self
             weakSelf?.isTVWatchlistAvailable = true
             weakSelf?.changingDataSourceForBaseTableView()
             DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
+                JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "Watch List"
                 if weakSelf?.baseTableView != nil{
                     weakSelf?.baseTableView.reloadData()
                     weakSelf?.baseTableView.layoutIfNeeded()

@@ -116,9 +116,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     let metadataVC = Utility.sharedInstance.prepareMetadata(modal.contentId ?? "", appType: videoType, fromScreen: TVOS_HOME_SCREEN_CAROUSEL, categoryName: TVOS_HOME_SCREEN_CAROUSEL, categoryIndex: 0, tabBarIndex: 0)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .Music,.Trailer,.Clip :
-                    let tappedItem = Item()
+                    var tappedItem = Item()
                     tappedItem.id = modal.contentId
-                    let app = App()
+                    var app = App()
                     app.type = videoType.rawValue
                     tappedItem.app = app
                     checkLoginAndPlay(tappedItem, categoryName: TVOS_HOME_SCREEN_CAROUSEL, categoryIndex: 0)
@@ -181,7 +181,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 
             }
             if isResumeWatchDataAvailable{
-                if let dataResume = JCDataStore.sharedDataStore.resumeWatchList?.data {
+                if let dataResume = JCDataStore.sharedDataStore.resumeWatchList?.data?[0] {
                     dataItemsForTableview.insert(dataResume, at: 0)
                 }
             }
@@ -271,7 +271,31 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             return
         }
         isHomeDatabeingCalled = true
-        
+        RJILApiManager.getBaseModel(pageNum: page, type: .home) {[unowned self] (isSuccess, erroMsg) in
+            guard isSuccess else {
+                self.isHomeDatabeingCalled = false
+                return
+            }
+            //Success
+            if(self.loadedPage == 0) {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isHomeDatabeingCalled = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isHomeDatabeingCalled = false
+                }
+            }
+        }/*
+
         let url = homeDataUrl.appending(String(page))
         let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
@@ -287,7 +311,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
                 return
             }
-        }
+        }*/
     }
     
     func evaluateHomeData(dictionaryResponseData responseData:Data) {
@@ -304,6 +328,24 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
 
     func callWebServiceForResumeWatchData() {
+        guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
+            isResumeWatchDataAvailable = false
+            return
+        }
+        RJILApiManager.getResumeWatchData {[unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.isResumeWatchDataAvailable = false
+                if let resumeItems = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items, resumeItems.count > 0 {
+                    self.isResumeWatchDataAvailable = true
+                }
+                self.baseTableView.reloadData()
+                self.baseTableView.layoutIfNeeded()
+            }
+        }
+        /*
         guard JCLoginManager.sharedInstance.isUserLoggedIn() else {
             isResumeWatchDataAvailable = false
             return
@@ -341,16 +383,16 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 }
                 return
             }
-        }
+        }*/
     }
   
-    
+    /*
     func evaluateResumeWatchData(dictionaryResponseData responseData: Data) {
         //Success
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .ResumeWatchList)
         JCDataStore.sharedDataStore.resumeWatchList?.data?.title = "Resume Watching"
         
-    }
+    }*/
     
     func callResumeWatchWebServiceOnPlayerDismiss() {
         //callWebServiceForResumeWatchData()
@@ -371,6 +413,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     
     //TBC
     func callWebServiceForLanguageList() {
+        RJILApiManager.getLanGenreData(isLang: true) {[unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {
+                return
+            }
+            DispatchQueue.main.async {
+                if let languageData = JCDataStore.sharedDataStore.languageData?.data{
+                    if languageData.count > 0{
+                        self.isLanguageDataAvailable = true
+                        self.baseTableView.reloadData()
+                    }
+                }
+            }
+        }
+        /*
         let url = languageListUrl
         print(url)
         let languageListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
@@ -396,7 +452,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     }
                 }
             }
-        }
+        }*/
     }
     
     func evaluateLanguageList(dictionaryResponseData responseData:Data) {
@@ -407,6 +463,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     func callWebServiceForGenreList() {
+        RJILApiManager.getLanGenreData(isLang: false) {[unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {
+                return
+            }
+            DispatchQueue.main.async {
+                if let languageData = JCDataStore.sharedDataStore.languageData?.data{
+                    if languageData.count > 0{
+                        self.isLanguageDataAvailable = true
+                        self.baseTableView.reloadData()
+                    }
+                }
+            }
+        }
+        /*
         let url = genreListUrl
         let genreListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
@@ -430,7 +500,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     }
                 }
             }
-        }
+        }*/
     }
     
     func evaluateGenreList(dictionaryResponseData responseData:Data)
@@ -446,7 +516,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
             return
         }
-        if let tappedItem = item as? Item {
+        if let item = item as? Item {
+            var tappedItem = item
             
             //Screenview event to Google Analytics
             let customParams: [String: String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
@@ -460,7 +531,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             switch itemAppType {
             case .Movie:
                 print("At Movie")
-                if let duration = tappedItem.duration?.floatValue(), duration > 0 {
+                if let duration = tappedItem.duration, duration > 0 {
                     checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                 } else {
                     toScreenName = METADATA_SCREEN
@@ -471,7 +542,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
             case .TVShow:
                 print("At TvShow")
-                if let duration = tappedItem.duration?.floatValue(), duration > 0 {
+                if let duration = tappedItem.duration, duration > 0 {
                     tappedItem.app?.type = VideoType.Episode.rawValue
                     checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                 } else {
@@ -560,6 +631,20 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             isUserRecommendationAvailable = false
             return
         }
+        RJILApiManager.getRecommendationData { [unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {
+                return
+            }
+            DispatchQueue.main.async {
+                if let recommendationData = JCDataStore.sharedDataStore.userRecommendationList?.data, recommendationData.count > 0 {
+                    self.isUserRecommendationAvailable = true
+                    self.baseTableView.reloadData()
+                } else {
+                    self.isUserRecommendationAvailable = false
+                }
+            }
+        }
+        /*
         let url = userRecommendationURL
         let params = ["uniqueId": JCAppUser.shared.unique, "jioId": JCAppUser.shared.uid]
         let recommendationListRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -591,7 +676,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     }
                 }
             }
-        }
+        }*/
     }
     
     func evaluateUserRecommendationList(dictionaryResponseData responseData: Data) {

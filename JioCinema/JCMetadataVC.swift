@@ -48,7 +48,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
-
+        
         if isMetaDataAvailable {
             showMetadata()
             let headerView = prepareHeaderView()
@@ -240,49 +240,77 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-       
+        
         self.itemId = id
         self.itemAppType = newAppType
         self.changeAddWatchlistButtonStatus(id, newAppType)
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
-        
-        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[unowned self] (response) in
             DispatchQueue.main.async {
                 guard id != "" else {
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.handleAlertForMetaDataDataFailure()
                     return
                 }
-                weakSelf?.isUserComingFromPlayerScreen = false
-                weakSelf?.loaderContainerView.isHidden = true
-                weakSelf?.metadataContainerView.isHidden = false
-                weakSelf?.activityIndicator.stopAnimating()
+                self.isUserComingFromPlayerScreen = false
+                self.loaderContainerView.isHidden = true
+                self.metadataContainerView.isHidden = false
+                self.activityIndicator.stopAnimating()
             }
-            
-            if let responseError = error
-            {
-                //TODO: handle error
-                print(responseError)
+            guard response.isSuccess else {
                 DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
-                    //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.showMetadata()
+                    self.handleAlertForMetaDataDataFailure()
                 }
                 return
             }
-            if let responseData = data {
-                
-                weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
-                DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
-                    let headerView = weakSelf?.prepareHeaderView()
-                    weakSelf?.metadataTableView.tableHeaderView = headerView
-                }
-                weakSelf?.callWebServiceForMoreLikeData(id: id)
-                return
+            self.metadata = response.model
+            self.metadata?.more = nil
+            self.metadata?.episodes = nil
+            DispatchQueue.main.async {
+                self.showMetadata()
+                let headerView = self.prepareHeaderView()
+                self.metadataTableView.tableHeaderView = headerView
             }
+            self.callWebServiceForMoreLikeData(id: id)
         }
+        /*
+         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+         weak var weakSelf = self
+         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+         DispatchQueue.main.async {
+         guard id != "" else {
+         weakSelf?.handleAlertForMetaDataDataFailure()
+         return
+         }
+         weakSelf?.isUserComingFromPlayerScreen = false
+         weakSelf?.loaderContainerView.isHidden = true
+         weakSelf?.metadataContainerView.isHidden = false
+         weakSelf?.activityIndicator.stopAnimating()
+         }
+         
+         if let responseError = error
+         {
+         //TODO: handle error
+         print(responseError)
+         DispatchQueue.main.async {
+         weakSelf?.showMetadata()
+         //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
+         weakSelf?.handleAlertForMetaDataDataFailure()
+         }
+         return
+         }
+         if let responseData = data {
+         
+         weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
+         DispatchQueue.main.async {
+         weakSelf?.showMetadata()
+         let headerView = weakSelf?.prepareHeaderView()
+         weakSelf?.metadataTableView.tableHeaderView = headerView
+         }
+         weakSelf?.callWebServiceForMoreLikeData(id: id)
+         return
+         }
+         }*/
     }
     
     func callWebServiceForMoreLikeData(id: String) {
@@ -301,66 +329,93 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
-        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-            
-            if let responseError = error {
-                //TODO: handle error
-                print(responseError)
+        RJILApiManager.getReponse(path: url, postType: .GET, reponseModelType: MetadataModel.self) {[unowned self] (response) in
+            guard response.isSuccess else {
                 return
             }
-            if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                DispatchQueue.main.async {
-                    if let metatableView = weakSelf?.metadataTableView {
-                        metatableView.reloadData()
-                        metatableView.layoutIfNeeded()
-                    }
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.myPreferredFocusView = weakSelf?.headerCell.playButton
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    func evaluateMoreLikeData(dictionaryResponseData responseData: Data) {
-        //Success
-        if let responseString = String(data: responseData, encoding: .utf8) {
-            let tempMetadata = MetadataModel(JSONString: responseString)
-            print("\(String(describing: tempMetadata?.episodes?.count)) 1111")
-            if itemAppType == VideoType.Movie {
+            let tempMetadata = response.model
+            if self.itemAppType == VideoType.Movie {
                 self.metadata?.more = tempMetadata?.more
-            } else if itemAppType == VideoType.TVShow {
+            } else if self.itemAppType == VideoType.TVShow {
                 if let episodes = tempMetadata?.episodes {
-                    let changedEpisodes = gettingEpisodesWithRequiredSequence(episodes)
-                    self.metadata?.episodes = changedEpisodes
+                    self.metadata?.episodes = episodes
                 }
                 self.metadata?.artist = tempMetadata?.artist
             }
             self.metadata?.displayText = tempMetadata?.displayText
+            DispatchQueue.main.async {
+                if let metatableView = self.metadataTableView {
+                    metatableView.reloadData()
+                    metatableView.layoutIfNeeded()
+                }
+                self.prepareMetdataArtistLabel()
+                self.myPreferredFocusView = self.headerCell.playButton
+                self.setNeedsFocusUpdate()
+                self.updateFocusIfNeeded()
+            }
+            
         }
+        /*
+         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+         weak var weakSelf = self
+         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+         
+         if let responseError = error {
+         //TODO: handle error
+         print(responseError)
+         return
+         }
+         if let responseData = data {
+         weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+         DispatchQueue.main.async {
+         if let metatableView = weakSelf?.metadataTableView {
+         metatableView.reloadData()
+         metatableView.layoutIfNeeded()
+         }
+         weakSelf?.prepareMetdataArtistLabel()
+         weakSelf?.myPreferredFocusView = weakSelf?.headerCell.playButton
+         weakSelf?.setNeedsFocusUpdate()
+         weakSelf?.updateFocusIfNeeded()
+         }
+         }
+         }*/
     }
     
-    private func gettingEpisodesWithRequiredSequence(_ episodes: [Episode]) -> [Episode] {
-        return episodes
-    }
     
-    func evaluateMetaData(dictionaryResponseData responseData: Data) {
-        //Success
-        if let responseString = String(data: responseData, encoding: .utf8) {
-            let metaDataModel = MetadataModel(JSONString: responseString)
-            self.metadata = metaDataModel
-            self.metadata?.more = nil
-            self.metadata?.episodes = nil
-            print("\(String(describing: metadata)) + 123")
-        }
-    }
+    
+    /*
+     func evaluateMoreLikeData(dictionaryResponseData responseData: Data) {
+     //Success
+     if let responseString = String(data: responseData, encoding: .utf8) {
+     let tempMetadata = MetadataModel(JSONString: responseString)
+     print("\(String(describing: tempMetadata?.episodes?.count)) 1111")
+     if itemAppType == VideoType.Movie {
+     self.metadata?.more = tempMetadata?.more
+     } else if itemAppType == VideoType.TVShow {
+     if let episodes = tempMetadata?.episodes {
+     let changedEpisodes = gettingEpisodesWithRequiredSequence(episodes)
+     self.metadata?.episodes = changedEpisodes
+     }
+     self.metadata?.artist = tempMetadata?.artist
+     }
+     self.metadata?.displayText = tempMetadata?.displayText
+     }
+     }
+     
+     private func gettingEpisodesWithRequiredSequence(_ episodes: [Episode]) -> [Episode] {
+     return episodes
+     }
+     
+     func evaluateMetaData(dictionaryResponseData responseData: Data) {
+     //Success
+     if let responseString = String(data: responseData, encoding: .utf8) {
+     let metaDataModel = MetadataModel(JSONString: responseString)
+     self.metadata = metaDataModel
+     self.metadata?.more = nil
+     self.metadata?.episodes = nil
+     print("\(String(describing: metadata)) + 123")
+     }
+     }*/
     
     func showMetadata() {
         loaderContainerView.isHidden = true
@@ -576,7 +631,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     fileprivate func fetchMoreDataForEpisode(seasonIndex: Int, isSeason: Bool, monthString: String, yearString: String) {
         if isSeason {
-                callWebServiceForSelectedFilter(filter: String(describing: seasonIndex))
+            callWebServiceForSelectedFilter(filter: String(describing: seasonIndex))
             return
         }
         callWebServiceForSelectedFilter(filter: "\(yearString)/\(monthString)")
@@ -585,36 +640,65 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func callWebServiceForSelectedFilter(filter: String) {
         let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
-        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-            
-            if let responseError = error {
-                //TODO: handle error
-                print(responseError)
+        RJILApiManager.getReponse(path: url, postType: .GET, reponseModelType: MetadataModel.self) {[unowned self] (response) in
+            guard response.isSuccess else {
                 return
             }
-            if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
-                DispatchQueue.main.async {
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.metadataTableView.reloadData()
-                    weakSelf?.metadataTableView.layoutIfNeeded()
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
+            let tempMetadata = response.model
+            if self.itemAppType == VideoType.Movie {
+                self.metadata?.more = tempMetadata?.more
+            } else if self.itemAppType == VideoType.TVShow {
+                if let episodes = tempMetadata?.episodes {
+                    self.metadata?.episodes = episodes
                 }
-                return
+                self.metadata?.artist = tempMetadata?.artist
             }
+            self.metadata?.displayText = tempMetadata?.displayText
+            DispatchQueue.main.async {
+                if let metatableView = self.metadataTableView {
+                    metatableView.reloadData()
+                    metatableView.layoutIfNeeded()
+                }
+                self.prepareMetdataArtistLabel()
+                self.myPreferredFocusView = self.headerCell.playButton
+                self.setNeedsFocusUpdate()
+                self.updateFocusIfNeeded()
+            }
+            
         }
+        /*
+         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+         
+         weak var weakSelf = self
+         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+         
+         if let responseError = error {
+         //TODO: handle error
+         print(responseError)
+         return
+         }
+         if let responseData = data {
+         weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+         DispatchQueue.main.async {
+         weakSelf?.prepareMetdataArtistLabel()
+         weakSelf?.metadataTableView.reloadData()
+         weakSelf?.metadataTableView.layoutIfNeeded()
+         weakSelf?.setNeedsFocusUpdate()
+         weakSelf?.updateFocusIfNeeded()
+         }
+         return
+         }
+         }*/
     }
     
-    func evaluateFilteredData(dictionaryResponseData responseData:Data) {
-        //Success
-        if let responseString = String(data: responseData, encoding: .utf8) {
-            let tempMetadata = MetadataModel(JSONString: responseString)
-            self.metadata?.episodes = tempMetadata?.episodes
-        }
-    }
+    /*
+     func evaluateFilteredData(dictionaryResponseData responseData:Data) {
+     //Success
+     if let responseString = String(data: responseData, encoding: .utf8) {
+     let tempMetadata = MetadataModel(JSONString: responseString)
+     self.metadata?.episodes = tempMetadata?.episodes
+     }
+     }*/
     
     func handleAlertForMetaDataDataFailure() {
         let action = Utility.AlertAction(title: "Dismiss", style: .default)
@@ -638,9 +722,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func checkIfItemIsInWatchList(_ itemIdToBeChecked: String, _ appType: VideoType) -> Bool {
-        var watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?.items
+        var watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?[0].items
         if appType == .Movie{
-            watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?.items
+            watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items
         }
         let itemMatched = watchListArray?.filter{ $0.id == itemIdToBeChecked}.first
         if itemMatched != nil {
@@ -716,49 +800,69 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
     }
     
-    func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>) {
+    func callWebServiceToUpdateWatchlist(withUrl url: String, watchlistStatus: Bool, andParameters params: [String: Any]) {
         self.headerCell.addToWatchListButton.isEnabled = false
-        let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[unowned self] (response) in
             DispatchQueue.main.async {
                 self.headerCell.addToWatchListButton.isEnabled = true
             }
-            if let responseError = error as NSError?
-            {
-                //TODO: handle error
-                print(responseError)
-                
-                self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: responseError.localizedDescription)
-                //Refresh sso token call fails
-                if responseError.code == 143{
-                    print("Refresh sso token call fails")
-                    DispatchQueue.main.async {
-                        //JCLoginManager.sharedInstance.logoutUser()
-                        //self.presentLoginVC()
-                    }
-                }
+            guard response.isSuccess else {
+                self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: response.errorMsg ?? "")
                 return
             }
-            
-            if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-            {
-                let code = parsedResponse["code"] as? Int
-                if(code == 200)
-                {
-                    self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
-                    DispatchQueue.main.async {
-                        if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST{
-                            self.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
-                        }else{
-                            self.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
-                        }
-                    }
-                    //ChangingTheDataSourceForWatchListItems
-                    self.changingDataSourceForWatchList()
+            self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
+            DispatchQueue.main.async {
+                if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST{
+                    self.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
+                }else{
+                    self.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
                 }
-                return
             }
+            //ChangingTheDataSourceForWatchListItems
+            self.changingDataSourceForWatchList()
         }
+        /*
+         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+         RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+         DispatchQueue.main.async {
+         self.headerCell.addToWatchListButton.isEnabled = true
+         }
+         if let responseError = error as NSError?
+         {
+         //TODO: handle error
+         print(responseError)
+         
+         self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: responseError.localizedDescription)
+         //Refresh sso token call fails
+         if responseError.code == 143{
+         print("Refresh sso token call fails")
+         DispatchQueue.main.async {
+         //JCLoginManager.sharedInstance.logoutUser()
+         //self.presentLoginVC()
+         }
+         }
+         return
+         }
+         
+         if let responseData = data,let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+         {
+         let code = parsedResponse["code"] as? Int
+         if(code == 200)
+         {
+         self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
+         DispatchQueue.main.async {
+         if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST{
+         self.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
+         }else{
+         self.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
+         }
+         }
+         //ChangingTheDataSourceForWatchListItems
+         self.changingDataSourceForWatchList()
+         }
+         return
+         }
+         }*/
         
     }
     
@@ -877,7 +981,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        if let tappedItem = item as? More {
+        if let tappedItem = item as? Item {
             let itemToBePlayed = self.convertingMoreToItem(tappedItem, currentItem: Item())
             if let itemId = itemToBePlayed.id {
                 self.item = itemToBePlayed
@@ -946,24 +1050,26 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         self.present(playerVC, animated: true, completion: nil)
     }
     
-    func convertingMoreToItem(_ moreItem: More, currentItem: Item) -> Item {
-        let tempItem = Item()
-        tempItem.id = moreItem.id
-        tempItem.name = moreItem.name
-        tempItem.showname = ""
-        tempItem.subtitle = moreItem.subtitle
-        tempItem.image = moreItem.image
-        tempItem.tvImage = ""
-        tempItem.description = moreItem.description
-        tempItem.banner = moreItem.banner
-        tempItem.format = moreItem.format
-        tempItem.language = moreItem.language
-        tempItem.vendor = ""
-        tempItem.app = moreItem.app
-        tempItem.latestId = ""
-        tempItem.layout = -1
-        
-        return tempItem
+    func convertingMoreToItem(_ moreItem: Item, currentItem: Item) -> Item {
+        return moreItem
+        /*
+         let tempItem = Item()
+         tempItem.id = moreItem.id
+         tempItem.name = moreItem.name
+         tempItem.showname = ""
+         tempItem.subtitle = moreItem.subtitle
+         tempItem.image = moreItem.image
+         tempItem.tvImage = ""
+         tempItem.description = moreItem.description
+         tempItem.banner = moreItem.banner
+         tempItem.format = moreItem.format
+         tempItem.language = moreItem.language
+         tempItem.vendor = ""
+         tempItem.app = moreItem.app
+         tempItem.latestId = ""
+         tempItem.layout = -1
+         
+         return tempItem*/
     }
     func playVideo() {
         if !Utility.sharedInstance.isNetworkAvailable {
@@ -1018,7 +1124,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
-//            self.dismiss(animated: true, completion: nil)
+            //            self.dismiss(animated: true, completion: nil)
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {

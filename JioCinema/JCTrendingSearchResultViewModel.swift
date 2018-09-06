@@ -25,14 +25,12 @@ class JCTrendingSearchResultViewModel: NSObject {
     }
     
     func callWebServiceForTrendingResult() {
-        let url = TrendingSearchTextURL
-        let request = RJILApiManager.defaultManager.prepareRequest(path: url, params: nil, encoding: .URL)
-        RJILApiManager.defaultManager.get(request: request) {[unowned self] (data, response, error) in
-            if let error = error as NSError? {
-                print(error)
+        RJILApiManager.getTrendingResult {[unowned self] (response) in
+            guard response.isSuccess else {
+                print(response.errorMsg ?? "")
                 return
             }
-            let searchSuperModel = RJILApiManager.parseData(data, modelType: JCTrendingSearchTextSuperModel.self)
+            let searchSuperModel = response.model
             if let searchRecommTexts = searchSuperModel?.data?["popularSearches"] {
                 self.updateTableView(searchRecommTexts)
             }

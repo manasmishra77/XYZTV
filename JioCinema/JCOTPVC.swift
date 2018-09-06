@@ -26,7 +26,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     var enteredJioNumber:String?
     var enteredNumber:String? = nil
     var timerCount = 0
-
+    
     let containerView = UIView(frame: CGRect.init(x: 200, y: 200, width: 600, height: 400))
     
     var isLoginPresentedFromAddToWatchlist = false
@@ -34,7 +34,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     var isLoginPresentedFromItemCell = false
     var presentingVCOfLoginVc: Any = false
     
-
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -103,7 +103,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnSignInButton(_ sender: Any)
     {
-        //jioNumberTFLabel.text = "7977638229"
         let enteredOTP = jioNumberTFLabel.text//searchController?.searchBar.text!
         if(enteredOTP?.count == 0)
         {
@@ -120,7 +119,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     }
     
     @IBAction func didClickOnKeyBoardButton(_ sender: JCKeyboardButton) {
-        
         if sender.tag == -1{
             if jioNumberTFLabel.text != "" && jioNumberTFLabel.text != "Enter Jio Number" && jioNumberTFLabel.text != "Enter OTP" {
                 let number = jioNumberTFLabel.text
@@ -129,12 +127,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 jioNumberTFLabel.text = String(truncatedNumber!)
                 if truncatedNumber == ""
                 {
-                    jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"                    
+                    jioNumberTFLabel.text = signInButton.isHidden ? "Enter Jio Number" : "Enter OTP"
                 }
             }
         }
         else{
-            var number: String? = jioNumberTFLabel.text
+            var number = jioNumberTFLabel.text
             if number == "Enter Jio Number" || number == "Enter OTP"{
                 number = ""
             }
@@ -169,7 +167,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-       // jioNumberTFLabel.text = "8356903414"
+        // jioNumberTFLabel.text = "8356903414"
         enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.count != 10)
         {
@@ -193,110 +191,214 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                                          style: .cancel, handler: nil)
         
         alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
     }
     
     
-    fileprivate func callWebServiceToGetOTP(number:String)
-    {
+    fileprivate func callWebServiceToGetOTP(number: String) {
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         view.addSubview(activityIndicator!)
         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
         activityIndicator?.startAnimating()
-        
-        enteredNumber = "+91".appending(number)
-        let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
-        weak var weakSelf = self
-        let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
-        RJILApiManager.defaultManager.post(request: otpRequest) { (data, response, error) in
+        RJILApiManager.getOTP(number: number) {[unowned self] (isSuccess, errMsg) in
             DispatchQueue.main.async {
-                weakSelf?.activityIndicator?.stopAnimating()
+                self.activityIndicator?.stopAnimating()
+            }
+            guard isSuccess else {
+                DispatchQueue.main.async {
+                    if (self.isRequestMadeForResend) {
+                        self.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
+                        //weakSelf?.searchController?.searchBar.text = ""
+                    } else {
+                        self.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
+                        self.jioNumberTFLabel.text = "Enter Jio Number"
+                        //weakSelf?.searchController?.searchBar.text = ""
+                    }
+                    
+                    self.isRequestMadeForResend = false
+                }
+                _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+                return
+            }
+            DispatchQueue.main.async {
+                self.getOTPButton.isHidden = true
+                self.resendOTPButton.isHidden = false
+                self.resendOTPButton.isEnabled = false
+                self.signInButton.isHidden = false
+                self.jioNumberTFLabel.text = "Enter OTP"
+                _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
             }
             
-            if let responseError = error as NSError?
-            {
-                if responseError.code == 204
-                {
-                    DispatchQueue.main.async {
-                        
-                        //weakSelf?.searchController?.searchBar.text = ""
-                        //weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
-                        //weakSelf?.searchController?.searchBar.isSecureTextEntry = true
-                        weakSelf?.getOTPButton.isHidden = true
-                        weakSelf?.resendOTPButton.isHidden = false
-                        weakSelf?.resendOTPButton.isEnabled = false
-                        weakSelf?.signInButton.isHidden = false
-                        weakSelf?.jioNumberTFLabel.text = "Enter OTP"
-                        _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
-                    }
-                }
-                else
-                {
-                    let errorString = responseError.userInfo["NSLocalizedDescription"]! as? String ?? ""
-                    let data = errorString.data(using: .utf8)
-                    _ = try? JSONSerialization.jsonObject(with: data!)
-                    
-                    
-                    DispatchQueue.main.async {
-                        if (weakSelf?.isRequestMadeForResend)!
-                        {
-                            weakSelf?.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
-                            //weakSelf?.searchController?.searchBar.text = ""
-                        }
-                        else
-                        {
-                            weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
-                            self.jioNumberTFLabel.text = "Enter Jio Number"
-                            //weakSelf?.searchController?.searchBar.text = ""
-                        }
-                        
-                        weakSelf?.isRequestMadeForResend = false
-                    }
-                    _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
-                }
-                return
-            }
-            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-            {
-                print(parsedResponse["code"]!)
-                print(responseData)
-                return
-            }
         }
+        /*
+         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+         view.addSubview(activityIndicator!)
+         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
+         activityIndicator?.startAnimating()
+         
+         enteredNumber = "+91".appending(number)
+         let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
+         weak var weakSelf = self
+         let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
+         RJILApiManager.defaultManager.post(request: otpRequest!) { (data, response, error) in
+         DispatchQueue.main.async {
+         weakSelf?.activityIndicator?.stopAnimating()
+         }
+         
+         if let responseError = error as NSError?
+         {
+         if responseError.code == 204
+         {
+         DispatchQueue.main.async {
+         
+         //weakSelf?.searchController?.searchBar.text = ""
+         //weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
+         //weakSelf?.searchController?.searchBar.isSecureTextEntry = true
+         weakSelf?.getOTPButton.isHidden = true
+         weakSelf?.resendOTPButton.isHidden = false
+         weakSelf?.resendOTPButton.isEnabled = false
+         weakSelf?.signInButton.isHidden = false
+         weakSelf?.jioNumberTFLabel.text = "Enter OTP"
+         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+         }
+         }
+         else
+         {
+         let errorString = responseError.userInfo["NSLocalizedDescription"]! as? String ?? ""
+         let data = errorString.data(using: .utf8)
+         _ = try? JSONSerialization.jsonObject(with: data!)
+         
+         
+         DispatchQueue.main.async {
+         if (weakSelf?.isRequestMadeForResend)!
+         {
+         weakSelf?.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
+         //weakSelf?.searchController?.searchBar.text = ""
+         }
+         else
+         {
+         weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
+         self.jioNumberTFLabel.text = "Enter Jio Number"
+         //weakSelf?.searchController?.searchBar.text = ""
+         }
+         
+         weakSelf?.isRequestMadeForResend = false
+         }
+         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+         }
+         return
+         }
+         if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+         {
+         print(parsedResponse["code"]!)
+         print(responseData)
+         return
+         }
+         }*/
     }
     
-    @objc func enableResendButton()
-    {
+    @objc func enableResendButton() {
         resendOTPButton.isEnabled = true
     }
     
-    fileprivate func callWebServiceToVerifyOTP(otp:String)
-    {
-        let params = [identifierKey:enteredNumber,otpKey:otp,upgradeAuthKey:upgradAuthValue,returnSessionDetailsKey:returnSessionDetailsValue]
-        
-        let otpVerficationRequest = RJILApiManager.defaultManager.prepareRequest(path: verifyOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: otpVerficationRequest) { (data, response, error) in
-            
-            if let responseError = error
-            {
-                //TODO: handle error
-                print(responseError)
+    fileprivate func callWebServiceToVerifyOTP(otp: String) {
+        RJILApiManager.verifyOTP(number: enteredNumber ?? "", otp: otp) {[unowned self] (isSuccess, errMsg) in
+            guard isSuccess else {
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-                DispatchQueue.main.async {
-                    self.activityIndicator?.stopAnimating()
-                }
+                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: errMsg ?? "")
+                return
             }
-            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-            {
-                weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
+            JCLoginManager.sharedInstance.setUserToDefaults()
+            let vc = self.presentingVCOfLoginVc
+            let presentedFromAddToWatchList = self.isLoginPresentedFromAddToWatchlist
+            let presentedFromPlayNowButtonOfMetadata = self.isLoginPresentedFromPlayNowButtonOfMetaData
+            let loginPresentedFromItemCell = self.isLoginPresentedFromItemCell
+            
+            //Updates after login
+            ParentalPinManager.shared.setParentalPinModel()
+            if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController {
+                if let homevc = tabVc.viewControllers![0] as? JCHomeVC {
+                 homevc.callWebServiceForResumeWatchData()
+                 homevc.callWebServiceForUserRecommendationList()
+                 }
+                 if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {
+                 movieVC.callWebServiceForMoviesWatchlist()
+                 }
+                 if let tvVc = tabVc.viewControllers![2] as? JCTVVC {
+                 tvVc.callWebServiceForTVWatchlist()
+                 }
             }
+            
+            DispatchQueue.main.async {
+                self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                    if loginPresentedFromItemCell{
+                        if let vc = vc as? JCHomeVC {
+                            vc.playItemAfterLogin()
+                        }
+                        else if (vc as? JCMoviesVC) != nil {
+                            //vc.playItemAfterLogin()
+                        }
+                        else if (vc as? JCTVVC) != nil {
+                            //vc.playItemAfterLogin()
+                        }
+                        else if let vc = vc as? JCMusicVC {
+                            vc.playItemAfterLogin()
+                        }
+//                        else if let vc = vc as? JCClipsVC {
+//                            vc.playItemAfterLogin()
+//                        }
+                        else if let vc = vc as? JCSearchResultViewController {
+                            vc.playItemAfterLogin()
+                        }
+                        else if let vc = vc as? JCMetadataVC {
+                            vc.playItemAfterLogin()
+                        }
+                    }
+                    if presentedFromAddToWatchList{
+                        if (vc as? JCMetadataVC) != nil{
+                            //Change Add to watchlist button status
+                            
+                        }
+                    }
+                    if presentedFromPlayNowButtonOfMetadata{
+                        if let vc = vc as? JCMetadataVC{
+                            //Play after login
+                            vc.didClickOnWatchNowButton(nil)
+                        }
+                    }
+                })
+            }
+            self.sendLoggedInAnalyticsEventWithSuccess()
+            
         }
+        /*
+         let params = [identifierKey:enteredNumber,otpKey:otp,upgradeAuthKey:upgradAuthValue,returnSessionDetailsKey:returnSessionDetailsValue]
+         
+         let otpVerficationRequest = RJILApiManager.defaultManager.prepareRequest(path: verifyOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
+         weak var weakSelf = self
+         RJILApiManager.defaultManager.post(request: otpVerficationRequest!) { (data, response, error) in
+         
+         if let responseError = error
+         {
+         //TODO: handle error
+         print(responseError)
+         self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
+         DispatchQueue.main.async {
+         self.activityIndicator?.stopAnimating()
+         }
+         }
+         if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+         {
+         weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
+         }
+         }*/
     }
     
     
-    fileprivate func callWebServiceToLoginViaSubId(info:[String:Any])
-    {
+    fileprivate func callWebServiceToLoginViaSubId(info:[String:Any]) {
         JCLoginManager.sharedInstance.loggingInViaSubId = true
         
         let sessionAttributes = info["sessionAttributes"] as? [String:Any]
@@ -309,7 +411,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         let url = basePath.appending(loginViaSubIdUrl)
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
         weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: loginRequest!) { (data, response, error) in
             
             DispatchQueue.main.async {
                 weakSelf?.activityIndicator?.stopAnimating()
@@ -339,17 +441,17 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     
                     //Updates after login
                     ParentalPinManager.shared.setParentalPinModel()
-                    if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
+                    if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController {
                         if let homevc = tabVc.viewControllers![0] as? JCHomeVC {
-                            homevc.callWebServiceForResumeWatchData()
-                            homevc.callWebServiceForUserRecommendationList()
-                        }
-                        if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {
-                            movieVC.callWebServiceForMoviesWatchlist()
-                        }
-                        if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
-                            tvVc.callWebServiceForTVWatchlist()
-                        }
+                         homevc.callWebServiceForResumeWatchData()
+                         homevc.callWebServiceForUserRecommendationList()
+                         }
+                         if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {
+                         movieVC.callWebServiceForMoviesWatchlist()
+                         }
+                         if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
+                         tvVc.callWebServiceForTVWatchlist()
+                         }
                     }
                     
                     DispatchQueue.main.async {
@@ -367,9 +469,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                                 else if let vc = vc as? JCMusicVC {
                                     vc.playItemAfterLogin()
                                 }
-                                else if let vc = vc as? JCClipsVC {
-                                    vc.playItemAfterLogin()
-                                }
+//                                else if let vc = vc as? JCClipsVC {
+//                                    vc.playItemAfterLogin()
+//                                }
                                 else if let vc = vc as? JCSearchResultViewController {
                                     vc.playItemAfterLogin()
                                 }
@@ -484,7 +586,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         }
         present(alertVC, animated: false, completion: nil)
     }
-
+    
     
     
 }

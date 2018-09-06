@@ -58,7 +58,7 @@
     var appType: VideoType = VideoType.Clip
     var isPlayList: Bool = false
     var episodeArray = [Episode]()
-    var moreArray = [More]()
+    var moreArray = [Item]()
     var isMoreDataAvailable = false
     var isEpisodeDataAvailable = false
     var playListId: String = ""
@@ -738,11 +738,11 @@
         Log.DLog(message: "openMetaDataVC" as AnyObject)
         if let topController = UIApplication.topViewController() {
             Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
-            let tempItem = Item()
+            var tempItem = Item()
             tempItem.id = model.id
             tempItem.name = model.name
             tempItem.banner = model.banner
-            let app = App()
+            var app = App()
             app.type = VideoType.Movie.rawValue
             tempItem.app = app
             
@@ -883,9 +883,54 @@
     //MARK:- Web service methods
     func callWebServiceForMoreLikeData(id: String) {
         let url = metadataUrl.appending(id)
+        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[unowned self] (response) in
+            guard response.isSuccess else {
+                return
+            }
+            var i = 0
+            if let recommendationItems = response.model?.more {
+                self.isMoreDataAvailable = false
+                self.moreArray.removeAll()
+                if recommendationItems.count > 0{
+                    self.isMoreDataAvailable = true
+                    self.moreArray = recommendationItems
+                }
+                
+            } else if let episodes = response.model?.episodes {
+                self.isEpisodeDataAvailable = false
+                
+                self.episodeArray.removeAll()
+                if episodes.count > 0{
+                    self.episodeArray.removeAll()
+                    if episodes.count > 0{
+                        self.isEpisodeDataAvailable = true
+                        for each in episodes{
+                            if each.id == self.id {
+                                self.episodeNumber = each.episodeNo
+                                break
+                            }
+                            i = i + 1
+                        }
+                        if i == episodes.count{
+                            i = i - 1
+                        }
+                        self.episodeArray = episodes
+                    }
+                    self.isEpisodeDataAvailable = true
+                    self.episodeArray = episodes
+                }
+            }
+            if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+                DispatchQueue.main.async {
+                    self.collectionView_Recommendation.reloadData()
+                    self.scrollCollectionViewToRow(row: i)
+                }
+            }
+        }
+        /*
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
         weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest!) { (data, response, error) in
             
             if let responseError = error as NSError?
             {
@@ -925,7 +970,7 @@
                         weakSelf?.episodeArray = episodes
                     }
                 }
-                else if let mores = recommendationItems as? [More]{
+                else if let mores = recommendationItems as? [Item]{
                     weakSelf?.isMoreDataAvailable = false
                     weakSelf?.moreArray.removeAll()
                     if mores.count > 0{
@@ -941,9 +986,10 @@
                 }
                 return
             }
-        }
+        }*/
     }
     
+    /*
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data) -> [Any]
     {
         //Success
@@ -959,12 +1005,61 @@
             }
         }
         return [More]()
-    }
+    }*/
     
     func callWebServiceForPlayListData(id:String) {
         //playerId = id
         let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
         let params = ["id": id,"contentId":""]
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[unowned self] (response) in
+            guard response.isSuccess else {
+                var failureType = ""
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
+                failureType = "Playlist service failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemTitle, contentId: self.id, videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription, playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+            let playList = response.model!
+            if let mores = playList.more {
+                self.moreArray.removeAll()
+                if mores.count > 0{
+                    self.isMoreDataAvailable = true
+                    var i = 0
+                    for each in mores{
+                        if each.id == self.id{
+                            break
+                        }
+                        i = i + 1
+                    }
+                    if i == mores.count{
+                        i = i - 1
+                    }
+                    self.moreArray = mores
+                    if (self.isPlayListFirstItemToBePlayed) {
+                        self.isPlayListFirstItemToBePlayed = false
+                        let playlistFirstItem = mores[0]
+                        self.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: self.playListId , isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: self.fromScreen, fromCategory: self.fromCategory, fromCategoryIndex: self.fromCategoryIndex )
+                        self.preparePlayerVC()
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.collectionView_Recommendation.reloadData()
+                            self.scrollCollectionViewToRow(row: i)
+                        }
+                    }
+                }
+            }
+            
+        }
+        /*
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
@@ -1040,7 +1135,7 @@
                 }
                 return
             }
-        }
+        }*/
     }
     
     func callWebServiceForPlaybackRights(id:String) {
@@ -1052,12 +1147,60 @@
         //playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [unowned self](response) in
+            DispatchQueue.main.async {
+                self.activityIndicatorOfLoaderView.stopAnimating()
+                
+            }
+            guard response.isSuccess else {
+                var failuretype = ""
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
+                failuretype = "Playbackrights failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemTitle, contentId: self.id, videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription, playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+            self.playbackRightsData = response.model
+            DispatchQueue.main.async {
+                
+                if((self.player) != nil) {
+                    self.player?.pause()
+                    self.resetPlayer()
+                }
+                //self.playbackRightsData?.url = nil
+                if let fpsUrl = self.playbackRightsData?.url {
+                    self.doParentalCheck(with: fpsUrl, isFps: true)
+                } else if let aesUrl = self.playbackRightsData?.aesUrl {
+                    self.doParentalCheck(with: aesUrl, isFps: false)
+                } else {
+                    let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                        DispatchQueue.main.async {
+                            print("dismiss")
+                            self.dismissPlayerVC()
+                        }
+                    }
+                    alert.addAction(cancelAction)
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: false, completion: nil)
+                    }
+                }
+            }
+            
+        }
+        /*
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
-                
             }
             if let responseError = error as NSError?
             {
@@ -1138,7 +1281,7 @@
                 }
                 return
             }
-        }
+        }*/
     }
     
     
@@ -1146,6 +1289,16 @@
         let json = ["id": id]
         let params = ["uniqueId": JCAppUser.shared.unique,"listId": "10","json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
+         weak var weakSelf = self
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+            guard response.isSuccess else {
+                return
+            }
+            if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                vc.callWebServiceForResumeWatchData()
+            }
+        }
+        /*
         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
@@ -1170,7 +1323,7 @@
                     vc.callWebServiceForResumeWatchData()
                 }
             }
-        }
+        }*/
     }
     
     func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
@@ -1188,6 +1341,15 @@
         params["duration"] = currentTimeDuration
         params["totalDuration"] = totalDuration
         weak var weakSelf = self.presentingViewController
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+            guard response.isSuccess else {
+                return
+            }
+            if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
+                vc.callWebServiceForResumeWatchData()
+            }
+        }
+        /*
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
@@ -1205,7 +1367,7 @@
                 }
                 return
             }
-        }
+        }*/
     }
     //MARK:- Resume watch view methods
     @IBAction func didClickOnResumeWatchingButton(_ sender: Any) {
@@ -1299,10 +1461,10 @@
     
     //Check in resume watchlist
     func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
-        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
-            if let drn = itemMatched?.duration?.floatValue() {
-                return drn
+            if let drn = itemMatched?.duration {
+                return Float(drn)
             }
         }
         return 0.0

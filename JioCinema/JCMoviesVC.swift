@@ -172,7 +172,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 dataItemsForTableview.remove(at: 0)
             }
             if isMoviesWatchlistAvailable {
-                if let watchListData = JCDataStore.sharedDataStore.moviesWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+                if let watchListData = JCDataStore.sharedDataStore.moviesWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
                     dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
@@ -191,7 +191,31 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             return
         }
         isMovieDataBeingCalled = true
-        
+        RJILApiManager.getBaseModel(pageNum: page, type: .movie) {[unowned self] (isSuccess, erroMsg) in
+            guard isSuccess else {
+                self.isMovieDataBeingCalled = false
+                return
+            }
+            //Success
+            if(self.loadedPage == 0) {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isMovieDataBeingCalled = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isMovieDataBeingCalled = false
+                }
+            }
+        }
+        /*
         let url = moviesDataUrl.appending(String(page))
         let moviesDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
@@ -210,7 +234,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 weakSelf?.evaluateMoviesData(dictionaryResponseData: responseData)
                 return
             }
-        }
+        }*/
     }
     
     func handleAlertForMoviesDataFailure() {
@@ -260,6 +284,24 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     
     func callWebServiceForMoviesWatchlist()
     {
+        RJILApiManager.getWatchListData(type: .movie) {[unowned self] (isSuccess, errorMsg) in
+            guard isSuccess else {
+                return
+            }
+            if (JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items?.count ?? 0) > 0 {
+                self.isMoviesWatchlistAvailable = true
+                self.changingDataSourceForBaseTableView()
+                DispatchQueue.main.async {
+                    JCDataStore.sharedDataStore.moviesWatchList?.data?[0].title = "Watch List"
+                    if self.baseTableView != nil{
+                        self.baseTableView.reloadData()
+                        self.baseTableView.layoutIfNeeded()
+                    }
+                }
+            }
+            
+        }
+        /*
         let url = moviesWatchListUrl
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
@@ -291,13 +333,13 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 }
                 return
             }
-        }
+        }*/
     }
-    
+    /*
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
-        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items?.count)! > 0 {
             weak var weakSelf = self
             self.isMoviesWatchlistAvailable = true
              self.changingDataSourceForBaseTableView()
@@ -309,7 +351,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 }
             }
         }
-    }
+    }*/
     
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true

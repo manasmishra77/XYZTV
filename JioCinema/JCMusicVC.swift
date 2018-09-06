@@ -149,6 +149,31 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
         }
         isMusicDataBeingCalled = true
         
+        RJILApiManager.getBaseModel(pageNum: page, type: .music) {[unowned self] (isSuccess, erroMsg) in
+            guard isSuccess else {
+                self.isMusicDataBeingCalled = false
+                return
+            }
+            //Success
+            if(self.loadedPage == 0) {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isMusicDataBeingCalled = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isMusicDataBeingCalled = false
+                }
+            }
+        }
+        /*
         let url = musicDataUrl.appending(String(page))
         let musicDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
@@ -166,7 +191,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
                 weakSelf?.evaluateMusicData(dictionaryResponseData: responseData)
                 return
             }
-        }
+        }*/
     }
     
     func evaluateMusicData(dictionaryResponseData responseData:Data)
@@ -272,7 +297,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int)
     {
         toScreenName = PLAYER_SCREEN
-        var moreArray: [More]? = nil
+        var moreArray: [Item]? = nil
         var isMoreDataAvailable = false
         if itemToBePlayed.isPlaylist ?? false{
             let recommendationArray = (JCDataStore.sharedDataStore.musicData?.data?[0].isCarousal ?? false) ? JCDataStore.sharedDataStore.musicData?.data?[categoryIndex + 1].items : JCDataStore.sharedDataStore.musicData?.data?[categoryIndex].items

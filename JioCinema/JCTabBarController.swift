@@ -31,8 +31,8 @@ class JCTabBarController: UITabBarController {
         let musicVC = JCMusicVC(nibName: "JCBaseVC", bundle: nil)
         musicVC.tabBarItem = UITabBarItem(title: "Music", image: nil, tag: 3)
         
-        let clipsVC = JCClipsVC(nibName: "JCBaseVC", bundle: nil)
-        clipsVC.tabBarItem = UITabBarItem(title: "Clips", image: nil, tag: 4)
+//        let clipsVC = JCClipsVC(nibName: "JCBaseVC", bundle: nil)
+//        clipsVC.tabBarItem = UITabBarItem(title: "Clips", image: nil, tag: 4)
         
         
         let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
@@ -48,7 +48,7 @@ class JCTabBarController: UITabBarController {
         settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         settingsVC?.tabBarItem = UITabBarItem(title: "Settings", image: nil, tag: 6)
         
-        let viewControllersArray = [homeVC, moviesVC, tvVC, musicVC, clipsVC, navControllerForSearchContainer, settingsVC!] as [Any]
+        let viewControllersArray = [homeVC, moviesVC, tvVC, musicVC, navControllerForSearchContainer, settingsVC!] as [Any]
         self.setViewControllers(viewControllersArray as? [UIViewController], animated: false)
         
         //self.tabBar.alpha = 0.7

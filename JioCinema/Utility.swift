@@ -169,8 +169,8 @@ class Utility {
         if isEpisodeAvailable{
             playerVC.episodeArray = recommendationArray as! [Episode]
         }
-        else if isMoreDataAvailable{
-            playerVC.moreArray = recommendationArray as! [More]
+        else if isMoreDataAvailable {
+            playerVC.moreArray = recommendationArray as! [Item]
         }
         playerVC.director = director ?? ""
         playerVC.starCast = starCast ?? ""
@@ -253,10 +253,12 @@ class Utility {
         return searchViewController
     }
     //MARK:- Converting Item array to More Array
-    func convertingItemArrayToMoreArray(_ itemArray: [Item]) -> [More] {
-        var moreArray = [More]()
+    func convertingItemArrayToMoreArray(_ itemArray: [Item]) -> [Item] {
+        return itemArray
+        /*
+        var moreArray = [Item]()
         for each in itemArray{
-            let more = More()
+            var more = Item()
             more.id = each.id
             more.name = each.name
             more.subtitle = each.subtitle
@@ -265,14 +267,14 @@ class Utility {
             more.language = each.language
             more.app = each.app
             more.description = each.description
-            more.totalDuration = each.totalDurationInt
+            more.totalDuration = each.totalDuration
             more.srt = ""
             more.totalDurationString = each.totalDuration
             more.image = each.image
             moreArray.append(more)
         }
         return moreArray
-        
+        */
     }
     
     //MARK:- Getting Xibs

@@ -46,17 +46,17 @@ class RJILApiManager {
     
     
     /*
-     devicetype	String deviceType (phone,tablet etc)
+     devicetype    String deviceType (phone,tablet etc)
      
-     os	String os of device (ios,android etc)
+     os    String os of device (ios,android etc)
      
-     deviceid	String device Id
+     deviceid    String device Id
      
-     uniqueid	String UniqueId of user (Except for login)
+     uniqueid    String UniqueId of user (Except for login)
      
-     ssotoken	String AccessToken required to maintain user session(Valid for 24 hrs).
+     ssotoken    String AccessToken required to maintain user session(Valid for 24 hrs).
      
-     usergroup	String Specifies the type of user
+     usergroup    String Specifies the type of user
      */
     
     
@@ -87,7 +87,7 @@ class RJILApiManager {
             return _commonHeaders
         }
     }
-
+    
     
     var otpHeaders:[String:String]{
         get{
@@ -156,7 +156,7 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest? {
         var request:URLRequest?
         
         if let params = params {
@@ -238,7 +238,7 @@ class RJILApiManager {
             request?.allHTTPHeaderFields = otpHeaders
         }
         
-        return request!
+        return request
     }
     
     func downloadData(withURL urlString:String,completion:@escaping (_ urlString:String, _ responseData:Data?)->()){
@@ -268,7 +268,7 @@ class RJILApiManager {
     
     private init() {} //This prevents others from using the default '()' initializer for this class.
     
-    private func createDataTask(withRequest request:URLRequest,httpMethod method:String, completion:@escaping RequestCompletionBlock) {
+    func createDataTask(withRequest request:URLRequest,httpMethod method:String, completion:@escaping RequestCompletionBlock) {
         var originalRequest = request
         originalRequest.httpMethod = method
         originalRequest.timeoutInterval = 30.0
@@ -313,7 +313,7 @@ class RJILApiManager {
                         let params = ["mtoken": JCAppUser.shared.mToken]
                         
                         let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
-                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
+                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest!, completion: { (data, response, error) in
                             guard error == nil else{
                                 var errorInfo:[String:String] = [String:String]()
                                 errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
@@ -358,14 +358,14 @@ class RJILApiManager {
                 
                 completion(nil, nil, NSError(domain: "some error domain", code: 504, userInfo: errorInfo))
             }
-            else if self.httpStatusCode == 200 {//Success
+            else if self.httpStatusCode == 200 || self.httpStatusCode == 204 {//Success
                 completion(data, response, error)
             }
             else {
                 var errorInfo: [String:String] = [String:String]()
                 let errorDescription = "Unexpected Response : HTTP Status Code :\(String(describing: self.httpStatusCode))"
                 if let receivedData = data {
-                    let dict = RJILApiManager.parse(data: receivedData)
+                    // let dict = RJILApiManager.parse(data: receivedData)
                     let responseString = String(data: receivedData, encoding:.utf8)
                     self.errorMessage = errorDescription + " " + responseString!
                 }
