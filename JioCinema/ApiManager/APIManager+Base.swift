@@ -58,13 +58,18 @@ extension RJILApiManager {
     
     
     
-    class func getResumeWatchData(_ completion: @escaping APISuccessBlock) {
-        let path = resumeWatchGetUrl
+    class func getResumeWatchData(vcType: BaseVCType = .home,_ completion: @escaping APISuccessBlock) {
+        let path = (vcType == .home) ? resumeWatchGetUrl : disneyResumeWatchListUrl
         let params = ["uniqueId": JCAppUser.shared.unique]
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
-                JCDataStore.sharedDataStore.resumeWatchList = response.model
-                 JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = "Resume Watching"
+                if vcType == .home {
+                    JCDataStore.sharedDataStore.resumeWatchList = response.model
+                    JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = "Resume Watching"
+                } else {
+                    JCDataStore.sharedDataStore.disneyResumeWatchList = response.model
+                    JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = "Resume Watching"
+                }
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)
@@ -119,6 +124,8 @@ extension RJILApiManager {
             return clipsDataUrl
         case .search:
             return homeDataUrl
+        case .disney:
+            return disneyHomeDataUrl
         }
     }
     private class func populateDataStore(_ vcType: BaseVCType, isPageNum0: Bool, model: BaseDataModel) {
@@ -147,6 +154,8 @@ extension RJILApiManager {
             JCDataStore.sharedDataStore.clipsData = model
         case .search:
             JCDataStore.sharedDataStore.searchData = model
+        case .disney:
+            JCDataStore.sharedDataStore.disneyData = model
         }
     }
     
@@ -164,6 +173,8 @@ extension RJILApiManager {
             JCDataStore.sharedDataStore.clipsData?.data?.append(model)
         case .search:
             JCDataStore.sharedDataStore.searchData?.data?.append(model)
+        case .disney:
+            JCDataStore.sharedDataStore.disneyData?.data?.append(model)
         }
     }
 }

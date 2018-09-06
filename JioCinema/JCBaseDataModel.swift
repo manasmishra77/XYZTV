@@ -412,7 +412,7 @@ struct App: Codable {
     }
 }
 enum BaseVCType: String {
-    case home, movie, tv, music, clip, search
+    case home, movie, tv, music, clip, search, disney
     
 }
 enum VideoType: Int {

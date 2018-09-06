@@ -81,6 +81,9 @@ class JCTabBarController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func presentVC(_ item: Item) {
+        
+    }
 
 }
 
