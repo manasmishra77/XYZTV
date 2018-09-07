@@ -104,6 +104,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             
         case 1:
             cell.textLabel?.text = AutoPlayHeading
+            cell.settingsDetailLabel.isHidden = false
             if IsAutoPlayOn {
                 cell.settingsDetailLabel.text = "ON"
             } else {

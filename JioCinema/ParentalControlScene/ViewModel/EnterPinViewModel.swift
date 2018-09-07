@@ -20,7 +20,6 @@ class EnterPinViewModel: NSObject {
         self.contentName = contentName
         self.delegate = delegate
         super.init()
-
     }
 
     func checkPin(_ enteredPin: String) -> Bool {

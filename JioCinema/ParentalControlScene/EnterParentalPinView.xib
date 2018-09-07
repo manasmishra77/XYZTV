@@ -48,7 +48,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZxV-Dp-Kbu">
                             <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -396,6 +396,7 @@
             <connections>
                 <outlet property="cancelButton" destination="lfS-kA-jQt" id="J81-hR-aOK"/>
                 <outlet property="contentTitle" destination="m2W-Zb-RQD" id="V4N-Yl-dfm"/>
+                <outlet property="keyBoardView" destination="Uob-UX-kVY" id="h0j-hO-jPT"/>
                 <outlet property="playButton" destination="9L4-nK-pOu" id="zGL-TK-KzJ"/>
                 <outletCollection property="passwordLabelArray" destination="ZxV-Dp-Kbu" collectionClass="NSMutableArray" id="r1b-t0-ft5"/>
                 <outletCollection property="passwordLabelArray" destination="6Wl-Jm-GaX" collectionClass="NSMutableArray" id="UFn-yX-AIY"/>
