@@ -22,10 +22,15 @@ class EnterParentalPinView: UIView {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
+    @IBOutlet weak var keyBoardView: UIStackView!
+    
     @IBOutlet var passwordLabelArray: [UILabel]!
     override func awakeFromNib() {
         cancelButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
         playButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
+        myPreferdFocusedView = keyBoardView
+        self.updateFocusIfNeeded()
+        self.setNeedsFocusUpdate()
     }
     @IBAction func playButtonTapped(_ sender: Any) {
         if delegate?.didClickOnSubmitButton(password) ?? false {
@@ -63,9 +68,12 @@ class EnterParentalPinView: UIView {
             playButton.isEnabled = false
             for i in 0...3{
                 passwordLabelArray[i].text = ""
+                passwordLabelArray[i].layer.borderColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
             }
             for i in 0..<pass.count{
                 passwordLabelArray[i].text = "●"
+                passwordLabelArray[i].textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
+                passwordLabelArray[i].layer.borderColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
             }
             if(pass.count == 4) {
                 playButton.isEnabled = true

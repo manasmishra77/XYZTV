@@ -135,6 +135,7 @@ let openSearchVCNotificationName = Notification.Name("openSearchVC")
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
+let resumeWatchReloadNotification = Notification.Name("resumeWatchReload")
 
 
 //Google Analytics
