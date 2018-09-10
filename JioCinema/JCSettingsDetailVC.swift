@@ -77,9 +77,9 @@ class JCSettingsDetailVC: UIViewController {
  
     @IBAction func didClickOnTurnOffButton(_ sender: Any) {
         if isForAutoPlay {
-            IsAutoPlayOn = true
+            IsAutoPlayOn = false
         } else {
-            IsAutoSubtitleOn = true
+            IsAutoSubtitleOn = false
         }
         self.dismiss(animated: false, completion: nil)
     }

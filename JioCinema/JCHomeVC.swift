@@ -49,6 +49,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             callWebServiceForResumeWatchData()
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadResumeWathcData),name: resumeWatchReloadNotification,object: nil)
        
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -301,6 +302,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             weakSelf?.isHomeDatabeingCalled = false
             
         }
+    }
+    
+    @objc func reloadResumeWathcData(notification: NotificationCenter) {
+        self.callWebServiceForResumeWatchData()
     }
 
     func callWebServiceForResumeWatchData() {
@@ -602,7 +607,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     func handleAlertForFirstTimeLaunchParentalControl() {
         let actionOk = Utility.AlertAction(title: "Ok", style: .default)
         let actionCancel = Utility.AlertAction(title: "Cancel", style: .cancel)
-        let alertVC = Utility.getCustomizedAlertController(with: "Parental Control Introduced", message: "", actions: [actionOk, actionCancel]) { (alertAction) in
+        let alertVC = Utility.getCustomizedAlertController(with: "", message: ParentalControlAlertMsg, actions: [actionOk, actionCancel]) { (alertAction) in
                 if alertAction.title == actionOk.title {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
                     self.tabBarController?.selectedIndex = 6
