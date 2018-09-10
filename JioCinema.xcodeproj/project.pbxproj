@@ -30,6 +30,8 @@
 		19BF8A76214651A6001C58DD /* BaseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */; };
 		19BF8A77214651A6001C58DD /* BaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A72214651A6001C58DD /* BaseViewController.xib */; };
 		19BF8A78214651A6001C58DD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A73214651A6001C58DD /* BaseViewController.swift */; };
+		19BF8A7D214657BF001C58DD /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */; };
+		19BF8A7E214657BF001C58DD /* ItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A7C214657BE001C58DD /* ItemCollectionViewCell.xib */; };
 		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
 		19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */; };
 		19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */; };
@@ -183,6 +185,8 @@
 		19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
 		19BF8A72214651A6001C58DD /* BaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseViewController.xib; sourceTree = "<group>"; };
 		19BF8A73214651A6001C58DD /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		19BF8A7C214657BE001C58DD /* ItemCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCollectionViewCell.xib; sourceTree = "<group>"; };
 		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
 		19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
 		19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
@@ -346,6 +350,8 @@
 		19BF8A7A214651C8001C58DD /* BaseScene */ = {
 			isa = PBXGroup;
 			children = (
+				19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */,
+				19BF8A7C214657BE001C58DD /* ItemCollectionViewCell.xib */,
 				19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */,
 				19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */,
 				19BF8A73214651A6001C58DD /* BaseViewController.swift */,
@@ -729,6 +735,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19BF8A7E214657BF001C58DD /* ItemCollectionViewCell.xib in Resources */,
 				2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */,
 				2025F4571F3B513A00C3B609 /* FAQ.png in Resources */,
 				7BB0E20F1F1DFF8E00A1DB0B /* JCCarouselCell.xib in Resources */,
@@ -926,6 +933,7 @@
 				7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */,
 				7BB0E2091F1DF52500A1DB0B /* JCMoviesVC.swift in Sources */,
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
+				19BF8A7D214657BF001C58DD /* ItemCollectionViewCell.swift in Sources */,
 				1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */,
 				B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */,
 				7BB0E20B1F1DF65900A1DB0B /* JCTabBarController.swift in Sources */,
