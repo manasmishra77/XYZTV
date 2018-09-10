@@ -230,7 +230,18 @@ struct MetadataModel: Codable {
             trailerId = try values.decodeIfPresent(String.self, forKey: .trailerId)
             releasedDate = try values.decodeIfPresent(String.self, forKey: .releasedDate)
             createdDate = try values.decodeIfPresent(String.self, forKey: .createdDate)
+            do{
             version = try values.decodeIfPresent(Int.self, forKey: .version)
+            } catch {
+                do {
+                    if let newVersion = try values.decodeIfPresent(String.self, forKey: .version){
+                    version = Int(newVersion)
+                    }
+                    
+                } catch {
+                    print(error)
+                }
+            }
             isDRM = try values.decodeIfPresent(Bool.self, forKey: .isDRM)
             do {
                 let stringValue = try values.decodeIfPresent(String.self, forKey: .videoId)
@@ -239,8 +250,29 @@ struct MetadataModel: Codable {
                 let intValue = try values.decodeIfPresent(Int.self, forKey: .videoId)
                 self.videoId  = "\(intValue ?? -1)"
             }
+            do {
             folder1 = try values.decodeIfPresent(Int.self, forKey: .folder1)
-            folder2 = try values.decodeIfPresent(Int.self, forKey: .folder2)
+            } catch {
+                do {
+                    if let folder1String = try values.decodeIfPresent(String.self, forKey: .folder1) {
+                        folder1 = Int(folder1String)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+            //folder2 = try values.decodeIfPresent(Int.self, forKey: .folder2)
+            do {
+                folder2 = try values.decodeIfPresent(Int.self, forKey: .folder2)
+            } catch {
+                do {
+                    if let folder2String = try values.decodeIfPresent(String.self, forKey: .folder2) {
+                        folder2 = Int(folder2String)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             imageId = try values.decodeIfPresent(String.self, forKey: .imageId)
             videoExt = try values.decodeIfPresent(String.self, forKey: .videoExt)
             imageExt = try values.decodeIfPresent(String.self, forKey: .imageExt)
@@ -253,26 +285,61 @@ struct MetadataModel: Codable {
                     let intValue = try values.decodeIfPresent(Int.self, forKey: .tags)
                     self.tags  = "\(intValue ?? -1)"
                 } catch {
-                    print("Error in tag \(error)")
+                   print("Error in tag \(error)")
                 }
             }
             singer = try values.decodeIfPresent([String].self, forKey: .singer)
             categories = try values.decodeIfPresent(String.self, forKey: .categories)
             category = try values.decodeIfPresent(String.self, forKey: .category)
-            label = try values.decodeIfPresent([String].self, forKey: .label)
+            do {
+                label = try values.decodeIfPresent([String].self, forKey: .label)
+            } catch{
+                do {
+                    if let labelString = try values.decodeIfPresent(String.self, forKey: .label) {
+                    label?.append(labelString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             views = try values.decodeIfPresent(Int.self, forKey: .views)
             validTo = try values.decodeIfPresent(String.self, forKey: .validTo)
             validFrom = try values.decodeIfPresent(String.self, forKey: .validFrom)
+            do {
             isSTB = try values.decodeIfPresent(Bool.self, forKey: .isSTB)
+            } catch {
+                do {
+                    let isSTBString = try values.decodeIfPresent(String.self, forKey: .isSTB)
+                    if isSTBString == "yes" {
+                        isSTB = true
+                    } else {
+                        isSTB = false
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             productionHouse = try values.decodeIfPresent(String.self, forKey: .productionHouse)
             do {
                 approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
             } catch  {
                 approved = false
             }
-            
+            do {
             isHD = try values.decodeIfPresent(Bool.self, forKey: .isHD)
+            } catch {
+                isHD = false
+            }
+            do {
             isLegal = try values.decodeIfPresent(Bool.self, forKey: .isLegal)
+            } catch{
+                let isLegalString = try values.decodeIfPresent(String.self, forKey: .isLegal)
+                if isLegalString == "Y" {
+                    isLegal = true
+                } else {
+                    isLegal = false
+                }
+            }
             isSeason = try values.decodeIfPresent(Bool.self, forKey: .isSeason)
             updatedAt = try values.decodeIfPresent(String.self, forKey: .updatedAt)
             censorCertificate = try values.decodeIfPresent(String.self, forKey: .censorCertificate)
@@ -294,21 +361,57 @@ struct MetadataModel: Codable {
             vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
             albumname = try values.decodeIfPresent(String.self, forKey: .albumname)
             awards = try values.decodeIfPresent(String.self, forKey: .awards)
+            do {
             writer = try values.decodeIfPresent(String.self, forKey: .writer)
+            }
+            catch {
+                print(error)
+            }
+            do {
             isEncrypt = try values.decodeIfPresent(Bool.self, forKey: .isEncrypt)
+            }
+            catch {
+                isEncrypt = true
+            }
+
             newmpd = try values.decodeIfPresent(Int.self, forKey: .newmpd)
             AESkey = try values.decodeIfPresent(String.self, forKey: .AESkey)
             musicDirector = try values.decodeIfPresent([String].self, forKey: .musicDirector)
             latestEpisodeId = try values.decodeIfPresent(String.self, forKey: .latestEpisodeId)
             lyricist = try values.decodeIfPresent([String].self, forKey: .lyricist)
-            publisher = try values.decodeIfPresent(String.self, forKey: .publisher)
+            do {
+                publisher = try values.decodeIfPresent(String.self, forKey: .publisher)
+            } catch {
+                print(error)
+            }
             name = try values.decodeIfPresent(String.self, forKey: .name)
             subtitle = try values.decodeIfPresent(String.self, forKey: .subtitle)
             resumeSubtitle = try values.decodeIfPresent(String.self, forKey: .resumeSubtitle)
             listSubtitle = try values.decodeIfPresent(String.self, forKey: .listSubtitle)
-            year = try values.decodeIfPresent(Int.self, forKey: .year)
+            //year = try values.decodeIfPresent(Int.self, forKey: .year)
+            do {
+                year = try values.decodeIfPresent(Int.self, forKey: .year)
+            }   catch {
+                do{
+                    if let yearString = try values.decodeIfPresent(String.self, forKey: .year){
+                        year = Int(yearString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             artist = try values.decodeIfPresent([String].self, forKey: .artist)
+            do{
             totalDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
+            } catch {
+                do {
+                    if let totalDurationString = try values.decodeIfPresent(String.self, forKey: .totalDuration) {
+                    totalDuration = Int(totalDurationString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             srt = try values.decodeIfPresent(String.self, forKey: .srt)
             genres = try values.decodeIfPresent([String].self, forKey: .genres)
             artistObj = try values.decodeIfPresent([ArtistObj].self, forKey: .artistObj)
@@ -321,9 +424,41 @@ struct MetadataModel: Codable {
             banner = try values.decodeIfPresent(String.self, forKey: .banner)
             format = try values.decodeIfPresent(Int.self, forKey: .format)
             language = try values.decodeIfPresent(String.self, forKey: .language)
+            do {
             totalDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
+            } catch {
+                do {
+                    if let stringTotalDuration = try values.decodeIfPresent(String.self, forKey: .totalDuration){
+                        totalDuration = Int(stringTotalDuration) }
+                } catch {
+                    print(error)
+                }
+            }
+            do {
             recomTime = try values.decodeIfPresent(Int.self, forKey: .recomTime)
+            } catch {
+                do {
+                    if let stringRecomTime = try values.decodeIfPresent(String.self, forKey: .recomTime){
+                    recomTime = Int(stringRecomTime)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+            do {
             isDownloadable = try values.decodeIfPresent(Bool.self, forKey: .isDownloadable)
+            } catch {
+                do {
+                    let isDownloadableString = try values.decodeIfPresent(String.self, forKey: .isDownloadable)
+                    if isDownloadableString == "yes" {
+                        isDownloadable = true
+                    } else {
+                        isDownloadable = false
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             thumb = try values.decodeIfPresent(String.self, forKey: .thumb)
             srt = try values.decodeIfPresent(String.self, forKey: .srt)
             dateUploaded = try values.decodeIfPresent(String.self, forKey: .dateUploaded)
@@ -339,29 +474,67 @@ struct MetadataModel: Codable {
             threshold = try values.decodeIfPresent(Int.self, forKey: .threshold)
             app = try values.decodeIfPresent(App.self, forKey: .app)
             categoryName = try values.decodeIfPresent([String].self, forKey: .categoryName)
-            categoryId = try values.decodeIfPresent([Int].self, forKey: .categoryId)
+            do {
+                categoryId = try values.decodeIfPresent([Int].self, forKey: .categoryId)
+            } catch {
+                do {
+                    let categoryIdString = try values.decodeIfPresent([String].self, forKey: .categoryId)
+                    if let categoryIdString = categoryIdString{
+                        for item in categoryIdString{
+                            if let intItem = Int(item) {
+                            categoryId?.append(intItem)
+                            }
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+                
+            }
             tinyUrl = try values.decodeIfPresent(String.self, forKey: .tinyUrl)
             do {
                 download = try values.decodeIfPresent(Bool.self, forKey: .download)
             } catch {
                 download = nil
             }
-            
-            primaryGenres = try values.decodeIfPresent([String].self, forKey: .primaryGenres)
+            do {
+                primaryGenres = try values.decodeIfPresent([String].self, forKey: .primaryGenres)
+            } catch {
+               print(error)
+            }
             recTags = try values.decodeIfPresent(String.self, forKey: .recTags)
             fpsKey = try values.decodeIfPresent(String.self, forKey: .fpsKey)
             fpsIv = try values.decodeIfPresent(String.self, forKey: .fpsIv)
             catData = try values.decodeIfPresent([CategoryData].self, forKey: .catData)
             newSubtitle = try values.decodeIfPresent(String.self, forKey: .newSubtitle)
             flavorCount = try values.decodeIfPresent(Int.self, forKey: .flavorCount)
+            do {
             oldFolder1 = try values.decodeIfPresent(Int.self, forKey: .oldFolder1)
+            } catch {
+                do {
+                if let oldFolder1String = try values.decodeIfPresent(String.self, forKey: .oldFolder1)
+                {
+                oldFolder1 = Int(oldFolder1String)
+                }
+                } catch {
+                    print(error)
+                }
+            }
             oldFolder2 = try values.decodeIfPresent(Int.self, forKey: .oldFolder2)
             isMoved = try values.decodeIfPresent(Bool.self, forKey: .isMoved)
             meta = try values.decodeIfPresent(Meta.self, forKey: .meta)
             code = try values.decodeIfPresent(Int.self, forKey: .code)
             displayText = try values.decodeIfPresent(String.self, forKey: .displayText)
-            more = try values.decodeIfPresent([Item].self, forKey: .more)
+            do {
+                more = try values.decodeIfPresent([Item].self, forKey: .more)
+            } catch {
+                print(error)
+            }
+            do {
             episodes = try values.decodeIfPresent([Episode].self, forKey: .episodes)
+            } catch {
+                print(error)
+            }
             inQueue = try values.decodeIfPresent(Bool.self, forKey: .inQueue)
             filter = try values.decodeIfPresent([Filter].self, forKey: .filter)
             maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
@@ -424,11 +597,39 @@ struct Meta: Codable {
         do {
             created = try values.decodeIfPresent(String.self, forKey: .created)
         } catch {
-            print(error)
+            do {
+                if let createdInt = try values.decodeIfPresent(Int.self, forKey: .created ) {
+                created = String(createdInt)
+                }
+            } catch {
+                print(error)
+            }
         }
         
-        version = try values.decodeIfPresent(Int.self, forKey: .version)
+        //version = try values.decodeIfPresent(Int.self, forKey: .version)
+        do{
+            version = try values.decodeIfPresent(Int.self, forKey: .version)
+        } catch {
+            do {
+                if let newVersion = try values.decodeIfPresent(String.self, forKey: .version){
+                    version = Int(newVersion)
+                }
+                
+            } catch {
+                print(error)
+            }
+        }
+        do {
         updated = try values.decodeIfPresent(String.self, forKey: .updated)
+        } catch {
+            do{
+                if let newUpdated = try values.decodeIfPresent(Int.self, forKey: .updated) {
+                updated = String(newUpdated)
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 
@@ -484,7 +685,17 @@ struct More: Codable {
         app = try values.decodeIfPresent(App.self, forKey: .app)
         rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         description = try values.decodeIfPresent(String.self, forKey: .description)
-        year = try values.decodeIfPresent(Int.self, forKey: .year)
+        do {
+            year = try values.decodeIfPresent(Int.self, forKey: .year)
+        } catch {
+            do{
+                if let yearString = try values.decodeIfPresent(String.self, forKey: .year){
+                year = Int(yearString)
+                }
+            } catch {
+                print(error)
+            }
+        }
         genres = try values.decodeIfPresent([String].self, forKey: .genres)
         totalDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
         srt = try values.decodeIfPresent(String.self, forKey: .srt)
@@ -532,7 +743,17 @@ struct Episode: Codable {
         subtitle = try values.decodeIfPresent(String.self, forKey: .subtitle)
         duration = try values.decodeIfPresent(Int.self, forKey: .duration)
         totalDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
+        do {
         epochShowDate = try values.decodeIfPresent(String.self, forKey: .epochShowDate)
+        } catch {
+            do{
+                if let epochShowDateInt = try values.decodeIfPresent(Int.self, forKey: .epochShowDate) {
+                epochShowDate = String(epochShowDateInt)
+                }
+            } catch {
+                print(error)
+            }
+        }
         episodeNo = try values.decodeIfPresent(Int.self, forKey: .episodeNo)
         legal = try values.decodeIfPresent(Bool.self, forKey: .legal)
         approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
