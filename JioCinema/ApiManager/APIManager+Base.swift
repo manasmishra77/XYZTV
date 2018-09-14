@@ -29,7 +29,7 @@ extension RJILApiManager {
     class func getBaseModel(pageNum: Int ,type: BaseVCType, completion: @escaping APISuccessBlock) {
         let path = getPathForVC(type) + "\(pageNum)"
         let isPageNum0 = (pageNum == 0)
-        RJILApiManager.getReponse(path: path, postType: .GET, paramEncoding: .URL, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
+        RJILApiManager.getReponse(path: path, postType: .POST, paramEncoding: .URL, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
             if response.isSuccess {
                 RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: response.model!)
                 completion(true, nil)

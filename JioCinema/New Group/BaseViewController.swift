@@ -39,12 +39,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     init(_ vcType: BaseVCType) {
-        switch vcType {
-        case .home:
-            self.baseViewModel = HomeViewModel(vcType) as! T
-        default:
+//        switch vcType {
+//        case .home:
+//            self.baseViewModel = HomeViewModel(vcType) as! T
+//        default:
             self.baseViewModel = BaseViewModel(vcType) as! T
-        }
+//        }
         super.init(nibName: "BaseViewController", bundle: nil)
         self.baseViewModel.fetchData(completion: tableReloadClosure)
         self.tabBarItem = UITabBarItem(title: vcType.rawValue.capitalized, image: nil, tag: 0)
