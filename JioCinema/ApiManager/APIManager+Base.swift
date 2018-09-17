@@ -29,6 +29,13 @@ extension RJILApiManager {
     class func getBaseModel(pageNum: Int ,type: BaseVCType, completion: @escaping APISuccessBlock) {
         let path = getPathForVC(type) + "\(pageNum)"
         let isPageNum0 = (pageNum == 0)
+        let url = NSURL(fileURLWithPath: path)
+        let request = NSURLRequest(url: url as URL)
+        request.setValue("06758e99be484fca56fb", forKey: "appkey")
+        request.setValue("no-cache", forKey: "cache-control")
+        request.setValue("application/json", forKey: "content-type")
+        request.setValue(true, forKey: "x-disney")
+
         RJILApiManager.getReponse(path: path, postType: .POST, paramEncoding: .URL, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
             if response.isSuccess {
                 RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: response.model!)
@@ -124,8 +131,14 @@ extension RJILApiManager {
             return clipsDataUrl
         case .search:
             return homeDataUrl
-        case .disney:
+        case .disneyHome:
             return disneyHomeDataUrl
+        case .disneyKids:
+            return disneyKidsDataUrl
+        case .disneyMovies:
+            return disneyMoviesDataUrl
+        case .disneyTVShow:
+            return disneyTVShowDataUrl
         }
     }
     private class func populateDataStore(_ vcType: BaseVCType, isPageNum0: Bool, model: BaseDataModel) {
@@ -154,7 +167,13 @@ extension RJILApiManager {
             JCDataStore.sharedDataStore.clipsData = model
         case .search:
             JCDataStore.sharedDataStore.searchData = model
-        case .disney:
+        case .disneyHome:
+            JCDataStore.sharedDataStore.disneyData = model
+        case .disneyMovies:
+            JCDataStore.sharedDataStore.disneyData = model
+        case .disneyKids:
+            JCDataStore.sharedDataStore.disneyData = model
+        case .disneyTVShow:
             JCDataStore.sharedDataStore.disneyData = model
         }
     }
@@ -173,8 +192,14 @@ extension RJILApiManager {
             JCDataStore.sharedDataStore.clipsData?.data?.append(model)
         case .search:
             JCDataStore.sharedDataStore.searchData?.data?.append(model)
-        case .disney:
+        case .disneyHome:
             JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+        case .disneyMovies:
+            JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+        case .disneyKids:
+            JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+        case .disneyTVShow:
+                JCDataStore.sharedDataStore.disneyData?.data?.append(model)
         }
     }
 }

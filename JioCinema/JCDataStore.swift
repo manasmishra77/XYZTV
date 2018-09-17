@@ -49,6 +49,7 @@ class JCDataStore {
         case Language
         case Genre
         case UserRecommendation
+        case Disney
         
     }
     

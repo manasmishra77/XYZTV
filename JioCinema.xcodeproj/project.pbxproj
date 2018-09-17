@@ -128,6 +128,9 @@
 		7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */; };
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
+		9918EF8B214F8012004096E1 /* DisneyButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */; };
+		9918EF8C214F8012004096E1 /* DisneyButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */; };
+		9918EF8E214F8038004096E1 /* JCDisneyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8D214F8038004096E1 /* JCDisneyVC.swift */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
@@ -288,6 +291,9 @@
 		7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCTextField.swift; sourceTree = "<group>"; };
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
+		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
+		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
+		9918EF8D214F8038004096E1 /* JCDisneyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCDisneyVC.swift; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
@@ -560,6 +566,7 @@
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
+				9918EF8D214F8038004096E1 /* JCDisneyVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -602,6 +609,8 @@
 				7BD39C951F419E110014255C /* JCMetadataButton.swift */,
 				53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */,
 				533F7023211C78DD003EA167 /* JCBaseTableViewFooterView.xib */,
+				9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */,
+				9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */,
 			);
 			name = CustomComponents;
 			sourceTree = "<group>";
@@ -756,6 +765,7 @@
 				B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
 				7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */,
+				9918EF8C214F8012004096E1 /* DisneyButtonsTableViewCell.xib in Resources */,
 				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
 				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
 				194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */,
@@ -947,7 +957,9 @@
 				7BFE51381F29BD4500C901C7 /* JCBaseTableViewHeaderCell.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,
 				1966AC61213FDBD800A98404 /* APIManager+LanguageGenre.swift in Sources */,
+				9918EF8E214F8038004096E1 /* JCDisneyVC.swift in Sources */,
 				7BB86E7B1F4C1FAD00610436 /* JCMonthCell.swift in Sources */,
+				9918EF8B214F8012004096E1 /* DisneyButtonsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

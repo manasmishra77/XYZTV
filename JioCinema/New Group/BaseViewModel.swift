@@ -25,7 +25,13 @@ class BaseViewModel: NSObject {
             return JCDataStore.sharedDataStore.clipsData
         case .search:
             return JCDataStore.sharedDataStore.clipsData
-        case .disney:
+        case .disneyHome:
+            return JCDataStore.sharedDataStore.disneyData
+        case .disneyKids:
+            return JCDataStore.sharedDataStore.disneyData
+        case .disneyTVShow:
+            return JCDataStore.sharedDataStore.disneyData
+        case .disneyMovies:
             return JCDataStore.sharedDataStore.disneyData
         }
     }
@@ -37,7 +43,7 @@ class BaseViewModel: NSObject {
             return JCDataStore.sharedDataStore.moviesWatchList
         case .tv:
             return JCDataStore.sharedDataStore.tvWatchList
-        case .disney:
+        case .disneyHome:
             return JCDataStore.sharedDataStore.disneyResumeWatchList
         default:
             return nil
@@ -75,7 +81,7 @@ class BaseViewModel: NSObject {
     func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         fetchBaseData()
-        getBaseWatchListData()
+        //getBaseWatchListData()
     }
     
     func fetchBaseData() {

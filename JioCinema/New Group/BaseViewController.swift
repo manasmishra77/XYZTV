@@ -117,19 +117,3 @@ enum ViewLoadingStatus {
     case none
     case completed
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

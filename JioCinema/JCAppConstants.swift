@@ -75,7 +75,11 @@ let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
 let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
 let SetParentalPinUrl = basePath + kAppKeyValue + "/v3.1/preferences/generatecode"
 let GetParentalPinDetailUrl = basePath + kAppKeyValue + "/v3.1/preferences/get"
-let disneyHomeDataUrl = ""
+let disneyHomeDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/60/")
+let disneyKidsDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/68/")
+let disneyMoviesDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/62/")
+let disneyTVShowDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/64/")
+//"http://10.130.9.92:8000/apis/06758e99be484fca56fb/v3/disneyhome/get/60/0"
 let disneyResumeWatchListUrl = ""
 
 //Completion Blocks
@@ -163,6 +167,7 @@ let subscriberIdKey = "subscriberId"
 //Screen Name
 let HOME_SCREEN = "Home Screen"
 let MOVIE_SCREEN = "Movie Screen"
+let DISNEY_SCREEN = "Disney Screen"
 let TV_SCREEN = "TV Screen"
 let MUSIC_SCREEN = "Music Screen"
 let CLIP_SCREEN = "Clip Screen"
