@@ -29,14 +29,15 @@ extension RJILApiManager {
     class func getBaseModel(pageNum: Int ,type: BaseVCType, completion: @escaping APISuccessBlock) {
         let path = getPathForVC(type) + "\(pageNum)"
         let isPageNum0 = (pageNum == 0)
-        let url = NSURL(fileURLWithPath: path)
-        let request = NSURLRequest(url: url as URL)
-        request.setValue("06758e99be484fca56fb", forKey: "appkey")
-        request.setValue("no-cache", forKey: "cache-control")
-        request.setValue("application/json", forKey: "content-type")
-        request.setValue(true, forKey: "x-disney")
+        var headerType = RequestHeaderType.baseCommon
+        var body: [String: String]? = nil
+        if type == .disneyHome, type == .disneyKids, type == .disneyMovies, type == .disneyTVShow {
+            headerType = .disneyCommon
+            body = [:]
+            body?["apikey"] = "l7xx56d0dec5d8b54fb4b8b4690698da302f"
+        }
 
-        RJILApiManager.getReponse(path: path, postType: .POST, paramEncoding: .URL, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
+        RJILApiManager.getReponse(path: path, headerType: headerType, params: body, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
             if response.isSuccess {
                 RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: response.model!)
                 completion(true, nil)

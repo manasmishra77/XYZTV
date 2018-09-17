@@ -127,6 +127,17 @@ class RJILApiManager {
         }
     }
     
+    var disneyHeaders: [String:String] {
+        get{
+            var headers = [String:String]()
+            headers["Content-Type"] = "application/json"
+            headers[kAppKey] = kAppKeyValue
+            headers["cache-control"] = "no-cache"
+            headers["x-disney"] = "true"
+            return headers
+        }
+    }
+    
     static func parse(data:Data) -> [String:Any]? {
         
         do {
@@ -156,7 +167,7 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest? {
+    func prepareRequest(path: String, headerType: RequestHeaderType = .baseCommon, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest? {
         var request:URLRequest?
         
         if let params = params {
@@ -236,6 +247,11 @@ class RJILApiManager {
         else
         {
             request?.allHTTPHeaderFields = otpHeaders
+        }
+        
+        if headerType == .disneyCommon {
+            request?.allHTTPHeaderFields = nil
+            request?.allHTTPHeaderFields = disneyHeaders
         }
         
         return request

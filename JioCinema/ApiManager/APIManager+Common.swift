@@ -12,7 +12,12 @@ typealias APISuccessBlock = (_ isSuccess: Bool, _ errorMsg: String?) -> ()
 
 extension RJILApiManager {
     
-    class func getReponse<T: Codable>(path: String, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) {
+    enum RequestHeaderType {
+        case disneyCommon
+        case baseCommon
+    }
+    
+    class func getReponse<T: Codable>(path: String, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) {
         
 //        guard !isLoginRequired, JCLoginManager.sharedInstance.isUserLoggedIn() else {
 //            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Not Logged in")
@@ -26,7 +31,7 @@ extension RJILApiManager {
             return
         }
         
-        guard let request = RJILApiManager.defaultManager.prepareRequest(path: path, params: params, encoding: paramEncoding) else {
+        guard let request = RJILApiManager.defaultManager.prepareRequest(path: path, headerType: headerType, params: params, encoding: paramEncoding) else {
             let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed")
             completion(response)
             return

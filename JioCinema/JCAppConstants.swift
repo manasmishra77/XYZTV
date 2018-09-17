@@ -75,10 +75,10 @@ let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
 let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
 let SetParentalPinUrl = basePath + kAppKeyValue + "/v3.1/preferences/generatecode"
 let GetParentalPinDetailUrl = basePath + kAppKeyValue + "/v3.1/preferences/get"
-let disneyHomeDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/60/")
-let disneyKidsDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/68/")
-let disneyMoviesDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/62/")
-let disneyTVShowDataUrl = basePath.appending("/06758e99be484fca56fb/v3/disneyhome/get/64/")
+let disneyHomeDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/60/"
+let disneyKidsDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/68/"
+let disneyMoviesDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/62/"
+let disneyTVShowDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/64/"
 //"http://10.130.9.92:8000/apis/06758e99be484fca56fb/v3/disneyhome/get/60/0"
 let disneyResumeWatchListUrl = ""
 
