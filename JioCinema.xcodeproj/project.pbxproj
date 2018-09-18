@@ -128,6 +128,8 @@
 		7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */; };
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
+		9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */; };
+		9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
@@ -290,6 +292,8 @@
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
 		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
+		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
+		9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CarouselViewForDisney.xib; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
@@ -606,6 +610,8 @@
 				533F7023211C78DD003EA167 /* JCBaseTableViewFooterView.xib */,
 				9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */,
 				9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */,
+				9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */,
+				9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */,
 			);
 			name = CustomComponents;
 			sourceTree = "<group>";
@@ -769,6 +775,7 @@
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
 				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
+				9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
@@ -923,6 +930,7 @@
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
+				9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
