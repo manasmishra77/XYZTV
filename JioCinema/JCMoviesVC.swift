@@ -309,6 +309,15 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 }
             }
         }
+        else {
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                if weakSelf?.baseTableView != nil{
+                    weakSelf?.baseTableView.reloadData()
+                    weakSelf?.baseTableView.layoutIfNeeded()
+                }
+            }
+        }
     }
     
     //ChangingTheAlpha

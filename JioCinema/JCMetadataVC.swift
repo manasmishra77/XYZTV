@@ -807,9 +807,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
         if itemAppType == .TVShow {
-            descText = (metadata?.descriptionForTVShow ?? "") + " " + SHOW_LESS
+            descText = (metadata?.descriptionForTVShow ?? "")// + " " + SHOW_LESS
         } else {
-            descText = (metadata?.description ?? "") + " " + SHOW_LESS
+            descText = (metadata?.description ?? "")// + " " + SHOW_LESS
         }
         let trimTextTopple = getShorterText(descText)
         if trimTextTopple.0 {
@@ -1047,7 +1047,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return (false, fontChangedText)
             }
         } else {
-            let newerText = text.dropLast(SHOW_LESS.count)
+            let newerText = text//.dropLast(SHOW_LESS.count)
             let fontChangedText = getAttributedString(String(newerText), colorChange: false, range: 0)
             return (false, fontChangedText)
         }
