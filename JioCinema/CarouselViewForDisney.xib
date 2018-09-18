@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CarouselViewForDisney" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="750"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYk-Ad-2KX">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="650"/>
+                    <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="650" id="RwD-X3-4ZI"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MvT-6u-5f6">
+                    <rect key="frame" x="0.0" y="650" width="1920" height="100"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="1sY-hE-Wev">
+                            <rect key="frame" x="623" y="7" width="675" height="86"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufe-Eu-Amx">
+                                    <rect key="frame" x="0.0" y="0.0" width="202" height="86"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" title="Movies"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqA-xm-EMl">
+                                    <rect key="frame" x="252" y="0.0" width="218" height="86"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" title="TVshow"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm5-pd-cBG">
+                                    <rect key="frame" x="520" y="0.0" width="155" height="86"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                    <state key="normal" title="Kids"/>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="1sY-hE-Wev" firstAttribute="centerX" secondItem="MvT-6u-5f6" secondAttribute="centerX" id="H10-zv-X83"/>
+                        <constraint firstAttribute="bottom" secondItem="1sY-hE-Wev" secondAttribute="bottom" constant="7" id="jDO-mJ-8W7"/>
+                        <constraint firstItem="1sY-hE-Wev" firstAttribute="centerY" secondItem="MvT-6u-5f6" secondAttribute="centerY" id="o7A-1C-Acf"/>
+                        <constraint firstItem="1sY-hE-Wev" firstAttribute="top" secondItem="MvT-6u-5f6" secondAttribute="top" constant="7" id="qai-JM-Ag5"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="MvT-6u-5f6" secondAttribute="trailing" id="8Ht-xG-IvG"/>
+                <constraint firstItem="OYk-Ad-2KX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="LBu-Dc-hTE"/>
+                <constraint firstAttribute="bottom" secondItem="MvT-6u-5f6" secondAttribute="bottom" id="NYt-YT-XWB"/>
+                <constraint firstItem="MvT-6u-5f6" firstAttribute="top" secondItem="OYk-Ad-2KX" secondAttribute="bottom" id="RYh-0P-307"/>
+                <constraint firstAttribute="trailing" secondItem="OYk-Ad-2KX" secondAttribute="trailing" id="kVn-VD-IKq"/>
+                <constraint firstItem="MvT-6u-5f6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mJJ-k1-IlM"/>
+                <constraint firstItem="OYk-Ad-2KX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uuQ-Tx-Rdn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
+            <connections>
+                <outlet property="kidsButton" destination="xm5-pd-cBG" id="Qtd-Xj-fVW"/>
+                <outlet property="moviesButton" destination="Ufe-Eu-Amx" id="b4Z-Nk-lZH"/>
+                <outlet property="tvShowButtton" destination="lqA-xm-EMl" id="VSm-5Y-w6c"/>
+                <outlet property="viewForCarousel" destination="OYk-Ad-2KX" id="f2X-ty-cOL"/>
+                <outlet property="viewOfButtons" destination="MvT-6u-5f6" id="h4m-no-dd9"/>
+            </connections>
+            <point key="canvasLocation" x="-115.5" y="-8.5"/>
+        </view>
+    </objects>
+</document>

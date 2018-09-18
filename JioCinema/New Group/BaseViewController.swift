@@ -8,8 +8,9 @@
 
 import UIKit
 
-class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, JCCarouselCellDelegate {
     var baseViewModel: T
+    var carousalView : InfinityScrollView?
     var viewLoadingStatus: ViewLoadingStatus = .none {
         didSet {
             if viewLoadingStatus == .viewLoaded, ((oldValue == .viewNotLoadedDataFetched) || (oldValue == .viewNotLoadedDataFetchedWithError)) {
@@ -94,6 +95,30 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
         cell.configureView(cellData, delegate: self)
         return cell
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if self.baseViewModel.vcType == .disneyHome{
+            let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
+
+            if carousalView == nil {
+                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
+                    carousalView = Utility.getHeaderForTableView(for: self, with: items)
+                    carousalView?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
+                }
+            }
+            carouselViewForDisney.viewForCarousel.addSubview(carousalView!)
+            return carouselViewForDisney
+        } else {
+            if carousalView == nil {
+                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items {
+                    carousalView = Utility.getHeaderForTableView(for: self, with: items)
+                }
+            }
+            return carousalView
+        }
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 750
     }
 }
 extension BaseViewController {
