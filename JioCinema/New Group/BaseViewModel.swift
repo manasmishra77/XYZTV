@@ -142,7 +142,7 @@ fileprivate extension BaseViewModel {
         guard let baseDataContainer = baseContainer else {return}
         let increaseBaseModelIndex = (baseDataContainer[0].isCarousal ?? false) ? 1 : 0
         baseModelIndex += increaseBaseModelIndex
-        for _ in baseDataContainer {
+        for _ in increaseBaseModelIndex..<baseDataContainer.count {
             baseTableIndexArray.append((BaseDataType.base, baseModelIndex))
             baseModelIndex += 1
         }
