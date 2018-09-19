@@ -838,7 +838,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             headerCell.titleLabel.text = metadata?.name
             headerCell.imdbImageLogo.isHidden = true
             headerCell.ratingLabel.isHidden = true
-            headerCell.tvShowLabel.text = metadata?.newSubtitle?.capitalized
+            headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
