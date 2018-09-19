@@ -88,6 +88,9 @@ class JCTabBarController: UITabBarController {
     func presentVC(_ item: Item) {
         
     }
+    func presentDisneySubVC(_ vc: UIViewController) {
+        self.present(vc, animated: false, completion: nil)
+    }
 
 }
 

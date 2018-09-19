@@ -44,9 +44,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 //        case .home:
 //            self.baseViewModel = HomeViewModel(vcType) as! T
 //        default:
-            self.baseViewModel = BaseViewModel(vcType) as! T
+        self.baseViewModel = BaseViewModel(vcType) as! T
 //        }
         super.init(nibName: "BaseViewController", bundle: nil)
+        self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
         self.tabBarItem = UITabBarItem(title: vcType.rawValue.capitalized, image: nil, tag: 0)
     
@@ -97,25 +98,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return cell
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if self.baseViewModel.vcType == .disneyHome{
-            let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
-
-            if carousalView == nil {
-                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
-                    carousalView = Utility.getHeaderForTableView(for: self, with: items)
-                    carousalView?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
-                }
-            }
-            carouselViewForDisney.viewForCarousel.addSubview(carousalView!)
-            return carouselViewForDisney
-        } else {
-            if carousalView == nil {
-                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items {
-                    carousalView = Utility.getHeaderForTableView(for: self, with: items)
-                }
-            }
-            return carousalView
-        }
+        return baseViewModel.carouselView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 750
@@ -130,6 +113,13 @@ extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
         tabBarVC.presentVC(item)
+    }
+}
+
+extension BaseViewController: BaseViewModelDelegate {
+    func presentVC(_ vc: UIViewController) {
+        guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
+        tabBarVC.presentDisneySubVC(vc)
     }
 }
 

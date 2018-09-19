@@ -13,7 +13,7 @@ protocol DisneyButtonTapDelegate{
 }
 
 class CarouselViewForDisney: UIView {
-     var delegate : DisneyButtonTapDelegate?
+    var delegate : DisneyButtonTapDelegate?
     @IBOutlet weak var viewForCarousel: UIView!
     @IBOutlet weak var viewOfButtons: UIView!
     @IBOutlet weak var moviesButton: UIView!

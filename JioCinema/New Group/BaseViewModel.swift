@@ -10,7 +10,11 @@ import UIKit
 
 typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType)
 
-class BaseViewModel: NSObject ,JCCarouselCellDelegate{
+protocol BaseViewModelDelegate {
+    func presentVC(_ vc: UIViewController)
+}
+
+class BaseViewModel: NSObject ,JCCarouselCellDelegate {
     var carousal : InfinityScrollView?
     var baseDataModel: BaseDataModel? {
         switch vcType {
@@ -50,52 +54,34 @@ class BaseViewModel: NSObject ,JCCarouselCellDelegate{
             return nil
         }
     }
-//    if self.baseViewModel.vcType == .disneyHome{
-//    let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
-//
-//    if carousalView == nil {
-//    if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
-//    carousalView = Utility.getHeaderForTableView(for: self, with: items)
-//    carousalView?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
-//    }
-//    }
-//    carouselViewForDisney.viewForCarousel.addSubview(carousalView!)
-//    return carouselViewForDisney
-//    } else {
-//    if carousalView == nil {
-//    if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items {
-//    carousalView = Utility.getHeaderForTableView(for: self, with: items)
-//    }
-//    }
-//    return carousalView
-//    }
+
     var carouselView : UIView? {
         switch vcType {
         case .disneyHome:
             let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
             
-                if carousal == nil {
+            if carousal == nil {
                 if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
-//                if let items = baseDataModel?.data?[0].items{
-                carousal = Utility.getHeaderForTableView(for: self, with: items)
-                carousal?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
+                    carousal = Utility.getHeaderForTableView(for: self, with: items)
+                    carousal?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
                 }
-                }
+            }
             carouselViewForDisney.viewForCarousel.addSubview(carousal!)
             carouselViewForDisney.delegate = self
             return carouselViewForDisney
         default:
-                if carousal == nil {
+            if carousal == nil {
                 if let items = baseDataModel?.data?[0].items {
-                carousal = Utility.getHeaderForTableView(for: self, with: items)
+                    carousal = Utility.getHeaderForTableView(for: self, with: items)
                 }
-                }
-                return carousal
+            }
+            return carousal
         }
     }
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
     }
+    var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
     var errorMsg: String?
@@ -206,15 +192,18 @@ extension BaseViewModel: DisneyButtonTapDelegate {
         switch tag {
         case 1:
             let disneyMovies = BaseViewController(.disneyMovies)
+            delegate?.presentVC(disneyMovies)
         case 2:
-            print("2")
+            let disneyTVShow = BaseViewController(.disneyTVShow)
+            delegate?.presentVC(disneyTVShow)
         case 3:
-            print("3")
+            let disneyKids = BaseViewController(.disneyKids)
+            delegate?.presentVC(disneyKids)
         default:
             return
         }
     }
-    enum ButtonType : Int{
+    enum ButtonType : Int {
         case Movies = 1
         case TVShow = 2
         case Kids = 3
