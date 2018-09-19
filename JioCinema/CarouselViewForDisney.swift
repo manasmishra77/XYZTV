@@ -1,3 +1,4 @@
+
 //
 //  CarouselViewForDisney.swift
 //  JioCinema
@@ -7,18 +8,24 @@
 //
 
 import UIKit
+protocol DisneyButtonTapDelegate{
+    func presentVCOnButtonTap(tag : Int)
+}
 
 class CarouselViewForDisney: UIView {
-
+     var delegate : DisneyButtonTapDelegate?
     @IBOutlet weak var viewForCarousel: UIView!
     @IBOutlet weak var viewOfButtons: UIView!
     @IBOutlet weak var moviesButton: UIView!
     @IBOutlet weak var tvShowButtton: UIView!
     @IBOutlet weak var kidsButton: UIView!
-    @IBAction func onMoviesTapped(_ sender: Any) {
+    @IBAction func onMoviesTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func onTVshowTapped(_ sender: Any) {
+    @IBAction func onTVshowTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func onKidesTapped(_ sender: Any) {
+    @IBAction func onKidesTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
 }
