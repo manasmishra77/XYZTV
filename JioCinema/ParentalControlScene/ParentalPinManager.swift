@@ -63,7 +63,7 @@ class ParentalPinManager: NSObject {
             if isPinOnceVerifiedWithinTheSession {
                 return false
             }
-            if maturityRating.ageIntValue < (ParentalPinManager.shared.allowedCategory.ageIntValue) {
+            if maturityRating.ageIntValue <= (ParentalPinManager.shared.allowedCategory.ageIntValForManager) {
                 return false
             }
             return true
