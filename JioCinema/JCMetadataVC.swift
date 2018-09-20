@@ -795,9 +795,12 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             if  maturityRating.capitalized == "All"  {
                 maturityRating = "3+"
             }
+            else if maturityRating == "" {
+                maturityRating = "NR"
+            }
             return " | Maturity Rating: \(maturityRating)"
         } else {
-            return ""
+            return " | Maturity Rating: NR"
         }
     }
     //prepare metadata view
