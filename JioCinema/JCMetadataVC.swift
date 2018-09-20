@@ -791,7 +791,10 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
     }
     func returnMaturityRating() -> String {
-        if let maturityRating = metadata?.maturityRating{
+        if var maturityRating = metadata?.maturityRating {
+            if  maturityRating.capitalized == "All"  {
+                maturityRating = "3+"
+            }
             return " | Maturity Rating: \(maturityRating)"
         } else {
             return ""
