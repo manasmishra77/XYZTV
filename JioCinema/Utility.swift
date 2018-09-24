@@ -200,7 +200,27 @@ class Utility {
         //metadataVC.modalTransitionStyle = .coverVertical
         return metadataVC
     }
-    
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil) -> JCMetadataVC {
+        print("show metadata")
+        let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
+        metadataVC.itemId = itemToBePlayedId
+        metadataVC.itemAppType = appType
+//        metadataVC.categoryName = categoryName
+//        metadataVC.categoryIndex = categoryIndex
+        metadataVC.fromScreen = fromScreen
+        metadataVC.tabBarIndex = tabBarIndex
+        metadataVC.shouldUseTabBarIndex = shouldUseTabBarIndex
+        metadataVC.isMetaDataAvailable = isMetaDataAvailable
+        if let metaData = metaData as? MetadataModel{
+            metadataVC.metadata = metaData
+        }
+        if let langData = languageData as? Item {
+            metadataVC.languageModel = langData
+        }
+        // metadataVC.modalPresentationStyle = .overFullScreen
+        //metadataVC.modalTransitionStyle = .coverVertical
+        return metadataVC
+    }
     //MARK:- Login View Controller Preparation method
     func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: UIViewController?) -> JCLoginVC
     {

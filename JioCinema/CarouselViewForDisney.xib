@@ -16,13 +16,6 @@
             <rect key="frame" x="0.0" y="0.0" width="1920" height="750"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYk-Ad-2KX">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="650"/>
-                    <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="650" id="RwD-X3-4ZI"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MvT-6u-5f6">
                     <rect key="frame" x="0.0" y="650" width="1920" height="100"/>
                     <subviews>
@@ -71,12 +64,8 @@
             <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="MvT-6u-5f6" secondAttribute="trailing" id="8Ht-xG-IvG"/>
-                <constraint firstItem="OYk-Ad-2KX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="LBu-Dc-hTE"/>
                 <constraint firstAttribute="bottom" secondItem="MvT-6u-5f6" secondAttribute="bottom" id="NYt-YT-XWB"/>
-                <constraint firstItem="MvT-6u-5f6" firstAttribute="top" secondItem="OYk-Ad-2KX" secondAttribute="bottom" id="RYh-0P-307"/>
-                <constraint firstAttribute="trailing" secondItem="OYk-Ad-2KX" secondAttribute="trailing" id="kVn-VD-IKq"/>
                 <constraint firstItem="MvT-6u-5f6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mJJ-k1-IlM"/>
-                <constraint firstItem="OYk-Ad-2KX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uuQ-Tx-Rdn"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
@@ -84,7 +73,6 @@
                 <outlet property="kidsButton" destination="xm5-pd-cBG" id="Qtd-Xj-fVW"/>
                 <outlet property="moviesButton" destination="Ufe-Eu-Amx" id="b4Z-Nk-lZH"/>
                 <outlet property="tvShowButtton" destination="lqA-xm-EMl" id="VSm-5Y-w6c"/>
-                <outlet property="viewForCarousel" destination="OYk-Ad-2KX" id="f2X-ty-cOL"/>
                 <outlet property="viewOfButtons" destination="MvT-6u-5f6" id="h4m-no-dd9"/>
             </connections>
             <point key="canvasLocation" x="-115.5" y="-8.5"/>

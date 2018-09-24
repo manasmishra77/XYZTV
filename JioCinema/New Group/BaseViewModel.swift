@@ -63,11 +63,14 @@ class BaseViewModel: NSObject ,JCCarouselCellDelegate {
             if carousal == nil {
                 if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
                     carousal = Utility.getHeaderForTableView(for: self, with: items)
-                    carousal?.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
+                    
                 }
             }
-            carouselViewForDisney.viewForCarousel.addSubview(carousal!)
+            if let carousal = carousal {
+            carousal.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
+            carouselViewForDisney.addSubview(carousal)
             carouselViewForDisney.delegate = self
+            }
             return carouselViewForDisney
         default:
             if carousal == nil {
@@ -110,6 +113,7 @@ class BaseViewModel: NSObject ,JCCarouselCellDelegate {
     func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         fetchBaseData()
+        print(ButtonType.Movies.rawValue)
         //getBaseWatchListData()
     }
     
@@ -136,7 +140,7 @@ class BaseViewModel: NSObject ,JCCarouselCellDelegate {
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
-                let data = dataContainer[itemIndexTuple.1]
+                let data = dataContainer[(itemIndexTuple.1)]
                 if itemIndexTuple.1 == dataContainer.count - 2 {
                     // fetchHomeData()
                 }

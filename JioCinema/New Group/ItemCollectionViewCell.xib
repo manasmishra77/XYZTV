@@ -47,7 +47,7 @@
                     </progressView>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="xdZ-19-fLq" firstAttribute="leading" secondItem="nFy-3D-dND" secondAttribute="leading" id="20D-w1-sqE"/>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="2KM-q2-3F1"/>

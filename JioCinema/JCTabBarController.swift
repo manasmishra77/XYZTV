@@ -86,7 +86,9 @@ class JCTabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     func presentVC(_ item: Item) {
-        
+        print(item)
+        let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5)
+        self.present(metadataVC, animated: true, completion: nil)
     }
     func presentDisneySubVC(_ vc: UIViewController) {
         self.present(vc, animated: false, completion: nil)
