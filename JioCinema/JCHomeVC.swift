@@ -609,14 +609,29 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         let actionCancel = Utility.AlertAction(title: "Cancel", style: .cancel)
         let alertVC = Utility.getCustomizedAlertController(with: "", message: ParentalControlAlertMsg, actions: [actionOk, actionCancel]) { (alertAction) in
                 if alertAction.title == actionOk.title {
+                    
+                    self.sendParentalPINPopupActionEvent(userAction: actionOk.title)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
                     self.tabBarController?.selectedIndex = 6
                     })
+            }
+                else {
+                    self.sendParentalPINPopupActionEvent(userAction: actionCancel.title)
             }
         }
         DispatchQueue.main.async {
             self.present(alertVC, animated: true, completion: nil)
         }
+    }
+    
+    func sendParentalPINPopupActionEvent(userAction: String) {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS", "User Action": userAction]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Parental PIN Popup", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinPopupActionEvent = JCAnalyticsEvent.sharedInstance.getParentalPINPopupActionPerformedEvent(userAction: userAction)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinPopupActionEvent)
     }
 }
 

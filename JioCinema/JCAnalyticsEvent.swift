@@ -19,7 +19,7 @@ let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
 let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/event"
 
 
-
+let JCANALYTICSEVENT_PARENTALPOPUP  = "Parental_PIN_Popup"
 
 class JCAnalyticsEvent: NSObject {
     
@@ -55,6 +55,12 @@ class JCAnalyticsEvent: NSObject {
     {
         let eventDictionary = ["platform":"TVOS","sorce":"App_Launch","key":JCANALYTICSEVENT_APPLAUNCH]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_APPLAUNCH )
+    }
+    
+    func getParentalPINPopupActionPerformedEvent(userAction: String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","User_Action":userAction,"key":JCANALYTICSEVENT_PARENTALPOPUP]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPOPUP)
     }
     
     func getLoginFailedEventForInternalAnalytics(jioID:String, errorMessage:String) -> Dictionary<String, Any>
