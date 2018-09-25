@@ -20,6 +20,7 @@ class EnterPinViewModel: NSObject {
         self.contentName = contentName
         self.delegate = delegate
         super.init()
+        self.sendParentalPINAskEvent()
     }
 
     func checkPin(_ enteredPin: String) -> Bool {
@@ -33,6 +34,28 @@ class EnterPinViewModel: NSObject {
     func getContentName() -> String {
         return contentName
     }
+
+    func sendParentalPINAskEvent() {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "PIN Asked", properties: eventProperties)
+        // For Internal Analytics Event
+        let parentalPinAskedEvent = JCAnalyticsEvent.sharedInstance.getParentalPINEntryViewedEvent()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinAskedEvent)
+    }
+    
+    func sendParentalPINEntryStatusEvent(resultStatus: String, errorString: String?) {
+        // For Clever Tap Event
+        var eventProperties = ["platform":"TVOS", "Result": resultStatus]
+        if let error = errorString {
+            eventProperties = ["platform":"TVOS", "Result": resultStatus, "PIN Entry Error": error]
+        }
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "PIN Entry Status", properties: eventProperties)
+        // For Internal Analytics Event
+        let parentalPinEntryStatusEvent = JCAnalyticsEvent.sharedInstance.getParentalPINEntryStatusEvent(resultStatus: resultStatus, errorString: errorString)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinEntryStatusEvent)
+    }
+    
     
 }
 
@@ -40,10 +63,12 @@ extension EnterPinViewModel: EnterParentalPinViewDelegate {
     func didClickOnSubmitButton(_ pin: String) -> Bool {
         if checkPin(pin) {
             ParentalPinManager.shared.isPinOnceVerifiedWithinTheSession = true
+            self.sendParentalPINEntryStatusEvent(resultStatus: "Success", errorString: nil)
             delegate.pinVerification(true)
             return true
         }
         else {
+            self.sendParentalPINEntryStatusEvent(resultStatus: "Failure", errorString: ValidPinAlertMsg)
             Utility.sharedInstance.showAlert(viewController: nil, title: "", message: ValidPinAlertMsg)
         }
         return false
