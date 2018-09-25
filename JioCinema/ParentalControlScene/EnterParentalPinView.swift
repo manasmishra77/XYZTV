@@ -33,6 +33,7 @@ class EnterParentalPinView: UIView {
         self.setNeedsFocusUpdate()
     }
     @IBAction func playButtonTapped(_ sender: Any) {
+        self.sendParentalPINAskEvent(userAction: "Play")
         if delegate?.didClickOnSubmitButton(password) ?? false {
         }
         password = ""
@@ -40,9 +41,22 @@ class EnterParentalPinView: UIView {
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
+        
+        self.sendParentalPINAskEvent(userAction: "Cancel")
         let topVC = UIApplication.topViewController()
         topVC?.dismiss(animated: true, completion: nil)
     }
+    
+    func sendParentalPINAskEvent(userAction: String) {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS", "User Action": userAction]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "PIN Asked", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinAskEvent = JCAnalyticsEvent.sharedInstance.getParentalPINAskEvent(userAction: userAction)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinAskEvent)
+    }
+    
     @IBAction func onTapOfNumKeyboard(_ sender: UIButton) {
         myPreferdFocusedView = nil
         if(sender.tag == -1){
