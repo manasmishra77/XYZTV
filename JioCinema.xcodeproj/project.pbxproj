@@ -27,7 +27,6 @@
 		197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */; };
 		19BF8A74214651A6001C58DD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */; };
 		19BF8A75214651A6001C58DD /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A70214651A6001C58DD /* BaseViewModel.swift */; };
-		19BF8A76214651A6001C58DD /* BaseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */; };
 		19BF8A77214651A6001C58DD /* BaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A72214651A6001C58DD /* BaseViewController.xib */; };
 		19BF8A78214651A6001C58DD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A73214651A6001C58DD /* BaseViewController.swift */; };
 		19BF8A7D214657BF001C58DD /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */; };
@@ -67,6 +66,7 @@
 		539AB25B2122E2760003FF84 /* ParentalPinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB25A2122E2760003FF84 /* ParentalPinManager.swift */; };
 		539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */ = {isa = PBXBuildFile; fileRef = 539FC8B42126F53D0070D306 /* ParentalControlSetting.png */; };
 		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
+		53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */; };
 		797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchResultViewController.swift */; };
 		797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880FA1F4ECB810032943E /* SearchDataStore.swift */; };
 		7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B072E741F2CBFB900C67E97 /* JCMusicVC.swift */; };
@@ -184,7 +184,6 @@
 		197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchTextSuperModel.swift; sourceTree = "<group>"; };
 		19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		19BF8A70214651A6001C58DD /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
-		19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
 		19BF8A72214651A6001C58DD /* BaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseViewController.xib; sourceTree = "<group>"; };
 		19BF8A73214651A6001C58DD /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -225,6 +224,7 @@
 		539AB25A2122E2760003FF84 /* ParentalPinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinManager.swift; sourceTree = "<group>"; };
 		539FC8B42126F53D0070D306 /* ParentalControlSetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ParentalControlSetting.png; sourceTree = "<group>"; };
 		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
+		53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		797880F81F4ECB390032943E /* JCSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchResultViewController.swift; sourceTree = "<group>"; };
 		797880FA1F4ECB810032943E /* SearchDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataStore.swift; sourceTree = "<group>"; };
@@ -359,10 +359,10 @@
 				19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */,
 				19BF8A7C214657BE001C58DD /* ItemCollectionViewCell.xib */,
 				19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */,
-				19BF8A71214651A6001C58DD /* BaseTableViewCell.xib */,
 				19BF8A73214651A6001C58DD /* BaseViewController.swift */,
 				19BF8A72214651A6001C58DD /* BaseViewController.xib */,
 				19BF8A70214651A6001C58DD /* BaseViewModel.swift */,
+				53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */,
 			);
 			name = BaseScene;
 			path = "New Group";
@@ -769,7 +769,6 @@
 				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
 				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
 				194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */,
-				19BF8A76214651A6001C58DD /* BaseTableViewCell.xib in Resources */,
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
@@ -782,6 +781,7 @@
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
 				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
+				53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
 				539618E321219B1500B576BF /* ParentalControlVC.xib in Resources */,

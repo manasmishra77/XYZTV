@@ -22,6 +22,20 @@ class BaseTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         configureCell()
+        
+        //tvOS11 adjustment
+        if #available(tvOS 11.0, *) {
+            let collectionFrame = CGRect.init(x: itemCollectionView.frame.origin.x - 70, y: itemCollectionView.frame.origin.y, width: itemCollectionView.frame.size.width, height: itemCollectionView.frame.size.height)
+            itemCollectionView.frame = collectionFrame
+            
+//            let labelFrame = CGRect(x: categoryTitleLabel.frame.origin.x - 70, y: categoryTitleLabel.frame.origin.y, width: categoryTitleLabel.frame.size.width, height: categoryTitleLabel.frame.size.height)
+//            
+//            categoryTitleLabel.frame = labelFrame
+            
+            
+        } else {
+            // or use some work around
+        }
     }
     
     private func configureCell() {
@@ -60,6 +74,20 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     }
 }
 
+
+extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 30
+//    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 392, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+}
 
 
 
