@@ -14,6 +14,7 @@ protocol BaseTableViewCellDelegate {
 
 class BaseTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
     var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base)
@@ -48,6 +49,7 @@ class BaseTableViewCell: UITableViewCell {
     func configureView(_ cellItems: TableCellItemsTuple, delegate: BaseTableViewCellDelegate) {
         self.cellItems = cellItems
         self.delegate = delegate
+        self.categoryTitleLabel.text = cellItems.title
         self.itemCollectionView.reloadData()
     }
 

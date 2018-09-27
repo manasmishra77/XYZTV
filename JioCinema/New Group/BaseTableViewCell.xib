@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Of Movie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfN-da-kYZ">
-                    <rect key="frame" x="12" y="12" width="236" height="45"/>
+                    <rect key="frame" x="30" y="12" width="236" height="45"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -39,10 +39,11 @@
                 <constraint firstItem="yTD-Ic-iAy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JBR-q1-W0a"/>
                 <constraint firstItem="FfN-da-kYZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Ll1-9t-dM1"/>
                 <constraint firstAttribute="bottom" secondItem="yTD-Ic-iAy" secondAttribute="bottom" constant="20" id="cUN-pc-bPX"/>
-                <constraint firstItem="FfN-da-kYZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="e6Q-jZ-bdu"/>
+                <constraint firstItem="FfN-da-kYZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="e6Q-jZ-bdu"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="categoryTitleLabel" destination="FfN-da-kYZ" id="EDW-mM-9b1"/>
                 <outlet property="itemCollectionView" destination="yTD-Ic-iAy" id="kAy-7m-tV4"/>
             </connections>
             <point key="canvasLocation" x="76.5" y="-136"/>

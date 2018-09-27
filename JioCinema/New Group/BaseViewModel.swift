@@ -12,9 +12,10 @@ typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCel
 
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
+    func presentMetadataOfIcarousel(_ itemId : Any)
 }
 
-class BaseViewModel: NSObject ,JCCarouselCellDelegate {
+class BaseViewModel: NSObject  {
     var carousal : InfinityScrollView?
     var baseDataModel: BaseDataModel? {
         switch vcType {
@@ -81,6 +82,7 @@ class BaseViewModel: NSObject ,JCCarouselCellDelegate {
             return carousal
         }
     }
+    
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
     }
@@ -214,10 +216,14 @@ extension BaseViewModel: DisneyButtonTapDelegate {
     }
 }
 
-
-
-
-
+extension BaseViewModel: JCCarouselCellDelegate {
+    func didTapOnCarouselItem(_ item: Any?)
+    {
+        if let item = item {
+            delegate?.presentMetadataOfIcarousel(item)
+        }
+    }
+}
 
 
 

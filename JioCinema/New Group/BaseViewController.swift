@@ -8,9 +8,9 @@
 
 import UIKit
 
-class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, JCCarouselCellDelegate {
+class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate{
     var baseViewModel: T
-    var carousalView : InfinityScrollView?
+    //var carousalView : InfinityScrollView?
     var viewLoadingStatus: ViewLoadingStatus = .none {
         didSet {
             if viewLoadingStatus == .viewLoaded, ((oldValue == .viewNotLoadedDataFetched) || (oldValue == .viewNotLoadedDataFetchedWithError)) {
@@ -111,19 +111,29 @@ extension BaseViewController {
 }
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
-        guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
+        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5)
+            self.present(metadataVC, animated: true, completion: nil)
+            return
+        }
         tabBarVC.presentVC(item)
     }
+
 }
 
 extension BaseViewController: BaseViewModelDelegate {
+    func presentMetadataOfIcarousel(_ itemId: Any) {
+        if let item = itemId as? Item {
+        self.didTapOnItemCell(nil, item)
+        }
+    }
+    
     func presentVC(_ vc: UIViewController) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
         tabBarVC.presentDisneySubVC(vc)
     }
+
 }
-
-
 
 enum ViewLoadingStatus {
     case viewLoaded
