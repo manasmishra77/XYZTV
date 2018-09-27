@@ -87,7 +87,7 @@ class JCTabBarController: UITabBarController {
     }
     func presentVC(_ item: Item) {
         print(item)
-        let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5)
+        let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
         self.present(metadataVC, animated: true, completion: nil)
     }
     func presentDisneySubVC(_ vc: UIViewController) {

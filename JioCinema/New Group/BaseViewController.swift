@@ -111,7 +111,11 @@ extension BaseViewController {
 }
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
-        guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
+        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
+            self.present(metadataVC, animated: true, completion: nil)
+            return
+        }
         tabBarVC.presentVC(item)
     }
 }
