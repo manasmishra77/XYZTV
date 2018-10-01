@@ -46,16 +46,31 @@ extension RJILApiManager {
             }
         }
     }
-    class func getWatchListData(type: BaseVCType, _ completion: @escaping APISuccessBlock) {
-        let path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
+    class func getWatchListData(isDisney : Bool ,type: BaseVCType, _ completion: @escaping APISuccessBlock) {
+        var path : String = ""
+        if isDisney {
+            path = (type == .movie) ? disneyMoviesWatchListUrl : disneyTvWatchListUrl
+        } else {
+            path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
+        }
+        //let path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
         let params = ["uniqueId": JCAppUser.shared.unique]
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
-                if (type == .movie) {
-                    JCDataStore.sharedDataStore.moviesWatchList = response.model
+                if isDisney {
+                    if (type == .movie) {
+                        JCDataStore.sharedDataStore.disneyMovieWatchList = response.model
+                    } else {
+                        JCDataStore.sharedDataStore.disneyTVWatchList = response.model
+                    }
                 } else {
-                    JCDataStore.sharedDataStore.tvWatchList = response.model
+                    if (type == .movie) {
+                        JCDataStore.sharedDataStore.moviesWatchList = response.model
+                    } else {
+                        JCDataStore.sharedDataStore.tvWatchList = response.model
+                    }
                 }
+                
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)

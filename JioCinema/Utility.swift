@@ -145,7 +145,7 @@ class Utility {
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -165,6 +165,8 @@ class Utility {
         
         playerVC.isEpisodeDataAvailable = isEpisodeAvailable
         playerVC.isMoreDataAvailable = isMoreDataAvailable
+        
+        playerVC.isDisney = isDisney
         
         if isEpisodeAvailable{
             playerVC.episodeArray = recommendationArray as! [Episode]
@@ -200,7 +202,7 @@ class Utility {
         //metadataVC.modalTransitionStyle = .coverVertical
         return metadataVC
     }
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false) -> JCMetadataVC {
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
         metadataVC.itemId = itemToBePlayedId
@@ -217,6 +219,8 @@ class Utility {
         if let langData = languageData as? Item {
             metadataVC.languageModel = langData
         }
+        
+        metadataVC.isDisney = isDisney
         // metadataVC.modalPresentationStyle = .overFullScreen
         //metadataVC.modalTransitionStyle = .coverVertical
         return metadataVC

@@ -21,7 +21,7 @@ class JCDataStore {
     var genreData: BaseDataModel?
     var disneyData: BaseDataModel?
     var disneyResumeWatchList: BaseDataModel?
-    var dineyMovieWatchList: BaseDataModel?
+    var disneyMovieWatchList: BaseDataModel?
     var disneyTVWatchList: BaseDataModel?
     
     var configData: ConfigData?

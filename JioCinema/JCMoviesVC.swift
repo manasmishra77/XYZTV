@@ -284,7 +284,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     
     func callWebServiceForMoviesWatchlist()
     {
-        RJILApiManager.getWatchListData(type: .movie) {[unowned self] (isSuccess, errorMsg) in
+        RJILApiManager.getWatchListData(isDisney : false ,type: .movie) {[unowned self] (isSuccess, errorMsg) in
             guard isSuccess else {
                 return
             }

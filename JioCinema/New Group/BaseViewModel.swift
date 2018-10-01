@@ -165,7 +165,7 @@ fileprivate extension BaseViewModel {
         case watchlist
     }
     fileprivate func getBaseWatchListData() {
-        RJILApiManager.getWatchListData(type: vcType, baseAPIReponseHandler)
+        RJILApiManager.getWatchListData(isDisney : true ,type: vcType, baseAPIReponseHandler)
     }
     
     fileprivate func populateBaseTableArray() {

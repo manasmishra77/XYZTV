@@ -254,7 +254,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
 
     func callWebServiceForTVWatchlist()
     {
-        RJILApiManager.getWatchListData(type: .tv) {[unowned self] (isSuccess, errorMsg) in
+        RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[unowned self] (isSuccess, errorMsg) in
             guard isSuccess else {return}
             if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
                 self.isTVWatchlistAvailable = true

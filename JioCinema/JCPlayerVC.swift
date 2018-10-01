@@ -71,6 +71,8 @@
     var starCast = ""
     var vendor = ""
     
+    var isDisney = false
+    
     fileprivate var isPlayListFirstItemToBePlayed = false
     fileprivate var videoViewingLapsedTime = 0.0
     fileprivate var totalBufferDurationTime = 0.0
@@ -1173,7 +1175,7 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                //self.playbackRightsData?.url = nil
+//                self.playbackRightsData?.url = nil
                 if let fpsUrl = self.playbackRightsData?.url {
                     self.doParentalCheck(with: fpsUrl, isFps: true)
                 } else if let aesUrl = self.playbackRightsData?.aesUrl {

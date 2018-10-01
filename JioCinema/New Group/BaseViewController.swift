@@ -11,6 +11,8 @@ import UIKit
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate{
     var baseViewModel: T
     //var carousalView : InfinityScrollView?
+    var isWatchlistAvailable = false
+    var dataItemsForTableview = [DataContainer]()
     var viewLoadingStatus: ViewLoadingStatus = .none {
         didSet {
             if viewLoadingStatus == .viewLoaded, ((oldValue == .viewNotLoadedDataFetched) || (oldValue == .viewNotLoadedDataFetchedWithError)) {
@@ -67,7 +69,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
         // Do any additional setup after loading the view.
         configureViews()
-        
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isWatchlistAvailable{
+            isWatchlistAvailable = false
+            dataItemsForTableview.remove(at: 0)
+            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
     }
     
     private func configureViews() {
@@ -94,6 +100,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
+        print(baseViewModel.getTableCellItems(for: 0, completion: tableReloadClosure    ))
         cell.configureView(cellData, delegate: self)
         return cell
     }
@@ -102,6 +109,25 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 750
+    }
+    func changingDataSourceForBaseTableView() {
+        //dataItemsForTableview.removeAll()
+        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data{
+            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
+                isWatchlistAvailable = false
+            }
+            dataItemsForTableview = disneyData
+            if dataItemsForTableview[0].isCarousal ?? false {
+                dataItemsForTableview.remove(at: 0)
+            }
+            if isWatchlistAvailable {
+                if let watchListData = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
+                
+                    dataItemsForTableview.insert(watchListData, at: 0)
+                }
+            }
+        }
+        
     }
 }
 extension BaseViewController {
@@ -112,7 +138,7 @@ extension BaseViewController {
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5)
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
             self.present(metadataVC, animated: true, completion: nil)
             return
         }
