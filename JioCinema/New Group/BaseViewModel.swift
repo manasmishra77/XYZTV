@@ -16,6 +16,7 @@ protocol BaseViewModelDelegate {
 }
 
 class BaseViewModel: NSObject  {
+    var isDisneyWatchlistAvailable = false
     var carousal : InfinityScrollView?
     var baseDataModel: BaseDataModel? {
         switch vcType {
@@ -68,9 +69,9 @@ class BaseViewModel: NSObject  {
                 }
             }
             if let carousal = carousal {
-            carousal.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
-            carouselViewForDisney.addSubview(carousal)
-            carouselViewForDisney.delegate = self
+                carousal.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
+                carouselViewForDisney.addSubview(carousal)
+                carouselViewForDisney.delegate = self
             }
             return carouselViewForDisney
         default:
@@ -116,9 +117,11 @@ class BaseViewModel: NSObject  {
         viewResponseBlock = completion
         fetchBaseData()
         print(ButtonType.Movies.rawValue)
-        //getBaseWatchListData()
+        getBaseWatchListData()
     }
-    
+    func getDataForWatchList() {
+        getBaseWatchListData()
+    }
     func fetchBaseData() {
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
             guard isSuccess else {
@@ -155,7 +158,43 @@ class BaseViewModel: NSObject  {
         }
         return (title: "", items: [], cellType: .base)
     }
-    
+//    func callWebServiceForDisneyWatchlist()
+//    {
+//        RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[unowned self] (isSuccess, errorMsg) in
+//            guard isSuccess else {return}
+//            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
+//                self.isDisneyWatchlistAvailable = true
+//                self.changingDataSourceForBaseTableView()
+//                DispatchQueue.main.async {
+//                    JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].title = "Watch List"
+////                    if baseTableView != nil{
+////                        baseTableView.reloadData()
+////                        baseTableView.layoutIfNeeded()
+////                    }
+//                }
+//            }
+//        }
+//    }
+//    func changingDataSourceForBaseTableView(){
+//        //dataItemsForTableview.removeAll()
+//        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data {
+//            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
+//                isDisneyWatchlistAvailable = false
+//            }
+////            dataItemsForTableview = tvData
+//            if baseDataModel?.data?[0].isCarousal ?? false {
+////                dataItemsForTableview.remove(at: 0)
+//            }
+//            if isDisneyWatchlistAvailable {
+//                if let watchListData = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
+// //                   dataItemsForTableview.insert(watchListData, at: 0)
+////                }
+////                if let watchListData = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
+////                    dataItemsForTableview.insert(watchListData, at: 0)
+//                }
+//            }
+//        }
+//    }
 }
 
 // MovieVC
@@ -217,8 +256,7 @@ extension BaseViewModel: DisneyButtonTapDelegate {
 }
 
 extension BaseViewModel: JCCarouselCellDelegate {
-    func didTapOnCarouselItem(_ item: Any?)
-    {
+    func didTapOnCarouselItem(_ item: Any?) {
         if let item = item {
             delegate?.presentMetadataOfIcarousel(item)
         }

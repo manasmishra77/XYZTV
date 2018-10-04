@@ -890,14 +890,25 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func changingDataSourceForWatchList() {
         if let navVc = (self.presentingViewController?.presentingViewController ?? self.presentingViewController) as? UINavigationController {
             if let tabVC = navVc.viewControllers[0] as? UITabBarController{
-                if self.itemAppType == VideoType.TVShow{
-                    if let vc = tabVC.viewControllers![2] as? JCTVVC{
-                        vc.callWebServiceForTVWatchlist()
+                if isDisney {
+                        if let vc = tabVC.viewControllers![4] as? BaseViewController{
+//                            if self.itemAppType == VideoType.TVShow{
+                            vc.callWebServiceForWatchlist()
+//                            }
+//                            else {
+//                             vc.callWebServiceForWatchlist()
+//                        }
                     }
-                }
-                if self.itemAppType == VideoType.Movie{
-                    if let vc = tabVC.viewControllers![1] as? JCMoviesVC{
-                        vc.callWebServiceForMoviesWatchlist()
+                } else {
+                    if self.itemAppType == VideoType.TVShow{
+                        if let vc = tabVC.viewControllers![2] as? JCTVVC{
+                            vc.callWebServiceForTVWatchlist()
+                        }
+                    }
+                    if self.itemAppType == VideoType.Movie{
+                        if let vc = tabVC.viewControllers![1] as? JCMoviesVC{
+                            vc.callWebServiceForMoviesWatchlist()
+                        }
                     }
                 }
             }

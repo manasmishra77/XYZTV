@@ -69,11 +69,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
         // Do any additional setup after loading the view.
         configureViews()
-        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isWatchlistAvailable{
-            isWatchlistAvailable = false
-            dataItemsForTableview.remove(at: 0)
-            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        }
+//        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isWatchlistAvailable {
+//            isWatchlistAvailable = false
+//            dataItemsForTableview.remove(at: 0)
+//            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+//        } else {
+//           callWebServiceForWatchlist()
+//        }
     }
     
     private func configureViews() {
@@ -85,7 +87,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             viewLoadingStatus = .viewLoaded
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -100,7 +102,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
-        print(baseViewModel.getTableCellItems(for: 0, completion: tableReloadClosure    ))
+        //print(baseViewModel.getTableCellItems(for: 0, completion: tableReloadClosure))
         cell.configureView(cellData, delegate: self)
         return cell
     }
@@ -110,9 +112,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 750
     }
+    func callWebServiceForWatchlist(){
+        baseViewModel.getDataForWatchList()
+    }
     func changingDataSourceForBaseTableView() {
         //dataItemsForTableview.removeAll()
-        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data{
+        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data {
             if !JCLoginManager.sharedInstance.isUserLoggedIn() {
                 isWatchlistAvailable = false
             }

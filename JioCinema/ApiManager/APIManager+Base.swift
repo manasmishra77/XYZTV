@@ -46,14 +46,18 @@ extension RJILApiManager {
             }
         }
     }
-    class func getWatchListData(isDisney : Bool ,type: BaseVCType, _ completion: @escaping APISuccessBlock) {
+    class func getWatchListData(isDisney : Bool,type: BaseVCType, _ completion: @escaping APISuccessBlock) {
         var path : String = ""
         if isDisney {
-            path = (type == .movie) ? disneyMoviesWatchListUrl : disneyTvWatchListUrl
+            if type == .disneyHome {
+                RJILApiManager.getResumeWatchData(vcType: .disneyHome, completion)
+                return
+            } else {
+                path = (type == .movie) ? disneyMoviesWatchListUrl : disneyTvWatchListUrl
+            }
         } else {
             path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
         }
-        //let path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
         let params = ["uniqueId": JCAppUser.shared.unique]
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
@@ -70,7 +74,6 @@ extension RJILApiManager {
                         JCDataStore.sharedDataStore.tvWatchList = response.model
                     }
                 }
-                
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)

@@ -75,7 +75,7 @@
                 <outlet property="tvShowButtton" destination="lqA-xm-EMl" id="VSm-5Y-w6c"/>
                 <outlet property="viewOfButtons" destination="MvT-6u-5f6" id="h4m-no-dd9"/>
             </connections>
-            <point key="canvasLocation" x="-115.5" y="-8.5"/>
+            <point key="canvasLocation" x="-116" y="-9"/>
         </view>
     </objects>
 </document>
