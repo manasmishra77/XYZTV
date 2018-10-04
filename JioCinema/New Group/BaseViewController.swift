@@ -77,7 +77,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 //           callWebServiceForWatchlist()
 //        }
     }
-    
+   
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
@@ -86,6 +86,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
         }
+        callWebServiceForWatchlist()
     }
     
     override func didReceiveMemoryWarning() {

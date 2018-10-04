@@ -46,14 +46,14 @@ extension RJILApiManager {
             }
         }
     }
-    class func getWatchListData(isDisney : Bool,type: BaseVCType, _ completion: @escaping APISuccessBlock) {
+    class func getWatchListData(isDisney : Bool, type: BaseVCType, _ completion: APISuccessBlock?) {
         var path : String = ""
         if isDisney {
             if type == .disneyHome {
-                RJILApiManager.getResumeWatchData(vcType: .disneyHome, completion)
+                RJILApiManager.getResumeWatchData(vcType: .disneyHome, completion!)
                 return
             } else {
-                path = (type == .movie) ? disneyMoviesWatchListUrl : disneyTvWatchListUrl
+                path = (type == .disneyMovies) ? disneyMoviesWatchListUrl : disneyTvWatchListUrl
             }
         } else {
             path = (type == .movie) ? moviesWatchListUrl : tvWatchListUrl
@@ -62,7 +62,7 @@ extension RJILApiManager {
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
                 if isDisney {
-                    if (type == .movie) {
+                    if (type == .disneyMovies) {
                         JCDataStore.sharedDataStore.disneyMovieWatchList = response.model
                     } else {
                         JCDataStore.sharedDataStore.disneyTVWatchList = response.model
@@ -74,9 +74,9 @@ extension RJILApiManager {
                         JCDataStore.sharedDataStore.tvWatchList = response.model
                     }
                 }
-                completion(true, nil)
+                completion?(true, nil)
             } else {
-                completion(false, response.errorMsg)
+                completion?(false, response.errorMsg)
             }
             
         }
@@ -85,9 +85,11 @@ extension RJILApiManager {
     
     
     class func getResumeWatchData(vcType: BaseVCType = .home,_ completion: @escaping APISuccessBlock) {
-        let path = (vcType == .home) ? resumeWatchGetUrl : disneyResumeWatchListUrl
-        let params = ["uniqueId": JCAppUser.shared.unique]
-        RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
+        let path = resumeWatchGetUrl
+        let listId = (vcType == .home) ? 10 : 30
+        let header = (vcType == .home) ? RequestHeaderType.baseCommon : RequestHeaderType.disneyCommon
+        let params = ["uniqueId": JCAppUser.shared.unique, "listId": listId] as [String : Any]
+        RJILApiManager.getReponse(path: path, headerType: header, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
                 if vcType == .home {
                     JCDataStore.sharedDataStore.resumeWatchList = response.model

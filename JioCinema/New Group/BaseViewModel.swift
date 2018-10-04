@@ -120,7 +120,8 @@ class BaseViewModel: NSObject  {
         getBaseWatchListData()
     }
     func getDataForWatchList() {
-        getBaseWatchListData()
+         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
+         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
     }
     func fetchBaseData() {
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
@@ -204,6 +205,7 @@ fileprivate extension BaseViewModel {
         case watchlist
     }
     fileprivate func getBaseWatchListData() {
+        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
         RJILApiManager.getWatchListData(isDisney : true ,type: vcType, baseAPIReponseHandler)
     }
     

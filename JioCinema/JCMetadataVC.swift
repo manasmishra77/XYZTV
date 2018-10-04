@@ -725,8 +725,16 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func checkIfItemIsInWatchList(_ itemIdToBeChecked: String, _ appType: VideoType) -> Bool {
         var watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?[0].items
-        if appType == .Movie{
-            watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items
+        if isDisney {
+            watchListArray = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0].items
+            if appType == .Movie{
+                watchListArray = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].items
+            }
+        } else {
+            watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?[0].items
+            if appType == .Movie{
+                watchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items
+            }
         }
         let itemMatched = watchListArray?.filter{ $0.id == itemIdToBeChecked}.first
         if itemMatched != nil {
