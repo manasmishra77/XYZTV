@@ -126,6 +126,13 @@ enum AgeGroup: String {
         if let ageInt = Int(self.rawValue.dropLast()) {
             return ageInt
         }
+        return 3
+    }
+    
+    var ageIntValForManager: Int {
+        if let ageInt = Int(self.rawValue.dropLast()) {
+            return ageInt
+        }
         return 0
     }
 }
