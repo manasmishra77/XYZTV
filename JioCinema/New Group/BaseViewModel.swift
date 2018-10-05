@@ -35,11 +35,11 @@ class BaseViewModel: NSObject  {
         case .disneyHome:
             return JCDataStore.sharedDataStore.disneyData
         case .disneyKids:
-            return JCDataStore.sharedDataStore.disneyData
+            return JCDataStore.sharedDataStore.disneyKidsData
         case .disneyTVShow:
-            return JCDataStore.sharedDataStore.disneyData
+            return JCDataStore.sharedDataStore.disneyTVShowData
         case .disneyMovies:
-            return JCDataStore.sharedDataStore.disneyData
+            return JCDataStore.sharedDataStore.disneyMoviesData
         }
     }
     var baseWatchListModel: BaseDataModel? {
@@ -52,6 +52,10 @@ class BaseViewModel: NSObject  {
             return JCDataStore.sharedDataStore.tvWatchList
         case .disneyHome:
             return JCDataStore.sharedDataStore.disneyResumeWatchList
+        case .disneyMovies:
+            return JCDataStore.sharedDataStore.disneyMovieWatchList
+        case .disneyTVShow:
+            return JCDataStore.sharedDataStore.disneyTVWatchList
         default:
             return nil
         }
@@ -154,7 +158,7 @@ class BaseViewModel: NSObject  {
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base)
+                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: .base)
             }
         }
         return (title: "", items: [], cellType: .base)

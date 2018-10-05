@@ -20,6 +20,9 @@ class JCDataStore {
     var languageData: BaseDataModel?
     var genreData: BaseDataModel?
     var disneyData: BaseDataModel?
+    var disneyMoviesData: BaseDataModel?
+    var disneyTVShowData: BaseDataModel?
+    var disneyKidsData: BaseDataModel?
     var disneyResumeWatchList: BaseDataModel?
     var disneyMovieWatchList: BaseDataModel?
     var disneyTVWatchList: BaseDataModel?

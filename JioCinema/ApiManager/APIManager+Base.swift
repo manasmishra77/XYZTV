@@ -191,11 +191,11 @@ extension RJILApiManager {
         case .disneyHome:
             JCDataStore.sharedDataStore.disneyData = model
         case .disneyMovies:
-            JCDataStore.sharedDataStore.disneyData = model
+            JCDataStore.sharedDataStore.disneyMoviesData = model
         case .disneyKids:
-            JCDataStore.sharedDataStore.disneyData = model
+            JCDataStore.sharedDataStore.disneyKidsData = model
         case .disneyTVShow:
-            JCDataStore.sharedDataStore.disneyData = model
+            JCDataStore.sharedDataStore.disneyTVShowData = model
         }
     }
     
@@ -216,11 +216,11 @@ extension RJILApiManager {
         case .disneyHome:
             JCDataStore.sharedDataStore.disneyData?.data?.append(model)
         case .disneyMovies:
-            JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+            JCDataStore.sharedDataStore.disneyMoviesData?.data?.append(model)
         case .disneyKids:
-            JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+            JCDataStore.sharedDataStore.disneyKidsData?.data?.append(model)
         case .disneyTVShow:
-                JCDataStore.sharedDataStore.disneyData?.data?.append(model)
+                JCDataStore.sharedDataStore.disneyTVShowData?.data?.append(model)
         }
     }
 }
