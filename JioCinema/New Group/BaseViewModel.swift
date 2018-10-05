@@ -67,9 +67,8 @@ class BaseViewModel: NSObject  {
             let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
             
             if carousal == nil {
-                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items{
+                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items {
                     carousal = Utility.getHeaderForTableView(for: self, with: items)
-                    
                 }
             }
             if let carousal = carousal {

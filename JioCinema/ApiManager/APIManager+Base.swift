@@ -61,20 +61,24 @@ extension RJILApiManager {
         let params = ["uniqueId": JCAppUser.shared.unique]
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
-                if isDisney {
-                    if (type == .disneyMovies) {
-                        JCDataStore.sharedDataStore.disneyMovieWatchList = response.model
+                if let dataContainer = response.model?.data?.first, (dataContainer.items?.count ?? 0) > 0 {
+                    if isDisney {
+                        if (type == .disneyMovies) {
+                            JCDataStore.sharedDataStore.disneyMovieWatchList = response.model
+                        } else {
+                            JCDataStore.sharedDataStore.disneyTVWatchList = response.model
+                        }
                     } else {
-                        JCDataStore.sharedDataStore.disneyTVWatchList = response.model
+                        if (type == .movie) {
+                            JCDataStore.sharedDataStore.moviesWatchList = response.model
+                        } else {
+                            JCDataStore.sharedDataStore.tvWatchList = response.model
+                        }
                     }
+                    completion?(true, nil)
                 } else {
-                    if (type == .movie) {
-                        JCDataStore.sharedDataStore.moviesWatchList = response.model
-                    } else {
-                        JCDataStore.sharedDataStore.tvWatchList = response.model
-                    }
+                    completion?(false, "List is empty!!")
                 }
-                completion?(true, nil)
             } else {
                 completion?(false, response.errorMsg)
             }
@@ -91,14 +95,18 @@ extension RJILApiManager {
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": listId] as [String : Any]
         RJILApiManager.getReponse(path: path, headerType: header, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
-                if vcType == .home {
-                    JCDataStore.sharedDataStore.resumeWatchList = response.model
-                    JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = "Resume Watching"
+                if let dataContainer = response.model?.data?.first, (dataContainer.items?.count ?? 0) > 0 {
+                    if vcType == .home {
+                        JCDataStore.sharedDataStore.resumeWatchList = response.model
+                        JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = "Resume Watching"
+                    } else {
+                        JCDataStore.sharedDataStore.disneyResumeWatchList = response.model
+                        JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = "Resume Watching"
+                    }
+                    completion(true, nil)
                 } else {
-                    JCDataStore.sharedDataStore.disneyResumeWatchList = response.model
-                    JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = "Resume Watching"
+                    completion(false, "List is empty!!")
                 }
-                completion(true, nil)
             } else {
                 completion(false, response.errorMsg)
             }
