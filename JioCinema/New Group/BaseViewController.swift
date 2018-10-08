@@ -71,6 +71,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
         // Do any additional setup after loading the view.
         configureViews()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.callWebServiceWhenItemAddedinWatchlist),
+            name: addtoWatchlistTappedNotificationName,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.callWebServiceWhenItemRemovedWatchlist),
+            name: removefromWatchlistTappedNotificationName,
+            object: nil)
     }
    
     private func configureViews() {
@@ -109,7 +119,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return 750
     }
     func callWebServiceForWatchlist(){
-        baseViewModel.getDataForWatchList()
+        baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }
     func changingDataSourceForBaseTableView() {
         //dataItemsForTableview.removeAll()
@@ -130,11 +140,14 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        baseTableView.reloadData()
+    }
     func callWebServiceWhenItemAddedinWatchlist(){
-        
+        baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }
     func callWebServiceWhenItemRemovedWatchlist(){
-        
+        baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }
 }
 extension BaseViewController {

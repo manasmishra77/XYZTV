@@ -88,23 +88,10 @@ class BaseViewModel: NSObject  {
     }
     
     init(_ vcType: BaseVCType) {
-        super.init()
         self.vcType = vcType
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(callWebServiceWhenItemAddedinWatchlist),
-            name: addtoWatchlistTappedNotificationName,
-            object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(callWebServiceWhenItemRemovedWatchlist),
-            name: removefromWatchlistTappedNotificationName,
-            object: nil)
+      
     }
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: addtoWatchlistTappedNotificationName, object: nil)
-        NotificationCenter.default.removeObserver(self, name: removefromWatchlistTappedNotificationName, object: nil)
-    }
+   
     var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
@@ -137,9 +124,12 @@ class BaseViewModel: NSObject  {
         print(ButtonType.Movies.rawValue)
         getBaseWatchListData()
     }
-    func getDataForWatchList() {
+    func getDataForWatchList(_ type : BaseVCType) {
+        if type == .disneyMovies {
          RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
+        } else if type == .disneyTVShow{
          RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+        }
     }
     func fetchBaseData() {
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
@@ -177,12 +167,7 @@ class BaseViewModel: NSObject  {
         }
         return (title: "", items: [], cellType: .base)
     }
-    func callWebServiceWhenItemAddedinWatchlist(){
-        
-    }
-    func callWebServiceWhenItemRemovedWatchlist(){
-        
-    }
+    
 //    func callWebServiceForDisneyWatchlist()
 //    {
 //        RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[unowned self] (isSuccess, errorMsg) in
