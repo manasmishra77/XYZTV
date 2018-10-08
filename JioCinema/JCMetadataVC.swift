@@ -727,7 +727,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         var watchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?[0].items
         if isDisney {
             watchListArray = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0].items
-            if appType == .Movie{
+            if appType == .Movie {
                 watchListArray = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].items
             }
         } else {
@@ -794,9 +794,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
-        print(isDisney)
         var params = [String: Any]()
-        if isDisney{
+        if isDisney {
             if itemAppType == .TVShow {
                 params = ["uniqueId": JCAppUser.shared.unique, "listId": "33" ,"json": ["id": metadata?.contentId ?? itemId]]
             } else if itemAppType == .Movie {
@@ -809,7 +808,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId]]
             }
         }
-        if JCLoginManager.sharedInstance.isUserLoggedIn(){
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
             //let url = isStatusAdd ? removeFromWatchListUrl : addToResumeWatchlistUrl
             let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
             callWebServiceToUpdateWatchlist(withUrl: url, watchlistStatus: isStatusAdd, andParameters: params)
@@ -819,6 +818,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func callWebServiceToUpdateWatchlist(withUrl url: String, watchlistStatus: Bool, andParameters params: [String: Any]) {
+        print(self.item)
         self.headerCell.addToWatchListButton.isEnabled = false
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[unowned self] (response) in
             DispatchQueue.main.async {
@@ -828,15 +828,29 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: response.errorMsg ?? "")
                 return
             }
+            //WatchList Staus, Remove from array
+            
+//            if watchlistStatus {
+//                print(self.item)
+//            } else {
+//
+//            }
             self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
             DispatchQueue.main.async {
-                if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST{
+                if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST {
                     self.headerCell.watchlistLabel.text = REMOVE_FROM_WATCHLIST
-                }else{
+                } else {
                     self.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
                 }
             }
             //ChangingTheDataSourceForWatchListItems
+            if self.isDisney {
+                if watchlistStatus {
+                    NotificationCenter.default.post(name: addtoWatchlistTappedNotificationName, object: nil)
+                } else {
+                    NotificationCenter.default.post(name: removefromWatchlistTappedNotificationName, object: nil)
+                }
+            }
             self.changingDataSourceForWatchList()
         }
         /*
@@ -899,7 +913,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if let navVc = (self.presentingViewController?.presentingViewController ?? self.presentingViewController) as? UINavigationController {
             if let tabVC = navVc.viewControllers[0] as? UITabBarController{
                 if isDisney {
-                        if let vc = tabVC.viewControllers![4] as? BaseViewController{
+                        if let vc = tabVC.viewControllers![4] as? BaseViewController {
 //                            if self.itemAppType == VideoType.TVShow{
                             vc.callWebServiceForWatchlist()
 //                            }

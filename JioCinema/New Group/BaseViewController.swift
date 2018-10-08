@@ -60,6 +60,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     deinit {
         print("BaseVC Deinit -)")
+        NotificationCenter.default.removeObserver(self, name: addtoWatchlistTappedNotificationName, object: nil)
+        NotificationCenter.default.removeObserver(self, name: removefromWatchlistTappedNotificationName, object: nil)
     }
     
   
@@ -69,13 +71,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
         // Do any additional setup after loading the view.
         configureViews()
-//        if !JCLoginManager.sharedInstance.isUserLoggedIn(), isWatchlistAvailable {
-//            isWatchlistAvailable = false
-//            dataItemsForTableview.remove(at: 0)
-//            baseTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-//        } else {
-//           callWebServiceForWatchlist()
-//        }
     }
    
     private func configureViews() {
@@ -135,6 +130,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         
     }
+    func callWebServiceWhenItemAddedinWatchlist(){
+        
+    }
+    func callWebServiceWhenItemRemovedWatchlist(){
+        
+    }
 }
 extension BaseViewController {
     func showAlert() {
@@ -144,7 +145,7 @@ extension BaseViewController {
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
             self.present(metadataVC, animated: true, completion: nil)
             return
         }

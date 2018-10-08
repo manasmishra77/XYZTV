@@ -88,7 +88,22 @@ class BaseViewModel: NSObject  {
     }
     
     init(_ vcType: BaseVCType) {
+        super.init()
         self.vcType = vcType
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(callWebServiceWhenItemAddedinWatchlist),
+            name: addtoWatchlistTappedNotificationName,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(callWebServiceWhenItemRemovedWatchlist),
+            name: removefromWatchlistTappedNotificationName,
+            object: nil)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: addtoWatchlistTappedNotificationName, object: nil)
+        NotificationCenter.default.removeObserver(self, name: removefromWatchlistTappedNotificationName, object: nil)
     }
     var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
@@ -161,6 +176,12 @@ class BaseViewModel: NSObject  {
             }
         }
         return (title: "", items: [], cellType: .base)
+    }
+    func callWebServiceWhenItemAddedinWatchlist(){
+        
+    }
+    func callWebServiceWhenItemRemovedWatchlist(){
+        
     }
 //    func callWebServiceForDisneyWatchlist()
 //    {
