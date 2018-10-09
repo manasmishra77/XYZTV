@@ -362,7 +362,6 @@
 		19BF8A7A214651C8001C58DD /* BaseScene */ = {
 			isa = PBXGroup;
 			children = (
-				19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */,
 				19BF8A7C214657BE001C58DD /* ItemCollectionViewCell.xib */,
 				19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */,
 				19BF8A73214651A6001C58DD /* BaseViewController.swift */,
@@ -544,6 +543,7 @@
 		7BD39C931F419CFA0014255C /* BridgningHeader */ = {
 			isa = PBXGroup;
 			children = (
+				19BF8A7B214657BE001C58DD /* ItemCollectionViewCell.swift */,
 				7BD39C941F419D150014255C /* JioCinema-Bridging-Header.h */,
 			);
 			name = BridgningHeader;
