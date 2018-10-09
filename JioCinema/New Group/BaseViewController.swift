@@ -54,6 +54,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         self.tabBarItem = UITabBarItem(title: vcType.rawValue.capitalized, image: nil, tag: 0)
     
     }
+
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,9 +64,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         NotificationCenter.default.removeObserver(self, name: addtoWatchlistTappedNotificationName, object: nil)
         NotificationCenter.default.removeObserver(self, name: removefromWatchlistTappedNotificationName, object: nil)
     }
-    
-  
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -94,6 +93,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         callWebServiceForWatchlist()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        baseViewModel.reloadTableView()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

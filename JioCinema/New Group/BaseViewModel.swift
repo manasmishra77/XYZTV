@@ -90,9 +90,9 @@ class BaseViewModel: NSObject  {
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
         if vcType == .disneyTVShow  {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData(completion:true)), name: didSetDisneyTVWatchlist, object: nil)
+           // NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData), name: didSetDisneyTVWatchlist, object: nil)
         } else if vcType == .disneyMovies {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData(completion:Bool)), name: didSetDisneyMovieWatchlist, object: nil)
+           // NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData), name: didSetDisneyMovieWatchlist, object: nil)
 
         }
     }
@@ -119,22 +119,26 @@ class BaseViewModel: NSObject  {
         return baseTableIndexArray.count
     }
     
+    func reloadTableView() {
+        if vcType == .disneyMovies || vcType == .disneyTVShow {
+            populateBaseTableArray()
+            viewResponseBlock?(true)
+        }
+    }
+    
     fileprivate var baseTableIndexArray: [(BaseDataType, Int)] = []
     fileprivate var baseModelIndex = 0
     fileprivate var baseWatchListIndex = 0
     
-    func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
+    @objc func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         fetchBaseData()
         print(ButtonType.Movies.rawValue)
         getBaseWatchListData()
     }
     func getDataForWatchList(_ type : BaseVCType) {
-        if type == .disneyMovies {
          RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
-        } else if type == .disneyTVShow{
          RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
-        }
     }
     func fetchBaseData() {
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in

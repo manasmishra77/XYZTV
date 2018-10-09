@@ -828,13 +828,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: response.errorMsg ?? "")
                 return
             }
-            //WatchList Staus, Remove from array
-            
-//            if watchlistStatus {
-//                print(self.item)
-//            } else {
-//
-//            }
+
             self.sendGoogleAnalyticsForWatchlist(with: watchlistStatus, andErrorMesage: "")
             DispatchQueue.main.async {
                 if self.headerCell.watchlistLabel.text == ADD_TO_WATCHLIST {

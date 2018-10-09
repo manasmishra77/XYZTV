@@ -90,7 +90,7 @@ extension RJILApiManager {
                             JCDataStore.sharedDataStore.tvWatchList = nil
                         }
                     }
-                    completion?(false, "List is empty!!")
+                    completion?(true, "List is empty!!")
                 }
             } else {
                 completion?(false, response.errorMsg)
