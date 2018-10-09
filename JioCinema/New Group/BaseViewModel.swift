@@ -89,7 +89,12 @@ class BaseViewModel: NSObject  {
     
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
-      
+        if vcType == .disneyTVShow  {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData(completion:true)), name: didSetDisneyTVWatchlist, object: nil)
+        } else if vcType == .disneyMovies {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData(completion:Bool)), name: didSetDisneyMovieWatchlist, object: nil)
+
+        }
     }
    
     var delegate: BaseViewModelDelegate?

@@ -24,8 +24,16 @@ class JCDataStore {
     var disneyTVShowData: BaseDataModel?
     var disneyKidsData: BaseDataModel?
     var disneyResumeWatchList: BaseDataModel?
-    var disneyMovieWatchList: BaseDataModel?
-    var disneyTVWatchList: BaseDataModel?
+    var disneyMovieWatchList: BaseDataModel? {
+        didSet{
+            NotificationCenter.default.post(name: didSetDisneyMovieWatchlist, object: nil)
+        }
+    }
+    var disneyTVWatchList: BaseDataModel? {
+        didSet{
+            NotificationCenter.default.post(name: didSetDisneyTVWatchlist, object: nil)
+        }
+    }
     
     var configData: ConfigData?
     var tvWatchList: BaseDataModel?//WatchListDataModel?

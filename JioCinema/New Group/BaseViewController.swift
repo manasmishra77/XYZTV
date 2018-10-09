@@ -100,7 +100,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return baseViewModel.countOfTableView
+            return baseViewModel.countOfTableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -139,9 +139,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             }
         }
         
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        baseTableView.reloadData()
     }
     func callWebServiceWhenItemAddedinWatchlist(){
         baseViewModel.getDataForWatchList(baseViewModel.vcType)

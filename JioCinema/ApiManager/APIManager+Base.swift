@@ -77,6 +77,19 @@ extension RJILApiManager {
                     }
                     completion?(true, nil)
                 } else {
+                    if isDisney {
+                        if (type == .disneyMovies) {
+                            JCDataStore.sharedDataStore.disneyMovieWatchList = nil
+                        } else {
+                            JCDataStore.sharedDataStore.disneyTVWatchList = nil
+                        }
+                    } else {
+                        if (type == .movie) {
+                            JCDataStore.sharedDataStore.moviesWatchList = nil
+                        } else {
+                            JCDataStore.sharedDataStore.tvWatchList = nil
+                        }
+                    }
                     completion?(false, "List is empty!!")
                 }
             } else {
