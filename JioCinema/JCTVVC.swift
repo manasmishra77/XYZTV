@@ -317,6 +317,16 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 }
             }
         }
+        else {
+            weak var weakSelf = self
+            DispatchQueue.main.async {
+                if weakSelf?.baseTableView != nil{
+                    weakSelf?.baseTableView.reloadData()
+                    weakSelf?.baseTableView.layoutIfNeeded()
+                }
+            }
+        }
+
     }
     
     //ChangingTheAlpha

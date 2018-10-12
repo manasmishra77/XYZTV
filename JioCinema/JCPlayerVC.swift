@@ -36,7 +36,7 @@
  
  
  class JCPlayerVC: UIViewController {
-    
+
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
     @IBOutlet weak var resumeWatchView: UIView!
     @IBOutlet weak var activityIndicatorOfLoaderView: UIActivityIndicatorView!
@@ -1304,7 +1304,6 @@
         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
-            
             if let responseError = error as NSError?
             {
                 //TODO: handle error
@@ -1319,11 +1318,7 @@
             
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                let code = parsedResponse["code"]
-                print("Removed from Resume Watchlist \(String(describing: code))")
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
-                    vc.callWebServiceForResumeWatchData()
-                }
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
             }
         }*/
     }
@@ -1363,10 +1358,7 @@
             {
                 print("Added to Resume Watchlist")
                 //To add in homevc and update resume watchlist data
-                
-                if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
-                    vc.callWebServiceForResumeWatchData()
-                }
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
                 return
             }
         }*/
@@ -1981,6 +1973,9 @@
             enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
             enterParentalPinView?.frame = self.view.frame
             self.view.addSubview(enterParentalPinView!)
+            myPreferredFocusView = enterParentalPinView
+            self.updateFocusIfNeeded()
+            self.setNeedsFocusUpdate()
         } else {
             intantiatePlayerAfterParentalCheck(with: url, isFps: isFps)
         }

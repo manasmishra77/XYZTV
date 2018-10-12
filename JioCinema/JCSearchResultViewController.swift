@@ -11,7 +11,7 @@ import UIKit
 class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, JCBaseTableViewCellDelegate, UITabBarControllerDelegate {
     
     weak var searchViewController: UISearchController? = nil
-    
+        var myPreferdFocusedView : UIView?
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
     fileprivate var metaDataAppType = VideoType.None
@@ -86,7 +86,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         cell.itemFromViewController = .Search
         cell.tag = indexPath.row
         cell.itemsArray = searchResultArray[indexPath.row].resultItems
-        let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.data?.count ?? 0))"
+        let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.itemsArray?.count ?? 0))"
         cell.categoryTitleLabel.text = categoryTitle
         
         cell.cellDelgate = self
@@ -216,6 +216,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 DispatchQueue.main.async {
                     self.searchResultArray = array
                     self.baseTableView.reloadData()
+
                 }
             }
             
@@ -322,6 +323,13 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
             Utility.sharedInstance.handleScreenNavigation(screenName: SEARCH_SCREEN, toScreen: "", duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
+    }
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferedView = myPreferdFocusedView {
+            return [preferedView]
+        }
+        return []
     }
     
 }

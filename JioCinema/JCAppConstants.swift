@@ -147,6 +147,7 @@ let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList"
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
+let resumeWatchReloadNotification = Notification.Name("resumeWatchReload")
 
 
 //Google Analytics

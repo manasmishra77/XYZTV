@@ -20,9 +20,21 @@ class SetParentalPinView: UIView {
         pinLabel.text = pin
         if ParentalPinManager.shared.parentalPinModel != nil {
             setParentalPinHeading.text = ResetPinText
+            sendParentalPINCodeGeneratedEvent(alreadySetPin: "TRUE")
         } else {
             setParentalPinHeading.text = SetPinText
+            sendParentalPINCodeGeneratedEvent(alreadySetPin: "FALSE")
         }
+    }
+    
+    func sendParentalPINCodeGeneratedEvent(alreadySetPin: String) {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS", "Already Set Pin": alreadySetPin]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Code Generated", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinCodeGenerationEvent = JCAnalyticsEvent.sharedInstance.getParentalPINCodeGeneratedEvent(alreadySetPin: alreadySetPin)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinCodeGenerationEvent)
     }
     
 }

@@ -19,7 +19,11 @@ let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
 let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/event"
 
 
-
+let JCANALYTICSEVENT_PARENTALPOPUP  = "Parental_PIN_Popup"
+let JCANALYTICSEVENT_PARENTALTILE   = "Parental_Control_Tile"
+let JCANALYTICSEVENT_PINENTRYSTATUS = "PIN_Entry_Status"
+let JCANALYTICSEVENT_PARENTALPINASK = "PIN_Asked"
+let JCANALYTICSEVENT_PARENTALCODE = "Code_Generated"
 
 class JCAnalyticsEvent: NSObject {
     
@@ -55,6 +59,49 @@ class JCAnalyticsEvent: NSObject {
     {
         let eventDictionary = ["platform":"TVOS","sorce":"App_Launch","key":JCANALYTICSEVENT_APPLAUNCH]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_APPLAUNCH )
+    }
+    
+    func getParentalPINPopupActionPerformedEvent(userAction: String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","User_Action":userAction,"key":JCANALYTICSEVENT_PARENTALPOPUP]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPOPUP)
+    }
+    
+    func getParentalPINAskEvent(userAction: String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","User_Action":userAction,"key":JCANALYTICSEVENT_PARENTALPINASK]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPINASK)
+    }
+    
+    func getParentalPINCodeGeneratedEvent(alreadySetPin: String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","User_Action":alreadySetPin,"key":JCANALYTICSEVENT_PARENTALCODE]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALCODE)
+    }
+    
+    func getParentalControlTileEvent() -> Dictionary<String, Any> {
+        let eventDictionary = ["platform":"TVOS","key":JCANALYTICSEVENT_PARENTALTILE]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALTILE)
+    }
+    
+    func getParentalControlTileSelectEvent() -> Dictionary<String, Any> {
+        let eventDictionary = ["platform":"TVOS", "click": "TRUE","key":JCANALYTICSEVENT_PARENTALTILE]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALTILE)
+    }
+    
+    func getParentalPINEntryStatusEvent(resultStatus: String, errorString: String?) -> Dictionary<String, Any> {
+        var eventDictionary = ["platform":"TVOS", "Result": resultStatus,"key":JCANALYTICSEVENT_PINENTRYSTATUS]
+        
+        if let error = errorString {
+            eventDictionary = ["platform":"TVOS", "Result": resultStatus, "PIN_Entry_Error": error, "key":JCANALYTICSEVENT_PINENTRYSTATUS]
+        }
+        
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PINENTRYSTATUS)
+    }
+    
+    func getParentalPINEntryViewedEvent() -> Dictionary<String, Any> {
+        let eventDictionary = ["platform":"TVOS", "key":JCANALYTICSEVENT_PARENTALPINASK]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPINASK)
     }
     
     func getLoginFailedEventForInternalAnalytics(jioID:String, errorMessage:String) -> Dictionary<String, Any>

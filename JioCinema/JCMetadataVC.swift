@@ -932,10 +932,16 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
     }
     func returnMaturityRating() -> String {
-        if let maturityRating = metadata?.maturityRating{
+        if var maturityRating = metadata?.maturityRating {
+            if  maturityRating.capitalized == "All"  {
+                maturityRating = "3+"
+            }
+            else if maturityRating == "" {
+                maturityRating = "NR"
+            }
             return " | Maturity Rating: \(maturityRating)"
         } else {
-            return ""
+            return " | Maturity Rating: NR"
         }
     }
     //prepare metadata view
@@ -948,9 +954,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
         if itemAppType == .TVShow {
-            descText = (metadata?.descriptionForTVShow ?? "") + " " + SHOW_LESS
+            descText = (metadata?.descriptionForTVShow ?? "")// + " " + SHOW_LESS
         } else {
-            descText = (metadata?.description ?? "") + " " + SHOW_LESS
+            descText = (metadata?.description ?? "")// + " " + SHOW_LESS
         }
         let trimTextTopple = getShorterText(descText)
         if trimTextTopple.0 {
@@ -979,7 +985,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             headerCell.titleLabel.text = metadata?.name
             headerCell.imdbImageLogo.isHidden = true
             headerCell.ratingLabel.isHidden = true
-            headerCell.tvShowLabel.text = metadata?.newSubtitle?.capitalized
+            headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
@@ -1190,7 +1196,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return (false, fontChangedText)
             }
         } else {
-            let newerText = text.dropLast(SHOW_LESS.count)
+            let newerText = text//.dropLast(SHOW_LESS.count)
             let fontChangedText = getAttributedString(String(newerText), colorChange: false, range: 0)
             return (false, fontChangedText)
         }

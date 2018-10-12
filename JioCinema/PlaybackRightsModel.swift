@@ -124,9 +124,9 @@ class PlaybackRightsModel: Mappable
     
     var maturityAgeGrp: AgeGroup {
         if let value = self.maturityRating {
-            return AgeGroup(rawValue: value) ?? .allAge
+            return AgeGroup(rawValue: value.capitalized) ?? .age18Plus
         }
-        return .allAge
+        return .age18Plus
     }
     
     required init(map:Map) {

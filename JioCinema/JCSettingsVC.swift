@@ -35,8 +35,31 @@ class JCSettingsVC: UIViewController {
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Settings", "Platform": "TVOS","Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+        self.sendParentalControlTileEvent()
+    }
+    
+    
+    
+    func sendParentalControlTileEvent() {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Parental Control Tile", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinTileEvent = JCAnalyticsEvent.sharedInstance.getParentalControlTileEvent()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinTileEvent)
     }
 
+    func sendParentalControlTileSelectEvent() {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS", "click": "TRUE"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Parental Control Tile", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinTileSelectEvent = JCAnalyticsEvent.sharedInstance.getParentalControlTileSelectEvent()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinTileSelectEvent)
+    }
+    
     
     func checkAndPerformParentalControlGetPin() {
         
@@ -104,6 +127,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             
         case 1:
             cell.textLabel?.text = AutoPlayHeading
+            cell.settingsDetailLabel.isHidden = false
             if IsAutoPlayOn {
                 cell.settingsDetailLabel.text = "ON"
             } else {
@@ -240,6 +264,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isFeedBackView = false
             
         case 3:
+            self.sendParentalControlTileSelectEvent()
             self.checkAndPerformParentalControlGetPin()
             return
             
