@@ -148,6 +148,7 @@ let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
 let resumeWatchReloadNotification = Notification.Name("resumeWatchReload")
+let reloadDisneyResumeWatch = Notification.Name("ReloadDisneyResumeWatch")
 
 
 //Google Analytics

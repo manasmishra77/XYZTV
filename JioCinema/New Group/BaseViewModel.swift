@@ -89,13 +89,10 @@ class BaseViewModel: NSObject  {
     
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
-        if vcType == .disneyTVShow  {
-           // NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData), name: didSetDisneyTVWatchlist, object: nil)
-        } else if vcType == .disneyMovies {
-           // NotificationCenter.default.addObserver(self, selector: #selector(self.fetchData), name: didSetDisneyMovieWatchlist, object: nil)
-
-        }
-    }
+        super.init()
+        if self.vcType == .disneyHome {
+            NotificationCenter.default.addObserver(self, selector: #selector(onCallDisneyResumeWatch(_:)), name: reloadDisneyResumeWatch, object: nil)
+        }    }
    
     var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
@@ -175,6 +172,11 @@ class BaseViewModel: NSObject  {
             }
         }
         return (title: "", items: [], cellType: .base)
+    }
+    
+    //notification listener
+    @objc func onCallDisneyResumeWatch(_ notification:Notification) {
+        self.getBaseWatchListData()
     }
     
 //    func callWebServiceForDisneyWatchlist()

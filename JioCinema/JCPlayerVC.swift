@@ -1289,15 +1289,19 @@
     
     func callWebServiceForRemovingResumedWatchlist(_ itemId: String) {
         let json = ["id": id]
-        let params = ["uniqueId": JCAppUser.shared.unique,"listId": "10","json": json] as [String : Any]
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
-         weak var weakSelf = self
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        weak var weakSelf = self
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
             guard response.isSuccess else {
                 return
             }
-            if let navVc = (weakSelf?.presentingViewController?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
-                vc.callWebServiceForResumeWatchData()
+            if self.isDisney {
+                NotificationCenter.default.post(name: reloadDisneyResumeWatch, object: nil)
+            }
+            else {
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
             }
         }
         /*
@@ -1326,24 +1330,32 @@
     func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
     {
         let url = addToResumeWatchlistUrl
-
+        
         let id = itemId
         let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
-
+        
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
-        params["listId"] = 10
+        params["listId"] = isDisney ? "30" : "10"
         params["json"] = json
         params["id"] = id
         params["duration"] = currentTimeDuration
         params["totalDuration"] = totalDuration
+        
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        
         weak var weakSelf = self.presentingViewController
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
             guard response.isSuccess else {
                 return
             }
-            if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController ?? weakSelf) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController, let vc = tabVc.viewControllers![0] as? JCHomeVC{
-                vc.callWebServiceForResumeWatchData()
+            
+            
+            if self.isDisney {
+                NotificationCenter.default.post(name: reloadDisneyResumeWatch, object: nil)
+            }
+            else {
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
             }
         }
         /*
@@ -1454,8 +1466,14 @@
     }
     
     //Check in resume watchlist
-    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
-        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
+    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float  {
+        if let resumeWatchDisneyArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+            let itemMatched = resumeWatchDisneyArray.filter{ $0.id == itemIdToBeChecked}.first
+            if let drn = itemMatched?.duration {
+                return Float(drn)
+            }
+        }
+        else if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
             if let drn = itemMatched?.duration {
                 return Float(drn)

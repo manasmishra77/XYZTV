@@ -106,7 +106,7 @@ extension RJILApiManager {
         let listId = (vcType == .home) ? 10 : 30
         let header = (vcType == .home) ? RequestHeaderType.baseCommon : RequestHeaderType.disneyCommon
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": listId] as [String : Any]
-        RJILApiManager.getReponse(path: path, headerType: header, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
+        RJILApiManager.getReponse(path: path, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
                 if let dataContainer = response.model?.data?.first, (dataContainer.items?.count ?? 0) > 0 {
                     if vcType == .home {
@@ -118,7 +118,12 @@ extension RJILApiManager {
                     }
                     completion(true, nil)
                 } else {
-                    completion(false, "List is empty!!")
+                    if vcType == .home {
+                        JCDataStore.sharedDataStore.resumeWatchList = nil
+                    } else {
+                        JCDataStore.sharedDataStore.disneyResumeWatchList = nil
+                    }
+                    completion(true, "List is empty!!")
                 }
             } else {
                 completion(false, response.errorMsg)
