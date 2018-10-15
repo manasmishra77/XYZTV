@@ -50,6 +50,10 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadResumeWathcData),name: resumeWatchReloadNotification,object: nil)
+        
+        
+        
+        
        
     }
     override func viewWillAppear(_ animated: Bool) {
