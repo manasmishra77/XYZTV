@@ -17,42 +17,43 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MvT-6u-5f6">
-                    <rect key="frame" x="0.0" y="650" width="1920" height="100"/>
+                    <rect key="frame" x="0.0" y="550" width="1920" height="200"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="1sY-hE-Wev">
-                            <rect key="frame" x="623" y="7" width="675" height="86"/>
+                            <rect key="frame" x="415" y="7" width="1090" height="186"/>
                             <subviews>
-                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufe-Eu-Amx">
-                                    <rect key="frame" x="0.0" y="0.0" width="202" height="86"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufe-Eu-Amx" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="330" height="186"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="Movies"/>
+                                    <state key="normal" backgroundImage="DisneyMovies"/>
                                     <connections>
                                         <action selector="onMoviesTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="0e4-EQ-XSt"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqA-xm-EMl">
-                                    <rect key="frame" x="252" y="0.0" width="218" height="86"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqA-xm-EMl" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="380" y="0.0" width="330" height="186"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="TVshow"/>
+                                    <state key="normal" backgroundImage="DisneyTVShow"/>
                                     <connections>
                                         <action selector="onTVshowTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="2X8-Ad-Ev8"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm5-pd-cBG">
-                                    <rect key="frame" x="520" y="0.0" width="155" height="86"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm5-pd-cBG" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
+                                    <rect key="frame" x="760" y="0.0" width="330" height="186"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="Kids"/>
+                                    <state key="normal" backgroundImage="DisneyKids"/>
                                     <connections>
                                         <action selector="onKidesTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="2Cy-1i-gsD"/>
                                     </connections>
                                 </button>
                             </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="1sY-hE-Wev" firstAttribute="centerX" secondItem="MvT-6u-5f6" secondAttribute="centerX" id="H10-zv-X83"/>
                         <constraint firstAttribute="bottom" secondItem="1sY-hE-Wev" secondAttribute="bottom" constant="7" id="jDO-mJ-8W7"/>
@@ -61,7 +62,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.08235294118" green="0.090196078430000007" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="MvT-6u-5f6" secondAttribute="trailing" id="8Ht-xG-IvG"/>
                 <constraint firstAttribute="bottom" secondItem="MvT-6u-5f6" secondAttribute="bottom" id="NYt-YT-XWB"/>
@@ -78,4 +79,9 @@
             <point key="canvasLocation" x="-116" y="-9"/>
         </view>
     </objects>
+    <resources>
+        <image name="DisneyKids" width="330" height="186"/>
+        <image name="DisneyMovies" width="330" height="186"/>
+        <image name="DisneyTVShow" width="330" height="186"/>
+    </resources>
 </document>

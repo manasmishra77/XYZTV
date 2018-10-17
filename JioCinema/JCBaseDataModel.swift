@@ -360,7 +360,19 @@ struct Item: Codable {
                 }
                 
             }
-            year = try values.decodeIfPresent(Int.self, forKey: .year)
+            //year = try values.decodeIfPresent(Int.self, forKey: .year)
+            do {
+                year = try values.decodeIfPresent(Int.self, forKey: .year)
+            }   catch {
+                do{
+                    if let yearString = try values.decodeIfPresent(String.self, forKey: .year){
+                        year = Int(yearString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+
             genres = try values.decodeIfPresent([String].self, forKey: .genres)
             srt = try values.decodeIfPresent(String.self, forKey: .srt)
         } catch {

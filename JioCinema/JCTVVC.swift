@@ -256,7 +256,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     {
         RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[unowned self] (isSuccess, errorMsg) in
             guard isSuccess else {return}
-            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
+            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count ?? 0) > 0 {
                 self.isTVWatchlistAvailable = true
                 self.changingDataSourceForBaseTableView()
                 DispatchQueue.main.async {

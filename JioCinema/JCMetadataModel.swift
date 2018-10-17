@@ -366,6 +366,13 @@ struct MetadataModel: Codable {
             }
             catch {
                 print(error)
+                do {
+                    if let writerArray = try values.decodeIfPresent([String].self, forKey: .writer) {
+                        writer = writerArray.joined(separator: " ")
+                        }
+                    } catch {
+                        print(error)
+                    }
             }
             do {
             isEncrypt = try values.decodeIfPresent(Bool.self, forKey: .isEncrypt)
@@ -501,6 +508,12 @@ struct MetadataModel: Codable {
                 primaryGenres = try values.decodeIfPresent([String].self, forKey: .primaryGenres)
             } catch {
                print(error)
+                do {
+                    let primaryGenresString = try values.decodeIfPresent(String.self, forKey: .primaryGenres)
+                    primaryGenres?.append(primaryGenresString ?? "")
+                } catch {
+                    print(error)
+                }
             }
             recTags = try values.decodeIfPresent(String.self, forKey: .recTags)
             fpsKey = try values.decodeIfPresent(String.self, forKey: .fpsKey)
@@ -756,8 +769,13 @@ struct Episode: Codable {
         }
         episodeNo = try values.decodeIfPresent(Int.self, forKey: .episodeNo)
         legal = try values.decodeIfPresent(Bool.self, forKey: .legal)
-        approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
-        
+//        approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
+        do {
+            approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
+        } catch {
+            print(error)
+        }
+
     }
 }
 

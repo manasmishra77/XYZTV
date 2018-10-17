@@ -33,4 +33,30 @@ class JCButton: UIButton
     }
     */
 
+    
+}
+class JCDisneyButton: UIButton
+{
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
+    {
+        if (context.nextFocusedView == self)
+        {
+            self.transform = CGAffineTransform.init(scaleX: 1.18, y: 1.18)
+        }
+        else
+        {
+            self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+        }
+        
+    }
+    /*
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
+    
 }

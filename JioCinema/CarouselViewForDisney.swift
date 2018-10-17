@@ -14,11 +14,10 @@ protocol DisneyButtonTapDelegate{
 
 class CarouselViewForDisney: UIView {
     var delegate : DisneyButtonTapDelegate?
-    @IBOutlet weak var viewForCarousel: UIView!
     @IBOutlet weak var viewOfButtons: UIView!
-    @IBOutlet weak var moviesButton: UIView!
-    @IBOutlet weak var tvShowButtton: UIView!
-    @IBOutlet weak var kidsButton: UIView!
+    @IBOutlet weak var moviesButton: JCDisneyButton!
+    @IBOutlet weak var tvShowButtton: JCDisneyButton!
+    @IBOutlet weak var kidsButton: JCDisneyButton!
     @IBAction func onMoviesTapped(_ sender: UIButton) {
         delegate?.presentVCOnButtonTap(tag: sender.tag)
     }

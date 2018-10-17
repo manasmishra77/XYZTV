@@ -61,8 +61,11 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
         // Do any additional setup after loading the view.
-        
-        
+        if isDisney {
+            headerCell.addToWatchListButton.focusedBGColor = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
+            headerCell.playButton.focusedBGColor = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
+        }
+
     }
     
     deinit {
@@ -1203,12 +1206,17 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
+        var colorToChange = UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
+        if isDisney{
+            colorToChange = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
+        }
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])
         fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
-            fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1), range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  colorToChange, range: NSRange(location: text.count - range, length: range))
             fontChangedText.addAttribute(NSAttributedStringKey.font, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: text.count - range, length: range))
         }
+
         return fontChangedText
     }
     
@@ -1253,7 +1261,5 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         let enumOfMonth = Month(rawValue: intOfMonth ?? 0)
         return enumOfMonth
     }
-    
-    
-    
+
 }
