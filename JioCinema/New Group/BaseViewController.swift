@@ -100,15 +100,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return baseViewModel.countOfTableView
+        return baseViewModel.countOfTableView
     }
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return baseViewModel.heightOfTableRow(indexPath.row)
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "BaseTableViewCell", for: indexPath) as? BaseTableViewCell else {
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
-        //print(baseViewModel.getTableCellItems(for: 0, completion: tableReloadClosure))
         cell.configureView(cellData, delegate: self)
         return cell
     }

@@ -200,6 +200,10 @@ let SHOW_MORE = "Show More"
 let SHOW_LESS = "Show Less"
 
 
+//MARK:- Tablecell Row height
+let rowHeightForPotrait: CGFloat = 400
+let rowHeightForLandscape: CGFloat = 350
+
 //MARK:- Google Analytics Constants
 
 //Event Category

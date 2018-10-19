@@ -151,9 +151,30 @@ class BaseViewModel: NSObject  {
         }
     }
     
+    func heightOfTableRow(_ index: Int) -> CGFloat {
+        let itemIndexTuple = baseTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data {
+                let data = dataContainer[(itemIndexTuple.1)]
+                let height: CGFloat = (data.items?[0].appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
+                return height
+            }
+        case .watchlist:
+            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
+                layout = (vcType == .disneyHome) ? .landscape : layout
+                let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+                return height
+            }
+        }
+        return 0.0
+    }
+    
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
+    
     
     func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> TableCellItemsTuple {
         viewResponseBlock = completion
