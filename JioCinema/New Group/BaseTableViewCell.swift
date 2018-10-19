@@ -84,7 +84,7 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height
-        let width = (cellItems.layout == .potrait) ? (height * (3/4)) : (height * (4/3))
+        let width = (cellItems.layout == .potrait) ? (height * widthToHeightPropertionForPotrat) : (height * widthToHeightPropertionForLandScape)
         return CGSize(width: width, height: height)
     }
     

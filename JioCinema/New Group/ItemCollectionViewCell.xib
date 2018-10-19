@@ -18,17 +18,54 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
-                        <rect key="frame" x="15" y="15" width="362" height="185"/>
-                        <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </imageView>
-                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdZ-19-fLq">
-                        <rect key="frame" x="15" y="15" width="362" height="185"/>
-                        <color key="backgroundColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7W-TF-XAc" userLabel="ImageProgressContainerView">
+                        <rect key="frame" x="15" y="15" width="362" height="195"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
+                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdZ-19-fLq">
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
+                                <color key="backgroundColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Tg-1Y-7Qg">
+                                <rect key="frame" x="0.0" y="185" width="362" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="OvZ-Jn-zMO"/>
+                                </constraints>
+                                <color key="progressTintColor" red="0.058823529411764705" green="0.4392156862745098" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="trackTintColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nFy-3D-dND" firstAttribute="leading" secondItem="s7W-TF-XAc" secondAttribute="leading" id="0UX-Te-cGq"/>
+                            <constraint firstItem="xdZ-19-fLq" firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="0hM-cy-G7Z"/>
+                            <constraint firstAttribute="bottom" secondItem="2Tg-1Y-7Qg" secondAttribute="bottom" id="1cQ-Na-Sal"/>
+                            <constraint firstItem="xdZ-19-fLq" firstAttribute="bottom" secondItem="nFy-3D-dND" secondAttribute="bottom" id="76d-9f-0pE"/>
+                            <constraint firstItem="xdZ-19-fLq" firstAttribute="top" secondItem="nFy-3D-dND" secondAttribute="top" id="Dm5-gR-Hhh"/>
+                            <constraint firstAttribute="trailing" secondItem="2Tg-1Y-7Qg" secondAttribute="trailing" id="IBv-rq-rLX"/>
+                            <constraint firstItem="xdZ-19-fLq" firstAttribute="leading" secondItem="nFy-3D-dND" secondAttribute="leading" id="QgS-VR-3jU"/>
+                            <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="leading" secondItem="s7W-TF-XAc" secondAttribute="leading" id="RPk-Ie-yFl"/>
+                            <constraint firstItem="nFy-3D-dND" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="top" id="aUx-Mr-AMK"/>
+                            <constraint firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="qTd-XB-eln"/>
+                            <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="top" secondItem="nFy-3D-dND" secondAttribute="bottom" id="vsy-mc-TyY"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
                         <rect key="frame" x="15" y="260" width="362" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -36,41 +73,32 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Tg-1Y-7Qg">
-                        <rect key="frame" x="15" y="200" width="362" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="OvZ-Jn-zMO"/>
-                        </constraints>
-                        <color key="progressTintColor" red="0.058823529411764705" green="0.4392156862745098" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="trackTintColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </progressView>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="xdZ-19-fLq" firstAttribute="leading" secondItem="nFy-3D-dND" secondAttribute="leading" id="20D-w1-sqE"/>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="2KM-q2-3F1"/>
-                <constraint firstItem="xdZ-19-fLq" firstAttribute="bottom" secondItem="nFy-3D-dND" secondAttribute="bottom" id="48T-7L-8Ky"/>
-                <constraint firstItem="xdZ-19-fLq" firstAttribute="top" secondItem="nFy-3D-dND" secondAttribute="top" id="7n7-hn-1Eb"/>
-                <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="centerX" secondItem="Rz2-K0-ksD" secondAttribute="centerX" id="Rwn-aP-NbU"/>
-                <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="top" secondItem="nFy-3D-dND" secondAttribute="bottom" id="Vsf-ga-94L"/>
-                <constraint firstItem="xdZ-19-fLq" firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="WTS-yK-Aoz"/>
-                <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="width" secondItem="nFy-3D-dND" secondAttribute="width" id="WTl-Z7-Cmo"/>
-                <constraint firstItem="nFy-3D-dND" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="bZV-fh-GmJ"/>
+                <constraint firstAttribute="trailing" secondItem="s7W-TF-XAc" secondAttribute="trailing" constant="15" id="HVa-Sh-srn"/>
+                <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="50" id="POj-b4-bWL"/>
+                <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="g3q-TQ-rIf"/>
                 <constraint firstAttribute="bottom" secondItem="rYV-oP-nC5" secondAttribute="bottom" id="gFH-X6-OcE"/>
-                <constraint firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" constant="15" id="gbc-it-PW8"/>
-                <constraint firstAttribute="bottom" secondItem="nFy-3D-dND" secondAttribute="bottom" constant="60" id="jqn-aE-yyf"/>
-                <constraint firstItem="nFy-3D-dND" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="luL-wb-5f3"/>
+                <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="nYa-e9-YQn"/>
                 <constraint firstAttribute="trailing" secondItem="rYV-oP-nC5" secondAttribute="trailing" constant="15" id="pW0-d9-sqZ"/>
             </constraints>
             <size key="customSize" width="439" height="267"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="0.0"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="heightConstraintForProgressBar" destination="OvZ-Jn-zMO" id="sQL-Ks-atO"/>
                 <outlet property="imageView" destination="nFy-3D-dND" id="C5f-hB-O9K"/>
                 <outlet property="nameLabel" destination="rYV-oP-nC5" id="45P-8A-7jQ"/>
                 <outlet property="nowPlayingLabel" destination="xdZ-19-fLq" id="Our-9h-3Gh"/>
                 <outlet property="progressBar" destination="2Tg-1Y-7Qg" id="9T1-Z1-B5J"/>
             </connections>
-            <point key="canvasLocation" x="86.5" y="46.5"/>
+            <point key="canvasLocation" x="86" y="46"/>
         </collectionViewCell>
     </objects>
 </document>
