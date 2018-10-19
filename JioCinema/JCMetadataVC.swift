@@ -812,8 +812,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
         }
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
-            //let url = isStatusAdd ? removeFromWatchListUrl : addToResumeWatchlistUrl
-            let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
+            let url = isStatusAdd ? addToWatchListUrl : removeFromWatchListUrl
             callWebServiceToUpdateWatchlist(withUrl: url, watchlistStatus: isStatusAdd, andParameters: params)
         } else {
             presentLoginVC(fromAddToWatchList: true, fromItemCell: false)
