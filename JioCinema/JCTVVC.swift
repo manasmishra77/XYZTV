@@ -266,7 +266,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
-        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count ?? 0) > 0 {
             weak var weakSelf = self
             weakSelf?.isTVWatchlistAvailable = true
             weakSelf?.changingDataSourceForBaseTableView()

@@ -297,7 +297,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
-        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count ?? 0) > 0 {
             weak var weakSelf = self
             self.isMoviesWatchlistAvailable = true
              self.changingDataSourceForBaseTableView()
