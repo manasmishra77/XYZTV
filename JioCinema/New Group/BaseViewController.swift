@@ -140,10 +140,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         
     }
-    func callWebServiceWhenItemAddedinWatchlist(){
+    @objc func callWebServiceWhenItemAddedinWatchlist(){
         baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }
-    func callWebServiceWhenItemRemovedWatchlist(){
+    @objc func callWebServiceWhenItemRemovedWatchlist(){
         baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }
 }

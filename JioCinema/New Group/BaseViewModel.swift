@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType)
+typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType)
 
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
@@ -100,7 +100,7 @@ class BaseViewModel: NSObject  {
     var errorMsg: String?
     
     var totalPage: Int {// Reference for Downloading base page
-        return baseDataModel?.totalPages ?? 0
+        return baseDataModel?.totalPages ?? 1
     }
     var viewResponseBlock: ((_ isSuccess: Bool) -> ())? = nil
     lazy var baseAPIReponseHandler = {(_ isSuccess: Bool, error: String?) in
@@ -138,6 +138,7 @@ class BaseViewModel: NSObject  {
          RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
     }
     func fetchBaseData() {
+        guard pageNumber < totalPage else {return}
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
             guard isSuccess else {
                 self.errorMsg = errMsg
@@ -161,17 +162,21 @@ class BaseViewModel: NSObject  {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                if itemIndexTuple.1 == dataContainer.count - 2 {
-                    // fetchHomeData()
+                if itemIndexTuple.1 == dataContainer.count - 1 {
+                    fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base)
+                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: .base)
+                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
+                layout = (vcType == .disneyHome) ? .landscape : layout
+                let cellType: ItemCellType = (vcType == .disneyHome) ? .resumeWatchDisney : .base
+                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base)
+        return (title: "", items: [], cellType: .base, layout: .landscape)
     }
     
     //notification listener

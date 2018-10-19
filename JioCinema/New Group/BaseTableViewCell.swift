@@ -17,7 +17,7 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base)
+    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscape)
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -83,7 +83,9 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
 //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 392, height: collectionView.frame.height)
+        let height = collectionView.frame.height
+        let width = (cellItems.layout == .potrait) ? (height * (3/4)) : (height * (4/3))
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
