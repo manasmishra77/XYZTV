@@ -62,29 +62,25 @@ class BaseViewModel: NSObject  {
     }
 
     var carouselView : UIView? {
-        switch vcType {
-        case .disneyHome:
-            let carouselViewForDisney = Bundle.main.loadNibNamed("CarouselViewForDisney", owner: self, options: nil)?.first as! CarouselViewForDisney
-            
-            if carousal == nil {
-                if let items = JCDataStore.sharedDataStore.disneyData?.data?[0].items {
-                    carousal = Utility.getHeaderForTableView(for: self, with: items)
+        if carousal == nil {
+            if let items = baseDataModel?.data?[0].items {
+                carousal = Utility.getHeaderForTableView(for: self, with: items)
+                
+                DispatchQueue.main.async {
+                    if self.vcType == .disneyHome {
+                        self.carousal?.viewOfButtons.isHidden = false
+                        self.carousal?.disneyViewHeight.constant = 130
+                    }
+                    else {
+                        self.carousal?.viewOfButtons.isHidden = true
+                        self.carousal?.disneyViewHeight.constant = 0
+                    }
                 }
+                
+
             }
-            if let carousal = carousal {
-                carousal.frame = CGRect(x: 0, y: 0, width: 1920, height: 650)
-                carouselViewForDisney.addSubview(carousal)
-                carouselViewForDisney.delegate = self
-            }
-            return carouselViewForDisney
-        default:
-            if carousal == nil {
-                if let items = baseDataModel?.data?[0].items {
-                    carousal = Utility.getHeaderForTableView(for: self, with: items)
-                }
-            }
-            return carousal
         }
+        return carousal
     }
     
     init(_ vcType: BaseVCType) {
@@ -149,6 +145,10 @@ class BaseViewModel: NSObject  {
             self.populateTableIndexArray()
             self.viewResponseBlock?(isSuccess)
         }
+    }
+    
+    func heightOfTableHeader()-> CGFloat {
+        return vcType == .disneyHome ? 780 : 650
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
@@ -280,7 +280,36 @@ fileprivate extension BaseViewModel {
         baseWatchListIndex = 0
     }
 }
-extension BaseViewModel: DisneyButtonTapDelegate {
+//extension BaseViewModel: DisneyButtonTapDelegate {
+//    func presentVCOnButtonTap(tag: Int) {
+//        switch tag {
+//        case 1:
+//            let disneyMovies = BaseViewController(.disneyMovies)
+//            delegate?.presentVC(disneyMovies)
+//        case 2:
+//            let disneyTVShow = BaseViewController(.disneyTVShow)
+//            delegate?.presentVC(disneyTVShow)
+//        case 3:
+//            let disneyKids = BaseViewController(.disneyKids)
+//            delegate?.presentVC(disneyKids)
+//        default:
+//            return
+//        }
+//    }
+//    enum ButtonType : Int {
+//        case Movies = 1
+//        case TVShow = 2
+//        case Kids = 3
+//    }
+//}
+
+extension BaseViewModel: JCCarouselCellDelegate {
+    func didTapOnCarouselItem(_ item: Any?) {
+        if let item = item {
+            delegate?.presentMetadataOfIcarousel(item)
+        }
+    }
+    
     func presentVCOnButtonTap(tag: Int) {
         switch tag {
         case 1:
@@ -300,14 +329,6 @@ extension BaseViewModel: DisneyButtonTapDelegate {
         case Movies = 1
         case TVShow = 2
         case Kids = 3
-    }
-}
-
-extension BaseViewModel: JCCarouselCellDelegate {
-    func didTapOnCarouselItem(_ item: Any?) {
-        if let item = item {
-            delegate?.presentMetadataOfIcarousel(item)
-        }
     }
 }
 

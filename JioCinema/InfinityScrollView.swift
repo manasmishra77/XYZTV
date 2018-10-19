@@ -11,6 +11,7 @@ import SDWebImage
 
 @objc protocol JCCarouselCellDelegate {
     @objc optional func didTapOnCarouselItem(_ item: Any?)
+    @objc optional func presentVCOnButtonTap(tag : Int)
 }
 
 class InfinityScrollView: UIView {
@@ -32,7 +33,21 @@ class InfinityScrollView: UIView {
     @IBOutlet weak var extraLeftView: UIView!
     @IBOutlet weak var extraRightView: UIView!
     @IBOutlet weak var leftView: UIView!
+    
+    @IBOutlet weak internal var viewOfButtons: UIView!
+    @IBOutlet weak internal var moviesButton: JCDisneyButton!
+    @IBOutlet weak internal var tvShowButtton: JCDisneyButton!
+    @IBOutlet weak internal var kidsButton: JCDisneyButton!
+    
+    
+    @IBOutlet weak var disneyViewHeight: NSLayoutConstraint!
+    
+    
     override func awakeFromNib() {
+        DispatchQueue.main.async {
+            self.disneyViewHeight.constant = 0
+            self.viewOfButtons.isHidden = true
+        }
     }
     
     func loadViews() {
@@ -85,6 +100,19 @@ class InfinityScrollView: UIView {
         let extraRightButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraRightButtonImageUrlString))!)
         self.extraRightButton.sd_setBackgroundImage(with: extraRightButtonImageUrl!, for: .normal, placeholderImage:#imageLiteral(resourceName: "CarouselPlaceholder"))
         
+    }
+    
+    
+    @IBAction internal func onMoviesTapped(_ sender: UIButton) {
+        carouselDelegate?.presentVCOnButtonTap!(tag: sender.tag)
+    }
+    
+    @IBAction internal func onTVshowTapped(_ sender: UIButton) {
+        carouselDelegate?.presentVCOnButtonTap!(tag: sender.tag)
+    }
+    
+    @IBAction internal func onKidesTapped(_ sender: UIButton) {
+        carouselDelegate?.presentVCOnButtonTap!(tag: sender.tag)
     }
     
     override var preferredFocusEnvironments: [UIFocusEnvironment]
@@ -260,6 +288,7 @@ class InfinityScrollView: UIView {
 
     
 }
+
 struct CarouselImageType {
     var next: Int?
     var current: Int?

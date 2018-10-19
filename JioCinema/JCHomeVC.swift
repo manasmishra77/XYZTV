@@ -8,6 +8,7 @@
 
 import UIKit
 class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
+    
     var isResumeWatchRowReloadNeeded = false
     var loadedPage = 1
     var isResumeWatchDataAvailable = false

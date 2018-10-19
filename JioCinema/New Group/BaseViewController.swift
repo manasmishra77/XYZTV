@@ -99,6 +99,14 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+    }
+    
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return baseViewModel.countOfTableView
     }
@@ -117,8 +125,21 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return baseViewModel.carouselView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 750
+        return baseViewModel.heightOfTableHeader()
     }
+    
+    //ChangingTheAlpha
+    var focusShiftedFromTabBarToVC = true
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
+    }
+
+    
     func callWebServiceForWatchlist(){
         baseViewModel.getDataForWatchList(baseViewModel.vcType)
     }

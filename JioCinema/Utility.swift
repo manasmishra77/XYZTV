@@ -347,6 +347,18 @@ class Utility {
         }
     }
     
+    class func baseTableViewInBaseViewController(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath {
+            guard nextIndexPath != prevIndexPath else {return}
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1))
+        } else if let nextIndexPath = context.nextFocusedIndexPath {
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+        } else if let prevIndexPath = context.previouslyFocusedIndexPath {
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: .white)
+        }
+    }
+    
     //MARK: ChangingTheAlpha when focus shifted from tab bar item to view controller view
    class func changingAlphaTabAbrToVC(carousalView: InfinityScrollView?, tableView: UITableView, toChange: inout Bool) {
         if toChange {
@@ -380,6 +392,12 @@ class Utility {
     
     class func changeTableCellAlpha(_ tableView: UITableView, indexpath: IndexPath, alpha: CGFloat, textColor: UIColor) {
         let cell = tableView.cellForRow(at: indexpath) as! JCBaseTableViewCell
+        cell.categoryTitleLabel.textColor = textColor
+        cell.contentView.alpha = alpha
+    }
+    
+    class func changeTableCellAlphaForbaseTableView(_ tableView: UITableView, indexpath: IndexPath, alpha: CGFloat, textColor: UIColor) {
+        let cell = tableView.cellForRow(at: indexpath) as! BaseTableViewCell
         cell.categoryTitleLabel.textColor = textColor
         cell.contentView.alpha = alpha
     }
