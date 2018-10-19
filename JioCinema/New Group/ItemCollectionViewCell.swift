@@ -24,16 +24,35 @@ class ItemCollectionViewCell: UICollectionViewCell {
             setImageOnCell(url: imageURL)
         }
         nameLabel.text = cellItems.item.name ?? ""
-//        switch cellItems.cellType {
-//        case .base:
-//            return
-//        case .resumeWatch:
-//            return
-//        case .artist:
-//            return
-//        case .player:
-//            return
-//        }
+        progressBar.isHidden = true
+        switch cellItems.cellType {
+        case .base:
+            return
+        case .resumeWatch:
+            setProgressbarForResumeWatchCell(cellItems)
+            return
+        case .resumeWatchDisney:
+            setProgressbarForResumeWatchCell(cellItems)
+            return
+        case .artist:
+            return
+        case .player:
+            return
+        }
+    }
+    private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
+        let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
+        let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
+        progressBar.isHidden = false
+        progressBar.progressTintColor = progressColor
+        progressBar.trackTintColor = progressDefaultColor
+        var progress: Float = 0.0
+        if let duration = cellItems.item.duration, let totalDuration = cellItems.item.totalDuration {
+            progress = Float(duration) / Float(totalDuration)
+            self.progressBar.setProgress(progress, animated: false)
+        } else {
+            self.progressBar.setProgress(0, animated: false)
+        }
     }
 
    fileprivate func setImageOnCell(url: URL) {
@@ -54,7 +73,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
 enum ItemCellType {
     case base
     case resumeWatch
+    case resumeWatchDisney
     case artist
     case player
-    
+}
+
+enum ItemCellLayoutType {
+    case potrait
+    case landscape
 }

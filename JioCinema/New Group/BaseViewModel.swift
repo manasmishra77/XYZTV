@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType)
+typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType)
 
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
@@ -165,14 +165,18 @@ class BaseViewModel: NSObject  {
                 if itemIndexTuple.1 == dataContainer.count - 1 {
                     fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base)
+                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: .base)
+                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
+                layout = (vcType == .disneyHome) ? .landscape : layout
+                let cellType: ItemCellType = (vcType == .disneyHome) ? .resumeWatchDisney : .base
+                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base)
+        return (title: "", items: [], cellType: .base, layout: .landscape)
     }
     
     //notification listener
