@@ -202,7 +202,16 @@ let SHOW_LESS = "Show Less"
 
 //MARK:- Tablecell Row height
 let rowHeightForPotrait: CGFloat = 400
-let rowHeightForLandscape: CGFloat = 350
+let rowHeightForLandscape: CGFloat = 300
+let widthToHeightPropertionForPotrat: CGFloat = 391/523
+let widthToHeightPropertionForLandScape: CGFloat = 420/289
+var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
+    return rowHeightForPotrait - 40
+}
+var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
+    return rowHeightForLandscape - 55
+}
+
 
 //MARK:- Google Analytics Constants
 

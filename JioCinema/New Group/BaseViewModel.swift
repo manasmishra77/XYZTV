@@ -152,33 +152,39 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
-        let itemIndexTuple = baseTableIndexArray[index]
-        switch itemIndexTuple.0 {
-        case .base:
-            if let dataContainer = baseDataModel?.data {
-                let data = dataContainer[(itemIndexTuple.1)]
-                let height: CGFloat = (data.items?[0].appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
-                return height
-            }
-        case .watchlist:
-            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
-                layout = (vcType == .disneyHome) ? .landscape : layout
-                let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
-                return height
-            }
-        }
-        return 0.0
+        let layout = itemCellLayoutType(index: index)
+        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+        return height
     }
     
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
     
+    func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
+        let itemIndexTuple = baseTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data {
+                let data = dataContainer[(itemIndexTuple.1)]
+                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                return layout
+            }
+        case .watchlist:
+            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
+                layout = (vcType == .disneyHome) ? .landscape : layout
+                return layout
+            }
+        }
+        return .landscape
+    }
+    
     
     func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> TableCellItemsTuple {
         viewResponseBlock = completion
         let itemIndexTuple = baseTableIndexArray[index]
+        let layout = itemCellLayoutType(index: index)
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
@@ -186,13 +192,10 @@ class BaseViewModel: NSObject  {
                 if itemIndexTuple.1 == dataContainer.count - 1 {
                     fetchBaseData()
                 }
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
                 return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
-                layout = (vcType == .disneyHome) ? .landscape : layout
                 let cellType: ItemCellType = (vcType == .disneyHome) ? .resumeWatchDisney : .base
                 return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }

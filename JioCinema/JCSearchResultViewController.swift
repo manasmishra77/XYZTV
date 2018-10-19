@@ -96,7 +96,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 340.0
+        if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
+            return rowHeightForPotrait
+        }
+        return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {

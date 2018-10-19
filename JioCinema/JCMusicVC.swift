@@ -63,7 +63,7 @@ class JCMusicVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+        return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

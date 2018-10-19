@@ -16,6 +16,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var nowPlayingLabel: UILabel!
+    @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
@@ -25,6 +26,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
         nameLabel.text = cellItems.item.name ?? ""
         progressBar.isHidden = true
+        heightConstraintForProgressBar.constant = 0
         switch cellItems.cellType {
         case .base:
             return
@@ -41,6 +43,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
     }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
+         heightConstraintForProgressBar.constant = 10
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
         let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
         progressBar.isHidden = false
@@ -64,7 +67,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
-            self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
+            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
         }

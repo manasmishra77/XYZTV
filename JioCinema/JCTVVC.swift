@@ -77,7 +77,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+       return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

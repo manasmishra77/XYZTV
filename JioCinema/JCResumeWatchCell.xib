@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,37 +18,54 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="8ri-7F-RAA" userLabel="Item Image View">
-                        <rect key="frame" x="15" y="15" width="362" height="185"/>
-                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpS-Xd-qPr" userLabel="ImageProgressBarContainerView">
+                        <rect key="frame" x="15" y="15" width="362" height="195"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="8ri-7F-RAA" userLabel="Item Image View">
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
+                            </imageView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oVx-Z5-1dR">
+                                <rect key="frame" x="0.0" y="185" width="362" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="Qdd-hE-6qn"/>
+                                </constraints>
+                                <color key="progressTintColor" red="0.90588235289999997" green="0.17254901959999999" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="trackTintColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="oVx-Z5-1dR" firstAttribute="leading" secondItem="fpS-Xd-qPr" secondAttribute="leading" id="0yi-5n-X56"/>
+                            <constraint firstAttribute="trailing" secondItem="oVx-Z5-1dR" secondAttribute="trailing" id="3mv-4x-xtl"/>
+                            <constraint firstItem="8ri-7F-RAA" firstAttribute="leading" secondItem="fpS-Xd-qPr" secondAttribute="leading" id="A8f-xy-Po0"/>
+                            <constraint firstItem="8ri-7F-RAA" firstAttribute="top" secondItem="fpS-Xd-qPr" secondAttribute="top" id="AUB-Cs-Q1B"/>
+                            <constraint firstAttribute="bottom" secondItem="oVx-Z5-1dR" secondAttribute="bottom" id="Bbr-e6-2aG"/>
+                            <constraint firstAttribute="trailing" secondItem="8ri-7F-RAA" secondAttribute="trailing" id="L2d-Aq-yoV"/>
+                            <constraint firstAttribute="bottom" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="10" id="g8f-U4-NRP"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSf-xZ-DEC" userLabel="titleLabel">
-                        <rect key="frame" x="15" y="224" width="362" height="36"/>
+                        <rect key="frame" x="15" y="220" width="362" height="40"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                         <color key="textColor" red="0.80087509379999999" green="0.80087509379999999" blue="0.80087509379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oVx-Z5-1dR">
-                        <rect key="frame" x="15" y="190" width="362" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="Qdd-hE-6qn"/>
-                        </constraints>
-                        <color key="progressTintColor" red="0.90588235289999997" green="0.17254901959999999" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="trackTintColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </progressView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="nSf-xZ-DEC" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="0wb-Jr-aSk"/>
-                <constraint firstItem="oVx-Z5-1dR" firstAttribute="centerX" secondItem="Rz2-K0-ksD" secondAttribute="centerX" id="56o-qU-wUB"/>
-                <constraint firstAttribute="trailing" secondItem="8ri-7F-RAA" secondAttribute="trailing" constant="15" id="Bni-PI-tCA"/>
-                <constraint firstItem="8ri-7F-RAA" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="HLB-7H-qxB"/>
-                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="24" id="LmW-GB-8GL"/>
-                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="oVx-Z5-1dR" secondAttribute="bottom" constant="24" id="UpR-Sj-n1f"/>
+                <constraint firstItem="fpS-Xd-qPr" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="5PE-VV-8pw"/>
+                <constraint firstAttribute="trailing" secondItem="fpS-Xd-qPr" secondAttribute="trailing" constant="15" id="Agt-jq-f8c"/>
+                <constraint firstAttribute="bottom" secondItem="fpS-Xd-qPr" secondAttribute="bottom" constant="50" id="KyZ-sK-DK3"/>
+                <constraint firstItem="fpS-Xd-qPr" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="RUc-1a-L3i"/>
                 <constraint firstAttribute="trailing" secondItem="nSf-xZ-DEC" secondAttribute="trailing" constant="15" id="eaw-Sx-ZJg"/>
                 <constraint firstAttribute="bottom" secondItem="nSf-xZ-DEC" secondAttribute="bottom" id="fIg-lX-vWC"/>
-                <constraint firstAttribute="bottom" secondItem="8ri-7F-RAA" secondAttribute="bottom" constant="60" id="nYF-HU-jQk"/>
-                <constraint firstItem="oVx-Z5-1dR" firstAttribute="width" secondItem="8ri-7F-RAA" secondAttribute="width" id="pBn-Vx-WWl"/>
-                <constraint firstItem="8ri-7F-RAA" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="qXy-xX-Fog"/>
+                <constraint firstItem="nSf-xZ-DEC" firstAttribute="top" secondItem="fpS-Xd-qPr" secondAttribute="bottom" constant="10" id="fTs-Gt-r8b"/>
             </constraints>
             <connections>
                 <outlet property="itemImageView" destination="8ri-7F-RAA" id="gZ9-zI-ebj"/>
@@ -58,6 +75,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="ItemPlaceHolder" width="224" height="126"/>
+        <image name="ItemPlaceHolder" width="448" height="252"/>
     </resources>
 </document>

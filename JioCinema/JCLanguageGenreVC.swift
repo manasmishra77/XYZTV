@@ -371,8 +371,15 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
 }
 
-extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
+extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
+            return CGSize(width: rowHeightForPotraitForLanguageGenreScreen * widthToHeightPropertionForPotrat, height: rowHeightForPotraitForLanguageGenreScreen)
+        }
+        return CGSize(width: rowHeightForLandscapeForLanguageGenreScreen * widthToHeightPropertionForLandScape, height: rowHeightForLandscapeForLanguageGenreScreen)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         if let count = languageGenreDetailModel?.data?.items?.count {
