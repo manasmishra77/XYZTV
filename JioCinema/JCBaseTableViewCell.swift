@@ -224,14 +224,31 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if(itemArrayType == .artistImages) {
             return 15
         }
-        return 30
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if(itemArrayType == .artistImages) {
-            return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
+        let height = collectionView.frame.height
+        var width = height * widthToHeightPropertionForLandScape
+        
+        switch itemArrayType {
+        case .resumeWatch:
+            break
+        case .item:
+            if let items = itemsArray as? [Item] {
+                let itemAppType = items[0].appType
+                if itemAppType == .Movie {
+                    width = height * widthToHeightPropertionForPotrat
+                }
+            }
+        case .more:
+            break
+        case .episode:
+            break
+        case .artistImages:
+            width = height
         }
-        return CGSize(width: 392, height: collectionView.frame.height)
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

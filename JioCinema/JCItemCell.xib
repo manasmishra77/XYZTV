@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,16 +18,37 @@
                 <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
-                        <rect key="frame" x="15" y="15" width="362" height="185"/>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingImage" translatesAutoresizingMaskIntoConstraints="NO" id="9Fy-pS-cD7">
-                        <rect key="frame" x="15" y="15" width="362" height="185"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
-                        <rect key="frame" x="15" y="224" width="377" height="36"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pxc-O2-vXj" userLabel="ImageProgressContainerView">
+                        <rect key="frame" x="15" y="15" width="362" height="235"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="235"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingImage" translatesAutoresizingMaskIntoConstraints="NO" id="9Fy-pS-cD7">
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="235"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                        <constraints>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="Ohj-4O-jMM"/>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="top" id="OtS-fr-OjT"/>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="leading" secondItem="lX4-Jx-2Fq" secondAttribute="leading" id="P9i-mi-uYu"/>
+                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Pxc-O2-vXj" secondAttribute="leading" id="XPM-jI-RTI"/>
+                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="top" id="g6h-Me-wKy"/>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="gvp-Qu-71x"/>
+                            <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="myU-4e-K5R"/>
+                            <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="oB7-4m-QFC"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
+                        <rect key="frame" x="15" y="260" width="377" height="0.0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -36,17 +57,12 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="da6-is-0b4" secondAttribute="bottom" id="7qn-4f-WnT"/>
-                <constraint firstItem="9Fy-pS-cD7" firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="BuG-Fk-Pba"/>
                 <constraint firstAttribute="trailing" secondItem="da6-is-0b4" secondAttribute="trailing" id="Eo9-jQ-Hlq"/>
-                <constraint firstItem="9Fy-pS-cD7" firstAttribute="leading" secondItem="lX4-Jx-2Fq" secondAttribute="leading" id="FWg-Ug-6fu"/>
-                <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="24" id="ICz-15-wga"/>
-                <constraint firstItem="9Fy-pS-cD7" firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="K88-Kp-Lef"/>
-                <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" constant="60" id="ZsR-1P-11D"/>
-                <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" constant="15" id="cLy-gq-NOw"/>
-                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="f4W-U2-6Ff"/>
+                <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="bottom" constant="10" id="FVE-in-92z"/>
+                <constraint firstItem="Pxc-O2-vXj" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="WaR-xJ-Bdu"/>
                 <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="fSF-31-6yh"/>
-                <constraint firstItem="9Fy-pS-cD7" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="top" id="ihk-Jd-m4Q"/>
-                <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="mFs-wD-PHh"/>
+                <constraint firstItem="Pxc-O2-vXj" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="fXf-bW-1ef"/>
+                <constraint firstAttribute="trailing" secondItem="Pxc-O2-vXj" secondAttribute="trailing" constant="15" id="pNQ-If-rB5"/>
             </constraints>
             <connections>
                 <outlet property="itemImageView" destination="lX4-Jx-2Fq" id="kwm-0Y-z5X"/>
@@ -57,7 +73,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="ItemPlaceHolder" width="224" height="126"/>
-        <image name="NowPlayingImage" width="224" height="126"/>
+        <image name="ItemPlaceHolder" width="448" height="252"/>
+        <image name="NowPlayingImage" width="448" height="252"/>
     </resources>
 </document>

@@ -83,7 +83,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         print("In Movie Screen Deinit")
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+        return rowHeightForPotrait
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

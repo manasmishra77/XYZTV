@@ -133,7 +133,13 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+        if isResumeWatchDataAvailable, indexPath.row == 0 {
+            return rowHeightForLandscape
+        }
+        if let appType = dataItemsForTableview[indexPath.row].items?.first?.appType, appType == .Movie {
+            return rowHeightForPotrait
+        }
+        return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
