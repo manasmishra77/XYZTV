@@ -42,13 +42,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     init(_ vcType: BaseVCType) {
-//        switch vcType {
-//        case .home:
-//            self.baseViewModel = HomeViewModel(vcType) as! T
-//        default:
         self.baseViewModel = BaseViewModel(vcType) as! T
-//        }
         super.init(nibName: "BaseViewController", bundle: nil)
+        if vcType == .disneyHome || vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyKids {
+                    self.view.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+        }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
         self.tabBarItem = UITabBarItem(title: vcType.rawValue.capitalized, image: nil, tag: 0)
