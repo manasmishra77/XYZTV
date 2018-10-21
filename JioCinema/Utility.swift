@@ -387,6 +387,10 @@ class Utility {
         }
         for each in tableView.visibleCells {
             each.contentView.alpha = 1
+            if let each = each as? BaseTableViewCell {
+                each.categoryTitleLabel.textColor = .white
+                each.itemCollectionView.alpha = 1
+            }
         }
     }
     
@@ -399,7 +403,7 @@ class Utility {
     class func changeTableCellAlphaForbaseTableView(_ tableView: UITableView, indexpath: IndexPath, alpha: CGFloat, textColor: UIColor) {
         let cell = tableView.cellForRow(at: indexpath) as! BaseTableViewCell
         cell.categoryTitleLabel.textColor = textColor
-        cell.contentView.alpha = alpha
+        cell.itemCollectionView.alpha = alpha
     }
     
     //MARK: Getting customized string

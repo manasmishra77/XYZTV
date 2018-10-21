@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate{
+class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate , UITabBarControllerDelegate{
     var baseViewModel: T
     //var carousalView : InfinityScrollView?
     var isWatchlistAvailable = false
@@ -65,7 +65,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         configureViews()
         NotificationCenter.default.addObserver(
@@ -79,7 +78,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             name: removefromWatchlistTappedNotificationName,
             object: nil)
     }
-   
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.delegate = self
+    }
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
