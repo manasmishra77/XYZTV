@@ -80,6 +80,12 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
                         tvVc.callWebServiceForTVWatchlist()
                     }
+                    if let disneyHomeVC = tabVc.viewControllers![4] as? BaseViewController {
+                        disneyHomeVC.callWebServiceForWatchlist()
+                        if let baseViewModel = disneyHomeVC.baseViewModel as? DisneyHomeViewModel {
+                            baseViewModel.getDataForResumeWatch()
+                        }
+                    }
                 }
                 
                 DispatchQueue.main.async {

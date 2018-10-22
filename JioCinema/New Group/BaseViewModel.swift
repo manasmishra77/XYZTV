@@ -113,10 +113,11 @@ class BaseViewModel: NSObject  {
     }
     
     func reloadTableView() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow {
+        if vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyHome{
             populateBaseTableArray()
             viewResponseBlock?(true)
         }
+
     }
     
     fileprivate var baseTableIndexArray: [(BaseDataType, Int)] = []
@@ -129,10 +130,7 @@ class BaseViewModel: NSObject  {
         print(ButtonType.Movies.rawValue)
         getBaseWatchListData()
     }
-    func getDataForWatchList(_ type : BaseVCType) {
-         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
-         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
-    }
+
     func fetchBaseData() {
         guard pageNumber < totalPage else {return}
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
