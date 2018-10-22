@@ -183,6 +183,8 @@ extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
            //Error handling
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
+            self.present(metadataVC, animated: true, completion: nil)
             return
         }
         tabBarVC.presentVC(item, dataType: .disney)
