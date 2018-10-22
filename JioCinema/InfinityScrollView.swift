@@ -42,6 +42,10 @@ class InfinityScrollView: UIView {
     
     @IBOutlet weak var disneyViewHeight: NSLayoutConstraint!
     
+//    weak var timer: Timer?
+    
+    var isCarousalFocused = true
+    
     
     override func awakeFromNib() {
         DispatchQueue.main.async {
@@ -117,7 +121,10 @@ class InfinityScrollView: UIView {
     
     override var preferredFocusEnvironments: [UIFocusEnvironment]
     {
-        return [myPreferredFocuseView!]
+        if let preferedFocusView = myPreferredFocuseView {
+            return [preferedFocusView]
+        }
+        return []
     }
     
     @objc func autoRotate()
@@ -166,19 +173,24 @@ class InfinityScrollView: UIView {
                 let extraLeftButtonImageUrlString = self.carouselArray[previousImage.extraOne!].tvImage ?? ""
                 let extraLeftButtonImageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(extraLeftButtonImageUrlString))!)
                 self.extraLeftButton.sd_setBackgroundImage(with: extraLeftButtonImageUrl!, for: .normal, placeholderImage: #imageLiteral(resourceName: "CarouselPlaceholder"))
-                
-                
-                //self.changeFocusForCarouselDelegate?.setFocusEnvironments()
-                self.myPreferredFocuseView = self.middleButton
+
+
                 self.leftView.frame = leftFrame
                 self.extraLeftView.frame = extraLeftFrame
                 self.rightView.frame = rightFrame
                 self.middleView.frame = middelFrame
                 //self.extraLeft.frame = extraLeftFrame
                 self.newImageLoaded = true
-                self.myPreferredFocuseView = self.middleButton
-                self.setNeedsFocusUpdate()
-                self.updateFocusIfNeeded()
+
+                if self.isCarousalFocused {
+                    self.myPreferredFocuseView = self.middleButton
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
+                }
+                else {
+                    self.myPreferredFocuseView = nil
+                }
+                
             })
             
         }
@@ -226,10 +238,14 @@ class InfinityScrollView: UIView {
                 self.middleView.frame = middelFrame
                 self.extraRightView.frame = extraRightFrame
                 self.newImageLoaded = true
-                self.myPreferredFocuseView = self.middleButton
-                self.setNeedsFocusUpdate()
-                self.updateFocusIfNeeded()
-                
+                if self.isCarousalFocused {
+                    self.myPreferredFocuseView = self.middleButton
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
+                }
+                else {
+                    self.myPreferredFocuseView = nil
+                }
             })
             
         }
@@ -240,6 +256,31 @@ class InfinityScrollView: UIView {
     @IBAction func didClickOnMiddleButton(_ sender: Any) {
         carouselDelegate?.didTapOnCarouselItem!(carouselArray[current])
     }
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        
+        print("inside didupdatefocus")
+        
+        if context.nextFocusedView == middleButton {
+            self.isCarousalFocused = true
+        }
+        else {
+            self.isCarousalFocused = false
+        }
+        //            timer?.invalidate()
+        //            timer = nil
+        //            NSObject.cancelPreviousPerformRequests(withTarget: InfinityScrollView.autoRotate)
+        //            timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(InfinityScrollView.autoRotate), userInfo: nil, repeats: true)
+        
+//
+//        print("previouslyFocusedItem == \(context.previouslyFocusedView)")
+//        print("nextFocusedItem == \(context.nextFocusedView)")
+//                self.myPreferredFocuseView = nil
+    }
+    
+//    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+//
+//    }
     
     //Next Image call for headercell of table
     func nextImage(current: Int) -> CarouselImageType {
