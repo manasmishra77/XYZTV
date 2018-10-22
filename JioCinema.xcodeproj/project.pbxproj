@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00777FFE02D94AB75D595079 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B33E3BBFC27C9E1E591B9B /* Pods_JioCinema.framework */; };
+		192A0152217DBE8000E5D08A /* DisneyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192A0151217DBE8000E5D08A /* DisneyHomeViewModel.swift */; };
+		192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192A0153217DBEAE00E5D08A /* CommonHomeViewModel.swift */; };
 		19491EDC2018522600870794 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19491EDB2018522600870794 /* TVServices.framework */; };
 		19491EDF2018522600870794 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EDE2018522600870794 /* ServiceProvider.swift */; };
 		19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 19491EDA2018522600870794 /* JCTopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -168,6 +170,8 @@
 
 /* Begin PBXFileReference section */
 		1774B5B2F6E3BB89A0D8147B /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
+		192A0151217DBE8000E5D08A /* DisneyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisneyHomeViewModel.swift; sourceTree = "<group>"; };
+		192A0153217DBEAE00E5D08A /* CommonHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHomeViewModel.swift; sourceTree = "<group>"; };
 		19491EDA2018522600870794 /* JCTopShelf.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JCTopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		19491EDB2018522600870794 /* TVServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TVServices.framework; path = System/Library/Frameworks/TVServices.framework; sourceTree = SDKROOT; };
 		19491EDE2018522600870794 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 				19BF8A72214651A6001C58DD /* BaseViewController.xib */,
 				19BF8A70214651A6001C58DD /* BaseViewModel.swift */,
 				53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */,
+				192A0151217DBE8000E5D08A /* DisneyHomeViewModel.swift */,
+				192A0153217DBEAE00E5D08A /* CommonHomeViewModel.swift */,
 			);
 			name = BaseScene;
 			path = "New Group";
@@ -945,6 +951,7 @@
 				9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
+				192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
@@ -964,6 +971,7 @@
 				19BF8A75214651A6001C58DD /* BaseViewModel.swift in Sources */,
 				539618F92122B80700B576BF /* SetParentalPinView.swift in Sources */,
 				7BB0E20E1F1DFF8E00A1DB0B /* JCCarouselCell.swift in Sources */,
+				192A0152217DBE8000E5D08A /* DisneyHomeViewModel.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
 				19491EE92018528100870794 /* TopShelfModel.swift in Sources */,
 				7B1084FF1F54270F008BC7E9 /* JCResumeWatchCell.swift in Sources */,

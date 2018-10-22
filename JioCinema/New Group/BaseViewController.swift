@@ -42,10 +42,14 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     init(_ vcType: BaseVCType) {
-        self.baseViewModel = BaseViewModel(vcType) as! T
+        if vcType == .disneyHome {
+            self.baseViewModel = DisneyHomeViewModel(vcType) as! T
+        } else {
+            self.baseViewModel = BaseViewModel(vcType) as! T
+        }
         super.init(nibName: "BaseViewController", bundle: nil)
         if vcType == .disneyHome || vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyKids {
-                    self.view.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+            self.view.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
         }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
@@ -178,11 +182,12 @@ extension BaseViewController {
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+           //Error handling
             let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
             self.present(metadataVC, animated: true, completion: nil)
             return
         }
-        tabBarVC.presentVC(item)
+        tabBarVC.presentVC(item, dataType: .disney)
     }
 
 }
@@ -190,7 +195,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
 extension BaseViewController: BaseViewModelDelegate {
     func presentMetadataOfIcarousel(_ itemId: Any) {
         if let item = itemId as? Item {
-        self.didTapOnItemCell(nil, item)
+            self.didTapOnItemCell(nil, item)
         }
     }
     
