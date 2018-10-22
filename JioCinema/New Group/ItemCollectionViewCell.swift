@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-typealias BaseItemCellModels = (item: Item, cellType: ItemCellType)
+typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: ItemCellLayoutType)
 
 class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
@@ -20,13 +20,14 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
-        //Load Image
-        if let imageURL = URL(string: cellItems.item.imageUrlString) {
-            setImageOnCell(url: imageURL)
-        }
         nameLabel.text = cellItems.item.name ?? ""
         progressBar.isHidden = true
         heightConstraintForProgressBar.constant = 0
+        
+        
+        //Load Image
+        self.setImageForLayoutType(cellItems)
+        
         switch cellItems.cellType {
         case .base:
             return
@@ -42,6 +43,23 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         }
     }
+    
+    
+    func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
+        //Load Image
+        if cellItems.layoutType == .landscape && cellItems.cellType == .resumeWatchDisney {
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
+        }
+        else {
+            if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
+                setImageOnCell(url: imageURL)
+            }
+        }
+    }
+    
+    
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
          heightConstraintForProgressBar.constant = 10
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)

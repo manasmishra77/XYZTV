@@ -228,7 +228,7 @@ struct Item: Codable {
     var episodeId: String?
     var list:[List]?
     
-    var imageUrlString: String {
+    var imageUrlPortraitContent: String {
         guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
         if let imageStr = image {
             return baseImageUrl + imageStr
@@ -237,6 +237,17 @@ struct Item: Codable {
         }
         return ""
     }
+    
+    var imageUrlLandscapContent: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = banner {
+            return baseImageUrl + imageStr
+        } else if let imageStr = image {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+    
     var appType: VideoType {
         let videoType = VideoType(rawValue: self.app?.type ?? -111)
         return videoType ?? .None

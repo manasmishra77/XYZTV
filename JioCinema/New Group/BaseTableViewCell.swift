@@ -59,6 +59,10 @@ class BaseTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    override func prepareForReuse() {
+
+    }
+    
 }
 
 extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -68,7 +72,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        cell.configureView((item: cellItems.items[indexPath.row], cellType: cellItems.cellType))
+        cell.configureView((item: cellItems.items[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layout))
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
