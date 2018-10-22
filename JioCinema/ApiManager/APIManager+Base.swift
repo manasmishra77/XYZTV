@@ -39,7 +39,8 @@ extension RJILApiManager {
 
         RJILApiManager.getReponse(path: path, headerType: headerType, params: body, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
             if response.isSuccess {
-                RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: response.model!)
+                let newModel = RJILApiManager.clearingEmptyItems(response.model!)
+                RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: newModel)
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)
@@ -99,7 +100,16 @@ extension RJILApiManager {
         }
     }
     
-    
+    private class func clearingEmptyItems(_ model: BaseDataModel) -> BaseDataModel {
+        var newModel = model
+        newModel.data?.removeAll()
+        for each in (model.data ?? []) {
+            if (each.items?.count ?? 0) > 0 {
+                newModel.data?.append(each)
+            }
+        }
+        return newModel
+    }
     
     class func getResumeWatchData(vcType: BaseVCType = .home,_ completion: @escaping APISuccessBlock) {
         let path = resumeWatchGetUrl
