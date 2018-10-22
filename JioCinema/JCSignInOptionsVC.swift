@@ -68,8 +68,17 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 
                 ParentalPinManager.shared.setParentalPinModel()
                 //Updates after login
-                if let navVc = (self.presentingViewController?.presentingViewController ?? self.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController {
-                    
+                
+                var navVC: UINavigationController? = nil
+                if let vc = self.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                } else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                }  else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                }
+
+                if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
                     if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
                         homevc.callWebServiceForResumeWatchData()
                         homevc.callWebServiceForUserRecommendationList()
@@ -79,6 +88,12 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     }
                     if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
                         tvVc.callWebServiceForTVWatchlist()
+                    }
+                    if let disneyHomeVC = tabVc.viewControllers![4] as? BaseViewController {
+                        disneyHomeVC.callWebServiceForWatchlist()
+                        if let baseViewModel = disneyHomeVC.baseViewModel as? DisneyHomeViewModel {
+                            baseViewModel.getDataForResumeWatch()
+                        }
                     }
                 }
                 

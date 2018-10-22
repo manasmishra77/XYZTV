@@ -84,6 +84,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
+       // self.baseViewModel.reloadTableView()
+//        if JCLoginManager.sharedInstance.isUserLoggedIn(), baseViewModel.isDisneyWatchlistAvailable {
+//            JCDataStore.sharedDataStore.disneyTVWatchList?.data = nil
+//            JCDataStore.sharedDataStore.disneyMovieWatchList?.data = nil
+//        }
     }
     private func configureViews() {
         baseTableView.delegate = self
@@ -146,7 +151,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
     
     func callWebServiceForWatchlist(){
-        baseViewModel.getDataForWatchList(baseViewModel.vcType)
+        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
+            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
+        }
     }
     func changingDataSourceForBaseTableView() {
         //dataItemsForTableview.removeAll()
@@ -167,11 +174,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         
     }
-    @objc func callWebServiceWhenItemAddedinWatchlist(){
-        baseViewModel.getDataForWatchList(baseViewModel.vcType)
+    @objc func callWebServiceWhenItemAddedinWatchlist() {
+        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
+            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
+        }
     }
     @objc func callWebServiceWhenItemRemovedWatchlist(){
-        baseViewModel.getDataForWatchList(baseViewModel.vcType)
+        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
+            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
+        }
     }
 }
 extension BaseViewController {

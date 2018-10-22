@@ -76,6 +76,16 @@ class DisneyHomeViewModel: BaseViewModel {
         return (title: "", items: [], cellType: .base, layout: .landscape)
     }
     
+    func getDataForWatchListForDisneyMovieAndTv(_ type : BaseVCType) {
+        RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
+        RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+    }
+    func getDataForResumeWatch()  {
+        if JCLoginManager.sharedInstance.isUserLoggedIn(){
+            RJILApiManager.getResumeWatchData(vcType: .disneyHome, baseAPIReponseHandler)
+        }
+    }
+    
     fileprivate func fetchAllDisneyHomeData() {
         fetchBaseData()
         RJILApiManager.getResumeWatchData(vcType: .disneyHome, baseAPIReponseHandler)
