@@ -39,6 +39,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     weak var cellDelgate: JCBaseTableViewCellDelegate? = nil
     let imageBaseURL = JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? ""
     
+    var isDisney = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         tableCellCollectionView.delegate = self
@@ -195,6 +197,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
         cell.isOpaque = true
         cell.backgroundColor = .clear
+        if isDisney {
+            cell.artistNameInitialButton.backgroundColor = UIColor(red: 0.0/255.0, green: 30.0/255.0, blue: 66.0/255.0, alpha: 1.0)
+        }
         return cell
         
     }

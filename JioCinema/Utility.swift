@@ -63,8 +63,8 @@ class Utility {
         var style: UIAlertActionStyle
     }
     //MARK: Apply Gradient
-    class func applyGradient(_ view: UIView) {
-        let initalColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor
+    class func applyGradient(_ view: UIView, _ initialColor : CGColor) {
+        let initalColor  = initialColor
         let finalColor = UIColor.clear.cgColor
         
         let colors2 = [initalColor, finalColor, finalColor, finalColor]
