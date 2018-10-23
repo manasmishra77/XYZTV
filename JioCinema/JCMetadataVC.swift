@@ -50,7 +50,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
-        
         if isMetaDataAvailable {
             showMetadata()
             let headerView = prepareHeaderView()
@@ -61,11 +60,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
         // Do any additional setup after loading the view.
-        if isDisney {
-            headerCell.addToWatchListButton.focusedBGColor = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
-            headerCell.playButton.focusedBGColor = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
-        }
-
+       
     }
     
     deinit {
@@ -117,10 +112,22 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     private func configureViews() {
-        self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
+        if isDisney {
+            configueeDisneyView()
+        } else {
+            headerCell.configureViews()
+        }
+         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         self.metadataTableView.tableFooterView = UIView()
         self.loadingLabel.text = "Loading"
         configureHeaderCell()
+    }
+    private func configueeDisneyView() {
+            headerCell.configureViews(true)
+            //headerCell.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            headerCell.addToWatchListButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+            headerCell.playButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+            metadataTableView.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
@@ -160,13 +167,15 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         cell.tableCellCollectionView.backgroundColor = UIColor.clear
         cell.itemFromViewController = itemAppType
-        
+        cell.isDisney = self.isDisney
         cell.moreLikeData = nil
         cell.episodes = nil
         cell.data = nil
         cell.artistImages = nil
         cell.cellDelgate = self
         cell.tag = indexPath.row
+        
+        cell.backgroundColor = .clear
         
         //Metadata for Movies
         if itemAppType == .Movie {
@@ -543,8 +552,13 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonCollectionViewCellIdentifier, for: indexPath) as! JCSeasonCollectionViewCell
             cell.seasonNumberLabel.text = "Season " + String(describing: metadata?.filter?[indexPath.row].season ?? 0)
+            cell.isDisney = self.isDisney
             if indexPath.row == 0 {
+                if isDisney {
+                    self.changeBorderColorOfCell(cell, toColor: UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0))
+                } else {
                 self.changeBorderColorOfCell(cell, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                }
             }
             
             return cell
@@ -1207,7 +1221,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         var colorToChange = UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
         if isDisney{
-            colorToChange = UIColor(red: 12.0/255.0, green: 32.0/255.0, blue: 61.0/255.0, alpha: 1.0)
+            colorToChange = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
         }
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])
         fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
@@ -1241,7 +1255,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func changeCollectionViewCellStyle(_ collectionView: UICollectionView, indexPath: IndexPath) {
         for each in collectionView.visibleCells {
             if each == collectionView.cellForItem(at: indexPath) {
+                if isDisney {
+                  self.changeBorderColorOfCell(each, toColor: UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0))
+                } else {
                 self.changeBorderColorOfCell(each, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
+                }
             } else {
                 self.changeBorderColorOfCell(each, toColor:  UIColor(red: 1, green: 1, blue: 1, alpha: 0))
             }
@@ -1250,7 +1268,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func changeBorderColorOfCell(_ cell: UICollectionViewCell, toColor: UIColor) {
         cell.layer.borderWidth = 2.0
-        cell.layer.borderColor = toColor.cgColor
+//        if isDisney {
+//            cell.layer.borderColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0).cgColor
+//        } else {
+            cell.layer.borderColor = toColor.cgColor
+//        }
         cell.layer.cornerRadius = 15.0
     }
     

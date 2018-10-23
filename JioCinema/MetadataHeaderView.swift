@@ -20,6 +20,7 @@ class MetadataHeaderView: UIView {
     
     weak var delegate: MetadataHeaderCellDelegate? = nil
     
+    var isDisney = false
     @IBOutlet weak var tvShowLabel: UILabel!
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
     @IBOutlet weak var directorStaticLabel: UILabel!
@@ -60,11 +61,14 @@ class MetadataHeaderView: UIView {
         super.awakeFromNib()
         // Initialization code
         print(self)
-        configureViews()
     }
     
-    func configureViews() {
-      Utility.applyGradient(self.bannerImageView)
+    func configureViews(_ isDisney : Bool = false) {
+        if isDisney {
+            Utility.applyGradient(self.bannerImageView, UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0).cgColor)
+        } else {
+            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor)
+        }
     }
     
     func resetView() -> UIView {

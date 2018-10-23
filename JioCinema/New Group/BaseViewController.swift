@@ -53,8 +53,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
-        self.tabBarItem = UITabBarItem(title: vcType.rawValue.capitalized, image: nil, tag: 0)
-    
+        self.tabBarItem = UITabBarItem(title: nil, image: UIImage.init(named: "WatchNow"), tag: 0)
+        //self.tabBarItem.image = UIImage(named: "DisneyMovies.png")
+        //self.tabBarItem.selectedImage = UIImage(named: "WatchNow.png")
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.white], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.white], for: .normal)
+        //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: unselectedColor], for: .normal)
+
     }
 
     
