@@ -41,6 +41,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         case .player:
             return
+        case .disneyCommon:
+            return
+        case .disneyArtist:
+            return
+        case .disneyPlayer:
+            return
         }
     }
     
@@ -93,10 +99,13 @@ class ItemCollectionViewCell: UICollectionViewCell {
 }
 enum ItemCellType {
     case base
+    case disneyCommon
     case resumeWatch
     case resumeWatchDisney
     case artist
+    case disneyArtist
     case player
+    case disneyPlayer
 }
 
 enum ItemCellLayoutType {

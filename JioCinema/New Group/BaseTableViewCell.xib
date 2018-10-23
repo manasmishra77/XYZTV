@@ -22,7 +22,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="yTD-Ic-iAy">
-                    <rect key="frame" x="0.0" y="56" width="1803" height="274"/>
+                    <rect key="frame" x="10" y="56" width="1783" height="274"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1wq-Hv-Not">
                         <size key="itemSize" width="376" height="250"/>
@@ -34,8 +34,8 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="yTD-Ic-iAy" secondAttribute="trailing" id="8ek-Vs-vzm"/>
-                <constraint firstItem="yTD-Ic-iAy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JBR-q1-W0a"/>
+                <constraint firstAttribute="trailing" secondItem="yTD-Ic-iAy" secondAttribute="trailing" constant="10" id="8ek-Vs-vzm"/>
+                <constraint firstItem="yTD-Ic-iAy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="JBR-q1-W0a"/>
                 <constraint firstItem="FfN-da-kYZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Ll1-9t-dM1"/>
                 <constraint firstItem="yTD-Ic-iAy" firstAttribute="top" secondItem="FfN-da-kYZ" secondAttribute="bottom" constant="10" id="bfJ-VI-nhe"/>
                 <constraint firstAttribute="bottom" secondItem="yTD-Ic-iAy" secondAttribute="bottom" constant="20" id="cUN-pc-bPX"/>
