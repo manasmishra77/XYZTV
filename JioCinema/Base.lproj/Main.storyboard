@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -786,8 +785,8 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Ee-E5k" userLabel="Metadata View">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
-                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="1" sectionFooterHeight="66" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dP-RB-Mav">
+                                        <rect key="frame" x="20" y="0.0" width="1880" height="1080"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableView>
@@ -795,8 +794,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="1dP-RB-Mav" secondAttribute="bottom" id="7th-tZ-SlL"/>
-                                    <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" id="OJN-iC-zVX"/>
-                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" id="kHT-ik-paF"/>
+                                    <constraint firstAttribute="trailing" secondItem="1dP-RB-Mav" secondAttribute="trailing" constant="20" id="OJN-iC-zVX"/>
+                                    <constraint firstItem="1dP-RB-Mav" firstAttribute="leading" secondItem="v2z-Ee-E5k" secondAttribute="leading" constant="20" id="kHT-ik-paF"/>
                                     <constraint firstItem="1dP-RB-Mav" firstAttribute="top" secondItem="v2z-Ee-E5k" secondAttribute="top" id="tPU-9X-Tdx"/>
                                 </constraints>
                             </view>
@@ -887,7 +886,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No video available!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOE-UX-E5Z">
-                                        <rect key="frame" x="785" y="477" width="349" height="47"/>
+                                        <rect key="frame" x="786" y="477" width="349" height="47"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
                                         <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1496,7 +1495,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us what you think about JioCinema on Apple TV." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsT-Td-1zF">
-                                        <rect key="frame" x="515" y="434" width="889" height="46"/>
+                                        <rect key="frame" x="516" y="434" width="889" height="46"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1723,7 +1722,7 @@
     </scenes>
     <resources>
         <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
-        <image name="LoginBackground" width="1920" height="1080"/>
+        <image name="LoginBackground" width="3840" height="2160"/>
         <image name="MetaDatBackGroundImage" width="1920" height="1080"/>
         <image name="Settings" width="300" height="300"/>
         <image name="back_ic" width="60" height="60"/>

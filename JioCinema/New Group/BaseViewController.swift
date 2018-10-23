@@ -53,13 +53,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
-        self.tabBarItem = UITabBarItem(title: nil, image: UIImage.init(named: "WatchNow"), tag: 0)
-        //self.tabBarItem.image = UIImage(named: "DisneyMovies.png")
-        //self.tabBarItem.selectedImage = UIImage(named: "WatchNow.png")
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.white], for: .selected)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.white], for: .normal)
-        //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: unselectedColor], for: .normal)
-
+        self.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 0)
     }
 
     
@@ -89,11 +83,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
-       // self.baseViewModel.reloadTableView()
-//        if JCLoginManager.sharedInstance.isUserLoggedIn(), baseViewModel.isDisneyWatchlistAvailable {
-//            JCDataStore.sharedDataStore.disneyTVWatchList?.data = nil
-//            JCDataStore.sharedDataStore.disneyMovieWatchList?.data = nil
-//        }
     }
     private func configureViews() {
         baseTableView.delegate = self
@@ -172,7 +161,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             }
             if isWatchlistAvailable {
                 if let watchListData = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
-                
                     dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }

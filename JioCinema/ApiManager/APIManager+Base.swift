@@ -151,7 +151,7 @@ extension RJILApiManager {
                     JCDataStore.sharedDataStore.languageData?.data?[0].title = "Languages"
                 } else {
                     JCDataStore.sharedDataStore.genreData = response.model
-                    JCDataStore.sharedDataStore.languageData?.data?[0].title = "Genres"
+                    JCDataStore.sharedDataStore.genreData?.data?[0].title = "Genres"
                 }
                 completion(true, nil)
             } else {
