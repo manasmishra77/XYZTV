@@ -179,7 +179,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         //Metadata for Movies
         if itemAppType == .Movie {
-            if let moreArray = moreTableViewDatasource[indexPath.row] as? [More] {
+            if let moreArray = moreTableViewDatasource[indexPath.row] as? [Item] {
                 cell.categoryTitleLabel.text = metadata?.displayText
                 cell.itemArrayType = .more
                 cell.itemsArray = moreArray

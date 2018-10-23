@@ -323,7 +323,17 @@ struct MetadataModel: Codable {
             do {
                 approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
             } catch  {
-                approved = false
+                do {
+                    let approvedString = try values.decodeIfPresent(String.self, forKey: .approved)
+                    if approvedString == "yes" {
+                        approved = true
+                    } else if approvedString == "no" {
+                        approved = false
+                    }
+                } catch {
+                 //approved = false
+                    print(error)
+                }
             }
             do {
             isHD = try values.decodeIfPresent(Bool.self, forKey: .isHD)
