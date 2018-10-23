@@ -94,11 +94,7 @@ class InfinityScrollView: UIView {
     }
     
     func setImageOnButton(button: UIButton, for index: Int) {
-        var urlString = self.carouselArray[index].tvImage ?? ""
-        if isDisney == true {
-            urlString = self.carouselArray[index].banner ?? self.carouselArray[index].tvImage ?? self.carouselArray[index].image ?? ""
-        }
-        
+        let urlString = self.carouselArray[index].tvImage ?? ""
         let imageUrl = URL(string: (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(urlString))!)
         button.sd_setBackgroundImage(with: imageUrl!, for: .normal, placeholderImage:#imageLiteral(resourceName: "CarouselPlaceholder"))
     }
