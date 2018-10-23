@@ -211,7 +211,6 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         cell.tag = indexPath.row
         cell.isResumeWatchCell = false
         if isResumeWatchDataAvailable, indexPath.row == 0 {
-
             cell.itemArrayType = .resumeWatch
         } else {
             cell.itemArrayType = .item
@@ -479,9 +478,9 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                 return
             }
             DispatchQueue.main.async {
-                if let languageData = JCDataStore.sharedDataStore.languageData?.data{
-                    if languageData.count > 0{
-                        self.isLanguageDataAvailable = true
+                if let genreData = JCDataStore.sharedDataStore.genreData?.data{
+                    if genreData.count > 0{
+                        self.isGenereDataAvailable = true
                         self.baseTableView.reloadData()
                     }
                 }

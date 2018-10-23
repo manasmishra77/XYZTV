@@ -128,6 +128,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             headerCell.addToWatchListButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
             headerCell.playButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
             metadataTableView.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            self.view.backgroundColor =  UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
