@@ -62,7 +62,7 @@ class DisneyHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainer.count - 2 {
                      fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout)
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {

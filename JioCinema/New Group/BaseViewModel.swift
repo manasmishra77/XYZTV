@@ -183,6 +183,10 @@ class BaseViewModel: NSObject  {
         viewResponseBlock = completion
         let itemIndexTuple = baseTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
+        var cellType: ItemCellType = .base
+        if vcType == .disneyMovies || vcType == .disneyTVShow {
+            cellType = .disneyCommon
+        }
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
@@ -190,11 +194,11 @@ class BaseViewModel: NSObject  {
                 if itemIndexTuple.1 == dataContainer.count - 1 {
                     fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
+                
+                return (title: data.title ?? "", items: data.items ?? [], cellType: cellType, layout: layout)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                let cellType: ItemCellType = (vcType == .disneyHome) ? .resumeWatchDisney : .base
                 return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
