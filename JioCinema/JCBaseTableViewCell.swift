@@ -126,16 +126,25 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         } else if let shownameOfThumbnail = items[indexPath.row].showname {
             thumbnailTitle = shownameOfThumbnail
         }
+
+        cell.nameLabel.text = (items[indexPath.row].app?.type == VideoType.Language.rawValue || items[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
         
-        if let imageUrl = items[indexPath.row].banner {
-            cell.nameLabel.text = (items[indexPath.row].app?.type == VideoType.Language.rawValue || items[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
-            
-            let url = URL(string: imageBaseURL + imageUrl)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+        if items[indexPath.row].appType == .Movie {
+            if let imageUrl = items[indexPath.row].image {
+                self.setImageOnThumbnail(urlString: imageUrl, on: cell)
+            }
+        }else if let imageUrl = items[indexPath.row].banner {
+            self.setImageOnThumbnail(urlString: imageUrl, on: cell)
         }
+        
         return cell
+    }
+    
+    func setImageOnThumbnail(urlString: String, on cell: JCItemCell) {
+        let url = URL(string: imageBaseURL + urlString)
+        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+        });
     }
     
     func episodesCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

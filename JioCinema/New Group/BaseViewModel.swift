@@ -64,12 +64,17 @@ class BaseViewModel: NSObject  {
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items {
-                carousal = Utility.getHeaderForTableView(for: self, with: items)
+                var isDisney = false
+                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
+                isDisney = true
+                }
+                
+                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
                 
                 DispatchQueue.main.async {
                     if self.vcType == .disneyHome {
                         self.carousal?.viewOfButtons.isHidden = false
-                        self.carousal?.disneyViewHeight.constant = 130
+                        self.carousal?.disneyViewHeight.constant = 100
                     }
                     else {
                         self.carousal?.viewOfButtons.isHidden = true
@@ -146,7 +151,7 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableHeader()-> CGFloat {
-        return vcType == .disneyHome ? 780 : 650
+        return vcType == .disneyHome ? 750 : 650
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
