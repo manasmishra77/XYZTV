@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14113" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" restorationIdentifier="kInfinityScrollView" id="iN0-l3-epB" customClass="InfinityScrollView" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1920" height="1180"/>
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1100"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZHr-DU-B2R">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1050"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1000"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItB-lo-Op8">
-                            <rect key="frame" x="-1490" y="0.0" width="1600" height="990"/>
+                            <rect key="frame" x="-1490" y="0.0" width="1600" height="940"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYZ-De-tSz" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="990"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="940"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -37,10 +37,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgV-FY-Ztf">
-                            <rect key="frame" x="160" y="0.0" width="1600" height="990"/>
+                            <rect key="frame" x="160" y="0.0" width="1600" height="940"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOS-dx-0Sr" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="990"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="940"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -63,10 +63,10 @@
                             </connections>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6U-N3-jrm">
-                            <rect key="frame" x="1810" y="0.0" width="1600" height="990"/>
+                            <rect key="frame" x="1810" y="0.0" width="1600" height="940"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eCz-uu-G7U" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="990"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="940"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -81,10 +81,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IE-bg-PV9">
-                            <rect key="frame" x="-3135" y="0.0" width="1600" height="990"/>
+                            <rect key="frame" x="-3135" y="0.0" width="1600" height="940"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngx-b5-YWi" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="990"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="940"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -99,10 +99,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8f-Wv-Yg7">
-                            <rect key="frame" x="3460" y="0.0" width="1600" height="990"/>
+                            <rect key="frame" x="3460" y="0.0" width="1600" height="940"/>
                             <subviews>
                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Vf-7G-Kww" customClass="CarouselViewButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="990"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1600" height="940"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="ItemPlaceHolder"/>
@@ -142,13 +142,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnN-jS-EPE">
-                    <rect key="frame" x="0.0" y="1050" width="1920" height="130"/>
+                    <rect key="frame" x="0.0" y="1000" width="1920" height="100"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="Kjm-fq-sMb">
-                            <rect key="frame" x="550" y="0.0" width="820" height="130"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kjm-fq-sMb">
+                            <rect key="frame" x="650" y="0.0" width="620" height="100"/>
                             <subviews>
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hYd-bW-I9p" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="130"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="193" height="100"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="DisneyMovies"/>
@@ -157,7 +157,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yDF-0P-Yon" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="290" y="0.0" width="240" height="130"/>
+                                    <rect key="frame" x="213" y="0.0" width="194" height="100"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="DisneyTVShow"/>
@@ -166,7 +166,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agE-zE-Oft" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                                    <rect key="frame" x="580" y="0.0" width="240" height="130"/>
+                                    <rect key="frame" x="427" y="0.0" width="193" height="100"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" backgroundImage="DisneyKids"/>
@@ -180,11 +180,11 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="Kjm-fq-sMb" firstAttribute="leading" secondItem="xnN-jS-EPE" secondAttribute="leading" constant="550" id="XHn-tX-Ckp"/>
+                        <constraint firstItem="Kjm-fq-sMb" firstAttribute="leading" secondItem="xnN-jS-EPE" secondAttribute="leading" constant="650" id="XHn-tX-Ckp"/>
                         <constraint firstItem="Kjm-fq-sMb" firstAttribute="top" secondItem="xnN-jS-EPE" secondAttribute="top" id="doa-uW-d0P"/>
-                        <constraint firstAttribute="trailing" secondItem="Kjm-fq-sMb" secondAttribute="trailing" constant="550" id="juE-Dm-B3z"/>
+                        <constraint firstAttribute="trailing" secondItem="Kjm-fq-sMb" secondAttribute="trailing" constant="650" id="juE-Dm-B3z"/>
                         <constraint firstAttribute="bottom" secondItem="Kjm-fq-sMb" secondAttribute="bottom" id="muL-f1-PDa"/>
-                        <constraint firstAttribute="height" constant="130" id="yG6-Hv-TYf"/>
+                        <constraint firstAttribute="height" constant="100" id="yG6-Hv-TYf"/>
                     </constraints>
                 </view>
             </subviews>
@@ -242,6 +242,6 @@
         <image name="DisneyKids" width="330" height="186"/>
         <image name="DisneyMovies" width="330" height="186"/>
         <image name="DisneyTVShow" width="330" height="186"/>
-        <image name="ItemPlaceHolder" width="224" height="126"/>
+        <image name="ItemPlaceHolder" width="448" height="252"/>
     </resources>
 </document>

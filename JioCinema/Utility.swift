@@ -310,8 +310,9 @@ class Utility {
     
     
     //MARK: Getting Carousal View in TableViewHeader
-    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item]) -> InfinityScrollView {
+    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item], isDisney: Bool = false) -> InfinityScrollView {
         let carousalView = Bundle.main.loadNibNamed("kInfinityScrollView", owner: delegate, options: nil)?.first as! InfinityScrollView
+            carousalView.isDisney = isDisney
             carousalView.carouselArray = carouselItems
             carousalView.loadViews()
             carousalView.carouselDelegate = delegate
