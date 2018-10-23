@@ -64,7 +64,12 @@ class BaseViewModel: NSObject  {
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items {
-                carousal = Utility.getHeaderForTableView(for: self, with: items)
+                var isDisney = false
+                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
+                isDisney = true
+                }
+                
+                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
                 
                 DispatchQueue.main.async {
                     if self.vcType == .disneyHome {
