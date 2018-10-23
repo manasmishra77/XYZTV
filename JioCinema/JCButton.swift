@@ -42,7 +42,7 @@ class JCDisneyButton: UIButton
     {
         if (context.nextFocusedView == self)
         {
-            self.transform = CGAffineTransform.init(scaleX: 1.18, y: 1.18)
+            self.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
         }
         else
         {

@@ -29,7 +29,7 @@ class DisneyHomeViewModel: BaseViewModel {
         return homeTableIndexArray.count
     }
     override func heightOfTableHeader() -> CGFloat {
-        return 780.0
+        return 750.0
     }
     override func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
         let itemIndexTuple = homeTableIndexArray[index]
