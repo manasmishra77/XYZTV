@@ -41,6 +41,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         case .player:
             return
+        case .disneyCommon:
+            return
+        case .disneyArtist:
+            return
+        case .disneyPlayer:
+            return
         }
     }
     
