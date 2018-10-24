@@ -226,7 +226,7 @@ class Utility {
         return metadataVC
     }
     //MARK:- Login View Controller Preparation method
-    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: UIViewController?) -> JCLoginVC
+    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: Any?) -> JCLoginVC
     {
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId) as! JCLoginVC
         loginVC.isLoginPresentedFromItemCell = fromItemCell

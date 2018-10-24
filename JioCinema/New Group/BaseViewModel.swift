@@ -118,12 +118,17 @@ class BaseViewModel: NSObject  {
     }
     
     func reloadTableView() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyHome{
+        if vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyHome {
             populateBaseTableArray()
             viewResponseBlock?(true)
         }
 
     }
+    
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
     
     fileprivate var baseTableIndexArray: [(BaseDataType, Int)] = []
     fileprivate var baseModelIndex = 0
@@ -194,16 +199,14 @@ class BaseViewModel: NSObject  {
         }
         switch itemIndexTuple.0 {
         case .base:
-            if let dataContainer = baseDataModel?.data {
-                let data = dataContainer[(itemIndexTuple.1)]
-                if itemIndexTuple.1 == dataContainer.count - 1 {
+            if let dataContainerArr = baseDataModel?.data, let dataContainer = getDataContainer(index) {
+                if itemIndexTuple.1 == dataContainerArr.count - 1 {
                     fetchBaseData()
                 }
-                
-                return (title: data.title ?? "", items: data.items ?? [], cellType: cellType, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         case .watchlist:
-            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+            if let dataContainer = getDataContainer(index) {
                 return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
@@ -215,43 +218,22 @@ class BaseViewModel: NSObject  {
         self.getBaseWatchListData()
     }
     
-//    func callWebServiceForDisneyWatchlist()
-//    {
-//        RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[unowned self] (isSuccess, errorMsg) in
-//            guard isSuccess else {return}
-//            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
-//                self.isDisneyWatchlistAvailable = true
-//                self.changingDataSourceForBaseTableView()
-//                DispatchQueue.main.async {
-//                    JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].title = "Watch List"
-////                    if baseTableView != nil{
-////                        baseTableView.reloadData()
-////                        baseTableView.layoutIfNeeded()
-////                    }
-//                }
-//            }
-//        }
-//    }
-//    func changingDataSourceForBaseTableView(){
-//        //dataItemsForTableview.removeAll()
-//        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data {
-//            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
-//                isDisneyWatchlistAvailable = false
-//            }
-////            dataItemsForTableview = tvData
-//            if baseDataModel?.data?[0].isCarousal ?? false {
-////                dataItemsForTableview.remove(at: 0)
-//            }
-//            if isDisneyWatchlistAvailable {
-//                if let watchListData = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
-// //                   dataItemsForTableview.insert(watchListData, at: 0)
-////                }
-////                if let watchListData = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
-////                    dataItemsForTableview.insert(watchListData, at: 0)
-//                }
-//            }
-//        }
-//    }
+    func getDataContainer(_ index: Int) -> DataContainer? {
+        let itemIndexTuple = baseTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .watchlist:
+            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        }
+        return nil
+    }
+    
+
 }
 
 // MovieVC
@@ -290,28 +272,6 @@ fileprivate extension BaseViewModel {
         baseWatchListIndex = 0
     }
 }
-//extension BaseViewModel: DisneyButtonTapDelegate {
-//    func presentVCOnButtonTap(tag: Int) {
-//        switch tag {
-//        case 1:
-//            let disneyMovies = BaseViewController(.disneyMovies)
-//            delegate?.presentVC(disneyMovies)
-//        case 2:
-//            let disneyTVShow = BaseViewController(.disneyTVShow)
-//            delegate?.presentVC(disneyTVShow)
-//        case 3:
-//            let disneyKids = BaseViewController(.disneyKids)
-//            delegate?.presentVC(disneyKids)
-//        default:
-//            return
-//        }
-//    }
-//    enum ButtonType : Int {
-//        case Movies = 1
-//        case TVShow = 2
-//        case Kids = 3
-//    }
-//}
 
 extension BaseViewModel: JCCarouselCellDelegate {
     func didTapOnCarouselItem(_ item: Any?) {
@@ -339,6 +299,79 @@ extension BaseViewModel: JCCarouselCellDelegate {
         case Movies = 1
         case TVShow = 2
         case Kids = 3
+    }
+}
+
+extension BaseViewModel {
+    func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
+        let indexFromArray = selectedIndexPath?.row ?? 0
+        let itemIndexTuple = baseTableIndexArray[indexFromArray]
+        let dataContainer = getDataContainer(indexFromArray)
+        let categoryName = dataContainer?.title ?? ""
+        switch item.appType {
+        case .Movie:
+            if let duration = item.duration, duration > 0 {
+                checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+            } else {
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                delegate?.presentVC(metadataVC)
+            }
+        case .Music, .Episode, .Clip, .Trailer:
+            checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+        case .TVShow:
+            print("At TvShow")
+            if let duration = item.duration, duration > 0 {
+                item.app?.type = VideoType.Episode.rawValue
+                checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+            } else {
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                delegate?.presentVC(metadataVC)
+            }
+        default:
+            print("Default")
+        }
+        
+    }
+    
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
+        } else {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    
+    func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        switch itemToBePlayed.appType {
+        case .Clip, .Music, .Trailer:
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (categoryName == TVOS_HOME_SCREEN_CAROUSEL ? TVOS_HOME_SCREEN : HOME_SCREEN), fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+            delegate?.presentVC(playerVC)
+        case .Episode:
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+            delegate?.presentVC(playerVC)
+        case .Movie:
+            print("Play Movie")
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+            delegate?.presentVC(playerVC)
+        default:
+            print("No Item")
+        }
+    }
+    
+    func presentLoginVC() {
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        delegate?.presentVC(loginVC)
     }
 }
 
