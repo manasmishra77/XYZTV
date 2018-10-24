@@ -13,6 +13,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     //var carousalView : InfinityScrollView?
     var isWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
+    var resumeWatchListDataAvailable = false
     var viewLoadingStatus: ViewLoadingStatus = .none {
         didSet {
             if viewLoadingStatus == .viewLoaded, ((oldValue == .viewNotLoadedDataFetched) || (oldValue == .viewNotLoadedDataFetchedWithError)) {
@@ -77,6 +78,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
+        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
+            resumeWatchListDataAvailable = false
+            baseViewModel.reloadTableView()
+        }
+        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
+            if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
+                self.baseViewModel.reloadTableView()
+            }
+        }
     }
     private func configureViews() {
         baseTableView.delegate = self

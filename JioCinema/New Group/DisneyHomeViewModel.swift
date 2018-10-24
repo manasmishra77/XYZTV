@@ -19,6 +19,22 @@ class DisneyHomeViewModel: BaseViewModel {
         viewResponseBlock = completion
         fetchAllDisneyHomeData()
     }
+    var isToReloadTableViewAfterLoginStatusChange: Bool {
+        let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
+        var resumeWatchListStatusInHomeTableArray = false
+        if homeTableIndexArray.count > 0 {
+            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
+        }
+        var reloadTable = false
+        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+            
+            reloadTable = true
+        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
+            
+            reloadTable = true
+        }
+        return reloadTable
+    }
     override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> TableCellItemsTuple {
         return getHomeCellItems(for: index)
     }
