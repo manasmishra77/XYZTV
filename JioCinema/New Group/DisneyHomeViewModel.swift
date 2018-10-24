@@ -49,6 +49,22 @@ class DisneyHomeViewModel: BaseViewModel {
         }
         return .landscape
     }
+    override func getDataContainer(_ index: Int) -> DataContainer? {
+        let itemIndexTuple = homeTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .reumeWatch:
+            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .character:
+            break
+        }
+        return nil
+    }
     
     
     // HOMEVC
@@ -57,9 +73,9 @@ class DisneyHomeViewModel: BaseViewModel {
         let layout = itemCellLayoutType(index: index)
         switch itemIndexTuple.0 {
         case .base:
-            if let dataContainer = baseDataModel?.data {
-                let data = dataContainer[itemIndexTuple.1]
-                if itemIndexTuple.1 == dataContainer.count - 2 {
+            if let dataContainerArr = baseDataModel?.data {
+                let data = dataContainerArr[itemIndexTuple.1]
+                if itemIndexTuple.1 == dataContainerArr.count - 2 {
                      fetchBaseData()
                 }
                 return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout)
