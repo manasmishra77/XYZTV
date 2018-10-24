@@ -181,7 +181,7 @@ class Utility {
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false) -> JCMetadataVC {
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
         metadataVC.itemId = itemToBePlayedId
@@ -198,8 +198,8 @@ class Utility {
         if let langData = languageData as? Item {
             metadataVC.languageModel = langData
         }
-       // metadataVC.modalPresentationStyle = .overFullScreen
-        //metadataVC.modalTransitionStyle = .coverVertical
+        
+        metadataVC.isDisney = isDisney
         return metadataVC
     }
     func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false) -> JCMetadataVC {
@@ -226,7 +226,7 @@ class Utility {
         return metadataVC
     }
     //MARK:- Login View Controller Preparation method
-    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: UIViewController?) -> JCLoginVC
+    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: Any?) -> JCLoginVC
     {
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId) as! JCLoginVC
         loginVC.isLoginPresentedFromItemCell = fromItemCell

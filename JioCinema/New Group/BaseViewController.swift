@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate , UITabBarControllerDelegate{
+class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
     //var carousalView : InfinityScrollView?
     var isWatchlistAvailable = false
@@ -185,8 +185,11 @@ extension BaseViewController {
 }
 extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
+        let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
+        baseViewModel.itemCellTapped(item, selectedIndexPath: selectedIndexPath)
+        return
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-           //Error handling
+            // For DisneyKids, Disney Movies, Disney TVShow
             let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
             self.present(metadataVC, animated: true, completion: nil)
             return
@@ -204,7 +207,11 @@ extension BaseViewController: BaseViewModelDelegate {
     }
     
     func presentVC(_ vc: UIViewController) {
-        guard let tabBarVC = self.tabBarController as? JCTabBarController else {return}
+        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+            // For DisneyKids, Disney Movies, Disney TVShow
+            self.present(vc, animated: true, completion: nil)
+            return
+        }
         tabBarVC.presentDisneySubVC(vc)
     }
 
