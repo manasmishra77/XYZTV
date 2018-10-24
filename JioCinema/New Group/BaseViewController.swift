@@ -62,8 +62,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     deinit {
         print("BaseVC Deinit -)")
-        NotificationCenter.default.removeObserver(self, name: addtoWatchlistTappedNotificationName, object: nil)
-        NotificationCenter.default.removeObserver(self, name: removefromWatchlistTappedNotificationName, object: nil)
+        NotificationCenter.default.removeObserver(self, name: WatchlistUpdatedNotificationName, object: nil)
     }
 
     override func viewDidLoad() {
@@ -72,13 +71,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         configureViews()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.callWebServiceWhenItemAddedinWatchlist),
-            name: addtoWatchlistTappedNotificationName,
-            object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.callWebServiceWhenItemRemovedWatchlist),
-            name: removefromWatchlistTappedNotificationName,
+            selector: #selector(self.callWebServiceWhenWatchlistUpdated),
+            name: WatchlistUpdatedNotificationName,
             object: nil)
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -95,9 +89,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         callWebServiceForWatchlist()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        baseViewModel.reloadTableView()
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -167,15 +158,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         
     }
-    @objc func callWebServiceWhenItemAddedinWatchlist() {
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
-        }
-    }
-    @objc func callWebServiceWhenItemRemovedWatchlist(){
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
-        }
+    @objc func callWebServiceWhenWatchlistUpdated() {
+            RJILApiManager.getWatchListData(isDisney: true, type: baseViewModel.vcType) { (isSuccess, errorMsg) in
+                guard isSuccess else {return}
+                self.baseViewModel.reloadTableView()
+            }
     }
 }
 extension BaseViewController {

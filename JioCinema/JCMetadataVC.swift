@@ -856,11 +856,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
             //ChangingTheDataSourceForWatchListItems
             if self.isDisney {
-                if watchlistStatus {
-                    NotificationCenter.default.post(name: addtoWatchlistTappedNotificationName, object: nil)
-                } else {
-                    NotificationCenter.default.post(name: removefromWatchlistTappedNotificationName, object: nil)
-                }
+                    NotificationCenter.default.post(name: WatchlistUpdatedNotificationName, object: nil)
             }
             self.changingDataSourceForWatchList()
         }

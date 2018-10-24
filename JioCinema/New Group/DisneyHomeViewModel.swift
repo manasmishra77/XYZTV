@@ -77,7 +77,7 @@ class DisneyHomeViewModel: BaseViewModel {
     }
     
     func getDataForWatchListForDisneyMovieAndTv(_ type : BaseVCType) {
-        RJILApiManager.getWatchListData(isDisney : true ,type: .disneyMovies, nil)
+        RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
     }
     func getDataForResumeWatch()  {
