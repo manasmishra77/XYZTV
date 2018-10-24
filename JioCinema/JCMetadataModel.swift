@@ -285,7 +285,7 @@ struct MetadataModel: Codable {
                     let intValue = try values.decodeIfPresent(Int.self, forKey: .tags)
                     self.tags  = "\(intValue ?? -1)"
                 } catch {
-                   print("Error in tag \(error)")
+                   //print("Error in tag \(error)")
                 }
             }
             singer = try values.decodeIfPresent([String].self, forKey: .singer)
@@ -375,13 +375,13 @@ struct MetadataModel: Codable {
             writer = try values.decodeIfPresent(String.self, forKey: .writer)
             }
             catch {
-                print(error)
+               // print(error)
                 do {
                     if let writerArray = try values.decodeIfPresent([String].self, forKey: .writer) {
                         writer = writerArray.joined(separator: " ")
                         }
                     } catch {
-                        print(error)
+                        //mprint(error)
                     }
             }
             do {
@@ -393,13 +393,23 @@ struct MetadataModel: Codable {
 
             newmpd = try values.decodeIfPresent(Int.self, forKey: .newmpd)
             AESkey = try values.decodeIfPresent(String.self, forKey: .AESkey)
-            musicDirector = try values.decodeIfPresent([String].self, forKey: .musicDirector)
+            do {
+                musicDirector = try values.decodeIfPresent([String].self, forKey: .musicDirector)
+            } catch {
+                do {
+                    if let musicDiretorString = try values.decodeIfPresent(String.self, forKey: .musicDirector) {
+                    musicDirector?.append(musicDiretorString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             latestEpisodeId = try values.decodeIfPresent(String.self, forKey: .latestEpisodeId)
             lyricist = try values.decodeIfPresent([String].self, forKey: .lyricist)
             do {
                 publisher = try values.decodeIfPresent(String.self, forKey: .publisher)
             } catch {
-                print(error)
+                //print(error)
             }
             name = try values.decodeIfPresent(String.self, forKey: .name)
             subtitle = try values.decodeIfPresent(String.self, forKey: .subtitle)
@@ -495,8 +505,7 @@ struct MetadataModel: Codable {
                 categoryId = try values.decodeIfPresent([Int].self, forKey: .categoryId)
             } catch {
                 do {
-                    let categoryIdString = try values.decodeIfPresent([String].self, forKey: .categoryId)
-                    if let categoryIdString = categoryIdString{
+                    if let categoryIdString = try values.decodeIfPresent([String].self, forKey: .categoryId) {
                         for item in categoryIdString{
                             if let intItem = Int(item) {
                             categoryId?.append(intItem)
@@ -504,7 +513,7 @@ struct MetadataModel: Codable {
                         }
                     }
                 } catch {
-                    print(error)
+                    //print(error)
                 }
                 
             }
@@ -517,7 +526,6 @@ struct MetadataModel: Codable {
             do {
                 primaryGenres = try values.decodeIfPresent([String].self, forKey: .primaryGenres)
             } catch {
-               print(error)
                 do {
                     let primaryGenresString = try values.decodeIfPresent(String.self, forKey: .primaryGenres)
                     primaryGenres?.append(primaryGenresString ?? "")
@@ -543,8 +551,16 @@ struct MetadataModel: Codable {
                     print(error)
                 }
             }
+            do {
             oldFolder2 = try values.decodeIfPresent(Int.self, forKey: .oldFolder2)
+            } catch {
+                //print(error)
+            }
+            do {
             isMoved = try values.decodeIfPresent(Bool.self, forKey: .isMoved)
+            } catch {
+                //print(error)
+            }
             meta = try values.decodeIfPresent(Meta.self, forKey: .meta)
             code = try values.decodeIfPresent(Int.self, forKey: .code)
             displayText = try values.decodeIfPresent(String.self, forKey: .displayText)
@@ -595,7 +611,17 @@ struct CategoryData: Codable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)
+        do {
+            id = try values.decodeIfPresent(Int.self, forKey: .id)
+        } catch {
+            do {
+                if let idString = try values.decodeIfPresent(String.self, forKey: .id){
+                    self.id = Int(idString)
+                }
+            } catch {
+                print(error)
+            }
+        }
         name = try values.decodeIfPresent(String.self, forKey: .name)
         order = try values.decode(Int.self, forKey: .order)
     }
@@ -777,13 +803,47 @@ struct Episode: Codable {
                 print(error)
             }
         }
-        episodeNo = try values.decodeIfPresent(Int.self, forKey: .episodeNo)
+        do {
+            episodeNo = try values.decodeIfPresent(Int.self, forKey: .episodeNo)
+        } catch {
+            do {
+                if let episodeNoString = try values.decodeIfPresent(String.self, forKey: .episodeNo){
+                    self.episodeNo = Int(episodeNoString)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        do {
         legal = try values.decodeIfPresent(Bool.self, forKey: .legal)
+        } catch {
+            do {
+                let legalString = try values.decodeIfPresent(String.self, forKey: .legal)
+                if legalString == "Y"{
+                    legal = true
+                } else {
+                    legal = false
+                }
+            } catch {
+                print(error)
+            }
+        }
 //        approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
         do {
             approved = try values.decodeIfPresent(Bool.self, forKey: .approved)
         } catch {
-            print(error)
+            do {
+                let approvedString = try values.decodeIfPresent(String.self, forKey: .approved)
+                if approvedString == "yes" {
+                    approved = true
+                } else if approvedString == "no" {
+                    approved = false
+                }
+            } catch {
+                //approved = false
+                //print(error)
+            }
+            //print(error)
         }
 
     }

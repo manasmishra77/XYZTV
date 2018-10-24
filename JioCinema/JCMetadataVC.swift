@@ -1239,10 +1239,10 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 750
+                let heightOfView = 780
                 return CGFloat(heightOfView)
             }
-            return 880
+            return 900
         default:
             return 0
         }
