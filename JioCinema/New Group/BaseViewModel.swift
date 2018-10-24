@@ -305,15 +305,15 @@ extension BaseViewModel: JCCarouselCellDelegate {
 extension BaseViewModel {
     func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
         let indexFromArray = selectedIndexPath?.row ?? 0
-        let itemIndexTuple = baseTableIndexArray[indexFromArray]
         let dataContainer = getDataContainer(indexFromArray)
         let categoryName = dataContainer?.title ?? ""
+        
         switch item.appType {
         case .Movie:
             if let duration = item.duration, duration > 0 {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(metadataVC)
             }
         case .Music, .Episode, .Clip, .Trailer:
@@ -321,10 +321,9 @@ extension BaseViewModel {
         case .TVShow:
             print("At TvShow")
             if let duration = item.duration, duration > 0 {
-                item.app?.type = VideoType.Episode.rawValue
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: .TVShow, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(metadataVC)
             }
         default:

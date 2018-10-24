@@ -356,6 +356,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                         else if let vc = vc as? JCMetadataVC {
                             vc.playItemAfterLogin()
                         }
+                        else if let vc = vc as? BaseViewModel {
+                            vc.playItemAfterLogin()
+                        }
                     }
                     if presentedFromAddToWatchList{
                         if (vc as? JCMetadataVC) != nil{

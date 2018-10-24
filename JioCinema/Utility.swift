@@ -181,7 +181,7 @@ class Utility {
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false) -> JCMetadataVC {
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
         metadataVC.itemId = itemToBePlayedId
@@ -198,8 +198,8 @@ class Utility {
         if let langData = languageData as? Item {
             metadataVC.languageModel = langData
         }
-       // metadataVC.modalPresentationStyle = .overFullScreen
-        //metadataVC.modalTransitionStyle = .coverVertical
+        
+        metadataVC.isDisney = isDisney
         return metadataVC
     }
     func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false) -> JCMetadataVC {

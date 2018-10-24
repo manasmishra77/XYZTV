@@ -162,7 +162,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func moreLikeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-        let moreArray = itemsArray as! [More]
+        let moreArray = itemsArray as! [Item]
         cell.nameLabel.text = moreArray[indexPath.row].name
         let imageUrl = moreArray[indexPath.row].banner ?? ""
         let url = URL(string: imageBaseURL + imageUrl)
@@ -220,7 +220,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             let items = itemsArray as! [Item]
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
         case .more:
-            let items = itemsArray as! [More]
+            let items = itemsArray as! [Item]
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
         case .episode:
             let items = itemsArray as! [Episode]

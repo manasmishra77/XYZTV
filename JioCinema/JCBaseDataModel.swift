@@ -437,6 +437,13 @@ struct App: Codable {
 enum BaseVCType: String {
     case home, movie, tv, music, clip, search, disneyHome, disneyMovies, disneyKids, disneyTVShow
     
+    var isDisney: Bool {
+        if self == .disneyHome || self == .disneyMovies || self == .disneyKids || self == .disneyTVShow {
+            return true
+        }
+        return false
+    }
+    
 }
 enum VideoType: Int {
     case Search             = -2
