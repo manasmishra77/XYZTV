@@ -275,9 +275,8 @@ fileprivate extension BaseViewModel {
 
 extension BaseViewModel: JCCarouselCellDelegate {
     func didTapOnCarouselItem(_ item: Any?) {
-        if let item = item {
-            delegate?.presentMetadataOfIcarousel(item)
-        }
+        guard let item = item as? Item else {return}
+        self.itemCellTapped(item, selectedIndexPath: nil)
     }
     
     func presentVCOnButtonTap(tag: Int) {
@@ -304,9 +303,10 @@ extension BaseViewModel: JCCarouselCellDelegate {
 
 extension BaseViewModel {
     func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
+        // Selected indexpath is for tableview cell
         let indexFromArray = selectedIndexPath?.row ?? 0
         let dataContainer = getDataContainer(indexFromArray)
-        let categoryName = dataContainer?.title ?? ""
+        let categoryName = dataContainer?.title ?? "Carousal"
         
         switch item.appType {
         case .Movie:

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate ,JCCarouselCellDelegate , UITabBarControllerDelegate{
+class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
     //var carousalView : InfinityScrollView?
     var isWatchlistAvailable = false
