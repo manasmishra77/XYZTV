@@ -12,32 +12,39 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" multipleTouchEnabled="YES" tag="101" contentMode="center" reuseIdentifier="kJCItemCell" id="Rz2-K0-ksD" customClass="JCItemCell" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
+            <rect key="frame" x="0.0" y="0.0" width="664" height="434"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
+                <rect key="frame" x="0.0" y="0.0" width="664" height="434"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="movie name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
+                        <rect key="frame" x="15" y="409" width="649" height="24"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pxc-O2-vXj" userLabel="ImageProgressContainerView">
-                        <rect key="frame" x="15" y="15" width="362" height="235"/>
+                        <rect key="frame" x="15" y="15" width="634" height="389"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="235"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="lX4-Jx-2Fq">
+                                <rect key="frame" x="0.0" y="0.0" width="634" height="389"/>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingImage" translatesAutoresizingMaskIntoConstraints="NO" id="9Fy-pS-cD7">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="235"/>
+                                <rect key="frame" x="0.0" y="0.0" width="634" height="389"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="Ohj-4O-jMM"/>
-                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="top" secondItem="lX4-Jx-2Fq" secondAttribute="top" id="OtS-fr-OjT"/>
-                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="leading" secondItem="lX4-Jx-2Fq" secondAttribute="leading" id="P9i-mi-uYu"/>
-                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Pxc-O2-vXj" secondAttribute="leading" id="XPM-jI-RTI"/>
-                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="top" id="g6h-Me-wKy"/>
-                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="gvp-Qu-71x"/>
-                            <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="myU-4e-K5R"/>
-                            <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="oB7-4m-QFC"/>
+                            <constraint firstAttribute="trailing" secondItem="9Fy-pS-cD7" secondAttribute="trailing" id="1Rj-zf-xdz"/>
+                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="leading" secondItem="Pxc-O2-vXj" secondAttribute="leading" id="NWY-83-0qr"/>
+                            <constraint firstAttribute="bottom" secondItem="9Fy-pS-cD7" secondAttribute="bottom" id="UIU-SX-hEj"/>
+                            <constraint firstAttribute="bottom" secondItem="lX4-Jx-2Fq" secondAttribute="bottom" id="V7O-ys-aen"/>
+                            <constraint firstItem="lX4-Jx-2Fq" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="top" id="eab-g0-01u"/>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="leading" secondItem="Pxc-O2-vXj" secondAttribute="leading" id="tij-Xt-bXo"/>
+                            <constraint firstAttribute="trailing" secondItem="lX4-Jx-2Fq" secondAttribute="trailing" id="uXG-fI-qis"/>
+                            <constraint firstItem="9Fy-pS-cD7" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="top" id="zgE-kk-dqc"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -45,31 +52,25 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="da6-is-0b4">
-                        <rect key="frame" x="15" y="260" width="377" height="0.0"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.57919406890000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="da6-is-0b4" secondAttribute="bottom" id="7qn-4f-WnT"/>
-                <constraint firstAttribute="trailing" secondItem="da6-is-0b4" secondAttribute="trailing" id="Eo9-jQ-Hlq"/>
-                <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="bottom" constant="10" id="FVE-in-92z"/>
-                <constraint firstItem="Pxc-O2-vXj" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="WaR-xJ-Bdu"/>
-                <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="fSF-31-6yh"/>
-                <constraint firstItem="Pxc-O2-vXj" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="fXf-bW-1ef"/>
-                <constraint firstAttribute="trailing" secondItem="Pxc-O2-vXj" secondAttribute="trailing" constant="15" id="pNQ-If-rB5"/>
+                <constraint firstItem="Pxc-O2-vXj" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="02d-vn-HGw"/>
+                <constraint firstAttribute="bottom" secondItem="Pxc-O2-vXj" secondAttribute="bottom" constant="30" id="7Sy-Cz-h2n"/>
+                <constraint firstItem="da6-is-0b4" firstAttribute="top" secondItem="Pxc-O2-vXj" secondAttribute="bottom" constant="5" id="8lh-SJ-nI0"/>
+                <constraint firstAttribute="trailing" secondItem="da6-is-0b4" secondAttribute="trailing" id="XR8-oU-xqE"/>
+                <constraint firstItem="da6-is-0b4" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="n3W-sL-Xye"/>
+                <constraint firstItem="Pxc-O2-vXj" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="nJl-bx-b6i"/>
+                <constraint firstAttribute="trailing" secondItem="Pxc-O2-vXj" secondAttribute="trailing" constant="15" id="x9V-sK-5y3"/>
             </constraints>
+            <size key="customSize" width="664" height="434"/>
             <connections>
                 <outlet property="itemImageView" destination="lX4-Jx-2Fq" id="kwm-0Y-z5X"/>
                 <outlet property="nameLabel" destination="da6-is-0b4" id="scW-la-eDm"/>
                 <outlet property="nowPlayingImageView" destination="9Fy-pS-cD7" id="kc0-lk-d2T"/>
             </connections>
-            <point key="canvasLocation" x="52" y="101"/>
+            <point key="canvasLocation" x="136" y="-29"/>
         </collectionViewCell>
     </objects>
     <resources>
