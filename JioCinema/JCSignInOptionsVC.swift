@@ -41,12 +41,14 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     }
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
-        jioIdTextField.text     = "pallavtrivedi-4"
-        passwordTextField.text  = "pallav@1010"
+//        jioIdTextField.text     = "pallavtrivedi-4"
+//        passwordTextField.text  = "pallav@1010"
         
-        //             jioIdTextField.text     = "poonam2016"
-        //             passwordTextField.text  = "poonam@12"
-        
+//                     jioIdTextField.text     = "poonam2016"
+//                     passwordTextField.text  = "poonam@12"
+        jioIdTextField.text     = "prabhu.p"
+        passwordTextField.text  = "ril@1234"
+
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
             Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
         } else {

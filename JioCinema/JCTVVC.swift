@@ -46,7 +46,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
-        
+
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "TV", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
@@ -82,10 +82,9 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        
         //dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.tvData?.data) != nil {
-           changingDataSourceForBaseTableView()
+           self.changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
         }
         else
@@ -266,6 +265,11 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                         self.baseTableView.layoutIfNeeded()
                     }
                 }
+            } else if JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count == nil {
+                self.isTVWatchlistAvailable = false
+                DispatchQueue.main.async {
+                    self.baseTableView.reloadData()
+                }
             }
         }
         /*
@@ -302,33 +306,33 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         }*/
     }
     
-    func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
-    {
-        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
-        if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
-            weak var weakSelf = self
-            weakSelf?.isTVWatchlistAvailable = true
-            weakSelf?.changingDataSourceForBaseTableView()
-            DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "Watch List"
-                if weakSelf?.baseTableView != nil{
-                    weakSelf?.baseTableView.reloadData()
-                    weakSelf?.baseTableView.layoutIfNeeded()
-                }
-            }
-        }
-        else {
-            weak var weakSelf = self
-            DispatchQueue.main.async {
-                if weakSelf?.baseTableView != nil{
-                    weakSelf?.baseTableView.reloadData()
-                    weakSelf?.baseTableView.layoutIfNeeded()
-                }
-            }
-        }
-
-    }
-    
+//    func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
+//    {
+//        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
+//        if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
+//            weak var weakSelf = self
+//            weakSelf?.isTVWatchlistAvailable = true
+//            weakSelf?.changingDataSourceForBaseTableView()
+//            DispatchQueue.main.async {
+//                JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "Watch List"
+//                if weakSelf?.baseTableView != nil{
+//                    weakSelf?.baseTableView.reloadData()
+//                    weakSelf?.baseTableView.layoutIfNeeded()
+//                }
+//            }
+//        }
+//        else {
+//            weak var weakSelf = self
+//            DispatchQueue.main.async {
+//                if weakSelf?.baseTableView != nil{
+//                    weakSelf?.baseTableView.reloadData()
+//                    weakSelf?.baseTableView.layoutIfNeeded()
+//                }
+//            }
+//        }
+//
+//    }
+//    
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true
     

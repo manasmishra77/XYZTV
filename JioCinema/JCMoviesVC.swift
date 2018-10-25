@@ -298,6 +298,11 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                         self.baseTableView.layoutIfNeeded()
                     }
                 }
+            }  else if JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items?.count == nil {
+                self.isMoviesWatchlistAvailable = false
+                DispatchQueue.main.async {
+                    self.baseTableView.reloadData()
+                }
             }
             
         }
