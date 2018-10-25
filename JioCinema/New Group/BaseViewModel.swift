@@ -263,6 +263,7 @@ fileprivate extension BaseViewModel {
     }
     private func insertInBaseTableIndex(from watchListContainer: [DataContainer]?) {
         guard watchListContainer != nil else {return}
+        guard baseModelIndex > 0 else {return}
         baseTableIndexArray.insert((BaseDataType.watchlist, baseWatchListIndex), at: baseWatchListIndex)
     }
     

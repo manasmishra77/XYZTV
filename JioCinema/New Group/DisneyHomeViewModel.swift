@@ -19,22 +19,7 @@ class DisneyHomeViewModel: BaseViewModel {
         viewResponseBlock = completion
         fetchAllDisneyHomeData()
     }
-    var isToReloadTableViewAfterLoginStatusChange: Bool {
-        let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
-        var resumeWatchListStatusInHomeTableArray = false
-        if homeTableIndexArray.count > 0 {
-            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
-        }
-        var reloadTable = false
-        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
-            
-            reloadTable = true
-        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
-            
-            reloadTable = true
-        }
-        return reloadTable
-    }
+    
     override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> TableCellItemsTuple {
         return getHomeCellItems(for: index)
     }
@@ -81,9 +66,29 @@ class DisneyHomeViewModel: BaseViewModel {
         }
         return nil
     }
+    override func reloadTableView() {
+        populateHomeTableArray()
+        viewResponseBlock?(true)
+    }
     
     
     // HOMEVC
+    var isToReloadTableViewAfterLoginStatusChange: Bool {
+        let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
+        var resumeWatchListStatusInHomeTableArray = false
+        if homeTableIndexArray.count > 0 {
+            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
+        }
+        var reloadTable = false
+        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+            
+            reloadTable = true
+        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
+            
+            reloadTable = true
+        }
+        return reloadTable
+    }
     func getHomeCellItems(for index: Int) -> TableCellItemsTuple  {
         let itemIndexTuple = homeTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
@@ -106,6 +111,11 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         }
         return (title: "", items: [], cellType: .base, layout: .landscape)
+    }
+    
+    //Used when logging in
+    func fetchDisneyResumeDataWithoutCompletion() {
+        RJILApiManager.getResumeWatchData(vcType: .disneyHome, nil)
     }
     
     func getDataForWatchListForDisneyMovieAndTv(_ type : BaseVCType) {
@@ -150,6 +160,7 @@ class DisneyHomeViewModel: BaseViewModel {
     }
     private func insertInHomeTableIndex(from watchListContainer: [DataContainer]?) {
         guard watchListContainer != nil else {return}
+         guard baseModelIndex > 0 else {return}
         homeTableIndexArray.insert((DisneyHomeDataType.reumeWatch, resumeWatchModelIndex), at: resumeWatchModelIndex)
     }
    

@@ -111,7 +111,7 @@ extension RJILApiManager {
         return newModel
     }
     
-    class func getResumeWatchData(vcType: BaseVCType = .home,_ completion: @escaping APISuccessBlock) {
+    class func getResumeWatchData(vcType: BaseVCType = .home,_ completion: APISuccessBlock?) {
         let path = resumeWatchGetUrl
         let listId = (vcType == .home) ? 10 : 30
         let header = (vcType == .home) ? RequestHeaderType.baseCommon : RequestHeaderType.disneyCommon
@@ -126,17 +126,17 @@ extension RJILApiManager {
                         JCDataStore.sharedDataStore.disneyResumeWatchList = response.model
                         JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = "Resume Watching"
                     }
-                    completion(true, nil)
+                    completion?(true, nil)
                 } else {
                     if vcType == .home {
                         JCDataStore.sharedDataStore.resumeWatchList = nil
                     } else {
                         JCDataStore.sharedDataStore.disneyResumeWatchList = nil
                     }
-                    completion(true, "List is empty!!")
+                    completion?(true, "List is empty!!")
                 }
             } else {
-                completion(false, response.errorMsg)
+                completion?(false, response.errorMsg)
             }
             
         }

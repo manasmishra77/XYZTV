@@ -139,7 +139,25 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+        if itemAppType == .Movie {
+            if let moreArray =  metadata?.more, moreArray.count > 0 {
+                if indexPath.row == 0 {
+                    return rowHeightForPotrait
+                } else {
+                    return 350
+                }
+            }
+            
+        } else if itemAppType == .TVShow {
+            if let episodeArray =  metadata?.episodes, episodeArray.count > 0 {
+                if indexPath.row == 0 {
+                    return rowHeightForLandscape
+                } else {
+                    return 350
+                }
+            }
+        }
+        return 0
     }
     
     

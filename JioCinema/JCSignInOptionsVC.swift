@@ -92,7 +92,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     if let disneyHomeVC = tabVc.viewControllers![4] as? BaseViewController {
                         disneyHomeVC.callWebServiceForWatchlist()
                         if let baseViewModel = disneyHomeVC.baseViewModel as? DisneyHomeViewModel {
-                            baseViewModel.getDataForResumeWatch()
+                           baseViewModel.fetchDisneyResumeDataWithoutCompletion()
                         }
                     }
                 }

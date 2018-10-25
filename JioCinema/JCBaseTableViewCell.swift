@@ -253,15 +253,13 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         switch itemArrayType {
         case .resumeWatch:
             break
-        case .item:
+        case .item, .more:
             if let items = itemsArray as? [Item] {
                 let itemAppType = items[0].appType
                 if itemAppType == .Movie {
                     width = height * widthToHeightPropertionForPotrat
                 }
             }
-        case .more:
-            break
         case .episode:
             break
         case .artistImages:
