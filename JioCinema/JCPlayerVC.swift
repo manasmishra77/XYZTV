@@ -884,8 +884,11 @@
     func callWebServiceForMoreLikeData(id: String) {
         let url = metadataUrl.appending(id)
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
+
+            guard let self = self else {
+                return
+            }
             
             if let responseError = error as NSError?
             {
@@ -899,19 +902,19 @@
             }
             if let responseData = data
             {
-                let recommendationItems = weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                let recommendationItems = self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 var i = 0
                 if let episodes = recommendationItems as? [Episode]{
-                    weakSelf?.isEpisodeDataAvailable = false
+                    self.isEpisodeDataAvailable = false
                     
-                    weakSelf?.episodeArray.removeAll()
+                    self.episodeArray.removeAll()
                     if episodes.count > 0{
-                        weakSelf?.episodeArray.removeAll()
+                        self.episodeArray.removeAll()
                         if episodes.count > 0{
-                            weakSelf?.isEpisodeDataAvailable = true
+                            self.isEpisodeDataAvailable = true
                             for each in episodes{
-                                if each.id == weakSelf?.id{
-                                    weakSelf?.episodeNumber = each.episodeNo
+                                if each.id == self.id{
+                                    self.episodeNumber = each.episodeNo
                                     break
                                 }
                                 i = i + 1
@@ -919,24 +922,24 @@
                             if i == episodes.count{
                                 i = i - 1
                             }
-                            weakSelf?.episodeArray = episodes
+                            self.episodeArray = episodes
                         }
-                        weakSelf?.isEpisodeDataAvailable = true
-                        weakSelf?.episodeArray = episodes
+                        self.isEpisodeDataAvailable = true
+                        self.episodeArray = episodes
                     }
                 }
                 else if let mores = recommendationItems as? [More]{
-                    weakSelf?.isMoreDataAvailable = false
-                    weakSelf?.moreArray.removeAll()
+                    self.isMoreDataAvailable = false
+                    self.moreArray.removeAll()
                     if mores.count > 0{
-                        weakSelf?.isMoreDataAvailable = true
-                        weakSelf?.moreArray = mores
+                        self.isMoreDataAvailable = true
+                        self.moreArray = mores
                     }
                 }
-                if (weakSelf?.isMoreDataAvailable ?? false) || (weakSelf?.isEpisodeDataAvailable ?? false){
+                if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
                     DispatchQueue.main.async {
-                        weakSelf?.collectionView_Recommendation.reloadData()
-                        weakSelf?.scrollCollectionViewToRow(row: i)
+                        self.collectionView_Recommendation.reloadData()
+                        self.scrollCollectionViewToRow(row: i)
                     }
                 }
                 return
@@ -966,8 +969,11 @@
         let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
         let params = ["id": id,"contentId":""]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             if let responseError = error as NSError?
             {
                 //TODO: handle error
@@ -995,10 +1001,10 @@
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failureType = "Playlist service failed"
-                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failureType] as [String : Any]
-                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
-                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             
@@ -1008,12 +1014,12 @@
                 {
                     if let playList = PlaylistDataModel(JSONString: responseString){
                         if let mores = playList.more{
-                            weakSelf?.moreArray.removeAll()
+                            self.moreArray.removeAll()
                             if mores.count > 0{
-                                weakSelf?.isMoreDataAvailable = true
+                                self.isMoreDataAvailable = true
                                 var i = 0
                                 for each in mores{
-                                    if each.id == weakSelf?.id{
+                                    if each.id == self.id{
                                         break
                                     }
                                     i = i + 1
@@ -1021,17 +1027,17 @@
                                 if i == mores.count{
                                     i = i - 1
                                 }
-                                weakSelf?.moreArray = mores
-                                if (weakSelf?.isPlayListFirstItemToBePlayed ?? false){
-                                    weakSelf?.isPlayListFirstItemToBePlayed = false
+                                self.moreArray = mores
+                                if (self.isPlayListFirstItemToBePlayed){
+                                    self.isPlayListFirstItemToBePlayed = false
                                     let playlistFirstItem = mores[0]
-                                    weakSelf?.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: weakSelf?.playListId ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: weakSelf?.fromScreen ?? "", fromCategory: weakSelf?.fromCategory ?? "", fromCategoryIndex: weakSelf?.fromCategoryIndex ?? 0)
-                                    weakSelf?.preparePlayerVC()
+                                    self.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: self.playListId , isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: self.fromScreen , fromCategory: self.fromCategory, fromCategoryIndex: self.fromCategoryIndex)
+                                    self.preparePlayerVC()
                                 }
                                 else{
                                     DispatchQueue.main.async {
-                                        weakSelf?.collectionView_Recommendation.reloadData()
-                                        weakSelf?.scrollCollectionViewToRow(row: i)
+                                        self.collectionView_Recommendation.reloadData()
+                                        self.scrollCollectionViewToRow(row: i)
                                     }
                                 }
                             }
@@ -1053,11 +1059,13 @@
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
-                
             }
             if let responseError = error as NSError?
             {
@@ -1098,10 +1106,10 @@
                     }
                     failuretype = "Playbackrights failed"
                 }
-                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failuretype] as [String : Any]
-                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
-                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             if let responseData = data
@@ -1111,27 +1119,27 @@
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
                         
-                        if((weakSelf?.player) != nil) {
-                            weakSelf?.player?.pause()
-                            weakSelf?.resetPlayer()
+                        if((self.player) != nil) {
+                            self.player?.pause()
+                            self.resetPlayer()
                         }
                         //self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
-                            weakSelf?.doParentalCheck(with: fpsUrl, isFps: true)
+                            self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
-                            weakSelf?.doParentalCheck(with: aesUrl, isFps: false)
+                            self.doParentalCheck(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
                             
                             let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                                 DispatchQueue.main.async {
                                     print("dismiss")
-                                    weakSelf?.dismissPlayerVC()
+                                    self.dismissPlayerVC()
                                 }
                             }
                             alert.addAction(cancelAction)
                             DispatchQueue.main.async {
-                                weakSelf?.present(alert, animated: false, completion: nil)
+                                self.present(alert, animated: false, completion: nil)
                             }
                         }
                     }
@@ -1147,7 +1155,6 @@
         let params = ["uniqueId": JCAppUser.shared.unique,"listId": "10","json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
             if let responseError = error as NSError?
             {
@@ -1182,18 +1189,14 @@
         params["id"] = id
         params["duration"] = currentTimeDuration
         params["totalDuration"] = totalDuration
-        weak var weakSelf = self.presentingViewController
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
             {
-                print(responseError)
                 return
             }
             if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                print("Added to Resume Watchlist")
-                //To add in homevc and update resume watchlist data
                 NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
                 return
             }
@@ -1533,9 +1536,6 @@
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
             if error != nil {
-                //                DispatchQueue.main.async {
-                //                    weakSelf?.handleAPIFailure("Unable to show content!")
-                //                }
                 return
             }
             if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {
@@ -1556,9 +1556,6 @@
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             if error != nil {
-                //                DispatchQueue.main.async {
-                //                    weakSelf?.handleAPIFailure("Unable to show content!")
-                //                }
                 return
             }
             
