@@ -55,7 +55,17 @@ struct PlaybackRightsModel: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         code = try values.decodeIfPresent(Int.self, forKey: .code)
         message = try values.decodeIfPresent(String.self, forKey: .message)
-        duration = try values.decodeIfPresent(Float.self, forKey: .duration)
+        do {
+            let floatDuration = try values.decodeIfPresent(Float.self, forKey: .duration)
+            duration = floatDuration
+        } catch {
+            do {
+                let intDuration = try values.decodeIfPresent(Int.self, forKey: .duration)
+                duration = Float(intDuration ?? 0)
+            } catch {
+                
+            }
+        }
         inqueue = try values.decodeIfPresent(Bool.self, forKey: .inqueue)
         totalDuration = try values.decodeIfPresent(String.self, forKey: .totalDuration)
         isSubscribed = try values.decodeIfPresent(Bool.self, forKey: .isSubscribed)

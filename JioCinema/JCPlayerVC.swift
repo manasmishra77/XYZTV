@@ -1467,13 +1467,14 @@
     
     //Check in resume watchlist
     func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float  {
-        if let resumeWatchDisneyArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
-            let itemMatched = resumeWatchDisneyArray.filter{ $0.id == itemIdToBeChecked}.first
-            if let drn = itemMatched?.duration {
-                return Float(drn)
+        if isDisney {
+            if let resumeWatchDisneyArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchDisneyArray.filter{ $0.id == itemIdToBeChecked}.first
+                if let drn = itemMatched?.duration {
+                    return Float(drn)
+                }
             }
-        }
-        else if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
+        } else if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
             let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
             if let drn = itemMatched?.duration {
                 return Float(drn)
