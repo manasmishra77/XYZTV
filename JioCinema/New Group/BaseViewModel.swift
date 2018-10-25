@@ -322,7 +322,9 @@ extension BaseViewModel {
         case .TVShow:
             print("At TvShow")
             if let duration = item.duration, duration > 0 {
-                checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+                var newItem = item
+                newItem.app?.type = 7
+                checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(metadataVC)
@@ -358,11 +360,11 @@ extension BaseViewModel {
             let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (categoryName == TVOS_HOME_SCREEN_CAROUSEL ? TVOS_HOME_SCREEN : HOME_SCREEN), fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
             delegate?.presentVC(playerVC)
         case .Episode:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney)
             delegate?.presentVC(playerVC)
         case .Movie:
             print("Play Movie")
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney)
             delegate?.presentVC(playerVC)
         default:
             print("No Item")
