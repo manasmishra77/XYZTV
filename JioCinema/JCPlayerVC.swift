@@ -155,7 +155,6 @@
     //MARK:- Add Player Observer
     func addPlayerNotificationObserver () {
         NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
@@ -324,10 +323,10 @@
         asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
         let requestedKeys: [Any] = [PLAYABLE_KEY]
         // Tells the asset to load the values of any of the specified keys that are not already loaded.
-        asset.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {() -> Void in
+        asset.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {[weak self]() -> Void in
             DispatchQueue.main.async(execute: {() -> Void in
                 /* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
-                self.prepare(toPlay: asset, withKeys: JCPlayerVC.assetKeysRequiredToPlay)
+                self?.prepare(toPlay: asset, withKeys: JCPlayerVC.assetKeysRequiredToPlay)
             })
         })
     }
@@ -371,7 +370,6 @@
         } else {
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
-            addPlayerNotificationObserver()
         }
         addPlayerNotificationObserver()
         playerController?.player = player
