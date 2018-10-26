@@ -268,7 +268,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             } else if JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count == nil {
                 self.isTVWatchlistAvailable = false
                 DispatchQueue.main.async {
-                    self.baseTableView.reloadData()
+                    self.baseTableView?.reloadData()
                 }
             }
         }
