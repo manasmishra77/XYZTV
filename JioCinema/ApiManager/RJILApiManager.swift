@@ -68,6 +68,8 @@ class RJILApiManager {
             _commonHeaders["deviceType"] = "stb"
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+            _commonHeaders["x-multilang"] = "true"
+
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
