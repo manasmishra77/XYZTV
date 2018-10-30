@@ -131,6 +131,9 @@ class DataContainer:Mappable
     var layout:Int?
     var position: Int? = nil
     
+    //Multiple Audio Parameter
+    var defaultAudioLanguage: String?
+    
     required init(map:Map) {
         
     }
@@ -146,6 +149,7 @@ class DataContainer:Mappable
         id <- map["id"]
         layout <- map["layout"]
         position <- map["position"]
+        defaultAudioLanguage <- map["defaultAudioLanguage"]
     }
 }
 
@@ -177,6 +181,7 @@ class Item:Mappable
     
     //multiaudio parameter
     var languageIndex : LanguageIndex?
+    var defaultAudioLanguage: String?
     
     init() {
         
@@ -203,7 +208,7 @@ class Item:Mappable
         description <- map["description"]
         banner <- map["banner"]
         isPlaylist <- map["isPlaylist"]
-        languageIndex <- map["languageIndex"]
+        
         if isPlaylist == nil {
             isPlaylist = false
         }
@@ -246,6 +251,9 @@ class Item:Mappable
             }
         }
         list <- map["list"]
+        
+        languageIndex <- map["languageIndex"]
+        
     }
 }
 

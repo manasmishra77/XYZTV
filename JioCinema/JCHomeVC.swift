@@ -210,6 +210,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         } else {
             cell.itemArrayType = .item
         }
+        //Added for multiple audio
+        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].defaultAudioLanguage
         cell.itemsArray = dataItemsForTableview[indexPath.row].items
         let categoryTitle = (dataItemsForTableview[indexPath.row].title ?? "")
         cell.categoryTitleLabel.text = categoryTitle
@@ -446,6 +448,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
     }
     
     //MARK:- JCBaseTableCell Delegate Methods
+ 
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if !Utility.sharedInstance.isNetworkAvailable {
             Utility.sharedInstance.showDismissableAlert(title: "", message: networkErrorMessage)
@@ -469,7 +472,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                 } else {
                     toScreenName = METADATA_SCREEN
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: HOME_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, defaultAudioLanguage: tappedItem.defaultAudioLanguage)
                     self.present(metadataVC, animated: false, completion: nil)
                 }
             case .Music, .Episode, .Clip, .Trailer:

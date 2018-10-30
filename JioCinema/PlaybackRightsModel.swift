@@ -90,6 +90,8 @@ class LanguageIndex: Mappable
     required init(map:Map) {
         
     }
+    init() {
+    }
     
     func mapping(map:Map)
     {
