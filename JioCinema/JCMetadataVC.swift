@@ -247,17 +247,20 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
         
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             DispatchQueue.main.async {
                 guard id != "" else {
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.handleAlertForMetaDataDataFailure()
                     return
                 }
-                weakSelf?.isUserComingFromPlayerScreen = false
-                weakSelf?.loaderContainerView.isHidden = true
-                weakSelf?.metadataContainerView.isHidden = false
-                weakSelf?.activityIndicator.stopAnimating()
+                self.isUserComingFromPlayerScreen = false
+                self.loaderContainerView.isHidden = true
+                self.metadataContainerView.isHidden = false
+                self.activityIndicator.stopAnimating()
             }
             
             if let responseError = error
@@ -265,21 +268,21 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 //TODO: handle error
                 print(responseError)
                 DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
+                    self.showMetadata()
                     //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.handleAlertForMetaDataDataFailure()
                 }
                 return
             }
             if let responseData = data {
                 
-                weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
+                self.evaluateMetaData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
-                    let headerView = weakSelf?.prepareHeaderView()
-                    weakSelf?.metadataTableView.tableHeaderView = headerView
+                    self.showMetadata()
+                    let headerView = self.prepareHeaderView()
+                    self.metadataTableView.tableHeaderView = headerView
                 }
-                weakSelf?.callWebServiceForMoreLikeData(id: id)
+                self.callWebServiceForMoreLikeData(id: id)
                 return
             }
         }
@@ -302,25 +305,27 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
             
+            guard let self = self else {
+                return
+            }
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
             }
             if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    if let metatableView = weakSelf?.metadataTableView {
+                    if let metatableView = self.metadataTableView {
                         metatableView.reloadData()
                         metatableView.layoutIfNeeded()
                     }
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.myPreferredFocusView = weakSelf?.headerCell.playButton
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
+                    self.prepareMetdataArtistLabel()
+                    self.myPreferredFocusView = self.headerCell.playButton
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
                 }
             }
         }
@@ -379,7 +384,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     fileprivate var categoryNameAfterLogin: String? = nil
     
     func checkLoginAndPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int) {
-        //weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
@@ -586,8 +590,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func callWebServiceForSelectedFilter(filter: String) {
         let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) {[weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             
             if let responseError = error {
                 //TODO: handle error
@@ -595,13 +602,13 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return
             }
             if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.metadataTableView.reloadData()
-                    weakSelf?.metadataTableView.layoutIfNeeded()
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
+                    self.prepareMetdataArtistLabel()
+                    self.metadataTableView.reloadData()
+                    self.metadataTableView.layoutIfNeeded()
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
                 }
                 return
             }
@@ -719,7 +726,12 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>) {
         self.headerCell.addToWatchListButton.isEnabled = false
         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
+            
             DispatchQueue.main.async {
                 self.headerCell.addToWatchListButton.isEnabled = true
             }
@@ -733,8 +745,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     DispatchQueue.main.async {
-                        //JCLoginManager.sharedInstance.logoutUser()
-                        //self.presentLoginVC()
                     }
                 }
                 return
