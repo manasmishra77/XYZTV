@@ -204,7 +204,12 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch itemArrayType {
-        case .item, .resumeWatch:
+        case .resumeWatch:
+            let items = itemsArray as! [Item]
+            let item = items[indexPath.row]
+            item.defaultAudioLanguage = item.languageIndex?.name
+            cellDelgate?.didTapOnItemCell?(self, item, self.tag)
+        case .item:
             let items = itemsArray as! [Item]
             let item = items[indexPath.row]
             item.defaultAudioLanguage = defaultAudioLanguage

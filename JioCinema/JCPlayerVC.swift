@@ -387,7 +387,7 @@
             player = AVPlayer(playerItem: playerItem)
         }
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        self.playerAudioLanguage("HINDI")
+        self.playerAudioLanguage(audioLanguage?.name)
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
