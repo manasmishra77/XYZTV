@@ -104,6 +104,7 @@ class MetadataModel:Mappable
     var code:Int?
     var displayText:String?
     var more:[More]?
+    var multipleAudio : String?
     var episodes:[Episode]?
     var inQueue:Bool?
     var filter:[Filter]?
@@ -235,6 +236,8 @@ class MetadataModel:Mappable
         code <- map["code"]
         displayText <- map["displayText"]
         more <- map["more"]
+        multipleAudio <- map["audios"]
+        
         episodes <- map["episodes"]
         inQueue <- map["inQueue"]
         isSeason <- map["isSeason"]

@@ -34,7 +34,23 @@
     return globalQueue!
  }
  
- 
+ enum AudioLanguage: String {
+    case english
+    case hindi
+    case tamil
+    case telugu
+    case marathi
+    case bengali
+    case none
+    
+    var code: String {
+        return self.rawValue.subString(start: 0, end: 1)
+    }
+    var name: String {
+        return self.rawValue.capitalized
+    }
+    
+ }
  class JCPlayerVC: UIViewController {
 
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
@@ -242,14 +258,14 @@
     func updateResumeWatchList() {
         if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
-            
+            let currentLanguage = ""
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
             if timeDifference < 300 {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
-                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration ,currentLanguage: currentLanguage)
                 
             }
         }
@@ -1173,13 +1189,16 @@
         }
     }
     
-    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
+    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, currentLanguage: String)
     {
         let url = addToResumeWatchlistUrl
 
         let id = itemId
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
+        let audioLanguage = AudioLanguage(rawValue: playbackRightsData?.languageIndex?.name ?? "") ?? .none
+        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 
+        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration, "languageIndex": languageIndexDict]
+        
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
         params["listId"] = 10
