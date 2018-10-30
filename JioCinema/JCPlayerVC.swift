@@ -369,7 +369,6 @@
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
         self.addMetadataToPlayer()
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -387,6 +386,8 @@
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
+        self.autoPlaySubtitle(IsAutoSubtitleOn)
+        self.playerAudioLanguage("HINDI")
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
@@ -405,6 +406,21 @@
         // Select track with displayName
         guard (subtitles?.count ?? 0) > 0 else {return}
         _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
+    }
+    
+    private func playerAudioLanguage(_ audioLanguage: String?) {
+        
+        guard let audioLanguage = audioLanguage else {
+            return
+        }
+        let audioes = player?.currentItem?.tracks(type: .audio)
+        // Select track with displayName
+        guard (audioes?.count ?? 0) > 0 else {return}
+        
+        
+        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+            _ = player?.currentItem?.select(type: .audio, name: language)
+        }
     }
     
     func handleForPlayerReference() {
@@ -1137,7 +1153,7 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
-                        //self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
