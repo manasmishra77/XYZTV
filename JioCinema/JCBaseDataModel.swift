@@ -175,6 +175,8 @@ class Item:Mappable
     var episodeId: String?
     var list:[List]?
     
+    //multiaudio parameter
+    var languageIndex : LanguageIndex?
     
     init() {
         
@@ -201,6 +203,7 @@ class Item:Mappable
         description <- map["description"]
         banner <- map["banner"]
         isPlaylist <- map["isPlaylist"]
+        languageIndex <- map["languageIndex"]
         if isPlaylist == nil {
             isPlaylist = false
         }

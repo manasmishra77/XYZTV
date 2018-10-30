@@ -87,6 +87,8 @@
     var starCast = ""
     var vendor = ""
     
+    var audioLanguage : LanguageIndex?
+    
     fileprivate var isPlayListFirstItemToBePlayed = false
     fileprivate var videoViewingLapsedTime = 0.0
     fileprivate var totalBufferDurationTime = 0.0
@@ -259,15 +261,13 @@
     func updateResumeWatchList() {
         if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
-            let currentLanguage = ""
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
             if timeDifference < 300 {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
-                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration ,currentLanguage: currentLanguage)
-                
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
             }
         }
     }
@@ -1068,7 +1068,8 @@
         //playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
-        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: headerParamDict)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
             DispatchQueue.main.async {
@@ -1184,12 +1185,13 @@
         }
     }
     
-    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, currentLanguage: String)
+    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
     {
         let url = addToResumeWatchlistUrl
 
         let id = itemId
-        let audioLanguage = AudioLanguage(rawValue: playbackRightsData?.languageIndex?.name ?? "") ?? .none
+        let lang: String = playbackRightsData?.languageIndex?.name?.lowercased() ?? ""
+        let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
         let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 
         let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration, "languageIndex": languageIndexDict]

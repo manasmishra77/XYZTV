@@ -89,7 +89,7 @@ class RJILApiManager {
             return _commonHeaders
         }
     }
-
+    
     
     var otpHeaders:[String:String]{
         get{
@@ -101,7 +101,6 @@ class RJILApiManager {
             return _otpHeaders
         }
     }
-    
     var checkVersionHeaders: [String:String]{
         get{
             var _checkVersionHeaders = [String:String]()
@@ -158,7 +157,7 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest {
         var request:URLRequest?
         
         if let params = params {
@@ -218,7 +217,11 @@ class RJILApiManager {
         else {
             request = getRequest(forPath: path)
         }
-        
+        if let headerParam = headerParam {
+            for (key, value) in headerParam {
+                request?.setValue(key, forHTTPHeaderField: value)
+            }
+        }
         if path.contains(checkVersionUrl)
         {
             request?.allHTTPHeaderFields = checkVersionHeaders
