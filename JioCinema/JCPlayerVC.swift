@@ -266,7 +266,8 @@
             if timeDifference < 300 {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
-                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
+                let audio = self.playerItem?.selected(type: .audio) ?? ""
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audio)
             }
         }
     }
@@ -1088,8 +1089,8 @@
         //playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
-        let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
-        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: headerParamDict)
+        //let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: nil)
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
             guard let self = self else {
                 return
@@ -1153,7 +1154,7 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
-//                        self.playbackRightsData?.url = nil
+                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1205,12 +1206,12 @@
         }
     }
     
-    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
+    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, selectedAudio: String)
     {
         let url = addToResumeWatchlistUrl
 
         let id = itemId
-        let lang: String = playbackRightsData?.languageIndex?.name?.lowercased() ?? ""
+        let lang: String = selectedAudio.lowercased() ?? ""
         let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
         let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 
@@ -1399,6 +1400,7 @@
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
+                            metaDataVC.defaultAudioLanguage = self.playerItem?.selected(type: .audio)
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
