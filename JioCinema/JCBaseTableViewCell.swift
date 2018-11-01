@@ -211,7 +211,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         case .item:
             let items = itemsArray as! [Item]
             let item = items[indexPath.row]
-            let language = Utility.checkInResumeWatchList(item.id ?? "") ??  self.defaultAudioLanguage
+            let language = self.defaultAudioLanguage
             item.defaultAudioLanguage = language
             cellDelgate?.didTapOnItemCell?(self, item, self.tag)
         case .more:

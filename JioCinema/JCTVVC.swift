@@ -235,6 +235,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = uniqueID
+        params["listId"] = 13
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in

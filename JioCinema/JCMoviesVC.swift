@@ -265,7 +265,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = uniqueID
-        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        params["listId"] = "12"
+        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
             if let responseError = error as NSError?
@@ -348,7 +349,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             if tappedItem.app?.type == VideoType.Movie.rawValue {
                 print("At Movie")
                 toScreenName = METADATA_SCREEN
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1, defaultAudioLanguage: tappedItem.defaultAudioLanguage)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1, defaultAudioLanguage: tappedItem.defaultAudioLanguage ?? tappedItem.language)
 //                self.tabBarController?.navigationController?.setNavigationBarHidden(true, animated: false)
 //                self.tabBarController?.navigationController?.pushViewController(metadataVC, animated: false)
                 self.present(metadataVC, animated: true, completion: nil)

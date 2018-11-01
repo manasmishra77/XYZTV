@@ -1154,7 +1154,7 @@
                             self.player?.pause()
                             self.resetPlayer()
                         }
-                        self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
                             self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1294,7 +1294,7 @@
     
     private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
         if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
-            return item.languageIndex ?? audioLanguage
+            return item.languageIndex
         }
         return audioLanguage
     }
@@ -1337,7 +1337,7 @@
     
     //Check in resume watchlist
     private func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
-        let itemMatched = self.checkInMyWatchList(itemIdToBeChecked)
+        let itemMatched = self.checkInResumeWatchList(itemIdToBeChecked)
         if let drn = itemMatched?.duration?.floatValue() {
             return drn
         }
