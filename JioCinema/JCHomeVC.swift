@@ -488,7 +488,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
                     self.present(metadataVC, animated: true, completion: nil)
                 }
             case .Genre, .Language:
-                presentLanguageGenreController(item: tappedItem)
+                presentLanguageGenreController(item: tappedItem, audioLanguage: tappedItem.language ?? "")
             default:
                 print("Default")
             }
@@ -557,10 +557,11 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         self.present(loginVC, animated: true, completion: nil)
     }
     
-    func presentLanguageGenreController(item: Item) {
+    func presentLanguageGenreController(item: Item, audioLanguage : String) {
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
+        languageGenreVC.defaultLanguage = audioLanguage
         self.present(languageGenreVC, animated: false, completion: nil)
     }
     func callWebServiceForUserRecommendationList() {

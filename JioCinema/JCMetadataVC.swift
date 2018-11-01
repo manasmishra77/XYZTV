@@ -1045,6 +1045,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
+//        languageGenreVC.defaultLanguage = item.defaultAudioLanguage
         return languageGenreVC
     }
     
