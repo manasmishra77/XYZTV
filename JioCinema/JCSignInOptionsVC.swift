@@ -41,8 +41,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     }
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
 
         
 //             jioIdTextField.text     = "poonam2016"
@@ -105,11 +105,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                     if let vc = vc as? JCHomeVC {
                                         vc.playItemAfterLogin()
                                     }
-                                    else if (vc as? JCMoviesVC) != nil {
+                                    else if let vc = vc as? JCMoviesVC {
                                         //vc.playItemAfterLogin()
                                     }
-                                    else if (vc as? JCTVVC) != nil {
-                                        //vc.playItemAfterLogin()
+                                    else if let vc = vc as? JCTVVC {
+                                        vc.playItemAfterLogin()
                                     }
                                     else if let vc = vc as? JCMusicVC {
                                         vc.playItemAfterLogin()

@@ -391,6 +391,14 @@ class Utility {
         return fontChangedtext
     }
     
+    //check if item is in resumeWatch for audio language
+    class func checkInResumeWatchList(_ itemIdToBeChecked: String) -> String? {
+        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
+            let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
+            return itemMatched?.languageIndex?.name
+        }
+        return nil
+    }
 }
 
 extension Date {

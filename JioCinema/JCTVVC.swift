@@ -123,6 +123,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
+        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].defaultAudioLanguage
         cell.tag = indexPath.row
         
         //Pagination call
@@ -319,6 +320,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 toScreenName = METADATA_SCREEN
                 let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: TV_SCREEN, categoryName: (baseCell?.categoryTitleLabel.text!)!, categoryIndex: indexFromArray, tabBarIndex: 1)
                 self.present(metadataVC, animated: true, completion: nil)
+            } else if tappedItem.app?.type == VideoType.Episode.rawValue {
+                checkLoginAndPlay(tappedItem, categoryName: baseCell?.categoryTitleLabel.text ?? "", categoryIndex: indexFromArray)
             }
         }
     }
@@ -339,6 +342,40 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 self.present(metadataVC, animated: true, completion: nil)
             }
         }
+    }
+    
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        //weak var weakSelf = self
+        var languageIndex : LanguageIndex?
+        languageIndex?.name = itemToBePlayed.defaultAudioLanguage
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode , fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "",audioLanguage : languageIndex)
+            present(playervc, animated: true, completion: nil)
+        }
+        else
+        {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    func presentLoginVC() {
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        self.present(loginVC, animated: true, completion: nil)
     }
 
 }

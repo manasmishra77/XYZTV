@@ -201,7 +201,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch itemArrayType {
         case .resumeWatch:
@@ -212,7 +211,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         case .item:
             let items = itemsArray as! [Item]
             let item = items[indexPath.row]
-            item.defaultAudioLanguage = defaultAudioLanguage
+            let language = Utility.checkInResumeWatchList(item.id ?? "") ??  self.defaultAudioLanguage
+            item.defaultAudioLanguage = language
             cellDelgate?.didTapOnItemCell?(self, item, self.tag)
         case .more:
             let items = itemsArray as! [More]

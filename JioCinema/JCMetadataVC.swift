@@ -958,8 +958,10 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if let artistArray = metadata?.artist {
             artists = artistArray.reduce("", +)
         }
-        
-        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
+        let language = Utility.checkInResumeWatchList(itemToBePlayed.id ?? "") ??  self.defaultAudioLanguage
+        let languageIndex = LanguageIndex()
+        languageIndex.name = language ?? defaultAudioLanguage
+        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, audioLanguage: languageIndex)
         self.present(playerVC, animated: true, completion: nil)
     }
     
@@ -994,8 +996,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         let directors = metadata?.directors?.reduce("", { (res, str) in
             res + "," + str
         })
+        let language = Utility.checkInResumeWatchList(itemId ?? "") ??  self.defaultAudioLanguage
         let languageIndex = LanguageIndex()
-        languageIndex.name = defaultAudioLanguage
+        languageIndex.name = language
         if itemAppType == .Movie{
             var isMoreDataAvailable = false
             var recommendationArray: Any = false
@@ -1045,6 +1048,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
+//        languageGenreVC.defaultLanguage = item.defaultAudioLanguage
         return languageGenreVC
     }
     
