@@ -1257,9 +1257,10 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
+        audioLanguage = checkItemAudioLanguage(id)
         switch appType {
         case .Movie:
-            currentDuration = checkInResumeWatchList(id)
+            currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
@@ -1268,7 +1269,7 @@
                 callWebServiceForPlaybackRights(id: id)
             }
         case .Episode:
-            currentDuration = checkInResumeWatchList(id)
+            currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
@@ -1288,6 +1289,13 @@
         default:
             break
         }
+    }
+    
+    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
+        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
+            return item.languageIndex ?? audioLanguage
+        }
+        return audioLanguage
     }
     
     //PlayerVc changing when an item is played from playervc recommendation
@@ -1327,16 +1335,39 @@
     }
     
     //Check in resume watchlist
-    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float {
-        if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
-            let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
-            if let drn = itemMatched?.duration?.floatValue() {
-                return drn
-            }
+    private func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
+        let itemMatched = self.checkInMyWatchList(itemIdToBeChecked)
+        if let drn = itemMatched?.duration?.floatValue() {
+            return drn
         }
         return 0.0
     }
     
+    //Check in my watchlist
+    private func checkInMyWatchList(_ itemIdToBeChecked: String) -> Item? {
+        if appType == .Movie {
+            if let movieWatchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
+                let itemMatched = movieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        } else if appType == .TVShow || appType == .Episode{
+            if let tvWatchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
+                let itemMatched = tvWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        }
+        return nil
+    }
+    //Check in my watchlist
+    private func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Item? {
+        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
+            let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+            return itemMatched
+        }
+        return nil
+    }
+    
+
     //MARK:- Dismiss Viewcontroller
     @objc func dismissPlayerVC() {
         self.resetPlayer()
