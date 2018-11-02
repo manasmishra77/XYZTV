@@ -123,7 +123,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
-        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].defaultAudioLanguage
+        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].categoryLanguage
         cell.tag = indexPath.row
         
         //Pagination call
@@ -357,13 +357,10 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         self.categoryNameAfterLogin = nil
     }
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
-        //weak var weakSelf = self
-        var languageIndex : LanguageIndex?
-        languageIndex?.name = itemToBePlayed.defaultAudioLanguage
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode , fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "",audioLanguage : languageIndex)
+            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode , fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : itemToBePlayed.audioLanguage)
             present(playervc, animated: true, completion: nil)
         }
         else
