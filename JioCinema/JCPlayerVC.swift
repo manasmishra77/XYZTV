@@ -34,23 +34,23 @@
     return globalQueue!
  }
  
- enum AudioLanguage: String {
-    case english
-    case hindi
-    case tamil
-    case telugu
-    case marathi
-    case bengali
-    case none
-    
-    var code: String {
-        return self.rawValue.subString(start: 0, end: 1)
-    }
-    var name: String {
-        return self.rawValue.capitalized
-    }
-    
- }
+// enum AudioLanguage: String {
+//    case english
+//    case hindi
+//    case tamil
+//    case telugu
+//    case marathi
+//    case bengali
+//    case none
+//    
+//    var code: String {
+//        return self.rawValue.subString(start: 0, end: 1)
+//    }
+//    var name: String {
+//        return self.rawValue.capitalized
+//    }
+//    
+// }
  class JCPlayerVC: UIViewController {
 
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
@@ -87,7 +87,7 @@
     var starCast = ""
     var vendor = ""
     
-    var audioLanguage : LanguageIndex?
+    var audioLanguage : AudioLanguage?
     
     fileprivate var isPlayListFirstItemToBePlayed = false
     fileprivate var videoViewingLapsedTime = 0.0
@@ -388,7 +388,8 @@
             player = AVPlayer(playerItem: playerItem)
         }
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        self.playerAudioLanguage(audioLanguage?.name)
+        let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage)
+        self.playerAudioLanguage(audioLanguageToBePlayed.name)
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
@@ -1258,7 +1259,7 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
-        audioLanguage = checkItemAudioLanguage(id)
+        //audioLanguage = checkItemAudioLanguage(id)
         switch appType {
         case .Movie:
             currentDuration = checkInResumeWatchListForDuration(id)
@@ -1292,12 +1293,12 @@
         }
     }
     
-    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
-        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
-            return item.languageIndex
-        }
-        return audioLanguage
-    }
+//    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
+//        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
+//            return item.languageIndex
+//        }
+//        return audioLanguage
+//    }
     
     //PlayerVc changing when an item is played from playervc recommendation
     func changePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: [Any] = [Any](), fromScreen: String, fromCategory: String, fromCategoryIndex: Int) {
@@ -1351,7 +1352,7 @@
                 let itemMatched = movieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
                 return itemMatched
             }
-        } else if appType == .TVShow || appType == .Episode{
+        } else if appType == .TVShow || appType == .Episode {
             if let tvWatchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
                 let itemMatched = tvWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
                 return itemMatched
@@ -1431,7 +1432,8 @@
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
-                            metaDataVC.defaultAudioLanguage = self.playerItem?.selected(type: .audio)
+                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio) ?? "")
+                            metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)

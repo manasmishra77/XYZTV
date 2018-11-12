@@ -20,6 +20,7 @@
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
 		197727B620B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */; };
 		197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */; };
+		1990084D218C179700AB8E76 /* MultiAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1990084C218C179700AB8E76 /* MultiAudioManager.swift */; };
 		19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */; };
 		19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */; };
 		19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */; };
@@ -164,6 +165,7 @@
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
 		197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchResultViewModel.swift; sourceTree = "<group>"; };
 		197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchTextSuperModel.swift; sourceTree = "<group>"; };
+		1990084C218C179700AB8E76 /* MultiAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiAudioManager.swift; sourceTree = "<group>"; };
 		19ED97EE1FD5406F00E43CBE /* CheckVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionModel.swift; sourceTree = "<group>"; };
 		19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionResult.swift; sourceTree = "<group>"; };
 		19ED97F01FD5406F00E43CBE /* CheckVersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckVersionData.swift; sourceTree = "<group>"; };
@@ -325,6 +327,14 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		1990084B218C176F00AB8E76 /* MultiAudioScene */ = {
+			isa = PBXGroup;
+			children = (
+				1990084C218C179700AB8E76 /* MultiAudioManager.swift */,
+			);
+			name = MultiAudioScene;
+			sourceTree = "<group>";
+		};
 		19ED97ED1FD5405800E43CBE /* VersionModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,6 +402,7 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
+				1990084B218C176F00AB8E76 /* MultiAudioScene */,
 				539618DF21219AE600B576BF /* ParentalControlScene */,
 				B8EADF041F9DC42C0069671B /* Analytics */,
 				7BA1C6E71F2F0702002AB966 /* Common */,
@@ -833,6 +844,7 @@
 				539618EF2121A0F300B576BF /* EnterPinViewModel.swift in Sources */,
 				7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */,
 				7B545E801F7A604C007C5004 /* JCAnalyticsManager.swift in Sources */,
+				1990084D218C179700AB8E76 /* MultiAudioManager.swift in Sources */,
 				7BB0E2111F1E283B00A1DB0B /* JCBaseDataModel.swift in Sources */,
 				7B78D7D41F13B92900F319BF /* RJILPendingTask.swift in Sources */,
 				7BE0EA4F1F30694100151D23 /* JCTVVC.swift in Sources */,
