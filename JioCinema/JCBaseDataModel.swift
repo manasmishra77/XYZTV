@@ -135,7 +135,7 @@ class DataContainer:Mappable
     private var defaultAudioLanguage: String?
     
     var categoryLanguage: AudioLanguage {
-        return AudioLanguage(rawValue: defaultAudioLanguage ?? "") ?? .none
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
     }
     
     required init(map:Map) {
