@@ -822,7 +822,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
-        
+        if let audio = metadata?.multipleAudio {
+        headerCell.multiAudioLanguge.text = "Audio : \(audio)"
+        }
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
         if itemAppType == .TVShow {
             descText = (metadata?.descriptionForTVShow ?? "")// + " " + SHOW_LESS
