@@ -166,7 +166,7 @@ class RJILApiManager {
                 //JSON
                 request = getRequest(forPath: path)
                 do{
-                    let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+                    let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: [])
                     request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
                     request?.httpBody = jsonData
                 }

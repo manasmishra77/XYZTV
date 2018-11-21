@@ -28,6 +28,11 @@ let JCANALYTICSEVENT_PARENTALCODE = "Code_Generated"
 class JCAnalyticsEvent: NSObject {
     
     static let sharedInstance = JCAnalyticsEvent()
+    private override init() {
+        super.init()
+    }
+    
+    private var isApplicationLaunchEventSent = false
     
     func getFinalEventDictionary(proDictionary: Dictionary<String, Any>, eventKey:String) -> Dictionary<String, Any>
     {
@@ -45,7 +50,7 @@ class JCAnalyticsEvent: NSObject {
         let hash = convertStringToMD5Hash(artistName: sid)
         let hexEncodedHash = hash.hexEncodedString()
         
-        let rtcEpoch = String(describing:Int(Date().timeIntervalSince1970))
+        let rtcEpoch = String(describing: Date())// String(describing:Int(Date().timeIntervalSince1970))
         let avnString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         //        if let avnValue = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String{
         //            avnString = avnValue
@@ -55,10 +60,20 @@ class JCAnalyticsEvent: NSObject {
         return finalDictionary
     }
     
-    func getApplaunchEventForInternalAnalytics() -> Dictionary<String, Any>
+    func sendAppLaunchEvent() {
+        if isApplicationLaunchEventSent {
+            return
+        }
+        let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
+        self.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
+        isApplicationLaunchEventSent = true
+    }
+    
+    private func getApplaunchEventForInternalAnalytics() -> Dictionary<String, Any>
     {
         let eventDictionary = ["platform":"TVOS","sorce":"App_Launch","key":JCANALYTICSEVENT_APPLAUNCH]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_APPLAUNCH )
+        
     }
     
     func getParentalPINPopupActionPerformedEvent(userAction: String) -> Dictionary<String, Any>
@@ -129,7 +144,7 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIASTART )
     }
     
-    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds:String, ts:String,  videoStartPlayingTime:String, bufferDuration:String, bufferCount:String, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String, director: String, starcast: String, contentp: String) -> [String : Any]
+    func getMediaEndEventForInternalAnalytics(contentId:String, playerCurrentPositionWhenMediaEnds: Int, ts:Int,  videoStartPlayingTime: Int, bufferDuration: Int, bufferCount: Int, screenName:String, bitrate:String, playList:String, rowPosition:String, categoryTitle: String, director: String, starcast: String, contentp: String) -> [String : Any]
     {
         let eventDictionary = ["platform":"TVOS",
                                "cid":contentId,
@@ -147,7 +162,7 @@ class JCAnalyticsEvent: NSObject {
                                "director": director,
                                "starcast": starcast,
                                "contentp": contentp
-                                ]
+            ] as [String : Any]
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_MEDIAEND)
     }
     
