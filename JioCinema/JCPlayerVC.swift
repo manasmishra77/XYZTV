@@ -1146,10 +1146,7 @@
                 return
             }
             
-            
-//            let eventPropertiesForCleverTap: [String: String]  = [:]
-//            let eventDicyForIAnalytics = [:]
-//            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+    
             if let responseData = data
             {
                 if let responseString = String(data: responseData, encoding: .utf8)
