@@ -56,6 +56,12 @@ class JCAnalyticsManager {
         self.sendEvent(eventType: "screenNavigation", params: params)
     }
     
+    func isAudioChanged(selectedLanguage: String, previouseLanguage : String) -> Bool {
+        if selectedLanguage != previouseLanguage{
+            return true
+        }
+        return false
+    }
     func event(category: String, action: String, label: String?, customParameters: Dictionary<String, String>?) {
         
         var params = ["ec" : category, "ea" : action, "el" : label ?? ""]
