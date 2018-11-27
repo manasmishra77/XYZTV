@@ -581,12 +581,15 @@
             var currentTimeDuration : Int = 0
             if(player?.timeControlStatus == .playing)
             {
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio){
+                
+                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) {
                         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
                             let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
                             var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
                             timeSpent = timeSpent > 0 ? timeSpent : 0
-                            let audioChangedInternalEvent = JCAnalyticsEvent.sharedInstance.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: String(currentTimeDuration), contentId: id, bufferDuration: String(totalBufferDurationTime), timeSpent: String(timeSpent), type: self.appType.name , bufferCount: String(bufferCount))
+
+                            
+                            let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
                             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
                             }
                     self.sendAudioChangedCleverTapEvent(duration: String(currentTimeDuration))
@@ -663,7 +666,7 @@
     
     func sendAudioChangedCleverTapEvent(duration : String){
         var lang = playerItem?.selected(type: .audio)
-        let eventProperties = ["Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
+        let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties)
     }
     //MARK:- AVPlayer Finish Playing Item
@@ -723,7 +726,7 @@
     
     func sendPlaybackFailureEvent(forCleverTap eventPropertiesCT:[String:Any], forInternalAnalytics eventPropertiesIA: [String: Any])
     {
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Playback Error", properties: eventPropertiesCT)
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
     }
     
@@ -1175,8 +1178,8 @@
             
             
 //            let eventPropertiesForCleverTap: [String: String]  = [:]
-//            let eventDicyForIAnalytics = [:]
-//            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+//            let eventDicyForIAnalytics : [String:Any] = [:]
+//            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics as! [String : Any])
             if let responseData = data
             {
                 if let responseString = String(data: responseData, encoding: .utf8)

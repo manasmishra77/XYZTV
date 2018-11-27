@@ -179,7 +179,6 @@ class JCAnalyticsEvent: NSObject {
                                "cid":contentId,
                                "Quality":videoQuality,
                                "Bitrate":bitrate,
-                               "Episode":episodeSubtitle,
                                "msg":playerErrorMessage,
                                "sec":apiFailureCode,
                                "serr":message,
@@ -193,15 +192,16 @@ class JCAnalyticsEvent: NSObject {
                                "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
     }
-    func getAudioChangedEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :String, contentId :String, bufferDuration :String, timeSpent :String, type :String, bufferCount :String) -> Dictionary<String, Any>{
-        let eventDictionary = [ "screenname" : screenName,
+    func getAudioChangedEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :Int, contentId :String, bufferDuration :Int, timeSpent :Int, type :String, bufferCount :Int) -> Dictionary<String, Any>{
+        let eventDictionary = [ "platform":"TVOS",
+                                "screenname" : screenName,
                                 "source": source,
                                 "epos": playerCurrentPositionWhenMediaEnds,
                                 "cid": contentId,
                                 "bd": bufferDuration,
                                 "ts": timeSpent,
                                 "Type": type,
-                                "bc": bufferCount]
+                                "bc": bufferCount] as [String : Any]
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_AUDIOCHANGED)
     }
     

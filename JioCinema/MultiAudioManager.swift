@@ -64,6 +64,21 @@ class MultiAudioManager: NSObject {
         return defaultLanguage ?? .none
     }
 }
+//Additon for multi-audio analytics
+extension MultiAudioManager {
+    class func getAudioChangedEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :Int, contentId :String, bufferDuration :Int, timeSpent :Int, type :String, bufferCount :Int) -> Dictionary<String, Any>{
+        let eventDictionary = [ "platform":"TVOS",
+                                "screenname" : screenName,
+                                "source": source,
+                                "epos": playerCurrentPositionWhenMediaEnds,
+                                "cid": contentId,
+                                "bd": bufferDuration,
+                                "ts": timeSpent,
+                                "Type": type,
+                                "bc": bufferCount] as [String : Any]
+        return JCAnalyticsEvent.sharedInstance.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_AUDIOCHANGED)
+    }
+}
 
 enum AudioLanguage: String {
     case english
