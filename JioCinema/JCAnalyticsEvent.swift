@@ -17,6 +17,7 @@ let JCANALYTICSEVENT_MEDIAERROR     = "media_error"
 let JCANALYTICSEVENT_SNAV           = "snav"
 let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
 let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/event"
+//"https://collect.media.jio.com/postdata/B", "https://collect.media.jio.com/postdata/E"
 let JCANALYTICSEVENT_AUDIOCHANGED   = "audiochanged"
 
 
@@ -79,7 +80,7 @@ class JCAnalyticsEvent: NSObject {
     
     func getParentalPINPopupActionPerformedEvent(userAction: String) -> Dictionary<String, Any>
     {
-        let eventDictionary = ["platform":"TVOS","User_Action":userAction,"key":JCANALYTICSEVENT_PARENTALPOPUP]
+        let eventDictionary = ["platform":"TVOS", "User_Action":userAction, "key": JCANALYTICSEVENT_PARENTALPOPUP]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPOPUP)
     }
     
