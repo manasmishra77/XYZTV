@@ -16,7 +16,10 @@ let JCANALYTICSEVENT_MEDIAEND       = "media_end"
 let JCANALYTICSEVENT_MEDIAERROR     = "media_error"
 let JCANALYTICSEVENT_SNAV           = "snav"
 let JCANALYTICSEVENT_APPLAUNCH      = "application_launched"
+let JCANALYTICSEVENT_APPKILLED      = "application_killed"
 let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/event"
+let JCANALYTICSEVENT_URL_BEGIN      = "https://collect.media.jio.com/postdata/B"
+let JCANALYTICSEVENT_URL_END      = "https://collect.media.jio.com/postdata/E"
 let JCANALYTICSEVENT_AUDIOCHANGED   = "audiochanged"
 
 
@@ -66,10 +69,22 @@ class JCAnalyticsEvent: NSObject {
             return
         }
         let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
+        self.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent, path: JCANALYTICSEVENT_URL_BEGIN)
         self.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
         isApplicationLaunchEventSent = true
     }
-    
+    func sendAppKilledEvent() {
+        
+        let appKilledInternalEvent = JCAnalyticsEvent.sharedInstance.getAppkilledEventForInternalAnalytics()
+        self.sendEventForInternalAnalytics(paramDict: appKilledInternalEvent)
+        self.sendEventForInternalAnalytics(paramDict: appKilledInternalEvent, path: JCANALYTICSEVENT_URL_END)
+    }
+    private func getAppkilledEventForInternalAnalytics() -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS","sorce":"App_killed","key":JCANALYTICSEVENT_APPKILLED]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_APPKILLED )
+        
+    }
     private func getApplaunchEventForInternalAnalytics() -> Dictionary<String, Any>
     {
         let eventDictionary = ["platform":"TVOS","sorce":"App_Launch","key":JCANALYTICSEVENT_APPLAUNCH]
@@ -205,7 +220,7 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_AUDIOCHANGED)
     }
     
-    func sendEventForInternalAnalytics(paramDict: [String: Any]) {
+    func sendEventForInternalAnalytics(paramDict: [String: Any], path: String = JCANALYTICSEVENT_URL) {
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: JCANALYTICSEVENT_URL, params: paramDict, encoding: .JSON)
         
         RJILApiManager.defaultManager.post(request: loginRequest)

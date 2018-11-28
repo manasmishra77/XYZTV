@@ -78,7 +78,17 @@
     var isMoreDataAvailable = false
     var isEpisodeDataAvailable = false
     var playListId: String = ""
-    var isAudioChanged: Bool = false
+    var isAudioChanged: Bool {
+        get {
+            if let currentItem = player?.currentItem {
+                if currentItem.tracks(type: .audio).count > 1 && currentItem.selected(type: .audio) != audioLanguage?.name{
+                    return true
+                }
+            }
+            return false
+        }
+        
+    }
     
     var fromScreen = ""
     var fromCategory = ""
@@ -731,11 +741,6 @@
     }
     
     func sendMediaEndAnalyticsEvent() {
-        if let selectdLanguage = player?.currentItem?.selected(type: .audio){
-        if selectdLanguage != audioLanguage?.name {
-            isAudioChanged = true
-        }
-        }
         vendor = playbackRightsData?.vendor ?? ""
         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
             
