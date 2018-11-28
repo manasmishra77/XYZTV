@@ -94,7 +94,7 @@ class JCAnalyticsEvent: NSObject {
     
     func getParentalPINPopupActionPerformedEvent(userAction: String) -> Dictionary<String, Any>
     {
-        let eventDictionary = ["platform":"TVOS","User_Action":userAction,"key":JCANALYTICSEVENT_PARENTALPOPUP]
+        let eventDictionary = ["platform":"TVOS", "User_Action":userAction, "key": JCANALYTICSEVENT_PARENTALPOPUP]
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_PARENTALPOPUP)
     }
     
