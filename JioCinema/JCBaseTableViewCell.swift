@@ -33,6 +33,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     var itemsArray: [Any]?
     var itemArrayType: ItemArrayType = .item
+    //audio lang from category
     var defaultAudioLanguage: AudioLanguage?
     
     var isResumeWatchCell = false

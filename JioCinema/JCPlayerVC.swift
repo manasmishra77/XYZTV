@@ -598,7 +598,9 @@
                             var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
                             timeSpent = timeSpent > 0 ? timeSpent : 0
 
-                            
+                            //audio lang for next item 
+                            let newAudionLanguage : AudioLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "") ?? .none
+                            audioLanguage = newAudionLanguage
                             let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
                             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
                             }
