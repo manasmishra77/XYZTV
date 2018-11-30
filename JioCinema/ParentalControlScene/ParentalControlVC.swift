@@ -22,6 +22,17 @@ class ParentalControlVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureView()
+        sendParentalControlTileEvent()
+    }
+    
+    func sendParentalControlTileEvent() {
+        // For Clever Tap Event
+        let eventProperties = ["platform":"TVOS"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Parental Control Tile", properties: eventProperties)
+        
+        // For Internal Analytics Event
+        let parentalPinTileEvent = JCAnalyticsEvent.sharedInstance.getParentalControlTileEvent()
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinTileEvent)
     }
     
     fileprivate func configureView() {
