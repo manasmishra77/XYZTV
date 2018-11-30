@@ -34,7 +34,23 @@
     return globalQueue!
  }
  
- 
+// enum AudioLanguage: String {
+//    case english
+//    case hindi
+//    case tamil
+//    case telugu
+//    case marathi
+//    case bengali
+//    case none
+//    
+//    var code: String {
+//        return self.rawValue.subString(start: 0, end: 1)
+//    }
+//    var name: String {
+//        return self.rawValue.capitalized
+//    }
+//    
+// }
  class JCPlayerVC: UIViewController {
 
     @IBOutlet weak var textOnLoaderCoverView: UILabel!
@@ -62,6 +78,17 @@
     var isMoreDataAvailable = false
     var isEpisodeDataAvailable = false
     var playListId: String = ""
+    var isAudioChanged: Bool {
+        get {
+            if let currentItem = player?.currentItem {
+                if currentItem.tracks(type: .audio).count > 1 && currentItem.selected(type: .audio) != audioLanguage?.name{
+                    return true
+                }
+            }
+            return false
+        }
+        
+    }
     
     var fromScreen = ""
     var fromCategory = ""
@@ -70,6 +97,9 @@
     var director = ""
     var starCast = ""
     var vendor = ""
+    var defaultLanguage = ""
+    
+    var audioLanguage : AudioLanguage?
     
     var isDisney = false
     
@@ -157,7 +187,6 @@
     //MARK:- Add Player Observer
     func addPlayerNotificationObserver () {
         NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(JCPlayerVC.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
@@ -245,15 +274,14 @@
     func updateResumeWatchList() {
         if let currentTime = player?.currentItem?.currentTime(), let totalTime = player?.currentItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
-            
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             
             if timeDifference < 300 {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
-                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration)
-                
+                let audio = self.playerItem?.selected(type: .audio) ?? ""
+                self.callWebServiceForAddToResumeWatchlist(id, currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audio)
             }
         }
     }
@@ -326,10 +354,10 @@
         asset.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
         let requestedKeys: [Any] = [PLAYABLE_KEY]
         // Tells the asset to load the values of any of the specified keys that are not already loaded.
-        asset.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {() -> Void in
+        asset.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {[weak self]() -> Void in
             DispatchQueue.main.async(execute: {() -> Void in
                 /* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
-                self.prepare(toPlay: asset, withKeys: JCPlayerVC.assetKeysRequiredToPlay)
+                self?.prepare(toPlay: asset, withKeys: JCPlayerVC.assetKeysRequiredToPlay)
             })
         })
     }
@@ -356,7 +384,6 @@
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
         self.addMetadataToPlayer()
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
         if playerController == nil {
             playerController = AVPlayerViewController()
             playerController?.delegate = self
@@ -373,8 +400,10 @@
         } else {
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
-            addPlayerNotificationObserver()
         }
+        self.autoPlaySubtitle(IsAutoSubtitleOn)
+        let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage)
+        self.playerAudioLanguage(audioLanguageToBePlayed.name)
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
@@ -393,6 +422,21 @@
         // Select track with displayName
         guard (subtitles?.count ?? 0) > 0 else {return}
         _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
+    }
+    
+    private func playerAudioLanguage(_ audioLanguage: String?) {
+        
+        guard let audioLanguage = audioLanguage else {
+            return
+        }
+        let audioes = player?.currentItem?.tracks(type: .audio)
+        // Select track with displayName
+        guard (audioes?.count ?? 0) > 0 else {return}
+        
+        
+        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+            _ = player?.currentItem?.select(type: .audio, name: language)
+        }
     }
     
     func handleForPlayerReference() {
@@ -546,6 +590,24 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
+            var currentTimeDuration : Int = 0
+            if(player?.timeControlStatus == .playing)
+            {
+                
+                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) {
+                        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
+                            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+                            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+                            timeSpent = timeSpent > 0 ? timeSpent : 0
+
+                            
+                            let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
+                            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
+                            }
+                    self.sendAudioChangedCleverTapEvent(duration: String(currentTimeDuration))
+                }
+                
+            }
             guard let startDuration = startTime_BufferDuration else {
                 return
             }
@@ -614,6 +676,11 @@
         }
     }
     
+    func sendAudioChangedCleverTapEvent(duration : String){
+        var lang = playerItem?.selected(type: .audio)
+        let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties)
+    }
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList{
@@ -671,7 +738,7 @@
     
     func sendPlaybackFailureEvent(forCleverTap eventPropertiesCT:[String:Any], forInternalAnalytics eventPropertiesIA: [String: Any])
     {
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Playback Error", properties: eventPropertiesCT)
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
     }
     
@@ -679,10 +746,11 @@
         vendor = playbackRightsData?.vendor ?? ""
         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
             
-            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
-            let timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+            timeSpent = timeSpent > 0 ? timeSpent : 0
             
-            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: "\(Int(timeSpent > 0 ? timeSpent : 0))", videoStartPlayingTime: "\(-videoStartingTimeDuration)", bufferDuration: String(describing: Int(totalBufferDurationTime)) , bufferCount: String(Int(bufferCount)), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory, director: director, starcast: starCast, contentp: vendor)
+            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: Int(timeSpent), videoStartPlayingTime: -videoStartingTimeDuration, bufferDuration: Int(totalBufferDurationTime), bufferCount: Int(bufferCount), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory, director: director, starcast: starCast, contentp: vendor, audioChanged: isAudioChanged )
             
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate": bitrate, "Duration" : timeSpent]
@@ -697,7 +765,7 @@
     
     
     func sendVideoViewedEventToCleverTap() {
-        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS", "Director": director, "Starcast": starCast, "Content Partner": vendor]
+        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS", "Director": director, "Starcast": starCast, "Content Partner": vendor, "Audio Changed": isAudioChanged]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties: eventProperties)
         
         let bufferEventProperties = ["Buffer Count": String(Int(bufferCount/2)),"Buffer Duration": Int(totalBufferDurationTime),"Content ID":id,"Type":appType.rawValue,"Title":itemTitle,"Episode":episodeNumber ?? -1,"Bitrate":bitrate, "Platform":"TVOS"] as [String : Any]
@@ -931,8 +999,16 @@
         }
         /*
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+<<<<<<< HEAD
         weak var weakSelf = self
         RJILApiManager.defaultManager.get(request: metadataRequest!) { (data, response, error) in
+=======
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
+
+            guard let self = self else {
+                return
+            }
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
             
             if let responseError = error as NSError?
             {
@@ -946,19 +1022,19 @@
             }
             if let responseData = data
             {
-                let recommendationItems = weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                let recommendationItems = self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 var i = 0
                 if let episodes = recommendationItems as? [Episode]{
-                    weakSelf?.isEpisodeDataAvailable = false
+                    self.isEpisodeDataAvailable = false
                     
-                    weakSelf?.episodeArray.removeAll()
+                    self.episodeArray.removeAll()
                     if episodes.count > 0{
-                        weakSelf?.episodeArray.removeAll()
+                        self.episodeArray.removeAll()
                         if episodes.count > 0{
-                            weakSelf?.isEpisodeDataAvailable = true
+                            self.isEpisodeDataAvailable = true
                             for each in episodes{
-                                if each.id == weakSelf?.id{
-                                    weakSelf?.episodeNumber = each.episodeNo
+                                if each.id == self.id{
+                                    self.episodeNumber = each.episodeNo
                                     break
                                 }
                                 i = i + 1
@@ -966,24 +1042,30 @@
                             if i == episodes.count{
                                 i = i - 1
                             }
-                            weakSelf?.episodeArray = episodes
+                            self.episodeArray = episodes
                         }
-                        weakSelf?.isEpisodeDataAvailable = true
-                        weakSelf?.episodeArray = episodes
+                        self.isEpisodeDataAvailable = true
+                        self.episodeArray = episodes
                     }
                 }
+<<<<<<< HEAD
                 else if let mores = recommendationItems as? [Item]{
                     weakSelf?.isMoreDataAvailable = false
                     weakSelf?.moreArray.removeAll()
+=======
+                else if let mores = recommendationItems as? [More]{
+                    self.isMoreDataAvailable = false
+                    self.moreArray.removeAll()
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
                     if mores.count > 0{
-                        weakSelf?.isMoreDataAvailable = true
-                        weakSelf?.moreArray = mores
+                        self.isMoreDataAvailable = true
+                        self.moreArray = mores
                     }
                 }
-                if (weakSelf?.isMoreDataAvailable ?? false) || (weakSelf?.isEpisodeDataAvailable ?? false){
+                if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
                     DispatchQueue.main.async {
-                        weakSelf?.collectionView_Recommendation.reloadData()
-                        weakSelf?.scrollCollectionViewToRow(row: i)
+                        self.collectionView_Recommendation.reloadData()
+                        self.scrollCollectionViewToRow(row: i)
                     }
                 }
                 return
@@ -1063,8 +1145,11 @@
         }
         /*
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             if let responseError = error as NSError?
             {
                 //TODO: handle error
@@ -1092,10 +1177,10 @@
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failureType = "Playlist service failed"
-                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failureType] as [String : Any]
-                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
-                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             
@@ -1105,12 +1190,12 @@
                 {
                     if let playList = PlaylistDataModel(JSONString: responseString){
                         if let mores = playList.more{
-                            weakSelf?.moreArray.removeAll()
+                            self.moreArray.removeAll()
                             if mores.count > 0{
-                                weakSelf?.isMoreDataAvailable = true
+                                self.isMoreDataAvailable = true
                                 var i = 0
                                 for each in mores{
-                                    if each.id == weakSelf?.id{
+                                    if each.id == self.id{
                                         break
                                     }
                                     i = i + 1
@@ -1118,17 +1203,17 @@
                                 if i == mores.count{
                                     i = i - 1
                                 }
-                                weakSelf?.moreArray = mores
-                                if (weakSelf?.isPlayListFirstItemToBePlayed ?? false){
-                                    weakSelf?.isPlayListFirstItemToBePlayed = false
+                                self.moreArray = mores
+                                if (self.isPlayListFirstItemToBePlayed){
+                                    self.isPlayListFirstItemToBePlayed = false
                                     let playlistFirstItem = mores[0]
-                                    weakSelf?.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: weakSelf?.playListId ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: weakSelf?.fromScreen ?? "", fromCategory: weakSelf?.fromCategory ?? "", fromCategoryIndex: weakSelf?.fromCategoryIndex ?? 0)
-                                    weakSelf?.preparePlayerVC()
+                                    self.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: self.playListId , isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: self.fromScreen , fromCategory: self.fromCategory, fromCategoryIndex: self.fromCategoryIndex)
+                                    self.preparePlayerVC()
                                 }
                                 else{
                                     DispatchQueue.main.async {
-                                        weakSelf?.collectionView_Recommendation.reloadData()
-                                        weakSelf?.scrollCollectionViewToRow(row: i)
+                                        self.collectionView_Recommendation.reloadData()
+                                        self.scrollCollectionViewToRow(row: i)
                                     }
                                 }
                             }
@@ -1149,7 +1234,10 @@
         //playerId = id
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [unowned self](response) in
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [weak self](response) in
+        guard let self = self else {
+        return
+        }
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
                 
@@ -1201,6 +1289,12 @@
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+        //let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: nil)
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+            guard let self = self else {
+                return
+            }
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
             }
@@ -1243,12 +1337,17 @@
                     }
                     failuretype = "Playbackrights failed"
                 }
-                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": weakSelf?.appType.name ?? "", "Title": weakSelf?.itemTitle ?? "", "Content ID": weakSelf?.id ?? "", "Bitrate": "0", "Episode": weakSelf?.itemDescription ?? "", "Platform": "TVOS", "Failure": failuretype] as [String : Any]
-                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: weakSelf?.appType.name ?? "", contentTitle: weakSelf?.itemTitle ?? "", contentId: weakSelf?.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: weakSelf?.itemDescription ?? "", playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
                 
-                weakSelf?.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
+            
+            
+//            let eventPropertiesForCleverTap: [String: String]  = [:]
+//            let eventDicyForIAnalytics : [String:Any] = [:]
+//            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics as! [String : Any])
             if let responseData = data
             {
                 if let responseString = String(data: responseData, encoding: .utf8)
@@ -1256,27 +1355,27 @@
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
                         
-                        if((weakSelf?.player) != nil) {
-                            weakSelf?.player?.pause()
-                            weakSelf?.resetPlayer()
+                        if((self.player) != nil) {
+                            self.player?.pause()
+                            self.resetPlayer()
                         }
-                        //self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.url = nil
                         if let fpsUrl = self.playbackRightsData?.url {
-                            weakSelf?.doParentalCheck(with: fpsUrl, isFps: true)
+                            self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
-                            weakSelf?.doParentalCheck(with: aesUrl, isFps: false)
+                            self.doParentalCheck(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
                             
                             let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                                 DispatchQueue.main.async {
                                     print("dismiss")
-                                    weakSelf?.dismissPlayerVC()
+                                    self.dismissPlayerVC()
                                 }
                             }
                             alert.addAction(cancelAction)
                             DispatchQueue.main.async {
-                                weakSelf?.present(alert, animated: false, completion: nil)
+                                self.present(alert, animated: false, completion: nil)
                             }
                         }
                     }
@@ -1306,7 +1405,6 @@
         }
         /*
         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
             if let responseError = error as NSError?
             {
@@ -1327,12 +1425,17 @@
         }*/
     }
     
-    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String)
+    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, selectedAudio: String)
     {
         let url = addToResumeWatchlistUrl
         
         let id = itemId
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
+
+        let lang: String = selectedAudio.lowercased() ?? ""
+        let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
+        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
+
+        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration, "languageIndex": languageIndexDict]
         
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
@@ -1359,17 +1462,15 @@
             }
         }
         /*
+
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
             {
-                print(responseError)
                 return
             }
             if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
             {
-                print("Added to Resume Watchlist")
-                //To add in homevc and update resume watchlist data
                 NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
                 return
             }
@@ -1396,9 +1497,10 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
+        //audioLanguage = checkItemAudioLanguage(id)
         switch appType {
         case .Movie:
-            currentDuration = checkInResumeWatchList(id)
+            currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
@@ -1407,7 +1509,7 @@
                 callWebServiceForPlaybackRights(id: id)
             }
         case .Episode:
-            currentDuration = checkInResumeWatchList(id)
+            currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
@@ -1428,6 +1530,13 @@
             break
         }
     }
+    
+//    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
+//        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
+//            return item.languageIndex
+//        }
+//        return audioLanguage
+//    }
     
     //PlayerVc changing when an item is played from playervc recommendation
     func changePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: [Any] = [Any](), fromScreen: String, fromCategory: String, fromCategoryIndex: Int) {
@@ -1466,23 +1575,32 @@
     }
     
     //Check in resume watchlist
-    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Float  {
-        if isDisney {
-            if let resumeWatchDisneyArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
-                let itemMatched = resumeWatchDisneyArray.filter{ $0.id == itemIdToBeChecked}.first
-                if let drn = itemMatched?.duration {
-                    return Float(drn)
-                }
-            }
-        } else if let resumeWatchArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
-            let itemMatched = resumeWatchArray.filter{ $0.id == itemIdToBeChecked}.first
-            if let drn = itemMatched?.duration {
-                return Float(drn)
-            }
+
+    private func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
+        let itemMatched = self.checkInResumeWatchList(itemIdToBeChecked)
+        if let drn = itemMatched?.duration {
+            return Float(drn)
         }
         return 0.0
     }
     
+    //Check in resume watchlist
+    private func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Item? {
+        if isDisney {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        } else {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        }
+        return nil
+    }
+    
+
     //MARK:- Dismiss Viewcontroller
     @objc func dismissPlayerVC() {
         self.resetPlayer()
@@ -1545,6 +1663,8 @@
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
+                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio) ?? "")
+                            metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
@@ -1716,9 +1836,6 @@
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             //print("error: \(error!)")
             if error != nil {
-                //                DispatchQueue.main.async {
-                //                    weakSelf?.handleAPIFailure("Unable to show content!")
-                //                }
                 return
             }
             if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {
@@ -1739,9 +1856,6 @@
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
             if error != nil {
-                //                DispatchQueue.main.async {
-                //                    weakSelf?.handleAPIFailure("Unable to show content!")
-                //                }
                 return
             }
             
@@ -1805,7 +1919,7 @@
                                 loadingRequest.finishLoading()
                         }
                         
-                        //handled = true;	// Request has been handled regardless of whether server returned an error.
+                        //handled = true;    // Request has been handled regardless of whether server returned an error.
                         // completionHandler(responseData)
                         //  return handled
                     })

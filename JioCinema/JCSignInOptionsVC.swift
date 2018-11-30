@@ -52,7 +52,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
             Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
         } else {
-            RJILApiManager.signInViaJioId(id: jioIdTextField.text ?? "", password: passwordTextField.text ?? "") {[unowned self] (isSuccess, errMsg) in
+            RJILApiManager.signInViaJioId(id: jioIdTextField.text ?? "", password: passwordTextField.text ?? "") {[weak self] (isSuccess, errMsg) in
+                guard let self = self else {return}
                 guard isSuccess else {
                     DispatchQueue.main.async {
                         self.handleAlertForSignInFailure()
@@ -110,8 +111,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             else if (vc as? JCMoviesVC) != nil {
                                 //vc.playItemAfterLogin()
                             }
-                            else if (vc as? JCTVVC) != nil {
-                                //vc.playItemAfterLogin()
+                            else if let vc = vc as? JCTVVC {
+                                vc.playItemAfterLogin()
                             }
                             else if let vc = vc as? JCMusicVC {
                                 vc.playItemAfterLogin()
@@ -137,6 +138,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                                 //Change Add to watchlist button status
                                 
                             }
+
                         }
                         else if presentedFromPlayNowButtonOfMetadata{
                             if let vc = vc as? JCMetadataVC{

@@ -113,6 +113,9 @@ struct MetadataModel: Codable {
         }
         return .allAge
     }
+    
+    var multipleAudio: String?
+    
     enum CodingKeys: String, CodingKey {
         case appkey = "appkey"
         case type = "type"
@@ -212,6 +215,7 @@ struct MetadataModel: Codable {
         case inQueue = "inQueue"
         case filter = "filter"
         case maturityRating = "maturityRating"
+        case multipleAudio = "audios"
     }
     init(from decoder: Decoder) throws {
         do {
@@ -577,6 +581,7 @@ struct MetadataModel: Codable {
             inQueue = try values.decodeIfPresent(Bool.self, forKey: .inQueue)
             filter = try values.decodeIfPresent([Filter].self, forKey: .filter)
             maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
+            multipleAudio = try values.decodeIfPresent(String.self, forKey: .multipleAudio)
         } catch {
             print(error)
         }
@@ -965,6 +970,7 @@ class MetadataModel:Mappable
     var code:Int?
     var displayText:String?
     var more:[More]?
+    var multipleAudio : String?
     var episodes:[Episode]?
     var inQueue:Bool?
     var filter:[Filter]?
@@ -1096,6 +1102,8 @@ class MetadataModel:Mappable
         code <- map["code"]
         displayText <- map["displayText"]
         more <- map["more"]
+        multipleAudio <- map["audios"]
+        
         episodes <- map["episodes"]
         inQueue <- map["inQueue"]
         isSeason <- map["isSeason"]

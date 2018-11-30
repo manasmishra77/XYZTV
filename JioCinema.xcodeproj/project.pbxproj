@@ -30,6 +30,7 @@
 		199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87421649ACE0052CA54 /* DisneyKids.png */; };
 		199DE87821649ACF0052CA54 /* DisneyMovies.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87521649ACF0052CA54 /* DisneyMovies.png */; };
 		199DE87921649ACF0052CA54 /* DisneyTVShow.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87621649ACF0052CA54 /* DisneyTVShow.png */; };
+		19B4A62221AFC5F200B13C77 /* MultiAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */; };
 		19BF8A74214651A6001C58DD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */; };
 		19BF8A75214651A6001C58DD /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BF8A70214651A6001C58DD /* BaseViewModel.swift */; };
 		19BF8A77214651A6001C58DD /* BaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19BF8A72214651A6001C58DD /* BaseViewController.xib */; };
@@ -192,6 +193,7 @@
 		199DE87421649ACE0052CA54 /* DisneyKids.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyKids.png; sourceTree = "<group>"; };
 		199DE87521649ACF0052CA54 /* DisneyMovies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyMovies.png; sourceTree = "<group>"; };
 		199DE87621649ACF0052CA54 /* DisneyTVShow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyTVShow.png; sourceTree = "<group>"; };
+		19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiAudioManager.swift; sourceTree = "<group>"; };
 		19BF8A6F214651A6001C58DD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		19BF8A70214651A6001C58DD /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		19BF8A72214651A6001C58DD /* BaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseViewController.xib; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
+				19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */,
 				19BF8A7A214651C8001C58DD /* BaseScene */,
 				539618DF21219AE600B576BF /* ParentalControlScene */,
 				B8EADF041F9DC42C0069671B /* Analytics */,
@@ -951,6 +954,7 @@
 				9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
+				19B4A62221AFC5F200B13C77 /* MultiAudioManager.swift in Sources */,
 				192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,

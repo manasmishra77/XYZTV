@@ -28,6 +28,7 @@ struct NoModel: Codable {
 extension RJILApiManager {
     class func getBaseModel(pageNum: Int ,type: BaseVCType, completion: @escaping APISuccessBlock) {
         let path = getPathForVC(type) + "\(pageNum)"
+        let postType: RequestType = (type == .home) ? .GET : .POST
         let isPageNum0 = (pageNum == 0)
         var headerType = RequestHeaderType.baseCommon
         var body: [String: String]? = nil
@@ -37,7 +38,7 @@ extension RJILApiManager {
             body?["apikey"] = "l7xx56d0dec5d8b54fb4b8b4690698da302f"
         }
 
-        RJILApiManager.getReponse(path: path, headerType: headerType, params: body, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
+        RJILApiManager.getReponse(path: path, headerType: headerType, params: body, postType: postType, paramEncoding: .JSON, shouldShowIndicator: isPageNum0, reponseModelType: BaseDataModel.self) { (response) in
             if response.isSuccess {
                 let newModel = RJILApiManager.clearingEmptyItems(response.model!)
                 RJILApiManager.populateDataStore(type, isPageNum0: isPageNum0, model: newModel)

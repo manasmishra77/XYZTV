@@ -68,6 +68,8 @@ class RJILApiManager {
             _commonHeaders["deviceType"] = "stb"
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+            _commonHeaders["x-multilang"] = "true"
+
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
@@ -99,7 +101,6 @@ class RJILApiManager {
             return _otpHeaders
         }
     }
-    
     var checkVersionHeaders: [String:String]{
         get{
             var _checkVersionHeaders = [String:String]()
@@ -167,7 +168,8 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, headerType: RequestHeaderType = .baseCommon, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest? {
+    func prepareRequest(path: String, headerType: RequestHeaderType = .baseCommon, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest? {
+
         var request:URLRequest?
         
         if let params = params {
@@ -227,25 +229,23 @@ class RJILApiManager {
         else {
             request = getRequest(forPath: path)
         }
-        
+        if let headerParam = headerParam {
+            for (key, value) in headerParam {
+                request?.setValue(key, forHTTPHeaderField: value)
+            }
+        }
         if path.contains(checkVersionUrl)
         {
             request?.allHTTPHeaderFields = checkVersionHeaders
         }
-        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
-        {
-            if(JCLoginManager.sharedInstance.loggingInViaSubId)
-            {
+        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false {
+            if(JCLoginManager.sharedInstance.loggingInViaSubId) {
                 request?.allHTTPHeaderFields = subIdHeaders
-            }
-            else
-            {
+            } else {
                 request?.allHTTPHeaderFields = commonHeaders
             }
             
-        }
-        else
-        {
+        } else  {
             request?.allHTTPHeaderFields = otpHeaders
         }
         

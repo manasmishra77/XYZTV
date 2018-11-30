@@ -35,6 +35,9 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     var shouldUseTabBarIndex: Bool = false
     var isMetaDataAvailable: Bool = false
     var metaData: Any?
+    
+    //for multiAudio implementation
+    var defaultLanguage : AudioLanguage?
 
     @IBOutlet weak var noVideosAvailableLabel: UILabel!
     @IBOutlet weak var languageGenreCollectionView: UICollectionView!
@@ -83,7 +86,10 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
             return
         }
-        
+        if !isLanguage {
+            defaultLanguage = MultiAudioManager.changeDefaultAudioLangForGenreVC(selectedAudioLang: paramString)
+            
+        }
         let url = langGenreDataUrl.appending("\(pageNo)")
         var params = [String:Any]()
         if isLanguage
@@ -182,7 +188,6 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                                 self.noVideosAvailableLabel.isHidden = true
                                 weakself?.prepareView()
                             }
-                            
                         }
                         else{
                             DispatchQueue.main.async {
@@ -261,7 +266,6 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
-
             languageGenreSelectionVC.textForHeader = "Select Language"
 
             languageGenreSelectionVC.dataSource = languageGenreDetailModel?.data?.languages
@@ -315,6 +319,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             }
             
         }
+        
         loadedPage = 0
     }
     
@@ -327,13 +332,14 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int, fromScreen: String)
     {
+        let audioLanguage = MultiAudioManager.getAudioLanguageForLangGenreVC(defaultAudioLanguage: defaultLanguage, item: itemToBePlayed)
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
         }
@@ -430,14 +436,15 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         let categoryName = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
         let fromScreen = (item?.app?.type == VideoType.Language.rawValue) ? LANGUAGE_SCREEN : GENRE_SCREEN
         if let tappedItem = languageGenreDetailModel?.data?.items?[indexPath.row], let appTypeInt = tappedItem.app?.type, let videoType = VideoType(rawValue: appTypeInt) {
+            let audioLang = MultiAudioManager.getAudioLanguageForLangGenreVC(defaultAudioLanguage: defaultLanguage, item: tappedItem)
             switch videoType {
             case .Movie:
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .TVShow:
                 print("At TvShow")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .Music, .Clip, .Episode, .Trailer:
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)

@@ -160,6 +160,13 @@ struct DataContainer: Codable {
     var layout: Int?
     var position: Int?
     
+    //Multiple Audio Parameter
+    private var defaultAudioLanguage: String?
+    
+    var categoryLanguage: AudioLanguage {
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
+    }
+    
     
     enum CodingKeys: String, CodingKey {
         case items = "items"
@@ -171,6 +178,7 @@ struct DataContainer: Codable {
         case id = "id"
         case layout = "layout"
         case position = "position"
+        case defaultAudioLanguage
     }
     
     init(from decoder: Decoder) throws {
@@ -198,6 +206,7 @@ struct DataContainer: Codable {
             }
             layout = try values.decodeIfPresent(Int.self, forKey: .layout)
             position = try values.decodeIfPresent(Int.self, forKey: .position)
+            defaultAudioLanguage = try values.decodeIfPresent(String.self, forKey: .defaultAudioLanguage)
         } catch  {
             print(error)
         }
@@ -259,6 +268,19 @@ struct Item: Codable {
     var genres:[String]? //
     var srt:String? //
     
+    
+    //multiaudio parameter
+    private var languageIndex : LanguageIndex?
+    //Local Variable used for defult audio
+    private var defaultAudioLanguage: String?
+    mutating func setDefaultAudioLanguage(_ audioLang: AudioLanguage?) {
+        defaultAudioLanguage = audioLang?.name
+    }
+    
+    var audioLanguage: AudioLanguage {
+        return MultiAudioManager.getItemAudioLanguage(languageIndex: languageIndex, defaultAudioLanguage: defaultAudioLanguage, displayLanguage: language)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
@@ -287,6 +309,7 @@ struct Item: Codable {
         case year = "year"
         case genres = "genres"
         case srt = "srt"
+        case languageIndex
     }
     init() {
         
@@ -386,10 +409,17 @@ struct Item: Codable {
 
             genres = try values.decodeIfPresent([String].self, forKey: .genres)
             srt = try values.decodeIfPresent(String.self, forKey: .srt)
+            languageIndex = try values.decodeIfPresent(LanguageIndex.self, forKey: .languageIndex)
         } catch {
             print(error)
         }
     }
+}
+
+struct LanguageIndex: Codable {
+    var name: String?
+    var code: String?
+    var index: Int?
 }
 
 struct List: Codable {
@@ -609,6 +639,13 @@ class DataContainer:Mappable
     var layout:Int?
     var position: Int? = nil
     
+    //Multiple Audio Parameter
+    private var defaultAudioLanguage: String?
+    
+    var categoryLanguage: AudioLanguage {
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
+    }
+    
     required init(map:Map) {
         
     }
@@ -624,6 +661,7 @@ class DataContainer:Mappable
         id <- map["id"]
         layout <- map["layout"]
         position <- map["position"]
+        defaultAudioLanguage <- map["defaultAudioLanguage"]
     }
 }
 
@@ -653,6 +691,17 @@ class Item:Mappable
     var episodeId: String?
     var list:[List]?
     
+    //multiaudio parameter
+    private var languageIndex : LanguageIndex?
+    //Local Variable used for defult audio
+    private var defaultAudioLanguage: String?
+    func setDefaultAudioLanguage(_ audioLang: AudioLanguage?) {
+        defaultAudioLanguage = audioLang?.name
+    }
+    
+    var audioLanguage: AudioLanguage {
+        return MultiAudioManager.getItemAudioLanguage(languageIndex: languageIndex, defaultAudioLanguage: defaultAudioLanguage, displayLanguage: language)
+    }
     
     init() {
         
@@ -679,6 +728,7 @@ class Item:Mappable
         description <- map["description"]
         banner <- map["banner"]
         isPlaylist <- map["isPlaylist"]
+        
         if isPlaylist == nil {
             isPlaylist = false
         }
@@ -721,6 +771,9 @@ class Item:Mappable
             }
         }
         list <- map["list"]
+        
+        languageIndex <- map["languageIndex"]
+        
     }
 }
 

@@ -32,6 +32,9 @@ struct PlaybackRightsModel: Codable {
         }
         return .allAge
     }
+    var languageIndex: LanguageIndex?
+    
+    
     
     enum CodingKeys: String, CodingKey {
         case code = "code"
@@ -49,6 +52,7 @@ struct PlaybackRightsModel: Codable {
         case thumb = "thumb"
         case vendor = "vendor"
         case maturityRating = "maturityRating"
+        case languageIndex
     }
     
     init(from decoder: Decoder) throws {
@@ -78,6 +82,7 @@ struct PlaybackRightsModel: Codable {
         thumb = try values.decodeIfPresent(String.self, forKey: .thumb)
         vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
         maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
+        languageIndex = try values.decodeIfPresent(LanguageIndex.self, forKey: .languageIndex)
     }
 }
 
@@ -131,6 +136,9 @@ class PlaybackRightsModel: Mappable
     var thumb:String?
     var vendor: String?
     var maturityRating: String?
+    var languageIndex: LanguageIndex?
+    var defaultLanguage: String?
+    var displayLanguages: [String]?
     
     var maturityAgeGrp: AgeGroup {
         if let value = self.maturityRating {
@@ -161,6 +169,9 @@ class PlaybackRightsModel: Mappable
         thumb <- map["thumb"]
         vendor <- map["vendorName"]
         maturityRating <- map["maturityRating"]
+        languageIndex <- map["languageIndex"]
+        defaultLanguage <- map["defaultLanguage"]
+        displayLanguages <- map["displayLanguages"]
 
     }
 }
@@ -177,6 +188,24 @@ class Subscription:Mappable
     func mapping(map:Map)
     {
         isSubscribed <- map["isSubscribed"]
+    }
+}
+class LanguageIndex: Mappable
+{
+    var name: String?
+    var code: String?
+    var index: Int?
+    required init(map:Map) {
+        
+    }
+    init() {
+    }
+    
+    func mapping(map:Map)
+    {
+        name <- map["name"]
+        code <- map["code"]
+        index <- map["index"]
     }
 }
 //MARK:- PlaylistDataModel Model

@@ -33,6 +33,7 @@ let basePath = prodBase
 //let basePath = qaBase
 
 //Config
+let common = "common/v3/"
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
 
 //Login
@@ -58,10 +59,20 @@ let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
+//From DisneyBranch
 let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
 let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
 let disneyTvWatchListUrl = basePath.appending("common/v3/metalist/get/33")
 let disneyMoviesWatchListUrl = basePath.appending("common/v3/metalist/get/32")
+/*
+ From Head
+=======
+//let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
+let moviesWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
+//let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
+let tvWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
+ */
 let addToWatchListUrl = basePath.appending("common/v3/list/add")
 let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
 let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")

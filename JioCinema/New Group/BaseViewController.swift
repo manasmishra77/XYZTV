@@ -187,11 +187,11 @@ extension BaseViewController: BaseTableViewCellDelegate {
         return
         guard let tabBarVC = self.tabBarController as? JCTabBarController else {
             // For DisneyKids, Disney Movies, Disney TVShow
-            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: true)
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, categoryName: "", categoryIndex: 0, tabBarIndex: 5, isDisney: true)
             self.present(metadataVC, animated: true, completion: nil)
             return
         }
-        tabBarVC.presentVC(item, dataType: .disney)
+        //tabBarVC.presentVC(item, dataType: .disney)
     }
 
 }

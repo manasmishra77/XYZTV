@@ -1,3 +1,7 @@
 # ignore all pods
 Pods/
 UserInterfaceState.xcuserstate
+.DS_Store
+*.xcsettings
+*.xcbkptlist
+*.xcuserstate

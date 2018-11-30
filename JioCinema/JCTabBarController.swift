@@ -85,11 +85,11 @@ class JCTabBarController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func presentVC(_ item: Item, dataType: DataType = .common) {
-        print(item)
-        let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, tabBarIndex: 5, isDisney: dataType == .disney)
-        self.present(metadataVC, animated: true, completion: nil)
-    }
+//    func presentVC(_ item: Item, dataType: DataType = .common) {
+//        print(item)
+//        let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, categoryName: <#String#>, categoryIndex: <#Int#>, tabBarIndex: 5, isDisney: dataType == .disney)
+//        self.present(metadataVC, animated: true, completion: nil)
+//    }
     func presentDisneySubVC(_ vc: UIViewController) {
         self.present(vc, animated: false, completion: nil)
     }

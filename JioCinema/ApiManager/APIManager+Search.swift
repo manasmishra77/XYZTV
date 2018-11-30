@@ -19,7 +19,6 @@ extension RJILApiManager {
             } else {
                 completion(false, response.errorMsg)
             }
-            
         }
     }
     class func getTrendingResult(completion: @escaping (_ response: Response<JCTrendingSearchTextSuperModel>) -> ()) {
