@@ -68,6 +68,8 @@ class RJILApiManager {
             _commonHeaders["deviceType"] = "stb"
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
+            _commonHeaders["x-multilang"] = "true"
+
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
@@ -87,7 +89,7 @@ class RJILApiManager {
             return _commonHeaders
         }
     }
-
+    
     
     var otpHeaders:[String:String]{
         get{
@@ -99,7 +101,6 @@ class RJILApiManager {
             return _otpHeaders
         }
     }
-    
     var checkVersionHeaders: [String:String]{
         get{
             var _checkVersionHeaders = [String:String]()
@@ -156,7 +157,7 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding) -> URLRequest {
+    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest {
         var request:URLRequest?
         
         if let params = params {
@@ -165,7 +166,7 @@ class RJILApiManager {
                 //JSON
                 request = getRequest(forPath: path)
                 do{
-                    let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+                    let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: [])
                     request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
                     request?.httpBody = jsonData
                 }
@@ -216,7 +217,11 @@ class RJILApiManager {
         else {
             request = getRequest(forPath: path)
         }
-        
+        if let headerParam = headerParam {
+            for (key, value) in headerParam {
+                request?.setValue(key, forHTTPHeaderField: value)
+            }
+        }
         if path.contains(checkVersionUrl)
         {
             request?.allHTTPHeaderFields = checkVersionHeaders

@@ -48,6 +48,7 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
     @IBOutlet weak var seasonsLabel: UILabel!
+    @IBOutlet weak var multiAudioLanguge: UILabel!
     
     
     //Constraints for all the view

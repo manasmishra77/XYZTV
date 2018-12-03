@@ -131,6 +131,13 @@ class DataContainer:Mappable
     var layout:Int?
     var position: Int? = nil
     
+    //Multiple Audio Parameter
+    private var defaultAudioLanguage: String?
+    
+    var categoryLanguage: AudioLanguage {
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
+    }
+    
     required init(map:Map) {
         
     }
@@ -146,6 +153,7 @@ class DataContainer:Mappable
         id <- map["id"]
         layout <- map["layout"]
         position <- map["position"]
+        defaultAudioLanguage <- map["defaultAudioLanguage"]
     }
 }
 
@@ -175,6 +183,17 @@ class Item:Mappable
     var episodeId: String?
     var list:[List]?
     
+    //multiaudio parameter
+    private var languageIndex : LanguageIndex?
+    //Local Variable used for defult audio
+    private var defaultAudioLanguage: String?
+    func setDefaultAudioLanguage(_ audioLang: AudioLanguage?) {
+        defaultAudioLanguage = audioLang?.name
+    }
+    
+    var audioLanguage: AudioLanguage {
+        return MultiAudioManager.getItemAudioLanguage(languageIndex: languageIndex, defaultAudioLanguage: defaultAudioLanguage, displayLanguage: language)
+    }
     
     init() {
         
@@ -201,6 +220,7 @@ class Item:Mappable
         description <- map["description"]
         banner <- map["banner"]
         isPlaylist <- map["isPlaylist"]
+        
         if isPlaylist == nil {
             isPlaylist = false
         }
@@ -243,6 +263,9 @@ class Item:Mappable
             }
         }
         list <- map["list"]
+        
+        languageIndex <- map["languageIndex"]
+        
     }
 }
 

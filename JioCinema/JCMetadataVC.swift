@@ -27,6 +27,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var shouldUseTabBarIndex = false
     var isMetaDataAvailable = false
     var isUserComingFromPlayerScreen = false
+    var defaultAudioLanguage: AudioLanguage?
     
     var languageModel: Item?
     fileprivate var toScreenName: String? = nil
@@ -247,17 +248,20 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let url = metadataUrl.appending(id.replacingOccurrences(of: "/0/0", with: ""))
         
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             DispatchQueue.main.async {
                 guard id != "" else {
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.handleAlertForMetaDataDataFailure()
                     return
                 }
-                weakSelf?.isUserComingFromPlayerScreen = false
-                weakSelf?.loaderContainerView.isHidden = true
-                weakSelf?.metadataContainerView.isHidden = false
-                weakSelf?.activityIndicator.stopAnimating()
+                self.isUserComingFromPlayerScreen = false
+                self.loaderContainerView.isHidden = true
+                self.metadataContainerView.isHidden = false
+                self.activityIndicator.stopAnimating()
             }
             
             if let responseError = error
@@ -265,21 +269,21 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 //TODO: handle error
                 print(responseError)
                 DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
+                    self.showMetadata()
                     //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
-                    weakSelf?.handleAlertForMetaDataDataFailure()
+                    self.handleAlertForMetaDataDataFailure()
                 }
                 return
             }
             if let responseData = data {
                 
-                weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
+                self.evaluateMetaData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    weakSelf?.showMetadata()
-                    let headerView = weakSelf?.prepareHeaderView()
-                    weakSelf?.metadataTableView.tableHeaderView = headerView
+                    self.showMetadata()
+                    let headerView = self.prepareHeaderView()
+                    self.metadataTableView.tableHeaderView = headerView
                 }
-                weakSelf?.callWebServiceForMoreLikeData(id: id)
+                self.callWebServiceForMoreLikeData(id: id)
                 return
             }
         }
@@ -302,25 +306,27 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         let url = (itemAppType == VideoType.Movie) ? metadataUrl.appending(id) : metadataUrl.appending(id + "/0/0")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
             
+            guard let self = self else {
+                return
+            }
             if let responseError = error {
                 //TODO: handle error
                 print(responseError)
                 return
             }
             if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    if let metatableView = weakSelf?.metadataTableView {
+                    if let metatableView = self.metadataTableView {
                         metatableView.reloadData()
                         metatableView.layoutIfNeeded()
                     }
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.myPreferredFocusView = weakSelf?.headerCell.playButton
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
+                    self.prepareMetdataArtistLabel()
+                    self.myPreferredFocusView = self.headerCell.playButton
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
                 }
             }
         }
@@ -379,7 +385,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     fileprivate var categoryNameAfterLogin: String? = nil
     
     func checkLoginAndPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int) {
-        //weak var weakSelf = self
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             prepareToPlay(itemToBePlayed, categoryName: categoryName, categoryIndex: categoryIndex)
@@ -586,8 +591,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func callWebServiceForSelectedFilter(filter: String) {
         let url = metadataUrl.appending(metadata?.id ?? "").appending("/\(filter)")
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.get(request: metadataRequest) {[weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
             
             if let responseError = error {
                 //TODO: handle error
@@ -595,13 +603,13 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return
             }
             if let responseData = data {
-                weakSelf?.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                self.evaluateMoreLikeData(dictionaryResponseData: responseData)
                 DispatchQueue.main.async {
-                    weakSelf?.prepareMetdataArtistLabel()
-                    weakSelf?.metadataTableView.reloadData()
-                    weakSelf?.metadataTableView.layoutIfNeeded()
-                    weakSelf?.setNeedsFocusUpdate()
-                    weakSelf?.updateFocusIfNeeded()
+                    self.prepareMetdataArtistLabel()
+                    self.metadataTableView.reloadData()
+                    self.metadataTableView.layoutIfNeeded()
+                    self.setNeedsFocusUpdate()
+                    self.updateFocusIfNeeded()
                 }
                 return
             }
@@ -701,12 +709,13 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String: Any]()
-        if itemAppType == .TVShow {
-            params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId]]
-        } else if itemAppType == .Movie {
-            params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId]]
-        }
+        let languageIndexDict: Dictionary<String, Any> = ["name": defaultAudioLanguage?.name ?? "", "code": defaultAudioLanguage?.code ?? "", "index": 0]
         
+        if itemAppType == .TVShow {
+            params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+        } else if itemAppType == .Movie {
+            params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+        }
         if JCLoginManager.sharedInstance.isUserLoggedIn(){
             //let url = isStatusAdd ? removeFromWatchListUrl : addToResumeWatchlistUrl
             let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
@@ -719,7 +728,12 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func callWebServiceToUpdateWatchlist(withUrl url:String, watchlistStatus: Bool, andParameters params: Dictionary<String, Any>) {
         self.headerCell.addToWatchListButton.isEnabled = false
         let updateWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { (data, response, error) in
+        RJILApiManager.defaultManager.post(request: updateWatchlistRequest) { [weak self] (data, response, error) in
+            
+            guard let self = self else {
+                return
+            }
+            
             DispatchQueue.main.async {
                 self.headerCell.addToWatchListButton.isEnabled = true
             }
@@ -733,8 +747,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
                     DispatchQueue.main.async {
-                        //JCLoginManager.sharedInstance.logoutUser()
-                        //self.presentLoginVC()
                     }
                 }
                 return
@@ -810,7 +822,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.titleLabel.text = metadata?.name
         headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
-        
+        if let audio = metadata?.multipleAudio {
+        headerCell.multiAudioLanguge.text = "Audio : \(audio)"
+        }
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
         if itemAppType == .TVShow {
             descText = (metadata?.descriptionForTVShow ?? "")// + " " + SHOW_LESS
@@ -947,8 +961,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if let artistArray = metadata?.artist {
             artists = artistArray.reduce("", +)
         }
-        
-        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
+        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, audioLanguage: defaultAudioLanguage)
         self.present(playerVC, animated: true, completion: nil)
     }
     
@@ -991,7 +1004,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 recommendationArray = moreArray
             }
             
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
+            
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, audioLanguage: defaultAudioLanguage)
             
             self.present(playerVC, animated: true, completion: nil)
         }
@@ -1002,7 +1016,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 isEpisodeAvailable = true
                 recommendationArray = episodes
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor)
+            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, audioLanguage: defaultAudioLanguage)
             self.present(playerVC, animated: true, completion: nil)
         }
     }
@@ -1031,6 +1045,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
+//        languageGenreVC.defaultLanguage = item.defaultAudioLanguage
         return languageGenreVC
     }
     

@@ -29,8 +29,8 @@ let networkErrorMessage = "Please check your device's network and retry!"
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-let basePath = prodBase
-//let basePath = qaBase
+//let basePath = prodBase
+let basePath = qaBase
 
 //Config
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
@@ -58,8 +58,10 @@ let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
-let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
-let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
+//let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
+let moviesWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
+//let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
+let tvWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
 let addToWatchListUrl = basePath.appending("common/v3/list/add")
 let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
 let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")

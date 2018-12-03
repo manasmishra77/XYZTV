@@ -113,6 +113,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
         cell.tag = indexPath.row
+        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].categoryLanguage
         
         //Pagination call
         if(indexPath.row == (JCDataStore.sharedDataStore.moviesData?.data?.count)! - 2) {
@@ -264,7 +265,8 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = uniqueID
-        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        params["listId"] = "12"
+        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
             if let responseError = error as NSError?
@@ -297,7 +299,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
     func evaluateMoviesWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .MoviesWatchList)
-        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.moviesWatchList?.data?.items?.count ?? 0) > 0 {
             weak var weakSelf = self
             self.isMoviesWatchlistAvailable = true
              self.changingDataSourceForBaseTableView()
@@ -331,7 +333,6 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
         Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: carousalView, toChange: &focusShiftedFromTabBarToVC)
     }
 
-    
     //MARK:- JCBaseTableCell Delegate Methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if !Utility.sharedInstance.isNetworkAvailable {
@@ -342,13 +343,13 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
             //Screenview event to Google Analytics
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: MOVIE_SCREEN, action: VIDEO_ACTION, label: tappedItem.name, customParameters: customParams)
-            
+
             let categoryName = baseCell?.categoryTitleLabel.text ?? "Carousel"
             print(tappedItem)
             if tappedItem.app?.type == VideoType.Movie.rawValue {
                 print("At Movie")
                 toScreenName = METADATA_SCREEN
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: MOVIE_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 1, defaultAudioLanguage: tappedItem.audioLanguage)
 //                self.tabBarController?.navigationController?.setNavigationBarHidden(true, animated: false)
 //                self.tabBarController?.navigationController?.pushViewController(metadataVC, animated: false)
                 self.present(metadataVC, animated: true, completion: nil)

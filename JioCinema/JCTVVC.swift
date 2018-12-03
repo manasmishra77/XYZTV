@@ -123,6 +123,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         cell.categoryTitleLabel.text = categoryTitle
         cell.tableCellCollectionView.reloadData()
         cell.cellDelgate = self
+        cell.defaultAudioLanguage = dataItemsForTableview[indexPath.row].categoryLanguage
         cell.tag = indexPath.row
         
         //Pagination call
@@ -234,6 +235,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = uniqueID
+        params["listId"] = 13
         let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
@@ -266,7 +268,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
     {
         JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
-        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count)! > 0 {
+        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count ?? 0) > 0 {
             weak var weakSelf = self
             weakSelf?.isTVWatchlistAvailable = true
             weakSelf?.changingDataSourceForBaseTableView()
@@ -319,6 +321,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 toScreenName = METADATA_SCREEN
                 let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: TV_SCREEN, categoryName: (baseCell?.categoryTitleLabel.text!)!, categoryIndex: indexFromArray, tabBarIndex: 1)
                 self.present(metadataVC, animated: true, completion: nil)
+            } else if tappedItem.app?.type == VideoType.Episode.rawValue {
+                checkLoginAndPlay(tappedItem, categoryName: baseCell?.categoryTitleLabel.text ?? "", categoryIndex: indexFromArray)
             }
         }
     }
@@ -339,6 +343,37 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 self.present(metadataVC, animated: true, completion: nil)
             }
         }
+    }
+    
+    //For after login function
+    fileprivate var itemAfterLogin: Item? = nil
+    fileprivate var categoryIndexAfterLogin: Int? = nil
+    fileprivate var categoryNameAfterLogin: String? = nil
+    
+    func playItemAfterLogin() {
+        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        self.itemAfterLogin = nil
+        self.categoryIndexAfterLogin = nil
+        self.categoryNameAfterLogin = nil
+    }
+    func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
+        if(JCLoginManager.sharedInstance.isUserLoggedIn())
+        {
+            JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
+            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode , fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : itemToBePlayed.audioLanguage)
+            present(playervc, animated: true, completion: nil)
+        }
+        else
+        {
+            self.itemAfterLogin = itemToBePlayed
+            self.categoryNameAfterLogin = categoryName
+            self.categoryIndexAfterLogin = categoryIndex
+            presentLoginVC()
+        }
+    }
+    func presentLoginVC() {
+        let loginVC = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: true, presentingVC: self)
+        self.present(loginVC, animated: true, completion: nil)
     }
 
 }

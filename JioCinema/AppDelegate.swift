@@ -19,13 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
     
+    
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
         //Sending event for Internal Analytics
-        let applaunchInternalEvent = JCAnalyticsEvent.sharedInstance.getApplaunchEventForInternalAnalytics()
-        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: applaunchInternalEvent)
+        
         Fabric.with([Crashlytics.self])
         
         Utility.sharedInstance.addIndicator()
@@ -48,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication)
     {
+        JCAnalyticsEvent.sharedInstance.sendAppLaunchEvent()
         if let _ = topShelfContentModel{
             if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
                     tabVc.selectedIndex = 0
@@ -59,7 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         
-        //Sending media_end analytics event when media_ends
+        //Sending media_end analytics event when media_ends & app_killed
+        JCAnalyticsEvent.sharedInstance.sendAppKilledEvent()
         if let playerVc = UIApplication.topViewController() as? JCPlayerVC{
             playerVc.viewWillDisappear(true)
         }

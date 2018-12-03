@@ -33,6 +33,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     var itemsArray: [Any]?
     var itemArrayType: ItemArrayType = .item
+    //audio lang from category
+    var defaultAudioLanguage: AudioLanguage?
     
     var isResumeWatchCell = false
     var itemFromViewController: VideoType?
@@ -200,12 +202,17 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch itemArrayType {
-        case .item, .resumeWatch:
+        case .resumeWatch:
             let items = itemsArray as! [Item]
-            cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
+            let item = items[indexPath.row]
+            cellDelgate?.didTapOnItemCell?(self, item, self.tag)
+        case .item:
+            let items = itemsArray as! [Item]
+            let item = items[indexPath.row]
+            item.setDefaultAudioLanguage(defaultAudioLanguage)
+            cellDelgate?.didTapOnItemCell?(self, item, self.tag)
         case .more:
             let items = itemsArray as! [More]
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)

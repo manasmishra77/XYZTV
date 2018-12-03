@@ -28,6 +28,9 @@ class PlaybackRightsModel: Mappable
     var thumb:String?
     var vendor: String?
     var maturityRating: String?
+    var languageIndex: LanguageIndex?
+    var defaultLanguage: String?
+    var displayLanguages: [String]?
     
     var maturityAgeGrp: AgeGroup {
         if let value = self.maturityRating {
@@ -58,6 +61,9 @@ class PlaybackRightsModel: Mappable
         thumb <- map["thumb"]
         vendor <- map["vendorName"]
         maturityRating <- map["maturityRating"]
+        languageIndex <- map["languageIndex"]
+        defaultLanguage <- map["defaultLanguage"]
+        displayLanguages <- map["displayLanguages"]
 
     }
 }
@@ -74,6 +80,24 @@ class Subscription:Mappable
     func mapping(map:Map)
     {
         isSubscribed <- map["isSubscribed"]
+    }
+}
+class LanguageIndex: Mappable
+{
+    var name: String?
+    var code: String?
+    var index: Int?
+    required init(map:Map) {
+        
+    }
+    init() {
+    }
+    
+    func mapping(map:Map)
+    {
+        name <- map["name"]
+        code <- map["code"]
+        index <- map["index"]
     }
 }
 //MARK:- PlaylistDataModel Model

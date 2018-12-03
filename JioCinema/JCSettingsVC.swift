@@ -35,20 +35,8 @@ class JCSettingsVC: UIViewController {
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Settings", "Platform": "TVOS","Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
-        self.sendParentalControlTileEvent()
     }
     
-    
-    
-    func sendParentalControlTileEvent() {
-        // For Clever Tap Event
-        let eventProperties = ["platform":"TVOS"]
-        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Parental Control Tile", properties: eventProperties)
-        
-        // For Internal Analytics Event
-        let parentalPinTileEvent = JCAnalyticsEvent.sharedInstance.getParentalControlTileEvent()
-        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinTileEvent)
-    }
 
     func sendParentalControlTileSelectEvent() {
         // For Clever Tap Event

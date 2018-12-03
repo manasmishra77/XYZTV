@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "tv",
-      "filename" : "TV_launch_icon_400x240.jpg",
+      "filename" : "icon_400x240.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "tv",
-      "filename" : "TV_launch_icon_800x480 2.jpg",
+      "filename" : "icon_800x480.jpg",
       "scale" : "2x"
     }
   ],
