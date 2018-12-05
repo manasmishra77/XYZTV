@@ -43,7 +43,7 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         case .reumeWatch:
             if (baseWatchListModel?.data?[itemIndexTuple.1]) != nil {
-                
+                return .landscapeForResume
             }
         case .character:
             print("character")
@@ -71,9 +71,16 @@ class DisneyHomeViewModel: BaseViewModel {
         viewResponseBlock?(true)
     }
     
+    //Used when logging in
+    override func fetchAfterLoginUserDataWithoutCompletion() {
+        RJILApiManager.getResumeWatchData(vcType: .disneyHome, nil)
+        RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
+        RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+    }
+    
     
     // HOMEVC
-    var isToReloadTableViewAfterLoginStatusChange: Bool {
+    override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var resumeWatchListStatusInHomeTableArray = false
         if homeTableIndexArray.count > 0 {
@@ -81,10 +88,8 @@ class DisneyHomeViewModel: BaseViewModel {
         }
         var reloadTable = false
         if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
-            
             reloadTable = true
         } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
-            
             reloadTable = true
         }
         return reloadTable

@@ -181,8 +181,8 @@ class JCLoginManager: UIViewController {
         JCAppUser.shared = JCAppUser()
         ParentalPinManager.shared.resetManager()
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
-        JCDataStore.sharedDataStore.tvWatchList?.data = nil
-        JCDataStore.sharedDataStore.moviesWatchList?.data = nil
+        JCDataStore.sharedDataStore.tvWatchList = nil
+        JCDataStore.sharedDataStore.moviesWatchList = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
         JCDataStore.sharedDataStore.userRecommendationList = nil
         JCDataStore.sharedDataStore.disneyTVWatchList = nil

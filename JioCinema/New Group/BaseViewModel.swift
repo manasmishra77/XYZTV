@@ -118,11 +118,28 @@ class BaseViewModel: NSObject  {
     }
     
     func reloadTableView() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyHome {
-            populateBaseTableArray()
-            viewResponseBlock?(true)
+        populateBaseTableArray()
+        viewResponseBlock?(true)
+    }
+    
+    var isToReloadTableViewAfterLoginStatusChange: Bool {
+        let isWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
+        var watchListStatusInBaseTableArray = false
+        if baseTableIndexArray.count > 0 {
+            watchListStatusInBaseTableArray = (baseTableIndexArray[baseWatchListIndex].0 == .watchlist)
         }
-
+        var reloadTable = false
+        if isWatchListAvailabaleInDataStore, !watchListStatusInBaseTableArray {
+            reloadTable = true
+        } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
+            reloadTable = true
+        }
+        return reloadTable
+    }
+    
+    //Used when logging in
+    func fetchAfterLoginUserDataWithoutCompletion() {
+        RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
     }
     
     //For after login function
@@ -137,7 +154,6 @@ class BaseViewModel: NSObject  {
     @objc func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         fetchBaseData()
-        print(ButtonType.Movies.rawValue)
         getBaseWatchListData()
     }
 
@@ -155,7 +171,7 @@ class BaseViewModel: NSObject  {
         }
     }
     
-    func heightOfTableHeader()-> CGFloat {
+    func heightOfTableHeader() -> CGFloat {
         return vcType == .disneyHome ? 750 : 650
     }
     
