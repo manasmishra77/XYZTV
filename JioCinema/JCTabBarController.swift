@@ -19,8 +19,8 @@ class JCTabBarController: UITabBarController {
         
         setTabBarTitle()
         
-        let homeVC = JCHomeVC(nibName: "JCBaseVC", bundle: nil)
-        homeVC.tabBarItem = UITabBarItem(title: "Home", image: nil, tag: 0)
+//        let homeVC = JCHomeVC(nibName: "JCBaseVC", bundle: nil)
+//        homeVC.tabBarItem = UITabBarItem(title: "Home", image: nil, tag: 0)
         
 //        let moviesVC = JCMoviesVC(nibName: "JCBaseVC", bundle: nil)
 //        moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: nil, tag: 1)
@@ -33,11 +33,11 @@ class JCTabBarController: UITabBarController {
         
 //        let clipsVC = JCClipsVC(nibName: "JCBaseVC", bundle: nil)
 //        clipsVC.tabBarItem = UITabBarItem(title: "Clips", image: nil, tag: 4)
-        let moviesVC = BaseViewController(.movie) //JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
-        let tvVC = BaseViewController(.tv) //JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
-        let musicVC = BaseViewController(.music) //JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
-
-        let disneyVC = BaseViewController(.disneyHome) //JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
+        let moviesVC = BaseViewController(.movie)
+        let tvVC = BaseViewController(.tv)
+        let musicVC = BaseViewController(.music)
+        let disneyVC = BaseViewController(.disneyHome)//JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
+        let homeVC = BaseViewController(.home)
         //disneyVC.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 4)
         
         

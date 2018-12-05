@@ -24,7 +24,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     @IBOutlet weak var baseTableView: UITableView!
     
-    lazy var tableReloadClosure: (Bool) -> () = {[unowned self] (isSuccess) in
+    lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
+        guard let self = self else {return}
         //Handle Reponse of APi Call
         print(self.baseViewModel.vcType)
         if self.viewLoadingStatus == .none {
@@ -42,9 +43,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     init(_ vcType: BaseVCType) {
-        if vcType == .disneyHome {
+        switch vcType {
+        case .home:
+            self.baseViewModel = CommonHomeViewModel(vcType) as! T
+        case .disneyHome:
             self.baseViewModel = DisneyHomeViewModel(vcType) as! T
-        } else {
+        default:
             self.baseViewModel = BaseViewModel(vcType) as! T
         }
         super.init(nibName: "BaseViewController", bundle: nil)
@@ -80,14 +84,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
-        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
-            resumeWatchListDataAvailable = false
-            baseViewModel.reloadTableView()
-        }
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
-                self.baseViewModel.reloadTableView()
-            }
+//        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
+//            resumeWatchListDataAvailable = false
+//            baseViewModel.reloadTableView()
+//        }
+        if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
+            self.baseViewModel.reloadTableView()
         }
     }
     private func configureViews() {
@@ -147,9 +149,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
 
     
-    func callWebServiceForWatchlist(){
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
+    func callWebServiceForWatchlist() {
+        if let viewModel = baseViewModel as? DisneyHomeViewModel {
+            viewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
         }
     }
     @objc func callWebServiceWhenWatchlistUpdated() {
