@@ -14,7 +14,7 @@ class JCSeasonCollectionViewCell: UICollectionViewCell {
     var isDisney = false
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        self.layer.cornerRadius = 10.0
+        self.layer.cornerRadius = 3.0
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)

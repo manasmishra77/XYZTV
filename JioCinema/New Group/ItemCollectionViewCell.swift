@@ -92,8 +92,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            self.nameLabel.isHidden = false
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.nameLabel.isHidden = true
         }
     }
 }

@@ -27,11 +27,9 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var playButton: JCMetadataButton!
     @IBOutlet weak var starringStaticLabel: UILabel!
     @IBOutlet weak var tvShowSubtitleLabel: UILabel!
-    @IBOutlet weak var imdbImageLogo: UIImageView!
     @IBOutlet weak var starringLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
@@ -74,7 +72,6 @@ class MetadataHeaderView: UIView {
     
     func resetView() -> UIView {
         titleLabel.text = ""
-        ratingLabel.text = ""
         subtitleLabel.text = ""
         directorLabel.text = ""
         starringLabel.text = ""

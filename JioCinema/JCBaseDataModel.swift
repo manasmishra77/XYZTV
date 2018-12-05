@@ -157,7 +157,6 @@ struct DataContainer: Codable {
     var order: Int?
     var isCarousal: Bool?
     var id: String?
-    var layout: Int?
     var position: Int?
     
     //Multiple Audio Parameter
@@ -166,7 +165,11 @@ struct DataContainer: Codable {
     var categoryLanguage: AudioLanguage {
         return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
     }
-    
+    //to decide rowheight from category-> layout
+    private var layout: Int?
+    var layoutType: LayoutType {
+        return LayoutType.intantiate(self.layout ?? 0)
+    }
     
     enum CodingKeys: String, CodingKey {
         case items = "items"
@@ -473,8 +476,37 @@ enum BaseVCType: String {
         }
         return false
     }
+    var name: String {
+        if isDisney {
+            return "Disney"
+        }
+        return self.rawValue.capitalized
+    }
     
 }
+enum LayoutType {
+    case Square
+    case Potrait
+    case Landscape
+    case Carousel
+    
+    static func intantiate(_ layout : Int) -> LayoutType {
+        switch layout {
+        case 1,9:
+            return .Carousel
+        case 2,4,7,5:
+            return .Landscape
+        case 12:
+            return .Square
+        case 3:
+            return .Potrait
+        default:
+            return .Landscape
+        }
+    }
+}
+
+
 enum VideoType: Int {
     case Search             = -2
     case Home               = -1
@@ -512,7 +544,9 @@ enum Month: Int {
     var name: String {
         get { return String(describing: self) }
     }
+    
 }
+
 
 
 

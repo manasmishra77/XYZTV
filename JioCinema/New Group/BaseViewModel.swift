@@ -160,8 +160,9 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
-        let layout = itemCellLayoutType(index: index)
-        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+//        let layout = itemCellLayoutType(index: index)
+    
+        let height: CGFloat = (baseDataModel?.data?[index].layoutType == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
         return height
     }
     
@@ -243,8 +244,10 @@ fileprivate extension BaseViewModel {
         case watchlist
     }
     fileprivate func getBaseWatchListData() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
-        RJILApiManager.getWatchListData(isDisney : true ,type: vcType, baseAPIReponseHandler)
+//        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
+        if vcType == .tv || vcType == .movie {
+        RJILApiManager.getWatchListData(isDisney : vcType.isDisney ,type: vcType, baseAPIReponseHandler)
+        }
     }
     
     fileprivate func populateBaseTableArray() {

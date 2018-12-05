@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="JioType-Light.ttf">
+            <string>JioType-Light</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,21 +24,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7W-TF-XAc" userLabel="ImageProgressContainerView">
-                        <rect key="frame" x="15" y="15" width="362" height="195"/>
+                        <rect key="frame" x="15" y="15" width="362" height="155"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="145"/>
                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdZ-19-fLq">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="185"/>
+                                <rect key="frame" x="0.0" y="0.0" width="362" height="145"/>
                                 <color key="backgroundColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Tg-1Y-7Qg">
-                                <rect key="frame" x="0.0" y="185" width="362" height="10"/>
+                                <rect key="frame" x="0.0" y="145" width="362" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="OvZ-Jn-zMO"/>
                                 </constraints>
@@ -66,10 +71,10 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
-                        <rect key="frame" x="15" y="220" width="362" height="40"/>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
+                        <rect key="frame" x="15" y="190" width="362" height="24"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
+                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="24"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -79,10 +84,10 @@
             <constraints>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="2KM-q2-3F1"/>
                 <constraint firstAttribute="trailing" secondItem="s7W-TF-XAc" secondAttribute="trailing" constant="15" id="HVa-Sh-srn"/>
-                <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="50" id="POj-b4-bWL"/>
-                <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="10" id="TIP-HB-83D"/>
+                <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="90" id="POj-b4-bWL"/>
+                <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="20" id="TIP-HB-83D"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="g3q-TQ-rIf"/>
-                <constraint firstAttribute="bottom" secondItem="rYV-oP-nC5" secondAttribute="bottom" id="gFH-X6-OcE"/>
+                <constraint firstAttribute="bottom" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="46" id="gFH-X6-OcE"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="nYa-e9-YQn"/>
                 <constraint firstAttribute="trailing" secondItem="rYV-oP-nC5" secondAttribute="trailing" constant="15" id="pW0-d9-sqZ"/>
             </constraints>
