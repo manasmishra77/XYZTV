@@ -53,15 +53,24 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
         //Load Image
-        if cellItems.layoutType == .landscape && cellItems.cellType == .resumeWatchDisney {
-            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
-                setImageOnCell(url: imageURL)
-            }
-        }
-        else {
+        
+        switch cellItems.layoutType {
+        case .potrait:
             if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
                 setImageOnCell(url: imageURL)
             }
+        case .landscape:
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
+        case .landscapeForResume:
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
+        case .landscapeForLangGenre:
+            break
+        case .landscapeWithLabels:
+            break
         }
     }
     
@@ -111,4 +120,7 @@ enum ItemCellType {
 enum ItemCellLayoutType {
     case potrait
     case landscape
+    case landscapeForResume
+    case landscapeForLangGenre
+    case landscapeWithLabels
 }
