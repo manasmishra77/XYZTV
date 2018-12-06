@@ -53,7 +53,7 @@ class CommonHomeViewModel: BaseViewModel {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = layoutOfCell(data.items?.first)
                 return layout
             }
         case .reumeWatch:
@@ -63,13 +63,13 @@ class CommonHomeViewModel: BaseViewModel {
         case .recommendation:
             if let dataContainer = recommendationModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = layoutOfCell(data.items?.first)
                 return layout
             }
         case .language, .genre:
             return .landscapeForLangGenre
         }
-        return .landscape
+        return .landscapeWithTitleOnly
     }
     
     override func getDataContainer(_ index: Int) -> DataContainer? {

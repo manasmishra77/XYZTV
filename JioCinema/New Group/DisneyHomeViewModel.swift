@@ -38,7 +38,7 @@ class DisneyHomeViewModel: BaseViewModel {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = layoutOfCell(data.items?.first)
                 return layout
             }
         case .reumeWatch:
@@ -48,7 +48,7 @@ class DisneyHomeViewModel: BaseViewModel {
         case .character:
             print("character")
         }
-        return .landscape
+        return .landscapeWithTitleOnly
     }
     override func getDataContainer(_ index: Int) -> DataContainer? {
         let itemIndexTuple = homeTableIndexArray[index]
@@ -115,7 +115,7 @@ class DisneyHomeViewModel: BaseViewModel {
                 return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscape)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     }
     
     //Used when logging in

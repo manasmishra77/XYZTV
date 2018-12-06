@@ -47,7 +47,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         tableCellCollectionView.delegate = self
         tableCellCollectionView.dataSource = self
         //self.alpha = 0.5
-        self.tableCellCollectionView.register(UINib(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.tableCellCollectionView.register(UINib(nibName: "ItemCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ItemCollectionViewCell")
         self.tableCellCollectionView.register(UINib(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
         self.tableCellCollectionView.register(UINib(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
@@ -124,7 +124,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     }
     
     func itemCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         let items = itemsArray as! [Item]
         var thumbnailTitle = ""
         if let nameOfThumbnail = items[indexPath.row].name, nameOfThumbnail != ""{
@@ -135,13 +135,13 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
         cell.nameLabel.text = (items[indexPath.row].app?.type == VideoType.Language.rawValue || items[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
         
-        if items[indexPath.row].appType == .Movie {
-            if let imageUrl = items[indexPath.row].image {
-                self.setImageOnThumbnail(urlString: imageUrl, on: cell)
-            }
-        }else if let imageUrl = items[indexPath.row].banner {
-            self.setImageOnThumbnail(urlString: imageUrl, on: cell)
-        }
+//        if items[indexPath.row].appType == .Movie {
+//            if let imageUrl = items[indexPath.row].image {
+//                self.setImageOnThumbnail(urlString: imageUrl, on: cell)
+//            }
+//        }else if let imageUrl = items[indexPath.row].banner {
+//            self.setImageOnThumbnail(urlString: imageUrl, on: cell)
+//        }
         
         return cell
     }
@@ -154,27 +154,27 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     }
     
     func episodesCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         let episodes = itemsArray as! [Episode]
         cell.nameLabel.text = episodes[indexPath.row].name
-        let imageUrl = episodes[indexPath.row].banner ?? ""
-        
-        let url = URL(string: imageBaseURL + imageUrl)
-        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-        });
+//        let imageUrl = episodes[indexPath.row].banner ?? ""
+//
+//        let url = URL(string: imageBaseURL + imageUrl)
+//        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//        });
         return cell
     }
     
     func moreLikeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         let moreArray = itemsArray as! [Item]
         cell.nameLabel.text = moreArray[indexPath.row].name
-        let imageUrl = moreArray[indexPath.row].banner ?? ""
-        let url = URL(string: imageBaseURL + imageUrl)
-        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-        });
+//        let imageUrl = moreArray[indexPath.row].banner ?? ""
+//        let url = URL(string: imageBaseURL + imageUrl)
+//        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//        });
         return cell
     }
     

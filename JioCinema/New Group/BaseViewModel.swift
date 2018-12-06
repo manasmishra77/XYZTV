@@ -187,24 +187,42 @@ class BaseViewModel: NSObject  {
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
-    
+    func layoutOfCell(_ item : Item?) -> ItemCellLayoutType {
+        
+        if let appType = item?.appType {
+            switch appType{
+            case .Episode , .Clip, .Music, .Search:
+                return .landscapeWithLabels
+            case .Language, .Genre:
+                return .landscapeForLangGenre
+            case .Movie:
+                return .potrait
+            default:
+                return .landscapeWithTitleOnly
+            }
+        }
+        return .landscapeWithTitleOnly
+    }
     func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
         let itemIndexTuple = baseTableIndexArray[index]
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = data.layoutType
-                return layout
+                var layout: ItemCellLayoutType = data.layoutType
+                return layoutOfCell(data.items?.first)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
                 var layout: ItemCellLayoutType = dataContainer.layoutType
-                layout = (vcType == .disneyHome) ? .landscape : layout
+                layout = (vcType == .disneyHome) ? .landscapeWithTitleOnly : layout
+                if (vcType == .disneyMovies) || (vcType == .movie) {
+                    layout = .potrait
+                }
                 return layout
             }
         }
-        return .landscape
+        return .landscapeWithTitleOnly
     }
     
     
@@ -229,7 +247,7 @@ class BaseViewModel: NSObject  {
                 return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscape)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     }
     
     //notification listener

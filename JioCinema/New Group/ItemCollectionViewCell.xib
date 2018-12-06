@@ -71,10 +71,17 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
-                        <rect key="frame" x="15" y="190" width="362" height="24"/>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
+                        <rect key="frame" x="15" y="190" width="362" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="24"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhF-XA-SdJ">
+                        <rect key="frame" x="15" y="200" width="362" height="0.0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -86,10 +93,12 @@
                 <constraint firstAttribute="trailing" secondItem="s7W-TF-XAc" secondAttribute="trailing" constant="15" id="HVa-Sh-srn"/>
                 <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="90" id="POj-b4-bWL"/>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="20" id="TIP-HB-83D"/>
+                <constraint firstItem="QhF-XA-SdJ" firstAttribute="top" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="10" id="Up5-gu-qXD"/>
+                <constraint firstAttribute="trailing" secondItem="QhF-XA-SdJ" secondAttribute="trailing" constant="15" id="cnu-zz-bhJ"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="g3q-TQ-rIf"/>
-                <constraint firstAttribute="bottom" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="46" id="gFH-X6-OcE"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="nYa-e9-YQn"/>
                 <constraint firstAttribute="trailing" secondItem="rYV-oP-nC5" secondAttribute="trailing" constant="15" id="pW0-d9-sqZ"/>
+                <constraint firstItem="QhF-XA-SdJ" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="ySx-Md-Gaa"/>
             </constraints>
             <size key="customSize" width="439" height="267"/>
             <userDefinedRuntimeAttributes>
@@ -103,6 +112,7 @@
                 <outlet property="nameLabel" destination="rYV-oP-nC5" id="45P-8A-7jQ"/>
                 <outlet property="nowPlayingLabel" destination="xdZ-19-fLq" id="Our-9h-3Gh"/>
                 <outlet property="progressBar" destination="2Tg-1Y-7Qg" id="9T1-Z1-B5J"/>
+                <outlet property="subtitle" destination="QhF-XA-SdJ" id="2Xm-XF-cRe"/>
             </connections>
             <point key="canvasLocation" x="86" y="46"/>
         </collectionViewCell>
