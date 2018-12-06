@@ -49,7 +49,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.languageGenreCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.languageGenreCollectionView.register(UINib.init(nibName: "ItemCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ItemCollectionViewCell")
         
         if item?.app?.type == VideoType.Language.rawValue
         {
@@ -113,7 +113,8 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             params["filter"] = 0
             params["key"] = "genre"
         }
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: LanguageGenreDetailModel.self) {[unowned self] (response) in
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: LanguageGenreDetailModel.self) {[weak self] (response) in
+            guard let self = self else{return}
             DispatchQueue.main.async {
                 self.videoCategoryButton.isEnabled = true
                 self.languageGenreButton.isEnabled = true
@@ -397,21 +398,17 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-
-        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner
-        {
-
-            cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
-            if let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image {
-                let url = URL(string: baseImageUrl + imageUrl)
-                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                });
-            }
-
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         
+        cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
+        var urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlLandscapContent ?? ""
+        if languageGenreDetailModel?.data?.items?[indexPath.row].appType == .Movie {
+            urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlPortraitContent ?? ""
+        }
+        let url = URL(string: urlString)
+        cell.imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+        });
         DispatchQueue.main.async {
         if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count ?? 0) - 1)
         {

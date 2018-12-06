@@ -176,9 +176,11 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
-//        let layout = itemCellLayoutType(index: index)
+        let layout = itemCellLayoutType(index: index)
     
-        let height: CGFloat = (baseDataModel?.data?[index].layoutType == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
+//        let height: CGFloat = (baseDataModel?.data?[index].layoutType == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
+          let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+
         return height
     }
     
@@ -192,12 +194,12 @@ class BaseViewModel: NSObject  {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = (data.layoutType == .Potrait) ? .potrait : .landscape
                 return layout
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
+                var layout: ItemCellLayoutType = (dataContainer.layoutType == .Potrait) ? .potrait : .landscape
                 layout = (vcType == .disneyHome) ? .landscape : layout
                 return layout
             }
@@ -348,12 +350,23 @@ extension BaseViewModel {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(metadataVC)
             }
+        case .Language,.Genre:
+            let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage.name)
+            delegate?.presentVC(languageGenreVC)
         default:
             print("Default")
         }
         
     }
     
+    func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{
+//        toScreenName = LANGUAGE_SCREEN
+        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        languageGenreVC.item = item
+        languageGenreVC.defaultLanguage = AudioLanguage(rawValue: audioLanguage)
+//        self.present(languageGenreVC, animated: false, completion: nil)
+        return languageGenreVC
+    }
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()

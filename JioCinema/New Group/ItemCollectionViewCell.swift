@@ -68,7 +68,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 setImageOnCell(url: imageURL)
             }
         case .landscapeForLangGenre:
-            break
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
         case .landscapeWithLabels:
             break
         }
