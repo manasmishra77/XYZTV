@@ -194,12 +194,12 @@ class BaseViewModel: NSObject  {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.layoutType == .Potrait) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = data.layoutType
                 return layout
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                var layout: ItemCellLayoutType = (dataContainer.layoutType == .Potrait) ? .potrait : .landscape
+                var layout: ItemCellLayoutType = dataContainer.layoutType
                 layout = (vcType == .disneyHome) ? .landscape : layout
                 return layout
             }

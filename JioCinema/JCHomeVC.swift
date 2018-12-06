@@ -138,7 +138,7 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             return rowHeightForLandscape
         }
         let layout = dataItemsForTableview[indexPath.row].layoutType
-        let height = (layout == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
+        let height = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
         return height
 //        if let appType = dataItemsForTableview[indexPath.row].items?.first?.appType, appType == .Movie {
 //            return rowHeightForPotrait

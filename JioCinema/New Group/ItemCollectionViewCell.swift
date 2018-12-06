@@ -127,4 +127,14 @@ enum ItemCellLayoutType {
     case landscapeForResume
     case landscapeForLangGenre
     case landscapeWithLabels
+    
+    init(layout : Int) {
+        switch layout {
+        //case 1,9: self = .Carousel
+        case 2,4,7,5: self = .landscape
+        //case 12: self = .Square
+        case 3:  self = .potrait
+        default: self = .landscape
+        }
+    }
 }

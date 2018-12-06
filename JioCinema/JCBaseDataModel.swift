@@ -167,8 +167,8 @@ struct DataContainer: Codable {
     }
     //to decide rowheight from category-> layout
     private var layout: Int?
-    var layoutType: LayoutType {
-        return LayoutType.intantiate(self.layout ?? 0)
+    var layoutType: ItemCellLayoutType {
+        return ItemCellLayoutType(layout: self.layout ?? 0)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -484,27 +484,23 @@ enum BaseVCType: String {
     }
     
 }
+/*
 enum LayoutType {
     case Square
     case Potrait
     case Landscape
     case Carousel
     
-    static func intantiate(_ layout : Int) -> LayoutType {
+    init(layout : Int) {
         switch layout {
-        case 1,9:
-            return .Carousel
-        case 2,4,7,5:
-            return .Landscape
-        case 12:
-            return .Square
-        case 3:
-            return .Potrait
-        default:
-            return .Landscape
+        case 1,9: self = .Carousel
+        case 2,4,7,5: self = .Landscape
+        case 12: self = .Square
+        case 3:  self = .Potrait
+        default: self = .Landscape
         }
     }
-}
+}*/
 
 
 enum VideoType: Int {
