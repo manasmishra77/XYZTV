@@ -157,6 +157,11 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         let episodes = itemsArray as! [Episode]
         cell.nameLabel.text = episodes[indexPath.row].name
+        let item = episodes[indexPath.row].getItem
+        let cellType: ItemCellType = .base
+        let layoutType: ItemCellLayoutType = .landscapeWithLabels
+        let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+        cell.configureView(cellItems)
 //        let imageUrl = episodes[indexPath.row].banner ?? ""
 //
 //        let url = URL(string: imageBaseURL + imageUrl)
@@ -166,10 +171,20 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         return cell
     }
     
+    
+    
     func moreLikeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         let moreArray = itemsArray as! [Item]
         cell.nameLabel.text = moreArray[indexPath.row].name
+        let item = moreArray[indexPath.row]
+        let cellType: ItemCellType = .base
+        var layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
+        if (item.appType == .Episode) || (item.appType == .TVShow) {
+            layoutType = .landscapeWithLabels
+        }
+        let cellItems: BaseItemCellModels = (item: moreArray[indexPath.row], cellType: cellType, layoutType: layoutType)
+        cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
 //        let url = URL(string: imageBaseURL + imageUrl)
 //        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {

@@ -772,6 +772,20 @@ struct Episode: Codable {
     var legal:Bool?
     var approved:Bool?
     
+    //Converting Episode to Item
+    var getItem: Item {
+        var item = Item()
+        item.id = self.id
+        item.banner = self.banner
+        item.image = image
+        item.subtitle = subtitle
+        var appType: App = App()
+        appType.type = VideoType.Episode.rawValue
+        item.app = appType
+        return item
+    }
+    
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
