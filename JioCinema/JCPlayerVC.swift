@@ -64,6 +64,10 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
+    @IBOutlet weak var collectionView_RecommendationHeigth: NSLayoutConstraint!
+    
+    @IBOutlet weak var collectionView_RecommendationBottomConstarint: NSLayoutConstraint!
+    
     //Player changes
     var id: String = ""
     var bannerUrlString: String = ""
@@ -166,6 +170,8 @@
         preparePlayerVC()
         addSwipeGesture()
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        let cellNib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
+        collectionView_Recommendation.register(cellNib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
     }
     
     override func didReceiveMemoryWarning() {
@@ -452,10 +458,9 @@
                     }
                     i = i + 1
                 }
-                if isMatched,i == moreArray.count{
+                if isMatched,i == moreArray.count {
                     i = i - 1
-                }
-                else if i == moreArray.count{
+                } else if i == moreArray.count {
                     i = 0
                 }
                 scrollCollectionViewToRow(row: i)
@@ -463,8 +468,7 @@
                 scrollCollectionViewToRow(row: 0)
             }
             
-        }
-        else if isEpisodeDataAvailable{
+        } else if isEpisodeDataAvailable {
             var i = 0
             var isMatched = false
             for each in episodeArray{
@@ -911,7 +915,7 @@
             UIView.animate(withDuration: 0.5, animations: {
                 let tempFrame = self.nextVideoView.frame
                 self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight - 300, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight - self.view_Recommendation.frame.height, width: screenWidth, height: self.view_Recommendation.frame.height)
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
             })
@@ -1497,7 +1501,9 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
+        
         //audioLanguage = checkItemAudioLanguage(id)
+        setRecommendationConstarints(appType)
         switch appType {
         case .Movie:
             currentDuration = checkInResumeWatchListForDuration(id)
@@ -1528,6 +1534,14 @@
             }
         default:
             break
+        }
+    }
+    
+    func setRecommendationConstarints(_ appType: VideoType) {
+        if appType == .Movie {
+            self.collectionView_RecommendationHeigth.constant = rowHeightForPotrait
+        } else {
+            self.collectionView_RecommendationHeigth.constant = rowHeightForLandscape
         }
     }
     
@@ -1617,8 +1631,13 @@
  }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
- extension JCPlayerVC: UICollectionViewDelegate
+ extension JCPlayerVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
  {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height = collectionView.frame.height - 30
+        let width = (appType == .Movie) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
+        return CGSize(width: width, height: height)
+    }
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return isRecommendationView
         //return true
@@ -1720,10 +1739,11 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
+        
         var imageUrl    = ""
-        if isEpisodeDataAvailable
-        {
+        if isEpisodeDataAvailable {
             let model = episodeArray[indexPath.row]
             cell.nameLabel.text = model.name
             if let bannerUrl = model.banner {
@@ -1732,27 +1752,38 @@
             if appType == .Episode {
                 isPlayList = true
             }
+            let item = model.getItem
+            let cellType: ItemCellType = .player
+            let layoutType: ItemCellLayoutType = .landscapeWithLabels
+            let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+            cell.configureView(cellItems)
+            
         }
-        else if isMoreDataAvailable{
+        else if isMoreDataAvailable {
             let model = moreArray[indexPath.row]
             cell.nameLabel.text = model.name
             if let bannerUrl = model.banner {
                 imageUrl = bannerUrl
             }
+            let item = moreArray[indexPath.row]
+            let cellType: ItemCellType = .player
+            let layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
+            let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+            cell.configureView(cellItems)
             
         }
-        if indexPath.row == currentPlayingIndex {
-            cell.nowPlayingImageView.isHidden = !isPlayList
-            
-        } else {
-            cell.nowPlayingImageView.isHidden = true
-        }
-        if let urlString = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl) {
-            let url = URL(string: urlString)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
-        }
+//        if indexPath.row == currentPlayingIndex {
+//            cell.nowPlayingImageView.isHidden = !isPlayList
+//
+//        } else {
+//            cell.nowPlayingImageView.isHidden = true
+//        }
+//        if let urlString = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl) {
+//            let url = URL(string: urlString)
+//            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//            });
+//        }
         return cell
     }
  }

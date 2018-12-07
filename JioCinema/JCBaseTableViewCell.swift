@@ -180,9 +180,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = .base
         var layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
-        if (item.appType == .Episode) || (item.appType == .TVShow) {
-            layoutType = .landscapeWithLabels
-        }
         let cellItems: BaseItemCellModels = (item: moreArray[indexPath.row], cellType: cellType, layoutType: layoutType)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
