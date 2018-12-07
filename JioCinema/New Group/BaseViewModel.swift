@@ -187,8 +187,7 @@ class BaseViewModel: NSObject  {
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
-    func layoutOfCell(_ item : Item?) -> ItemCellLayoutType {
-        
+    func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
         if let appType = item?.appType {
             switch appType{
             case .Episode , .Clip, .Music, .Search:
@@ -210,7 +209,7 @@ class BaseViewModel: NSObject  {
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
                 var layout: ItemCellLayoutType = data.layoutType
-                return layoutOfCell(data.items?.first)
+                return getLayoutOfCellForItemType(data.items?.first)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
