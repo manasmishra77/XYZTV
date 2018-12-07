@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UBg-5w-Ipw">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -568,9 +568,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRe-AD-HU3">
                                 <rect key="frame" x="0.0" y="1030" width="1920" height="300"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QOy-iQ-IFl">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QOy-iQ-IFl">
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="300"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="T53-kQ-kSh">
                                             <size key="itemSize" width="376" height="250"/>
@@ -588,6 +587,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="Dys-AQ-rVF"/>
+                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="leading" secondItem="VRe-AD-HU3" secondAttribute="leading" id="FoD-Qh-lwF"/>
+                                    <constraint firstAttribute="bottom" secondItem="QOy-iQ-IFl" secondAttribute="bottom" id="cQY-aA-CXE"/>
+                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="top" secondItem="VRe-AD-HU3" secondAttribute="top" id="nxD-K5-8t0"/>
+                                    <constraint firstAttribute="trailing" secondItem="QOy-iQ-IFl" secondAttribute="trailing" id="pKG-od-RaK"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xym-mI-ik0" userLabel="Loader View">
@@ -731,6 +734,8 @@
                     <connections>
                         <outlet property="activityIndicatorOfLoaderView" destination="M96-XT-G9E" id="IVw-Po-Rmf"/>
                         <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="1dJ-5w-5Ya"/>
+                        <outlet property="collectionView_RecommendationBottomConstarint" destination="RiY-8m-uwM" id="d3U-Bf-A7d"/>
+                        <outlet property="collectionView_RecommendationHeigth" destination="Dys-AQ-rVF" id="gcw-5j-ZFE"/>
                         <outlet property="loaderCoverView" destination="Xym-mI-ik0" id="e2B-3D-V4V"/>
                         <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
                         <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>
