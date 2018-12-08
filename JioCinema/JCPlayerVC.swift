@@ -1401,10 +1401,10 @@
                 return
             }
             if self.isDisney {
-                NotificationCenter.default.post(name: reloadDisneyResumeWatch, object: nil)
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
             }
             else {
-                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
         /*
@@ -1459,10 +1459,10 @@
             
             
             if self.isDisney {
-                NotificationCenter.default.post(name: reloadDisneyResumeWatch, object: nil)
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
             }
             else {
-                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
         /*

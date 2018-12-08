@@ -17,6 +17,7 @@ class CommonHomeViewModel: BaseViewModel {
     fileprivate var langModelIndex = 0
     fileprivate var genreModelIndex = 0
     fileprivate var homeTableIndexArray: [(HomeDataType, Int)] = []
+    fileprivate var isResumeWatchListUpdated = false
     
     var recommendationModel: BaseDataModel? {
         return JCDataStore.sharedDataStore.userRecommendationList
@@ -30,6 +31,10 @@ class CommonHomeViewModel: BaseViewModel {
     }
     
     //Override BaseViewModel
+    override init(_ vcType: BaseVCType) {
+        super.init(vcType)
+        NotificationCenter.default.addObserver(self, selector: #selector(onCallHomeResumeWatchUpdate(_:)), name: AppNotification.reloadResumeWatch, object: nil)
+    }
     override func fetchData(completion: @escaping (Bool) -> ()) {
         viewResponseBlock = completion
         fetchAllHomeData()
@@ -101,17 +106,25 @@ class CommonHomeViewModel: BaseViewModel {
     
     override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
-        var resumeWatchListStatusInHomeTableArray = false
-        if homeTableIndexArray.count > 0 {
-            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
-        }
         var reloadTable = false
-        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+        //When Resume watch get updated
+        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+            isResumeWatchListUpdated = false
             reloadTable = true
-        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
-            reloadTable = true
+            return reloadTable
+        } else {
+            //After login cases
+            var resumeWatchListStatusInHomeTableArray = false
+            if homeTableIndexArray.count > 0 {
+                resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
+            }
+            if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+                reloadTable = true
+            } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
+                reloadTable = true
+            }
+            return reloadTable
         }
-        return reloadTable
     }
     
     //Used when logging in
@@ -162,7 +175,11 @@ class CommonHomeViewModel: BaseViewModel {
     }
     
     
-    
+    //Used when resume watchlist get updated
+    @objc func onCallHomeResumeWatchUpdate(_ notification:Notification) {
+        RJILApiManager.getResumeWatchData(nil)
+        self.isResumeWatchListUpdated = true
+    }
     fileprivate func handleOnFailure(completion: @escaping (_ isSuccess: Bool) -> ()) {
         print("Api failed")
         completion(false)

@@ -91,9 +91,10 @@ class BaseViewModel: NSObject  {
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
         super.init()
-        if self.vcType == .disneyHome {
-            NotificationCenter.default.addObserver(self, selector: #selector(onCallDisneyResumeWatch(_:)), name: reloadDisneyResumeWatch, object: nil)
-        }    }
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
    
     var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
@@ -129,14 +130,25 @@ class BaseViewModel: NSObject  {
             watchListStatusInBaseTableArray = (baseTableIndexArray[baseWatchListIndex].0 == .watchlist)
         }
         var reloadTable = false
-        if isWatchListAvailabaleInDataStore, !watchListStatusInBaseTableArray {
+        if isWatchListAvailabaleInDataStore, isWatchListUpdated {
             reloadTable = true
-        } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
-            reloadTable = true
+            isWatchListUpdated = false
+        } else {
+            if isWatchListAvailabaleInDataStore, !watchListStatusInBaseTableArray {
+                reloadTable = true
+            } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
+                reloadTable = true
+            }
         }
         return reloadTable
     }
     
+    // may be used to get updated watchlist after adding or removing in watchlist
+    func getUpdatedWatchListFor(vcType: BaseVCType) {
+       fetchAfterLoginUserDataWithoutCompletion()
+        isWatchListUpdated = true
+        
+    }
     //Used when logging in
     func fetchAfterLoginUserDataWithoutCompletion() {
         RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
@@ -150,6 +162,7 @@ class BaseViewModel: NSObject  {
     fileprivate var baseTableIndexArray: [(BaseDataType, Int)] = []
     fileprivate var baseModelIndex = 0
     fileprivate var baseWatchListIndex = 0
+    fileprivate var isWatchListUpdated = false
     
     @objc func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
@@ -177,10 +190,7 @@ class BaseViewModel: NSObject  {
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
         let layout = itemCellLayoutType(index: index)
-    
-//        let height: CGFloat = (baseDataModel?.data?[index].layoutType == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
-          let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
-
+        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
         return height
     }
     
@@ -208,7 +218,7 @@ class BaseViewModel: NSObject  {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                var layout: ItemCellLayoutType = data.layoutType
+                var _: ItemCellLayoutType = data.layoutType
                 return getLayoutOfCellForItemType(data.items?.first)
             }
         case .watchlist:
@@ -249,11 +259,6 @@ class BaseViewModel: NSObject  {
         return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     }
     
-    //notification listener
-    @objc func onCallDisneyResumeWatch(_ notification:Notification) {
-        self.getBaseWatchListData()
-    }
-    
     func getDataContainer(_ index: Int) -> DataContainer? {
         let itemIndexTuple = baseTableIndexArray[index]
         switch itemIndexTuple.0 {
@@ -269,7 +274,7 @@ class BaseViewModel: NSObject  {
         return nil
     }
     
-
+    
 }
 
 // MovieVC
@@ -279,9 +284,8 @@ fileprivate extension BaseViewModel {
         case watchlist
     }
     fileprivate func getBaseWatchListData() {
-//        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
         if vcType == .tv || vcType == .movie {
-        RJILApiManager.getWatchListData(isDisney : vcType.isDisney ,type: vcType, baseAPIReponseHandler)
+            RJILApiManager.getWatchListData(isDisney : vcType.isDisney ,type: vcType, baseAPIReponseHandler)
         }
     }
     
