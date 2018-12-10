@@ -190,7 +190,7 @@ class BaseViewModel: NSObject  {
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
         let layout = itemCellLayoutType(index: index)
-        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+        let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow)) ? rowHeightForPotrait : rowHeightForLandscape
         return height
     }
     

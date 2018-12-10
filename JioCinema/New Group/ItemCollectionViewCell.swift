@@ -77,12 +77,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
     private func configureCellLabelVisibility(_ layoutType: ItemCellLayoutType, isFocused: Bool = false) {
         switch layoutType {
         case .potrait:
+            subtitle.text = ""
             if isFocused {
                 nameLabel.text = cellItem?.item.name ?? ""
-                subtitle.text = ""
             } else {
                 nameLabel.text = ""
-                subtitle.text = ""
             }
         case .potraitWithLabelAlwaysShow:
             subtitle.text = ""
