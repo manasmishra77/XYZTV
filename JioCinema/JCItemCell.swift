@@ -21,8 +21,10 @@ class JCItemCell: UICollectionViewCell {
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
+            self.nameLabel.isHidden = false
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.nameLabel.isHidden = true
         }
     }
     

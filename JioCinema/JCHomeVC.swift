@@ -137,10 +137,13 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         if isResumeWatchDataAvailable, indexPath.row == 0 {
             return rowHeightForLandscape
         }
-        if let appType = dataItemsForTableview[indexPath.row].items?.first?.appType, appType == .Movie {
-            return rowHeightForPotrait
-        }
-        return rowHeightForLandscape
+        let layout = dataItemsForTableview[indexPath.row].layoutType
+        let height = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+        return height
+//        if let appType = dataItemsForTableview[indexPath.row].items?.first?.appType, appType == .Movie {
+//            return rowHeightForPotrait
+//        }
+//        return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

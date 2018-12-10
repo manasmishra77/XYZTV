@@ -8,7 +8,7 @@
 
 import UIKit
 
-/*
+
 class CommonHomeViewModel: BaseViewModel {
     
     fileprivate var baseModelIndex = 0
@@ -17,6 +17,18 @@ class CommonHomeViewModel: BaseViewModel {
     fileprivate var langModelIndex = 0
     fileprivate var genreModelIndex = 0
     fileprivate var homeTableIndexArray: [(HomeDataType, Int)] = []
+    
+    var recommendationModel: BaseDataModel? {
+        return JCDataStore.sharedDataStore.userRecommendationList
+    }
+    
+    var languageModel: BaseDataModel? {
+        return JCDataStore.sharedDataStore.languageData
+    }
+    var genreModel: BaseDataModel? {
+        return JCDataStore.sharedDataStore.genreData
+    }
+    
     //Override BaseViewModel
     override func fetchData(completion: @escaping (Bool) -> ()) {
         viewResponseBlock = completion
@@ -31,38 +43,114 @@ class CommonHomeViewModel: BaseViewModel {
     override var countOfTableView: Int {
         return homeTableIndexArray.count
     }
+    override func reloadTableView() {
+        populateHomeTableArray()
+        viewResponseBlock?(true)
+    }
+    override func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
+        let itemIndexTuple = homeTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data {
+                let data = dataContainer[(itemIndexTuple.1)]
+                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first)
+                return layout
+            }
+        case .reumeWatch:
+            if (baseWatchListModel?.data?[itemIndexTuple.1]) != nil {
+                return .landscapeForResume
+            }
+        case .recommendation:
+            if let dataContainer = recommendationModel?.data {
+                let data = dataContainer[(itemIndexTuple.1)]
+                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first)
+                return layout
+            }
+        case .language, .genre:
+            return .landscapeForLangGenre
+        }
+        return .landscapeWithTitleOnly
+    }
     
+    override func getDataContainer(_ index: Int) -> DataContainer? {
+        let itemIndexTuple = homeTableIndexArray[index]
+        switch itemIndexTuple.0 {
+        case .base:
+            if let dataContainer = baseDataModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .reumeWatch:
+            if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .recommendation:
+            if let dataContainer = recommendationModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .language:
+            if let dataContainer = languageModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        case .genre:
+            if let dataContainer = genreModel?.data?[itemIndexTuple.1] {
+                return dataContainer
+            }
+        }
+        return nil
+    }
+    
+    override var isToReloadTableViewAfterLoginStatusChange: Bool {
+        let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
+        var resumeWatchListStatusInHomeTableArray = false
+        if homeTableIndexArray.count > 0 {
+            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
+        }
+        var reloadTable = false
+        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+            reloadTable = true
+        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
+            reloadTable = true
+        }
+        return reloadTable
+    }
+    
+    //Used when logging in
+   override func fetchAfterLoginUserDataWithoutCompletion() {
+        RJILApiManager.getResumeWatchData(nil)
+        RJILApiManager.getRecommendationData(nil)
+    }
     
     // HOMEVC
     func getHomeCellItems(for index: Int) -> TableCellItemsTuple  {
         let itemIndexTuple = homeTableIndexArray[index]
+        let layout = itemCellLayoutType(index: index)
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[itemIndexTuple.1]
                 if itemIndexTuple.1 == dataContainer.count - 2 {
-                    // fetchHomeData()
+                    fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base)
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .resumeWatch)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .resumeWatch, layout: layout)
             }
         case .recommendation:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
             }
         case .language:
             if let dataContainer = JCDataStore.sharedDataStore.languageData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
             }
         case .genre:
             if let dataContainer = JCDataStore.sharedDataStore.genreData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base)
+        return (title: "", items: [], cellType: .base, layout: layout)
     }
     
     fileprivate func fetchAllHomeData() {
@@ -72,6 +160,8 @@ class CommonHomeViewModel: BaseViewModel {
         RJILApiManager.getLanGenreData(isLang: true, baseAPIReponseHandler)
         RJILApiManager.getLanGenreData(isLang: false, baseAPIReponseHandler)
     }
+    
+    
     
     fileprivate func handleOnFailure(completion: @escaping (_ isSuccess: Bool) -> ()) {
         print("Api failed")
@@ -148,4 +238,4 @@ class CommonHomeViewModel: BaseViewModel {
     }
 }
 
-*/
+

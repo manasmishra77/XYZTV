@@ -16,11 +16,17 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var nowPlayingLabel: UILabel!
+    @IBOutlet weak var subtitle: UILabel!
+//    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
+    @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
         nameLabel.text = cellItems.item.name ?? ""
+        subtitle.text = cellItems.item.subtitle
+        nameLabel.isHidden = true
+        subtitle.isHidden = true
         progressBar.isHidden = true
         heightConstraintForProgressBar.constant = 0
         
@@ -28,6 +34,19 @@ class ItemCollectionViewCell: UICollectionViewCell {
         //Load Image
         self.setImageForLayoutType(cellItems)
         
+        switch cellItems.layoutType {
+        case .landscapeWithTitleOnly:
+            subtitle.text = ""
+        case .landscapeForLangGenre:
+            nameLabel.text = ""
+            subtitle.text = ""
+        case .landscapeForResume:
+            subtitle.text = ""
+        case .landscapeWithLabels:
+            subtitle.text = ""
+        case .potrait:
+            subtitle.text = ""
+        }
         switch cellItems.cellType {
         case .base:
             return
@@ -48,18 +67,32 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .disneyPlayer:
             return
         }
+
     }
     
     
     func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
         //Load Image
-        if cellItems.layoutType == .landscape && cellItems.cellType == .resumeWatchDisney {
+        
+        switch cellItems.layoutType {
+        case .potrait:
+            if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
+                setImageOnCell(url: imageURL)
+            }
+        case .landscapeWithTitleOnly:
             if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
                 setImageOnCell(url: imageURL)
             }
-        }
-        else {
-            if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
+        case .landscapeForResume:
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
+        case .landscapeForLangGenre:
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+                setImageOnCell(url: imageURL)
+            }
+        case .landscapeWithLabels:
+            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
                 setImageOnCell(url: imageURL)
             }
         }
@@ -92,8 +125,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            self.nameLabel.isHidden = false
+            self.subtitle.isHidden = false
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.nameLabel.isHidden = true
+            self.subtitle.isHidden = true
         }
     }
 }
@@ -110,5 +147,18 @@ enum ItemCellType {
 
 enum ItemCellLayoutType {
     case potrait
-    case landscape
+    case landscapeWithTitleOnly
+    case landscapeForResume
+    case landscapeForLangGenre
+    case landscapeWithLabels
+    
+    init(layout : Int) {
+        switch layout {
+        //case 1,9: self = .Carousel
+        case 2,4,7,5: self = .landscapeWithTitleOnly
+        //case 12: self = .Square
+        case 3:  self = .potrait
+        default: self = .landscapeWithTitleOnly
+        }
+    }
 }

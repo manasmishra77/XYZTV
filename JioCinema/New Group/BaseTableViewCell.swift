@@ -17,7 +17,7 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscape)
+    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -88,7 +88,7 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height
-        let width = (cellItems.layout == .potrait) ? (height * widthToHeightPropertionForPotrat) : (height * widthToHeightPropertionForLandScape)
+        let width = (cellItems.layout == .potrait) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
         return CGSize(width: width, height: height)
     }
     

@@ -41,13 +41,13 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     }
     
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
-//        jioIdTextField.text     = "pallavtrivedi-4"
-//        passwordTextField.text  = "pallav@1010"
+        jioIdTextField.text     = "pallavtrivedi-4"
+        passwordTextField.text  = "pallav@1010"
         
 //                     jioIdTextField.text     = "poonam2016"
 //                     passwordTextField.text  = "poonam@12"
-        jioIdTextField.text     = "prabhu.p"
-        passwordTextField.text  = "ril@1234"
+//        jioIdTextField.text     = "prabhu.p"
+//        passwordTextField.text  = "ril@1234"
 
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
             Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
@@ -82,21 +82,32 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 }
 
                 if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
-                    if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-                        homevc.callWebServiceForResumeWatchData()
-                        homevc.callWebServiceForUserRecommendationList()
-                    }
-                    if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
-                        movieVC.callWebServiceForMoviesWatchlist()
-                    }
-                    if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
-                        tvVc.callWebServiceForTVWatchlist()
-                    }
-                    if let disneyHomeVC = tabVc.viewControllers![4] as? BaseViewController {
+//                    if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
+//                        homevc.callWebServiceForResumeWatchData()
+//                        homevc.callWebServiceForUserRecommendationList()
+//                    }
+//                    if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
+//                        movieVC.callWebServiceForMoviesWatchlist()
+//                    }
+//                    if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
+//                        tvVc.callWebServiceForTVWatchlist()
+//                    }
+                    if let disneyHomeVC = tabVc.viewControllers?[4] as? BaseViewController {
                         disneyHomeVC.callWebServiceForWatchlist()
                         if let baseViewModel = disneyHomeVC.baseViewModel as? DisneyHomeViewModel {
-                           baseViewModel.fetchDisneyResumeDataWithoutCompletion()
+                           baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                         }
+                    }
+                    if let homeVC = tabVc.viewControllers?[0] as? BaseViewController {
+                        if let viewModel = homeVC.baseViewModel as? CommonHomeViewModel {
+                            viewModel.fetchAfterLoginUserDataWithoutCompletion()
+                        }
+                    }
+                    if let movieVC = tabVc.viewControllers?[1] as? BaseViewController {
+                            movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                    }
+                    if let tvVc = tabVc.viewControllers?[2] as? BaseViewController {
+                            tvVc.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                 }
                 

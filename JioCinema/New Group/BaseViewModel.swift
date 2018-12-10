@@ -118,11 +118,28 @@ class BaseViewModel: NSObject  {
     }
     
     func reloadTableView() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyHome {
-            populateBaseTableArray()
-            viewResponseBlock?(true)
+        populateBaseTableArray()
+        viewResponseBlock?(true)
+    }
+    
+    var isToReloadTableViewAfterLoginStatusChange: Bool {
+        let isWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
+        var watchListStatusInBaseTableArray = false
+        if baseTableIndexArray.count > 0 {
+            watchListStatusInBaseTableArray = (baseTableIndexArray[baseWatchListIndex].0 == .watchlist)
         }
-
+        var reloadTable = false
+        if isWatchListAvailabaleInDataStore, !watchListStatusInBaseTableArray {
+            reloadTable = true
+        } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
+            reloadTable = true
+        }
+        return reloadTable
+    }
+    
+    //Used when logging in
+    func fetchAfterLoginUserDataWithoutCompletion() {
+        RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
     }
     
     //For after login function
@@ -137,7 +154,6 @@ class BaseViewModel: NSObject  {
     @objc func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         fetchBaseData()
-        print(ButtonType.Movies.rawValue)
         getBaseWatchListData()
     }
 
@@ -155,37 +171,57 @@ class BaseViewModel: NSObject  {
         }
     }
     
-    func heightOfTableHeader()-> CGFloat {
+    func heightOfTableHeader() -> CGFloat {
         return vcType == .disneyHome ? 750 : 650
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
         let layout = itemCellLayoutType(index: index)
-        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+    
+//        let height: CGFloat = (baseDataModel?.data?[index].layoutType == .Potrait) ? rowHeightForPotrait : rowHeightForLandscape
+          let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+
         return height
     }
     
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
-    
+    func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
+        if let appType = item?.appType {
+            switch appType{
+            case .Episode , .Clip, .Music, .Search:
+                return .landscapeWithLabels
+            case .Language, .Genre:
+                return .landscapeForLangGenre
+            case .Movie:
+                return .potrait
+            default:
+                return .landscapeWithTitleOnly
+            }
+        }
+        return .landscapeWithTitleOnly
+    }
     func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
         let itemIndexTuple = baseTableIndexArray[index]
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
-                return layout
+                var layout: ItemCellLayoutType = data.layoutType
+                return getLayoutOfCellForItemType(data.items?.first)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                var layout: ItemCellLayoutType = (dataContainer.items?[0].appType == .Movie) ? .potrait : .landscape
-                layout = (vcType == .disneyHome) ? .landscape : layout
+                var layout: ItemCellLayoutType = dataContainer.layoutType
+                layout = (vcType == .disneyHome) ? .landscapeWithTitleOnly : layout
+                if (vcType == .disneyMovies) || (vcType == .movie) {
+                    layout = .potrait
+                }
                 return layout
             }
         }
-        return .landscape
+        return .landscapeWithTitleOnly
     }
     
     
@@ -210,7 +246,7 @@ class BaseViewModel: NSObject  {
                 return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscape)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     }
     
     //notification listener
@@ -243,8 +279,10 @@ fileprivate extension BaseViewModel {
         case watchlist
     }
     fileprivate func getBaseWatchListData() {
-        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
-        RJILApiManager.getWatchListData(isDisney : true ,type: vcType, baseAPIReponseHandler)
+//        if vcType == .disneyMovies || vcType == .disneyTVShow {return}
+        if vcType == .tv || vcType == .movie {
+        RJILApiManager.getWatchListData(isDisney : vcType.isDisney ,type: vcType, baseAPIReponseHandler)
+        }
     }
     
     fileprivate func populateBaseTableArray() {
@@ -329,12 +367,23 @@ extension BaseViewModel {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(metadataVC)
             }
+        case .Language,.Genre:
+            let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage.name)
+            delegate?.presentVC(languageGenreVC)
         default:
             print("Default")
         }
         
     }
     
+    func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{
+//        toScreenName = LANGUAGE_SCREEN
+        let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
+        languageGenreVC.item = item
+        languageGenreVC.defaultLanguage = AudioLanguage(rawValue: audioLanguage)
+//        self.present(languageGenreVC, animated: false, completion: nil)
+        return languageGenreVC
+    }
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()

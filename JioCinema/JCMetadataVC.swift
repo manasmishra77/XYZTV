@@ -1029,8 +1029,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
-            headerCell.imdbImageLogo.isHidden = true
-            headerCell.ratingLabel.isHidden = true
             headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
@@ -1306,7 +1304,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
 //        } else {
             cell.layer.borderColor = toColor.cgColor
 //        }
-        cell.layer.cornerRadius = 15.0
+        cell.layer.cornerRadius = 3.0
     }
     
     //Get Month Enum

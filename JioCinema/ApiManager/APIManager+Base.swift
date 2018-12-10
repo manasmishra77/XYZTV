@@ -161,15 +161,15 @@ extension RJILApiManager {
         }
         
     }
-    class func getRecommendationData(_ completion: @escaping APISuccessBlock) {
+    class func getRecommendationData(_ completion: APISuccessBlock?) {
         let path = userRecommendationURL
         let params = ["uniqueId": JCAppUser.shared.unique, "jioId": JCAppUser.shared.uid]
         RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
                 JCDataStore.sharedDataStore.userRecommendationList = response.model
-                completion(true, nil)
+                completion?(true, nil)
             } else {
-                completion(false, response.errorMsg)
+                completion?(false, response.errorMsg)
             }
         }
     }

@@ -211,10 +211,11 @@ let SHOW_LESS = "Show Less"
 
 
 //MARK:- Tablecell Row height
-let rowHeightForPotrait: CGFloat = 400
-let rowHeightForLandscape: CGFloat = 300
-let widthToHeightPropertionForPotrat: CGFloat = 391/523
-let widthToHeightPropertionForLandScape: CGFloat = 420/289
+let rowHeightForPotrait: CGFloat = 561
+let rowHeightForLandscape: CGFloat = 397
+let widthToHeightPropertionForPotrat: CGFloat = 277/475
+let widthToHeightPropertionForLandScape: CGFloat = 365/311
+
 var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
     return rowHeightForPotrait - 40
 }

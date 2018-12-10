@@ -38,17 +38,17 @@ class DisneyHomeViewModel: BaseViewModel {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = (data.items?[0].appType == .Movie) ? .potrait : .landscape
+                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first)
                 return layout
             }
         case .reumeWatch:
             if (baseWatchListModel?.data?[itemIndexTuple.1]) != nil {
-                
+                return .landscapeForResume
             }
         case .character:
             print("character")
         }
-        return .landscape
+        return .landscapeWithTitleOnly
     }
     override func getDataContainer(_ index: Int) -> DataContainer? {
         let itemIndexTuple = homeTableIndexArray[index]
@@ -71,9 +71,16 @@ class DisneyHomeViewModel: BaseViewModel {
         viewResponseBlock?(true)
     }
     
+    //Used when logging in
+    override func fetchAfterLoginUserDataWithoutCompletion() {
+        RJILApiManager.getResumeWatchData(vcType: .disneyHome, nil)
+        RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
+        RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+    }
+    
     
     // HOMEVC
-    var isToReloadTableViewAfterLoginStatusChange: Bool {
+    override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var resumeWatchListStatusInHomeTableArray = false
         if homeTableIndexArray.count > 0 {
@@ -81,10 +88,8 @@ class DisneyHomeViewModel: BaseViewModel {
         }
         var reloadTable = false
         if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
-            
             reloadTable = true
         } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
-            
             reloadTable = true
         }
         return reloadTable
@@ -110,7 +115,7 @@ class DisneyHomeViewModel: BaseViewModel {
                 return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscape)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
     }
     
     //Used when logging in

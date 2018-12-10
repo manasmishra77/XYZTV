@@ -57,9 +57,7 @@ class JCLanguageGenreSelectionVC: UIViewController,UITableViewDelegate, UITableV
         languageSelectionDelegate?.selectedFilter(filter: indexPath.row)
         self.dismiss(animated: false, completion: nil)
     }
-    
-    
-    
+  
 }
 
 class JCLanguageGenreSelectionPrototypeCell: UITableViewCell {

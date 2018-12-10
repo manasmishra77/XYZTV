@@ -11,7 +11,6 @@ import UIKit
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
     //var carousalView : InfinityScrollView?
-    var isWatchlistAvailable = false
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
     var viewLoadingStatus: ViewLoadingStatus = .none {
@@ -25,7 +24,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     @IBOutlet weak var baseTableView: UITableView!
     
-    lazy var tableReloadClosure: (Bool) -> () = {[unowned self] (isSuccess) in
+    lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
+        guard let self = self else {return}
         //Handle Reponse of APi Call
         print(self.baseViewModel.vcType)
         if self.viewLoadingStatus == .none {
@@ -43,18 +43,24 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     init(_ vcType: BaseVCType) {
-        if vcType == .disneyHome {
+        switch vcType {
+        case .home:
+            self.baseViewModel = CommonHomeViewModel(vcType) as! T
+        case .disneyHome:
             self.baseViewModel = DisneyHomeViewModel(vcType) as! T
-        } else {
+        default:
             self.baseViewModel = BaseViewModel(vcType) as! T
         }
         super.init(nibName: "BaseViewController", bundle: nil)
+        self.tabBarItem = UITabBarItem(title: vcType.name, image: nil, tag: 0)
+        self.view.backgroundColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
         if vcType == .disneyHome || vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyKids {
             self.view.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
         }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
-        self.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 0)
+//        self.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 0)
+
     }
 
     
@@ -78,14 +84,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
-        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
-            resumeWatchListDataAvailable = false
-            baseViewModel.reloadTableView()
-        }
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
-                self.baseViewModel.reloadTableView()
-            }
+//        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
+//            resumeWatchListDataAvailable = false
+//            baseViewModel.reloadTableView()
+//        }
+        if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
+            self.baseViewModel.reloadTableView()
         }
     }
     private func configureViews() {
@@ -145,28 +149,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
 
     
-    func callWebServiceForWatchlist(){
-        if let baseViewModel = baseViewModel as? DisneyHomeViewModel {
-            baseViewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
+    func callWebServiceForWatchlist() {
+        if let viewModel = baseViewModel as? DisneyHomeViewModel {
+            viewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
         }
-    }
-    func changingDataSourceForBaseTableView() {
-        //dataItemsForTableview.removeAll()
-        if let disneyData = JCDataStore.sharedDataStore.disneyData?.data {
-            if !JCLoginManager.sharedInstance.isUserLoggedIn() {
-                isWatchlistAvailable = false
-            }
-            dataItemsForTableview = disneyData
-            if dataItemsForTableview[0].isCarousal ?? false {
-                dataItemsForTableview.remove(at: 0)
-            }
-            if isWatchlistAvailable {
-                if let watchListData = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
-                    dataItemsForTableview.insert(watchListData, at: 0)
-                }
-            }
-        }
-        
     }
     @objc func callWebServiceWhenWatchlistUpdated() {
             RJILApiManager.getWatchListData(isDisney: true, type: baseViewModel.vcType) { (isSuccess, errorMsg) in

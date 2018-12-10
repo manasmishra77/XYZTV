@@ -316,6 +316,13 @@
 		7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCTextField.swift; sourceTree = "<group>"; };
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
+		990FCDEB21B5113F008C01A6 /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
+		990FCDEC21B5113F008C01A6 /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
+		990FCDED21B5113F008C01A6 /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
+		990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
+		990FCDEF21B51140008C01A6 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = icomoon.ttf; sourceTree = "<group>"; };
+		990FCDF021B51140008C01A6 /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
+		990FCDF121B51140008C01A6 /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
 		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
@@ -456,6 +463,7 @@
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
+				990FCDEA21B50C82008C01A6 /* Fonts */,
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
 				19491EDD2018522600870794 /* JCTopShelf */,
@@ -661,6 +669,20 @@
 				9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */,
 			);
 			name = CustomComponents;
+			sourceTree = "<group>";
+		};
+		990FCDEA21B50C82008C01A6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				990FCDEF21B51140008C01A6 /* icomoon.ttf */,
+				990FCDF121B51140008C01A6 /* JioType-Black.ttf */,
+				990FCDEB21B5113F008C01A6 /* JioType-Bold.ttf */,
+				990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */,
+				990FCDF021B51140008C01A6 /* JioType-LightItalic.ttf */,
+				990FCDEC21B5113F008C01A6 /* JioType-Medium.ttf */,
+				990FCDED21B5113F008C01A6 /* JioType-MediumItalic.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		991FCC032C29485454E4C5A0 /* Frameworks */ = {
