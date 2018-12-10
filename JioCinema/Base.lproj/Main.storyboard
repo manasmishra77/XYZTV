@@ -529,7 +529,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OXd-1y-bTi">
-                                <rect key="frame" x="1320" y="800" width="600" height="150"/>
+                                <rect key="frame" x="1320" y="830" width="600" height="150"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="28g-LG-naa">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
@@ -717,10 +717,10 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Xym-mI-ik0" firstAttribute="leading" secondItem="qDA-Z1-tmP" secondAttribute="leading" id="1Yj-sw-aSR"/>
+                            <constraint firstItem="VRe-AD-HU3" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="50" id="4e7-0r-qKp"/>
                             <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="N9a-t5-dPh" secondAttribute="bottom" constant="-60" id="5c2-FD-5iu"/>
                             <constraint firstAttribute="trailing" secondItem="OXd-1y-bTi" secondAttribute="trailing" id="7L1-Yi-o4A"/>
                             <constraint firstAttribute="trailing" secondItem="N9a-t5-dPh" secondAttribute="trailing" id="8Rl-QL-Jtg"/>
-                            <constraint firstItem="d3Q-X8-goK" firstAttribute="top" secondItem="OXd-1y-bTi" secondAttribute="bottom" constant="70" id="9no-cs-ZY7"/>
                             <constraint firstItem="N9a-t5-dPh" firstAttribute="top" secondItem="Zyd-cn-lgC" secondAttribute="bottom" constant="-60" id="FPp-oE-Sge"/>
                             <constraint firstAttribute="bottom" secondItem="VRe-AD-HU3" secondAttribute="bottom" constant="-250" id="RiY-8m-uwM"/>
                             <constraint firstAttribute="bottom" secondItem="Xym-mI-ik0" secondAttribute="bottom" id="VHM-9S-HwJ"/>
@@ -733,9 +733,9 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicatorOfLoaderView" destination="M96-XT-G9E" id="IVw-Po-Rmf"/>
+                        <outlet property="bottomConstarintRecommendationView" destination="RiY-8m-uwM" id="d3U-Bf-A7d"/>
                         <outlet property="collectionView_Recommendation" destination="QOy-iQ-IFl" id="1dJ-5w-5Ya"/>
-                        <outlet property="collectionView_RecommendationBottomConstarint" destination="RiY-8m-uwM" id="d3U-Bf-A7d"/>
-                        <outlet property="collectionView_RecommendationHeigth" destination="Dys-AQ-rVF" id="gcw-5j-ZFE"/>
+                        <outlet property="heightRecommendationView" destination="Dys-AQ-rVF" id="gcw-5j-ZFE"/>
                         <outlet property="loaderCoverView" destination="Xym-mI-ik0" id="e2B-3D-V4V"/>
                         <outlet property="nextVideoNameLabel" destination="VOU-lG-iud" id="20a-Ih-sw9"/>
                         <outlet property="nextVideoPlayingTimeLabel" destination="qG8-AD-0fn" id="QcN-qi-YBq"/>

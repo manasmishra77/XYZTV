@@ -64,9 +64,9 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
-    @IBOutlet weak var collectionView_RecommendationHeigth: NSLayoutConstraint!
+    @IBOutlet weak var heightRecommendationView: NSLayoutConstraint!
     
-    @IBOutlet weak var collectionView_RecommendationBottomConstarint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstarintRecommendationView: NSLayoutConstraint!
     
     //Player changes
     var id: String = ""
@@ -913,9 +913,8 @@
         DispatchQueue.main.async {
             
             UIView.animate(withDuration: 0.5, animations: {
-                let tempFrame = self.nextVideoView.frame
-                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight - self.view_Recommendation.frame.height, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.bottomConstarintRecommendationView.constant = 0
+                self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
             })
@@ -926,11 +925,9 @@
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         collectionView_Recommendation.isScrollEnabled = false
         DispatchQueue.main.async {
-            
             UIView.animate(withDuration: 0.5, animations: {
-                let tempFrame = self.nextVideoView.frame
-                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y + 300, width: tempFrame.size.width, height: tempFrame.size.height)
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.bottomConstarintRecommendationView.constant = -self.heightRecommendationView.constant + 60
+                self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
                 self.recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
@@ -1539,18 +1536,12 @@
     
     func setRecommendationConstarints(_ appType: VideoType) {
         if appType == .Movie {
-            self.collectionView_RecommendationHeigth.constant = rowHeightForPotrait
+            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
         } else {
-            self.collectionView_RecommendationHeigth.constant = rowHeightForLandscape
+            self.heightRecommendationView.constant = PlayerRecommendationSize.landscapeRowHeight
         }
+        self.bottomConstarintRecommendationView.constant = PlayerRecommendationSize.bottomConstarint(appType)
     }
-    
-//    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
-//        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
-//            return item.languageIndex
-//        }
-//        return audioLanguage
-//    }
     
     //PlayerVc changing when an item is played from playervc recommendation
     func changePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: [Any] = [Any](), fromScreen: String, fromCategory: String, fromCategoryIndex: Int) {
@@ -1634,9 +1625,8 @@
  extension JCPlayerVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
  {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height - 30
-        let width = (appType == .Movie) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
-        return CGSize(width: width, height: height)
+        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
+        return size
     }
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return isRecommendationView
