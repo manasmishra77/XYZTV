@@ -863,7 +863,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func callWebServiceToUpdateWatchlist(withUrl url: String, watchlistStatus: Bool, andParameters params: [String: Any]) {
-        print(self.item)
         self.headerCell.addToWatchListButton.isEnabled = false
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
             guard let self = self else {
@@ -884,10 +883,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 } else {
                     self.headerCell.watchlistLabel.text = ADD_TO_WATCHLIST
                 }
-            }
-            //ChangingTheDataSourceForWatchListItems
-            if self.isDisney {
-                NotificationCenter.default.post(name: WatchlistUpdatedNotificationName, object: nil)
             }
             self.changingDataSourceForWatchList()
         }
@@ -949,25 +944,21 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     //ChangingTheDataSourceForWatchListItems
     func changingDataSourceForWatchList() {
         if let navVc = (self.presentingViewController?.presentingViewController ?? self.presentingViewController) as? UINavigationController {
-            if let tabVC = navVc.viewControllers[0] as? UITabBarController{
+            if let tabVC = navVc.viewControllers[0] as? UITabBarController {
+                let isMovie = self.itemAppType == VideoType.Movie
                 if isDisney {
-                        if let vc = tabVC.viewControllers![4] as? BaseViewController {
-//                            if self.itemAppType == VideoType.TVShow{
-                            vc.callWebServiceForWatchlist()
-//                            }
-//                            else {
-//                             vc.callWebServiceForWatchlist()
-//                        }
+                    if let vc = tabVC.viewControllers?[4] as? BaseViewController {
+                        let basseVCType: BaseVCType = isMovie ? BaseVCType.disneyMovies : BaseVCType.disneyTVShow
+                        vc.baseViewModel.getUpdatedWatchListFor(vcType: basseVCType)
                     }
                 } else {
-                    if self.itemAppType == VideoType.TVShow{
-                        if let vc = tabVC.viewControllers![2] as? JCTVVC{
-                            vc.callWebServiceForTVWatchlist()
+                    if isMovie {
+                        if let vc = tabVC.viewControllers?[1] as? BaseViewController {
+                            vc.baseViewModel.getUpdatedWatchListFor(vcType: .movie)
                         }
-                    }
-                    if self.itemAppType == VideoType.Movie{
-                        if let vc = tabVC.viewControllers![1] as? JCMoviesVC{
-                            vc.callWebServiceForMoviesWatchlist()
+                    } else {
+                        if let vc = tabVC.viewControllers?[2] as? BaseViewController {
+                            vc.baseViewModel.getUpdatedWatchListFor(vcType: .tv)
                         }
                     }
                 }

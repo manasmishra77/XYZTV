@@ -143,22 +143,18 @@ let EnterParentalPinViewIdentifier = "EnterParentalPinView"
 let heightOfCarouselSection = 600
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
-let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
-let playerDismissNotificationName = Notification.Name("playerDismissed")
-let watchNowNotificationName = Notification.Name("didClickOnWatchNowNotification")
-let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell")
-let showLoginFromMetadataNotificationName = Notification.Name("showLoginFromMetadata")
-let loginSuccessNotificationName = Notification.Name("loginSuccessful")
-let readyToPlayNotificationName = Notification.Name("readyToPlay")
-let openSearchVCNotificationName = Notification.Name("openSearchVC")
 let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")
 let didSetDisneyTVWatchlist = Notification.Name("didSetDisneyTVWatchList")
 let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList")
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
-let resumeWatchReloadNotification = Notification.Name("resumeWatchReload")
-let reloadDisneyResumeWatch = Notification.Name("ReloadDisneyResumeWatch")
+
+
+struct AppNotification {
+    static let reloadResumeWatch = Notification.Name("resumeWatchReload")
+    static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
+}
 
 
 //Google Analytics

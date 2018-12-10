@@ -59,8 +59,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
-//        self.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 0)
-
     }
 
     
@@ -69,25 +67,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     deinit {
         print("BaseVC Deinit -)")
-        NotificationCenter.default.removeObserver(self, name: WatchlistUpdatedNotificationName, object: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureViews()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.callWebServiceWhenWatchlistUpdated),
-            name: WatchlistUpdatedNotificationName,
-            object: nil)
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
-//        if !JCLoginManager.sharedInstance.isUserLoggedIn(), resumeWatchListDataAvailable {
-//            resumeWatchListDataAvailable = false
-//            baseViewModel.reloadTableView()
-//        }
         if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
             self.baseViewModel.reloadTableView()
         }
@@ -100,7 +88,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
         }
-        callWebServiceForWatchlist()
     }
     
     override func didReceiveMemoryWarning() {
@@ -147,19 +134,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
     }
-
-    
-    func callWebServiceForWatchlist() {
-        if let viewModel = baseViewModel as? DisneyHomeViewModel {
-            viewModel.getDataForWatchListForDisneyMovieAndTv(baseViewModel.vcType)
-        }
-    }
-    @objc func callWebServiceWhenWatchlistUpdated() {
-            RJILApiManager.getWatchListData(isDisney: true, type: baseViewModel.vcType) { (isSuccess, errorMsg) in
-                guard isSuccess else {return}
-                self.baseViewModel.reloadTableView()
-            }
-    }
 }
 extension BaseViewController {
     func showAlert() {
@@ -170,16 +144,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
         baseViewModel.itemCellTapped(item, selectedIndexPath: selectedIndexPath)
-        return
-        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-            // For DisneyKids, Disney Movies, Disney TVShow
-            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: DISNEY_SCREEN, categoryName: "", categoryIndex: 0, tabBarIndex: 5, isDisney: true)
-            self.present(metadataVC, animated: true, completion: nil)
-            return
-        }
-        //tabBarVC.presentVC(item, dataType: .disney)
     }
-
 }
 
 extension BaseViewController: BaseViewModelDelegate {

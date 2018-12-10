@@ -65,9 +65,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 
                 JCLoginManager.sharedInstance.setUserToDefaults()
                 let vc = self.presentingVCOfLoginVc
-                let presentedFromAddToWatchList = self.isLoginPresentedFromAddToWatchlist ?? false
-                let presentedFromPlayNowButtonOfMetadata = self.isLoginPresentedFromPlayNowButtonOfMetaData ?? false
-                let loginPresentedFromItemCell = self.isLoginPresentedFromItemCell ?? false
+                let presentedFromAddToWatchList = self.isLoginPresentedFromAddToWatchlist
+                let presentedFromPlayNowButtonOfMetadata = self.isLoginPresentedFromPlayNowButtonOfMetaData
+                let loginPresentedFromItemCell = self.isLoginPresentedFromItemCell
                 
                 ParentalPinManager.shared.setParentalPinModel()
                 //Updates after login
@@ -82,26 +82,11 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                 }
 
                 if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
-//                    if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-//                        homevc.callWebServiceForResumeWatchData()
-//                        homevc.callWebServiceForUserRecommendationList()
-//                    }
-//                    if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
-//                        movieVC.callWebServiceForMoviesWatchlist()
-//                    }
-//                    if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
-//                        tvVc.callWebServiceForTVWatchlist()
-//                    }
                     if let disneyHomeVC = tabVc.viewControllers?[4] as? BaseViewController {
-                        disneyHomeVC.callWebServiceForWatchlist()
-                        if let baseViewModel = disneyHomeVC.baseViewModel as? DisneyHomeViewModel {
-                           baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
-                        }
+                        disneyHomeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                     if let homeVC = tabVc.viewControllers?[0] as? BaseViewController {
-                        if let viewModel = homeVC.baseViewModel as? CommonHomeViewModel {
-                            viewModel.fetchAfterLoginUserDataWithoutCompletion()
-                        }
+                            homeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                     if let movieVC = tabVc.viewControllers?[1] as? BaseViewController {
                             movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
@@ -151,8 +136,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             }
 
                         }
-                        else if presentedFromPlayNowButtonOfMetadata{
-                            if let vc = vc as? JCMetadataVC{
+                        else if presentedFromPlayNowButtonOfMetadata {
+                            if let vc = vc as? JCMetadataVC {
                                 //Play after login
                                 vc.didClickOnWatchNowButton(nil)
                             }

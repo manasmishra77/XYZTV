@@ -20,16 +20,18 @@ class ItemCollectionViewCell: UICollectionViewCell {
 //    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
+    var cellItem : BaseItemCellModels?
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
+        cellItem = cellItems
         nameLabel.text = cellItems.item.name ?? ""
-        subtitle.text = cellItems.item.subtitle
-        nameLabel.isHidden = true
+        subtitle.text = cellItems.item.subtitle          
         subtitle.isHidden = true
         progressBar.isHidden = true
         heightConstraintForProgressBar.constant = 0
-        
+
+
         
         //Load Image
         self.setImageForLayoutType(cellItems)
@@ -43,7 +45,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeForResume:
             subtitle.text = ""
         case .landscapeWithLabels:
-            subtitle.text = ""
+            break
         case .potrait:
             subtitle.text = ""
         }
@@ -82,6 +84,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithTitleOnly:
             if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
                 setImageOnCell(url: imageURL)
+
             }
         case .landscapeForResume:
             if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
@@ -127,10 +130,16 @@ class ItemCollectionViewCell: UICollectionViewCell {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             self.nameLabel.isHidden = false
             self.subtitle.isHidden = false
+            if cellItem?.layoutType == .landscapeForLangGenre {
+            imageView.borderWidth = 5
+            imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            }
+        
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.nameLabel.isHidden = true
             self.subtitle.isHidden = true
+            imageView.borderWidth = 0
         }
     }
 }

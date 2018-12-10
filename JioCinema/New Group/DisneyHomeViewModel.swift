@@ -14,7 +14,12 @@ class DisneyHomeViewModel: BaseViewModel {
     fileprivate var resumeWatchModelIndex = 0
     fileprivate var characterModelIndex = 0
     fileprivate var homeTableIndexArray: [(DisneyHomeDataType, Int)] = []
+    fileprivate var isResumeWatchListUpdated = false
     //Override BaseViewModel
+    override init(_ vcType: BaseVCType) {
+        super.init(vcType)
+        NotificationCenter.default.addObserver(self, selector: #selector(onCallDisneyResumeWatchUpdate(_:)), name: AppNotification.reloadResumeWatchForDisney, object: nil)
+    }
     override func fetchData(completion: @escaping (Bool) -> ()) {
         viewResponseBlock = completion
         fetchAllDisneyHomeData()
@@ -70,6 +75,13 @@ class DisneyHomeViewModel: BaseViewModel {
         populateHomeTableArray()
         viewResponseBlock?(true)
     }
+    override func getUpdatedWatchListFor(vcType: BaseVCType) {
+        if vcType == .disneyMovies {
+            RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
+        } else if vcType == .disneyTVShow {
+            RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+        }
+    }
     
     //Used when logging in
     override func fetchAfterLoginUserDataWithoutCompletion() {
@@ -82,18 +94,34 @@ class DisneyHomeViewModel: BaseViewModel {
     // HOMEVC
     override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
-        var resumeWatchListStatusInHomeTableArray = false
-        if homeTableIndexArray.count > 0 {
-            resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
-        }
         var reloadTable = false
-        if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+        //When Resume watch get updated
+        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+            isResumeWatchListUpdated = false
             reloadTable = true
-        } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
-            reloadTable = true
+            return reloadTable
+        } else {
+            //After login cases
+            var resumeWatchListStatusInHomeTableArray = false
+            if homeTableIndexArray.count > 0 {
+                resumeWatchListStatusInHomeTableArray = (homeTableIndexArray[resumeWatchModelIndex].0 == .reumeWatch)
+            }
+            if isResumeWatchListAvailabaleInDataStore, !resumeWatchListStatusInHomeTableArray {
+                reloadTable = true
+            } else if !isResumeWatchListAvailabaleInDataStore, resumeWatchListStatusInHomeTableArray {
+                reloadTable = true
+            }
+            return reloadTable
         }
-        return reloadTable
     }
+    
+    //notification listener
+    //Used when resume watchlist get updated 
+    @objc func onCallDisneyResumeWatchUpdate(_ notification:Notification) {
+        self.fetchDisneyResumeDataWithoutCompletion()
+        self.isResumeWatchListUpdated = true
+    }
+    
     func getHomeCellItems(for index: Int) -> TableCellItemsTuple  {
         let itemIndexTuple = homeTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
@@ -136,6 +164,7 @@ class DisneyHomeViewModel: BaseViewModel {
     fileprivate func fetchAllDisneyHomeData() {
         fetchBaseData()
         RJILApiManager.getResumeWatchData(vcType: .disneyHome, baseAPIReponseHandler)
+        getDataForWatchListForDisneyMovieAndTv(vcType)
     }
     
     fileprivate func handleOnFailure(completion: @escaping (_ isSuccess: Bool) -> ()) {

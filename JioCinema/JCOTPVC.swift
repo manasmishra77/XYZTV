@@ -115,6 +115,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
             activityIndicator?.startAnimating()
             self.callWebServiceToVerifyOTP(otp: enteredOTP!)
+            
         }
     }
     
@@ -203,7 +204,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         view.addSubview(activityIndicator!)
         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
         activityIndicator?.startAnimating()
-        RJILApiManager.getOTP(number: number) {[unowned self] (isSuccess, errMsg) in
+        RJILApiManager.getOTP(number: number) {[weak self] (isSuccess, errMsg) in
+            guard let self = self else {return}
             DispatchQueue.main.async {
                 self.activityIndicator?.stopAnimating()
             }
@@ -305,7 +307,8 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     }
     
     fileprivate func callWebServiceToVerifyOTP(otp: String) {
-        RJILApiManager.verifyOTP(number: enteredNumber ?? "", otp: otp) {[unowned self] (isSuccess, errMsg) in
+        RJILApiManager.verifyOTP(number: enteredNumber ?? "", otp: otp) {[weak self] (isSuccess, errMsg) in
+            guard let self = self else {return}
             guard isSuccess else {
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
                 self.sendLoggedInAnalyticsEventWithFailure(errorMessage: errMsg ?? "")
@@ -317,57 +320,75 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             let presentedFromPlayNowButtonOfMetadata = self.isLoginPresentedFromPlayNowButtonOfMetaData
             let loginPresentedFromItemCell = self.isLoginPresentedFromItemCell
             
-            //Updates after login
             ParentalPinManager.shared.setParentalPinModel()
-            if let navVc = self.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController {
-                if let homevc = tabVc.viewControllers![0] as? JCHomeVC {
-                 homevc.callWebServiceForResumeWatchData()
-                 homevc.callWebServiceForUserRecommendationList()
-                 }
-                 if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC {
-                 movieVC.callWebServiceForMoviesWatchlist()
-                 }
-                 if let tvVc = tabVc.viewControllers![2] as? JCTVVC {
-                 tvVc.callWebServiceForTVWatchlist()
-                 }
+            //Updates after login
+            
+            var navVC: UINavigationController? = nil
+            if let vc = self.presentingViewController?.presentingViewController as? UINavigationController {
+                navVC = vc
+            } else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                navVC = vc
+            }  else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                navVC = vc
+            }
+            
+            if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
+                if let disneyHomeVC = tabVc.viewControllers?[4] as? BaseViewController {
+                    disneyHomeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                }
+                if let homeVC = tabVc.viewControllers?[0] as? BaseViewController {
+                    homeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                }
+                if let movieVC = tabVc.viewControllers?[1] as? BaseViewController {
+                    movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                }
+                if let tvVc = tabVc.viewControllers?[2] as? BaseViewController {
+                    tvVc.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                }
             }
             
             DispatchQueue.main.async {
                 self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                    if loginPresentedFromItemCell{
+                    
+                    if loginPresentedFromItemCell {
+                        
                         if let vc = vc as? JCHomeVC {
                             vc.playItemAfterLogin()
                         }
                         else if (vc as? JCMoviesVC) != nil {
                             //vc.playItemAfterLogin()
                         }
-                        else if (vc as? JCTVVC) != nil {
-                            //vc.playItemAfterLogin()
+                        else if let vc = vc as? JCTVVC {
+                            vc.playItemAfterLogin()
                         }
                         else if let vc = vc as? JCMusicVC {
                             vc.playItemAfterLogin()
                         }
-//                        else if let vc = vc as? JCClipsVC {
-//                            vc.playItemAfterLogin()
-//                        }
+                            //                            else if let vc = vc as? JCClipsVC {
+                            //                                vc.playItemAfterLogin()
+                            //                            }
                         else if let vc = vc as? JCSearchResultViewController {
                             vc.playItemAfterLogin()
                         }
                         else if let vc = vc as? JCMetadataVC {
                             vc.playItemAfterLogin()
                         }
+                        else if let vc = vc as? JCLanguageGenreVC {
+                            vc.playItemAfterLogin()
+                        }
                         else if let vc = vc as? BaseViewModel {
                             vc.playItemAfterLogin()
                         }
                     }
-                    if presentedFromAddToWatchList{
+                    else if presentedFromAddToWatchList {
                         if (vc as? JCMetadataVC) != nil{
                             //Change Add to watchlist button status
                             
                         }
+                        
                     }
-                    if presentedFromPlayNowButtonOfMetadata{
-                        if let vc = vc as? JCMetadataVC{
+                    else if presentedFromPlayNowButtonOfMetadata {
+                        if let vc = vc as? JCMetadataVC {
                             //Play after login
                             vc.didClickOnWatchNowButton(nil)
                         }
@@ -375,8 +396,9 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 })
             }
             self.sendLoggedInAnalyticsEventWithSuccess()
-            
         }
+        
+    }
         /*
          let params = [identifierKey:enteredNumber,otpKey:otp,upgradeAuthKey:upgradAuthValue,returnSessionDetailsKey:returnSessionDetailsValue]
          
@@ -398,7 +420,6 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
          weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
          }
          }*/
-    }
     
     
     fileprivate func callWebServiceToLoginViaSubId(info:[String:Any]) {
@@ -504,7 +525,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                 }
             }
         }
-    }
+}
     
     
     func setUserData(data:[String:Any])
