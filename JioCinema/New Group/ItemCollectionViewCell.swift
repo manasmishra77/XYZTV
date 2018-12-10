@@ -26,29 +26,16 @@ class ItemCollectionViewCell: UICollectionViewCell {
     func configureView(_ cellItems: BaseItemCellModels) {
         cellItem = cellItems
         nameLabel.text = cellItems.item.name ?? ""
-        subtitle.text = cellItems.item.subtitle          
-        subtitle.isHidden = true
+        subtitle.text = cellItems.item.subtitle
         progressBar.isHidden = true
+        nameLabel.isHidden = false
+        subtitle.isHidden = false
         heightConstraintForProgressBar.constant = 0
-
-
         
         //Load Image
         self.setImageForLayoutType(cellItems)
-        
-        switch cellItems.layoutType {
-        case .landscapeWithTitleOnly:
-            subtitle.text = ""
-        case .landscapeForLangGenre:
-            nameLabel.text = ""
-            subtitle.text = ""
-        case .landscapeForResume:
-            subtitle.text = ""
-        case .landscapeWithLabels:
-            break
-        case .potrait:
-            subtitle.text = ""
-        }
+        configureCellLabelVisibility(cellItems.layoutType)
+
         switch cellItems.cellType {
         case .base:
             return
@@ -73,34 +60,56 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     
-    func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
+    private func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
         //Load Image
-        
         switch cellItems.layoutType {
-        case .potrait:
+        case .potrait, .potraitWithLabelAlwaysShow:
             if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
                 setImageOnCell(url: imageURL)
             }
-        case .landscapeWithTitleOnly:
-            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
-                setImageOnCell(url: imageURL)
-
-            }
-        case .landscapeForResume:
-            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
-                setImageOnCell(url: imageURL)
-            }
-        case .landscapeForLangGenre:
-            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
-                setImageOnCell(url: imageURL)
-            }
-        case .landscapeWithLabels:
+        case .landscapeWithTitleOnly, .landscapeForLangGenre, .landscapeForResume, .landscapeWithLabels, .landscapeWithLabelsAlwaysShow:
             if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
                 setImageOnCell(url: imageURL)
             }
         }
     }
     
+    private func configureCellLabelVisibility(_ layoutType: ItemCellLayoutType, isFocused: Bool = false) {
+        switch layoutType {
+        case .potrait:
+            if isFocused {
+                nameLabel.text = cellItem?.item.name ?? ""
+                subtitle.text = ""
+            } else {
+                nameLabel.text = ""
+                subtitle.text = ""
+            }
+        case .potraitWithLabelAlwaysShow:
+            subtitle.text = ""
+        case .landscapeWithTitleOnly:
+            subtitle.text = ""
+            if isFocused {
+               nameLabel.text = cellItem?.item.name ?? ""
+            } else {
+               nameLabel.text = ""
+            }
+        case .landscapeForResume:
+            break
+        case .landscapeForLangGenre:
+            nameLabel.text = ""
+            subtitle.text = ""
+        case .landscapeWithLabels:
+            if isFocused {
+                nameLabel.text = cellItem?.item.name ?? ""
+                subtitle.text = cellItem?.item.subtitle ?? ""
+            } else {
+                nameLabel.text = ""
+                subtitle.text = ""
+            }
+        case .landscapeWithLabelsAlwaysShow:
+            break
+        }
+    }
     
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
          heightConstraintForProgressBar.constant = 10
@@ -118,7 +127,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
     }
 
-   fileprivate func setImageOnCell(url: URL) {
+    private func setImageOnCell(url: URL) {
         imageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
@@ -128,17 +137,15 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
-            self.nameLabel.isHidden = false
-            self.subtitle.isHidden = false
+            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if cellItem?.layoutType == .landscapeForLangGenre {
-            imageView.borderWidth = 5
-            imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+                imageView.borderWidth = 5
+                imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
-        
+            
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.nameLabel.isHidden = true
-            self.subtitle.isHidden = true
+            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
             imageView.borderWidth = 0
         }
     }
@@ -156,10 +163,12 @@ enum ItemCellType {
 
 enum ItemCellLayoutType {
     case potrait
+    case potraitWithLabelAlwaysShow
     case landscapeWithTitleOnly
     case landscapeForResume
     case landscapeForLangGenre
     case landscapeWithLabels
+    case landscapeWithLabelsAlwaysShow
     
     init(layout : Int) {
         switch layout {

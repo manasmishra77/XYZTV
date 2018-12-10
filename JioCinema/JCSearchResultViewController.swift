@@ -117,9 +117,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         if let appType = item?.appType {
             switch appType {
             case .Episode, .Clip, .Music, .Search:
-                return .landscapeWithLabels
-            case .Language, .Genre:
-                return .landscapeForLangGenre
+                return .landscapeWithLabelsAlwaysShow
             case .Movie:
                 return .potrait
             default:
