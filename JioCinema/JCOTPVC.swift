@@ -168,15 +168,12 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        // jioNumberTFLabel.text = "8356903414"
+        jioNumberTFLabel.text = "8356903414"//"9757012372"//
         enteredJioNumber = jioNumberTFLabel.text
-        if(enteredJioNumber?.count != 10)
-        {
+        if(enteredJioNumber?.count != 10) {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
             self.jioNumberTFLabel.text = "Enter Jio Number"
-        }
-        else
-        {
+        } else {
             self.callWebServiceToGetOTP(number: enteredJioNumber!)
         }
     }
@@ -204,6 +201,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         view.addSubview(activityIndicator!)
         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
         activityIndicator?.startAnimating()
+        enteredNumber = "+91".appending(number)
         RJILApiManager.getOTP(number: number) {[weak self] (isSuccess, errMsg) in
             guard let self = self else {return}
             DispatchQueue.main.async {
@@ -309,6 +307,11 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     fileprivate func callWebServiceToVerifyOTP(otp: String) {
         RJILApiManager.verifyOTP(number: enteredNumber ?? "", otp: otp) {[weak self] (isSuccess, errMsg) in
             guard let self = self else {return}
+            DispatchQueue.main.async {
+                self.activityIndicator?.stopAnimating()
+                self.activityIndicator?.removeFromSuperview()
+                self.activityIndicator = nil
+            }
             guard isSuccess else {
                 self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
                 self.sendLoggedInAnalyticsEventWithFailure(errorMessage: errMsg ?? "")
