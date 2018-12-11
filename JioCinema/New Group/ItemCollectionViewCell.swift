@@ -15,8 +15,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var scrollViewForLabel: UIScrollView!
     @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var subtitle: UILabel!
+    @IBOutlet weak var widthOfnameLabel: NSLayoutConstraint!
+
 //    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
@@ -31,6 +34,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         nameLabel.isHidden = false
         subtitle.isHidden = false
         heightConstraintForProgressBar.constant = 0
+        widthOfnameLabel.constant = nameLabel.intrinsicContentSize.width
         
         //Load Image
         self.setImageForLayoutType(cellItems)
@@ -108,8 +112,22 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithLabelsAlwaysShow:
             break
         }
+        
     }
-    
+    private func autoScroll(){
+        self.scrollViewForLabel.contentOffset.x = -(scrollViewForLabel.frame.width)
+
+        let sepration = nameLabel.intrinsicContentSize.width - scrollViewForLabel.frame.width
+        var duration = sepration * 0.8 / 24
+        
+        
+        UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: UIViewAnimationOptions.curveLinear, animations: {
+            self.scrollViewForLabel.contentOffset.x = self.nameLabel.intrinsicContentSize.width
+            }, completion: {(finished: Bool) in
+                self.scrollViewForLabel.contentOffset.x = 0
+        })
+//        }
+    }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
          heightConstraintForProgressBar.constant = 10
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
@@ -140,6 +158,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if cellItem?.layoutType == .landscapeForLangGenre {
                 imageView.borderWidth = 5
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            }
+            if scrollViewForLabel.frame.width < nameLabel.intrinsicContentSize.width{
+                self.autoScroll()
             }
             
         } else {
