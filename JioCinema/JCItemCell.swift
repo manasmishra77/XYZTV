@@ -36,7 +36,7 @@ class JCItemCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            self.transform = CGAffineTransform(scaleX: 1.18, y: 1.18)
+            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             autoScrollLabel?.setLabelText("Some lengthy text to be scrolled")
             self.nameLabel.isHidden = true
         } else {

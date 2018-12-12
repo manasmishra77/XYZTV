@@ -266,7 +266,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height
-        var width = height * widthToHeightPropertionForLandScape
+        var width = height * widthToHeightPropertionForLandScapeOLD
         
         switch itemArrayType {
         case .resumeWatch:
@@ -275,7 +275,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
             if let items = itemsArray as? [Item] {
                 let itemAppType = items[0].appType
                 if itemAppType == .Movie {
-                    width = height * widthToHeightPropertionForPotrat
+                    width = height * widthToHeightPropertionForPotratOLD
                 }
             }
         case .episode:
@@ -285,6 +285,8 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         }
         return CGSize(width: width, height: height)
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)

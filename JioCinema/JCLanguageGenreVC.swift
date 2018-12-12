@@ -382,11 +382,11 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
     var itemCellSize: CGSize {
         if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
             let height = rowHeightForPotraitForLanguageGenreScreen
-            let widht = height*widthToHeightPropertionForPotrat
+            let widht = height*widthToHeightPropertionForPotratOLD
             return CGSize(width: widht, height: height)
         } else {
             let height = rowHeightForLandscapeForLanguageGenreScreen
-            let widht = height*widthToHeightPropertionForLandScape
+            let widht = height*widthToHeightPropertionForLandScapeOLD
             return CGSize(width: widht, height: height)
         }
     }
@@ -404,6 +404,10 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
