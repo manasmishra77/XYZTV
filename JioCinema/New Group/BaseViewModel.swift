@@ -74,7 +74,7 @@ class BaseViewModel: NSObject  {
                 DispatchQueue.main.async {
                     if self.vcType == .disneyHome {
                         self.carousal?.viewOfButtons.isHidden = false
-                        self.carousal?.disneyViewHeight.constant = 100
+                        self.carousal?.disneyViewHeight.constant = 200
                     }
                     else {
                         self.carousal?.viewOfButtons.isHidden = true
@@ -185,7 +185,7 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableHeader() -> CGFloat {
-        return vcType == .disneyHome ? 750 : 650
+        return vcType == .disneyHome ? 850 : 650
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
