@@ -185,7 +185,19 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableHeader() -> CGFloat {
-        return vcType == .disneyHome ? 850 : 650
+        if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
+            return (vcType == .disneyHome) ? 850 : 650
+        }
+        return 0
+    }
+    
+    func leadingConstraintBaseTable() -> CGFloat {
+        switch vcType {
+        case .disneyMovies, .disneyKids, .disneyTVShow:
+            return 0
+        default:
+            return 0//80
+        }
     }
     
     func heightOfTableRow(_ index: Int) -> CGFloat {

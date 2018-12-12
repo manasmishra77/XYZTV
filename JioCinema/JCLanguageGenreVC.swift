@@ -378,38 +378,61 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
 }
 
-extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var itemCellSize: CGSize {
         if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
-            return CGSize(width: rowHeightForPotraitForLanguageGenreScreen * widthToHeightPropertionForPotrat, height: rowHeightForPotraitForLanguageGenreScreen)
+            let height = rowHeightForPotraitForLanguageGenreScreen
+            let widht = height*widthToHeightPropertionForPotratOLD
+            return CGSize(width: widht, height: height)
+        } else {
+            let height = rowHeightForLandscapeForLanguageGenreScreen
+            let widht = height*widthToHeightPropertionForLandScapeOLD
+            return CGSize(width: widht, height: height)
         }
-        return CGSize(width: rowHeightForLandscapeForLanguageGenreScreen * widthToHeightPropertionForLandScape, height: rowHeightForLandscapeForLanguageGenreScreen)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return itemCellSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = languageGenreDetailModel?.data?.items?.count {
             return count
         }
         return 0
         
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        
-        cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
-        var urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlLandscapContent ?? ""
-        if languageGenreDetailModel?.data?.items?[indexPath.row].appType == .Movie {
-            urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlPortraitContent ?? ""
+        let item = languageGenreDetailModel?.data?.items?[indexPath.row] ?? Item()
+        let cellType: ItemCellType = .base
+        var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
+        if item.appType == .Movie {
+            layoutType = .potrait
+        } else if item.appType == .TVShow {
+            layoutType = .landscapeWithLabels
         }
-        let url = URL(string: urlString)
-        cell.imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-        });
-        DispatchQueue.main.async {
+        
+        let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+        cell.configureView(cellItems)
+        
+//        cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
+//        var urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlLandscapContent ?? ""
+//        if languageGenreDetailModel?.data?.items?[indexPath.row].appType == .Movie {
+//            urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlPortraitContent ?? ""
+//        }
+//        let url = URL(string: urlString)
+//        cell.imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//        });
         if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count ?? 0) - 1)
         {
             if(self.loadedPage < (self.languageGenreDetailModel?.pageCount ?? 0) - 1)
@@ -424,7 +447,6 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
                 
                 self.loadedPage += 1
             }
-        }
         }
         return cell
     }

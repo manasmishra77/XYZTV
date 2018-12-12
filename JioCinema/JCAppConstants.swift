@@ -211,12 +211,16 @@ let rowHeightForPotrait: CGFloat = 561
 let rowHeightForLandscape: CGFloat = 397
 let widthToHeightPropertionForPotrat: CGFloat = 277/475
 let widthToHeightPropertionForLandScape: CGFloat = 365/311
+let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
+let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
+
+
 
 var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
-    return rowHeightForPotrait - 40
+    return rowHeightForPotrait - 60
 }
 var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
-    return rowHeightForLandscape - 55
+    return rowHeightForLandscape - 75
 }
 
 struct PlayerRecommendationSize {

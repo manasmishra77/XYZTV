@@ -24,6 +24,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     @IBOutlet weak var baseTableView: UITableView!
     
+    @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
+    
+    
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
         //Handle Reponse of APi Call
@@ -85,6 +88,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         baseTableView.dataSource = self
         let cellNib = UINib(nibName: "BaseTableViewCell", bundle: nil)
         baseTableView.register(cellNib, forCellReuseIdentifier: "BaseTableViewCell")
+        baseTableLeadingConstraint.constant = baseViewModel.leadingConstraintBaseTable()
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
         }
