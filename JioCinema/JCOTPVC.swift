@@ -447,6 +447,11 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
             {
                 //TODO: handle error
                 print(responseError)
+                print(responseError)
+                self.showAlert(alertTitle: "Try Again!!!", alertMessage: "Some error occuered!!")
+                DispatchQueue.main.async {
+                    self.activityIndicator?.stopAnimating()
+                }
                 
                 self.sendLoggedInAnalyticsEventWithFailure(errorMessage: responseError.localizedDescription)
                 

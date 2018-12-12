@@ -604,7 +604,9 @@
                             var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
                             timeSpent = timeSpent > 0 ? timeSpent : 0
 
-                            
+                            //audio lang for next item 
+                            let newAudionLanguage : AudioLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "") ?? .none
+                            audioLanguage = newAudionLanguage
                             let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
                             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
                             }
@@ -1361,6 +1363,7 @@
                             self.resetPlayer()
                         }
 //                        self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.aesUrl = "http://rcpems02.cdnsrv.ril.com/vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1530619201851.smil/playn.m3u8"
                         if let fpsUrl = self.playbackRightsData?.url {
                             self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1966,7 +1969,7 @@
             //this is data request so processing the url. change the scheme to http
             
             if (urlString.contains("fakeHttp")), (urlString.contains("token")) {
-                print(urlString)
+                //print(urlString)
                 urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
                 guard let url = URL(string: urlString) else {
                     return false
@@ -2001,7 +2004,7 @@
 //                }
 //                else{
                 if urlString.contains("subtitlelist"){
-                    print("m3u8 = \(urlString)")
+                    //print("m3u8 = \(urlString)")
                 }
                     let expiryTime:String = self.getExpireTime()
                     urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
@@ -2011,7 +2014,7 @@
                     guard let url = URL(string: urlString) else {
                         return false
                     }
-                    print("printing value of url \(urlString)")
+                    //print("printing value of url \(urlString)")
                     do {
                         let data = try Data(contentsOf: url)
                         dataRequest?.respond(with: data)
@@ -2025,7 +2028,7 @@
                 
                 return true
             }
-            if(urlString.contains(".ts")) {
+            if(urlString.contains(".ts")) || (urlString.contains(".webvtt")) {
                 urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
                 if let redirect = self.generateRedirectURL(sourceURL: urlString), let url = URL(string: urlString) {
                     //Step 9 and 10:-
