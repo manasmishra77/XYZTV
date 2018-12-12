@@ -191,6 +191,15 @@ class BaseViewModel: NSObject  {
         return 0
     }
     
+    func leadingConstraintBaseTable() -> CGFloat {
+        switch vcType {
+        case .disneyMovies, .disneyKids, .disneyTVShow:
+            return 0
+        default:
+            return 0//80
+        }
+    }
+    
     func heightOfTableRow(_ index: Int) -> CGFloat {
         let layout = itemCellLayoutType(index: index)
         let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow)) ? rowHeightForPotrait : rowHeightForLandscape
