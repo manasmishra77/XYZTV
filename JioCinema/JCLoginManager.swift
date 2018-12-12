@@ -103,7 +103,7 @@ class JCLoginManager: UIViewController {
         
         JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
         JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
-        let subId = user!["subscriberId"] as? String ?? ""
+        let subId = user?["subscriberId"] as? String ?? ""
         
         let params = [subscriberIdKey:subId]
         

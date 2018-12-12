@@ -234,19 +234,14 @@ class RJILApiManager {
                 request?.setValue(key, forHTTPHeaderField: value)
             }
         }
-        if path.contains(checkVersionUrl)
-        {
+        if path.contains(checkVersionUrl) {
             request?.allHTTPHeaderFields = checkVersionHeaders
-        }
-        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false {
-            if(JCLoginManager.sharedInstance.loggingInViaSubId) {
-                request?.allHTTPHeaderFields = subIdHeaders
-            } else {
-                request?.allHTTPHeaderFields = commonHeaders
-            }
-            
-        } else  {
+        } else if (path.contains(loginViaSubIdUrl)) {
+            request?.allHTTPHeaderFields = subIdHeaders
+        } else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) {
             request?.allHTTPHeaderFields = otpHeaders
+        } else {
+            request?.allHTTPHeaderFields = commonHeaders
         }
         
         if headerType == .disneyCommon {

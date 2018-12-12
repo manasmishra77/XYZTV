@@ -219,6 +219,36 @@ var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
     return rowHeightForLandscape - 55
 }
 
+struct PlayerRecommendationSize {
+    static var landscapeRowHeight: CGFloat {
+        let height = rowHeightForLandscape
+        return height
+    }
+    static var potraitRowHeight: CGFloat {
+        let height = rowHeightForPotrait
+        return height
+    }
+    static var landscapeCellSize: CGSize {
+        let height = landscapeRowHeight - 30
+        let width = (height * widthToHeightPropertionForLandScape) + 30
+        return CGSize(width: width, height: height)
+    }
+    static var potraitCellSize: CGSize {
+        let height = potraitRowHeight - 30
+        let width = (height * widthToHeightPropertionForPotrat) + 30
+        return CGSize(width: width, height: height)
+    }
+    
+    static func bottomConstarint(_ appType: VideoType) -> CGFloat {
+        if appType == .Movie {
+            return -(rowHeightForPotrait - 60)
+        } else {
+            return -(rowHeightForLandscape - 60)
+        }
+        
+    }
+}
+
 
 //MARK:- Google Analytics Constants
 

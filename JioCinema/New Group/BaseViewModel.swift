@@ -199,7 +199,7 @@ class BaseViewModel: NSObject  {
     
     func heightOfTableRow(_ index: Int) -> CGFloat {
         let layout = itemCellLayoutType(index: index)
-        let height: CGFloat = (layout == .potrait) ? rowHeightForPotrait : rowHeightForLandscape
+        let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow)) ? rowHeightForPotrait : rowHeightForLandscape
         return height
     }
     
@@ -208,9 +208,9 @@ class BaseViewModel: NSObject  {
     }
     func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
         if let appType = item?.appType {
-            switch appType{
-            case .Episode , .Clip, .Music, .Search:
-                return .landscapeWithLabels
+            switch appType {
+            case .Episode, .Clip, .Music, .Search:
+                return .landscapeWithLabelsAlwaysShow
             case .Language, .Genre:
                 return .landscapeForLangGenre
             case .Movie:
@@ -233,9 +233,9 @@ class BaseViewModel: NSObject  {
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
                 var layout: ItemCellLayoutType = dataContainer.layoutType
-                layout = (vcType == .disneyHome) ? .landscapeWithTitleOnly : layout
+                layout = .landscapeWithLabelsAlwaysShow
                 if (vcType == .disneyMovies) || (vcType == .movie) {
-                    layout = .potrait
+                    layout = .potraitWithLabelAlwaysShow
                 }
                 return layout
             }

@@ -49,7 +49,10 @@ extension RJILApiManager {
                         let response = Response<T>(model: responseModel, isSuccess: true, errorMsg: nil)
                         completion(response)
                     } else {
-                        let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Couldn't parse")
+                        var response = Response<T>(model: nil, isSuccess: false, errorMsg: "Couldn't parse")
+                        if reponseModelType == NoModel.self {
+                            response = Response<T>(model: nil, isSuccess: true, errorMsg: "No respnse!")
+                        }
                         completion(response)
                     }
                 default:
@@ -132,7 +135,7 @@ extension RJILApiManager {
         }
     }
     class func verifyOTP(number: String, otp: String, completion: @escaping APISuccessBlock) {
-         let params = [identifierKey: "+91" + number, otpKey:otp, upgradeAuthKey:upgradAuthValue, returnSessionDetailsKey:returnSessionDetailsValue]
+         let params = [identifierKey: number, otpKey:otp, upgradeAuthKey:upgradAuthValue, returnSessionDetailsKey:returnSessionDetailsValue]
         RJILApiManager.getReponse(path: verifyOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: OTPModel.self) { (response) in
             if response.isSuccess {
                     JCAppUser.shared.lbCookie = response.model?.lbCookie ?? ""
