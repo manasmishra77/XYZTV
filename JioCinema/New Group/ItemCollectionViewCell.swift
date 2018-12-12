@@ -25,6 +25,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
     var cellItem : BaseItemCellModels?
     
+    
 
     func configureView(_ cellItems: BaseItemCellModels) {
         cellItem = cellItems
@@ -114,19 +115,34 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
         
     }
-    private func autoScroll(){
-        self.scrollViewForLabel.contentOffset.x = -(scrollViewForLabel.frame.width)
+    var animate: UIViewPropertyAnimator?
+    private func autoScroll() {
+        self.scrollViewForLabel.contentOffset.x = 0
+        //self.scrollViewForLabel.contentInset.left = scrollViewForLabel.frame.width
 
         let sepration = nameLabel.intrinsicContentSize.width - scrollViewForLabel.frame.width
         var duration = sepration * 0.8 / 24
-        
-        
-        UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: UIViewAnimationOptions.curveLinear, animations: {
-            self.scrollViewForLabel.contentOffset.x = self.nameLabel.intrinsicContentSize.width
+        UIView.animateKeyframes(withDuration: TimeInterval(duration), delay: 0.5, options: .repeat, animations: {
+            self.scrollViewForLabel.contentOffset.x = sepration
+        }) { (_) in
+            self.scrollViewForLabel.contentOffset.x = 0
+            
+        }
+//
+        animate = UIViewPropertyAnimator.init(duration: TimeInterval(duration), curve: UIViewAnimationCurve.easeIn) {
+
+        }
+        animate?.startAnimation()
+        animate?.addCompletion({ (position) in
+            if position == .end {
+
+            }
+        })
+        UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+
             }, completion: {(finished: Bool) in
                 self.scrollViewForLabel.contentOffset.x = 0
         })
-//        }
     }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
          heightConstraintForProgressBar.constant = 10
@@ -152,23 +168,25 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if (context.nextFocusedView == self) {
+         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if cellItem?.layoutType == .landscapeForLangGenre {
                 imageView.borderWidth = 5
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
-            if scrollViewForLabel.frame.width < nameLabel.intrinsicContentSize.width{
+            if scrollViewForLabel.frame.width < nameLabel.intrinsicContentSize.width {
                 self.autoScroll()
             }
-            
         } else {
-            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.layer.removeAllAnimations()
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
             imageView.borderWidth = 0
         }
     }
+    
+    
 }
 enum ItemCellType {
     case base
