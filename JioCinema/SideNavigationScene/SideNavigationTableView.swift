@@ -14,14 +14,14 @@ protocol SideNavigationTableProtocol {
 }
 
 enum ViewControllersType: String, CaseIterable {
-//    case Home
-//    case Movies
-//    case Tv
-//    case Music
-//    case Clips
-//    case Search
-    case Disney
-    case Settings
+    case home
+    case movies
+    case tv
+    case music
+    case clips
+    case search
+    case disneyHome
+    case settings
 }
 
 
@@ -67,21 +67,20 @@ extension SideNavigationTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideNavigationTableCell", for: indexPath) as! SideNavigationTableCell
         cell.backgroundColor = .green
-        cell.iconLabel.backgroundColor = .black
+//        cell.iconLabel.backgroundColor = .clear
+                cell.titleLabel.backgroundColor = .clear
+        cell.titleLabel.textColor = .white
         cell.titleLabel.text = ViewControllersType.allCases[indexPath.row].rawValue
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 90
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if context.focusHeading == .left {
-            delegate?.sideNavigationSwipeEnd(side: .left)
-        }
-        else if context.focusHeading == .right {
-            delegate?.sideNavigationSwipeEnd(side: .right)
+        if context.focusHeading == .left ||  context.focusHeading == .right{
+            delegate?.sideNavigationSwipeEnd(side: context.focusHeading)
         }
     }
     

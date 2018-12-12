@@ -17,9 +17,14 @@ class SideNavigationTableCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        iconLabel.text = "A"        
-        titleLabel.text = "ABCD"
+    }
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if (context.nextFocusedView == self) {
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } else {
+            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -179,7 +179,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.nameLabel.text = moreArray[indexPath.row].name
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = .base
-        var layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
+        var layoutType: ItemCellLayoutType = .potrait
         let cellItems: BaseItemCellModels = (item: moreArray[indexPath.row], cellType: cellType, layoutType: layoutType)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""

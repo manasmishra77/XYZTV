@@ -24,17 +24,17 @@
             <subviews>
                 <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxB-XN-F1d">
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                    <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tia-ON-rxD">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="1080"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="0.0" y="0.0" width="80" height="1080"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="240" id="jTe-Kf-RrW"/>
+                        <constraint firstAttribute="width" constant="80" id="jTe-Kf-RrW"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="cxB-XN-F1d" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7SO-3O-Zmm"/>
                 <constraint firstItem="tia-ON-rxD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ge8-xv-zNg"/>

@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseViewController" customModule="JioCinema" customModuleProvider="target">
             <connections>
+                <outlet property="baseTableLeadingConstraint" destination="I4A-6S-zTh" id="PmE-KS-03v"/>
                 <outlet property="baseTableView" destination="9De-59-Cbg" id="kdo-Pg-aQm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Eym-vH-oyN"/>
             </connections>
@@ -22,13 +23,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="350" sectionHeaderHeight="66" sectionFooterHeight="66" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9De-59-Cbg">
-                    <rect key="frame" x="133" y="-30" width="1787" height="1110"/>
+                    <rect key="frame" x="85" y="-30" width="1835" height="1110"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="9De-59-Cbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="133" id="I4A-6S-zTh"/>
+                <constraint firstItem="9De-59-Cbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="85" id="I4A-6S-zTh"/>
                 <constraint firstAttribute="trailing" secondItem="9De-59-Cbg" secondAttribute="trailing" id="LOx-Ye-ubn"/>
                 <constraint firstItem="9De-59-Cbg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-30" id="O8V-SN-9q3"/>
                 <constraint firstAttribute="bottom" secondItem="9De-59-Cbg" secondAttribute="bottom" id="x5f-Jm-ewT"/>

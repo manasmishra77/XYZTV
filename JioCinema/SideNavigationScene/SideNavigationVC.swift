@@ -16,6 +16,9 @@ class SideNavigationVC: UIViewController {
     
     var sideNavigationView: SideNavigationTableView?
     var sideNavigationViewModel: SideNavigationViewModel?
+    let sideViewExpandedWidth: CGFloat = 250
+    let sideViewCollapsedWidth: CGFloat = 80
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -29,7 +32,7 @@ class SideNavigationVC: UIViewController {
         sideNavigationView?.delegate = self
         sideNavigationView?.frame = navigationTableHolder.frame
         navigationTableHolder.addSubview(sideNavigationView!)
-        sideNavigationWidthConstraint.constant = 120
+        sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
     }
 
 }
@@ -38,27 +41,43 @@ extension SideNavigationVC: SideNavigationTableProtocol {
 
     
     func sideNavigationSwipeEnd(side: UIFocusHeading) {
-        if side == .left {
-            sideNavigationWidthConstraint.constant = 350
+        var navigationWidth = sideViewExpandedWidth
+        if side == .right {
+            navigationWidth = sideViewCollapsedWidth
         }
-        else if side == .right {
-            sideNavigationWidthConstraint.constant = 120
+        self.sideNavigationWidthConstraint.constant = CGFloat(navigationWidth)
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
         }
     }
     
     func didSelectRowInNavigationTable(controllerType: String) {
         
-        sideNavigationWidthConstraint.constant = 120
+        sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
+        var viewControllerObject: UIViewController?
         switch controllerType {
-        case ViewControllersType.Disney.rawValue :
-            let myViewController = sideNavigationViewModel?.disneHomeVC
-            self.addChildViewController(myViewController!)
-            self.HolderView.addSubview(myViewController!.view)
-        default:
-            let myViewController = sideNavigationViewModel?.settingsVC
-            self.addChildViewController(myViewController!)
-            self.HolderView.addSubview(myViewController!.view)
+        case ViewControllersType.disneyHome.rawValue :
+            viewControllerObject = sideNavigationViewModel?.disneHomeVC
+        case ViewControllersType.home.rawValue :
+            viewControllerObject = sideNavigationViewModel?.homeVC
+        case ViewControllersType.movies.rawValue :
+            viewControllerObject = sideNavigationViewModel?.moviesVC
+        case ViewControllersType.clips.rawValue :
+            viewControllerObject = sideNavigationViewModel?.clips
+        case ViewControllersType.tv.rawValue :
+            viewControllerObject = sideNavigationViewModel?.tvVC
+        case ViewControllersType.search.rawValue :
+            viewControllerObject = sideNavigationViewModel?.searchVC
+        case ViewControllersType.settings.rawValue :
+            viewControllerObject = sideNavigationViewModel?.settingsVC
+        case ViewControllersType.music.rawValue :
+            viewControllerObject = sideNavigationViewModel?.musicVC
+        default: break
         }
-
+        
+        if let vc = viewControllerObject {
+            self.addChildViewController(vc)
+            self.HolderView.addSubview(vc.view)
+        }
     }
 }

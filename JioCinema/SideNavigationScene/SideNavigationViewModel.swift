@@ -11,9 +11,11 @@ import UIKit
 
 class SideNavigationViewModel: NSObject {
     
-//    var homeVC, moviesVC, tvVC, musicVC, disneHomeVC : BaseViewController<BaseViewModel>?
-    var disneHomeVC : BaseViewController<BaseViewModel>?
+    var homeVC, moviesVC, tvVC, musicVC, clips, disneHomeVC : BaseViewController<BaseViewModel>?
+//    var disneHomeVC : BaseViewController<BaseViewModel>?
+    
     var settingsVC: JCSettingsVC?
+    var searchVC: SearchNavigationController?
 
     override init() {
         super.init()
@@ -24,13 +26,34 @@ class SideNavigationViewModel: NSObject {
         
         for i in 0..<ViewControllersType.allCases.count {
             switch ViewControllersType.allCases[i].rawValue {
-            case ViewControllersType.Disney.rawValue :
+            case ViewControllersType.disneyHome.rawValue :
                 disneHomeVC = BaseViewController(.disneyHome)
-            case ViewControllersType.Settings.rawValue :
+            case ViewControllersType.settings.rawValue :
                 settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
+            case ViewControllersType.home.rawValue :
+                homeVC = BaseViewController(.home)
+            case ViewControllersType.tv.rawValue :
+                tvVC = BaseViewController(.tv)
+            case ViewControllersType.music.rawValue :
+                musicVC = BaseViewController(.music)
+            case ViewControllersType.clips.rawValue :
+                clips = BaseViewController(.clip)
+            case ViewControllersType.movies.rawValue :
+                moviesVC = BaseViewController(.movie)
+                
+            case ViewControllersType.search.rawValue :
+                searchVC = self.getSearchController()
+                
             default: break
             }
         }
+    }
+    
+    func getSearchController() -> SearchNavigationController{
+        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
+        return SearchNavigationController(rootViewController: searchContainerController)
     }
     
 }

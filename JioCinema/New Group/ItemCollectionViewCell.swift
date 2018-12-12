@@ -20,7 +20,17 @@ class ItemCollectionViewCell: UICollectionViewCell {
 //    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
+    
+    @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
+    
+    var timer:Timer?
+    var nameLabelMaxWidth: Int = 0
+    
     var cellItem : BaseItemCellModels?
+    
+    override func prepareForReuse() {
+        self.resetNameLabel()
+    }
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
@@ -126,6 +136,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+                    resetNameLabel()
         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             self.nameLabel.isHidden = false
@@ -133,7 +144,19 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if cellItem?.layoutType == .landscapeForLangGenre {
             imageView.borderWidth = 5
             imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+                
+
             }
+            
+
+            if (nameLabel.intrinsicContentSize.width > (self.frame.width - 10)) {
+//               nameLabel!.text = nameLabel.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text!
+                nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
+                timer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
+            }
+
+            
+
         
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -142,6 +165,29 @@ class ItemCollectionViewCell: UICollectionViewCell {
             imageView.borderWidth = 0
         }
     }
+    
+    func resetNameLabel() {
+        self.nameLabel.clipsToBounds = true
+        self.nameLabel.layer.masksToBounds = true
+        self.clipsToBounds = true
+        nameLabelLeadingConstraint.constant = 15
+        timer?.invalidate()
+        timer = nil
+        nameLabel.text = cellItem?.item.name ?? ""
+    }
+    
+    @objc func moveText() {
+        if (Int(self.nameLabelLeadingConstraint.constant) < (-self.nameLabelMaxWidth)) {
+            resetNameLabel()
+            timer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
+        }
+        else {
+            self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 2
+        }
+    }
+
+    
+    
 }
 enum ItemCellType {
     case base
