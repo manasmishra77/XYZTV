@@ -168,7 +168,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        jioNumberTFLabel.text = "8356903414"//"9757012372"//
+        //jioNumberTFLabel.text = /"8356903414"//"9757012372"//
         enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.count != 10) {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
