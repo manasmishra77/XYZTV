@@ -140,7 +140,9 @@ extension RJILApiManager {
             if response.isSuccess {
                     JCAppUser.shared.lbCookie = response.model?.lbCookie ?? ""
                     JCAppUser.shared.ssoToken = response.model?.ssoToken ?? ""
-                    RJILApiManager.loginViaSubId(subId: response.model?.subId ?? "", completion: completion)
+                    JCAppUser.shared.uid = response.model?.sessionAttribute?.user?.uid ?? ""
+                    JCAppUser.shared.profileId = response.model?.sessionAttribute?.profile?.profileId ?? ""
+                    RJILApiManager.loginViaSubId(subId: response.model?.sessionAttribute?.user?.subscriberId ?? "", completion: completion)
                 } else {
                     completion(false, response.errorMsg)
                 }
@@ -160,6 +162,7 @@ extension RJILApiManager {
                 JCAppUser.shared.unique = response.model?.uniqueId ?? ""
                 JCAppUser.shared.mToken = response.model?.mToken ?? ""
                 JCAppUser.shared.userGroup = response.model?.userGrp ?? ""
+                JCAppUser.shared.uid = response.model?.username ?? ""
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)

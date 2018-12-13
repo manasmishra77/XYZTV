@@ -598,7 +598,7 @@
             if(player?.timeControlStatus == .playing)
             {
                 
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) {
+                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && audioLanguage?.name != nil {
                         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
                             let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
                             var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
