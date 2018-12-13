@@ -155,10 +155,13 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
 
     private func setImageOnCell(url: URL) {
-        imageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+        imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
-        })
+        }
+//        imageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//            //print(error)
+//        })
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
