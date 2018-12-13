@@ -368,7 +368,7 @@ extension BaseViewModel {
             if let duration = item.duration, duration > 0 {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Music, .Episode, .Clip, .Trailer:
@@ -380,7 +380,7 @@ extension BaseViewModel {
                 newItem.app?.type = 7
                 checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Language,.Genre:
