@@ -144,26 +144,26 @@ class CommonHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainer.count - 2 {
                     fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout)
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .resumeWatch, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .resumeWatch, layout: layout, sectionLanguage: .english)
             }
         case .recommendation:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
             }
         case .language:
             if let dataContainer = JCDataStore.sharedDataStore.languageData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
             }
         case .genre:
             if let dataContainer = JCDataStore.sharedDataStore.genreData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: layout)
+        return (title: "", items: [], cellType: .base, layout: layout, sectionLanguage: .english)
     }
     
     fileprivate func fetchAllHomeData() {

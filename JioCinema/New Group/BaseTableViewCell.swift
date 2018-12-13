@@ -17,7 +17,10 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
+    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+    
+    //audio lang from category
+    var defaultAudioLanguage: AudioLanguage?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -76,7 +79,9 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didTapOnItemCell(self, cellItems.items[indexPath.row])
+        var newItem = cellItems.items[indexPath.row]
+        newItem.setDefaultAudioLanguage(defaultAudioLanguage)
+        delegate?.didTapOnItemCell(self, newItem)
     }
 }
 
