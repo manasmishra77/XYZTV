@@ -27,25 +27,25 @@ struct SignInModel: Codable {
     //Login via subId
     var name: String?
     var userGrp: String?
+    var username: String?
 }
 
 struct OTPModel: Codable {
-    var subId: String?
     var lbCookie: String?
     var ssoToken: String?
+    var sessionAttribute : SessionAttributes?
     enum CodingKeys: String, CodingKey {
-        case subId = "sessionAttributes"
+        case sessionAttribute = "sessionAttributes"
         case lbCookie
         case ssoToken
+        
     }
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         lbCookie = try values.decodeIfPresent(String.self, forKey: .lbCookie)
         ssoToken = try values.decodeIfPresent(String.self, forKey: .ssoToken)
-        let sessionAttribute = try values.decodeIfPresent(SessionAttributes.self, forKey: .subId)
-        subId = sessionAttribute?.user?.subscriberId
-        
+        sessionAttribute = try values.decodeIfPresent(SessionAttributes.self, forKey: .sessionAttribute)
     }
 }
 struct SessionAttributes : Codable {

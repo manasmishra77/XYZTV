@@ -174,7 +174,7 @@ struct MetadataModel: Codable {
         case artistObj = "artistObj"
         case directors = "directors"
         case description = "description"
-        case descriptionForTVShow = "descriptionForTVShow"
+        case descriptionForTVShow = "desc"
         case rating = "rating"
         case review = "review"
         //case totalDurationString = "totalDurationString"
