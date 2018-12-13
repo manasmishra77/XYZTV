@@ -170,7 +170,7 @@ class Utility {
         playerVC.audioLanguage = audioLanguage
         playerVC.defaultLanguage = fromLanguage
         
-        if isEpisodeAvailable{
+        if isEpisodeAvailable {
             playerVC.episodeArray = recommendationArray as! [Episode]
         }
         else if isMoreDataAvailable {
