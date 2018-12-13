@@ -124,20 +124,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
         
     }
-    private func autoScroll(){
-        self.scrollViewForLabel.contentOffset.x = -(scrollViewForLabel.frame.width)
-
-        let sepration = nameLabel.intrinsicContentSize.width - scrollViewForLabel.frame.width
-        var duration = sepration * 0.8 / 24
-        
-        
-        UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: UIViewAnimationOptions.curveLinear, animations: {
-            self.scrollViewForLabel.contentOffset.x = self.nameLabel.intrinsicContentSize.width
-            }, completion: {(finished: Bool) in
-                self.scrollViewForLabel.contentOffset.x = 0
-        })
-//        }
-    }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
          heightConstraintForProgressBar.constant = 10
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
@@ -180,7 +166,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if (nameLabel.intrinsicContentSize.width > (self.frame.width - 40)) {
 //               nameLabel!.text = nameLabel.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
-                timer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
+                
+                startTimer()
             }
 
             
@@ -207,14 +194,19 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @objc func moveText() {
         if (Int(self.nameLabelLeadingConstraint.constant) < (-self.nameLabelMaxWidth)) {
             resetNameLabel()
-            timer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
+            startTimer()
         }
         else {
             self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 2
         }
     }
+    func startTimer(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
+        }
+        
+    }
 
-    
     
 }
 enum ItemCellType {

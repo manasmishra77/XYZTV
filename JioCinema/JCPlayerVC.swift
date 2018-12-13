@@ -1435,7 +1435,7 @@
         
         let id = itemId
 
-        let lang: String = selectedAudio.lowercased() ?? ""
+        let lang: String = selectedAudio.lowercased()
         let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
         let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 

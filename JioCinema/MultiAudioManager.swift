@@ -21,35 +21,43 @@ class MultiAudioManager: NSObject {
     
     //Check in my watchlist
     class func checkAndReturnFromMyWatchList(itemIdToBeChecked: String, appType: VideoType) -> Item? {
+        var iteMatched: Item? = nil
         if appType == .Movie {
             if let movieWatchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?[0].items {
-                let itemMatched = movieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
-            } else if let disneyMovieWatchListArray = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].items {
-                let itemMatched = disneyMovieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
+                iteMatched = movieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
             }
+            if iteMatched == nil {
+                if let disneyMovieWatchListArray = JCDataStore.sharedDataStore.disneyMovieWatchList?.data?[0].items {
+                    iteMatched = disneyMovieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                }
+            }
+            return iteMatched
         } else if appType == .TVShow || appType == .Episode {
             if let tvWatchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?[0].items {
-                let itemMatched = tvWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
-            } else if let disneyTVWatchListArray = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0].items {
-                let itemMatched = disneyTVWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
+                iteMatched = tvWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
             }
-        } 
+            if iteMatched == nil {
+                if let disneyTVWatchListArray = JCDataStore.sharedDataStore.disneyTVWatchList?.data?[0].items {
+                    iteMatched = disneyTVWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                }
+                return iteMatched
+            } 
+            
+        }
         return nil
     }
     //Check in resume watchlist
     class func checkAndReturnFromResumeWatchList(itemIdToBeChecked: String) -> Item? {
+        var iteMatched: Item? = nil
         if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
-            let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-            return itemMatched
-        } else if let disneyResumeWatchListArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
-            let itemMatched = disneyResumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-            return itemMatched
+            iteMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
         }
-        return nil
+        if iteMatched == nil {
+            if let disneyResumeWatchListArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+                iteMatched = disneyResumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+            }
+        }
+        return iteMatched
     }
     
     class func getAudioLanguageForLangGenreVC(defaultAudioLanguage: AudioLanguage?, item: Item) -> AudioLanguage {

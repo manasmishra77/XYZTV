@@ -52,6 +52,7 @@ class BaseTableViewCell: UITableViewCell {
     func configureView(_ cellItems: TableCellItemsTuple, delegate: BaseTableViewCellDelegate) {
         self.cellItems = cellItems
         self.delegate = delegate
+        self.defaultAudioLanguage = cellItems.sectionLanguage
         self.categoryTitleLabel.text = cellItems.title
         self.itemCollectionView.reloadData()
     }

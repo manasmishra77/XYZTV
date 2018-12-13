@@ -840,21 +840,24 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String: Any]()
+        let audioLanguage: AudioLanguage = defaultAudioLanguage ?? .none
+        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index": 0]
         if isDisney {
             if itemAppType == .TVShow {
-                params = ["uniqueId": JCAppUser.shared.unique, "listId": "33" ,"json": ["id": metadata?.contentId ?? itemId]]
+                params = ["uniqueId": JCAppUser.shared.unique, "listId": "33" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
             } else if itemAppType == .Movie {
-                params = ["uniqueId": JCAppUser.shared.unique,"listId": "32" ,"json": ["id": metadata?.contentId ?? itemId]]
+                params = ["uniqueId": JCAppUser.shared.unique,"listId": "32" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
             }
         } else {
             if itemAppType == .TVShow {
-                params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId]]
+                params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
             } else if itemAppType == .Movie {
-                params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId]]
+                params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
             }
         }
+        
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
-            let url = isStatusAdd ? addToWatchListUrl : removeFromWatchListUrl
+            let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
 
             callWebServiceToUpdateWatchlist(withUrl: url, watchlistStatus: isStatusAdd, andParameters: params)
         } else {
