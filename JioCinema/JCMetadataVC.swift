@@ -990,7 +990,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.frame.size.width = metadataContainerView.frame.size.width
         headerCell.frame.size.height = getHeaderContainerHeight()
         headerCell.titleLabel.text = metadata?.name
-        headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
+        headerCell.subtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if let audio = metadata?.multipleAudio {
         headerCell.multiAudioLanguge.text = "Audio : \(audio)"
