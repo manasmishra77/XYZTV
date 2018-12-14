@@ -167,7 +167,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 imageView.borderWidth = 5
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
-            if (nameLabel.intrinsicContentSize.width > (self.frame.width - 40)) {
+            if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
                 startTimer()

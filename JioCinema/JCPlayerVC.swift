@@ -282,8 +282,9 @@
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
+            let totalDurationFloat = Double(totalDuration.floatValue() ?? 0)
             
-            if timeDifference < 300 {
+            if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
                 let audio = self.playerItem?.selected(type: .audio) ?? ""
@@ -1685,7 +1686,7 @@
                             homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
-                                let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0)
+                                let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
                                 tabVc.present(metaVc, animated: false, completion: nil)
                             })
                         }
