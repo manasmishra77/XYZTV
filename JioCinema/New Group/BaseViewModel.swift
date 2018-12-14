@@ -8,7 +8,8 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType)
+typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage)
+
 
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
@@ -261,14 +262,14 @@ class BaseViewModel: NSObject  {
                 if itemIndexTuple.1 == dataContainerArr.count - 1 {
                     fetchBaseData()
                 }
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: dataContainer.categoryLanguage)
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout)
+                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
     }
     
     func getDataContainer(_ index: Int) -> DataContainer? {
@@ -368,7 +369,7 @@ extension BaseViewModel {
             if let duration = item.duration, duration > 0 {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Music, .Episode, .Clip, .Trailer:
@@ -380,7 +381,7 @@ extension BaseViewModel {
                 newItem.app?.type = 7
                 checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: "", categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Language,.Genre:
@@ -393,11 +394,9 @@ extension BaseViewModel {
     }
     
     func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{
-//        toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
         languageGenreVC.defaultLanguage = AudioLanguage(rawValue: audioLanguage)
-//        self.present(languageGenreVC, animated: false, completion: nil)
         return languageGenreVC
     }
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
@@ -422,14 +421,14 @@ extension BaseViewModel {
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         switch itemToBePlayed.appType {
         case .Clip, .Music, .Trailer:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: (categoryName == TVOS_HOME_SCREEN_CAROUSEL ? TVOS_HOME_SCREEN : HOME_SCREEN), fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         case .Episode:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         case .Movie:
             print("Play Movie")
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: HOME_SCREEN, fromCategory: categoryName, fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         default:
             print("No Item")

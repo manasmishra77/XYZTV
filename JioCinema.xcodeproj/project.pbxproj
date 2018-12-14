@@ -322,7 +322,6 @@
 		990FCDEC21B5113F008C01A6 /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
 		990FCDED21B5113F008C01A6 /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
 		990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
-		990FCDEF21B51140008C01A6 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = icomoon.ttf; sourceTree = "<group>"; };
 		990FCDF021B51140008C01A6 /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
 		990FCDF121B51140008C01A6 /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
 		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
@@ -677,7 +676,6 @@
 		990FCDEA21B50C82008C01A6 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				990FCDEF21B51140008C01A6 /* icomoon.ttf */,
 				990FCDF121B51140008C01A6 /* JioType-Black.ttf */,
 				990FCDEB21B5113F008C01A6 /* JioType-Bold.ttf */,
 				990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */,

@@ -598,7 +598,7 @@
             if(player?.timeControlStatus == .playing)
             {
                 
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) {
+                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && audioLanguage?.name != nil {
                         if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
                             let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
                             var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
@@ -1435,7 +1435,7 @@
         
         let id = itemId
 
-        let lang: String = selectedAudio.lowercased() ?? ""
+        let lang: String = selectedAudio.lowercased()
         let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
         let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 
@@ -1502,7 +1502,7 @@
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
         
-        //audioLanguage = checkItemAudioLanguage(id)
+       // audioLanguage = checkItemAudioLanguage(id)
         setRecommendationConstarints(appType)
         switch appType {
         case .Movie:

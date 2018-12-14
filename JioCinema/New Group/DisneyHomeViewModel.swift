@@ -130,18 +130,18 @@ class DisneyHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainerArr.count - 2 {
                      fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout)
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: data.categoryLanguage)
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: "Resume Watch List", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout)
+                return (title: "Resume Watch List", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english)
             }
         case .character:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
     }
     
     //Used when logging in

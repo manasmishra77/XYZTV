@@ -34,8 +34,6 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
-    
-    @IBOutlet weak var imdbLogoWidth: NSLayoutConstraint!
     @IBOutlet weak var monthCollectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var heightOfContainerView: NSLayoutConstraint!
     @IBOutlet weak var descriptionLabel: UILabel!

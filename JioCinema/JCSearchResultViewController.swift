@@ -108,9 +108,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             let title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
             let cellType: ItemCellType = .base
             let layout: ItemCellLayoutType = getLayoutOfCellForItemType(items.first)
-            return (title: title, items: items, cellType: cellType, layout: layout)
+            return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english)
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
     }
     
     func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
@@ -154,7 +154,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -163,7 +163,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
                 case .Music, .Episode, .Clip, .Trailer:
@@ -210,11 +210,11 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer {
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode {
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
         }
