@@ -168,6 +168,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
             if (nameLabel.intrinsicContentSize.width > (self.frame.width - 40)) {
+                nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
                 startTimer()
             }
@@ -194,14 +195,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
             startTimer()
         }
         else {
-            self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 2
+            self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 1
         }
     }
     func startTimer(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
-        }
-        
+            self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
     }
 
     
