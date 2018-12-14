@@ -1028,7 +1028,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
             headerCell.directorStaticLabel.isHidden = true
-            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
+//            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
             headerCell.frame.size.height -= headerCell.directorStaticLabel.frame.height + 8
             
             if (metadata?.isSeason) != nil {
