@@ -16,7 +16,7 @@ class SideNavigationVC: UIViewController {
     
     var sideNavigationView: SideNavigationTableView?
     var sideNavigationViewModel: SideNavigationViewModel?
-    let sideViewExpandedWidth: CGFloat = 250
+    let sideViewExpandedWidth: CGFloat = 300
     let sideViewCollapsedWidth: CGFloat = 80
     
     override func viewDidLoad() {
@@ -25,6 +25,7 @@ class SideNavigationVC: UIViewController {
 
         self.addSideNavigation()
         sideNavigationViewModel = SideNavigationViewModel()
+        self.didSelectRowInNavigationTable(controllerType: (sideNavigationViewModel?.getSelectedViewController())!.rawValue)
     }
     
     func addSideNavigation() {

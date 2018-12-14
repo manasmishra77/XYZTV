@@ -9,10 +9,13 @@
 import Foundation
 import UIKit
 
+
+
 class SideNavigationViewModel: NSObject {
     
     var homeVC, moviesVC, tvVC, musicVC, clips, disneHomeVC : BaseViewController<BaseViewModel>?
-//    var disneHomeVC : BaseViewController<BaseViewModel>?
+    
+    private var selectedController: ViewControllersType?
     
     var settingsVC: JCSettingsVC?
     var searchVC: SearchNavigationController?
@@ -20,6 +23,18 @@ class SideNavigationViewModel: NSObject {
     override init() {
         super.init()
         self.initialiseControllers()
+        self.selectedController = .home
+    }
+    
+    func getSelectedViewController() -> ViewControllersType {
+        guard let selectedController = self.selectedController else {
+            return .home
+        }
+        return selectedController
+     }
+    
+    func setSelectedViewController(viewControllerType: ViewControllersType) {
+        self.selectedController = viewControllerType
     }
     
     func initialiseControllers() {
