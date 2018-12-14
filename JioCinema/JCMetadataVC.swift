@@ -953,6 +953,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     if let vc = tabVC.viewControllers?[4] as? BaseViewController {
                         let basseVCType: BaseVCType = isMovie ? BaseVCType.disneyMovies : BaseVCType.disneyTVShow
                         vc.baseViewModel.getUpdatedWatchListFor(vcType: basseVCType)
+                        if let presentedVC = vc.presentedViewController as? BaseViewController {
+                            presentedVC.baseViewModel.changeWatchListUpdatedVariableSatus(true)
+                        }
                     }
                 } else {
                     if isMovie {

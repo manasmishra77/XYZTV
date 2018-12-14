@@ -139,7 +139,7 @@ class BaseViewModel: NSObject  {
                 reloadTable = true
             } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
                 reloadTable = true
-            }
+            } 
         }
         return reloadTable
     }
@@ -170,6 +170,7 @@ class BaseViewModel: NSObject  {
         fetchBaseData()
         getBaseWatchListData()
     }
+    
 
     func fetchBaseData() {
         guard pageNumber < totalPage else {return}
@@ -248,6 +249,7 @@ class BaseViewModel: NSObject  {
     }
     
     
+    
     func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> TableCellItemsTuple {
         viewResponseBlock = completion
         let itemIndexTuple = baseTableIndexArray[index]
@@ -285,6 +287,12 @@ class BaseViewModel: NSObject  {
             }
         }
         return nil
+    }
+    
+    
+    //Used for DisneyMovieVC and DisneyTVVC
+    func changeWatchListUpdatedVariableSatus(_ status: Bool) {
+        self.isWatchListUpdated = status
     }
     
     
