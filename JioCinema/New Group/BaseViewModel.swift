@@ -197,7 +197,7 @@ class BaseViewModel: NSObject  {
         case .disneyMovies, .disneyKids, .disneyTVShow:
             return 0
         default:
-            return 0//80
+            return 80
         }
     }
     

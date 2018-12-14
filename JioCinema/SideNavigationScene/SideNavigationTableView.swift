@@ -56,6 +56,13 @@ extension SideNavigationTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didSelectRowInNavigationTable(controllerType: ViewControllersType.allCases[indexPath.row].rawValue)
+        let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
+        cell.selectionIndicatorView.backgroundColor = .blue
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
+        cell.selectionIndicatorView.backgroundColor = .clear
     }
     
 }
@@ -71,6 +78,8 @@ extension SideNavigationTableView: UITableViewDataSource {
         cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = .white
         cell.titleLabel.text = ViewControllersType.allCases[indexPath.row].rawValue
+        
+        
         return cell
     }
     

@@ -15,55 +15,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "825"
             endingLineNumber = "825"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:watchlistStatus:andParameters:)"
+            landmarkName = "didClickOnShowMoreDescriptionButton(_:toShowMore:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vinitsomani/Documents/JioWorkSpace/JioCinema_tvOS/JioCinema/JCMetadataVC.swift"
-                  timestampString = "561928826.8925771"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "825"
-                  endingLineNumber = "825"
-                  offsetFromSymbolStart = "748">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (JioCinema.Response&lt;JioCinema.NoModel&gt;) -&gt; () in JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vinitsomani/Documents/JioWorkSpace/JioCinema_tvOS/JioCinema/JCMetadataVC.swift"
-                  timestampString = "561928826.894623"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "825"
-                  endingLineNumber = "825"
-                  offsetFromSymbolStart = "87">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (JioCinema.Response&lt;JioCinema.NoModel&gt;) -&gt; () in JioCinema.JCMetadataVC.callWebServiceToUpdateWatchlist(withUrl: Swift.String, watchlistStatus: Swift.Bool, andParameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "JioCinema"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vinitsomani/Documents/JioWorkSpace/JioCinema_tvOS/JioCinema/JCMetadataVC.swift"
-                  timestampString = "561928826.8968019"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "825"
-                  endingLineNumber = "825"
-                  offsetFromSymbolStart = "18">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -78,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "827"
             endingLineNumber = "827"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:watchlistStatus:andParameters:)"
+            landmarkName = "didClickOnShowMoreDescriptionButton(_:toShowMore:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -94,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "844"
             endingLineNumber = "844"
-            landmarkName = "callWebServiceToUpdateWatchlist(withUrl:watchlistStatus:andParameters:)"
+            landmarkName = "didClickOnAddOrRemoveWatchListButton(_:isStatusAdd:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -104,13 +57,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JioCinema/New Group/BaseViewController.swift"
-            timestampString = "561655639.824924"
+            filePath = "JioCinema/JCTabBarController.swift"
+            timestampString = "566465911.4320101"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
-            landmarkName = "changingDataSourceForBaseTableView()"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/SideNavigationScene/SideNavigationTableView.swift"
+            timestampString = "566472464.778396"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/SideNavigationScene/SideNavigationTableView.swift"
+            timestampString = "566472464.7786781"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "tableView(_:didDeselectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JioCinema/SideNavigationScene/SideNavigationTableView.swift"
+            timestampString = "566472464.778874"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -15,8 +15,12 @@ class SideNavigationTableCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    @IBOutlet weak var selectionIndicatorView: UIView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionIndicatorView.backgroundColor = .clear
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

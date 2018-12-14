@@ -16,16 +16,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9P4-jo-ghK">
-                    <rect key="frame" x="0.0" y="50" width="1048" height="2036"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1096" height="2136"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="0.55294117647058827" green="0.019607843137254902" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="9P4-jo-ghK" secondAttribute="trailing" constant="50" id="PC4-pT-dM2"/>
-                <constraint firstAttribute="bottom" secondItem="9P4-jo-ghK" secondAttribute="bottom" constant="50" id="UFd-B1-xoL"/>
+                <constraint firstAttribute="trailing" secondItem="9P4-jo-ghK" secondAttribute="trailing" constant="2" id="PC4-pT-dM2"/>
+                <constraint firstAttribute="bottom" secondItem="9P4-jo-ghK" secondAttribute="bottom" id="UFd-B1-xoL"/>
                 <constraint firstItem="9P4-jo-ghK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="USj-hV-OEl"/>
-                <constraint firstItem="9P4-jo-ghK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="lXR-Co-m6l"/>
+                <constraint firstItem="9P4-jo-ghK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="lXR-Co-m6l"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

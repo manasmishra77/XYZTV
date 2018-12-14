@@ -35,6 +35,8 @@ class SideNavigationVC: UIViewController {
         navigationTableHolder.addSubview(sideNavigationView!)
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
     }
+    
+    
 
 }
 
