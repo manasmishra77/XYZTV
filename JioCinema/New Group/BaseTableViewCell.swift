@@ -11,13 +11,26 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
 }
+//To be used in place of TableCellItemsTuple Tuple
+struct BaseTableCellModel {
+    let items: [Item]!
+    let cellType: ItemCellType!
+    let layoutType: ItemCellLayoutType!
+    let sectionLanguage: AudioLanguage!
+    init(items: [Item], cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .none) {
+        self.items = items
+        self.cellType = cellType
+        self.layoutType = layoutType
+        self.sectionLanguage = sectionLanguage
+    }
+}
 
 class BaseTableViewCell: UITableViewCell {
     
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .none)
     
     //audio lang from category
     var defaultAudioLanguage: AudioLanguage?
@@ -31,20 +44,14 @@ class BaseTableViewCell: UITableViewCell {
         if #available(tvOS 11.0, *) {
             let collectionFrame = CGRect.init(x: itemCollectionView.frame.origin.x - 70, y: itemCollectionView.frame.origin.y, width: itemCollectionView.frame.size.width, height: itemCollectionView.frame.size.height)
             itemCollectionView.frame = collectionFrame
-            
-//            let labelFrame = CGRect(x: categoryTitleLabel.frame.origin.x - 70, y: categoryTitleLabel.frame.origin.y, width: categoryTitleLabel.frame.size.width, height: categoryTitleLabel.frame.size.height)
-//            
-//            categoryTitleLabel.frame = labelFrame
-            
-            
         } else {
             // or use some work around
         }
     }
     
     private func configureCell() {
-        let cellNib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
-        itemCollectionView.register(cellNib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
+        let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
+        itemCollectionView.register(cellNib, forCellWithReuseIdentifier: BaseItemCellNibIdentifier)
         itemCollectionView.delegate = self
         itemCollectionView.dataSource = self
     }
@@ -75,7 +82,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
         cell.configureView((item: cellItems.items[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layout))
         return cell
     }

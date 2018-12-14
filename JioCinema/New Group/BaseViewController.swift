@@ -54,7 +54,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         default:
             self.baseViewModel = BaseViewModel(vcType) as! T
         }
-        super.init(nibName: "BaseViewController", bundle: nil)
+        super.init(nibName: BaseViewControllerNibIdentifier, bundle: nil)
         self.tabBarItem = UITabBarItem(title: vcType.name, image: nil, tag: 0)
         self.view.backgroundColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
         if vcType == .disneyHome || vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyKids {
@@ -86,8 +86,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
-        let cellNib = UINib(nibName: "BaseTableViewCell", bundle: nil)
-        baseTableView.register(cellNib, forCellReuseIdentifier: "BaseTableViewCell")
+        let cellNib = UINib(nibName: BaseTableCellNibIdentifier, bundle: nil)
+        baseTableView.register(cellNib, forCellReuseIdentifier: BaseTableCellNibIdentifier)
         baseTableLeadingConstraint.constant = baseViewModel.leadingConstraintBaseTable()
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
@@ -114,7 +114,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return baseViewModel.heightOfTableRow(indexPath.row)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "BaseTableViewCell", for: indexPath) as? BaseTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BaseTableCellNibIdentifier, for: indexPath) as? BaseTableViewCell else {
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)

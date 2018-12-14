@@ -21,9 +21,11 @@ class SideNavigationTableCell: UITableViewCell {
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
-            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.iconLabel.backgroundColor = .white
+            self.titleLabel.textColor = .white
         } else {
-            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.iconLabel.backgroundColor = .black
+            self.titleLabel.textColor = .black
         }
     }
 

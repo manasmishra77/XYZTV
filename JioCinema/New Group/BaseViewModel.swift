@@ -10,6 +10,7 @@ import UIKit
 
 typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage)
 
+
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
     func presentMetadataOfIcarousel(_ itemId : Any)

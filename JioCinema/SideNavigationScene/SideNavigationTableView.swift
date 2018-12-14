@@ -44,6 +44,7 @@ class SideNavigationTableView: UIView {
         navigationTable.register(UINib(nibName: "SideNavigationTableCell", bundle: nil), forCellReuseIdentifier: "SideNavigationTableCell")
         navigationTable.delegate = self
         navigationTable.dataSource = self
+        self.navigationTable.remembersLastFocusedIndexPath = true
     }
 
 }
@@ -67,8 +68,7 @@ extension SideNavigationTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideNavigationTableCell", for: indexPath) as! SideNavigationTableCell
         cell.backgroundColor = .green
-//        cell.iconLabel.backgroundColor = .clear
-                cell.titleLabel.backgroundColor = .clear
+        cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = .white
         cell.titleLabel.text = ViewControllersType.allCases[indexPath.row].rawValue
         return cell
@@ -83,6 +83,8 @@ extension SideNavigationTableView: UITableViewDataSource {
             delegate?.sideNavigationSwipeEnd(side: context.focusHeading)
         }
     }
+    
+    
     
 }
 

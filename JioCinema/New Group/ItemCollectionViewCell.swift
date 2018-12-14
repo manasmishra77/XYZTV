@@ -11,6 +11,19 @@ import SDWebImage
 
 typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: ItemCellLayoutType)
 
+
+//To be used in place of BaseItemCellModels Tuple
+struct BaseItemCellModel {
+    let item: Item!
+    let cellType: ItemCellType!
+    let layoutType: ItemCellLayoutType!
+    init(item: Item, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels) {
+        self.item = item
+        self.cellType = cellType
+        self.layoutType = layoutType
+    }
+}
+
 class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -44,7 +57,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
         nameLabel.isHidden = false
         subtitle.isHidden = false
         heightConstraintForProgressBar.constant = 0
-//        widthOfnameLabel.constant = nameLabel.intrinsicContentSize.width
         
         //Load Image
         self.setImageForLayoutType(cellItems)
@@ -144,36 +156,22 @@ class ItemCollectionViewCell: UICollectionViewCell {
         imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
         }
-//        imageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-//            //print(error)
-//        })
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-                    resetNameLabel()
+        resetNameLabel()
         if (context.nextFocusedView == self) {
             self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if cellItem?.layoutType == .landscapeForLangGenre {
-            imageView.borderWidth = 5
-            imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-                
-
+                imageView.borderWidth = 5
+                imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
-            
-
             if (nameLabel.intrinsicContentSize.width > (self.frame.width - 40)) {
-//               nameLabel!.text = nameLabel.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text! + "     " + nameLabel.text! + "    " + nameLabel!.text!
+                nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
-                
                 startTimer()
             }
-
-            
-
-        
-
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
@@ -197,14 +195,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
             startTimer()
         }
         else {
-            self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 2
+            self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 1
         }
     }
     func startTimer(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
-        }
-        
+            self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
     }
 
     
