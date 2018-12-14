@@ -11,6 +11,19 @@ import SDWebImage
 
 typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: ItemCellLayoutType)
 
+
+//To be used in place of BaseItemCellModels Tuple
+struct BaseItemCellModel {
+    let item: Item!
+    let cellType: ItemCellType!
+    let layoutType: ItemCellLayoutType!
+    init(item: Item, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels) {
+        self.item = item
+        self.cellType = cellType
+        self.layoutType = layoutType
+    }
+}
+
 class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!

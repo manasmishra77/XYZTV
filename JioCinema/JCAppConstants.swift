@@ -137,6 +137,9 @@ let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell
 let SettingCellIdentifier = "kSettingsTableViewCell"
 let SearchRecommendationCellIdentifier = "SearchRecommendationCellIdentifier"
 let EnterParentalPinViewIdentifier = "EnterParentalPinView"
+let BaseItemCellNibIdentifier = "ItemCollectionViewCell"
+let BaseTableCellNibIdentifier = "BaseTableViewCell"
+let BaseViewControllerNibIdentifier = "BaseViewController"
 
 
 //Constant Values
