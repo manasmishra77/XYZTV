@@ -706,6 +706,7 @@
             }
             else if self.appType == .Episode {
                 if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
+                    updateResumeWatchList()
                     changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                     preparePlayerVC()
                 } else {
@@ -1267,7 +1268,8 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-//                self.playbackRightsData?.url = nil
+                //self.playbackRightsData?.url = nil
+                //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {
                     self.doParentalCheck(with: fpsUrl, isFps: true)
                 } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1985,8 +1987,7 @@
                 }
                 return true
             }
-            if (urlString.contains(".m3u8"))
-            {
+            if (urlString.contains(".m3u8")) {
 //                if urlString.contains("subtitlelist"){
 //                    print("subtitlelist = = \(urlString)")
 //                    urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
@@ -2004,7 +2005,7 @@
 //                    }
 //                }
 //                else{
-                if urlString.contains("subtitlelist"){
+                if urlString.contains("subtitlelist") {
                     //print("m3u8 = \(urlString)")
                 }
                     let expiryTime:String = self.getExpireTime()
