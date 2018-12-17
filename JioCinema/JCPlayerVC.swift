@@ -472,7 +472,7 @@
         } else if isEpisodeDataAvailable {
             var i = 0
             var isMatched = false
-            for each in episodeArray{
+            for each in episodeArray {
                 if each.id == id{
                     isMatched = true
                     episodeNumber = each.episodeNo
@@ -481,9 +481,9 @@
                 i = i + 1
             }
             if i == episodeArray.count{
-                if isMatched{
+                if isMatched {
                     i = i - 1
-                }else{
+                } else {
                     i = 0
                 }
             }

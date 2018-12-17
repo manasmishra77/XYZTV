@@ -459,11 +459,11 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
             switch videoType {
             case .Movie:
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, modelForPresentedVC: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .TVShow:
                 print("At TvShow")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, modelForPresentedVC: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .Music, .Clip, .Episode, .Trailer:
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)
