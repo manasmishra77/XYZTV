@@ -1136,7 +1136,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     if let searchVcNav = tabController.selectedViewController as? UINavigationController {
                         if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
                             if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false)
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: nil)
                             }
                         }
                     }
@@ -1401,6 +1401,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
 enum VCTypeForArtist {
     case languageGenre
     case disneyHome
+    case home
     case disneyTV
     case disneyMovie
     case disneyKids
