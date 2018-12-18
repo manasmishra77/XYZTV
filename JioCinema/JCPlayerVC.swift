@@ -386,6 +386,10 @@
         }
         
         playerItem = AVPlayerItem(asset: asset)
+        let output = AVPlayerItemLegibleOutput.init()
+        output.setDelegate(self, queue:DispatchQueue.main)
+        output.suppressesPlayerRendering = true
+        playerItem?.add(output)
         self.playVideoWithPlayerItem()
     }
     //MARK:- Play Video
@@ -424,7 +428,10 @@
 
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
-        guard isAutoPlaySubtitle else {return}
+        guard isAutoPlaySubtitle else {
+             _ = player?.currentItem?.selectedMediaOption(in: <#T##AVMediaSelectionGroup#>)
+            return
+        }
         let subtitles = player?.currentItem?.tracks(type: .subtitle)
         // Select track with displayName
         guard (subtitles?.count ?? 0) > 0 else {return}
@@ -447,12 +454,12 @@
     }
     
     func handleForPlayerReference() {
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             collectionView_Recommendation.reloadData()
             if isPlayList{
                 var i = 0
                 var isMatched = false
-                for each in moreArray{
+                for each in moreArray {
                     if each.id == id{
                         isMatched = true
                         break
@@ -1268,8 +1275,8 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                //self.playbackRightsData?.url = nil
-                //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
+                self.playbackRightsData?.url = nil
+                self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {
                     self.doParentalCheck(with: fpsUrl, isFps: true)
                 } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -2075,6 +2082,9 @@
     func playerViewController(_ playerViewController: AVPlayerViewController, didPresent interstitial: AVInterstitialTimeRange) {
         print("Gotit")
     }
+ }
+ extension JCPlayerVC: AVPlayerItemLegibleOutputPushDelegate {
+    
  }
  
  
