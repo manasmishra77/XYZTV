@@ -485,6 +485,24 @@ enum BaseVCType: String {
         }
         return self.rawValue.capitalized
     }
+    var tabBarIndex: Int? {
+        switch self {
+        case .home:
+            return 0
+        case .movie:
+            return 1
+        case .tv:
+            return 2
+        case .music:
+            return 3
+        case .search:
+            return 5
+        case .disneyHome:
+            return 4
+        default:
+            return nil
+        }
+    }
     
 }
 /*

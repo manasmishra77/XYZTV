@@ -325,7 +325,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 self.resetLanguageScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             } else {
-                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
+                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, vcTypeForArtist: vcTypeForMetadataArtist)
                 self.resetMetdataScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             }

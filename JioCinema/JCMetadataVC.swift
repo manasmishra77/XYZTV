@@ -1093,12 +1093,41 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
             
             if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
-                let metaDataTabBarIndex = tabController.selectedIndex
-                tabController.selectedIndex = 5
-                if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                    if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false)
+                if (presentingVcTypeForArtist == .disneyMovie) || (presentingVcTypeForArtist == .disneyTV) || (presentingVcTypeForArtist == .disneyKids) {
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+                            }
+                        }
+                    }
+                    self.dismiss(animated: false, completion: nil)
+                    return
+                }
+                if isDisney {
+                    var metaDataTabBarIndex = tabController.selectedIndex
+                    if let index = tabBarIndex {
+                        metaDataTabBarIndex = index
+                    }
+                    tabController.selectedIndex = 5
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: .disneyHome)
+                            }
+                        }
+                    }
+                } else {
+                    var metaDataTabBarIndex = tabController.selectedIndex
+                    if let index = tabBarIndex {
+                        metaDataTabBarIndex = index
+                    }
+                    tabController.selectedIndex = 5
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false)
+                            }
                         }
                     }
                 }
@@ -1237,7 +1266,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                         }
                     }
             } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
-                tabc.selectedIndex = 0
+                tabc.selectedIndex = tabBarIndex ?? 0
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
@@ -1361,6 +1390,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
 //Used when VC is presented on DisneyTVVC,disneyMovie, disneyKids, languageGenre
 enum VCTypeForArtist {
     case languageGenre
+    case disneyHome
     case disneyTV
     case disneyMovie
     case disneyKids
