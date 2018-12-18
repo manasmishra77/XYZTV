@@ -334,10 +334,12 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     fileprivate func resetMetdataScreenRelatedVars() {
         metaDataForArtist = nil
+        isForArtistSearch = false
     }
     fileprivate func resetLanguageScreenRelatedVars() {
         languageModelForArtistSearch = nil
         baseVCModelForArtistSearch = nil
+        vcTypeForMetadataArtist = nil
         resetMetdataScreenRelatedVars()
     }
     
