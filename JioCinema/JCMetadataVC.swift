@@ -1104,6 +1104,16 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     }
                     self.dismiss(animated: false, completion: nil)
                     return
+                } else if presentingVcTypeForArtist == .languageGenre {
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
+                            }
+                        }
+                    }
+                    self.dismiss(animated: false, completion: nil)
+                    return
                 }
                 if isDisney {
                     var metaDataTabBarIndex = tabController.selectedIndex

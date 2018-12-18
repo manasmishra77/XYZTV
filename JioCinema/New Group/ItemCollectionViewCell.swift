@@ -88,7 +88,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     //Used for background color of namelabel patchview
     func configureNameLabelPatchView(_ cellItems: BaseItemCellModels) {
         //patchForTitleLabelLeading.isHidden = true
-        if cellItems.cellType == .disneyCommon || cellItems.cellType == .disneyPlayer || cellItems.cellType == .disneyArtist {
+        if cellItems.cellType.isDisney {
             patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
         } else if cellItems.cellType == .search {
             patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
@@ -226,6 +226,9 @@ enum ItemCellType {
     case player
     case disneyPlayer
     case search
+    var isDisney: Bool {
+        return(self == .disneyCommon || self == .disneyPlayer || self == .disneyArtist || self == .resumeWatchDisney)
+    }
 }
 
 enum ItemCellLayoutType {
