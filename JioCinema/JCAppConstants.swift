@@ -156,7 +156,7 @@ struct AppNotification {
 struct ViewColor {
     static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
     static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
-
+    static let searchBackGround: UIColor = .black
 }
 
 

@@ -480,6 +480,9 @@ enum BaseVCType: String {
         if isDisney {
             return "Disney"
         }
+        if self == .tv {
+            return self.rawValue.uppercased()
+        }
         return self.rawValue.capitalized
     }
     

@@ -24,6 +24,7 @@ struct BaseItemCellModel {
     }
 }
 
+
 class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -43,6 +44,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         self.resetNameLabel()
     }
+    
     
 
     func configureView(_ cellItems: BaseItemCellModels) {
@@ -77,7 +79,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         case .disneyArtist:
             return
-        case .disneyPlayer:
+        case .disneyPlayer, .search:
             return
         }
 
@@ -88,6 +90,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
         //patchForTitleLabelLeading.isHidden = true
         if cellItems.cellType == .disneyCommon || cellItems.cellType == .disneyPlayer || cellItems.cellType == .disneyArtist {
             patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
+        } else if cellItems.cellType == .search {
+            patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
         } else {
             patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
         }
@@ -221,6 +225,7 @@ enum ItemCellType {
     case disneyArtist
     case player
     case disneyPlayer
+    case search
 }
 
 enum ItemCellLayoutType {

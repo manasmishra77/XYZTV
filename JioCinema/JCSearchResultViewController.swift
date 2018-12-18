@@ -108,7 +108,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     func getCellItems(_ index: Int) -> TableCellItemsTuple {
         if let items = searchResultArray[index].resultItems {
             let title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
-            let cellType: ItemCellType = .base
+            let cellType: ItemCellType = .search
             let layout: ItemCellLayoutType = getLayoutOfCellForItemType(items.first)
             return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english)
         }
@@ -324,18 +324,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: nil, vcTypeForArtist: vcTypeForMetadataArtist)
                 self.resetLanguageScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
-            }
-           
-//            if let languageModel = languageModelForArtistSearch as? Item {
-//                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: languageModel)
-//                self.resetLanguageScreenRelatedVars()
-//                self.present(metaDataVC, animated: true, completion: nil)
-//            } else if let baseModel = baseVCModelForArtistSearch {
-//                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: baseModel)
-//                self.resetLanguageScreenRelatedVars()
-//                self.present(metaDataVC, animated: true, completion: nil)
-//            }
-            else {
+            } else {
                 let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
                 self.resetMetdataScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)

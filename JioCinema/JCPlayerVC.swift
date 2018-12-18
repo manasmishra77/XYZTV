@@ -429,7 +429,7 @@
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
         guard isAutoPlaySubtitle else {
-             _ = player?.currentItem?.selectedMediaOption(in: <#T##AVMediaSelectionGroup#>)
+             //_ = player?.currentItem?.selectedMediaOption(in: <#T##AVMediaSelectionGroup#>)
             return
         }
         let subtitles = player?.currentItem?.tracks(type: .subtitle)
