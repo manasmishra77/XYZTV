@@ -255,7 +255,7 @@ class BaseViewModel: NSObject  {
         let itemIndexTuple = baseTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
         var cellType: ItemCellType = .base
-        if vcType == .disneyMovies || vcType == .disneyTVShow {
+        if vcType.isDisney {
             cellType = .disneyCommon
         }
         switch itemIndexTuple.0 {

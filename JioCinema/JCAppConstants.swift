@@ -19,11 +19,6 @@ let screenWidth:CGFloat = UIScreen.main.bounds.width
 let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
 let networkErrorMessage = "Please check your device's network and retry!"
 
-//var collectionIndex = -1
-//var selectedItemFromViewController:VideoType = VideoType.Home
-//var categoryTitle = ""
-//var referenceFromPlayerVC = ""
-
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
@@ -157,6 +152,11 @@ let isParentalControlShown = "isParentalControlShown"
 struct AppNotification {
     static let reloadResumeWatch = Notification.Name("resumeWatchReload")
     static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
+}
+struct ViewColor {
+    static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+    static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
+
 }
 
 

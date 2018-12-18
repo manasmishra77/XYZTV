@@ -28,13 +28,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var scrollViewForLabel: UIScrollView!
     @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var subtitle: UILabel!
-//    @IBOutlet weak var widthOfnameLabel: NSLayoutConstraint!
-
-//    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
-    @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
+    @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
     
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
@@ -51,6 +47,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
     func configureView(_ cellItems: BaseItemCellModels) {
         cellItem = cellItems
+        //configureView(cellItems)
+        configureNameLabelPatchView(cellItems)
         nameLabel.text = cellItems.item.name ?? ""
         subtitle.text = cellItems.item.subtitle
         progressBar.isHidden = true
@@ -83,6 +81,16 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         }
 
+    }
+    
+    //Used for background color of namelabel patchview
+    func configureNameLabelPatchView(_ cellItems: BaseItemCellModels) {
+        //patchForTitleLabelLeading.isHidden = true
+        if cellItems.cellType == .disneyCommon || cellItems.cellType == .disneyPlayer || cellItems.cellType == .disneyArtist {
+            patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
+        } else {
+            patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
+        }
     }
     
     
