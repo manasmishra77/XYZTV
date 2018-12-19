@@ -1402,8 +1402,8 @@
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
-        weak var weakSelf = self
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { [weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
@@ -1459,16 +1459,15 @@
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         
         weak var weakSelf = self.presentingViewController
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
-            
-            
+
             if self.isDisney {
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
-            }
-            else {
+            } else {
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
