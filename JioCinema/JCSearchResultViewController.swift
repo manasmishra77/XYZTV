@@ -309,6 +309,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         self.languageModelForArtistSearch = languageModel
         self.baseVCModelForArtistSearch = baseVCModel
         self.vcTypeForMetadataArtist = vcTypeForMetadata
+        self.isComminFromSelectingRecommend = false
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
