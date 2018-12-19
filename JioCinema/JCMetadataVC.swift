@@ -137,7 +137,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
-        headerCell.addToWatchListButton.isEnabled = false
+        //headerCell.addToWatchListButton.isEnabled = false
         headerCell.delegate = self
     }
     
