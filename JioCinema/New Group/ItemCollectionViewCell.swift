@@ -222,6 +222,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
     }
     func startTimer() {
+            self.timer?.invalidate()
+            self.timer = nil
             self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
     }
 
