@@ -1164,10 +1164,12 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 if isDisney {
                     if let baseVC = superNav.presentedViewController as? BaseViewController {
                         var vcType: VCTypeForArtist = .disneyMovie
-                        if itemAppType == .Movie {
-                            
-                        } else if itemAppType == .TVShow {
+                        if baseVC.baseViewModel.vcType == .disneyMovies {
+                            vcType = .disneyMovie
+                        } else if baseVC.baseViewModel.vcType == .disneyTVShow {
                             vcType = .disneyTV
+                        } else if baseVC.baseViewModel.vcType == .disneyKids {
+                            vcType = .disneyKids
                         }
                         if let searchVcNav = tabController.selectedViewController as? UINavigationController {
                             if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
@@ -1340,7 +1342,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         var colorToChange = UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
-        if isDisney{
+        if isDisney {
             colorToChange = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
         }
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])

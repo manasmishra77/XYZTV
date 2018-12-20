@@ -1105,7 +1105,8 @@
         //playerId = id
         let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
         let params = ["id": id,"contentId":""]
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[unowned self] (response) in
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 var failureType = ""
                 DispatchQueue.main.async {

@@ -25,7 +25,8 @@ class JCTrendingSearchResultViewModel: NSObject {
     }
     
     func callWebServiceForTrendingResult() {
-        RJILApiManager.getTrendingResult {[unowned self] (response) in
+        RJILApiManager.getTrendingResult {[weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 print(response.errorMsg ?? "")
                 return

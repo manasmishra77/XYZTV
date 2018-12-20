@@ -174,7 +174,8 @@ class BaseViewModel: NSObject  {
 
     func fetchBaseData() {
         guard pageNumber < totalPage else {return}
-        RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
+        RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[weak self] (isSuccess, errMsg) in
+            guard let self = self else {return}
             guard isSuccess else {
                 self.errorMsg = errMsg
                 self.viewResponseBlock?(isSuccess)

@@ -12,6 +12,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     weak var searchViewController: UISearchController? = nil
         var myPreferdFocusedView : UIView?
+    
+    
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
     fileprivate var metaDataAppType = VideoType.None
@@ -349,6 +351,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         searchResultArray.removeAll()
         resetLanguageScreenRelatedVars()
         self.baseTableView.reloadData()
+        if let viewModel =  trendingSearchResultViewModel {
+            viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: false)
+        }
     }
     
     func handleWhenSearchResultArrayChanges() {
