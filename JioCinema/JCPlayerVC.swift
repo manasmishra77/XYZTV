@@ -803,7 +803,8 @@
                 self.collectionView_Recommendation.isScrollEnabled = true
                 let path = IndexPath(row: row, section: 0)
                 
-                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
+                self.collectionView_Recommendation.layoutIfNeeded()
                 let cell = self.collectionView_Recommendation.cellForItem(at: path)
                 self.currentPlayingIndex = row
                 self.myPreferredFocusView = cell
