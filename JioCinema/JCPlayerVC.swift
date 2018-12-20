@@ -386,10 +386,6 @@
         }
         
         playerItem = AVPlayerItem(asset: asset)
-        let output = AVPlayerItemLegibleOutput.init()
-        output.setDelegate(self, queue:DispatchQueue.main)
-        output.suppressesPlayerRendering = true
-        playerItem?.add(output)
         self.playVideoWithPlayerItem()
     }
     //MARK:- Play Video
@@ -965,7 +961,8 @@
     //MARK:- Web service methods
     func callWebServiceForMoreLikeData(id: String) {
         let url = metadataUrl.appending(id)
-        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[unowned self] (response) in
+        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
@@ -973,7 +970,7 @@
             if let recommendationItems = response.model?.more {
                 self.isMoreDataAvailable = false
                 self.moreArray.removeAll()
-                if recommendationItems.count > 0{
+                if recommendationItems.count > 0 {
                     self.isMoreDataAvailable = true
                     self.moreArray = recommendationItems
                 }
@@ -1275,8 +1272,8 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                self.playbackRightsData?.url = nil
-                self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
+                //self.playbackRightsData?.url = nil
+                //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {
                     self.doParentalCheck(with: fpsUrl, isFps: true)
                 } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1405,8 +1402,8 @@
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
-        weak var weakSelf = self
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { [weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
@@ -1462,16 +1459,15 @@
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         
         weak var weakSelf = self.presentingViewController
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
+            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
-            
-            
+
             if self.isDisney {
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
-            }
-            else {
+            } else {
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
@@ -1685,7 +1681,7 @@
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
-                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio) ?? "")
+                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
                             metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
