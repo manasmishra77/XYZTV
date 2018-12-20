@@ -569,7 +569,7 @@
                                 <rect key="frame" x="0.0" y="1030" width="1920" height="300"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QOy-iQ-IFl">
-                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="300"/>
+                                        <rect key="frame" x="0.0" y="-15" width="1920" height="315"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="T53-kQ-kSh">
                                             <size key="itemSize" width="376" height="250"/>
@@ -589,7 +589,7 @@
                                     <constraint firstAttribute="height" constant="300" id="Dys-AQ-rVF"/>
                                     <constraint firstItem="QOy-iQ-IFl" firstAttribute="leading" secondItem="VRe-AD-HU3" secondAttribute="leading" id="FoD-Qh-lwF"/>
                                     <constraint firstAttribute="bottom" secondItem="QOy-iQ-IFl" secondAttribute="bottom" id="cQY-aA-CXE"/>
-                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="top" secondItem="VRe-AD-HU3" secondAttribute="top" id="nxD-K5-8t0"/>
+                                    <constraint firstItem="QOy-iQ-IFl" firstAttribute="top" secondItem="VRe-AD-HU3" secondAttribute="top" constant="-15" id="nxD-K5-8t0"/>
                                     <constraint firstAttribute="trailing" secondItem="QOy-iQ-IFl" secondAttribute="trailing" id="pKG-od-RaK"/>
                                 </constraints>
                             </view>

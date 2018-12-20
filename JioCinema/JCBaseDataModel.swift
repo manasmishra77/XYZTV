@@ -423,6 +423,22 @@ struct LanguageIndex: Codable {
     var name: String?
     var code: String?
     var index: Int?
+    enum CodingKeys: String, CodingKey {
+        case code
+        case name
+        case index
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(String.self, forKey: .code)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        do {
+            index = try values.decodeIfPresent(Int.self, forKey: .index)
+        } catch {
+        }
+        
+    }
 }
 
 struct List: Codable {

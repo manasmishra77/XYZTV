@@ -221,7 +221,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 1
         }
     }
-    func startTimer(){
+    func startTimer() {
             self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
     }
 

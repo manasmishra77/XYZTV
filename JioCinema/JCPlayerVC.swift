@@ -1111,6 +1111,7 @@
                 DispatchQueue.main.async {
                     //self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
+                    self.loaderCoverView.isHidden = false
                     self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
@@ -1245,9 +1246,7 @@
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [weak self](response) in
-        guard let self = self else {
-        return
-        }
+        guard let self = self else {return}
             DispatchQueue.main.async {
                 self.activityIndicatorOfLoaderView.stopAnimating()
                 
@@ -1255,8 +1254,8 @@
             guard response.isSuccess else {
                 var failuretype = ""
                 DispatchQueue.main.async {
-                    //self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
+                    self.loaderCoverView.isHidden = false
                     self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
