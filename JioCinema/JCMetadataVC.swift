@@ -389,6 +389,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 if let metatableView = self.metadataTableView {
                     metatableView.reloadData()
                     metatableView.layoutIfNeeded()
+                    metatableView.contentOffset = CGPoint(x: 0, y: 0)
                 }
                 self.prepareMetdataArtistLabel()
                 self.myPreferredFocusView = self.headerCell.playButton
@@ -997,7 +998,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.titleLabel.text = metadata?.name
         headerCell.starringLabel.text = metadata?.artist?.joined(separator: ",")
         headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
-        if metadata?.multipleAudio != nil{
+        if metadata?.multipleAudio != nil {
           headerCell.subtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
         }
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")

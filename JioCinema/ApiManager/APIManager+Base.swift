@@ -262,6 +262,22 @@ extension RJILApiManager {
     }
 }
 
+//extension RJILApiManager {
+//
+//    //Parse to fix datatype
+//    func parseToFixDataType<T>(data: Any ,dataTypes: [FixDataType], requireModelType: T.Type) -> T? {
+//        <#function body#>
+//    }
+//
+//    enum FixDataType {
+//        case integer
+//        case float
+//        case double
+//        case string
+//        case bool
+//    }
+//}
+
 
 
 

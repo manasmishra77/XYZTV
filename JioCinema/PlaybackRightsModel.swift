@@ -71,7 +71,17 @@ struct PlaybackRightsModel: Codable {
             }
         }
         inqueue = try values.decodeIfPresent(Bool.self, forKey: .inqueue)
-        totalDuration = try values.decodeIfPresent(String.self, forKey: .totalDuration)
+        do {
+            let stringDuration = try values.decodeIfPresent(String.self, forKey: .totalDuration)
+            totalDuration = stringDuration
+        } catch {
+            do {
+                let intDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
+                totalDuration = "\(intDuration ?? 0)"
+            } catch {
+                
+            }
+        }
         isSubscribed = try values.decodeIfPresent(Bool.self, forKey: .isSubscribed)
         subscription = try values.decodeIfPresent(Subscription.self, forKey: .subscription)
         aesUrl = try values.decodeIfPresent(String.self, forKey: .aesUrl)
