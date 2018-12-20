@@ -53,6 +53,15 @@ class ItemCollectionViewCell: UICollectionViewCell {
         configureNameLabelPatchView(cellItems)
         nameLabel.text = cellItems.item.name ?? ""
         subtitle.text = cellItems.item.subtitle
+        if let newSubtitle = cellItems.item.subtitle?.split(separator: "|"){
+        if cellItems.cellType == .resumeWatch || cellItems.cellType == .resumeWatchDisney{
+            if newSubtitle[1].trimmingCharacters(in: .whitespaces) == cellItems.item.language && newSubtitle.count == 3 {
+            subtitle.text = "\(newSubtitle[0])" + "|\(newSubtitle[2])"
+            }
+        }
+        }
+        //subtitle.text = "\(newSubtitle[0])" + "\(newSubtitle[3])"
+        
         progressBar.isHidden = true
         nameLabel.isHidden = false
         subtitle.isHidden = false
@@ -92,7 +101,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
             patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
         } else if cellItems.cellType == .search {
             patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
-        } else {
+        } else if cellItems.cellType == .player {
+            patchForTitleLabelLeading.backgroundColor = ViewColor.clearBackGround
+        }else {
             patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
         }
     }
