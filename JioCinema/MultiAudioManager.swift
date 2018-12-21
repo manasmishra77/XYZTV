@@ -104,6 +104,11 @@ enum AudioLanguage: String {
     case telugu
     case marathi
     case bengali
+    case kannada
+    case punjabi
+    case gujarati
+    case bhojpuri
+    case malayalam
     case none
     
     var code: String {
