@@ -108,7 +108,7 @@ class CommonHomeViewModel: BaseViewModel {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var reloadTable = false
         //When Resume watch get updated
-        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+        if isResumeWatchListUpdated {
             isResumeWatchListUpdated = false
             reloadTable = true
             return reloadTable
@@ -131,6 +131,7 @@ class CommonHomeViewModel: BaseViewModel {
    override func fetchAfterLoginUserDataWithoutCompletion() {
         RJILApiManager.getResumeWatchData(nil)
         RJILApiManager.getRecommendationData(nil)
+        isResumeWatchListUpdated = true
     }
     
     // HOMEVC

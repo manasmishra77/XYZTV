@@ -86,6 +86,7 @@ class DisneyHomeViewModel: BaseViewModel {
         RJILApiManager.getResumeWatchData(vcType: .disneyHome, nil)
         RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+        isResumeWatchListUpdated = true
     }
     
     
@@ -94,7 +95,7 @@ class DisneyHomeViewModel: BaseViewModel {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var reloadTable = false
         //When Resume watch get updated
-        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+        if isResumeWatchListUpdated {
             isResumeWatchListUpdated = false
             reloadTable = true
             return reloadTable

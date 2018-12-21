@@ -131,7 +131,7 @@ class BaseViewModel: NSObject  {
             watchListStatusInBaseTableArray = (baseTableIndexArray[baseWatchListIndex].0 == .watchlist)
         }
         var reloadTable = false
-        if isWatchListAvailabaleInDataStore, isWatchListUpdated {
+        if isWatchListUpdated {
             reloadTable = true
             isWatchListUpdated = false
         } else {
@@ -146,13 +146,12 @@ class BaseViewModel: NSObject  {
     
     // may be used to get updated watchlist after adding or removing in watchlist
     func getUpdatedWatchListFor(vcType: BaseVCType) {
-       fetchAfterLoginUserDataWithoutCompletion()
-        isWatchListUpdated = true
-        
+       fetchAfterLoginUserDataWithoutCompletion()        
     }
     //Used when logging in
     func fetchAfterLoginUserDataWithoutCompletion() {
         RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
+        isWatchListUpdated = true
     }
     
     //For after login function
