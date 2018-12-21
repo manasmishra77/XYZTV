@@ -96,15 +96,17 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     //Used for background color of namelabel patchview
     func configureNameLabelPatchView(_ cellItems: BaseItemCellModels) {
-        //patchForTitleLabelLeading.isHidden = true
-        if cellItems.cellType.isDisney {
-            patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
-        } else if cellItems.cellType == .search {
+        switch cellItems.cellType {
+        case .search:
             patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
-        } else if cellItems.cellType == .player {
+        case .disneyPlayer, .player:
             patchForTitleLabelLeading.backgroundColor = ViewColor.clearBackGround
-        }else {
-            patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
+        default:
+            if cellItems.cellType.isDisney {
+                patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
+            } else {
+                patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
+            }
         }
     }
     
