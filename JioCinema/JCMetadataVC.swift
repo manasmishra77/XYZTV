@@ -1036,7 +1036,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
-            headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+            if metadata?.multipleAudio != nil {
+                headerCell.tvShowLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+            } else {
+                headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+            }
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
