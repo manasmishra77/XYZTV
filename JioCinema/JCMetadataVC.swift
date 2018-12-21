@@ -1324,8 +1324,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 95 {
-            let trimText = text.subString(start: 0, end: 94) + "... " + SHOW_MORE
+        if text.count > 90 {
+            let trimText = text.subString(start: 0, end: 89) + "... " + SHOW_MORE
             if trimText.count <= text.count {
                 let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
                 return (true, fontChangedText)
