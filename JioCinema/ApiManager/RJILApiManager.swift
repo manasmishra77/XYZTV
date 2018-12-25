@@ -69,7 +69,8 @@ class RJILApiManager {
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
             _commonHeaders["x-multilang"] = "true"
-
+            _commonHeaders["X-API-Key"] = "RJIL_JioCinema"
+            _commonHeaders["app-name"] = "RJIL_JioCinema"
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
