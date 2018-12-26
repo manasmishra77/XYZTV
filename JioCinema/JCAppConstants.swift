@@ -228,22 +228,24 @@ var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
 }
 
 struct PlayerRecommendationSize {
+    static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
+    static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
     static var landscapeRowHeight: CGFloat {
-        let height = rowHeightForLandscape
+        let height: CGFloat = 306 + 30//rowHeightForLandscape
         return height
     }
     static var potraitRowHeight: CGFloat {
-        let height = rowHeightForPotrait
+        let height: CGFloat = 470 + 30 //rowHeightForPotrait
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 30
-        let width = (height * widthToHeightPropertionForLandScape) + 30
+        let height = landscapeRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 30
-        let width = (height * widthToHeightPropertionForPotrat) + 30
+        let height = potraitRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     
