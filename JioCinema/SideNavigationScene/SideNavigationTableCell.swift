@@ -25,18 +25,9 @@ class SideNavigationTableCell: UITableViewCell {
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
-            self.iconLabel.backgroundColor = .white
-            self.titleLabel.textColor = .white
+            self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
         } else {
-            self.iconLabel.backgroundColor = .black
-            self.titleLabel.textColor = .black
+            self.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1).withAlphaComponent(1.0)
         }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

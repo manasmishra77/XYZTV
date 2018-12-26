@@ -26,6 +26,13 @@ class SideNavigationVC: UIViewController {
         self.addSideNavigation()
         sideNavigationViewModel = SideNavigationViewModel()
         self.didSelectRowInNavigationTable(controllerType: (sideNavigationViewModel?.getSelectedViewController())!.rawValue)
+        
+        let menuPressRecognizer = UITapGestureRecognizer()
+        menuPressRecognizer.addTarget(self, action: #selector(SideNavigationVC.menuButtonAction(recognizer:)))
+        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPressType.menu.rawValue)]
+        self.view.addGestureRecognizer(menuPressRecognizer)
+        
+        
     }
     
     func addSideNavigation() {
@@ -35,9 +42,17 @@ class SideNavigationVC: UIViewController {
         navigationTableHolder.addSubview(sideNavigationView!)
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
     }
+   
+    @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
+        
+        if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
+            self.sideNavigationSwipeEnd(side: .left)
+        }
+        else {
+//            exit(0)
+        }
+    }
     
-    
-
 }
 
 extension SideNavigationVC: SideNavigationTableProtocol {
@@ -55,6 +70,10 @@ extension SideNavigationVC: SideNavigationTableProtocol {
     }
     
     func didSelectRowInNavigationTable(controllerType: String) {
+        
+        if let uiView = self.HolderView.subviews.first {
+            uiView.removeFromSuperview()
+        }
         
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
         var viewControllerObject: UIViewController?
@@ -77,6 +96,7 @@ extension SideNavigationVC: SideNavigationTableProtocol {
             viewControllerObject = sideNavigationViewModel?.musicVC
         default: break
         }
+        
         
         if let vc = viewControllerObject {
             self.addChildViewController(vc)

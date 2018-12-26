@@ -58,6 +58,8 @@ extension SideNavigationTableView: UITableViewDelegate {
         delegate?.didSelectRowInNavigationTable(controllerType: ViewControllersType.allCases[indexPath.row].rawValue)
         let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
         cell.selectionIndicatorView.backgroundColor = .blue
+        cell.iconLabel.backgroundColor = .white
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -74,12 +76,7 @@ extension SideNavigationTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideNavigationTableCell", for: indexPath) as! SideNavigationTableCell
-        cell.backgroundColor = .green
-        cell.titleLabel.backgroundColor = .clear
-        cell.titleLabel.textColor = .white
         cell.titleLabel.text = ViewControllersType.allCases[indexPath.row].rawValue
-        
-        
         return cell
     }
     
@@ -91,6 +88,13 @@ extension SideNavigationTableView: UITableViewDataSource {
         if context.focusHeading == .left ||  context.focusHeading == .right{
             delegate?.sideNavigationSwipeEnd(side: context.focusHeading)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {
+        if context.nextFocusedIndexPath == nil && (context.focusHeading == .down || context.focusHeading == .up ) {
+         return false
+        }
+        return true
     }
     
     
