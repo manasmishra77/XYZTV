@@ -41,7 +41,8 @@ class ParentalControlVC: UIViewController {
         self.setPinInView("")
         setParentalViewModel = SetParentalViewModel()
         Utility.sharedInstance.showIndicator()
-        setParentalViewModel?.getPinForParentalControl(completion: {[unowned self] (pin) in
+        setParentalViewModel?.getPinForParentalControl(completion: {[weak self] (pin) in
+            guard let self = self else {return}
             Utility.sharedInstance.hideIndicator()
             if let pin = pin {
                 self.setPinInView(pin)

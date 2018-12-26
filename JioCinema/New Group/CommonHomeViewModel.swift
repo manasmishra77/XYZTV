@@ -108,7 +108,7 @@ class CommonHomeViewModel: BaseViewModel {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var reloadTable = false
         //When Resume watch get updated
-        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+        if isResumeWatchListUpdated {
             isResumeWatchListUpdated = false
             reloadTable = true
             return reloadTable
@@ -131,6 +131,7 @@ class CommonHomeViewModel: BaseViewModel {
    override func fetchAfterLoginUserDataWithoutCompletion() {
         RJILApiManager.getResumeWatchData(nil)
         RJILApiManager.getRecommendationData(nil)
+        isResumeWatchListUpdated = true
     }
     
     // HOMEVC
@@ -144,7 +145,7 @@ class CommonHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainer.count - 2 {
                     fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout, sectionLanguage: data.categoryLanguage)
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
@@ -152,7 +153,7 @@ class CommonHomeViewModel: BaseViewModel {
             }
         case .recommendation:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: dataContainer.categoryLanguage)
             }
         case .language:
             if let dataContainer = JCDataStore.sharedDataStore.languageData?.data?[itemIndexTuple.1] {

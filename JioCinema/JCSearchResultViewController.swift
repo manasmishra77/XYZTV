@@ -12,6 +12,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     weak var searchViewController: UISearchController? = nil
         var myPreferdFocusedView : UIView?
+    
+    
     //For Search from artist name
     fileprivate var metaDataItemId: String = ""
     fileprivate var metaDataAppType = VideoType.None
@@ -23,6 +25,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     fileprivate var screenAppearTiming = Date()
     fileprivate var metaDataForArtist: Any? = nil
     fileprivate var languageModelForArtistSearch: Any?
+    fileprivate var baseVCModelForArtistSearch: Item? // used for DisneyTVVC, DisneyMovie and DisneyKid //if the VC is presented on the TabbarVc
+    fileprivate var vcTypeForMetadataArtist: VCTypeForArtist?
     
     fileprivate var isComminFromSelectingRecommend = false
     
@@ -106,7 +110,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     func getCellItems(_ index: Int) -> TableCellItemsTuple {
         if let items = searchResultArray[index].resultItems {
             let title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
-            let cellType: ItemCellType = .base
+            let cellType: ItemCellType = .search
             let layout: ItemCellLayoutType = getLayoutOfCellForItemType(items.first)
             return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english)
         }
@@ -293,7 +297,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     //MARK:- Artist search preparation methods
-    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any, languageModel: Any? = nil) {
+    func searchArtist(searchText: String, metaDataItemId: String, metaDataAppType: VideoType, metaDataFromScreen: String, metaDataCategoryName: String, metaDataCategoryIndex: Int, metaDataTabBarIndex: Int, metaData: Any, languageModel: Any? = nil, baseVCModel: Item? = nil, vcTypeForMetadata: VCTypeForArtist? = nil) {
         isForArtistSearch = true
         searchViewController?.searchBar.text = searchText
         searchResultForkey(with: searchText)
@@ -305,17 +309,26 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         self.metaDataTabBarIndex = metaDataTabBarIndex
         self.metaDataForArtist = metaData
         self.languageModelForArtistSearch = languageModel
+        self.baseVCModelForArtistSearch = baseVCModel
+        self.vcTypeForMetadataArtist = vcTypeForMetadata
+        self.isComminFromSelectingRecommend = false
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu, isForArtistSearch {
             isForArtistSearch = false
-            if let languageModel = languageModelForArtistSearch as? Item {
-                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, languageData: languageModel)
+            if vcTypeForMetadataArtist == .languageGenre {
+                if let languageModel = languageModelForArtistSearch as? Item {
+                    let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: languageModel, vcTypeForArtist: vcTypeForMetadataArtist)
+                    self.resetLanguageScreenRelatedVars()
+                    self.present(metaDataVC, animated: true, completion: nil)
+                }
+            } else if vcTypeForMetadataArtist == .disneyTV || vcTypeForMetadataArtist == .disneyMovie || vcTypeForMetadataArtist == .disneyKids {
+                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: nil, vcTypeForArtist: vcTypeForMetadataArtist)
                 self.resetLanguageScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             } else {
-                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!)
+                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, vcTypeForArtist: vcTypeForMetadataArtist)
                 self.resetMetdataScreenRelatedVars()
                 self.present(metaDataVC, animated: true, completion: nil)
             }
@@ -324,9 +337,12 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     fileprivate func resetMetdataScreenRelatedVars() {
         metaDataForArtist = nil
+        isForArtistSearch = false
     }
     fileprivate func resetLanguageScreenRelatedVars() {
         languageModelForArtistSearch = nil
+        baseVCModelForArtistSearch = nil
+        vcTypeForMetadataArtist = nil
         resetMetdataScreenRelatedVars()
     }
     
@@ -335,6 +351,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         searchResultArray.removeAll()
         resetLanguageScreenRelatedVars()
         self.baseTableView.reloadData()
+        if let viewModel =  trendingSearchResultViewModel {
+            viewModel.tuggleSearchViewsAndSearchRecommViews(toShowSearchRecommView: false)
+        }
     }
     
     func handleWhenSearchResultArrayChanges() {

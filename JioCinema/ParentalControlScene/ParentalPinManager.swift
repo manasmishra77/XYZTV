@@ -53,7 +53,8 @@ class ParentalPinManager: NSObject {
     
     func setParentalPinModel() {
         guard JCLoginManager.sharedInstance.isUserLoggedIn() else {return}
-        RJILApiManager.getParentalPinForContentFromServer(completion: {[unowned self] (parentalPinModel) in
+        RJILApiManager.getParentalPinForContentFromServer(completion: {[weak self] (parentalPinModel) in
+            guard let self = self else {return}
             self.parentalPinModel = parentalPinModel
         })
     }

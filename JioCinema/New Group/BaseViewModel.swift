@@ -131,7 +131,7 @@ class BaseViewModel: NSObject  {
             watchListStatusInBaseTableArray = (baseTableIndexArray[baseWatchListIndex].0 == .watchlist)
         }
         var reloadTable = false
-        if isWatchListAvailabaleInDataStore, isWatchListUpdated {
+        if isWatchListUpdated {
             reloadTable = true
             isWatchListUpdated = false
         } else {
@@ -139,20 +139,19 @@ class BaseViewModel: NSObject  {
                 reloadTable = true
             } else if !isWatchListAvailabaleInDataStore, watchListStatusInBaseTableArray {
                 reloadTable = true
-            }
+            } 
         }
         return reloadTable
     }
     
     // may be used to get updated watchlist after adding or removing in watchlist
     func getUpdatedWatchListFor(vcType: BaseVCType) {
-       fetchAfterLoginUserDataWithoutCompletion()
-        isWatchListUpdated = true
-        
+       fetchAfterLoginUserDataWithoutCompletion()        
     }
     //Used when logging in
     func fetchAfterLoginUserDataWithoutCompletion() {
         RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
+        isWatchListUpdated = true
     }
     
     //For after login function
@@ -170,10 +169,12 @@ class BaseViewModel: NSObject  {
         fetchBaseData()
         getBaseWatchListData()
     }
+    
 
     func fetchBaseData() {
         guard pageNumber < totalPage else {return}
-        RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[unowned self] (isSuccess, errMsg) in
+        RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[weak self] (isSuccess, errMsg) in
+            guard let self = self else {return}
             guard isSuccess else {
                 self.errorMsg = errMsg
                 self.viewResponseBlock?(isSuccess)
@@ -248,12 +249,13 @@ class BaseViewModel: NSObject  {
     }
     
     
+    
     func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> TableCellItemsTuple {
         viewResponseBlock = completion
         let itemIndexTuple = baseTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
         var cellType: ItemCellType = .base
-        if vcType == .disneyMovies || vcType == .disneyTVShow {
+        if vcType.isDisney {
             cellType = .disneyCommon
         }
         switch itemIndexTuple.0 {
@@ -285,6 +287,12 @@ class BaseViewModel: NSObject  {
             }
         }
         return nil
+    }
+    
+    
+    //Used for DisneyMovieVC and DisneyTVVC
+    func changeWatchListUpdatedVariableSatus(_ status: Bool) {
+        self.isWatchListUpdated = status
     }
     
     
@@ -369,7 +377,7 @@ extension BaseViewModel {
             if let duration = item.duration, duration > 0 {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Music, .Episode, .Clip, .Trailer:
@@ -381,7 +389,7 @@ extension BaseViewModel {
                 newItem.app?.type = 7
                 checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 0, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, languageData: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Language,.Genre:
@@ -421,7 +429,7 @@ extension BaseViewModel {
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         switch itemToBePlayed.appType {
         case .Clip, .Music, .Trailer:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         case .Episode:
             let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)

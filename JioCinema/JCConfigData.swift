@@ -78,9 +78,9 @@ struct ConfigDataURLs: Codable {
         case video = "video"
         case videoDRMurl = "videoDRMurl"
         case wvProxyUrl = "wvProxyUrl"
-        case cdnEncryptionFlag = "cdnEncryptionFlag"
-        case cdnTokenKey = "cdnTokenKey"
-        case cdnUrlExpiryDuration = "cdnUrlExpiryDuration"
+        case cdnEncryptionFlag = "cdnencryption_flag"
+        case cdnTokenKey = "tid"
+        case cdnUrlExpiryDuration = "cdnUrlExpiry"
         case parentalSession = "parentalSession"
         case tvHomeUrl = "tvHomeUrl"
     }

@@ -86,6 +86,7 @@ class DisneyHomeViewModel: BaseViewModel {
         RJILApiManager.getResumeWatchData(vcType: .disneyHome, nil)
         RJILApiManager.getWatchListData(isDisney: true, type: .disneyMovies, nil)
         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
+        isResumeWatchListUpdated = true
     }
     
     
@@ -94,7 +95,7 @@ class DisneyHomeViewModel: BaseViewModel {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
         var reloadTable = false
         //When Resume watch get updated
-        if isResumeWatchListAvailabaleInDataStore, isResumeWatchListUpdated {
+        if isResumeWatchListUpdated {
             isResumeWatchListUpdated = false
             reloadTable = true
             return reloadTable
@@ -138,10 +139,10 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         case .character:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: .english)
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+        return (title: "", items: [], cellType: .disneyCommon, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
     }
     
     //Used when logging in

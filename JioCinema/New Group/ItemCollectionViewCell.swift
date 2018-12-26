@@ -24,17 +24,14 @@ struct BaseItemCellModel {
     }
 }
 
+
 class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var scrollViewForLabel: UIScrollView!
     @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var subtitle: UILabel!
-//    @IBOutlet weak var widthOfnameLabel: NSLayoutConstraint!
-
-//    @IBOutlet weak var heightConstraintForSubtitle: NSLayoutConstraint!
-    @IBOutlet weak var heightConstraintForTitle: NSLayoutConstraint!
+    @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
     
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
@@ -48,11 +45,23 @@ class ItemCollectionViewCell: UICollectionViewCell {
         self.resetNameLabel()
     }
     
+    
 
     func configureView(_ cellItems: BaseItemCellModels) {
         cellItem = cellItems
+        //configureView(cellItems)
+        configureNameLabelPatchView(cellItems)
         nameLabel.text = cellItems.item.name ?? ""
         subtitle.text = cellItems.item.subtitle
+        if let newSubtitle = cellItems.item.subtitle?.split(separator: "|"){
+        if cellItems.cellType == .resumeWatch || cellItems.cellType == .resumeWatchDisney{
+            if newSubtitle[1].trimmingCharacters(in: .whitespaces) == cellItems.item.language && newSubtitle.count == 3 {
+            subtitle.text = "\(newSubtitle[0])" + "|\(newSubtitle[2])"
+            }
+        }
+        }
+        //subtitle.text = "\(newSubtitle[0])" + "\(newSubtitle[3])"
+        
         progressBar.isHidden = true
         nameLabel.isHidden = false
         subtitle.isHidden = false
@@ -79,10 +88,26 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         case .disneyArtist:
             return
-        case .disneyPlayer:
+        case .disneyPlayer, .search:
             return
         }
 
+    }
+    
+    //Used for background color of namelabel patchview
+    func configureNameLabelPatchView(_ cellItems: BaseItemCellModels) {
+        switch cellItems.cellType {
+        case .search:
+            patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
+        case .disneyPlayer, .player:
+            patchForTitleLabelLeading.backgroundColor = ViewColor.clearBackGround
+        default:
+            if cellItems.cellType.isDisney {
+                patchForTitleLabelLeading.backgroundColor = ViewColor.disneyBackground
+            } else {
+                patchForTitleLabelLeading.backgroundColor = ViewColor.commonBackground
+            }
+        }
     }
     
     
@@ -167,7 +192,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 imageView.borderWidth = 5
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
-            if (nameLabel.intrinsicContentSize.width > (self.frame.width - 40)) {
+            if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
                 startTimer()
@@ -198,7 +223,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
             self.nameLabelLeadingConstraint.constant = self.nameLabelLeadingConstraint.constant - 1
         }
     }
-    func startTimer(){
+    func startTimer() {
+            self.timer?.invalidate()
+            self.timer = nil
             self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(self.moveText), userInfo: nil, repeats: true)
     }
 
@@ -213,6 +240,10 @@ enum ItemCellType {
     case disneyArtist
     case player
     case disneyPlayer
+    case search
+    var isDisney: Bool {
+        return(self == .disneyCommon || self == .disneyPlayer || self == .disneyArtist || self == .resumeWatchDisney)
+    }
 }
 
 enum ItemCellLayoutType {

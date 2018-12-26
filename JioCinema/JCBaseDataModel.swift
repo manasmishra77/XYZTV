@@ -423,6 +423,22 @@ struct LanguageIndex: Codable {
     var name: String?
     var code: String?
     var index: Int?
+    enum CodingKeys: String, CodingKey {
+        case code
+        case name
+        case index
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(String.self, forKey: .code)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        do {
+            index = try values.decodeIfPresent(Int.self, forKey: .index)
+        } catch {
+        }
+        
+    }
 }
 
 struct List: Codable {
@@ -480,7 +496,31 @@ enum BaseVCType: String {
         if isDisney {
             return "Disney"
         }
+        if self == .movie{
+            return "Movies"
+        }
+        if self == .tv {
+            return self.rawValue.uppercased()
+        }
         return self.rawValue.capitalized
+    }
+    var tabBarIndex: Int? {
+        switch self {
+        case .home:
+            return 0
+        case .movie:
+            return 1
+        case .tv:
+            return 2
+        case .music:
+            return 3
+        case .search:
+            return 5
+        case .disneyHome:
+            return 4
+        default:
+            return nil
+        }
     }
     
 }

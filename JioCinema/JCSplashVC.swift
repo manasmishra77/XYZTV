@@ -25,7 +25,8 @@ class JCSplashVC: UIViewController {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             callWebServiceToCheckVersion()
         } else {
-            JCLoginManager.sharedInstance.performNetworkCheck(completion: { [unowned self] (isOnJioNetwork) in
+            JCLoginManager.sharedInstance.performNetworkCheck(completion: { [weak self] (isOnJioNetwork) in
+                guard let self = self else {return}
                 //user has been set in user defaults
                 self.callWebServiceToCheckVersion()
             })
@@ -42,7 +43,8 @@ class JCSplashVC: UIViewController {
     }
     //MARK:- Version check and update
     func callWebServiceToCheckVersion() {
-        RJILApiManager.callWebServiceToCheckVersion {[unowned self] (response) in
+        RJILApiManager.callWebServiceToCheckVersion {[weak self] (response) in
+            guard let self = self else {return}
             if response.isSuccess {
                 let checkModel =  response.model!
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
@@ -62,7 +64,8 @@ class JCSplashVC: UIViewController {
         }
     }
     func callWebServiceForConfigData() {
-        RJILApiManager.getConfigData {[unowned self] (isSuccess, errorMsg) in
+        RJILApiManager.getConfigData {[weak self] (isSuccess, errorMsg) in
+            guard let self = self else {return}
             if isSuccess {
                 ParentalPinManager.shared.setParentalPinModel()
                 self.callWebServiceForHomeData(page: 0)
@@ -75,7 +78,8 @@ class JCSplashVC: UIViewController {
     }
     
     func callWebServiceForHomeData(page: Int) {
-        RJILApiManager.getBaseModel(pageNum: page, type: .home) {[unowned self] (isSuccess, erroMsg) in
+        RJILApiManager.getBaseModel(pageNum: page, type: .home) {[weak self] (isSuccess, erroMsg) in
+            guard let self = self else {return}
             guard isSuccess else {
                 DispatchQueue.main.async {
                     self.showAlert(alertString: networkErrorMessage)

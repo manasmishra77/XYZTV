@@ -19,11 +19,6 @@ let screenWidth:CGFloat = UIScreen.main.bounds.width
 let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
 let networkErrorMessage = "Please check your device's network and retry!"
 
-//var collectionIndex = -1
-//var selectedItemFromViewController:VideoType = VideoType.Home
-//var categoryTitle = ""
-//var referenceFromPlayerVC = ""
-
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
@@ -158,6 +153,12 @@ struct AppNotification {
     static let reloadResumeWatch = Notification.Name("resumeWatchReload")
     static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
 }
+struct ViewColor {
+    static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+    static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
+    static let searchBackGround: UIColor = .black
+    static let clearBackGround: UIColor = .clear
+}
 
 
 //Google Analytics
@@ -227,22 +228,24 @@ var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
 }
 
 struct PlayerRecommendationSize {
+    static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
+    static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
     static var landscapeRowHeight: CGFloat {
-        let height = rowHeightForLandscape
+        let height: CGFloat = 306 + 30//rowHeightForLandscape
         return height
     }
     static var potraitRowHeight: CGFloat {
-        let height = rowHeightForPotrait
+        let height: CGFloat = 470 + 30 //rowHeightForPotrait
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 30
-        let width = (height * widthToHeightPropertionForLandScape) + 30
+        let height = landscapeRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 30
-        let width = (height * widthToHeightPropertionForPotrat) + 30
+        let height = potraitRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     

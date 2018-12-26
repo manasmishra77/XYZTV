@@ -29,7 +29,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var isUserComingFromPlayerScreen = false
     var defaultAudioLanguage: AudioLanguage?
     
-    var languageModel: Item?
+    var modelForPresentedVC: Item? // Used when a VC is presented on the TabVc
+    var presentingVcTypeForArtist: VCTypeForArtist?
     fileprivate var toScreenName: String? = nil
     fileprivate var screenAppearTiming = Date()
     fileprivate var actualHeightOfTheDescContainerView: CGFloat?
@@ -37,6 +38,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     fileprivate var selectedRowCell: Int?
     fileprivate var isMonthSelected = false
     fileprivate var myPreferredFocusView: UIView?
+    
     
     @IBOutlet weak var metadataTableView: UITableView!
     @IBOutlet weak var metadataContainerView: UIView!
@@ -50,7 +52,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViews()
         if isMetaDataAvailable {
             showMetadata()
             let headerView = prepareHeaderView()
@@ -60,6 +61,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             callWebServiceForMetadata(id: itemId, newAppType: itemAppType)
         }
+        configureViews()
         // Do any additional setup after loading the view.
        
     }
@@ -135,7 +137,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCYearCell", bundle: nil), forCellWithReuseIdentifier: yearCellIdentifier)
         headerCell.monthsCollectionView.register(UINib.init(nibName:"JCMonthCell", bundle: nil), forCellWithReuseIdentifier: monthCellIdentifier)
-        headerCell.addToWatchListButton.isEnabled = false
+        //headerCell.addToWatchListButton.isEnabled = false
         headerCell.delegate = self
     }
     
@@ -387,6 +389,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 if let metatableView = self.metadataTableView {
                     metatableView.reloadData()
                     metatableView.layoutIfNeeded()
+                    metatableView.contentOffset = CGPoint(x: 0, y: 0)
                 }
                 self.prepareMetdataArtistLabel()
                 self.myPreferredFocusView = self.headerCell.playButton
@@ -458,6 +461,9 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
      }*/
     
     func showMetadata() {
+        if presentingVcTypeForArtist != nil, isMetaDataAvailable, presentingVcTypeForArtist != .languageGenre {
+            isDisney = true
+        }
         loaderContainerView.isHidden = true
         metadataContainerView.isHidden = false
     }
@@ -953,6 +959,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     if let vc = tabVC.viewControllers?[4] as? BaseViewController {
                         let basseVCType: BaseVCType = isMovie ? BaseVCType.disneyMovies : BaseVCType.disneyTVShow
                         vc.baseViewModel.getUpdatedWatchListFor(vcType: basseVCType)
+                        if let presentedVC = vc.presentedViewController as? BaseViewController {
+                            presentedVC.baseViewModel.changeWatchListUpdatedVariableSatus(true)
+                        }
                     }
                 } else {
                     if isMovie {
@@ -987,7 +996,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.frame.size.width = metadataContainerView.frame.size.width
         headerCell.frame.size.height = getHeaderContainerHeight()
         headerCell.titleLabel.text = metadata?.name
+        headerCell.starringLabel.text = metadata?.artist?.joined(separator: ",")
         headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
+        if metadata?.multipleAudio != nil {
+          headerCell.subtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+        }
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if let audio = metadata?.multipleAudio {
         headerCell.multiAudioLanguge.text = "Audio : \(audio)"
@@ -1023,12 +1036,16 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
-            headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+            if metadata?.multipleAudio != nil {
+                headerCell.tvShowLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+            } else {
+                headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+            }
             headerCell.tvShowLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
             headerCell.directorStaticLabel.isHidden = true
-            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
+//            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
             headerCell.frame.size.height -= headerCell.directorStaticLabel.frame.height + 8
             
             if (metadata?.isSeason) != nil {
@@ -1076,7 +1093,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             print("In episode")
             checkLoginAndPlay(tappedItem, categoryName: MORELIKE, categoryIndex: 0)
         }
-        else if let tappedItem = item as? String{
+        else if let tappedItem = item as? String {
             print("In Artist")
             //present search from here
             
@@ -1084,30 +1101,91 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
             
-            if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController{
-                let metaDataTabBarIndex = tabController.selectedIndex
-                tabController.selectedIndex = 5
-                if let searchVcNav = tabController.selectedViewController as? UINavigationController{
-                    if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController{
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false)
+            if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
+                if (presentingVcTypeForArtist == .disneyMovie) || (presentingVcTypeForArtist == .disneyTV) || (presentingVcTypeForArtist == .disneyKids) {
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+                            }
+                        }
+                    }
+                    self.dismiss(animated: false, completion: nil)
+                    return
+                } else if presentingVcTypeForArtist == .languageGenre {
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
+                            }
+                        }
+                    }
+                    self.dismiss(animated: false, completion: nil)
+                    return
+                }
+                if isDisney {
+                    var metaDataTabBarIndex = tabController.selectedIndex
+                    if let index = tabBarIndex {
+                        metaDataTabBarIndex = index
+                    }
+                    tabController.selectedIndex = 5
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: .disneyHome)
+                            }
+                        }
+                    }
+                } else {
+                    var metaDataTabBarIndex = tabController.selectedIndex
+                    if let index = tabBarIndex {
+                        metaDataTabBarIndex = index
+                    }
+                    tabController.selectedIndex = 5
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: nil)
+                            }
                         }
                     }
                 }
                 self.dismiss(animated: true, completion: nil)
             } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
                 tabController.selectedIndex = 5
-                if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                    if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                        if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                            searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: languageModel)
+                if let langVC = superNav.presentedViewController as? JCLanguageGenreVC {
+                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
+                            }
                         }
                     }
-                }
-                if let langVC = superNav.presentedViewController as? JCLanguageGenreVC {
                     self.dismiss(animated: false, completion: {
                         langVC.dismiss(animated: false, completion: nil)
                     })
+                }
+                if isDisney {
+                    if let baseVC = superNav.presentedViewController as? BaseViewController {
+                        var vcType: VCTypeForArtist = .disneyMovie
+                        if baseVC.baseViewModel.vcType == .disneyMovies {
+                            vcType = .disneyMovie
+                        } else if baseVC.baseViewModel.vcType == .disneyTVShow {
+                            vcType = .disneyTV
+                        } else if baseVC.baseViewModel.vcType == .disneyKids {
+                            vcType = .disneyKids
+                        }
+                        if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+                            if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+                                if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+                                    searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: vcType)
+                                }
+                            }
+                        }
+                        self.dismiss(animated: false, completion: {
+                            baseVC.dismiss(animated: false, completion: nil)
+                        })
+                    }
                 }
             }
         }
@@ -1165,7 +1243,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         let directors = metadata?.directors?.reduce("", { (res, str) in
             res + "," + str
         })
-        if itemAppType == .Movie{
+        if itemAppType == .Movie {
             var isMoreDataAvailable = false
             var recommendationArray: Any = false
             if let moreArray = metadata?.more, moreArray.count > 0{
@@ -1174,18 +1252,15 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
             
             let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "", isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
-
-            
             self.present(playerVC, animated: true, completion: nil)
-        }
-        else if itemAppType == .TVShow {
+        } else if itemAppType == .TVShow {
             var isEpisodeAvailable = false
             var recommendationArray: Any = false
             if let episodes = metadata?.episodes, episodes.count > 0{
                 isEpisodeAvailable = true
                 recommendationArray = episodes
             }
-            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, audioLanguage: defaultAudioLanguage)
+            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
             self.present(playerVC, animated: true, completion: nil)
         }
     }
@@ -1194,29 +1269,55 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if  presses.first?.type == .menu, shouldUseTabBarIndex, (tabBarIndex != nil) {
             if let superNav = self.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
                 tabc.selectedIndex = tabBarIndex!
-                if let languageModel = languageModel {
-                    let vc = self.presentLanguageGenreController(item: languageModel)
-                    self.dismiss(animated: false, completion: {
-                        superNav.present(vc, animated: false, completion: nil)
-                    })
-                }
+                    if let vcType = presentingVcTypeForArtist {
+                        switch vcType {
+                        case .languageGenre:
+                            if let modelForPresentedVC = modelForPresentedVC {
+                                let vc = self.presentLanguageGenreController(item: modelForPresentedVC)
+                                self.dismiss(animated: false, completion: {
+                                    superNav.present(vc, animated: false, completion: nil)
+                                })
+                            }
+                        default:
+                            if let vc = presentDinseyController(vCTypeForArtist: vcType) {
+                                self.dismiss(animated: false) {
+                                    superNav.present(vc, animated: false, completion: nil)
+                                }
+                            }
+                        }
+                    }
             } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
-                tabc.selectedIndex = 0
-                //self.dismiss(animated: true, completion: nil)
+                tabc.selectedIndex = tabBarIndex ?? 0
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
-            //            self.dismiss(animated: true, completion: nil)
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {
         toScreenName = LANGUAGE_SCREEN
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
-//        languageGenreVC.defaultLanguage = item.defaultAudioLanguage
         return languageGenreVC
     }
+    func presentDinseyController(vCTypeForArtist: VCTypeForArtist) -> BaseViewController<BaseViewModel>? {
+       // toScreenName = LANGUAGE_SCREEN
+        switch vCTypeForArtist {
+        case .disneyTV:
+            let vc = BaseViewController<BaseViewModel>(.disneyTVShow)
+            return vc
+        case .disneyMovie:
+            let vc = BaseViewController<BaseViewModel>(.disneyMovies)
+            return vc
+        case .disneyKids:
+            let vc = BaseViewController<BaseViewModel>(.disneyKids)
+            return vc
+        default:
+            break
+        }
+        return nil
+    }
+    
     
     //DescriptionContainerview size fixing
     func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
@@ -1227,8 +1328,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 95 {
-            let trimText = text.subString(start: 0, end: 94) + "... " + SHOW_MORE
+        if text.count > 90 {
+            let trimText = text.subString(start: 0, end: 89) + "... " + SHOW_MORE
             if trimText.count <= text.count {
                 let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
                 return (true, fontChangedText)
@@ -1245,7 +1346,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         var colorToChange = UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
-        if isDisney{
+        if isDisney {
             colorToChange = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
         }
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])
@@ -1267,10 +1368,10 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 780
+                let heightOfView = 780 + 50
                 return CGFloat(heightOfView)
             }
-            return 900
+            return 900 + 50
         default:
             return 0
         }
@@ -1293,11 +1394,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func changeBorderColorOfCell(_ cell: UICollectionViewCell, toColor: UIColor) {
         cell.layer.borderWidth = 2.0
-//        if isDisney {
-//            cell.layer.borderColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0).cgColor
-//        } else {
-            cell.layer.borderColor = toColor.cgColor
-//        }
+        cell.layer.borderColor = toColor.cgColor
         cell.layer.cornerRadius = 3.0
     }
     
@@ -1308,4 +1405,15 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         return enumOfMonth
     }
 
+}
+
+
+//Used when VC is presented on DisneyTVVC,disneyMovie, disneyKids, languageGenre
+enum VCTypeForArtist {
+    case languageGenre
+    case disneyHome
+    case home
+    case disneyTV
+    case disneyMovie
+    case disneyKids
 }

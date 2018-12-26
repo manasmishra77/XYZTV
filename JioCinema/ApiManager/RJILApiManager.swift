@@ -62,7 +62,7 @@ class RJILApiManager {
     
     //TODO: similar AppUser class will be made?
     var commonHeaders:[String:String]{
-        get{
+        get {
             var _commonHeaders = [String:String]()
             _commonHeaders["os"] = "ios"
             _commonHeaders["deviceType"] = "stb"

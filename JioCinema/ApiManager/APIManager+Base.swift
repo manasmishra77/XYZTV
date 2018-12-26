@@ -262,6 +262,32 @@ extension RJILApiManager {
     }
 }
 
+//extension RJILApiManager {
+//
+//    //Parse to fix datatype
+//    func parseToFixDataType<T>(data: Any, dataTypes: [FixDataType], requireModelType: T.Type) -> T? {
+//        for eachType in dataTypes {
+//            
+//            do {
+//                let stringValue = try values.decodeIfPresent(String.self, forKey: .contentId)
+//                self.contentId = stringValue
+//            } catch {
+//                let intValue = try values.decodeIfPresent(Int.self, forKey: .contentId)
+//                self.contentId  = "\(intValue ?? -1)"
+//            }
+//        }
+//        <#function body#>
+//    }
+//
+//    enum FixDataType {
+//        case integer
+//        case float
+//        case double
+//        case string
+//        case bool
+//    }
+//}
+
 
 
 

@@ -183,7 +183,7 @@ class Utility {
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, isDisney: Bool = false, defaultAudioLanguage: AudioLanguage? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int?, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, modelForPresentedVC: Any? = nil, vcTypeForArtist: VCTypeForArtist? = nil, isDisney: Bool = false, defaultAudioLanguage: AudioLanguage? = nil) -> JCMetadataVC {
 
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
@@ -198,8 +198,11 @@ class Utility {
         if let metaData = metaData as? MetadataModel {
             metadataVC.metadata = metaData
         }
-        if let langData = languageData as? Item {
-            metadataVC.languageModel = langData
+        if let vcType = vcTypeForArtist {
+            metadataVC.presentingVcTypeForArtist = vcType
+        }
+        if let langData = modelForPresentedVC as? Item {
+            metadataVC.modelForPresentedVC = langData
         }
         metadataVC.defaultAudioLanguage = defaultAudioLanguage
         
