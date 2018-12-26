@@ -144,6 +144,12 @@
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
 		9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */; };
 		9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */; };
+		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
+		9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */; };
+		9966543621D381360026CC8D /* CarouselCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */; };
+		9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543721D382FE0026CC8D /* ViewForCarousel.xib */; };
+		9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543921D3C0D70026CC8D /* DisneyButtons.swift */; };
+		9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543A21D3C0D70026CC8D /* DisneyButtons.xib */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
@@ -328,6 +334,12 @@
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
 		9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CarouselViewForDisney.xib; sourceTree = "<group>"; };
+		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
+		9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
+		9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CarouselCollectionViewCell.xib; sourceTree = "<group>"; };
+		9966543721D382FE0026CC8D /* ViewForCarousel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewForCarousel.xib; sourceTree = "<group>"; };
+		9966543921D3C0D70026CC8D /* DisneyButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtons.swift; sourceTree = "<group>"; };
+		9966543A21D3C0D70026CC8D /* DisneyButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtons.xib; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
@@ -585,6 +597,8 @@
 				7B61D4F21F7526CC001B081D /* JCArtistImageCell.xib */,
 				194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */,
 				194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */,
+				9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */,
+				9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -653,6 +667,8 @@
 		7BFEC4C11F174A84001DFE6D /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
+				9966543921D3C0D70026CC8D /* DisneyButtons.swift */,
+				9966543A21D3C0D70026CC8D /* DisneyButtons.xib */,
 				533F701F211C7609003EA167 /* JCBaseTableViewFooterView.swift */,
 				B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */,
 				196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */,
@@ -669,6 +685,8 @@
 				9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */,
 				9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */,
 				9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */,
+				9966543021D380C00026CC8D /* ViewForCarousel.swift */,
+				9966543721D382FE0026CC8D /* ViewForCarousel.xib */,
 			);
 			name = CustomComponents;
 			sourceTree = "<group>";
@@ -820,6 +838,7 @@
 				2025F4571F3B513A00C3B609 /* FAQ.png in Resources */,
 				7BB0E20F1F1DFF8E00A1DB0B /* JCCarouselCell.xib in Resources */,
 				533F7024211C78DD003EA167 /* JCBaseTableViewFooterView.xib in Resources */,
+				9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */,
 				2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */,
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
 				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
@@ -840,6 +859,7 @@
 				7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */,
 				2025F4551F3B513100C3B609 /* Autoplay.png in Resources */,
 				2025F45F1F3B51CE00C3B609 /* PrivacyPolicy.png in Resources */,
+				9966543621D381360026CC8D /* CarouselCollectionViewCell.xib in Resources */,
 				194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */,
 				7BB86E781F4C1C4700610436 /* JCYearCell.xib in Resources */,
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
@@ -857,6 +877,7 @@
 				199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */,
 				53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
+				9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
 				53D1E2F421B7ED67003BD5C1 /* SideNavigationTableView.xib in Resources */,
 				539618E321219B1500B576BF /* ParentalControlVC.xib in Resources */,
@@ -958,7 +979,9 @@
 				19BF8A74214651A6001C58DD /* BaseTableViewCell.swift in Sources */,
 				203C40AA1F4EE80300D91108 /* JCResumeWatchingVC.swift in Sources */,
 				7B072E751F2CBFB900C67E97 /* JCMusicVC.swift in Sources */,
+				9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
+				9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */,
 				1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
 				194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */,
@@ -997,6 +1020,7 @@
 				539618ED2121A05200B576BF /* SetParentalViewModel.swift in Sources */,
 				194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */,
 				7B0979241F27884C00B47E68 /* RJILImageDownloader.swift in Sources */,
+				9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */,
 				B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */,
 				53D1E2E721B7B881003BD5C1 /* SideNavigationVC.swift in Sources */,
 				7BB86E771F4C1C4700610436 /* JCYearCell.swift in Sources */,
