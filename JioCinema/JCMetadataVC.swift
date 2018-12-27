@@ -846,21 +846,27 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String: Any]()
-        let audioLanguage: AudioLanguage = defaultAudioLanguage ?? .none
-        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index": 0]
+        var json: [String: Any] = ["json": ["id": metadata?.contentId ?? itemId]]
+        var listId = ""
         if isDisney {
             if itemAppType == .TVShow {
-                params = ["uniqueId": JCAppUser.shared.unique, "listId": "33" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+                listId = "33"
             } else if itemAppType == .Movie {
-                params = ["uniqueId": JCAppUser.shared.unique,"listId": "32" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+                listId = "32"
             }
         } else {
             if itemAppType == .TVShow {
-                params = ["uniqueId": JCAppUser.shared.unique, "listId": "13" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+                listId = "13"
             } else if itemAppType == .Movie {
-                params = ["uniqueId": JCAppUser.shared.unique,"listId": "12" ,"json": ["id": metadata?.contentId ?? itemId, "languageIndex": languageIndexDict]]
+                listId = "12"
             }
         }
+        
+        if let audioLanguage: AudioLanguage = defaultAudioLanguage {
+            let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index": 0]
+            json["languageIndex"] = languageIndexDict
+        }
+        params = ["uniqueId": JCAppUser.shared.unique, "listId": listId ,"json": json]
         
         if JCLoginManager.sharedInstance.isUserLoggedIn() {
             let url = isStatusAdd ? addToResumeWatchlistUrl : removeFromWatchListUrl
