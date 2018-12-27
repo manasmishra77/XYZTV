@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
-    //var carousalView : InfinityScrollView?
+    var carousalView : ViewForCarousel?
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
     var viewLoadingStatus: ViewLoadingStatus = .none {
@@ -106,12 +106,18 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 0
+        } else {
         return baseViewModel.countOfTableView
+        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return baseViewModel.heightOfTableRow(indexPath.row)
+        return baseViewModel.heightOfTableRow(indexPath)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BaseTableCellNibIdentifier, for: indexPath) as? BaseTableViewCell else {
@@ -122,22 +128,26 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return cell
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return baseViewModel.carouselView
+        if section == 0 {
+            return baseViewModel.carouselView
+        } else {
+            return baseViewModel.buttonView()
+        }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return baseViewModel.heightOfTableHeader()
+        return baseViewModel.heightOfTableHeader(section: section)
     }
     
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true
     
-    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
-    }
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
-    }
+//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+//        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
+//    }
+//    
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
+//    }
 }
 extension BaseViewController {
     func showAlert() {

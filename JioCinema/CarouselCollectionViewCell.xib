@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="light"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CarouselCollectionViewCell" id="Rz2-K0-ksD" customClass="CarouselCollectionViewCell" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="348" height="277"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="348" height="277"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="64w-cj-G1R">
+                        <rect key="frame" x="5" y="0.0" width="338" height="277"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="64w-cj-G1R" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="5" id="95Q-6g-P1e"/>
+                <constraint firstAttribute="trailing" secondItem="64w-cj-G1R" secondAttribute="trailing" constant="5" id="Ill-Td-LRT"/>
+                <constraint firstAttribute="bottom" secondItem="64w-cj-G1R" secondAttribute="bottom" id="V4c-LV-4kY"/>
+                <constraint firstItem="64w-cj-G1R" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="uG0-pp-eph"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="7PP-Ag-gPX"/>
+            <size key="customSize" width="348" height="277"/>
+            <connections>
+                <outlet property="imageView" destination="64w-cj-G1R" id="tAq-eV-2rg"/>
+                <outlet property="leftSepration" destination="95Q-6g-P1e" id="JEW-TF-QAC"/>
+                <outlet property="rightSepration" destination="Ill-Td-LRT" id="k1x-sl-Tw7"/>
+            </connections>
+            <point key="canvasLocation" x="218" y="220.5"/>
+        </collectionViewCell>
+    </objects>
+</document>

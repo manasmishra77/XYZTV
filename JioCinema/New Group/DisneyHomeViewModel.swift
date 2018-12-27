@@ -15,6 +15,8 @@ class DisneyHomeViewModel: BaseViewModel {
     fileprivate var characterModelIndex = 0
     fileprivate var homeTableIndexArray: [(DisneyHomeDataType, Int)] = []
     fileprivate var isResumeWatchListUpdated = false
+
+    var disneyButtonView : DisneyButtons?
     //Override BaseViewModel
     override init(_ vcType: BaseVCType) {
         super.init(vcType)
@@ -88,8 +90,30 @@ class DisneyHomeViewModel: BaseViewModel {
         RJILApiManager.getWatchListData(isDisney : true ,type: .disneyTVShow, nil)
         isResumeWatchListUpdated = true
     }
-    
-    
+    override func heightOfTableHeader(section: Int) -> CGFloat {
+        if section == 0 {
+            if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
+                return 650
+            }
+            return 0
+        } else {
+            return 200
+        }
+    }
+    override func buttonView() -> DisneyButtons? {
+                if disneyButtonView == nil {
+                    disneyButtonView = Utility.getXib("DisneyButtons", type: DisneyButtons.self, owner: self)
+                    return disneyButtonView
+                }
+                return disneyButtonView
+    }
+//    var viewOfCarousel : UIView? {
+//        if disneyButtonView == nil {
+//        disneyButtonView = Bundle.main.loadNibNamed("DisneyButtons", owner: nil, options: nil)?.first as! DisneyButtonsView
+//            return disneyButtonView
+//        }
+//        return disneyButtonView
+//    }
     // HOMEVC
     override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)

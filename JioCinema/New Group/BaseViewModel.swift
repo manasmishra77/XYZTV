@@ -18,7 +18,7 @@ protocol BaseViewModelDelegate {
 
 class BaseViewModel: NSObject  {
     var isDisneyWatchlistAvailable = false
-    var carousal : InfinityScrollView?
+    var carousal : ViewForCarousel?
     var baseDataModel: BaseDataModel? {
         switch vcType {
         case .home:
@@ -64,27 +64,31 @@ class BaseViewModel: NSObject  {
 
     var carouselView : UIView? {
         if carousal == nil {
-            if let items = baseDataModel?.data?[0].items {
-                var isDisney = false
-                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
-                isDisney = true
-                }
-                
-                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
-                
-                DispatchQueue.main.async {
-                    if self.vcType == .disneyHome {
-                        self.carousal?.viewOfButtons.isHidden = false
-                        self.carousal?.disneyViewHeight.constant = 200
-                    }
-                    else {
-                        self.carousal?.viewOfButtons.isHidden = true
-                        self.carousal?.disneyViewHeight.constant = 0
-                    }
-                }
-                
-
+            if let items = baseDataModel?.data?[0].items{
+                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 650)
+                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: true, sepration: 20, visiblePercentageOfPeekingCell: 0.2, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: true, setImage: self)
             }
+//            if let items = baseDataModel?.data?[0].items {
+//                var isDisney = false
+//                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
+//                isDisney = true
+//                }
+//
+//                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
+//
+//                DispatchQueue.main.async {
+//                    if self.vcType == .disneyHome {
+//                        self.carousal?.viewOfButtons.isHidden = false
+//                        self.carousal?.disneyViewHeight.constant = 200
+//                    }
+//                    else {
+//                        self.carousal?.viewOfButtons.isHidden = true
+//                        self.carousal?.disneyViewHeight.constant = 0
+//                    }
+//                }
+//
+//
+//            }
         }
         return carousal
     }
@@ -186,13 +190,23 @@ class BaseViewModel: NSObject  {
         }
     }
     
-    func heightOfTableHeader() -> CGFloat {
-        if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
-            return (vcType == .disneyHome) ? 850 : 650
+    func heightOfTableHeader(section : Int) -> CGFloat {
+//        if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
+//            return (vcType == .disneyHome) ? 850 : 650
+//        }
+//        return 0
+        if section == 0 {
+            if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
+                return 650
+            }
+            return 0
+        } else {
+            return 0
         }
-        return 0
     }
-    
+    func buttonView() -> DisneyButtons? {
+        return nil
+    }
     func leadingConstraintBaseTable() -> CGFloat {
         switch vcType {
         case .disneyMovies, .disneyKids, .disneyTVShow:
@@ -202,10 +216,14 @@ class BaseViewModel: NSObject  {
         }
     }
     
-    func heightOfTableRow(_ index: Int) -> CGFloat {
-        let layout = itemCellLayoutType(index: index)
+    func heightOfTableRow(_ index: IndexPath) -> CGFloat {
+        if index.section == 0 {
+            return 0
+        } else {
+        let layout = itemCellLayoutType(index: index.row)
         let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow)) ? rowHeightForPotrait : rowHeightForLandscape
         return height
+        }
     }
     
     func populateTableIndexArray() {
@@ -448,7 +466,16 @@ extension BaseViewModel {
         delegate?.presentVC(loginVC)
     }
 }
-
+extension BaseViewModel : CarousalImageDelegate {
+    func setImageFor(_ imageView: UIImageView, for index: Int) {
+        if let urlString = baseDataModel?.data?[0].items?[index].imageUrlForCarousel{
+            let url = URL(string: urlString)
+            imageView.sd_setImage(with: url)
+        }
+        
+    }
+    
+}
 
 
 
