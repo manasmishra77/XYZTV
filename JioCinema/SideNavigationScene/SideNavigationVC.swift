@@ -15,24 +15,18 @@ class SideNavigationVC: UIViewController {
     @IBOutlet weak var sideNavigationWidthConstraint: NSLayoutConstraint!
     
     var sideNavigationView: SideNavigationTableView?
-    var sideNavigationViewModel: SideNavigationViewModel?
     let sideViewExpandedWidth: CGFloat = 300
     let sideViewCollapsedWidth: CGFloat = 80
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
         self.addSideNavigation()
-        sideNavigationViewModel = SideNavigationViewModel()
-        self.didSelectRowInNavigationTable(controllerType: (sideNavigationViewModel?.getSelectedViewController())!.rawValue)
-        
+        self.didSelectRowInNavigationTable(menuItem: MenuItem.init(type: .home))
         let menuPressRecognizer = UITapGestureRecognizer()
         menuPressRecognizer.addTarget(self, action: #selector(SideNavigationVC.menuButtonAction(recognizer:)))
         menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPressType.menu.rawValue)]
         self.view.addGestureRecognizer(menuPressRecognizer)
-        
-        
     }
     
     func addSideNavigation() {
@@ -49,7 +43,7 @@ class SideNavigationVC: UIViewController {
             self.sideNavigationSwipeEnd(side: .left)
         }
         else {
-//            exit(0)
+
         }
     }
     
@@ -69,36 +63,12 @@ extension SideNavigationVC: SideNavigationTableProtocol {
         }
     }
     
-    func didSelectRowInNavigationTable(controllerType: String) {
-        
+    func didSelectRowInNavigationTable(menuItem: MenuItem) {
         if let uiView = self.HolderView.subviews.first {
             uiView.removeFromSuperview()
         }
-        
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
-        var viewControllerObject: UIViewController?
-        switch controllerType {
-        case ViewControllersType.disneyHome.rawValue :
-            viewControllerObject = sideNavigationViewModel?.disneHomeVC
-        case ViewControllersType.home.rawValue :
-            viewControllerObject = sideNavigationViewModel?.homeVC
-        case ViewControllersType.movies.rawValue :
-            viewControllerObject = sideNavigationViewModel?.moviesVC
-        case ViewControllersType.clips.rawValue :
-            viewControllerObject = sideNavigationViewModel?.clips
-        case ViewControllersType.tv.rawValue :
-            viewControllerObject = sideNavigationViewModel?.tvVC
-        case ViewControllersType.search.rawValue :
-            viewControllerObject = sideNavigationViewModel?.searchVC
-        case ViewControllersType.settings.rawValue :
-            viewControllerObject = sideNavigationViewModel?.settingsVC
-        case ViewControllersType.music.rawValue :
-            viewControllerObject = sideNavigationViewModel?.musicVC
-        default: break
-        }
-        
-        
-        if let vc = viewControllerObject {
+        if let vc = menuItem.viewControllerObject {
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
         }

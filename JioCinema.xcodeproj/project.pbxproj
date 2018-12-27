@@ -75,10 +75,9 @@
 		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
 		53D1E2E721B7B881003BD5C1 /* SideNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */; };
 		53D1E2E821B7B881003BD5C1 /* SideNavigationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */; };
-		53D1E2EA21B7C093003BD5C1 /* SideNavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */; };
 		53D1E2F421B7ED67003BD5C1 /* SideNavigationTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */; };
 		53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */; };
-		53DDCB1E21BE6860004F0A6A /* SideNavigationTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */; };
+		53DA284C21D4AB1F00479A22 /* SideNavigationTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53DA284B21D4AB1E00479A22 /* SideNavigationTableCell.xib */; };
 		53DDCB2021BF90F9004F0A6A /* AutoScrollLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */; };
 		53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */; };
 		797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchResultViewController.swift */; };
@@ -247,10 +246,9 @@
 		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
 		53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVC.swift; sourceTree = "<group>"; };
 		53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideNavigationVC.xib; sourceTree = "<group>"; };
-		53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationViewModel.swift; sourceTree = "<group>"; };
 		53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideNavigationTableView.xib; sourceTree = "<group>"; };
 		53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationTableView.swift; sourceTree = "<group>"; };
-		53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideNavigationTableCell.xib; sourceTree = "<group>"; };
+		53DA284B21D4AB1E00479A22 /* SideNavigationTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideNavigationTableCell.xib; sourceTree = "<group>"; };
 		53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoScrollLabel.swift; sourceTree = "<group>"; };
 		53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
@@ -450,10 +448,9 @@
 		53D1E2E421B7B836003BD5C1 /* SideNavigationScene */ = {
 			isa = PBXGroup;
 			children = (
-				53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */,
+				53DA284B21D4AB1E00479A22 /* SideNavigationTableCell.xib */,
 				53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */,
 				53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */,
-				53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */,
 				53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */,
 				53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */,
 				530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */,
@@ -824,7 +821,7 @@
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
 				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
 				539618F32121A41F00B576BF /* EnterParentalPinView.xib in Resources */,
-				53DDCB1E21BE6860004F0A6A /* SideNavigationTableCell.xib in Resources */,
+				53DA284C21D4AB1F00479A22 /* SideNavigationTableCell.xib in Resources */,
 				7BFE51431F29F47100C901C7 /* JCItemCell.xib in Resources */,
 				7BD39C991F419F470014255C /* AddtoWatchlist.png in Resources */,
 				205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */,
@@ -982,7 +979,6 @@
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
-				53D1E2EA21B7C093003BD5C1 /* SideNavigationViewModel.swift in Sources */,
 				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				539618F22121A41F00B576BF /* EnterParentalPinView.swift in Sources */,
 				53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */,

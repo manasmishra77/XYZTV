@@ -9,14 +9,11 @@
 import UIKit
 
 class SideNavigationTableCell: UITableViewCell {
-
-    
-    @IBOutlet weak var iconLabel: UILabel!
     
     @IBOutlet weak var titleLabel: UILabel!
-    
     @IBOutlet weak var selectionIndicatorView: UIView!
     
+    @IBOutlet weak var iconImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
