@@ -260,6 +260,15 @@ struct Item: Codable {
         return ""
     }
     
+    var imageUrlForCarousel: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = tvImage {
+            return baseImageUrl + imageStr
+        } else if let imageStr = banner {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
     var appType: VideoType {
         let videoType = VideoType(rawValue: self.app?.type ?? -111)
         return videoType ?? .None
