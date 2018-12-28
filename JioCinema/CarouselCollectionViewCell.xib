@@ -24,6 +24,7 @@
                     </imageView>
                 </subviews>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="64w-cj-G1R" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="5" id="95Q-6g-P1e"/>
                 <constraint firstAttribute="trailing" secondItem="64w-cj-G1R" secondAttribute="trailing" constant="5" id="Ill-Td-LRT"/>

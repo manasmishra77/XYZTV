@@ -39,14 +39,14 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         }
     }
     
-    var indexpath = IndexPath(row: 0, section: 0)
+    var indexpathVar = IndexPath(row: 0, section: 0)
     var carousalImageDelegate: CarousalImageDelegate?
     
     static func instantiate(count : Int, isCircular : Bool, sepration : CGFloat, visiblePercentageOfPeekingCell visiblePart : CGFloat, hasFooter : Bool,frameOfView : CGRect, backGroundColor : UIColor,autoScroll : Bool, setImage delegate: CarousalImageDelegate) -> ViewForCarousel {
          let view: ViewForCarousel = initFromNib()
-        if autoScroll {
-            view.startTimer()
-        }
+//        if autoScroll {
+//            view.startTimer()
+//        }
         view.count = count
         view.isCircular = isCircular
         view.sepration = sepration
@@ -58,6 +58,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.collectionView.register(UINib(nibName: "CarouselCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CarouselCollectionViewCell")
 
         view.carousalImageDelegate = delegate
+        view.collectionView.isScrollEnabled = false
         view.configureCollectionViewLayoutItemSize()
         //UI changes in view
         view.frame = frameOfView
@@ -67,14 +68,21 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.pageControl.isHidden = true
         view.collectionView.delegate = view
         view.collectionView.dataSource = view
+        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
+        swipeRight.direction = [.right]
+        view.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
+        swipeLeft.direction = [.left]
+        view.addGestureRecognizer(swipeLeft)
         //for circurlar carousel
-        if isCircular {
-        view.indexpath.row = count * 15
-            DispatchQueue.main.async {
-                view.scrollToSpecificPosition(index: view.indexpath)
-            }
-//            view.pageControl.currentPage = indexPath.row % arrayOfImage.count
-        }
+//        if isCircular {
+//        view.indexpathVar.row = count * 15
+//            DispatchQueue.main.async {
+//                view.scrollToSpecificPosition(index: view.indexpathVar)
+//            }
+////            view.pageControl.currentPage = indexPath.row % arrayOfImage.count
+//        }
         if hasFooter {
             view.pageControl.isHidden = false
             view.heightOfPageControl.constant = 20
@@ -110,36 +118,86 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let safeIndex = max(0, min(countOfArray - 1, index))
         return safeIndex
     }
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        indexOfCellBeforeDragging = indexOfMajorCell()
-    }
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        // Stop scrollView sliding:
-        targetContentOffset.pointee = scrollView.contentOffset
-        
-        // calculate where scrollView should snap to:
-        let indexOfMajorCell = self.indexOfMajorCell()
-        
-        // calculate conditions:
-        let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
-        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < countOfArray && velocity.x > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
-        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
-        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-        
-        if didUseSwipeToSkipCell {
-            
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            indexpath.row = snapToIndex
-        } else {
-            indexpath.row = indexOfMajorCell
-        }
-        scrollToSpecificPosition(index: indexpath)
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        indexOfCellBeforeDragging = indexOfMajorCell()
+//    }
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        // Stop scrollView sliding:
+//        targetContentOffset.pointee = scrollView.contentOffset
+//
+//        // calculate where scrollView should snap to:
+//        let indexOfMajorCell = self.indexOfMajorCell()
+//
+//        // calculate conditions:
+//        let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
+//        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < countOfArray && velocity.x > swipeVelocityThreshold
+//        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
+//        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
+//        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
+//
+//        if didUseSwipeToSkipCell {
+//
+//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+//            indexpath.row = snapToIndex
+//        } else {
+//            indexpath.row = indexOfMajorCell
+//        }
+//        scrollToSpecificPosition(index: indexpath)
+//    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countOfArray
     }
     
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("right")
+                swipeToNextOrPrivious(swipeNext: false)
+            case UISwipeGestureRecognizerDirection.left:
+                print("left")
+                swipeToNextOrPrivious(swipeNext: true)
+            default:
+                break
+            }
+        }
+    }
+
+    func swipeToNextOrPrivious(swipeNext : Bool) {
+//        if let focusedCell = UIScreen.main.focusedView as? UICollectionViewCell {
+//            if let indexPath = collectionView.indexPath(for: focusedCell) {
+//                print("IndexPath is \(indexPath)")
+//                if indexPath.row < count && indexPath.row >= 0 {
+//                    print("IndexPath is \(indexPath)")
+//                    if swipeNext && indexPath.row != count - 1{
+//                        indexpathVar = IndexPath(row: indexPath.row + 1, section: 0)
+//                    } else if (indexPath.row != 0){
+//                        indexpathVar = IndexPath(row: indexPath.row - 1, section: 0)
+//                    }
+//                    collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//                }
+//            }
+//        }
+//        if let focusedCell = UIScreen.main.focusedView as? UICollectionViewCell {
+        var indexPath : Int = indexOfMajorCell()
+
+                if indexPath < count && indexPath >= 0 {
+                print("IndexPath is \(indexPath)")
+
+                    if swipeNext && indexPath != count - 1{
+                        indexpathVar = IndexPath(row: indexPath + 1, section: 0)
+                    } else if (indexPath != 0){
+                        indexpathVar = IndexPath(row: indexPath - 1, section: 0)
+                    }
+
+                collectionView.scrollToItem(at: indexpathVar, at: .centeredHorizontally, animated: true)
+                }
+//        }
+        
+    }
+    func swipeToprivious() {
+        
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCollectionViewCell", for: indexPath) as! CarouselCollectionViewCell
         cell.rightSepration.constant = sepration / 2
@@ -157,23 +215,23 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height)
         return sizeOfCell
     }
-    func startTimer() {
-        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(ViewForCarousel.autoSwipe), userInfo: nil, repeats: true);
-    }
-    @objc func autoSwipe() {
-        if isCircular && autoScroll {
-            if indexOfMajorCell() > countOfArray - 14*(count){
-                indexpath.row = count * 15
-                scrollToSpecificPosition(index: indexpath)
-                return
-            }
-        }
-        indexOfCellBeforeScrolling = indexOfMajorCell()
-        let indexToScroll = IndexPath(row: indexOfCellBeforeScrolling + 1, section: 0)
-        if indexToScroll.row < countOfArray {
-            self.scrollToSpecificPosition(index: indexToScroll)
-        }
-    }
+//    func startTimer() {
+//        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(ViewForCarousel.autoSwipe), userInfo: nil, repeats: true);
+//    }
+//    @objc func autoSwipe() {
+//        if isCircular && autoScroll {
+//            if indexOfMajorCell() > countOfArray - 14*(count){
+//                indexpath.row = count * 15
+//                scrollToSpecificPosition(index: indexpath)
+//                return
+//            }
+//        }
+//        indexOfCellBeforeScrolling = indexOfMajorCell()
+//        let indexToScroll = IndexPath(row: indexOfCellBeforeScrolling + 1, section: 0)
+//        if indexToScroll.row < countOfArray {
+//            self.scrollToSpecificPosition(index: indexToScroll)
+//        }
+//    }
     func scrollToSpecificPosition(index : IndexPath) {
         collectionView!.scrollToItem(at: index, at: .centeredHorizontally, animated: false)
         pageControl.currentPage = index.row % count
