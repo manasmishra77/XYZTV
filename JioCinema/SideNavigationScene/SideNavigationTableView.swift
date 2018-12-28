@@ -32,15 +32,16 @@ enum ViewControllersType: String {
             return self.rawValue.capitalized
         }
     }
-    
 }
 
 struct MenuItem {
     var image: UIImage!
     var type : ViewControllersType!
+    var index : Int!
     var viewControllerObject: UIViewController?
     
-    init(type:ViewControllersType) {
+    init(type:ViewControllersType, index: Int) {
+        self.index = index
         self.type = type
         switch type {
         case .home:
@@ -89,6 +90,8 @@ class SideNavigationTableView: UIView {
     var controllersType: ViewControllersType?
 
     var itemsList = [MenuItem]()
+    
+    var selectedIndex = -1
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -102,20 +105,40 @@ class SideNavigationTableView: UIView {
         navigationTable.delegate = self
         navigationTable.dataSource = self
         self.navigationTable.remembersLastFocusedIndexPath = true
-        self.setMenuListItem()
+//        self.setMenuListItem()
     }
     
     func setMenuListItem() {
-        self.itemsList.append(MenuItem.init(type: .search))
-        self.itemsList.append(MenuItem.init(type: .home))
-        self.itemsList.append(MenuItem.init(type: .movies))
-        self.itemsList.append(MenuItem.init(type: .tv))
-        self.itemsList.append(MenuItem.init(type: .disneyHome))
-        self.itemsList.append(MenuItem.init(type: .music))
-        self.itemsList.append(MenuItem.init(type: .clips))
-        self.itemsList.append(MenuItem.init(type: .settings))
+        self.itemsList.append(MenuItem.init(type: .search, index: 0))
+        self.itemsList.append(MenuItem.init(type: .home, index: 1))
+        self.itemsList.append(MenuItem.init(type: .movies, index: 2))
+        self.itemsList.append(MenuItem.init(type: .tv, index: 3))
+        self.itemsList.append(MenuItem.init(type: .disneyHome, index: 4))
+        self.itemsList.append(MenuItem.init(type: .music, index: 5))
+        self.itemsList.append(MenuItem.init(type: .clips, index: 6))
+        self.itemsList.append(MenuItem.init(type: .settings, index: 7))
+        self.navigationTable.reloadData()
+        performNavigationTableSelection(index: 1)
     }
+    
+    func performNavigationTableSelection(index: Int) {
+        
+            if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
+                (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
+            }
 
+        selectedIndex = index
+        let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
+        if itemsList[index].type == ViewControllersType.disneyHome {
+            cell.selectionIndicatorView.backgroundColor = ViewColor.disneyBackground
+            self.navigationTable.backgroundColor = ViewColor.disneyBackground
+        }
+        else {
+            cell.selectionIndicatorView.backgroundColor = #colorLiteral(red: 0.931439817, green: 0.2393863201, blue: 0.4902414083, alpha: 1)
+            self.navigationTable.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+        }
+        delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[index])
+    }
 }
 
 
@@ -124,22 +147,18 @@ class SideNavigationTableView: UIView {
 extension SideNavigationTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[indexPath.row])
-        let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
-        cell.selectionIndicatorView.backgroundColor = .blue
-        
+        self.performNavigationTableSelection(index: indexPath.row)
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
-        cell.selectionIndicatorView.backgroundColor = .clear
-    }
+//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//        let cell = tableView.cellForRow(at: indexPath) as! SideNavigationTableCell
+//        cell.selectionIndicatorView.backgroundColor = .clear
+//    }
     
 }
 
 extension SideNavigationTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       // return ViewControllersType.allCases.count
         return self.itemsList.count
     }
     
@@ -166,8 +185,4 @@ extension SideNavigationTableView: UITableViewDataSource {
         }
         return true
     }
-    
-    
-    
 }
-

@@ -22,7 +22,6 @@ class SideNavigationVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.addSideNavigation()
-        self.didSelectRowInNavigationTable(menuItem: MenuItem.init(type: .home))
         let menuPressRecognizer = UITapGestureRecognizer()
         menuPressRecognizer.addTarget(self, action: #selector(SideNavigationVC.menuButtonAction(recognizer:)))
         menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPressType.menu.rawValue)]
@@ -35,6 +34,11 @@ class SideNavigationVC: UIViewController {
         sideNavigationView?.frame = navigationTableHolder.frame
         navigationTableHolder.addSubview(sideNavigationView!)
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
+        self.sideNavigationView?.setMenuListItem()
+//        sideNavigationView?.navigationTable.selectRow (at: IndexPath.init(item: 1, section: 0), animated: true, scrollPosition: .none)
+        
+        
+        
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
