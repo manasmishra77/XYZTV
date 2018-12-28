@@ -846,7 +846,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func didClickOnAddOrRemoveWatchListButton(_ headerView: MetadataHeaderView, isStatusAdd: Bool) {
         var params = [String: Any]()
-        var json: [String: Any] = ["json": ["id": metadata?.contentId ?? itemId]]
+        var json: [String: Any] = ["id": metadata?.contentId ?? itemId]
         var listId = ""
         if isDisney {
             if itemAppType == .TVShow {

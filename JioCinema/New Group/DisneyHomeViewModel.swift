@@ -135,7 +135,7 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: "Resume Watch List", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english)
+                return (title: "Resume Watching", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english)
             }
         case .character:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
