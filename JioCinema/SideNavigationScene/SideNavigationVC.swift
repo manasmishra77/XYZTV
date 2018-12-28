@@ -34,8 +34,8 @@ class SideNavigationVC: UIViewController {
         sideNavigationView?.frame = navigationTableHolder.frame
         navigationTableHolder.addSubview(sideNavigationView!)
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
-//        sideNavigationView?.performNavigationTableSelection(index: 1)
-        sideNavigationView?.navigationTable.selectRow (at: IndexPath.init(item: 1, section: 0), animated: true, scrollPosition: .none)
+        self.sideNavigationView?.setMenuListItem()
+//        sideNavigationView?.navigationTable.selectRow (at: IndexPath.init(item: 1, section: 0), animated: true, scrollPosition: .none)
         
         
         
