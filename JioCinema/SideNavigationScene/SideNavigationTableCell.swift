@@ -24,7 +24,7 @@ class SideNavigationTableCell: UITableViewCell {
         if (context.nextFocusedView == self) {
             self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
         } else {
-            self.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1).withAlphaComponent(1.0)
+            self.backgroundColor = .clear
         }
     }
 }
