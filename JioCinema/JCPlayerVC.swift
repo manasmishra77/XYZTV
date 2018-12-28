@@ -1444,10 +1444,12 @@
         let id = itemId
 
         let lang: String = selectedAudio.lowercased()
-        let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
-        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
-
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration, "languageIndex": languageIndexDict]
+        var json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
+        
+        if let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) {
+            let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
+            json["languageIndex"] = languageIndexDict
+        }
         
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
