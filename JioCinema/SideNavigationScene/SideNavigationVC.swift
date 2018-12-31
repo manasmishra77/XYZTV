@@ -14,6 +14,7 @@ class SideNavigationVC: UIViewController {
     @IBOutlet weak var navigationTableHolder: UIView!
     @IBOutlet weak var sideNavigationWidthConstraint: NSLayoutConstraint!
     
+    var myPreferdFocusedView : UIView?
     var sideNavigationView: SideNavigationTableView?
     let sideViewExpandedWidth: CGFloat = 300
     let sideViewCollapsedWidth: CGFloat = 80
@@ -50,6 +51,13 @@ class SideNavigationVC: UIViewController {
 
         }
     }
+
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferedView = myPreferdFocusedView {
+            return [preferedView]
+        }
+        return []
+    }
     
 }
 
@@ -68,11 +76,16 @@ extension SideNavigationVC: SideNavigationTableProtocol {
     }
     
     func didSelectRowInNavigationTable(menuItem: MenuItem) {
+        
+        myPreferdFocusedView = nil
         if let uiView = self.HolderView.subviews.first {
             uiView.removeFromSuperview()
         }
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
         if let vc = menuItem.viewControllerObject {
+            myPreferdFocusedView = self.HolderView
+            self.updateFocusIfNeeded()
+            self.setNeedsFocusUpdate()
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
         }
