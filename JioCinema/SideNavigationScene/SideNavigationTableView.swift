@@ -123,9 +123,9 @@ class SideNavigationTableView: UIView {
     
     func performNavigationTableSelection(index: Int) {
         
-            if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
-                (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
-            }
+        if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
+            (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
+        }
 
         selectedIndex = index
         let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
