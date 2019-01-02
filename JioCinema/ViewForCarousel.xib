@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xaf-Gz-OVH">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1050"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1040"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aPh-BB-LvP">
                         <size key="itemSize" width="50" height="50"/>
@@ -27,7 +27,7 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="dL5-80-tQ8">
-                    <rect key="frame" x="0.0" y="1050" width="1920" height="30"/>
+                    <rect key="frame" x="0.0" y="1040" width="1920" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="upk-YG-AOU"/>
                     </constraints>
@@ -41,7 +41,7 @@
                 <constraint firstItem="dL5-80-tQ8" firstAttribute="top" secondItem="Xaf-Gz-OVH" secondAttribute="bottom" id="YQU-AZ-XHC"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YS1-8a-Nee"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aAa-nD-kJ5"/>
-                <constraint firstAttribute="bottom" secondItem="dL5-80-tQ8" secondAttribute="bottom" id="nzF-KS-vuG"/>
+                <constraint firstAttribute="bottom" secondItem="dL5-80-tQ8" secondAttribute="bottom" constant="10" id="nzF-KS-vuG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
             <connections>
