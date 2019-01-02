@@ -16,4 +16,5 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+    
 }
