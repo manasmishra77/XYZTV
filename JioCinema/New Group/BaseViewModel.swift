@@ -467,6 +467,12 @@ extension BaseViewModel {
     }
 }
 extension BaseViewModel : CarousalImageDelegate {
+    func didTapOnCell(_ index: IndexPath, _ collectionView: UICollectionView) {
+        if let item = baseDataModel?.data?[0].items {
+        itemCellTapped(item[index.row], selectedIndexPath: index)
+        }
+    }
+    
     func setImageFor(_ imageView: UIImageView, for index: Int) {
         if let urlString = baseDataModel?.data?[0].items?[index].imageUrlForCarousel{
             let url = URL(string: urlString)
@@ -474,6 +480,7 @@ extension BaseViewModel : CarousalImageDelegate {
         }
         
     }
+    
     
 }
 
