@@ -18,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
-    
-    
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -47,8 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication)
-    {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         JCAnalyticsEvent.sharedInstance.sendAppLaunchEvent()
         if let _ = topShelfContentModel{
             if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
