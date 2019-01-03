@@ -77,17 +77,26 @@ extension SideNavigationVC: SideNavigationTableProtocol {
     
     func didSelectRowInNavigationTable(menuItem: MenuItem) {
         
-        myPreferdFocusedView = nil
-        if let uiView = self.HolderView.subviews.first {
-            uiView.removeFromSuperview()
-        }
+
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
         if let vc = menuItem.viewControllerObject {
+            
+            if menuItem.type == .search {
+                self.navigationController?.present(vc, animated: false, completion: {
+                    
+                })
+            }
+            else {
+                myPreferdFocusedView = nil
+                if let uiView = self.HolderView.subviews.first {
+                    uiView.removeFromSuperview()
+                }
             myPreferdFocusedView = self.HolderView
             self.updateFocusIfNeeded()
             self.setNeedsFocusUpdate()
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
+            }
         }
     }
 }

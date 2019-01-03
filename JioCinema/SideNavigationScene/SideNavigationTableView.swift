@@ -122,20 +122,24 @@ class SideNavigationTableView: UIView {
     }
     
     func performNavigationTableSelection(index: Int) {
-        
-        if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
-            (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
-        }
-
-        selectedIndex = index
-        let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
-        if itemsList[index].type == ViewControllersType.disneyHome {
-            cell.selectionIndicatorView.backgroundColor = ViewColor.disneyBackground
-            self.navigationTable.backgroundColor = ViewColor.disneyBackground
+        if itemsList[index].type == ViewControllersType.search {
+            
         }
         else {
-            cell.selectionIndicatorView.backgroundColor = #colorLiteral(red: 0.931439817, green: 0.2393863201, blue: 0.4902414083, alpha: 1)
-            self.navigationTable.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+            if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
+                (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
+            }
+            
+            selectedIndex = index
+            let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
+            if itemsList[index].type == ViewControllersType.disneyHome {
+                    cell.selectionIndicatorView.backgroundColor = ViewColor.disneyBackground
+                    self.navigationTable.backgroundColor = ViewColor.disneyBackground
+            }
+            else {
+                    cell.selectionIndicatorView.backgroundColor = #colorLiteral(red: 0.931439817, green: 0.2393863201, blue: 0.4902414083, alpha: 1)
+                    self.navigationTable.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+            }
         }
         delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[index])
     }
