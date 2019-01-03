@@ -226,7 +226,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.isOpaque = true
         cell.backgroundColor = .clear
         if isDisney {
-            cell.artistNameInitialButton.backgroundColor = UIColor(red: 0.0/255.0, green: 30.0/255.0, blue: 66.0/255.0, alpha: 1.0)
+            cell.artistNameInitialButton.backgroundColor = ViewColor.disneyButtonColor
         }
         return cell
         

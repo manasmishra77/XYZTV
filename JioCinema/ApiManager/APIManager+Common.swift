@@ -17,18 +17,20 @@ extension RJILApiManager {
         case baseCommon
     }
     
-    class func getReponse<T: Codable>(path: String, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) {
+    class func getReponse<T: Codable>(path: String, shouldCheckNetWork: Bool = true, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) {
         
 //        guard !isLoginRequired, JCLoginManager.sharedInstance.isUserLoggedIn() else {
 //            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Not Logged in")
 //            completion(response)
 //            return
 //        }
-        
-        guard Utility.sharedInstance.isNetworkAvailable else {
-            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network")
-            completion(response)
-            return
+        if shouldCheckNetWork {
+            // Used only for getconfig and check version
+            guard Utility.sharedInstance.isNetworkAvailable else {
+                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network")
+                completion(response)
+                return
+            }
         }
         
         guard let request = RJILApiManager.defaultManager.prepareRequest(path: path, headerType: headerType, params: params, encoding: paramEncoding) else {
@@ -75,7 +77,7 @@ extension RJILApiManager {
     class func getConfigData(completion: @escaping APISuccessBlock) {
         let params = [kAppKey: kAppKeyValue]
         let path = basePath + common + configUrl
-        RJILApiManager.getReponse(path: path, params: params, postType: .GET, paramEncoding: .URL, shouldShowIndicator: true, reponseModelType: ConfigData.self) { (response) in
+        RJILApiManager.getReponse(path: path, shouldCheckNetWork: false, params: params, postType: .GET, paramEncoding: .URL, shouldShowIndicator: true, reponseModelType: ConfigData.self) { (response) in
             if response.isSuccess {
                JCDataStore.setConfigData(with: response.model!)
                 completion(true, nil)
@@ -89,7 +91,7 @@ extension RJILApiManager {
 //MARK:- Version check and update
 extension RJILApiManager {
     class func callWebServiceToCheckVersion(completion: @escaping (Response<CheckVersionModel>) -> ()) {
-        RJILApiManager.getReponse(path: checkVersionUrl, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
+        RJILApiManager.getReponse(path: checkVersionUrl, shouldCheckNetWork: false, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
     }
 }
 

@@ -46,6 +46,7 @@ class JCSplashVC: UIViewController {
         RJILApiManager.callWebServiceToCheckVersion {[weak self] (response) in
             guard let self = self else {return}
             if response.isSuccess {
+                self.tryAgainCount = 0
                 let checkModel =  response.model!
                 let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
                 // If build number is coming from back-end
@@ -59,8 +60,11 @@ class JCSplashVC: UIViewController {
                         return
                     }
                 }
+                self.callWebServiceForConfigData()
+            } else {
+                self.showAlertForCheckVersion(alertString: "")
             }
-            self.callWebServiceForConfigData()
+            
         }
     }
     func callWebServiceForConfigData() {
@@ -211,6 +215,30 @@ class JCSplashVC: UIViewController {
         
     }
     
+    func showAlertForCheckVersion(alertString: String) {
+        weak var weakSelf = self
+        let alert = UIAlertController(title: "Connection Error",
+                                      message: alertString,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
+            weakSelf?.tryAgainCount += 1
+            if let count = weakSelf?.tryAgainCount {
+                if count < 4 {
+                    weakSelf?.callWebServiceToCheckVersion()
+                } else {
+                    exit(0)
+                }
+            }
+        }
+        
+        alert.addAction(cancelAction)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
     
     //    func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
     //        do {
@@ -247,6 +275,7 @@ class JCSplashVC: UIViewController {
         }
         
     }
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu {
             exit(0)

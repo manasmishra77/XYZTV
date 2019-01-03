@@ -21,7 +21,7 @@ class JCSeasonCollectionViewCell: UICollectionViewCell {
             seasonNumberLabel.textColor = UIColor.white
             self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             if isDisney {
-                self.backgroundColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+                self.backgroundColor = ViewColor.disneyButtonColor
             }
         }
         else

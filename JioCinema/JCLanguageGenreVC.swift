@@ -381,13 +381,15 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
 extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var itemCellSize: CGSize {
         if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
-            let height = rowHeightForPotraitForLanguageGenreScreen
-            let widht = height*widthToHeightPropertionForPotratOLD
-            return CGSize(width: widht, height: height)
+//            let height = rowHeightForPotraitForLanguageGenreScreen
+//            let widht = height*widthToHeightPropertionForPotratOLD
+            return LanguageGenreScene.potraitCellSize
         } else {
-            let height = rowHeightForLandscapeForLanguageGenreScreen
-            let widht = height*widthToHeightPropertionForLandScapeOLD
-            return CGSize(width: widht, height: height)
+//            let height = rowHeightForLandscapeForLanguageGenreScreen
+//            let widht = height*widthToHeightPropertionForLandScapeOLD
+//            return CGSize(width: widht, height: height)
+            return LanguageGenreScene.landscapeCellSize
+
         }
     }
     
