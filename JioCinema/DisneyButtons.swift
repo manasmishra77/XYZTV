@@ -6,16 +6,23 @@
 //
 
 import UIKit
+protocol DisneyButtonsTapedDelegate{
+    func presentVCOnButtonTap(tag : Int)
+}
 
 class DisneyButtons: UIView {
+    var delegate : DisneyButtonsTapedDelegate?
     override func awakeFromNib() {
-        
+
     }
-    @IBAction func moviesButtonTapped(_ sender: Any) {
+    @IBAction func moviesButtonTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func tvShowTapped(_ sender: Any) {
+    @IBAction func tvShowTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func kidsTapped(_ sender: Any) {
+    @IBAction func kidsTapped(_ sender: UIButton) {
+        delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
     /*
     // Only override draw() if you perform custom drawing.

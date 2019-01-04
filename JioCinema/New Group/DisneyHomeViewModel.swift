@@ -102,18 +102,14 @@ class DisneyHomeViewModel: BaseViewModel {
     }
     override func buttonView() -> DisneyButtons? {
                 if disneyButtonView == nil {
+                    //disneyButtonView?.delegate = self
                     disneyButtonView = Utility.getXib("DisneyButtons", type: DisneyButtons.self, owner: self)
+                    disneyButtonView?.delegate = self
                     return disneyButtonView
                 }
                 return disneyButtonView
     }
-//    var viewOfCarousel : UIView? {
-//        if disneyButtonView == nil {
-//        disneyButtonView = Bundle.main.loadNibNamed("DisneyButtons", owner: nil, options: nil)?.first as! DisneyButtonsView
-//            return disneyButtonView
-//        }
-//        return disneyButtonView
-//    }
+
     // HOMEVC
     override var isToReloadTableViewAfterLoginStatusChange: Bool {
         let isResumeWatchListAvailabaleInDataStore = (self.baseWatchListModel != nil)
@@ -249,33 +245,25 @@ class DisneyHomeViewModel: BaseViewModel {
         case reumeWatch
         case character
     }
+
 }
 
-//extension DisneyHomeViewModel: DisneyButtonTapDelegate {
-//    func didTapOnCarouselItem(_ item: Any?) {
-//        if let item = item {
-//            delegate?.presentMetadataOfIcarousel(item)
-//        }
-//    }
-//
-//    func presentVCOnButtonTap(tag: Int) {
-//        switch tag {
-//        case 1:
-//            let disneyMovies = BaseViewController(.disneyMovies)
-//            delegate?.presentVC(disneyMovies)
-//        case 2:
-//            let disneyTVShow = BaseViewController(.disneyTVShow)
-//            delegate?.presentVC(disneyTVShow)
-//        case 3:
-//            let disneyKids = BaseViewController(.disneyKids)
-//            delegate?.presentVC(disneyKids)
-//        default:
-//            return
-//        }
-//    }
-//    enum ButtonType : Int {
-//        case Movies = 1
-//        case TVShow = 2
-//        case Kids = 3
-//    }
-//}
+extension DisneyHomeViewModel : DisneyButtonsTapedDelegate {
+    func presentVCOnButtonTap(tag: Int) {
+        switch tag {
+        case 1:
+            let disneyMovies = BaseViewController(.disneyMovies)
+            delegate?.presentVC(disneyMovies)
+        case 2:
+            let disneyTVShow = BaseViewController(.disneyTVShow)
+            delegate?.presentVC(disneyTVShow)
+        case 3:
+            let disneyKids = BaseViewController(.disneyKids)
+            delegate?.presentVC(disneyKids)
+        default:
+            return
+        }
+    }
+    
+    
+}

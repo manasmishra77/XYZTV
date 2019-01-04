@@ -237,7 +237,7 @@ class InfinityScrollView: UIView {
         
     }
     @IBAction func didClickOnMiddleButton(_ sender: Any) {
-        carouselDelegate?.didTapOnCarouselItem!(carouselArray[current])
+//        carouselDelegate?.didTapOnCarouselItem!(carouselArray[current])
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

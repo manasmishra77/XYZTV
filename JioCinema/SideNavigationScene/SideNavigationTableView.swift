@@ -60,7 +60,7 @@ struct MenuItem {
             self.image = UIImage.init(named: "Search")
             self.viewControllerObject = self.getSearchController()
         case .settings:
-            self.image = UIImage.init(named: "Settings")
+            self.image = UIImage.init(named: "SettingsIcon")
             self.viewControllerObject = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         case .music:
             self.image = UIImage.init(named: "Music")

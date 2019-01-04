@@ -24,18 +24,27 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyMovies"/>
+                            <connections>
+                                <action selector="moviesButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="m5x-J2-JLu"/>
+                            </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDv-hJ-Stb" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
                             <rect key="frame" x="313" y="0.0" width="294" height="570"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyTVShow"/>
+                            <connections>
+                                <action selector="tvShowTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Rnc-fd-Vkn"/>
+                            </connections>
                         </button>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifg-QR-FBt" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
                             <rect key="frame" x="627" y="0.0" width="293" height="570"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyKids"/>
+                            <connections>
+                                <action selector="kidsTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="csA-D7-mco"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

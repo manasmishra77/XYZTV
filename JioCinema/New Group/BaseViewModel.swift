@@ -355,33 +355,33 @@ fileprivate extension BaseViewModel {
     }
 }
 
-extension BaseViewModel: JCCarouselCellDelegate {
-    func didTapOnCarouselItem(_ item: Any?) {
-        guard let item = item as? Item else {return}
-        self.itemCellTapped(item, selectedIndexPath: nil)
-    }
-    
-    func presentVCOnButtonTap(tag: Int) {
-        switch tag {
-        case 1:
-            let disneyMovies = BaseViewController(.disneyMovies)
-            delegate?.presentVC(disneyMovies)
-        case 2:
-            let disneyTVShow = BaseViewController(.disneyTVShow)
-            delegate?.presentVC(disneyTVShow)
-        case 3:
-            let disneyKids = BaseViewController(.disneyKids)
-            delegate?.presentVC(disneyKids)
-        default:
-            return
-        }
-    }
-    enum ButtonType : Int {
-        case Movies = 1
-        case TVShow = 2
-        case Kids = 3
-    }
-}
+//extension BaseViewModel: DisneyButtonTapDelegate {
+////    func didTapOnCarouselItem(_ item: Any?) {
+////        guard let item = item as? Item else {return}
+////        self.itemCellTapped(item, selectedIndexPath: nil)
+////    }
+////    
+//    func presentVCOnButtonTap(tag: Int) {
+//        switch tag {
+//        case 1:
+//            let disneyMovies = BaseViewController(.disneyMovies)
+//            delegate?.presentVC(disneyMovies)
+//        case 2:
+//            let disneyTVShow = BaseViewController(.disneyTVShow)
+//            delegate?.presentVC(disneyTVShow)
+//        case 3:
+//            let disneyKids = BaseViewController(.disneyKids)
+//            delegate?.presentVC(disneyKids)
+//        default:
+//            return
+//        }
+//    }
+//    enum ButtonType : Int {
+//        case Movies = 1
+//        case TVShow = 2
+//        case Kids = 3
+//    }
+//}
 
 extension BaseViewModel {
     func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
