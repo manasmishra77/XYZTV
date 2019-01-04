@@ -136,6 +136,8 @@ class RJILApiManager {
             headers[kAppKey] = kAppKeyValue
             headers["cache-control"] = "no-cache"
             headers["x-disney"] = "true"
+            headers["x-charcat"] = "true"
+            headers["x-apisignatures"] = "5772987293"
             return headers
         }
     }

@@ -159,6 +159,11 @@ struct DataContainer: Codable {
     var id: String?
     var position: Int?
     
+    //Added For Disney Character
+    var characterItems: [DisneyCharacterItems]?
+    var backgroundImage: String?
+    var isCharCategory: Bool?
+    
     //Multiple Audio Parameter
     private var defaultAudioLanguage: String?
     
@@ -182,6 +187,9 @@ struct DataContainer: Codable {
         case layout = "layout"
         case position = "position"
         case defaultAudioLanguage
+        case characterItems
+        case backgroundImage
+        case isCharCategory = "isCharCat"
     }
     
     init(from decoder: Decoder) throws {
@@ -210,6 +218,15 @@ struct DataContainer: Codable {
             layout = try values.decodeIfPresent(Int.self, forKey: .layout)
             position = try values.decodeIfPresent(Int.self, forKey: .position)
             defaultAudioLanguage = try values.decodeIfPresent(String.self, forKey: .defaultAudioLanguage)
+            characterItems = try values.decodeIfPresent([DisneyCharacterItems].self, forKey: .characterItems)
+            backgroundImage = try values.decodeIfPresent(String.self, forKey: .backgroundImage)
+            do{
+                var isCharCat = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
+                isCharCategory = isCharCat
+            } catch {
+                let isCharCatBool = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
+                isCharCategory = isCharCatBool ?? false
+            }
         } catch  {
             print(error)
         }
@@ -591,6 +608,42 @@ enum Month: Int {
     }
     
 }
+struct DisneyCharacterItems : Codable {
+    let id : String?
+    let name : String?
+    let image : String?
+    let logo : String?
+    let url : String?
+    let items : [Item]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case image
+        case logo
+        case url
+        case items
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            let itemIdNum = try values.decodeIfPresent(Int.self, forKey: .id)
+            id = "\(itemIdNum ?? 0)"
+        } catch {
+            let itemIdString = try values.decodeIfPresent(String.self, forKey: .id)
+            id = itemIdString
+        }
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        image = try values.decodeIfPresent(String.self, forKey: .image)
+        logo = try values.decodeIfPresent(String.self, forKey: .logo)
+        url = try values.decodeIfPresent(String.self, forKey: .url)
+        items = try values.decodeIfPresent([Item].self, forKey: .items)
+    }
+    
+}
+
+
 
 
 

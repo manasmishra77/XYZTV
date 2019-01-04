@@ -32,7 +32,7 @@ extension RJILApiManager {
         let isPageNum0 = (pageNum == 0)
         var headerType = RequestHeaderType.baseCommon
         var body: [String: String]? = nil
-        if type == .disneyHome, type == .disneyKids, type == .disneyMovies, type == .disneyTVShow {
+        if type == .disneyHome || type == .disneyKids || type == .disneyMovies || type == .disneyTVShow {
             headerType = .disneyCommon
             body = [:]
             body?["apikey"] = "l7xx56d0dec5d8b54fb4b8b4690698da302f"
@@ -105,9 +105,10 @@ extension RJILApiManager {
         var newModel = model
         newModel.data?.removeAll()
         for each in (model.data ?? []) {
-            if (each.items?.count ?? 0) > 0 {
+            if (each.items?.count ?? 0 > 0) || (each.characterItems?.count ?? 0 > 0) {
                 newModel.data?.append(each)
             }
+
         }
         return newModel
     }

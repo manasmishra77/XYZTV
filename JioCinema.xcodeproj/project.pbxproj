@@ -498,9 +498,9 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
+				19BF8A7A214651C8001C58DD /* BaseScene */,
 				53D1E2E421B7B836003BD5C1 /* SideNavigationScene */,
 				19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */,
-				19BF8A7A214651C8001C58DD /* BaseScene */,
 				539618DF21219AE600B576BF /* ParentalControlScene */,
 				B8EADF041F9DC42C0069671B /* Analytics */,
 				7BA1C6E71F2F0702002AB966 /* Common */,

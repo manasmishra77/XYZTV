@@ -52,6 +52,7 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         case .character:
             print("character")
+            return .potrait
         }
         return .landscapeWithTitleOnly
     }
@@ -67,6 +68,7 @@ class DisneyHomeViewModel: BaseViewModel {
                 return dataContainer
             }
         case .character:
+//            if let dataContainer = baseDataModel?.data?[itemIndexTuple.1].
             break
         }
         return nil
@@ -155,18 +157,19 @@ class DisneyHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainerArr.count - 2 {
                      fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: data.categoryLanguage)
+            
+                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: data.categoryLanguage, charItems: data.characterItems ?? [] )
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: "Resume Watching", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english)
+                return (title: "Resume Watching", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english, charItems: [])
             }
         case .character:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: .english, charItems: [])
             }
         }
-        return (title: "", items: [], cellType: .disneyCommon, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+        return (title: "", items: [], cellType: .disneyCommon, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
     }
     
     //Used when logging in

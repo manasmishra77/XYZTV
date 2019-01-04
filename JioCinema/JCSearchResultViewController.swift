@@ -112,9 +112,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             let title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
             let cellType: ItemCellType = .search
             let layout: ItemCellLayoutType = getLayoutOfCellForItemType(items.first)
-            return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english)
+            return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
     }
     
     func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage)
+typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage, charItems: [DisneyCharacterItems])
 
 
 protocol BaseViewModelDelegate {
@@ -282,14 +282,14 @@ class BaseViewModel: NSObject  {
                 if itemIndexTuple.1 == dataContainerArr.count - 1 {
                     fetchBaseData()
                 }
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: dataContainer.categoryLanguage)
+                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: dataContainer.categoryLanguage, charItems: dataContainer.characterItems ?? [])
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
+        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
     }
     
     func getDataContainer(_ index: Int) -> DataContainer? {
