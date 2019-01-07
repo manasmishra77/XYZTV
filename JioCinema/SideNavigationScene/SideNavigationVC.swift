@@ -69,10 +69,19 @@ extension SideNavigationVC: SideNavigationTableProtocol {
         if side == .right {
             navigationWidth = sideViewCollapsedWidth
         }
-        self.sideNavigationWidthConstraint.constant = CGFloat(navigationWidth)
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
+        else {
+            myPreferdFocusedView = self.sideNavigationView
+            self.updateFocusIfNeeded()
+            self.setNeedsFocusUpdate()
         }
+        self.sideNavigationWidthConstraint.constant = CGFloat(navigationWidth)
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { (animationDone) in
+
+        })
+        
+        
     }
     
     func didSelectRowInNavigationTable(menuItem: MenuItem) {
@@ -82,6 +91,7 @@ extension SideNavigationVC: SideNavigationTableProtocol {
         if let vc = menuItem.viewControllerObject {
             
             if menuItem.type == .search {
+                (vc as? SearchNavigationController)?.jCSearchVC?.searchResultForkey(with: "")
                 self.navigationController?.present(vc, animated: false, completion: {
                     
                 })

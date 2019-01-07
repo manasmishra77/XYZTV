@@ -57,6 +57,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         
         //Search Trending ViewModel Intialization
         trendingSearchResultViewModel = JCTrendingSearchResultViewModel(self)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -234,12 +235,22 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         }
     }
     
+    func resetSearch() {
+        self.searchResultArray.removeAll()
+        self.baseTableView.reloadData()
+    }
+    
     //MARK:-  UISearchResultsUpdating Methods
     func updateSearchResults(for searchController: UISearchController) {
         searchResultForkey(with: searchController.searchBar.text ?? "")
     }
     
     func searchResultForkey(with key: String) {
+        
+        if key == "" {
+            self.searchViewController?.searchBar.text = ""
+        }
+        
         let url = preditiveSearchURL
         let params: [String: String]? = ["q": key]
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[weak self](response) in
@@ -301,39 +312,39 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         isForArtistSearch = true
         searchViewController?.searchBar.text = searchText
         searchResultForkey(with: searchText)
-        self.metaDataItemId = metaDataItemId
-        self.metaDataAppType = metaDataAppType
-        self.metaDataFromScreen = metaDataFromScreen
-        self.metaDataCategoryName = metaDataCategoryName
-        self.metaDataCategoryIndex = metaDataCategoryIndex
-        self.metaDataTabBarIndex = metaDataTabBarIndex
-        self.metaDataForArtist = metaData
-        self.languageModelForArtistSearch = languageModel
-        self.baseVCModelForArtistSearch = baseVCModel
-        self.vcTypeForMetadataArtist = vcTypeForMetadata
-        self.isComminFromSelectingRecommend = false
+//        self.metaDataItemId = metaDataItemId
+//        self.metaDataAppType = metaDataAppType
+//        self.metaDataFromScreen = metaDataFromScreen
+//        self.metaDataCategoryName = metaDataCategoryName
+//        self.metaDataCategoryIndex = metaDataCategoryIndex
+//        self.metaDataTabBarIndex = metaDataTabBarIndex
+//        self.metaDataForArtist = metaData
+//        self.languageModelForArtistSearch = languageModel
+//        self.baseVCModelForArtistSearch = baseVCModel
+//        self.vcTypeForMetadataArtist = vcTypeForMetadata
+//        self.isComminFromSelectingRecommend = false
     }
     
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu, isForArtistSearch {
-            isForArtistSearch = false
-            if vcTypeForMetadataArtist == .languageGenre {
-                if let languageModel = languageModelForArtistSearch as? Item {
-                    let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: languageModel, vcTypeForArtist: vcTypeForMetadataArtist)
-                    self.resetLanguageScreenRelatedVars()
-                    self.present(metaDataVC, animated: true, completion: nil)
-                }
-            } else if vcTypeForMetadataArtist == .disneyTV || vcTypeForMetadataArtist == .disneyMovie || vcTypeForMetadataArtist == .disneyKids {
-                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: nil, vcTypeForArtist: vcTypeForMetadataArtist)
-                self.resetLanguageScreenRelatedVars()
-                self.present(metaDataVC, animated: true, completion: nil)
-            } else {
-                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, vcTypeForArtist: vcTypeForMetadataArtist)
-                self.resetMetdataScreenRelatedVars()
-                self.present(metaDataVC, animated: true, completion: nil)
-            }
-        }
-    }
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        if presses.first?.type == UIPressType.menu, isForArtistSearch {
+//            isForArtistSearch = false
+//            if vcTypeForMetadataArtist == .languageGenre {
+//                if let languageModel = languageModelForArtistSearch as? Item {
+//                    let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: languageModel, vcTypeForArtist: vcTypeForMetadataArtist)
+//                    self.resetLanguageScreenRelatedVars()
+//                    self.present(metaDataVC, animated: true, completion: nil)
+//                }
+//            } else if vcTypeForMetadataArtist == .disneyTV || vcTypeForMetadataArtist == .disneyMovie || vcTypeForMetadataArtist == .disneyKids {
+//                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, modelForPresentedVC: nil, vcTypeForArtist: vcTypeForMetadataArtist)
+//                self.resetLanguageScreenRelatedVars()
+//                self.present(metaDataVC, animated: true, completion: nil)
+//            } else {
+//                let metaDataVC = Utility.sharedInstance.prepareMetadata(metaDataItemId, appType: metaDataAppType, fromScreen: metaDataFromScreen, categoryName: metaDataCategoryName, categoryIndex: metaDataCategoryIndex, tabBarIndex: metaDataTabBarIndex, shouldUseTabBarIndex: true, isMetaDataAvailable: true, metaData: metaDataForArtist!, vcTypeForArtist: vcTypeForMetadataArtist)
+//                self.resetMetdataScreenRelatedVars()
+//                self.present(metaDataVC, animated: true, completion: nil)
+//            }
+//        }
+//    }
     
     fileprivate func resetMetdataScreenRelatedVars() {
         metaDataForArtist = nil
