@@ -158,6 +158,7 @@ struct ViewColor {
     static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
     static let searchBackGround: UIColor = .black
     static let clearBackGround: UIColor = .clear
+    static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
 }
 
 
@@ -218,13 +219,35 @@ let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
-
+struct LanguageGenreScene {
+    static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
+    static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
+    static var landscapeRowHeight: CGFloat {
+        let height: CGFloat = 306 + 30//rowHeightForLandscape
+        return height
+    }
+    static var potraitRowHeight: CGFloat {
+        let height: CGFloat = 470 + 30 //rowHeightForPotrait
+        return height
+    }
+    static var landscapeCellSize: CGSize {
+        let height = landscapeRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForLandscape)
+        return CGSize(width: width, height: height)
+    }
+    static var potraitCellSize: CGSize {
+        let height = potraitRowHeight - 40
+        let width = (height / heightToWidthRatioOfItemCellForPotrait)
+        return CGSize(width: width, height: height)
+    }
+    
+}
 
 var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
-    return rowHeightForPotrait - 60
+    return rowHeightForPotrait
 }
 var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
-    return rowHeightForLandscape - 75
+    return rowHeightForLandscape
 }
 
 struct PlayerRecommendationSize {

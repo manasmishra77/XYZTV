@@ -128,8 +128,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     private func configueeDisneyView() {
             headerCell.configureViews(true)
             //headerCell.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
-            headerCell.addToWatchListButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
-            headerCell.playButton.focusedBGColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+            headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
+            headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
             metadataTableView.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
             self.view.backgroundColor =  UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
@@ -586,7 +586,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             cell.isDisney = self.isDisney
             if indexPath.row == 0 {
                 if isDisney {
-                    self.changeBorderColorOfCell(cell, toColor: UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0))
+                    self.changeBorderColorOfCell(cell, toColor: ViewColor.disneyButtonColor)
                 } else {
                 self.changeBorderColorOfCell(cell, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
                 }
@@ -1395,7 +1395,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         var colorToChange = UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
         if isDisney {
-            colorToChange = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+            colorToChange = ViewColor.disneyButtonColor
         }
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])
         fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
@@ -1430,7 +1430,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         for each in collectionView.visibleCells {
             if each == collectionView.cellForItem(at: indexPath) {
                 if isDisney {
-                  self.changeBorderColorOfCell(each, toColor: UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0))
+                  self.changeBorderColorOfCell(each, toColor: ViewColor.disneyButtonColor)
                 } else {
                 self.changeBorderColorOfCell(each, toColor:  UIColor(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1))
                 }
