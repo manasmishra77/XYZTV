@@ -14,7 +14,7 @@ protocol CarousalImageDelegate {
 }
 
 class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+    var isFocuable : Bool = true
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     private var indexOfCellBeforeDragging = 0
@@ -45,7 +45,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     var myPreferedFocusView : UIView?
     override var preferredFocusEnvironments: [UIFocusEnvironment]{
         if let preferredView = myPreferedFocusView {
-            preferredView.alpha = 0.3
+//            preferredView.alpha = 0.3
             return [preferredView]
         }
         return []
@@ -66,7 +66,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.collectionView.register(UINib(nibName: "CarouselCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CarouselCollectionViewCell")
 
         view.carousalImageDelegate = delegate
-        view.collectionView.isScrollEnabled = false
+//        view.collectionView.isScrollEnabled = true
         view.configureCollectionViewLayoutItemSize()
         //UI changes in view
         view.frame = frameOfView
@@ -76,17 +76,17 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.pageControl.isHidden = true
         view.collectionView.delegate = view
         view.collectionView.dataSource = view
-        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
-        swipeRight.direction = [.right]
-        view.addGestureRecognizer(swipeRight)
-
-        let swipeLeft = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
-        swipeLeft.direction = [.left]
-        view.addGestureRecognizer(swipeLeft)
+//        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
+//        swipeRight.direction = [.right]
+//        view.addGestureRecognizer(swipeRight)
+//
+//        let swipeLeft = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
+//        swipeLeft.direction = [.left]
+//        view.addGestureRecognizer(swipeLeft)
         
-        let tap = UITapGestureRecognizer(target: view, action: #selector(view.handleTap(sender:)))
-//        tap.delegate = self // This is not required
-        view.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: view, action: #selector(view.handleTap(sender:)))
+////        tap.delegate = self // This is not required
+//        view.addGestureRecognizer(tap)
         //view.myPreferedFocusView = view.collectionView.cellForItem(at: view.indexpathVar)
         
 //        let swipeDown = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
@@ -110,10 +110,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
 
     private func calculateSectionInset() -> CGFloat {
         var inset : CGFloat = 0.0
-//        if let width = collectionView?.frame.width {
-//            inset = (width - widthOfCell) / 4
             inset = visiblePart + sepration
-//        }
         return inset
     }
     
@@ -138,6 +135,14 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         indexOfCellBeforeDragging = indexOfMajorCell()
     }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("dsbgv")
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        print("asdf1234")
+    }
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         print(velocity)
 
@@ -148,7 +153,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let indexOfMajorCell = self.indexOfMajorCell()
         indexpathVar.row = indexOfMajorCell
         // calculate conditions:
-        let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
+        let swipeVelocityThreshold: CGFloat = 0.05 // after some trail and error
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < countOfArray && velocity.x > swipeVelocityThreshold
         let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
         let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
@@ -165,31 +170,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countOfArray
     }
-    
-    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
-    }
-    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
-//        let gRe = UIGestureRecognize
-        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-            switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.right:
-                print("right")
-                swipeToNextOrPrivious(swipeNext: true)
-            case UISwipeGestureRecognizerDirection.left:
-                print("left")
-                swipeToNextOrPrivious(swipeNext: false)
-//            case UISwipeGestureRecognizerDirection.down:
-//                swipeDown()
-            default:
-                break
-            }
-        }
-    }
-//
-//    func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
-//        return false
-//    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCollectionViewCell", for: indexPath) as! CarouselCollectionViewCell
         cell.rightSepration.constant = sepration / 2
@@ -199,8 +180,6 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
            index = indexPath.row % count
         }
         self.carousalImageDelegate?.setImageFor(cell.imageView, for: index)
-        //cell.imageView.image = UIImage(named: arrayOfImage[index])
-        
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -211,60 +190,33 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
 //        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
 //    }
 //
-//    func startTimer() {
-//        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(ViewForCarousel.autoSwipe), userInfo: nil, repeats: true);
-//    }
-//    @objc func autoSwipe() {
-//        if isCircular && autoScroll {
-//            if indexOfMajorCell() > countOfArray - 14*(count){
-//                indexpath.row = count * 15
-//                scrollToSpecificPosition(index: indexpath)
-//                return
-//            }
-//        }
-//        indexOfCellBeforeScrolling = indexOfMajorCell()
-//        let indexToScroll = IndexPath(row: indexOfCellBeforeScrolling + 1, section: 0)
-//        if indexToScroll.row < countOfArray {
-//            self.scrollToSpecificPosition(index: indexToScroll)
-//        }
-//    }
     func scrollToSpecificPosition(index : IndexPath,animation : Bool = true) {
         pageControl.currentPage = index.row % count
-        //if myPreferedFocusView != collectionView.cellForItem(at: index) {
-            collectionView!.scrollToItem(at: index, at: .centeredHorizontally, animated: animation)
-            self.collectionView.layoutIfNeeded()
-            updateCellInFocus(previousFocusView: myPreferedFocusView, nextFocusedView: collectionView.cellForItem(at: index))
-            myPreferedFocusView = collectionView.cellForItem(at: index)
-            self.setNeedsFocusUpdate()
-            self.updateFocusIfNeeded()
-       // }
-    }
-    func updateCellInFocus(previousFocusView : UIView?, nextFocusedView : UIView?) {
-            previousFocusView
-            nextFocusedView?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-            previousFocusView?.transform = CGAffineTransform(scaleX: 1, y: 1)
+        if myPreferedFocusView != collectionView.cellForItem(at: index) {
+//                    myPreferedFocusView = nil
+            DispatchQueue.main.async {
+                self.collectionView!.scrollToItem(at: index, at: .centeredHorizontally, animated: animation)
+                self.collectionView.layoutIfNeeded()
+                self.updateCellInFocus(previousFocusView: self.myPreferedFocusView, nextFocusedView: self.collectionView.cellForItem(at: index))
+            }
+
+//            myPreferedFocusView = collectionView.cellForItem(at: index)
+//            self.setNeedsFocusUpdate()
+//            self.updateFocusIfNeeded()
+        }
 
     }
-    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        print(context)
-    }
-//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-//        indexpathVar.row = indexOfMajorCell()
-//        if context.nextFocusedView == self {
-//            self.collectionView.cellForItem(at: indexpathVar)?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
-//        } else {
-//            self.collectionView.cellForItem(at: indexpathVar)?.transform = CGAffineTransform(scaleX: 1, y: 1)
-//        }
-//    }
+
 }
 extension UIView {
     class func initFromNib<T: UIView>() -> T {
         return Bundle.main.loadNibNamed(String(describing: self), owner: nil, options: nil)?[0] as! T
     }
 }
+//swipe gesture
 extension ViewForCarousel {
-
-    func swipeToNextOrPrivious(swipeNext : Bool) {
+//
+//    func swipeToNextOrPrivious(swipeNext : Bool) {
 //        if let focusedCell = UIScreen.main.focusedView as? UICollectionViewCell {
 //            if let indexPath = collectionView.indexPath(for: focusedCell) {
 //                print("IndexPath is \(indexPath)")
@@ -280,18 +232,106 @@ extension ViewForCarousel {
 //            }
 //        }
 //        if let focusedCell = UIScreen.main.focusedView as? UICollectionViewCell {
-            let indexPath : Int = indexOfMajorCell()
-            indexpathVar.row = indexPath
-            if indexPath < count && indexPath >= 0 {
-                print("IndexPath is \(indexPath)")
-                
-                if swipeNext && indexPath != count - 1{
-                    indexpathVar = IndexPath(row: indexPath + 1, section: 0)
-                } else if (indexPath != 0) && !swipeNext{
-                    indexpathVar = IndexPath(row: indexPath - 1, section: 0)
-                }
-                self.scrollToSpecificPosition(index: indexpathVar)
-        }        
-    }
+//            let indexPath : Int = indexOfMajorCell()
+//            indexpathVar.row = indexPath
+//            if indexPath < count && indexPath >= 0 {
+//                print("IndexPath is \(indexPath)")
+//
+//                if swipeNext && indexPath != count - 1{
+//                    indexpathVar = IndexPath(row: indexPath + 1, section: 0)
+//                } else if (indexPath != 0) && !swipeNext{
+//                    indexpathVar = IndexPath(row: indexPath - 1, section: 0)
+//                }
+//                self.scrollToSpecificPosition(index: indexpathVar)
+//            }
+//        }
+//    }
+    //    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
+    //        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
+    //    }
+    //    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+    ////        let gRe = UIGestureRecognize
+    //        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+    //            switch swipeGesture.direction {
+    //            case UISwipeGestureRecognizerDirection.right:
+    //                print("right")
+    //                swipeToNextOrPrivious(swipeNext: true)
+    //            case UISwipeGestureRecognizerDirection.left:
+    //                print("left")
+    //                swipeToNextOrPrivious(swipeNext: false)
+    ////            case UISwipeGestureRecognizerDirection.down:
+    ////                swipeDown()
+    //            default:
+    //                break
+    //            }
+    //        }
+    //    }
+    //
 }
+//autoScroll
+extension ViewForCarousel {
+    //    func startTimer() {
+    //        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(ViewForCarousel.autoSwipe), userInfo: nil, repeats: true);
+    //    }
+    //    @objc func autoSwipe() {
+    //        if isCircular && autoScroll {
+    //            if indexOfMajorCell() > countOfArray - 14*(count){
+    //                indexpath.row = count * 15
+    //                scrollToSpecificPosition(index: indexpath)
+    //                return
+    //            }
+    //        }
+    //        indexOfCellBeforeScrolling = indexOfMajorCell()
+    //        let indexToScroll = IndexPath(row: indexOfCellBeforeScrolling + 1, section: 0)
+    //        if indexToScroll.row < countOfArray {
+    //            self.scrollToSpecificPosition(index: indexToScroll)
+    //        }
+    //    }
+}
+// focus handling
+extension ViewForCarousel {
+    //    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+    //        print(context)
+    //
+    //    }
+    //    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+    //        indexpathVar.row = indexOfMajorCell()
+    //        if context.nextFocusedView == self {
+    //            self.collectionView.cellForItem(at: indexpathVar)?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+    //        } else {
+    //            self.collectionView.cellForItem(at: indexpathVar)?.transform = CGAffineTransform(scaleX: 1, y: 1)
+    //        }
+    //    }
+    //    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+    //
+    //    }
+    //    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+    //        return false
+    //    }
+    
+    //    func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
+    //        if context.focusHeading == .left {
+    //
+    //        } else if context.focusHeading == .right {
+    //
+    //        }
+    //
+    //      return false
+    //    }
+    //    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+    //
+    //    }
+    //    func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
+    //        return false
+    //    }
+    func updateCellInFocus(previousFocusView : UIView?, nextFocusedView : UIView?) {
+        print("updateCellInFocus")
+        nextFocusedView?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+        previousFocusView?.transform = CGAffineTransform(scaleX: 1, y: 1)
+                myPreferedFocusView = nil
+        myPreferedFocusView = nextFocusedView
+        self.setNeedsFocusUpdate()
+        self.updateFocusIfNeeded()
+    }
 
+}

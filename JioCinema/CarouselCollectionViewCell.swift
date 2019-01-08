@@ -17,4 +17,12 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
     
+//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+//        if (context.nextFocusedView == self) {
+//            self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
+//        } else {
+//            self.backgroundColor = .clear
+//        }
+//    }
+    
 }
