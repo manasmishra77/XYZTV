@@ -48,9 +48,19 @@ class SideNavigationVC: UIViewController {
             self.sideNavigationSwipeEnd(side: .left)
         }
         else {
-
+            exit(0)
         }
     }
+    
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        if(presses.first?.type == UIPressType.menu) {
+//            if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
+//                self.sideNavigationSwipeEnd(side: .left)
+//                return
+//            }
+//        }
+//            super.pressesBegan(presses, with: event)
+//    }
 
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferedView = myPreferdFocusedView {
@@ -97,16 +107,19 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-                myPreferdFocusedView = nil
                 if let uiView = self.HolderView.subviews.first {
                     uiView.removeFromSuperview()
                 }
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
                 
-            myPreferdFocusedView = vc.view
-            self.updateFocusIfNeeded()
-            self.setNeedsFocusUpdate()
+                DispatchQueue.main.async {
+                    self.myPreferdFocusedView = nil
+                    self.myPreferdFocusedView = self.HolderView
+                    self.updateFocusIfNeeded()
+                    self.setNeedsFocusUpdate()
+                }
+
             }
         }
     }

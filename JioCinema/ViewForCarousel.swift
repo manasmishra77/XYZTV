@@ -178,6 +178,13 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
+               if context.nextFocusedIndexPath == nil && context.focusHeading == .up {
+                   return false
+               }
+               return true
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedIndexPath != nil && !collectionView.isScrollEnabled) {
             DispatchQueue.main.async {
@@ -189,6 +196,13 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
             }
         }
     }
+    
+//    func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {
+//        if context.nextFocusedIndexPath == nil && (context.focusHeading == .down || context.focusHeading == .up ) {
+//            return false
+//        }
+//        return true
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height - 40)
@@ -238,9 +252,9 @@ extension ViewForCarousel {
 // focus handling
 extension ViewForCarousel {
     func updateCellInFocus(previousFocusView : UIView?, nextFocusedView : UIView?) {
-        print("updateCellInFocus")
-        nextFocusedView?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-        previousFocusView?.transform = CGAffineTransform(scaleX: 1, y: 1)
+//        print("updateCellInFocus")
+//        nextFocusedView?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+//        previousFocusView?.transform = CGAffineTransform(scaleX: 1, y: 1)
 //                myPreferedFocusView = nil
 //        myPreferedFocusView = nextFocusedView
 //        self.setNeedsFocusUpdate()
