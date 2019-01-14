@@ -36,21 +36,31 @@ class SideNavigationVC: UIViewController {
         navigationTableHolder.addSubview(sideNavigationView!)
         sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
         self.sideNavigationView?.setMenuListItem()
-//        sideNavigationView?.navigationTable.selectRow (at: IndexPath.init(item: 1, section: 0), animated: true, scrollPosition: .none)
-        
-        
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.sideNavigationView?.performNavigationTableSelection(index: (self.sideNavigationView?.selectedIndex)!)
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-        
         if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
             self.sideNavigationSwipeEnd(side: .left)
         }
         else {
-
+            exit(0)
         }
     }
+    
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        if(presses.first?.type == UIPressType.menu) {
+//            if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
+//                self.sideNavigationSwipeEnd(side: .left)
+//                return
+//            }
+//        }
+//            super.pressesBegan(presses, with: event)
+//    }
 
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferedView = myPreferdFocusedView {
@@ -70,7 +80,7 @@ extension SideNavigationVC: SideNavigationTableProtocol {
             navigationWidth = sideViewCollapsedWidth
         }
         else {
-            myPreferdFocusedView = self.sideNavigationView
+            myPreferdFocusedView = self.sideNavigationView?.navigationTable
             self.updateFocusIfNeeded()
             self.setNeedsFocusUpdate()
         }
@@ -97,15 +107,19 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-                myPreferdFocusedView = nil
                 if let uiView = self.HolderView.subviews.first {
                     uiView.removeFromSuperview()
                 }
-            myPreferdFocusedView = self.HolderView
-            self.updateFocusIfNeeded()
-            self.setNeedsFocusUpdate()
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
+                
+                DispatchQueue.main.async {
+                    self.myPreferdFocusedView = nil
+                    self.myPreferdFocusedView = self.HolderView
+                    self.updateFocusIfNeeded()
+                    self.setNeedsFocusUpdate()
+                }
+
             }
         }
     }

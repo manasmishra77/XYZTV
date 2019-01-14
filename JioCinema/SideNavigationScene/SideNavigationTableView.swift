@@ -118,7 +118,8 @@ class SideNavigationTableView: UIView {
         self.itemsList.append(MenuItem.init(type: .clips, index: 6))
         self.itemsList.append(MenuItem.init(type: .settings, index: 7))
         self.navigationTable.reloadData()
-        performNavigationTableSelection(index: 1)
+        selectedIndex = 1
+//        performNavigationTableSelection(index: 1)
     }
     
     func performNavigationTableSelection(index: Int) {
@@ -133,12 +134,12 @@ class SideNavigationTableView: UIView {
             selectedIndex = index
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
             if itemsList[index].type == ViewControllersType.disneyHome {
-                    cell.selectionIndicatorView.backgroundColor = ViewColor.disneyBackground
-                    self.navigationTable.backgroundColor = ViewColor.disneyBackground
+                    cell.selectionIndicatorView.backgroundColor = ViewColor.disneyButtonColor
+                    self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
             }
             else {
                     cell.selectionIndicatorView.backgroundColor = #colorLiteral(red: 0.931439817, green: 0.2393863201, blue: 0.4902414083, alpha: 1)
-                    self.navigationTable.backgroundColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+                    self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
         }
         delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[index])
