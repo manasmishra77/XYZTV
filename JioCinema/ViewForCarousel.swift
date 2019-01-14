@@ -186,10 +186,10 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let sizeOfCell = CGSize(width: widthOfCell - 40, height: frameOfView.height - 40)
         return sizeOfCell
     }
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
-//    }
-//
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
+    }
+
     func scrollToSpecificPosition(index : IndexPath,animation : Bool = true) {
         pageControl.currentPage = index.row % count
         if myPreferedFocusView != collectionView.cellForItem(at: index) {
