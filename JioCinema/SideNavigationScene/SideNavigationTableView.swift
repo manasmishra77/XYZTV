@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SideNavigationTableProtocol {
+protocol SideNavigationTableProtocol: AnyObject {
     func sideNavigationSwipeEnd(side: UIFocusHeading)
     func didSelectRowInNavigationTable(menuItem: MenuItem)
 }
@@ -28,6 +28,8 @@ enum ViewControllersType: String {
         switch self {
         case .disneyHome:
             return "Disney-Jio"
+        case .tv:
+            return "TV"
         default:
             return self.rawValue.capitalized
         }
@@ -86,7 +88,7 @@ class SideNavigationTableView: UIView {
     
     @IBOutlet weak var navigationTable: UITableView!
     
-    var delegate: SideNavigationTableProtocol?
+    weak var delegate: SideNavigationTableProtocol?
     var controllersType: ViewControllersType?
 
     var itemsList = [MenuItem]()
