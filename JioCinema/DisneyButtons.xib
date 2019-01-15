@@ -17,10 +17,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sew-LP-T61">
-                    <rect key="frame" x="406" y="10" width="1108" height="180"/>
+                    <rect key="frame" x="460" y="10" width="1000" height="180"/>
                     <subviews>
                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5YK-bb-CYv" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="356" height="180"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyMovies"/>
@@ -29,10 +29,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDv-hJ-Stb" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="376" y="0.0" width="356" height="180"/>
+                            <rect key="frame" x="340" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="356" id="Iqj-LB-45N"/>
+                                <constraint firstAttribute="width" constant="320" id="Iqj-LB-45N"/>
                             </constraints>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyTVShow"/>
@@ -41,7 +41,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifg-QR-FBt" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="752" y="0.0" width="356" height="180"/>
+                            <rect key="frame" x="680" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyKids"/>
