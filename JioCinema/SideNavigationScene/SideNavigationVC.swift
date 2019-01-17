@@ -27,6 +27,14 @@ class SideNavigationVC: UIViewController {
         menuPressRecognizer.addTarget(self, action: #selector(SideNavigationVC.menuButtonAction(recognizer:)))
         menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPressType.menu.rawValue)]
         self.view.addGestureRecognizer(menuPressRecognizer)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onSerchNavRemoving(_:)), name: AppNotification.serchViewUnloading, object: nil)
+    }
+    
+    @objc func onSerchNavRemoving(_ notification:Notification) {
+        self.presentedViewController?.dismiss(animated: true, completion: {
+            self.sideNavigationView?.performNavigationTableSelection(index: (self.sideNavigationView?.selectedIndex)!)
+        })
     }
     
     func addSideNavigation() {
@@ -40,7 +48,6 @@ class SideNavigationVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.sideNavigationView?.performNavigationTableSelection(index: (self.sideNavigationView?.selectedIndex)!)
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
