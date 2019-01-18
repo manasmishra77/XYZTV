@@ -169,12 +169,13 @@ extension BaseViewController: BaseViewModelDelegate {
     }
     
     func presentVC(_ vc: UIViewController) {
-        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-            // For DisneyKids, Disney Movies, Disney TVShow
             self.present(vc, animated: true, completion: nil)
-            return
-        }
-        tabBarVC.presentDisneySubVC(vc)
+//        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+//            // For DisneyKids, Disney Movies, Disney TVShow
+//            self.present(vc, animated: true, completion: nil)
+//            return
+//        }
+//        tabBarVC.presentDisneySubVC(vc)
     }
 
 }

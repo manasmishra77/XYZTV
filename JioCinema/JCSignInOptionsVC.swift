@@ -46,8 +46,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
 //                     jioIdTextField.text     = "poonam2016"
 //                     passwordTextField.text  = "poonam@12"
-//        jioIdTextField.text     = "prabhu.p"
-//        passwordTextField.text  = "ril@1234"
+        jioIdTextField.text     = "prabhu.p"
+        passwordTextField.text  = "ril@1234"
 
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
             Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
@@ -81,17 +81,17 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     navVC = vc
                 }
 
-                if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
-                    if let disneyHomeVC = tabVc.viewControllers?[4] as? BaseViewController {
+                if let tabVc = navVC?.viewControllers[0] as? SideNavigationVC {
+                    if let disneyHomeVC = tabVc.sideNavigationView?.itemsList[4].viewControllerObject as? BaseViewController {
                         disneyHomeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let homeVC = tabVc.viewControllers?[0] as? BaseViewController {
+                    if let homeVC = tabVc.sideNavigationView?.itemsList[1].viewControllerObject as? BaseViewController {
                             homeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let movieVC = tabVc.viewControllers?[1] as? BaseViewController {
+                    if let movieVC = tabVc.sideNavigationView?.itemsList[2].viewControllerObject as? BaseViewController {
                             movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let tvVc = tabVc.viewControllers?[2] as? BaseViewController {
+                    if let tvVc = tabVc.sideNavigationView?.itemsList[3].viewControllerObject as? BaseViewController {
                             tvVc.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                 }

@@ -13,14 +13,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DisneyButtons" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1920" height="590"/>
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sew-LP-T61">
-                    <rect key="frame" x="500" y="10" width="920" height="570"/>
+                    <rect key="frame" x="460" y="10" width="1000" height="180"/>
                     <subviews>
                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5YK-bb-CYv" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="293" height="570"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyMovies"/>
@@ -29,8 +29,11 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDv-hJ-Stb" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="313" y="0.0" width="294" height="570"/>
+                            <rect key="frame" x="340" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="320" id="Iqj-LB-45N"/>
+                            </constraints>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyTVShow"/>
                             <connections>
@@ -38,7 +41,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifg-QR-FBt" customClass="JCDisneyButton" customModule="JioCinema" customModuleProvider="target">
-                            <rect key="frame" x="627" y="0.0" width="293" height="570"/>
+                            <rect key="frame" x="680" y="0.0" width="320" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" backgroundImage="DisneyKids"/>
@@ -52,10 +55,10 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="sew-LP-T61" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="500" id="BCl-EK-Zdj"/>
-                <constraint firstAttribute="trailing" secondItem="sew-LP-T61" secondAttribute="trailing" constant="500" id="DDi-Sk-ygJ"/>
-                <constraint firstItem="sew-LP-T61" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="YIY-Ha-15g"/>
-                <constraint firstAttribute="bottom" secondItem="sew-LP-T61" secondAttribute="bottom" constant="10" id="bKL-3q-88z"/>
+                <constraint firstItem="sew-LP-T61" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NnA-0I-Pxb"/>
+                <constraint firstItem="sew-LP-T61" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="eJj-fr-Uuh"/>
+                <constraint firstAttribute="bottom" secondItem="sew-LP-T61" secondAttribute="bottom" constant="10" id="egt-4J-OfV"/>
+                <constraint firstItem="sew-LP-T61" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="ouH-bH-9GU"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>

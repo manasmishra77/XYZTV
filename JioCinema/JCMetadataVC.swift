@@ -126,12 +126,12 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         configureHeaderCell()
     }
     private func configueeDisneyView() {
-        headerCell.configureViews(true)
-        //headerCell.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
-        headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
-        headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
-        metadataTableView.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
-        self.view.backgroundColor =  UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            headerCell.configureViews(true)
+            //headerCell.backgroundColor = UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
+            headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
+            metadataTableView.backgroundColor = ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            self.view.backgroundColor =  ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
         headerCell.seasonCollectionView.register(UINib.init(nibName:"JCSeasonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: seasonCollectionViewCellIdentifier)
@@ -1086,6 +1086,13 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.starringLabel.text =  metadata?.artist?.joined(separator: ", ")
     }
     
+    private func getSearchController() -> SearchNavigationController{
+        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
+        return SearchNavigationController(rootViewController: searchContainerController)
+    }
+    
     //MARK:- JCBaseTableViewCellDelegate methods, More tableview cell delegate methods
     func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
         if !Utility.sharedInstance.isNetworkAvailable {
@@ -1113,6 +1120,41 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             //Google Analytics for Artist Click
             let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
             JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
+            
+            
+//            if let superNav = (((self.presentingViewController as? UINavigationController)?.presentingViewController as? UINavigationController)?.viewControllers[0] as? SideNavigationVC)?.sideNavigationView?.itemsList[0].viewControllerObject
+            
+            
+            if let searchNavController = self.presentingViewController as? SearchNavigationController {
+                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+                self.dismiss(animated: false) {
+                    
+                }
+            }
+            else {
+                let searchNavController = self.getSearchController()
+                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+                self.present(searchNavController, animated: false) {
+                    
+                }
+            }
+
+            return
+            
+
+
+            
+            
+//            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+            //searchResultForkey(with: tappedItem)
+            
+
+            
+//            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.dismiss(animated: false) {
+//
+//            }
+            
+            
             
             if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
                 if (presentingVcTypeForArtist == .disneyMovie) || (presentingVcTypeForArtist == .disneyTV) || (presentingVcTypeForArtist == .disneyKids) {
