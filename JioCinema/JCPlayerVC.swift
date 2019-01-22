@@ -658,7 +658,7 @@
                     isFpsUrl = false
                     self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
                 } else {
-                    /*
+                    
                     //AES url failed
                     failureType = "AES"
                     let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
@@ -672,7 +672,7 @@
                     alert.addAction(cancelAction)
                     DispatchQueue.main.async {
                         self.present(alert, animated: false, completion: nil)
-                    }*/
+                    }
                 }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
@@ -1273,7 +1273,8 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                //self.playbackRightsData?.url = nil
+//                self.playbackRightsData?.url = nil
+//                self.playbackRightsData?.aesUrl = nil
                 //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {
                     self.doParentalCheck(with: fpsUrl, isFps: true)

@@ -29,14 +29,17 @@ class JCSearchViewController: UISearchController {
        // print("123")
         
     }
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        
-//        //Sending event to the searchvc when menu button preesed
-//        if presses.first?.type == UIPressType.menu {
+    
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        
+        //Sending event to the searchvc when menu button preesed
+        if presses.first?.type == UIPressType.menu {
+
+            NotificationCenter.default.post(name: AppNotification.serchViewUnloading, object: nil)
 //            if let searchVc = self.searchResultsController as? JCSearchResultViewController {
 //                searchVc.pressesBegan(presses, with: event)
 //            }
-//        }
-//    }
+        }
+    }
 
 }

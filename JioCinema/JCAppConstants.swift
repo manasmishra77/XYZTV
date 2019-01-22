@@ -144,6 +144,7 @@ let isUserLoggedInKey = "isUserLoggedIn"
 let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")
 let didSetDisneyTVWatchlist = Notification.Name("didSetDisneyTVWatchList")
 let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList")
+
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
@@ -152,6 +153,7 @@ let isParentalControlShown = "isParentalControlShown"
 struct AppNotification {
     static let reloadResumeWatch = Notification.Name("resumeWatchReload")
     static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
+    static let serchViewUnloading = Notification.Name("SearchViewUnloading")
 }
 struct ViewColor {
     static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)

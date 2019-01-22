@@ -121,7 +121,7 @@ class SideNavigationTableView: UIView {
         self.itemsList.append(MenuItem.init(type: .settings, index: 7))
         self.navigationTable.reloadData()
         selectedIndex = 1
-//        performNavigationTableSelection(index: 1)
+        performNavigationTableSelection(index: 1)
     }
     
     func performNavigationTableSelection(index: Int) {
