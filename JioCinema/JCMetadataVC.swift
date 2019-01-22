@@ -1416,17 +1416,22 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     //Height of the table header container
     func getHeaderContainerHeight() -> CGFloat {
+        var heightConstant : CGFloat = 0.0
+        let newTitleHight = getSizeofDescriptionContainerView(metadata?.name ?? "", widthOfView: headerCell.descriptionContainerview.frame.size.width, font: headerCell.titleLabel.font)
+        if newTitleHight > 85 {
+            heightConstant = newTitleHight - 85
+        }
         switch itemAppType {
         case .Movie:
             //To be changed to dynamic one
-            return 689
+            return 689 + heightConstant
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 780 + 50
+                let heightOfView = 780 + 50 + heightConstant
                 return CGFloat(heightOfView)
             }
-            return 900 + 50
+            return 900 + 50 + heightConstant
         default:
             return 0
         }

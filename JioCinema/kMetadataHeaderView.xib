@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -33,8 +33,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oog-7o-H3Y">
                     <rect key="frame" x="0.0" y="30" width="1920" height="1038"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-yh-ge7">
-                            <rect key="frame" x="30" y="15" width="0.0" height="0.0"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-yh-ge7">
+                            <rect key="frame" x="30" y="15" width="792" height="0.0"/>
                             <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="72"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -278,6 +278,7 @@
                 <constraint firstItem="L7P-Yq-xJD" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" id="DP4-q5-UIb"/>
                 <constraint firstItem="L7P-Yq-xJD" firstAttribute="leading" secondItem="JvY-ef-buL" secondAttribute="trailing" constant="10" id="EF1-ax-tay"/>
                 <constraint firstItem="oog-7o-H3Y" firstAttribute="top" secondItem="3YS-bd-bkv" secondAttribute="top" constant="30" id="F8o-Rr-FNQ"/>
+                <constraint firstItem="L7P-Yq-xJD" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="trailing" id="YXo-lx-43L"/>
                 <constraint firstAttribute="bottom" secondItem="oog-7o-H3Y" secondAttribute="bottom" id="efR-2O-tyZ"/>
                 <constraint firstAttribute="trailing" secondItem="L7P-Yq-xJD" secondAttribute="trailing" id="ehh-kK-oej"/>
                 <constraint firstItem="oog-7o-H3Y" firstAttribute="leading" secondItem="3YS-bd-bkv" secondAttribute="leading" id="fp9-SJ-HG7"/>
