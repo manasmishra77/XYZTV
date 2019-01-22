@@ -468,8 +468,8 @@ extension BaseViewModel {
 }
 extension BaseViewModel : CarousalImageDelegate {
     func didTapOnCell(_ index: IndexPath, _ collectionView: UICollectionView) {
-        if let item = baseDataModel?.data?[0].items {
-        itemCellTapped(item[index.row], selectedIndexPath: index)
+        if let items = baseDataModel?.data?[0].items {
+        itemCellTapped(items[index.row], selectedIndexPath: index)
         }
     }
     

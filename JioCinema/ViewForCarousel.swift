@@ -186,7 +186,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.carousalImageDelegate?.didTapOnCell(indexpathVar,collectionView)
+        self.carousalImageDelegate?.didTapOnCell(indexPath,collectionView)
     }
 
 //    func scrollToSpecificPosition(index : IndexPath,animation : Bool = true) {
