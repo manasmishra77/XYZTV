@@ -175,6 +175,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCollectionViewCell", for: indexPath) as! CarouselCollectionViewCell
         cell.rightSepration.constant = sepration / 2
         cell.leftSepration.constant = sepration / 2
+        cell.imageView.cornerRadius = 10
         var index = indexPath.row
         if isCircular {
            index = indexPath.row % count

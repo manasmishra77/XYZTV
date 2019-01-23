@@ -196,9 +196,13 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
             }
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-
-                imageView.borderWidth = 5
+            imageView.borderWidth = 5
+            if cellItem?.cellType.isDisney ?? false {
+                imageView.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+            } else {
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            }
+
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)

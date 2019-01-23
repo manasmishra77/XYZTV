@@ -137,7 +137,6 @@ class SideNavigationTableView: UIView {
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
             if itemsList[index].type == ViewControllersType.disneyHome {
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
-                    cell.backgroundColor = .black
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
             }
             else {

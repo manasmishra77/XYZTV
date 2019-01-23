@@ -15,13 +15,13 @@ class DisneyButtons: UIView {
     override func awakeFromNib() {
 
     }
-    @IBAction func moviesButtonTapped(_ sender: UIButton) {
+    @IBAction func moviesButtonTapped(_ sender: JCDisneyButton) {
         delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func tvShowTapped(_ sender: UIButton) {
+    @IBAction func tvShowTapped(_ sender: JCDisneyButton) {
         delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
-    @IBAction func kidsTapped(_ sender: UIButton) {
+    @IBAction func kidsTapped(_ sender: JCDisneyButton) {
         delegate?.presentVCOnButtonTap(tag: sender.tag)
     }
     /*
