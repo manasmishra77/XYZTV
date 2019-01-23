@@ -221,12 +221,20 @@ let SHOW_LESS = "Show Less"
 
 
 //MARK:- Tablecell Row height
-let rowHeightForPotrait: CGFloat = 561
-let rowHeightForLandscape: CGFloat = 397
+
+let itemHeightForPortrait: CGFloat = 450
+let itemHeightForLandscape: CGFloat = 360
+let itemWidthForPortrait: CGFloat = 270
+let itemWidthForLadscape: CGFloat = 480
+
+let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90//561
+let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90//397
 let widthToHeightPropertionForPotrat: CGFloat = 277/475
 let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
+
+
 
 struct LanguageGenreScene {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54

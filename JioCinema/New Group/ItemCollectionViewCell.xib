@@ -24,21 +24,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7W-TF-XAc" userLabel="ImageProgressContainerView">
-                        <rect key="frame" x="15" y="15" width="362" height="155"/>
+                        <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="145"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="160"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdZ-19-fLq">
-                                <rect key="frame" x="0.0" y="0.0" width="362" height="145"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="160"/>
                                 <color key="backgroundColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Tg-1Y-7Qg">
-                                <rect key="frame" x="0.0" y="145" width="362" height="10"/>
+                                <rect key="frame" x="0.0" y="160" width="392" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="OvZ-Jn-zMO"/>
                                 </constraints>
@@ -98,16 +98,16 @@
             <constraints>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="2KM-q2-3F1"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="height" secondItem="rYV-oP-nC5" secondAttribute="height" id="4UL-0s-ecn"/>
-                <constraint firstAttribute="trailing" secondItem="s7W-TF-XAc" secondAttribute="trailing" constant="15" id="HVa-Sh-srn"/>
+                <constraint firstAttribute="trailing" secondItem="s7W-TF-XAc" secondAttribute="trailing" id="HVa-Sh-srn"/>
                 <constraint firstAttribute="trailing" secondItem="rYV-oP-nC5" secondAttribute="trailing" constant="20" id="L9X-7M-Lcg"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="centerY" secondItem="rYV-oP-nC5" secondAttribute="centerY" id="OaZ-bj-Mep"/>
                 <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="90" id="POj-b4-bWL"/>
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="20" id="TIP-HB-83D"/>
                 <constraint firstItem="QhF-XA-SdJ" firstAttribute="top" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="10" id="Up5-gu-qXD"/>
                 <constraint firstAttribute="trailing" secondItem="QhF-XA-SdJ" secondAttribute="trailing" constant="15" id="cnu-zz-bhJ"/>
-                <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="g3q-TQ-rIf"/>
+                <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="g3q-TQ-rIf"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="iGw-Rc-SW1"/>
-                <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="nYa-e9-YQn"/>
+                <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="nYa-e9-YQn"/>
                 <constraint firstItem="QhF-XA-SdJ" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="ySx-Md-Gaa"/>
             </constraints>
             <size key="customSize" width="439" height="267"/>
