@@ -16,8 +16,8 @@ class SideNavigationVC: UIViewController {
     
     var myPreferdFocusedView : UIView?
     var sideNavigationView: SideNavigationTableView?
-    let sideViewExpandedWidth: CGFloat = 300
-    let sideViewCollapsedWidth: CGFloat = 80
+    let sideViewExpandedWidth: CGFloat = 368
+    let sideViewCollapsedWidth: CGFloat = 108
     
     override func viewDidLoad() {
         super.viewDidLoad()

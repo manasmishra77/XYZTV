@@ -159,15 +159,19 @@ struct ViewColor {
     static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
     static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
     
-    
-    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.01960784314, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 0.7241277825)
+    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.6285945773, green: 0.09878890961, blue: 0.2734127343, alpha: 0.72)
+//    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.01960784314, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+//    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
     
 //    Cinema Left Menu Background Color  : #8D0536
     
     static let searchBackGround: UIColor = .black
     static let clearBackGround: UIColor = .clear
     static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
+    static let selectionBarOnLeftNavigationColorForDisney: UIColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+
 }
 
 

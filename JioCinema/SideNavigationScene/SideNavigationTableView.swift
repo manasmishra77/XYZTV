@@ -29,7 +29,7 @@ enum ViewControllersType: String {
         case .disneyHome:
             return "Disney-Jio"
         case .tv:
-            return "TV"
+            return "TV Shows"
         default:
             return self.rawValue.capitalized
         }
@@ -136,11 +136,12 @@ class SideNavigationTableView: UIView {
             selectedIndex = index
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
             if itemsList[index].type == ViewControllersType.disneyHome {
-                    cell.selectionIndicatorView.backgroundColor = ViewColor.disneyButtonColor
+                    cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
+                    cell.backgroundColor = .black
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
             }
             else {
-                    cell.selectionIndicatorView.backgroundColor = #colorLiteral(red: 0.931439817, green: 0.2393863201, blue: 0.4902414083, alpha: 1)
+                    cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
         }
