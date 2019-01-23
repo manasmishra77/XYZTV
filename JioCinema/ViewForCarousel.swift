@@ -30,6 +30,8 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     var frameOfView : CGRect!
     var visiblePart : CGFloat!
     var autoScroll : Bool!
+    var isScrolling = false
+    
     var countOfArray : Int {
         get {
             if isCircular {
@@ -76,6 +78,9 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.pageControl.isHidden = true
         view.collectionView.delegate = view
         view.collectionView.dataSource = view
+        
+        view.collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        
 //        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
 //        swipeRight.direction = [.right]
 //        view.addGestureRecognizer(swipeRight)
@@ -179,6 +184,10 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
+        
+        if isScrolling == true {
+            return false
+        }
                if context.nextFocusedIndexPath == nil && context.focusHeading == .up {
                    return false
                }
@@ -199,7 +208,21 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         if (context.nextFocusedIndexPath != nil && !collectionView.isScrollEnabled) {
 //>>>>>>> c7c2730f548a1cc61d70f1fdf3666d210a1f6f3e
             DispatchQueue.main.async {
-                collectionView.scrollToItem(at: context.nextFocusedIndexPath!, at: .centeredHorizontally, animated: true)
+                
+                //isScrolling
+                self.isScrolling = true
+//
+                UIView.animate(withDuration: 0.5, animations: {
+                collectionView.scrollToItem(at: context.nextFocusedIndexPath!, at: .centeredHorizontally, animated: false)
+                }, completion: { (isScrolled) in
+                    self.isScrolling = false
+                })
+                
+//                UIView.animate(withDuration: 0.7, animations: {
+//                    collectionView.scrollToItem(at: context.nextFocusedIndexPath!, at: .centeredHorizontally, animated: true)
+//                })
+                
+
                 self.myPreferedFocusView = nil
                 self.myPreferedFocusView = context.nextFocusedView
                 self.setNeedsFocusUpdate()
