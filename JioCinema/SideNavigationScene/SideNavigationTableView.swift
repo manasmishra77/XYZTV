@@ -187,7 +187,7 @@ extension SideNavigationTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {
-        if context.nextFocusedIndexPath == nil && (context.focusHeading == .down || context.focusHeading == .up ) {
+        if context.nextFocusedIndexPath == nil && (context.focusHeading == .down || context.focusHeading == .up || context.focusHeading == .left) {
          return false
         }
         return true
