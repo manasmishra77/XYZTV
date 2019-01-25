@@ -262,12 +262,12 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if(itemArrayType == .artistImages) {
             return 15
         }
-        return 10
+        return 25
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height
-        var width = height * widthToHeightPropertionForLandScapeOLD
+        var width = itemWidthForLadscape//height * widthToHeightPropertionForLandScapeOLD
         
         switch itemArrayType {
         case .resumeWatch:
@@ -276,7 +276,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
             if let items = itemsArray as? [Item] {
                 let itemAppType = items[0].appType
                 if itemAppType == .Movie {
-                    width = height * widthToHeightPropertionForPotratOLD
+                    width = itemWidthForPortrait//height * widthToHeightPropertionForPotratOLD
                 }
             }
         case .episode:

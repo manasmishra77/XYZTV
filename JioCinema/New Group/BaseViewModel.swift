@@ -66,7 +66,7 @@ class BaseViewModel: NSObject  {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items{
                 let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: 650)
-                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 60, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
+                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
 //            if let items = baseDataModel?.data?[0].items {
 //                var isDisney = false
@@ -212,7 +212,7 @@ class BaseViewModel: NSObject  {
         case .disneyMovies, .disneyKids, .disneyTVShow:
             return 0
         default:
-            return 80
+            return SideNavigationConstants.collapsedWidth
         }
     }
     

@@ -1641,6 +1641,7 @@
         let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
         return size
     }
+    
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return isRecommendationView
         //return true

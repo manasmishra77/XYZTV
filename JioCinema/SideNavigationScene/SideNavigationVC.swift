@@ -16,8 +16,6 @@ class SideNavigationVC: UIViewController {
     
     var myPreferdFocusedView : UIView?
     var sideNavigationView: SideNavigationTableView?
-    let sideViewExpandedWidth: CGFloat = 368
-    let sideViewCollapsedWidth: CGFloat = 108
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +40,7 @@ class SideNavigationVC: UIViewController {
         sideNavigationView?.delegate = self
         sideNavigationView?.frame = navigationTableHolder.frame
         navigationTableHolder.addSubview(sideNavigationView!)
-        sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
+        sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
         self.sideNavigationView?.setMenuListItem()
     }
     
@@ -51,7 +49,7 @@ class SideNavigationVC: UIViewController {
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-        if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
+        if (self.sideNavigationWidthConstraint.constant == SideNavigationConstants.collapsedWidth) {
             self.sideNavigationSwipeEnd(side: .left)
         }
         else {
@@ -82,9 +80,9 @@ extension SideNavigationVC: SideNavigationTableProtocol {
 
     
     func sideNavigationSwipeEnd(side: UIFocusHeading) {
-        var navigationWidth = sideViewExpandedWidth
+        var navigationWidth = SideNavigationConstants.expandedWidth
         if side == .right {
-            navigationWidth = sideViewCollapsedWidth
+            navigationWidth = SideNavigationConstants.collapsedWidth
         }
         else {
             myPreferdFocusedView = self.sideNavigationView?.navigationTable
@@ -104,7 +102,7 @@ extension SideNavigationVC: SideNavigationTableProtocol {
     func didSelectRowInNavigationTable(menuItem: MenuItem) {
         
 
-        sideNavigationWidthConstraint.constant = sideViewCollapsedWidth
+        sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
         if let vc = menuItem.viewControllerObject {
             
             if menuItem.type == .search {

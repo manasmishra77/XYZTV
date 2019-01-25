@@ -238,7 +238,10 @@ let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
-
+struct SideNavigationConstants {
+    static let expandedWidth: CGFloat = 368
+    static let collapsedWidth: CGFloat = 108
+}
 
 struct LanguageGenreScene {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
@@ -252,13 +255,13 @@ struct LanguageGenreScene {
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForLandscape)
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForPotrait)
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     
@@ -275,21 +278,21 @@ struct PlayerRecommendationSize {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
     static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
     static var landscapeRowHeight: CGFloat {
-        let height: CGFloat = 306 + 30//rowHeightForLandscape
+        let height: CGFloat =  rowHeightForLandscape// 306 + 30//rowHeightForLandscape
         return height
     }
     static var potraitRowHeight: CGFloat {
-        let height: CGFloat = 470 + 30 //rowHeightForPotrait
+        let height: CGFloat = rowHeightForPotrait//470 + 30 //rowHeightForPotrait
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForLandscape)
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForPotrait)
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     

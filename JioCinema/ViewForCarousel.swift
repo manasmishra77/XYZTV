@@ -176,6 +176,9 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         cell.rightSepration.constant = sepration / 2
         cell.leftSepration.constant = sepration / 2
         cell.imageView.cornerRadius = 10
+        
+        cell.contentView.layer.cornerRadius = 20
+        cell.contentView.layer.masksToBounds = true
         var index = indexPath.row
         if isCircular {
            index = indexPath.row % count

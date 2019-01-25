@@ -27,10 +27,10 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tia-ON-rxD">
-                    <rect key="frame" x="0.0" y="0.0" width="80" height="1080"/>
+                    <rect key="frame" x="0.0" y="0.0" width="108" height="1080"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="80" id="jTe-Kf-RrW"/>
+                        <constraint firstAttribute="width" constant="108" id="jTe-Kf-RrW"/>
                     </constraints>
                 </view>
             </subviews>
