@@ -27,11 +27,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
-                                <rect key="frame" x="0.0" y="0.0" width="392" height="160"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdZ-19-fLq">
-                                <rect key="frame" x="0.0" y="0.0" width="392" height="160"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                                 <color key="backgroundColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -63,7 +63,7 @@
                             <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="leading" secondItem="s7W-TF-XAc" secondAttribute="leading" id="RPk-Ie-yFl"/>
                             <constraint firstItem="nFy-3D-dND" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="top" id="aUx-Mr-AMK"/>
                             <constraint firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="qTd-XB-eln"/>
-                            <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="top" secondItem="nFy-3D-dND" secondAttribute="bottom" id="vsy-mc-TyY"/>
+                            <constraint firstItem="2Tg-1Y-7Qg" firstAttribute="bottom" secondItem="nFy-3D-dND" secondAttribute="bottom" id="vsy-mc-TyY"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
