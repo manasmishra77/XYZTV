@@ -1103,8 +1103,12 @@
     
     func callWebServiceForPlayListData(id:String) {
         //playerId = id
-        let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
-        let params = ["id": id,"contentId":""]
+        var url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
+        var params = ["id": id,"contentId":""]
+                if isPlayList && self.id == ""{
+                    //url = playBackForPlayList.appending(playListId)
+                    //params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+                }
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[weak self] (response) in
             guard let self = self else {return}
             guard response.isSuccess else {
@@ -1244,8 +1248,14 @@
         }
         print("Playback rights id is === \(id)")
         //playerId = id
-        let url = playbackRightsURL.appending(id)
-        let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+//        let id = "2d893090c79c11e69992e7790d732476"
+        var url = "https://prod.media.jio.com/apis/common/v3/playbackrights/get/2d893090c79c11e69992e7790d732476"
+//        playbackRightsURL.appending(id)
+        var params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+//        if isPlayList && id == ""{
+//            url = playBackForPlayList.appending(playListId)
+//            params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+//        }
         RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [weak self](response) in
         guard let self = self else {return}
             DispatchQueue.main.async {
@@ -1516,13 +1526,18 @@
         setRecommendationConstarints(appType)
         switch appType {
         case .Movie:
-            currentDuration = checkInResumeWatchListForDuration(id)
-            if currentDuration > 0 {
-                isSwipingAllowed_RecommendationView = false
-                resumeWatchView.isHidden = false
+            if isPlayList , id == ""{
+                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlayListData(id: playListId)
             } else {
-                resumeWatchView.isHidden = true
-                callWebServiceForPlaybackRights(id: id)
+                currentDuration = checkInResumeWatchListForDuration(id)
+                if currentDuration > 0 {
+                    isSwipingAllowed_RecommendationView = false
+                    resumeWatchView.isHidden = false
+                } else {
+                    resumeWatchView.isHidden = true
+                    callWebServiceForPlaybackRights(id: id)
+                }
             }
         case .Episode:
             currentDuration = checkInResumeWatchListForDuration(id)

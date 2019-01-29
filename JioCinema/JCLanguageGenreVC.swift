@@ -408,13 +408,22 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         return 25
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        var padding : CGFloat = 0
+        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
+            padding = (collectionView.frame.width - 5*(itemCellSize.width) - 4*(25))/2
+        } else {
+            padding = (collectionView.frame.width - 3*(itemCellSize.width) - 2*(25))/2
+        }
+
+        return UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
     }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 20
-//    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell

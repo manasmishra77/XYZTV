@@ -901,7 +901,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="750" id="WpB-ec-gyA"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="55" minimumInteritemSpacing="55" id="iTY-9q-Tyn">
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="25" minimumInteritemSpacing="25" id="iTY-9q-Tyn">
                                             <size key="itemSize" width="376" height="250"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
