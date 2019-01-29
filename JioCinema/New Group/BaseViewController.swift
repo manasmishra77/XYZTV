@@ -86,7 +86,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
-        baseTableView.remembersLastFocusedIndexPath = true
+//        baseTableView.remembersLastFocusedIndexPath = true
         let cellNib = UINib(nibName: BaseTableCellNibIdentifier, bundle: nil)
         baseTableView.register(cellNib, forCellReuseIdentifier: BaseTableCellNibIdentifier)
         baseTableLeadingConstraint.constant = baseViewModel.leadingConstraintBaseTable()

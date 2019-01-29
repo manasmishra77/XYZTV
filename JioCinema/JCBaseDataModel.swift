@@ -126,7 +126,18 @@ struct ResumeWatchListDataModel: Codable {
         title = try values.decodeIfPresent(String.self, forKey: .title)
         pageCount = try values.decodeIfPresent(Int.self, forKey: .pageCount)
         seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
-        layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        do {
+            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        } catch{
+            do {
+                if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                layout = Int(layoutString)
+                }
+            } catch {
+                print(error)
+            }
+        }
+            
     }
 }
 
@@ -207,7 +218,18 @@ struct DataContainer: Codable {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .id)
                 self.id = "\(valNum ?? -1)"
             }
-            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            do{
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                    print(error)
+                }
+                
+            }
             position = try values.decodeIfPresent(Int.self, forKey: .position)
             defaultAudioLanguage = try values.decodeIfPresent(String.self, forKey: .defaultAudioLanguage)
         } catch  {
@@ -362,8 +384,17 @@ struct Item: Codable {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .latestId)
                 self.latestId = "\(valNum ?? -1)"
             }
-            
-            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            do {
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             
             do {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .duration)
