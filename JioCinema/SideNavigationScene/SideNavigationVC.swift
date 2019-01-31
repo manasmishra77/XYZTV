@@ -16,8 +16,11 @@ class SideNavigationVC: UIViewController {
     
     var myPreferdFocusedView : UIView?
     var sideNavigationView: SideNavigationTableView?
+
     var selectedVC: UIViewController?
-    
+
+    static let shared = SideNavigationVC()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

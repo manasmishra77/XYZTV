@@ -39,9 +39,13 @@ class JCTabBarController: UITabBarController {
         let disneyVC = BaseViewController(.disneyHome)//JCDisneyVC(nibName: "JCBaseVC", bundle: nil)
         let homeVC = BaseViewController(.home)
         //disneyVC.tabBarItem = UITabBarItem(title: "Disney", image: nil, tag: 4)
-        
-        
-        
+        var currentController: UIViewController? {
+            if let vc = self.viewControllers?[self.selectedIndex] {
+                return vc
+            }
+            return nil
+        }
+
         let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black

@@ -1424,14 +1424,16 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         switch itemAppType {
         case .Movie:
             //To be changed to dynamic one
-            return 709 + heightConstant
+            //return 709 + heightConstant
+            return 808 + heightConstant
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 780 + 50 + heightConstant
+                let heightOfView = 965//780 + 50 + heightConstant
                 return CGFloat(heightOfView)
             }
-            return 900 + 50 + heightConstant
+            return 1143 + heightConstant
+//            return 900 + 50 + heightConstant
         default:
             return 0
         }

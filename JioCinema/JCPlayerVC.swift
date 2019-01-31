@@ -337,7 +337,7 @@
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
                 _ = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
-                guard let assetUrl = URL(string: changedUrl) else {
+                guard let assetUrl = URL(string: absoluteUrlString) else {
                     return
                 }
                 videoAsset = AVURLAsset(url: assetUrl, options: header)
@@ -1249,10 +1249,9 @@
         }
         print("Playback rights id is === \(id)")
         //playerId = id
-//        let id = "2d893090c79c11e69992e7790d732476"
-        let url = playbackRightsURL.appending(id)//"https://prod.media.jio.com/apis/common/v3/playbackrights/get/2d893090c79c11e69992e7790d732476"
-        
-        let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+
+        var url = playbackRightsURL.appending(id)
+        var params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
 //        if isPlayList && id == ""{
 //            url = playBackForPlayList.appending(playListId)
 //            params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
@@ -1264,6 +1263,28 @@
                 
             }
             guard response.isSuccess else {
+                if response.code == CommonResponseCode.refreshSSOFailed.rawValue {
+                    //Logout User
+                    let presentingVC = self.presentingViewController
+                    self.dismissPlayerVC(completion: {
+                        // Logout user
+                        if let metaVc = presentingVC as? JCMetadataVC {
+                            metaVc.didClickOnWatchNowButton(nil)
+                        } else {
+                        
+                            
+                        }
+//                    } else if let navVC = presentingVC as? UINavigationController, let tabVC = navVC.viewControllers.first as? JCTabBarController, let vc = tabVC.currentController as? BaseViewController {
+//                        vc.baseViewModel.playItemAfterRefreshSSOFailed()
+//                    }
+
+//                        SideNavigationVC, let vc = tabVC. as? BaseViewController {
+//                            vc.baseViewModel.playItemAfterRefreshSSOFailed()
+//                        }
+                    })
+                    return
+                }
+
                 var failuretype = ""
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.isHidden = true
@@ -1636,9 +1657,11 @@
     
 
     //MARK:- Dismiss Viewcontroller
-    @objc func dismissPlayerVC() {
+//    @objc func dismissPlayerVC() {
+    @objc func dismissPlayerVC(completion: (() -> ())? = nil) {
         self.resetPlayer()
-        self.dismiss(animated: true, completion: nil)
+        //        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: completion)
     }
     
     //MARK:- Change recommendation view visibility

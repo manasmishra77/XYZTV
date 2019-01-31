@@ -105,6 +105,8 @@ class BaseViewModel: NSObject  {
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
     var errorMsg: String?
+    var tappedItem: Item?
+
     
     var totalPage: Int {// Reference for Downloading base page
         return baseDataModel?.totalPages ?? 1
@@ -157,6 +159,14 @@ class BaseViewModel: NSObject  {
         RJILApiManager.getWatchListData(isDisney: vcType.isDisney, type: vcType, nil)
         isWatchListUpdated = true
     }
+    
+    // Play item after refresh sso failed after doing login
+    func playItemAfterRefreshSSOFailed() {
+        guard let item = self.tappedItem else {return}
+        checkLoginAndPlay(item, categoryName: "Played After RefreshSSO", categoryIndex: -1)
+    }
+    
+
     
     //For after login function
     fileprivate var itemAfterLogin: Item? = nil
@@ -389,6 +399,7 @@ extension BaseViewModel {
         let indexFromArray = selectedIndexPath?.row ?? 0
         let dataContainer = getDataContainer(indexFromArray)
         let categoryName = dataContainer?.title ?? "Carousal"
+        self.tappedItem = item
         if !(item.isPlaylist ?? false) {
             switch item.appType {
             case .Movie:
