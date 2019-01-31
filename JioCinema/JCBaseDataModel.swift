@@ -134,7 +134,6 @@ struct ResumeWatchListDataModel: Codable {
                 layout = Int(layoutString)
                 }
             } catch {
-                print(error)
             }
         }
             
@@ -226,7 +225,6 @@ struct DataContainer: Codable {
                         layout = Int(layoutString)
                     }
                 } catch {
-                    print(error)
                 }
                 
             }
@@ -396,7 +394,6 @@ struct Item: Codable {
                         layout = Int(layoutString)
                     }
                 } catch {
-                    print(error)
                 }
             }
             

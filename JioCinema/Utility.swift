@@ -145,7 +145,7 @@ class Utility {
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "",latestId : String?, isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -158,6 +158,7 @@ class Utility {
         playerVC.appType = appType
         playerVC.isPlayList = isPlayList
         playerVC.playListId = playListId
+        playerVC.latestId = latestId
         
         playerVC.fromScreen = fromScreen
         playerVC.fromCategory = fromCategory

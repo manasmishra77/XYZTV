@@ -77,6 +77,7 @@
     var currentDuration: Float = 0.0
     var appType: VideoType = VideoType.Clip
     var isPlayList: Bool = false
+    var latestId : String?
     var episodeArray = [Episode]()
     var moreArray = [Item]()
     var isMoreDataAvailable = false
@@ -1249,9 +1250,9 @@
         print("Playback rights id is === \(id)")
         //playerId = id
 //        let id = "2d893090c79c11e69992e7790d732476"
-        var url = "https://prod.media.jio.com/apis/common/v3/playbackrights/get/2d893090c79c11e69992e7790d732476"
-//        playbackRightsURL.appending(id)
-        var params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+        let url = playbackRightsURL.appending(id)//"https://prod.media.jio.com/apis/common/v3/playbackrights/get/2d893090c79c11e69992e7790d732476"
+        
+        let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
 //        if isPlayList && id == ""{
 //            url = playBackForPlayList.appending(playListId)
 //            params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
