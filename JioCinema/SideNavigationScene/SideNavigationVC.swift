@@ -16,6 +16,7 @@ class SideNavigationVC: UIViewController {
     
     var myPreferdFocusedView : UIView?
     var sideNavigationView: SideNavigationTableView?
+    var selectedVC: UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +80,7 @@ class SideNavigationVC: UIViewController {
 extension SideNavigationVC: SideNavigationTableProtocol {
 
     
+    
     func sideNavigationSwipeEnd(side: UIFocusHeading) {
         var navigationWidth = SideNavigationConstants.expandedWidth
         if side == .right {
@@ -112,11 +114,20 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-                if let uiView = self.HolderView.subviews.first {
-                    uiView.removeFromSuperview()
-                }
+//                if let uiView = self.HolderView.subviews.first {
+                    
+                    selectedVC?.willMove(toParentViewController: nil)
+                    selectedVC?.view.removeFromSuperview()
+                    selectedVC?.removeFromParentViewController()
+//                    content.willMove(toParentViewController: nil)
+//                    content.view.removeFromSuperview()
+//                    content.removeFromParentViewController()
+//                    uiView.removeFromSuperview()
+//                }
             self.addChildViewController(vc)
             self.HolderView.addSubview(vc.view)
+            vc.didMove(toParentViewController: self)
+                selectedVC = vc
                 
                 DispatchQueue.main.async {
                     self.myPreferdFocusedView = nil
