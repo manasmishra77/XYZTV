@@ -47,6 +47,7 @@ class SideNavigationVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        didSelectRowInNavigationTable(menuItem: (sideNavigationView?.itemsList[(sideNavigationView?.selectedIndex)!])!)
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
