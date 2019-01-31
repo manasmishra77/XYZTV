@@ -813,7 +813,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 descText = (metadata?.description ?? "") + " " + SHOW_LESS
             }
             let widthofView = headerCell.descriptionContainerview.frame.size.width
-            let font = UIFont(name: "Helvetica", size: 28)!
+            let font = UIFont(name: "JioType-Light", size: 32)!
             let newHeight = (getSizeofDescriptionContainerView(descText, widthOfView: widthofView, font: font))
             headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
@@ -833,7 +833,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
             let textTopple = getShorterText(descText)
             let widthofView = headerCell.descriptionContainerview.frame.size.width
-            let font = UIFont(name: "Helvetica", size: 28)!
+            let font = UIFont(name: "JioType-Light", size: 32)!
             let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
             headerCell.frame.size.height -= newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
@@ -1050,11 +1050,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
             if metadata?.multipleAudio != nil {
-                headerCell.tvShowLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+                headerCell.tvShowSubtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
             } else {
-                headerCell.tvShowLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+                headerCell.tvShowSubtitleLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
             }
-            headerCell.tvShowLabel.isHidden = false
+            headerCell.tvShowSubtitleLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
             headerCell.directorLabel.isHidden = true
             headerCell.directorStaticLabel.isHidden = true
@@ -1383,8 +1383,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 90 {
-            let trimText = text.subString(start: 0, end: 89) + "... " + SHOW_MORE
+        if text.count > 85 {
+            let trimText = text.subString(start: 0, end: 84) + "... " + SHOW_MORE
             if trimText.count <= text.count {
                 let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
                 return (true, fontChangedText)
@@ -1404,11 +1404,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if isDisney {
             colorToChange = ViewColor.disneyButtonColor
         }
-        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 28.0)!])
+        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Light", size: 32.0)!])
         fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
             fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  colorToChange, range: NSRange(location: text.count - range, length: range))
-            fontChangedText.addAttribute(NSAttributedStringKey.font, value: UIFont(name: "HelveticaNeue-Bold", size: 22.0)!, range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSAttributedStringKey.font, value: UIFont(name: "JioType-Medium", size: 30.0)!, range: NSRange(location: text.count - range, length: range))
         }
         
         return fontChangedText
