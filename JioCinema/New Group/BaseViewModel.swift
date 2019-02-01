@@ -400,35 +400,31 @@ extension BaseViewModel {
         let dataContainer = getDataContainer(indexFromArray)
         let categoryName = dataContainer?.title ?? "Carousal"
         self.tappedItem = item
-        if !(item.isPlaylist ?? false) {
-            switch item.appType {
-            case .Movie:
-                if let duration = item.duration, duration > 0 {
-                    checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-                } else {
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
-                    delegate?.presentVC(metadataVC)
-                }
-            case .Music, .Episode, .Clip, .Trailer:
+        switch item.appType {
+        case .Movie:
+            if let duration = item.duration, duration > 0  || ((item.isPlaylist ?? false) && (dataContainer?.title == "Carousal")) {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-            case .TVShow:
-                print("At TvShow")
-                if let duration = item.duration, duration > 0 {
-                    var newItem = item
-                    newItem.app?.type = 7
-                    checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
-                } else {
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
-                    delegate?.presentVC(metadataVC)
-                }
-            case .Language,.Genre:
-                let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage.name)
-                delegate?.presentVC(languageGenreVC)
-            default:
-                print("Default")
+            } else {
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
+                delegate?.presentVC(metadataVC)
             }
-        } else{
+        case .Music, .Episode, .Clip, .Trailer:
             checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+        case .TVShow:
+            print("At TvShow")
+            if let duration = item.duration, duration > 0 {
+                var newItem = item
+                newItem.app?.type = 7
+                checkLoginAndPlay(newItem, categoryName: categoryName, categoryIndex: indexFromArray)
+            } else {
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
+                delegate?.presentVC(metadataVC)
+            }
+        case .Language,.Genre:
+            let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage.name)
+            delegate?.presentVC(languageGenreVC)
+        default:
+            print("Default")
         }
     }
     

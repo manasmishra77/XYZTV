@@ -1044,7 +1044,22 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
-        
+        //Static labels height
+        if metadata?.directors?.count == 0 || metadata?.directors == nil{
+            headerCell.heightOFDirectorStatic.constant = 0
+        } else {
+            headerCell.heightOFDirectorStatic.constant = 38
+        }
+        if metadata?.artist?.count == 0 || metadata?.artist == nil{
+            headerCell.heightOfStarringStatic.constant = 0
+        } else {
+            headerCell.heightOfStarringStatic.constant = 38
+        }
+        if metadata?.multipleAudio == "" || metadata?.multipleAudio == nil{
+            headerCell.heightOfAudioStatic.constant = 0
+        } else {
+            headerCell.heightOfAudioStatic.constant = 38
+        }
         if itemAppType == .Movie, metadata != nil {
             return headerCell
         } else if itemAppType == VideoType.TVShow, metadata != nil {
@@ -1377,14 +1392,18 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     //DescriptionContainerview size fixing
     func getSizeofDescriptionContainerView(_ text: String, widthOfView: CGFloat, font: UIFont) -> CGFloat {
         let inset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        if text == ""{
+            return 0
+        } else {
         let heightOfTheString = text.heightForWithFont(font: font, width: widthOfView, insets: inset)
         return heightOfTheString
+        }
     }
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 75 {
-            let trimText = text.subString(start: 0, end: 74) + "... " + SHOW_MORE
+        if text.count > 70 {
+            let trimText = text.subString(start: 0, end: 69) + "... " + SHOW_MORE
             if trimText.count <= text.count {
                 let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
                 return (true, fontChangedText)
@@ -1417,22 +1436,35 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     //Height of the table header container
     func getHeaderContainerHeight() -> CGFloat {
         var heightConstant : CGFloat = 0.0
-        let newTitleHight = getSizeofDescriptionContainerView(metadata?.name ?? "", widthOfView: headerCell.descriptionContainerview.frame.size.width, font: headerCell.titleLabel.font)
-        if newTitleHight > 85 {
-            heightConstant = newTitleHight - 85
+        let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let newTitleHight = metadata?.name?.heightForWithFont(font: headerCell.titleLabel.font, width: (headerCell.descriptionContainerview.frame.size.width - 50), insets: inset) ?? 0
+        if newTitleHight > 76 {
+            heightConstant = newTitleHight - 76
         }
+        let newDirectorHight = getSizeofDescriptionContainerView(metadata?.directors?.joined(separator: ",") ?? "", widthOfView: headerCell.descriptionContainerview.frame.size.width - 200, font: headerCell.directorLabel.font)
+        if newDirectorHight > 38 {
+            heightConstant += newDirectorHight
+        }
+        let newStaringHight = getSizeofDescriptionContainerView(metadata?.artist?.joined(separator: ", ") ?? "", widthOfView: headerCell.descriptionContainerview.frame.size.width - 200 , font: headerCell.starringLabel.font)
+        if newStaringHight > 38 {
+            heightConstant += newStaringHight
+        }
+        let newAudioHight = getSizeofDescriptionContainerView(metadata?.multipleAudio ?? "", widthOfView: headerCell.descriptionContainerview.frame.size.width - 180 , font: headerCell.multiAudioLanguge.font)
+        if newStaringHight > 38 {
+            heightConstant += newAudioHight
+        }
+
         switch itemAppType {
         case .Movie:
             //To be changed to dynamic one
-            //return 709 + heightConstant
-            return 808 + heightConstant
+            return 562 + heightConstant
         case .TVShow:
             //To be changed to dynamic one
             if metadata?.isSeason ?? false {
-                let heightOfView = 965//780 + 50 + heightConstant
+                let heightOfView = 750 + heightConstant//780 + 50 + heightConstant
                 return CGFloat(heightOfView)
             }
-            return 1143 + heightConstant
+            return 900 + heightConstant
 //            return 900 + 50 + heightConstant
         default:
             return 0

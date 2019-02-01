@@ -26,13 +26,19 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!
     @IBOutlet weak var starringStaticLabel: UILabel!
+    @IBOutlet weak var audioStaticLabel: UILabel!
     @IBOutlet weak var tvShowSubtitleLabel: UILabel!
     @IBOutlet weak var starringLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
+    @IBOutlet weak var multiAudioLanguge: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
+    
+    @IBOutlet weak var heightOFDirectorStatic: NSLayoutConstraint!
+    @IBOutlet weak var heightOfStarringStatic: NSLayoutConstraint!
+    @IBOutlet weak var heightOfAudioStatic: NSLayoutConstraint!
     
     @IBOutlet weak var monthCollectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var heightOfContainerView: NSLayoutConstraint!
@@ -45,7 +51,6 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
     @IBOutlet weak var seasonsLabel: UILabel!
-    @IBOutlet weak var multiAudioLanguge: UILabel!
     
     
     //Constraints for all the view
@@ -64,7 +69,7 @@ class MetadataHeaderView: UIView {
         if isDisney {
             Utility.applyGradient(self.bannerImageView, UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0).cgColor)
         } else {
-            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor)
+            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.08235294118, green: 0.09019607843, blue: 0.07843137255, alpha: 1).cgColor)
         }
     }
     

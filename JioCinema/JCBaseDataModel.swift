@@ -206,8 +206,11 @@ struct DataContainer: Codable {
             url = try values.decodeIfPresent(String.self, forKey: .url)
             title = try values.decodeIfPresent(String.self, forKey: .title)
             seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
+            do {
             isCarousal = try values.decodeIfPresent(Bool.self, forKey: .isCarousal)
-            
+            } catch {
+                isCarousal = false
+            }
             order = try values.decodeIfPresent(Int.self, forKey: .order)
             
             do {
@@ -374,7 +377,6 @@ struct Item: Codable {
             do {
                 language = try values.decodeIfPresent(String.self, forKey: .language)
             } catch {
-                print(error)
             }
             genre = try values.decodeIfPresent(String.self, forKey: .genre)
             vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
