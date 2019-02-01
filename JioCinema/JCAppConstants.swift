@@ -241,7 +241,7 @@ let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
 struct SideNavigationConstants {
     static let expandedWidth: CGFloat = 368
-    static let collapsedWidth: CGFloat = 108
+    static let collapsedWidth: CGFloat = 132
 }
 
 struct LanguageGenreScene {
