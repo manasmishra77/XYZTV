@@ -37,7 +37,9 @@ enum ViewControllersType: String {
 }
 
 struct MenuItem {
-    var image: UIImage!
+//    var image: UIImage!
+    var unselectedImage: String!
+    var selectedImage: String!
     var type : ViewControllersType!
     var index : Int!
     var viewControllerObject: UIViewController?
@@ -47,28 +49,36 @@ struct MenuItem {
         self.type = type
         switch type {
         case .home:
-            self.image =  UIImage.init(named: "Home")
+            self.unselectedImage = "Home"
+            self.selectedImage = "HomeSelected"
             self.viewControllerObject = BaseViewController(.home)
         case .clips:
-            self.image = UIImage.init(named: "Clips")
+            self.unselectedImage = "Clips"
+            self.selectedImage = "ClipsSelected"
             self.viewControllerObject = BaseViewController(.clip)
         case .movies:
-            self.image = UIImage.init(named: "Movies")
+            self.unselectedImage = "Movies"
+            self.selectedImage = "MoviesSelected"
             self.viewControllerObject = BaseViewController(.movie)
         case .tv:
-            self.image = UIImage.init(named: "Tvshow")
+            self.unselectedImage = "Tvshow"
+            self.selectedImage = "TvshowSelected"
             self.viewControllerObject = BaseViewController(.tv)
         case .search:
-            self.image = UIImage.init(named: "Search")
+            self.unselectedImage = "Search"
+            self.selectedImage = "SearchSelected"
             self.viewControllerObject = self.getSearchController()
         case .settings:
-            self.image = UIImage.init(named: "SettingsIcon")
+            self.unselectedImage = "SettingsIcon"
+            self.selectedImage = "SettingsIconSelected"
             self.viewControllerObject = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: settingsVCStoryBoardId) as? JCSettingsVC
         case .music:
-            self.image = UIImage.init(named: "Music")
+            self.unselectedImage = "Music"
+            self.selectedImage = "MusicSelected"
             self.viewControllerObject = BaseViewController(.music)
         case .disneyHome:
-            self.image = UIImage.init(named: "Disney")
+            self.unselectedImage = "Disney"
+            self.selectedImage = "DisneySelected"
             self.viewControllerObject = BaseViewController(.disneyHome)
         }
       
@@ -129,8 +139,10 @@ class SideNavigationTableView: UIView {
             
         }
         else {
-            if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) {
-                (cell as? SideNavigationTableCell)?.selectionIndicatorView.backgroundColor = .clear
+            if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) as? SideNavigationTableCell {
+                cell.selectionIndicatorView.backgroundColor = .clear
+                cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].unselectedImage)
+                cell.titleLabel.font = UIFont.init(name: "JioType-Light", size: cell.titleLabel.font.pointSize)
             }
             
             selectedIndex = index
@@ -138,11 +150,14 @@ class SideNavigationTableView: UIView {
             if itemsList[index].type == ViewControllersType.disneyHome {
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
+                
             }
             else {
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
+                cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].selectedImage)
+                cell.titleLabel.font = UIFont.init(name: "JioType-Bold", size: cell.titleLabel.font.pointSize)
         }
         delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[index])
     }
@@ -172,7 +187,8 @@ extension SideNavigationTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideNavigationTableCell", for: indexPath) as! SideNavigationTableCell
         cell.titleLabel.text = self.itemsList[indexPath.row].type.name
-        cell.iconImageView.image = self.itemsList[indexPath.row].image
+        cell.iconImageView.image = UIImage.init(named: self.itemsList[indexPath.row].unselectedImage)
+        // self.itemsList[indexPath.row].image
         return cell
     }
     
