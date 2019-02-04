@@ -232,8 +232,8 @@ let itemHeightForLandscape: CGFloat = 360
 let itemWidthForPortrait: CGFloat = 270
 let itemWidthForLadscape: CGFloat = 480
 
-let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90//561
-let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90//397
+let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90 + 14//561
+let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90 + 14//397
 let widthToHeightPropertionForPotrat: CGFloat = 277/475
 let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
