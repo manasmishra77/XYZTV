@@ -155,6 +155,7 @@
 		9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543721D382FE0026CC8D /* ViewForCarousel.xib */; };
 		9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543921D3C0D70026CC8D /* DisneyButtons.swift */; };
 		9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543A21D3C0D70026CC8D /* DisneyButtons.xib */; };
+		99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */ = {isa = PBXBuildFile; fileRef = 99BB5DD6220838B4000E73A1 /* metadatabg.png */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
@@ -344,6 +345,7 @@
 		9966543721D382FE0026CC8D /* ViewForCarousel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewForCarousel.xib; sourceTree = "<group>"; };
 		9966543921D3C0D70026CC8D /* DisneyButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtons.swift; sourceTree = "<group>"; };
 		9966543A21D3C0D70026CC8D /* DisneyButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtons.xib; sourceTree = "<group>"; };
+		99BB5DD6220838B4000E73A1 /* metadatabg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadatabg.png; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 		7BFEC4AC1F154C9B001DFE6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				99BB5DD6220838B4000E73A1 /* metadatabg.png */,
 				199DE87421649ACE0052CA54 /* DisneyKids.png */,
 				199DE87521649ACF0052CA54 /* DisneyMovies.png */,
 				199DE87621649ACF0052CA54 /* DisneyTVShow.png */,
@@ -872,6 +875,7 @@
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
 				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
+				99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
 				9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,

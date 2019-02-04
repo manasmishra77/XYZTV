@@ -30,7 +30,7 @@
                         </state>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3m-wi-yjz">
-                        <rect key="frame" x="15" y="240" width="362" height="0.0"/>
+                        <rect key="frame" x="15" y="250" width="362" height="0.0"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                         <color key="textColor" red="0.80087509379999999" green="0.80087509379999999" blue="0.80087509379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -39,7 +39,7 @@
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="w3m-wi-yjz" secondAttribute="trailing" constant="15" id="4m6-Hl-uuP"/>
-                <constraint firstAttribute="bottom" secondItem="w3m-wi-yjz" secondAttribute="bottom" constant="10" id="Ski-HU-gKV"/>
+                <constraint firstAttribute="bottom" secondItem="w3m-wi-yjz" secondAttribute="bottom" id="Ski-HU-gKV"/>
                 <constraint firstItem="w3m-wi-yjz" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="ooy-7U-EFz"/>
             </constraints>
             <connections>

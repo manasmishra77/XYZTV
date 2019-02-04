@@ -66,11 +66,11 @@ class MetadataHeaderView: UIView {
     }
     
     func configureViews(_ isDisney : Bool = false) {
-        if isDisney {
-            Utility.applyGradient(self.bannerImageView, UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0).cgColor)
-        } else {
-            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.08235294118, green: 0.09019607843, blue: 0.07843137255, alpha: 1).cgColor)
-        }
+//        if isDisney {
+//            Utility.applyGradient(self.bannerImageView, UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0).cgColor)
+//        } else {
+//            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.08235294118, green: 0.09019607843, blue: 0.07843137255, alpha: 1).cgColor)
+//        }
     }
     
     func resetView() -> UIView {
