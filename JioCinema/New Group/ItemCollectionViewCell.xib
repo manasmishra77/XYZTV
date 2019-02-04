@@ -72,21 +72,21 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
-                        <rect key="frame" x="15" y="190" width="357" height="0.0"/>
+                        <rect key="frame" x="15" y="182" width="357" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="32"/>
+                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhF-XA-SdJ">
-                        <rect key="frame" x="15" y="200" width="362" height="0.0"/>
+                        <rect key="frame" x="15" y="190" width="362" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="22"/>
+                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="24"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="got-SL-a7b">
-                        <rect key="frame" x="0.0" y="190" width="15" height="0.0"/>
+                        <rect key="frame" x="0.0" y="182" width="15" height="0.0"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="C2O-Ng-ead"/>
@@ -102,8 +102,8 @@
                 <constraint firstAttribute="trailing" secondItem="rYV-oP-nC5" secondAttribute="trailing" constant="20" id="L9X-7M-Lcg"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="centerY" secondItem="rYV-oP-nC5" secondAttribute="centerY" id="OaZ-bj-Mep"/>
                 <constraint firstAttribute="bottom" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="90" id="POj-b4-bWL"/>
-                <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="20" id="TIP-HB-83D"/>
-                <constraint firstItem="QhF-XA-SdJ" firstAttribute="top" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="10" id="Up5-gu-qXD"/>
+                <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="12" id="TIP-HB-83D"/>
+                <constraint firstItem="QhF-XA-SdJ" firstAttribute="top" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="8" id="Up5-gu-qXD"/>
                 <constraint firstAttribute="trailing" secondItem="QhF-XA-SdJ" secondAttribute="trailing" constant="15" id="cnu-zz-bhJ"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="g3q-TQ-rIf"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="iGw-Rc-SW1"/>

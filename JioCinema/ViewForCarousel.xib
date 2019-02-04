@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xaf-Gz-OVH">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1040"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1020"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="aPh-BB-LvP">
                         <size key="itemSize" width="50" height="50"/>
@@ -38,7 +38,7 @@
                 <constraint firstItem="dL5-80-tQ8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CfC-T9-O0Y"/>
                 <constraint firstAttribute="trailing" secondItem="dL5-80-tQ8" secondAttribute="trailing" id="OWp-Eb-pMI"/>
                 <constraint firstAttribute="trailing" secondItem="Xaf-Gz-OVH" secondAttribute="trailing" id="Qpx-ZI-r59"/>
-                <constraint firstItem="dL5-80-tQ8" firstAttribute="top" secondItem="Xaf-Gz-OVH" secondAttribute="bottom" id="YQU-AZ-XHC"/>
+                <constraint firstItem="dL5-80-tQ8" firstAttribute="top" secondItem="Xaf-Gz-OVH" secondAttribute="bottom" constant="20" id="YQU-AZ-XHC"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YS1-8a-Nee"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aAa-nD-kJ5"/>
                 <constraint firstAttribute="bottom" secondItem="dL5-80-tQ8" secondAttribute="bottom" constant="10" id="nzF-KS-vuG"/>
