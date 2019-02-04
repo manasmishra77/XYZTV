@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-2O-Hcl">
-                        <rect key="frame" x="0.0" y="40" width="119" height="290"/>
+                        <rect key="frame" x="0.0" y="42" width="119" height="288"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp1-2v-ZfO">
                             <size key="itemSize" width="376" height="250"/>
@@ -34,7 +34,7 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-JA-ni5">
-                        <rect key="frame" x="0.0" y="20" width="99" height="0.0"/>
+                        <rect key="frame" x="0.0" y="10" width="99" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -44,8 +44,8 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Zq0-JA-ni5" secondAttribute="trailing" constant="20" id="24P-Ub-Ec0"/>
-                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" constant="20" id="A3e-Ao-KkK"/>
-                    <constraint firstItem="Xxw-2O-Hcl" firstAttribute="top" secondItem="Zq0-JA-ni5" secondAttribute="bottom" constant="20" id="IPP-Mz-FNh"/>
+                    <constraint firstItem="Zq0-JA-ni5" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" constant="10" id="A3e-Ao-KkK"/>
+                    <constraint firstItem="Xxw-2O-Hcl" firstAttribute="top" secondItem="Zq0-JA-ni5" secondAttribute="bottom" constant="32" id="IPP-Mz-FNh"/>
                     <constraint firstAttribute="bottom" secondItem="Xxw-2O-Hcl" secondAttribute="bottom" constant="20" id="Ual-TB-YA8"/>
                     <constraint firstItem="Zq0-JA-ni5" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" id="am0-0a-2Rm"/>
                     <constraint firstItem="Xxw-2O-Hcl" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" id="r79-ia-311"/>

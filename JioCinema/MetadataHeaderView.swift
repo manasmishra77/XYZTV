@@ -22,6 +22,7 @@ class MetadataHeaderView: UIView {
     
     var isDisney = false
     @IBOutlet weak var tvShowLabel: UILabel!
+    @IBOutlet weak var maturityRating: UILabel!
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
     @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!

@@ -50,7 +50,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-9k-LOD">
-                            <rect key="frame" x="0.0" y="66" width="960" height="0.0"/>
+                            <rect key="frame" x="0.0" y="66" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="38"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -82,7 +82,7 @@
                                     </connections>
                                 </button>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEp-5g-7vi">
-                                    <rect key="frame" x="806" y="55" width="154" height="35"/>
+                                    <rect key="frame" x="801" y="54" width="159" height="36"/>
                                     <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -180,19 +180,19 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch Now" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-Um-m5H">
-                            <rect key="frame" x="0.0" y="450" width="161" height="56"/>
+                            <rect key="frame" x="0.0" y="450" width="161" height="57"/>
                             <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="24"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add To Watchlist" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDi-mf-e5u">
-                            <rect key="frame" x="193" y="450" width="161" height="56"/>
+                            <rect key="frame" x="193" y="450" width="161" height="57"/>
                             <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="24"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
-                            <rect key="frame" x="0.0" y="602" width="133" height="39"/>
+                            <rect key="frame" x="0.0" y="603" width="137" height="39"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="dpG-gM-dH3"/>
                             </constraints>
@@ -201,7 +201,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
-                            <rect key="frame" x="0.0" y="755" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="756" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
                                 <size key="itemSize" width="92" height="36"/>
@@ -211,7 +211,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5UE-Yr-tQb">
-                            <rect key="frame" x="0.0" y="669" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="670" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="62" id="J2n-hf-aJ5"/>
@@ -237,10 +237,27 @@
                                 <action selector="didClickOnWatchNowButton:" destination="3YS-bd-bkv" eventType="primaryActionTriggered" id="pfQ-Ik-8T5"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jhh-fe-RFK">
+                            <rect key="frame" x="10" y="66" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="34"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="bwB-9k-LOD" firstAttribute="trailing" secondItem="gX0-yh-ge7" secondAttribute="trailing" id="1zQ-pE-M7d"/>
+                        <constraint firstItem="jhh-fe-RFK" firstAttribute="centerY" secondItem="bwB-9k-LOD" secondAttribute="centerY" id="1Zo-7O-Lc3"/>
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="top" secondItem="cIl-4y-LGb" secondAttribute="bottom" constant="28" id="2dn-IE-q6Z"/>
                         <constraint firstAttribute="trailing" secondItem="5UE-Yr-tQb" secondAttribute="trailing" constant="20" id="6zF-Z2-INh"/>
                         <constraint firstItem="SVi-bc-1rd" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="7co-V9-Aas"/>
@@ -252,6 +269,7 @@
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="centerY" secondItem="Gee-Um-m5H" secondAttribute="centerY" id="ESy-0f-AQO"/>
                         <constraint firstItem="WRU-np-U9S" firstAttribute="top" secondItem="rYF-NG-moE" secondAttribute="bottom" constant="30" id="GBj-Dw-8bl"/>
                         <constraint firstItem="CSY-Bj-9Od" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="Gc5-qz-ney"/>
+                        <constraint firstItem="jhh-fe-RFK" firstAttribute="centerY" secondItem="gWq-bF-uCP" secondAttribute="centerY" id="LYm-jO-huq"/>
                         <constraint firstItem="5UE-Yr-tQb" firstAttribute="top" secondItem="CSY-Bj-9Od" secondAttribute="bottom" constant="28" id="M9k-GA-m05"/>
                         <constraint firstItem="Gee-Um-m5H" firstAttribute="leading" secondItem="SVi-bc-1rd" secondAttribute="leading" id="NfM-ga-SZg"/>
                         <constraint firstItem="bwB-9k-LOD" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="OYh-OV-AA4"/>
@@ -266,6 +284,7 @@
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="trailing" secondItem="rYF-NG-moE" secondAttribute="trailing" id="UMi-QH-Uxt"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="top" secondItem="bwB-9k-LOD" secondAttribute="bottom" constant="40" id="Uif-ih-oeD"/>
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="trailing" secondItem="56R-tw-AWf" secondAttribute="trailing" id="VSY-SD-FVc"/>
+                        <constraint firstItem="jhh-fe-RFK" firstAttribute="leading" secondItem="gWq-bF-uCP" secondAttribute="trailing" constant="10" id="VuJ-LR-Xc4"/>
                         <constraint firstItem="56R-tw-AWf" firstAttribute="centerY" secondItem="SVi-bc-1rd" secondAttribute="centerY" id="W6h-E2-mq4"/>
                         <constraint firstItem="CdM-i7-rsk" firstAttribute="top" secondItem="PIt-OS-2qO" secondAttribute="top" id="WTI-KG-y3T"/>
                         <constraint firstItem="ek5-ew-j1E" firstAttribute="height" secondItem="5UE-Yr-tQb" secondAttribute="height" id="XJY-ZG-kZV"/>
@@ -286,6 +305,7 @@
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="leading" secondItem="56R-tw-AWf" secondAttribute="leading" id="vLR-0v-Eol"/>
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="top" secondItem="oog-7o-H3Y" secondAttribute="top" constant="38" id="xIt-d3-fzA"/>
                         <constraint firstItem="rYF-NG-moE" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="zob-Cg-ehf"/>
+                        <constraint firstItem="jhh-fe-RFK" firstAttribute="leading" secondItem="bwB-9k-LOD" secondAttribute="trailing" constant="10" id="zpE-8t-BQ7"/>
                     </constraints>
                 </view>
             </subviews>
@@ -314,6 +334,7 @@
                 <outlet property="heightOfAudioStatic" destination="sg4-aR-WkK" id="7Pi-fW-AZg"/>
                 <outlet property="heightOfSeasonStaticLabel" destination="dpG-gM-dH3" id="O9l-hX-kE2"/>
                 <outlet property="heightOfStarringStatic" destination="mVY-2g-1Tu" id="1Tg-qp-IMl"/>
+                <outlet property="maturityRating" destination="jhh-fe-RFK" id="Odq-eC-wfp"/>
                 <outlet property="monthsCollectionView" destination="ek5-ew-j1E" id="qNW-vC-L09"/>
                 <outlet property="multiAudioLanguge" destination="cIl-4y-LGb" id="x1i-GH-v15"/>
                 <outlet property="playButton" destination="SVi-bc-1rd" id="rl2-x2-hle"/>

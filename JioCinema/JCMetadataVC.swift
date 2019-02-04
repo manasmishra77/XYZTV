@@ -991,18 +991,22 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         
     }
-    func returnMaturityRating() -> String {
+    func appendMaturityRating() {
+        headerCell.maturityRating.borderWidth = 2
+        headerCell.maturityRating.borderColor = .white
+        headerCell.maturityRating.cornerRadius = 5
         if var maturityRating = metadata?.maturityRating {
             if  maturityRating.capitalized == "All"  {
-                maturityRating = "3+"
+                maturityRating = " 3+ "
             }
             else if maturityRating == "" {
-                maturityRating = "NR"
+                maturityRating = " NR "
             }
-            return " | Maturity Rating: \(maturityRating)"
+            headerCell.maturityRating.text = " \(maturityRating) "
         } else {
-            return " | Maturity Rating: NR"
+            headerCell.maturityRating.text = " NR "
         }
+
     }
     //prepare metadata view
     func prepareMetadataView() -> UIView {
@@ -1010,10 +1014,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.frame.size.height = getHeaderContainerHeight()
         headerCell.titleLabel.text = metadata?.name
         headerCell.starringLabel.text = metadata?.artist?.joined(separator: ",")
-        headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(returnMaturityRating())
+        headerCell.subtitleLabel.text = metadata?.newSubtitle?.appending(" |")
         if metadata?.multipleAudio != nil {
-            headerCell.subtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+            headerCell.subtitleLabel.text = metadata?.subtitle?.appending(" |")
         }
+        appendMaturityRating()
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if let audio = metadata?.multipleAudio {
             headerCell.multiAudioLanguge.text = "Audio : \(audio)"
@@ -1065,9 +1070,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         } else if itemAppType == VideoType.TVShow, metadata != nil {
             headerCell.titleLabel.text = metadata?.name
             if metadata?.multipleAudio != nil {
-                headerCell.tvShowSubtitleLabel.text = metadata?.subtitle?.appending(returnMaturityRating())
+                headerCell.tvShowSubtitleLabel.text = metadata?.subtitle?.appending(" |")
             } else {
-                headerCell.tvShowSubtitleLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") \((returnMaturityRating()))"
+                headerCell.tvShowSubtitleLabel.text = "\(metadata?.newSubtitle?.capitalized ?? "") |"
             }
             headerCell.tvShowSubtitleLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
