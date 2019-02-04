@@ -1402,8 +1402,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     //Trim description text
     func getShorterText(_ text: String) -> (Bool, NSAttributedString) {
-        if text.count > 70 {
-            let trimText = text.subString(start: 0, end: 69) + "... " + SHOW_MORE
+        if text.count > 85 {
+            let trimText = text.subString(start: 0, end: 84) + "... " + SHOW_MORE
             if trimText.count <= text.count {
                 let fontChangedText = getAttributedString(trimText, colorChange: true, range: 10)
                 return (true, fontChangedText)
@@ -1437,7 +1437,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     func getHeaderContainerHeight() -> CGFloat {
         var heightConstant : CGFloat = 0.0
         let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        let newTitleHight = metadata?.name?.heightForWithFont(font: headerCell.titleLabel.font, width: (headerCell.descriptionContainerview.frame.size.width - 50), insets: inset) ?? 0
+        let newTitleHight = metadata?.name?.heightForWithFont(font: headerCell.titleLabel.font, width: (headerCell.descriptionContainerview.frame.size.width - 20), insets: inset) ?? 0
         if newTitleHight > 76 {
             heightConstant = newTitleHight - 76
         }
