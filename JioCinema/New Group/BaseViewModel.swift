@@ -65,7 +65,7 @@ class BaseViewModel: NSObject  {
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items{
-                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: 680)
+                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: 700)
                 carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
 //            if let items = baseDataModel?.data?[0].items {
@@ -207,7 +207,7 @@ class BaseViewModel: NSObject  {
 //        return 0
         if section == 0 {
             if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
-                return 650
+                return 700
             }
             return 0
         } else {

@@ -243,7 +243,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
 //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height - 80)
+        let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height - 100)
         return sizeOfCell
     }
     

@@ -58,7 +58,8 @@ class SideNavigationVC: UIViewController {
             self.sideNavigationSwipeEnd(side: .left)
         }
         else {
-            exit(0)
+            let app = UIApplication.shared
+            app.perform(#selector(NSXPCConnection.suspend))
         }
     }
     

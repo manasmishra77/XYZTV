@@ -93,7 +93,7 @@ class DisneyHomeViewModel: BaseViewModel {
     override func heightOfTableHeader(section: Int) -> CGFloat {
         if section == 0 {
             if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
-                return 650
+                return 700
             }
             return 0
         } else {
