@@ -192,7 +192,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
-                            <rect key="frame" x="0.0" y="603" width="137" height="39"/>
+                            <rect key="frame" x="0.0" y="555" width="137" height="39"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="dpG-gM-dH3"/>
                             </constraints>
@@ -201,7 +201,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
-                            <rect key="frame" x="0.0" y="756" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="708" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
                                 <size key="itemSize" width="92" height="36"/>
@@ -211,7 +211,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5UE-Yr-tQb">
-                            <rect key="frame" x="0.0" y="670" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="622" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="62" id="J2n-hf-aJ5"/>
@@ -300,7 +300,7 @@
                         <constraint firstItem="FTO-oj-fuY" firstAttribute="leading" secondItem="gX0-yh-ge7" secondAttribute="leading" id="kiN-PF-Lqy"/>
                         <constraint firstItem="bwB-9k-LOD" firstAttribute="top" secondItem="gX0-yh-ge7" secondAttribute="bottom" constant="28" id="oZH-Ym-sKz"/>
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="centerX" secondItem="56R-tw-AWf" secondAttribute="centerX" id="qiZ-Wm-8q5"/>
-                        <constraint firstItem="CSY-Bj-9Od" firstAttribute="top" secondItem="Gee-Um-m5H" secondAttribute="bottom" constant="96" id="t5S-MC-9eH"/>
+                        <constraint firstItem="CSY-Bj-9Od" firstAttribute="top" secondItem="Gee-Um-m5H" secondAttribute="bottom" constant="48" id="t5S-MC-9eH"/>
                         <constraint firstItem="JvY-ef-buL" firstAttribute="leading" secondItem="FTO-oj-fuY" secondAttribute="trailing" constant="5" id="uAh-Fs-DmW"/>
                         <constraint firstItem="RDi-mf-e5u" firstAttribute="leading" secondItem="56R-tw-AWf" secondAttribute="leading" id="vLR-0v-Eol"/>
                         <constraint firstItem="gX0-yh-ge7" firstAttribute="top" secondItem="oog-7o-H3Y" secondAttribute="top" constant="38" id="xIt-d3-fzA"/>
@@ -324,6 +324,7 @@
             <connections>
                 <outlet property="addToWatchListButton" destination="56R-tw-AWf" id="Znf-U4-kcw"/>
                 <outlet property="audioStaticLabel" destination="WRU-np-U9S" id="lwj-I1-E9M"/>
+                <outlet property="backgroudImage" destination="3rK-TM-LCh" id="WHA-QW-MRF"/>
                 <outlet property="bannerImageView" destination="L7P-Yq-xJD" id="e5a-DM-uRN"/>
                 <outlet property="descriptionContainerViewHeight" destination="DnL-rJ-G7F" id="oX5-fV-VUb"/>
                 <outlet property="descriptionContainerview" destination="rYF-NG-moE" id="btF-yu-wc3"/>

@@ -37,6 +37,8 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
+    @IBOutlet weak var backgroudImage: UIImageView!
+    
     @IBOutlet weak var heightOFDirectorStatic: NSLayoutConstraint!
     @IBOutlet weak var heightOfStarringStatic: NSLayoutConstraint!
     @IBOutlet weak var heightOfAudioStatic: NSLayoutConstraint!

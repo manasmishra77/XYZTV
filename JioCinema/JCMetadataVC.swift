@@ -131,6 +131,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
             headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
             metadataTableView.backgroundColor = ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+            headerCell.backgroudImage.image = UIImage.init(named: "DisneyMetadataBg")
             self.view.backgroundColor =  ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
@@ -1021,7 +1022,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         appendMaturityRating()
         headerCell.directorLabel.text = metadata?.directors?.joined(separator: ",")
         if let audio = metadata?.multipleAudio {
-            headerCell.multiAudioLanguge.text = "Audio : \(audio)"
+            headerCell.multiAudioLanguge.text = audio
         }
         var descText = "" //(metadata?.description ?? "") + " " + SHOW_LESS
         if itemAppType == .TVShow {
@@ -1087,7 +1088,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     headerCell.seasonCollectionView.isHidden = false
                     headerCell.monthsCollectionView.isHidden = true
                     headerCell.seasonsLabel.isHidden = true
-                    headerCell.sseparationBetweenSeasonLabelAndSeasonCollView.constant = 0
+//                    headerCell.sseparationBetweenSeasonLabelAndSeasonCollView.constant = 0
                     headerCell.heightOfSeasonStaticLabel.constant = 0
                 } else {
                     headerCell.seasonsLabel.isHidden = false
@@ -1441,18 +1442,18 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     //Height of the table header container
     func getHeaderContainerHeight() -> CGFloat {
         var heightConstant : CGFloat = 0.0
-        let inset = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+        let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         let newTitleHight = metadata?.name?.heightForWithFont(font: headerCell.titleLabel.font, width: (headerCell.titleLabel.frame.width), insets: inset) ?? 0
-//        if newTitleHight > 76 {
             heightConstant = newTitleHight
-//        }
-//        let newDirectorHight = getSizeofDescriptionContainerView(metadata?.directors?.joined(separator: ",") ?? "", widthOfView: headerCell.directorLabel.frame.width, font: headerCell.directorLabel.font)
+        
         let newAudioHight = metadata?.multipleAudio?.heightForWithFont(font: headerCell.multiAudioLanguge.font, width: headerCell.multiAudioLanguge.frame.width, insets: inset)
         heightConstant += newAudioHight ?? 0
-        let newStaringHight = getSizeofDescriptionContainerView(metadata?.artist?.joined(separator: ", ") ?? "", widthOfView: headerCell.starringLabel.frame.width , font: headerCell.starringLabel.font, inset: inset)
-            heightConstant += newStaringHight
-        let newDirectorHight = getSizeofDescriptionContainerView(metadata?.multipleAudio ?? "", widthOfView: headerCell.multiAudioLanguge.frame.width, font: headerCell.multiAudioLanguge.font, inset: inset)
-            heightConstant += newDirectorHight
+        
+        let newStaringHight = metadata?.artist?.joined(separator: ", ").heightForWithFont(font: headerCell.starringLabel.font, width: headerCell.starringLabel.frame.width, insets: inset)
+            heightConstant += newStaringHight ?? 0
+        
+        let newDirectorHight = metadata?.directors?.joined(separator: ", ").heightForWithFont(font: headerCell.directorLabel.font, width: headerCell.directorLabel.frame.width, insets: inset)
+            heightConstant += newDirectorHight ?? 0
 
         switch itemAppType {
         case .Movie:

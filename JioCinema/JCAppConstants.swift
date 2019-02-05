@@ -240,7 +240,7 @@ let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
 struct SideNavigationConstants {
-    static let expandedWidth: CGFloat = 368
+    static let expandedWidth: CGFloat = 400
     static let collapsedWidth: CGFloat = 132
 }
 

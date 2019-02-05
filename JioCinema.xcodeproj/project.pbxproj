@@ -517,8 +517,8 @@
 				7B78D7D51F13BCD400F319BF /* Constants */,
 				7B78D7D01F13B92900F319BF /* ApiManager */,
 				7B78D7C51F13A91900F319BF /* Main.storyboard */,
-				7B78D7C11F13A91900F319BF /* AppDelegate.swift */,
 				7B78D7C81F13A91A00F319BF /* Assets.xcassets */,
+				7B78D7C11F13A91900F319BF /* AppDelegate.swift */,
 				7B78D7CA1F13A91A00F319BF /* Info.plist */,
 			);
 			path = JioCinema;
