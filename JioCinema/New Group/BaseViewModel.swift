@@ -402,9 +402,11 @@ extension BaseViewModel {
         self.tappedItem = item
         switch item.appType {
         case .Movie:
-            if let duration = item.duration, duration > 0  || ((item.isPlaylist ?? false) && (dataContainer?.title == "Carousal")) {
+            if let duration = item.duration, duration > 0  {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-            } else {
+            }else if ((item.isPlaylist ?? false) && (selectedIndexPath?.section == 0)) {
+                checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+            }else {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
