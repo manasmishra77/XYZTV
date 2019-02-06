@@ -296,7 +296,7 @@ class BaseViewModel: NSObject  {
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "My List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
             }
         }
         return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)

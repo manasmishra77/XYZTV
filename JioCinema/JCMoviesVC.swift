@@ -293,7 +293,7 @@ class JCMoviesVC: JCBaseVC,UITableViewDataSource, UITableViewDelegate, UITabBarC
                 self.isMoviesWatchlistAvailable = true
                 self.changingDataSourceForBaseTableView()
                 DispatchQueue.main.async {
-                    JCDataStore.sharedDataStore.moviesWatchList?.data?[0].title = "Watch List"
+                    JCDataStore.sharedDataStore.moviesWatchList?.data?[0].title = "My List"
                     if self.baseTableView != nil{
                         self.baseTableView.reloadData()
                         self.baseTableView.layoutIfNeeded()

@@ -8,6 +8,14 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="JioType-Bold.ttf">
+            <string>JioType-Bold</string>
+        </array>
+        <array key="JioType-Medium.ttf">
+            <string>JioType-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--SplashVC-->
         <scene sceneID="fhQ-9S-g0b">
@@ -54,21 +62,29 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLY-s9-NYO" userLabel="LoginOptionView">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="zci-ga-evD">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loginbgImage" translatesAutoresizingMaskIntoConstraints="NO" id="zci-ga-evD">
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinemaIcon" translatesAutoresizingMaskIntoConstraints="NO" id="mMa-KC-Pbg">
+                                        <rect key="frame" x="835" y="68" width="250" height="250"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="250" id="2zn-Du-DSp"/>
+                                            <constraint firstAttribute="width" constant="250" id="wc4-6T-zXH"/>
+                                        </constraints>
+                                    </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gm-mc-G4v" userLabel="SignIn Options Container">
-                                        <rect key="frame" x="322" y="351" width="1276" height="679"/>
+                                        <rect key="frame" x="322" y="414" width="1276" height="616"/>
                                         <subviews>
                                             <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxH-Nz-KET" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="398" y="243" width="480" height="68"/>
+                                                <rect key="frame" x="398" y="103" width="480" height="68"/>
                                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="68" id="ntB-ms-Zwr"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="480" id="sTL-ns-UFL"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                                 <state key="normal" title="Sign In via Jio Number"/>
                                                 <connections>
@@ -76,12 +92,13 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vR2-ya-wId" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="398" y="347" width="480" height="68"/>
+                                                <rect key="frame" x="398" y="207" width="480" height="68"/>
                                                 <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="68" id="egL-gL-2p6"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="480" id="g7K-M1-G4o"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                                 <state key="normal" title="Sign In via Jio ID"/>
                                                 <connections>
@@ -89,18 +106,21 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NGB-JE-29z">
-                                                <rect key="frame" x="319" y="0.0" width="638" height="87"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                                <rect key="frame" x="307" y="0.0" width="663" height="47"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="47" id="3fL-kf-irJ"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="40"/>
                                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                                 <state key="normal" title="Please login to watch the video"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ld1-x1-w91">
-                                                <rect key="frame" x="-91" y="523" width="1459" height="126"/>
+                                                <rect key="frame" x="-91" y="460" width="1459" height="126"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="1459" id="1tl-pT-YxO"/>
                                                     <constraint firstAttribute="height" constant="126" id="idc-05-jjc"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -112,390 +132,37 @@
                                             <constraint firstItem="GxH-Nz-KET" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="DLU-U5-1wr"/>
                                             <constraint firstItem="ld1-x1-w91" firstAttribute="centerX" secondItem="vR2-ya-wId" secondAttribute="centerX" id="VD7-Ge-ihQ"/>
                                             <constraint firstItem="NGB-JE-29z" firstAttribute="top" secondItem="5Gm-mc-G4v" secondAttribute="top" id="VxB-mJ-brq"/>
-                                            <constraint firstItem="GxH-Nz-KET" firstAttribute="top" secondItem="NGB-JE-29z" secondAttribute="bottom" constant="156" id="hhg-Zv-cE6"/>
+                                            <constraint firstItem="GxH-Nz-KET" firstAttribute="top" secondItem="NGB-JE-29z" secondAttribute="bottom" constant="56" id="hhg-Zv-cE6"/>
                                             <constraint firstItem="vR2-ya-wId" firstAttribute="centerX" secondItem="5Gm-mc-G4v" secondAttribute="centerX" id="pMa-kd-zMx"/>
                                             <constraint firstAttribute="bottom" secondItem="ld1-x1-w91" secondAttribute="bottom" constant="30" id="rJh-uo-wO2"/>
-                                            <constraint firstAttribute="height" constant="679" id="sLM-Ye-MQG"/>
                                             <constraint firstItem="vR2-ya-wId" firstAttribute="top" secondItem="GxH-Nz-KET" secondAttribute="bottom" constant="36" id="xtT-6G-9wW"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="mMa-KC-Pbg" firstAttribute="centerX" secondItem="hLY-s9-NYO" secondAttribute="centerX" id="Aeq-zY-nl8"/>
+                                    <constraint firstItem="mMa-KC-Pbg" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" constant="68" id="Dxv-6O-AA1"/>
+                                    <constraint firstItem="5Gm-mc-G4v" firstAttribute="top" secondItem="mMa-KC-Pbg" secondAttribute="bottom" constant="96" id="HYN-FB-0Kp"/>
                                     <constraint firstItem="5Gm-mc-G4v" firstAttribute="centerX" secondItem="hLY-s9-NYO" secondAttribute="centerX" id="qoN-PL-cfi"/>
                                     <constraint firstAttribute="bottom" secondItem="5Gm-mc-G4v" secondAttribute="bottom" constant="50" id="tV6-du-Q0h"/>
-                                </constraints>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NFq-i3-4LS" userLabel="SignInWithJioIdView">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZE8-Hj-hR9" userLabel="signInJioID Container">
-                                        <rect key="frame" x="201" y="427" width="1573" height="653"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in using your Jio ID and Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NcI-l6-m58">
-                                                <rect key="frame" x="447" y="-33" width="678" height="46"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFR-Da-I6I">
-                                                <rect key="frame" x="57" y="471" width="1459" height="126"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpy-lh-DdY" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="536" y="325" width="500" height="62"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
-                                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                                <state key="normal" title="Sign In"/>
-                                                <connections>
-                                                    <action selector="didClickOnJioIDSignInButton:" destination="l1U-WD-QGu" eventType="primaryActionTriggered" id="lEO-Fd-KCW"/>
-                                                    <action selector="didClickOnSignInButton:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="o77-1q-5Jw"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Jio ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S3Z-5j-3fy" customClass="JCTextField" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="536" y="136" width="500" height="76"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="l1U-WD-QGu" id="2NM-iH-nal"/>
-                                                </connections>
-                                            </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wqd-eZ-bQ9" customClass="JCPasswordField" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="536" y="220" width="500" height="76"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.1972872463" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="l1U-WD-QGu" id="KEa-au-sKl"/>
-                                                </connections>
-                                            </textField>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zud-WB-UwX" userLabel="OTPView">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95t-kv-cAO" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="848" y="377" width="224" height="86"/>
-                                        <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="224" id="987-xV-Pl8"/>
-                                            <constraint firstAttribute="height" constant="86" id="VhE-6b-ZLk"/>
-                                        </constraints>
-                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                        <state key="normal" title="Get OTP"/>
-                                        <connections>
-                                            <action selector="didClickOnGetOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="vyS-5e-oxT"/>
-                                            <action selector="didClickOnGetOtpButton:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="YWe-Nv-MSF"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mR1-nH-Xd5" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="808" y="466" width="305" height="65"/>
-                                        <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="hnk-IF-Dv3"/>
-                                            <constraint firstAttribute="height" constant="65" id="w47-8e-GPl"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
-                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                        <state key="normal" title="Resend OTP"/>
-                                        <connections>
-                                            <action selector="didClickOnResendOTPButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="qYG-XW-r7T"/>
-                                            <action selector="didClickOnResendOtpButton:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="Lf4-f1-aYz"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WaE-fo-b9H" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="808" y="388" width="305" height="65"/>
-                                        <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="2iu-7B-cJW"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="T8V-X8-bTl"/>
-                                        </constraints>
-                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                        <state key="normal" title="Sign In"/>
-                                        <connections>
-                                            <action selector="didClickOnSignInButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="8uo-3B-9VC"/>
-                                            <action selector="didClickOnSignInViaOtpButton:" destination="z9d-cP-8gO" eventType="primaryActionTriggered" id="q2U-YH-65f"/>
-                                        </connections>
-                                    </button>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request for OTP has been made again" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAX-Wx-FRF">
-                                        <rect key="frame" x="665" y="565" width="590" height="50"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="Ikk-48-2d3"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Jio Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myx-ko-HRa">
-                                        <rect key="frame" x="610" y="70" width="700" height="80"/>
-                                        <color key="backgroundColor" red="0.27302397830000003" green="0.27302397830000003" blue="0.27302397830000003" alpha="0.376546204" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="700" id="dN5-5T-AfZ"/>
-                                            <constraint firstAttribute="height" constant="80" id="yqc-CQ-Chj"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="TcS-CP-dk8" userLabel="KeyboardStackView">
-                                        <rect key="frame" x="580" y="215" width="760" height="90"/>
-                                        <subviews>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zsW-sb-r2d" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="1">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="KcU-ZS-rx0"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Iv-I5-z1d" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="69" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="2">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="zKw-ky-eEc"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O0B-JB-wrh" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="138" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="3">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="x8c-od-MCd"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Jk-5g-ofR" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="207" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="4">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="8"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="Cki-DE-tur"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jl3-5A-ALh" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="276" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="5">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="lxh-tW-lj9"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c8s-E6-wCH" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="345" y="0.0" width="70" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="6">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="rAv-Kc-mjw"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KW0-EM-nzY" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="415" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="7">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="nXY-dg-u6N"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1QD-C9-Z8H" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="484" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="8">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="U3M-Sd-xbE"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dh0-yH-lux" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="553" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="9">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="sbh-9n-JEu"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ac0-DA-5z5" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="622" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
-                                                <state key="normal" title="0">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="nif-YA-R3J"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3f-P9-jWB" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
-                                                <rect key="frame" x="691" y="0.0" width="69" height="90"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
-                                                <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                                <state key="normal" image="back_ic">
-                                                    <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didClickOnKeyBoardButton:" destination="9dd-sk-a51" eventType="primaryActionTriggered" id="tVL-wO-C65"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <gestureRecognizers/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="90" id="PS1-Eq-p93"/>
-                                            <constraint firstAttribute="width" constant="760" id="vdQ-hv-ex0"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="myx-ko-HRa" firstAttribute="top" secondItem="zud-WB-UwX" secondAttribute="top" constant="70" id="8Ed-ns-qiU"/>
-                                    <constraint firstItem="mR1-nH-Xd5" firstAttribute="top" secondItem="95t-kv-cAO" secondAttribute="bottom" constant="3" id="8tu-5Y-nqa"/>
-                                    <constraint firstItem="WaE-fo-b9H" firstAttribute="top" secondItem="95t-kv-cAO" secondAttribute="bottom" constant="-75" id="Ech-MH-4Ce"/>
-                                    <constraint firstItem="TcS-CP-dk8" firstAttribute="top" secondItem="myx-ko-HRa" secondAttribute="bottom" constant="65" id="JGv-a3-VZ7"/>
-                                    <constraint firstItem="cAX-Wx-FRF" firstAttribute="centerX" secondItem="zud-WB-UwX" secondAttribute="centerX" id="Jy1-Da-MNl"/>
-                                    <constraint firstItem="mR1-nH-Xd5" firstAttribute="centerX" secondItem="zud-WB-UwX" secondAttribute="centerX" id="Q7r-mZ-EAy"/>
-                                    <constraint firstItem="95t-kv-cAO" firstAttribute="centerX" secondItem="zud-WB-UwX" secondAttribute="centerX" id="VVn-Vv-0bb"/>
-                                    <constraint firstItem="cAX-Wx-FRF" firstAttribute="centerY" secondItem="zud-WB-UwX" secondAttribute="centerY" constant="50" id="bVQ-17-DaY"/>
-                                    <constraint firstItem="myx-ko-HRa" firstAttribute="centerX" secondItem="zud-WB-UwX" secondAttribute="centerX" id="bhV-C2-yz7"/>
-                                    <constraint firstItem="TcS-CP-dk8" firstAttribute="centerX" secondItem="myx-ko-HRa" secondAttribute="centerX" id="i3n-2A-kwI"/>
-                                    <constraint firstItem="cAX-Wx-FRF" firstAttribute="top" secondItem="mR1-nH-Xd5" secondAttribute="bottom" constant="34" id="qqh-rk-xcK"/>
-                                    <constraint firstItem="WaE-fo-b9H" firstAttribute="centerX" secondItem="95t-kv-cAO" secondAttribute="centerX" id="sAb-88-cSf"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="A1e-0o-NZu" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="bottom" constant="-60" id="6J7-18-D7y"/>
-                            <constraint firstItem="zud-WB-UwX" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" id="EIm-Ev-dGs"/>
-                            <constraint firstItem="zud-WB-UwX" firstAttribute="bottom" secondItem="hLY-s9-NYO" secondAttribute="bottom" id="HJ5-nL-G0d"/>
-                            <constraint firstItem="zud-WB-UwX" firstAttribute="trailing" secondItem="hLY-s9-NYO" secondAttribute="trailing" id="KUK-UN-smp"/>
                             <constraint firstItem="hLY-s9-NYO" firstAttribute="top" secondItem="8Mb-bs-Oj9" secondAttribute="bottom" constant="-60" id="UtS-qy-hMG"/>
-                            <constraint firstItem="NFq-i3-4LS" firstAttribute="bottom" secondItem="hLY-s9-NYO" secondAttribute="bottom" id="WrE-z8-e2E"/>
-                            <constraint firstItem="NFq-i3-4LS" firstAttribute="leading" secondItem="hLY-s9-NYO" secondAttribute="leading" id="dOS-nw-EWY"/>
                             <constraint firstItem="hLY-s9-NYO" firstAttribute="leading" secondItem="5aR-rg-pSc" secondAttribute="leading" id="f30-F4-Ls7"/>
-                            <constraint firstItem="zud-WB-UwX" firstAttribute="leading" secondItem="hLY-s9-NYO" secondAttribute="leading" id="iHM-uQ-LGb"/>
-                            <constraint firstItem="NFq-i3-4LS" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" id="oux-Vg-1Wg"/>
                             <constraint firstAttribute="trailing" secondItem="hLY-s9-NYO" secondAttribute="trailing" id="uNs-th-viO"/>
-                            <constraint firstItem="NFq-i3-4LS" firstAttribute="trailing" secondItem="hLY-s9-NYO" secondAttribute="trailing" id="xml-yy-Yb0"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="LoginOptionView" destination="hLY-s9-NYO" id="zgR-Le-ks9"/>
-                        <outlet property="jioIdTF" destination="S3Z-5j-3fy" id="ydQ-Er-BXe"/>
-                        <outlet property="otpView" destination="zud-WB-UwX" id="oGH-2V-der"/>
-                        <outlet property="passwordTF" destination="Wqd-eZ-bQ9" id="I1Q-9N-mP5"/>
                         <outlet property="pleaseLoginMessageButton" destination="NGB-JE-29z" id="BhE-K7-p4Q"/>
                         <outlet property="signInJioIDButton" destination="vR2-ya-wId" id="jFR-ld-y0q"/>
                         <outlet property="signInOTPButton" destination="GxH-Nz-KET" id="taO-Df-szl"/>
                         <outlet property="signInOptionsContainer" destination="5Gm-mc-G4v" id="PsB-aO-VTl"/>
-                        <outlet property="signInWithJioIdView" destination="NFq-i3-4LS" id="a9Y-4Z-c4D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4TR-G4-NbC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -539,13 +206,13 @@
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qG8-AD-0fn">
                                         <rect key="frame" x="230" y="30" width="340" height="30"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="25"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
-                                        <rect key="frame" x="230" y="90" width="340" height="35"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                        <rect key="frame" x="230" y="90" width="340" height="36"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -600,13 +267,13 @@
                                         <rect key="frame" x="928" y="508" width="64" height="64"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EbU-It-uxH">
-                                        <rect key="frame" x="860" y="602" width="201" height="34"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="28"/>
+                                        <rect key="frame" x="859" y="602" width="202" height="33"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="28"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="610-L2-zn9">
-                                        <rect key="frame" x="840" y="660" width="241" height="86"/>
+                                        <rect key="frame" x="840" y="659" width="241" height="86"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Try Again"/>
                                     </button>
@@ -625,8 +292,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select playback option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZk-9P-kiy">
-                                        <rect key="frame" x="580" y="266" width="761" height="84"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="70"/>
+                                        <rect key="frame" x="575" y="267" width="771" height="83"/>
+                                        <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="70"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -637,6 +304,7 @@
                                             <constraint firstAttribute="height" constant="60" id="Ix1-V9-FYS"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="Ktp-X6-KDw"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Resume Watching">
@@ -661,6 +329,7 @@
                                             <constraint firstAttribute="height" constant="60" id="IWw-WS-Mxo"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="ilQ-gB-hTq"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Start From Beginning">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -678,12 +347,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6s-6Y-fSV" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="640" y="620" width="640" height="60"/>
+                                        <rect key="frame" x="631" y="620" width="658" height="60"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Vzu-xf-fi9"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="yyS-UO-Pm3"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Remove From Resume Watching">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -767,7 +437,7 @@
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uyr-Yb-QCy">
                                         <rect key="frame" x="960" y="480" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <color key="textColor" red="0.94194585210210213" green="0.94194585210210213" blue="0.94194585210210213" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -848,11 +518,11 @@
                                 <rect key="frame" x="0.0" y="60" width="1920" height="1020"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Malayalam" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmG-gv-hHK">
-                                        <rect key="frame" x="839" y="20" width="242" height="64"/>
+                                        <rect key="frame" x="839" y="20" width="243" height="64"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="64" id="fkq-5v-9DO"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="47"/>
+                                        <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="47"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -863,6 +533,7 @@
                                             <constraint firstAttribute="width" constant="400" id="aRr-fU-41S"/>
                                             <constraint firstAttribute="height" constant="70" id="jX0-l5-pqE"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -880,6 +551,7 @@
                                             <constraint firstAttribute="height" constant="74" id="C9E-TC-567"/>
                                             <constraint firstAttribute="width" constant="400" id="obw-Id-laq"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -891,8 +563,8 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No video available!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOE-UX-E5Z">
-                                        <rect key="frame" x="786" y="477" width="349" height="47"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                        <rect key="frame" x="780" y="477" width="361" height="47"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="40"/>
                                         <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1007,8 +679,8 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rR-xw-boL">
-                                <rect key="frame" x="895" y="70" width="131" height="60"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="50"/>
+                                <rect key="frame" x="894" y="70" width="132" height="59"/>
+                                <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1066,7 +738,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="305" id="nY1-Oh-AIh"/>
                                     <constraint firstAttribute="height" constant="65" id="wXy-xU-7cp"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Resend OTP"/>
                                 <connections>
@@ -1087,12 +759,12 @@
                                 </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request for OTP has been made again" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2E-0R-bbW">
-                                <rect key="frame" x="665" y="588" width="590" height="50"/>
+                                <rect key="frame" x="655" y="588" width="611" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="jcY-Bm-Lh0"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
+                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="34"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1103,7 +775,7 @@
                                     <constraint firstAttribute="height" constant="80" id="JMy-Lc-McD"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="700" id="hrL-cS-9kH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1113,7 +785,7 @@
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QR2-HE-JqK" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="1">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1130,7 +802,7 @@
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHJ-tv-s9y" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="69" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="2">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1147,7 +819,7 @@
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VNn-Xs-xaW" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="138" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="3">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1164,7 +836,7 @@
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gVN-lu-d7T" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="207" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="4">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1181,7 +853,7 @@
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zm4-2Q-zR5" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="276" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="5">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1198,7 +870,7 @@
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ikw-F5-y1J" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="345" y="0.0" width="70" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="6">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1215,7 +887,7 @@
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rRu-b4-VcX" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="415" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="7">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1232,7 +904,7 @@
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="snf-76-rsY" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="484" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="8">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1249,7 +921,7 @@
                                     <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fhV-y1-EX8" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="553" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="9">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1266,7 +938,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MsJ-hn-YYf" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="622" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                         <state key="normal" title="0">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1283,7 +955,7 @@
                                     <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCe-G1-Jif" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                         <rect key="frame" x="691" y="0.0" width="69" height="90"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" image="back_ic">
                                             <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1350,55 +1022,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="TMZ-XE-kko">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loginbgImage" translatesAutoresizingMaskIntoConstraints="NO" id="TMZ-XE-kko">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dss-Jh-kZK" userLabel="signInJioID Container">
-                                <rect key="frame" x="201" y="427" width="1573" height="653"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dss-Jh-kZK" userLabel="signInJioID Container">
+                                <rect key="frame" x="0.0" y="488" width="1920" height="592"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in using your Jio ID and Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQP-b1-5By">
-                                        <rect key="frame" x="447" y="-33" width="678" height="46"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPY-dB-t1A">
-                                        <rect key="frame" x="57" y="471" width="1459" height="126"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPY-dB-t1A">
+                                        <rect key="frame" x="100" y="473" width="1720" height="43"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-Bd-PVP" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="536" y="325" width="500" height="62"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-Bd-PVP" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="710" y="327" width="500" height="62"/>
                                         <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="62" id="LZK-jz-5Od"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Sign In"/>
                                         <connections>
                                             <action selector="didClickOnJioIDSignInButton:" destination="l1U-WD-QGu" eventType="primaryActionTriggered" id="bWJ-iZ-tq2"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Jio ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fT6-VL-Yg6" customClass="JCTextField" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="536" y="136" width="500" height="76"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Jio ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fT6-VL-Yg6" customClass="JCTextField" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="710" y="138" width="500" height="76"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="76" id="T3w-Wl-QXl"/>
+                                            <constraint firstAttribute="width" constant="500" id="wcA-op-TrI"/>
+                                        </constraints>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="l1U-WD-QGu" id="gfk-Dx-RDq"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="juj-aF-iXE" customClass="JCPasswordField" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="536" y="220" width="500" height="76"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in using your Jio ID and Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQP-b1-5By">
+                                        <rect key="frame" x="597" y="0.0" width="726" height="47"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="40"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="juj-aF-iXE" customClass="JCPasswordField" customModule="JioCinema" customModuleProvider="target">
+                                        <rect key="frame" x="710" y="222" width="500" height="76"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.19728724630996311" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                         <connections>
                                             <outlet property="delegate" destination="l1U-WD-QGu" id="p0I-r7-aGx"/>
@@ -1406,13 +1080,36 @@
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="HPY-dB-t1A" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="5Hq-YN-2GE"/>
+                                    <constraint firstItem="NOr-Bd-PVP" firstAttribute="top" secondItem="juj-aF-iXE" secondAttribute="bottom" constant="29" id="8GE-kk-srW"/>
+                                    <constraint firstItem="juj-aF-iXE" firstAttribute="width" secondItem="fT6-VL-Yg6" secondAttribute="width" id="9qN-cp-Em6"/>
+                                    <constraint firstItem="bQP-b1-5By" firstAttribute="top" secondItem="Dss-Jh-kZK" secondAttribute="top" id="Bx1-1d-kiT"/>
+                                    <constraint firstItem="NOr-Bd-PVP" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="CUf-RN-6Wp"/>
+                                    <constraint firstAttribute="trailing" secondItem="HPY-dB-t1A" secondAttribute="trailing" constant="100" id="CVx-Pi-pXo"/>
+                                    <constraint firstItem="fT6-VL-Yg6" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="Gbo-3d-a0q"/>
+                                    <constraint firstItem="NOr-Bd-PVP" firstAttribute="width" secondItem="fT6-VL-Yg6" secondAttribute="width" id="M3L-o2-iFX"/>
+                                    <constraint firstItem="juj-aF-iXE" firstAttribute="height" secondItem="fT6-VL-Yg6" secondAttribute="height" id="NWi-dk-u8Z"/>
+                                    <constraint firstItem="HPY-dB-t1A" firstAttribute="top" secondItem="NOr-Bd-PVP" secondAttribute="bottom" constant="84" id="Rt7-Rd-7MB"/>
+                                    <constraint firstItem="juj-aF-iXE" firstAttribute="top" secondItem="fT6-VL-Yg6" secondAttribute="bottom" constant="8" id="V6Q-S1-aup"/>
+                                    <constraint firstItem="juj-aF-iXE" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="cGy-3e-bAp"/>
+                                    <constraint firstItem="fT6-VL-Yg6" firstAttribute="top" secondItem="bQP-b1-5By" secondAttribute="bottom" constant="91" id="mdQ-dS-uMY"/>
+                                    <constraint firstItem="HPY-dB-t1A" firstAttribute="leading" secondItem="Dss-Jh-kZK" secondAttribute="leading" constant="100" id="nfE-gf-w0W"/>
+                                    <constraint firstItem="bQP-b1-5By" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="yGW-5E-buj"/>
+                                </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinemaIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uaO-TX-pJ3">
+                                <rect key="frame" x="823" y="115" width="274" height="277"/>
+                            </imageView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="TMZ-XE-kko" firstAttribute="leading" secondItem="3pQ-gF-vcW" secondAttribute="leading" id="MOt-l2-98O"/>
-                            <constraint firstItem="TMZ-XE-kko" firstAttribute="top" secondItem="YA5-Br-8aN" secondAttribute="bottom" constant="-60" id="h0x-zH-Zhc"/>
-                            <constraint firstItem="sRt-Ca-1fF" firstAttribute="top" secondItem="TMZ-XE-kko" secondAttribute="bottom" constant="-60" id="rnE-kL-9dJ"/>
-                            <constraint firstAttribute="trailing" secondItem="TMZ-XE-kko" secondAttribute="trailing" id="xsF-8O-YMx"/>
+                            <constraint firstItem="uaO-TX-pJ3" firstAttribute="centerX" secondItem="3pQ-gF-vcW" secondAttribute="centerX" id="5Nt-57-bxl"/>
+                            <constraint firstItem="uaO-TX-pJ3" firstAttribute="top" secondItem="YA5-Br-8aN" secondAttribute="bottom" constant="55" id="IFi-Bb-7fz"/>
+                            <constraint firstItem="Dss-Jh-kZK" firstAttribute="top" secondItem="uaO-TX-pJ3" secondAttribute="bottom" constant="96" id="Tan-Ad-5Bi"/>
+                            <constraint firstItem="Dss-Jh-kZK" firstAttribute="centerX" secondItem="3pQ-gF-vcW" secondAttribute="centerX" id="eVz-ba-sw9"/>
+                            <constraint firstItem="Dss-Jh-kZK" firstAttribute="leading" secondItem="3pQ-gF-vcW" secondAttribute="leading" id="fUa-Ke-4BU"/>
+                            <constraint firstAttribute="trailing" secondItem="Dss-Jh-kZK" secondAttribute="trailing" id="l8h-Oc-JVE"/>
+                            <constraint firstAttribute="bottom" secondItem="Dss-Jh-kZK" secondAttribute="bottom" id="sCe-ll-tAk"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1466,7 +1163,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                         </subviews>
@@ -1494,31 +1191,31 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5p-ly-aEf">
-                                        <rect key="frame" x="701" y="300" width="518" height="84"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="70"/>
+                                        <rect key="frame" x="701" y="300" width="519" height="83"/>
+                                        <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="70"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us what you think about JioCinema on Apple TV." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsT-Td-1zF">
-                                        <rect key="frame" x="516" y="434" width="889" height="46"/>
+                                        <rect key="frame" x="516" y="433" width="889" height="46"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write a mail to us at" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="04G-mY-dkv">
-                                        <rect key="frame" x="792" y="490" width="336" height="46"/>
+                                        <rect key="frame" x="792" y="489" width="336" height="46"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jiocinema@jio.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z4I-Ce-T4x">
-                                        <rect key="frame" x="790" y="561" width="340" height="46"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="38"/>
+                                        <rect key="frame" x="788" y="560" width="344" height="45"/>
+                                        <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="38"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mention Subject as JioCinema-Apple TV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNF-Sd-zKb">
-                                        <rect key="frame" x="615" y="657" width="690" height="46"/>
+                                        <rect key="frame" x="615" y="655" width="690" height="46"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1542,8 +1239,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When autoplay is on, a suggested video plays next automatically a notification show which video is coming" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5IW-vi-iub">
-                                        <rect key="frame" x="243" y="422" width="1434" height="35"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                        <rect key="frame" x="214" y="421" width="1493" height="36"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1584,8 +1281,8 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AutoPlay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW3-wG-M7M">
-                                        <rect key="frame" x="832" y="300" width="256" height="72"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="60"/>
+                                        <rect key="frame" x="831" y="300" width="258" height="71"/>
+                                        <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="60"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1727,9 +1424,10 @@
     </scenes>
     <resources>
         <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
-        <image name="LoginBackground" width="3840" height="2160"/>
+        <image name="JioCinemaIcon" width="274" height="277"/>
         <image name="MetaDatBackGroundImage" width="1920" height="1080"/>
         <image name="Settings" width="300" height="300"/>
         <image name="back_ic" width="60" height="60"/>
+        <image name="loginbgImage" width="1920" height="1080"/>
     </resources>
 </document>
