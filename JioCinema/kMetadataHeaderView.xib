@@ -30,7 +30,7 @@
                         <constraint firstAttribute="height" constant="738" id="cza-FJ-sAA"/>
                     </constraints>
                 </imageView>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metadatabg" translatesAutoresizingMaskIntoConstraints="NO" id="3rK-TM-LCh">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metadatabg" translatesAutoresizingMaskIntoConstraints="NO" id="3rK-TM-LCh">
                     <rect key="frame" x="20" y="0.0" width="1900" height="738"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" image="YES" playsSound="YES"/>
