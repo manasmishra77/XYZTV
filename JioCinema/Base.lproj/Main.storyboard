@@ -29,7 +29,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinema-SplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="gnq-sp-Jd0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="gnq-sp-Jd0">
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                             </imageView>
                         </subviews>
@@ -679,7 +679,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rR-xw-boL">
-                                <rect key="frame" x="894" y="70" width="132" height="59"/>
+                                <rect key="frame" x="899" y="70" width="123" height="59"/>
                                 <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1427,11 +1427,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="JioCinema-SplashScreen" width="1920" height="1080"/>
         <image name="JioCinemaIcon" width="274" height="277"/>
         <image name="MetaDatBackGroundImage" width="1920" height="1080"/>
         <image name="Settings" width="300" height="300"/>
         <image name="back_ic" width="60" height="60"/>
         <image name="loginbgImage" width="1920" height="1080"/>
+        <image name="splash" width="1920" height="1080"/>
     </resources>
 </document>

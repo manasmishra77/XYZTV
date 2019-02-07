@@ -155,6 +155,7 @@
 		9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543721D382FE0026CC8D /* ViewForCarousel.xib */; };
 		9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543921D3C0D70026CC8D /* DisneyButtons.swift */; };
 		9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543A21D3C0D70026CC8D /* DisneyButtons.xib */; };
+		9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */; };
 		99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */ = {isa = PBXBuildFile; fileRef = 99BB5DD6220838B4000E73A1 /* metadatabg.png */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
@@ -345,6 +346,7 @@
 		9966543721D382FE0026CC8D /* ViewForCarousel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewForCarousel.xib; sourceTree = "<group>"; };
 		9966543921D3C0D70026CC8D /* DisneyButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtons.swift; sourceTree = "<group>"; };
 		9966543A21D3C0D70026CC8D /* DisneyButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtons.xib; sourceTree = "<group>"; };
+		9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = JioCinema_Splash_Screen.jpg; sourceTree = "<group>"; };
 		99BB5DD6220838B4000E73A1 /* metadatabg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadatabg.png; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
@@ -654,6 +656,7 @@
 				539FC8B42126F53D0070D306 /* ParentalControlSetting.png */,
 				7BD39C971F419F470014255C /* AddtoWatchlist.png */,
 				7BD39C981F419F470014255C /* WatchNow.png */,
+				9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */,
 				7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */,
 				2025F4541F3B513100C3B609 /* Autoplay.png */,
 				2025F4561F3B513A00C3B609 /* FAQ.png */,
@@ -887,6 +890,7 @@
 				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */,
+				9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */,
 				53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */,
