@@ -391,6 +391,10 @@
     }
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
+        
+        let rule = AVTextStyleRule.init(textMarkupAttributes: [kCMTextMarkupAttribute_RelativeFontSize as String : 80])
+        playerItem?.textStyleRules = [rule] as? [AVTextStyleRule]
+        
         self.addMetadataToPlayer()
         if playerController == nil {
             playerController = AVPlayerViewController()
@@ -1241,6 +1245,8 @@
             }
         }*/
     }
+    
+    
     
     func callWebServiceForPlaybackRights(id:String) {
         isSwipingAllowed_RecommendationView = true
