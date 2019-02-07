@@ -68,14 +68,14 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinemaIcon" translatesAutoresizingMaskIntoConstraints="NO" id="mMa-KC-Pbg">
-                                        <rect key="frame" x="835" y="68" width="250" height="250"/>
+                                        <rect key="frame" x="835" y="115" width="250" height="250"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="250" id="2zn-Du-DSp"/>
                                             <constraint firstAttribute="width" constant="250" id="wc4-6T-zXH"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gm-mc-G4v" userLabel="SignIn Options Container">
-                                        <rect key="frame" x="322" y="414" width="1276" height="616"/>
+                                        <rect key="frame" x="322" y="461" width="1276" height="599"/>
                                         <subviews>
                                             <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxH-Nz-KET" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                                 <rect key="frame" x="398" y="103" width="480" height="68"/>
@@ -115,7 +115,7 @@
                                                 <state key="normal" title="Please login to watch the video"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ld1-x1-w91">
-                                                <rect key="frame" x="-91" y="460" width="1459" height="126"/>
+                                                <rect key="frame" x="-91" y="443" width="1459" height="126"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="1459" id="1tl-pT-YxO"/>
                                                     <constraint firstAttribute="height" constant="126" id="idc-05-jjc"/>
@@ -142,10 +142,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="mMa-KC-Pbg" firstAttribute="centerX" secondItem="hLY-s9-NYO" secondAttribute="centerX" id="Aeq-zY-nl8"/>
-                                    <constraint firstItem="mMa-KC-Pbg" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" constant="68" id="Dxv-6O-AA1"/>
+                                    <constraint firstItem="mMa-KC-Pbg" firstAttribute="top" secondItem="hLY-s9-NYO" secondAttribute="top" constant="115" id="Dxv-6O-AA1"/>
                                     <constraint firstItem="5Gm-mc-G4v" firstAttribute="top" secondItem="mMa-KC-Pbg" secondAttribute="bottom" constant="96" id="HYN-FB-0Kp"/>
                                     <constraint firstItem="5Gm-mc-G4v" firstAttribute="centerX" secondItem="hLY-s9-NYO" secondAttribute="centerX" id="qoN-PL-cfi"/>
-                                    <constraint firstAttribute="bottom" secondItem="5Gm-mc-G4v" secondAttribute="bottom" constant="50" id="tV6-du-Q0h"/>
+                                    <constraint firstAttribute="bottom" secondItem="5Gm-mc-G4v" secondAttribute="bottom" constant="20" symbolic="YES" id="tV6-du-Q0h"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -211,7 +211,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VOU-lG-iud">
-                                        <rect key="frame" x="230" y="90" width="340" height="35"/>
+                                        <rect key="frame" x="230" y="90" width="340" height="36"/>
                                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -267,7 +267,7 @@
                                         <rect key="frame" x="928" y="508" width="64" height="64"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EbU-It-uxH">
-                                        <rect key="frame" x="863" y="602" width="194" height="33"/>
+                                        <rect key="frame" x="859" y="602" width="202" height="33"/>
                                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="28"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -292,7 +292,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select playback option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZk-9P-kiy">
-                                        <rect key="frame" x="602" y="268" width="716" height="82"/>
+                                        <rect key="frame" x="575" y="267" width="771" height="83"/>
                                         <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="70"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -347,7 +347,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6s-6Y-fSV" customClass="AutoplayButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="640" y="620" width="640" height="60"/>
+                                        <rect key="frame" x="631" y="620" width="658" height="60"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Vzu-xf-fi9"/>
@@ -1027,16 +1027,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dss-Jh-kZK" userLabel="signInJioID Container">
-                                <rect key="frame" x="0.0" y="488" width="1920" height="592"/>
+                                <rect key="frame" x="0.0" y="461" width="1920" height="619"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If facing trouble logging-in, kindly write to us jiocinema@jio.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPY-dB-t1A">
-                                        <rect key="frame" x="100" y="473" width="1720" height="43"/>
+                                        <rect key="frame" x="100" y="504" width="1720" height="43"/>
                                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-Bd-PVP" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="710" y="327" width="500" height="62"/>
+                                        <rect key="frame" x="710" y="292" width="500" height="62"/>
                                         <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="62" id="LZK-jz-5Od"/>
@@ -1049,7 +1049,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Jio ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fT6-VL-Yg6" customClass="JCTextField" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="710" y="138" width="500" height="76"/>
+                                        <rect key="frame" x="710" y="103" width="500" height="76"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="76" id="T3w-Wl-QXl"/>
@@ -1069,7 +1069,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="juj-aF-iXE" customClass="JCPasswordField" customModule="JioCinema" customModuleProvider="target">
-                                        <rect key="frame" x="710" y="222" width="500" height="76"/>
+                                        <rect key="frame" x="710" y="187" width="500" height="76"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.19728724630996311" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
@@ -1090,22 +1090,26 @@
                                     <constraint firstItem="fT6-VL-Yg6" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="Gbo-3d-a0q"/>
                                     <constraint firstItem="NOr-Bd-PVP" firstAttribute="width" secondItem="fT6-VL-Yg6" secondAttribute="width" id="M3L-o2-iFX"/>
                                     <constraint firstItem="juj-aF-iXE" firstAttribute="height" secondItem="fT6-VL-Yg6" secondAttribute="height" id="NWi-dk-u8Z"/>
-                                    <constraint firstItem="HPY-dB-t1A" firstAttribute="top" secondItem="NOr-Bd-PVP" secondAttribute="bottom" constant="84" id="Rt7-Rd-7MB"/>
+                                    <constraint firstItem="HPY-dB-t1A" firstAttribute="top" secondItem="NOr-Bd-PVP" secondAttribute="bottom" constant="150" id="Rt7-Rd-7MB"/>
                                     <constraint firstItem="juj-aF-iXE" firstAttribute="top" secondItem="fT6-VL-Yg6" secondAttribute="bottom" constant="8" id="V6Q-S1-aup"/>
                                     <constraint firstItem="juj-aF-iXE" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="cGy-3e-bAp"/>
-                                    <constraint firstItem="fT6-VL-Yg6" firstAttribute="top" secondItem="bQP-b1-5By" secondAttribute="bottom" constant="91" id="mdQ-dS-uMY"/>
+                                    <constraint firstItem="fT6-VL-Yg6" firstAttribute="top" secondItem="bQP-b1-5By" secondAttribute="bottom" constant="56" id="mdQ-dS-uMY"/>
                                     <constraint firstItem="HPY-dB-t1A" firstAttribute="leading" secondItem="Dss-Jh-kZK" secondAttribute="leading" constant="100" id="nfE-gf-w0W"/>
                                     <constraint firstItem="bQP-b1-5By" firstAttribute="centerX" secondItem="Dss-Jh-kZK" secondAttribute="centerX" id="yGW-5E-buj"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JioCinemaIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uaO-TX-pJ3">
-                                <rect key="frame" x="823" y="115" width="274" height="277"/>
+                                <rect key="frame" x="835" y="115" width="250" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="844-H1-RQI"/>
+                                    <constraint firstAttribute="height" constant="250" id="OhQ-ek-dAm"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="uaO-TX-pJ3" firstAttribute="centerX" secondItem="3pQ-gF-vcW" secondAttribute="centerX" id="5Nt-57-bxl"/>
-                            <constraint firstItem="uaO-TX-pJ3" firstAttribute="top" secondItem="YA5-Br-8aN" secondAttribute="bottom" constant="55" id="IFi-Bb-7fz"/>
-                            <constraint firstItem="Dss-Jh-kZK" firstAttribute="top" secondItem="uaO-TX-pJ3" secondAttribute="bottom" constant="96" id="Tan-Ad-5Bi"/>
+                            <constraint firstItem="bQP-b1-5By" firstAttribute="top" secondItem="uaO-TX-pJ3" secondAttribute="bottom" constant="96" id="GUs-nl-JlT"/>
+                            <constraint firstItem="uaO-TX-pJ3" firstAttribute="top" secondItem="3pQ-gF-vcW" secondAttribute="top" constant="115" id="IFi-Bb-7fz"/>
                             <constraint firstItem="Dss-Jh-kZK" firstAttribute="centerX" secondItem="3pQ-gF-vcW" secondAttribute="centerX" id="eVz-ba-sw9"/>
                             <constraint firstItem="Dss-Jh-kZK" firstAttribute="leading" secondItem="3pQ-gF-vcW" secondAttribute="leading" id="fUa-Ke-4BU"/>
                             <constraint firstAttribute="trailing" secondItem="Dss-Jh-kZK" secondAttribute="trailing" id="l8h-Oc-JVE"/>
