@@ -61,7 +61,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.isCircular = isCircular
         view.sepration = sepration
         view.frameOfView = frameOfView
-        view.widthOfCell =  view.collectionView.frame.width - 200  //  (frameOfView.width - 2 * sepration) / (1 + CGFloat(2 * visiblePart))
+        view.widthOfCell =  (view.frameOfView.height - 100) * 3  //  (frameOfView.width - 2 * sepration) / (1 + CGFloat(2 * visiblePart))
         view.hasFooter = hasFooter
         view.visiblePart = visiblePart
         view.autoScroll = autoScroll

@@ -30,8 +30,8 @@ class JCLoginVC: UIViewController {
         signInOTPButton.layer.cornerRadius = 8
         signInJioIDButton.layer.cornerRadius = 8
         // Do any additional setup after loading the view.
-        otpView.isHidden = true
-        signInWithJioIdView.isHidden = true
+        //otpView.isHidden = true
+        //signInWithJioIdView.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {

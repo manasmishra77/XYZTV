@@ -65,7 +65,7 @@ class BaseViewModel: NSObject  {
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items{
-                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: 700)
+                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: 650)
                 carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
 //            if let items = baseDataModel?.data?[0].items {
@@ -296,7 +296,7 @@ class BaseViewModel: NSObject  {
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
+                return (title: dataContainer.title ?? "My List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english)
             }
         }
         return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english)
