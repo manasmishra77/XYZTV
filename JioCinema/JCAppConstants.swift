@@ -103,6 +103,7 @@ let kAppKey = "appkey"
 
 //Values
 let kAppKeyValue = "06758e99be484fca56fb"
+let apIKey = "l7xxe187b7105c2f4f6ab71c078bd5fc165c"
 
 //StoryBoard Ids
 let loginVCStoryBoardId = "kLoginVC"
@@ -139,7 +140,7 @@ let BaseViewControllerNibIdentifier = "BaseViewController"
 
 
 //Constant Values
-let heightOfCarouselSection = 600
+let heightOfCarouselSection : CGFloat = 670
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
 let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")

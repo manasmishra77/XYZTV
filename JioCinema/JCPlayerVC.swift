@@ -1272,23 +1272,16 @@
                 if response.code == CommonResponseCode.refreshSSOFailed.rawValue {
                     //Logout User
                     let presentingVC = self.presentingViewController
-                    self.dismissPlayerVC(completion: {
-                        // Logout user
-                        if let metaVc = presentingVC as? JCMetadataVC {
-                            metaVc.didClickOnWatchNowButton(nil)
-                        } else {
-                        
-                            
-                        }
-//                    } else if let navVC = presentingVC as? UINavigationController, let tabVC = navVC.viewControllers.first as? JCTabBarController, let vc = tabVC.currentController as? BaseViewController {
-//                        vc.baseViewModel.playItemAfterRefreshSSOFailed()
-//                    }
-
-//                        SideNavigationVC, let vc = tabVC. as? BaseViewController {
-//                            vc.baseViewModel.playItemAfterRefreshSSOFailed()
+//                    self.dismissPlayerVC(completion: {
+//                        // Logout user
+//                        if let metaVc = presentingVC as? JCMetadataVC {
+//                            metaVc.didClickOnWatchNowButton(nil)
+//                        } else {
+//                        
+//                            
 //                        }
-                    })
-                    return
+//                    })
+                    
                 }
 
                 var failuretype = ""

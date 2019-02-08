@@ -19,15 +19,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="348" height="277"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="64w-cj-G1R">
-                        <rect key="frame" x="5" y="0.0" width="338" height="277"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="64w-cj-G1R">
+                        <rect key="frame" x="0.0" y="0.0" width="348" height="277"/>
                     </imageView>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="64w-cj-G1R" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="5" id="95Q-6g-P1e"/>
-                <constraint firstAttribute="trailing" secondItem="64w-cj-G1R" secondAttribute="trailing" constant="5" id="Ill-Td-LRT"/>
+                <constraint firstItem="64w-cj-G1R" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="95Q-6g-P1e"/>
+                <constraint firstAttribute="trailing" secondItem="64w-cj-G1R" secondAttribute="trailing" id="Ill-Td-LRT"/>
                 <constraint firstAttribute="bottom" secondItem="64w-cj-G1R" secondAttribute="bottom" id="V4c-LV-4kY"/>
                 <constraint firstItem="64w-cj-G1R" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="uG0-pp-eph"/>
             </constraints>

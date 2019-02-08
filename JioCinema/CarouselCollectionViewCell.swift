@@ -20,7 +20,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self)
         {
-            self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
+            self.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
             self.superview?.bringSubview(toFront: self)
         }
         else {

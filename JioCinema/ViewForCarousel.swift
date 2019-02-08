@@ -61,7 +61,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.isCircular = isCircular
         view.sepration = sepration
         view.frameOfView = frameOfView
-        view.widthOfCell =  (view.frameOfView.height - 100) * 3  //  (frameOfView.width - 2 * sepration) / (1 + CGFloat(2 * visiblePart))
+        view.widthOfCell =  (view.frameOfView.height) * 3  //  (frameOfView.width - 2 * sepration) / (1 + CGFloat(2 * visiblePart))
         view.hasFooter = hasFooter
         view.visiblePart = visiblePart
         view.autoScroll = autoScroll
@@ -124,7 +124,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         if isCircular {
             collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
 
         }
         collectionView.reloadData()
@@ -243,7 +243,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
 //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height - 100)
+        let sizeOfCell = CGSize(width: widthOfCell, height: frameOfView.height)
         return sizeOfCell
     }
     
