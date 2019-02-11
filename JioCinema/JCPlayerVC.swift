@@ -1255,8 +1255,8 @@
         print("Playback rights id is === \(id)")
         //playerId = id
 
-        var url = playbackRightsURL.appending(id)
-        var params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+        let url = playbackRightsURL.appending(id)
+        let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
 //        if isPlayList && id == ""{
 //            url = playBackForPlayList.appending(playListId)
 //            params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
