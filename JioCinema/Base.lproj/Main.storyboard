@@ -679,7 +679,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rR-xw-boL">
-                                <rect key="frame" x="899" y="70" width="123" height="59"/>
+                                <rect key="frame" x="894" y="70" width="132" height="59"/>
                                 <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1359,11 +1359,29 @@
                                             <constraint firstAttribute="width" constant="400" id="xlr-hN-eaN"/>
                                         </constraints>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlh-Us-6ip">
+                                        <rect key="frame" x="0.0" y="840" width="960" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMW-P1-JpC">
+                                        <rect key="frame" x="0.0" y="860" width="960" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="38"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="bXi-OJ-zSf" firstAttribute="centerY" secondItem="ns8-il-pSj" secondAttribute="centerY" id="G6A-wH-Eca"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="width" secondItem="mlh-Us-6ip" secondAttribute="width" id="Hkg-Ff-mKV"/>
                                     <constraint firstItem="bXi-OJ-zSf" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="IQK-ii-wTM"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="R4N-w8-jbR"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="top" secondItem="mlh-Us-6ip" secondAttribute="bottom" constant="20" id="Rua-0E-BEC"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="Woi-A0-RCs"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="top" secondItem="bXi-OJ-zSf" secondAttribute="bottom" constant="100" id="hsv-LB-1ih"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="width" secondItem="ns8-il-pSj" secondAttribute="width" id="uvn-pc-cgS"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUu-Mq-dHq">
@@ -1417,6 +1435,8 @@
                     </view>
                     <connections>
                         <outlet property="headerLabel" destination="AZL-rz-ek8" id="TTL-Gk-wHQ"/>
+                        <outlet property="jioIDLabel" destination="mlh-Us-6ip" id="oJc-FD-ams"/>
+                        <outlet property="name" destination="eMW-P1-JpC" id="8md-84-auF"/>
                         <outlet property="settingsImageView" destination="bXi-OJ-zSf" id="Nev-T0-5eB"/>
                         <outlet property="settingsTableView" destination="MhF-TE-sxZ" id="125-Jw-Gg5"/>
                     </connections>

@@ -14,6 +14,8 @@ class JCSettingsVC: UIViewController {
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var headerLabel: UILabel!
     
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var jioIDLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -35,6 +37,12 @@ class JCSettingsVC: UIViewController {
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Settings", "Platform": "TVOS","Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
+            name.text = JCAppUser.shared.commonName
+            jioIDLabel.text = JCAppUser.shared.uid
+        }
     }
     
 
