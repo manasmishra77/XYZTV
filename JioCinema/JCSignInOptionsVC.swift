@@ -81,17 +81,17 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                     navVC = vc
                 }
 
-                if let tabVc = navVC?.viewControllers[0] as? UITabBarController {
-                    if let disneyHomeVC = tabVc.viewControllers?[4] as? BaseViewController {
+                if let sideNavigationVC = navVC?.viewControllers[0] as? SideNavigationVC {
+                    if let disneyHomeVC = sideNavigationVC.sideNavigationView?.itemsList[4].viewControllerObject as? BaseViewController {
                         disneyHomeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let homeVC = tabVc.viewControllers?[0] as? BaseViewController {
+                    if let homeVC = sideNavigationVC.sideNavigationView?.itemsList[1].viewControllerObject as? BaseViewController {
                             homeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let movieVC = tabVc.viewControllers?[1] as? BaseViewController {
+                    if let movieVC = sideNavigationVC.sideNavigationView?.itemsList[2].viewControllerObject as? BaseViewController {
                             movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    if let tvVc = tabVc.viewControllers?[2] as? BaseViewController {
+                    if let tvVc = sideNavigationVC.sideNavigationView?.itemsList[3].viewControllerObject as? BaseViewController {
                             tvVc.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                 }

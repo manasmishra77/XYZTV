@@ -72,13 +72,12 @@
 		539AB2592122C4CB0003FF84 /* ParentalPinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */; };
 		539AB25B2122E2760003FF84 /* ParentalPinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539AB25A2122E2760003FF84 /* ParentalPinManager.swift */; };
 		539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */ = {isa = PBXBuildFile; fileRef = 539FC8B42126F53D0070D306 /* ParentalControlSetting.png */; };
+		53A70E3D220454AA00C48814 /* SideNavigationTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53A70E3C220454A900C48814 /* SideNavigationTableCell.xib */; };
 		53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */; };
 		53D1E2E721B7B881003BD5C1 /* SideNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */; };
 		53D1E2E821B7B881003BD5C1 /* SideNavigationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */; };
-		53D1E2EA21B7C093003BD5C1 /* SideNavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */; };
 		53D1E2F421B7ED67003BD5C1 /* SideNavigationTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */; };
 		53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */; };
-		53DDCB1E21BE6860004F0A6A /* SideNavigationTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */; };
 		53DDCB2021BF90F9004F0A6A /* AutoScrollLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */; };
 		53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */; };
 		797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797880F81F4ECB390032943E /* JCSearchResultViewController.swift */; };
@@ -142,6 +141,12 @@
 		7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */; };
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
+		847BC0512201D19A00FB5B2A /* JioType-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */; };
+		847BC0532201D19A00FB5B2A /* JioType-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */; };
+		847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */; };
+		847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */; };
+		847BC0562201D19A00FB5B2A /* JioType-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */; };
+		847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04C2201D19900FB5B2A /* JioType-Light.ttf */; };
 		9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */; };
 		9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
@@ -150,6 +155,8 @@
 		9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543721D382FE0026CC8D /* ViewForCarousel.xib */; };
 		9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543921D3C0D70026CC8D /* DisneyButtons.swift */; };
 		9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543A21D3C0D70026CC8D /* DisneyButtons.xib */; };
+		9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */; };
+		99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */ = {isa = PBXBuildFile; fileRef = 99BB5DD6220838B4000E73A1 /* metadatabg.png */; };
 		B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */; };
 		B65E074D1F78E07D00D4FA9E /* InfinityScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */; };
 		B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */; };
@@ -250,13 +257,12 @@
 		539AB2582122C4CB0003FF84 /* ParentalPinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinModel.swift; sourceTree = "<group>"; };
 		539AB25A2122E2760003FF84 /* ParentalPinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalPinManager.swift; sourceTree = "<group>"; };
 		539FC8B42126F53D0070D306 /* ParentalControlSetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ParentalControlSetting.png; sourceTree = "<group>"; };
+		53A70E3C220454A900C48814 /* SideNavigationTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideNavigationTableCell.xib; sourceTree = "<group>"; };
 		53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoplayButton.swift; sourceTree = "<group>"; };
 		53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVC.swift; sourceTree = "<group>"; };
 		53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideNavigationVC.xib; sourceTree = "<group>"; };
-		53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationViewModel.swift; sourceTree = "<group>"; };
 		53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideNavigationTableView.xib; sourceTree = "<group>"; };
 		53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationTableView.swift; sourceTree = "<group>"; };
-		53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideNavigationTableCell.xib; sourceTree = "<group>"; };
 		53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoScrollLabel.swift; sourceTree = "<group>"; };
 		53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
 		58F9747714A2216C06A7A868 /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
@@ -324,12 +330,12 @@
 		7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCTextField.swift; sourceTree = "<group>"; };
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
-		990FCDEB21B5113F008C01A6 /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
-		990FCDEC21B5113F008C01A6 /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
-		990FCDED21B5113F008C01A6 /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
-		990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
-		990FCDF021B51140008C01A6 /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
-		990FCDF121B51140008C01A6 /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
+		847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
+		847BC04C2201D19900FB5B2A /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
+		847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
+		847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
+		847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
+		847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
 		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
@@ -340,6 +346,8 @@
 		9966543721D382FE0026CC8D /* ViewForCarousel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewForCarousel.xib; sourceTree = "<group>"; };
 		9966543921D3C0D70026CC8D /* DisneyButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtons.swift; sourceTree = "<group>"; };
 		9966543A21D3C0D70026CC8D /* DisneyButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtons.xib; sourceTree = "<group>"; };
+		9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = JioCinema_Splash_Screen.jpg; sourceTree = "<group>"; };
+		99BB5DD6220838B4000E73A1 /* metadatabg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadatabg.png; sourceTree = "<group>"; };
 		B65E07491F78E07D00D4FA9E /* CarouselViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewButton.swift; sourceTree = "<group>"; };
 		B65E074A1F78E07D00D4FA9E /* InfinityScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinityScrollView.swift; sourceTree = "<group>"; };
 		B65E074B1F78E07D00D4FA9E /* kInfinityScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kInfinityScrollView.xib; sourceTree = "<group>"; };
@@ -462,10 +470,9 @@
 		53D1E2E421B7B836003BD5C1 /* SideNavigationScene */ = {
 			isa = PBXGroup;
 			children = (
-				53DDCB1D21BE685F004F0A6A /* SideNavigationTableCell.xib */,
+				53A70E3C220454A900C48814 /* SideNavigationTableCell.xib */,
 				53D1E2E521B7B881003BD5C1 /* SideNavigationVC.swift */,
 				53D1E2E621B7B881003BD5C1 /* SideNavigationVC.xib */,
-				53D1E2E921B7C093003BD5C1 /* SideNavigationViewModel.swift */,
 				53D1E2F321B7ED67003BD5C1 /* SideNavigationTableView.xib */,
 				53D1E2F721B7F1B4003BD5C1 /* SideNavigationTableView.swift */,
 				530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */,
@@ -476,7 +483,7 @@
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
-				990FCDEA21B50C82008C01A6 /* Fonts */,
+				847BC04A2201D18900FB5B2A /* Fonts */,
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
 				19491EDD2018522600870794 /* JCTopShelf */,
@@ -512,8 +519,8 @@
 				7B78D7D51F13BCD400F319BF /* Constants */,
 				7B78D7D01F13B92900F319BF /* ApiManager */,
 				7B78D7C51F13A91900F319BF /* Main.storyboard */,
-				7B78D7C11F13A91900F319BF /* AppDelegate.swift */,
 				7B78D7C81F13A91A00F319BF /* Assets.xcassets */,
+				7B78D7C11F13A91900F319BF /* AppDelegate.swift */,
 				7B78D7CA1F13A91A00F319BF /* Info.plist */,
 			);
 			path = JioCinema;
@@ -641,6 +648,7 @@
 		7BFEC4AC1F154C9B001DFE6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				99BB5DD6220838B4000E73A1 /* metadatabg.png */,
 				199DE87421649ACE0052CA54 /* DisneyKids.png */,
 				199DE87521649ACF0052CA54 /* DisneyMovies.png */,
 				199DE87621649ACF0052CA54 /* DisneyTVShow.png */,
@@ -648,6 +656,7 @@
 				539FC8B42126F53D0070D306 /* ParentalControlSetting.png */,
 				7BD39C971F419F470014255C /* AddtoWatchlist.png */,
 				7BD39C981F419F470014255C /* WatchNow.png */,
+				9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */,
 				7BC1E7151F33044700D08E83 /* JioCinema-SplashScreen.png */,
 				2025F4541F3B513100C3B609 /* Autoplay.png */,
 				2025F4561F3B513A00C3B609 /* FAQ.png */,
@@ -691,15 +700,15 @@
 			name = CustomComponents;
 			sourceTree = "<group>";
 		};
-		990FCDEA21B50C82008C01A6 /* Fonts */ = {
+		847BC04A2201D18900FB5B2A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				990FCDF121B51140008C01A6 /* JioType-Black.ttf */,
-				990FCDEB21B5113F008C01A6 /* JioType-Bold.ttf */,
-				990FCDEE21B5113F008C01A6 /* JioType-Light.ttf */,
-				990FCDF021B51140008C01A6 /* JioType-LightItalic.ttf */,
-				990FCDEC21B5113F008C01A6 /* JioType-Medium.ttf */,
-				990FCDED21B5113F008C01A6 /* JioType-MediumItalic.ttf */,
+				847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */,
+				847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */,
+				847BC04C2201D19900FB5B2A /* JioType-Light.ttf */,
+				847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */,
+				847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */,
+				847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -833,7 +842,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */,
 				19BF8A7E214657BF001C58DD /* ItemCollectionViewCell.xib in Resources */,
+				847BC0562201D19A00FB5B2A /* JioType-LightItalic.ttf in Resources */,
 				2024C4891F3C9C2D003A08C3 /* ArrowGrey.png in Resources */,
 				2025F4571F3B513A00C3B609 /* FAQ.png in Resources */,
 				7BB0E20F1F1DFF8E00A1DB0B /* JCCarouselCell.xib in Resources */,
@@ -843,17 +854,19 @@
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
 				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
 				539618F32121A41F00B576BF /* EnterParentalPinView.xib in Resources */,
-				53DDCB1E21BE6860004F0A6A /* SideNavigationTableCell.xib in Resources */,
 				7BFE51431F29F47100C901C7 /* JCItemCell.xib in Resources */,
 				7BD39C991F419F470014255C /* AddtoWatchlist.png in Resources */,
 				205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */,
 				19BF8A77214651A6001C58DD /* BaseViewController.xib in Resources */,
 				7BC1E7161F33044700D08E83 /* JioCinema-SplashScreen.png in Resources */,
+				847BC0532201D19A00FB5B2A /* JioType-Medium.ttf in Resources */,
 				7BD39C9A1F419F470014255C /* WatchNow.png in Resources */,
 				7BFE51391F29BD4500C901C7 /* JCBaseTableViewHeaderCell.xib in Resources */,
+				847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */,
 				7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */,
 				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
 				B65E074E1F78E07D00D4FA9E /* kInfinityScrollView.xib in Resources */,
+				847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */,
 				53D1E2E821B7B881003BD5C1 /* SideNavigationVC.xib in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
 				7BABC1D11F4B126B00B4B1AA /* JCSeasonCollectionViewCell.xib in Resources */,
@@ -865,21 +878,25 @@
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
 				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
+				99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
 				9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				199DE87821649ACF0052CA54 /* DisneyMovies.png in Resources */,
 				7B1085001F54270F008BC7E9 /* JCResumeWatchCell.xib in Resources */,
+				847BC0512201D19A00FB5B2A /* JioType-MediumItalic.ttf in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
 				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */,
+				9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */,
 				53F16C51215AB25F0052BE0A /* BaseTableViewCell.xib in Resources */,
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
 				53D1E2F421B7ED67003BD5C1 /* SideNavigationTableView.xib in Resources */,
+				53A70E3D220454AA00C48814 /* SideNavigationTableCell.xib in Resources */,
 				539618E321219B1500B576BF /* ParentalControlVC.xib in Resources */,
 				199DE87921649ACF0052CA54 /* DisneyTVShow.png in Resources */,
 			);
@@ -1005,7 +1022,6 @@
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
-				53D1E2EA21B7C093003BD5C1 /* SideNavigationViewModel.swift in Sources */,
 				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				539618F22121A41F00B576BF /* EnterParentalPinView.swift in Sources */,
 				53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */,

@@ -9,30 +9,22 @@
 import UIKit
 
 class SideNavigationTableCell: UITableViewCell {
-
-    
-    @IBOutlet weak var iconLabel: UILabel!
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var selectionIndicatorView: UIView!
+    
+    @IBOutlet weak var iconImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionIndicatorView.backgroundColor = .clear
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if (context.nextFocusedView == self) {
-            self.iconLabel.backgroundColor = .white
-            self.titleLabel.textColor = .white
+            self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
         } else {
-            self.iconLabel.backgroundColor = .black
-            self.titleLabel.textColor = .black
+            self.backgroundColor = .clear
         }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

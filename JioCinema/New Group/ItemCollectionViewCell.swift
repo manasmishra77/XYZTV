@@ -53,6 +53,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
         configureNameLabelPatchView(cellItems)
         nameLabel.text = cellItems.item.name ?? ""
         subtitle.text = cellItems.item.subtitle
+        
+//        self.backgroundColor = .brown
 //        if let newSubtitle = cellItems.item.subtitle?.split(separator: "|"){
 //        if cellItems.cellType == .resumeWatch || cellItems.cellType == .resumeWatchDisney{
 //            if newSubtitle[1].trimmingCharacters(in: .whitespaces) == cellItems.item.language && newSubtitle.count == 3 {
@@ -178,7 +180,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
 
     private func setImageOnCell(url: URL) {
-        imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//        imageView.backgroundColor = .green
+       imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
         }
     }
@@ -186,12 +189,20 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         resetNameLabel()
         if (context.nextFocusedView == self) {
-            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            
+            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
+                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            } else {
+                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
+            }
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-            if cellItem?.layoutType == .landscapeForLangGenre {
-                imageView.borderWidth = 5
+            imageView.borderWidth = 5
+            if cellItem?.cellType.isDisney ?? false {
+                imageView.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+            } else {
                 imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             }
+
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
@@ -201,6 +212,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
             imageView.borderWidth = 0
+            self.borderWidth = 0
         }
     }
     

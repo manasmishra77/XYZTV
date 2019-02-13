@@ -95,13 +95,16 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
 
 
 extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 30
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 25
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let height = collectionView.frame.height
+//        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
+//        return CGSize(width: width, height: height)
         let height = collectionView.frame.height
-        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
+        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? itemWidthForPortrait : itemWidthForLadscape
         return CGSize(width: width, height: height)
     }
     

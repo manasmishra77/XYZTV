@@ -21,8 +21,6 @@ class JCSettingsTableViewCell: UITableViewCell {
         self.contentView.layer.cornerRadius = 10.0
         self.baseView.layer.cornerRadius = 10.0
         self.baseView.layer.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4431372549, blue: 0.4745098039, alpha: 1).cgColor
-        
-        
         // Initialization code
     }
     
@@ -32,7 +30,6 @@ class JCSettingsTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 

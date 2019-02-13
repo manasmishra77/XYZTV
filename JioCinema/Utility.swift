@@ -145,7 +145,7 @@ class Utility {
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "",latestId : String?, isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -158,6 +158,7 @@ class Utility {
         playerVC.appType = appType
         playerVC.isPlayList = isPlayList
         playerVC.playListId = playListId
+        playerVC.latestId = latestId
         
         playerVC.fromScreen = fromScreen
         playerVC.fromCategory = fromCategory
@@ -394,7 +395,7 @@ class Utility {
     
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "HelveticaNeue-Bold"
+        var fontName = "JioType-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -404,7 +405,7 @@ class Utility {
             if let font = UIFont(name: fontName, size: fontSize!) {
                 return font
             } else {
-                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize!)!
             }
             
         }
@@ -412,7 +413,7 @@ class Utility {
     
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
@@ -467,7 +468,7 @@ extension String {
     
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "HelveticaNeue-Bold"
+        var fontName = "JioType-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -477,12 +478,12 @@ extension String {
             if let font = UIFont(name: fontName, size: fontSize!) {
                 return font
             } else {
-                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize!)!
             }
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]

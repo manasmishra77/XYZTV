@@ -126,7 +126,17 @@ struct ResumeWatchListDataModel: Codable {
         title = try values.decodeIfPresent(String.self, forKey: .title)
         pageCount = try values.decodeIfPresent(Int.self, forKey: .pageCount)
         seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
-        layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        do {
+            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        } catch{
+            do {
+                if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                layout = Int(layoutString)
+                }
+            } catch {
+            }
+        }
+            
     }
 }
 
@@ -204,8 +214,11 @@ struct DataContainer: Codable {
             url = try values.decodeIfPresent(String.self, forKey: .url)
             title = try values.decodeIfPresent(String.self, forKey: .title)
             seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
+            do {
             isCarousal = try values.decodeIfPresent(Bool.self, forKey: .isCarousal)
-            
+            } catch {
+                isCarousal = false
+            }
             order = try values.decodeIfPresent(Int.self, forKey: .order)
             
             do {
@@ -215,7 +228,17 @@ struct DataContainer: Codable {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .id)
                 self.id = "\(valNum ?? -1)"
             }
-            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            do{
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                }
+                
+            }
             position = try values.decodeIfPresent(Int.self, forKey: .position)
             defaultAudioLanguage = try values.decodeIfPresent(String.self, forKey: .defaultAudioLanguage)
             characterItems = try values.decodeIfPresent([DisneyCharacterItems].self, forKey: .characterItems)
@@ -368,7 +391,10 @@ struct Item: Codable {
                 let valString = try values.decodeIfPresent(String.self, forKey: .format)
                 self.format = Int(valString ?? "0")
             }
-            language = try values.decodeIfPresent(String.self, forKey: .language)
+            do {
+                language = try values.decodeIfPresent(String.self, forKey: .language)
+            } catch {
+            }
             genre = try values.decodeIfPresent(String.self, forKey: .genre)
             vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
             app = try values.decodeIfPresent(App.self, forKey: .app)
@@ -379,8 +405,16 @@ struct Item: Codable {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .latestId)
                 self.latestId = "\(valNum ?? -1)"
             }
-            
-            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            do {
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                }
+            }
             
             do {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .duration)
@@ -392,11 +426,14 @@ struct Item: Codable {
             isPlaylist = try values.decodeIfPresent(Bool.self, forKey: .isPlaylist)
             
             do {
-                let valString = try values.decodeIfPresent(String.self, forKey: .playlistId)
-                self.playlistId = valString
+                self.playlistId = try values.decodeIfPresent(String.self, forKey: .playlistId)
             } catch {
-                let valNum = try values.decodeIfPresent(Int.self, forKey: .playlistId)
-                self.playlistId = "\(valNum ?? -1)"
+                do {
+                    let valNum = try values.decodeIfPresent(Int.self, forKey: .playlistId)
+                    self.playlistId = "\(valNum ?? -1)"
+                } catch {
+                    print(error)
+                }
             }
             do {
                 let valNum = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
@@ -478,8 +515,12 @@ struct List: Codable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)
-        name = try values.decodeIfPresent(String.self, forKey: .name)
+        do {
+            id = try values.decodeIfPresent(Int.self, forKey: .id)
+            name = try values.decodeIfPresent(String.self, forKey: .name)
+        } catch {
+            print(error)
+        }
     }
 }
 

@@ -54,6 +54,7 @@ let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
+let playBackForPlayList = basePath.appending("common/v3/playlistdata/get/")
 //From DisneyBranch
 let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
 let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
@@ -79,7 +80,7 @@ let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593e
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
 let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
-let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
+let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")   
 let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
 let SetParentalPinUrl = basePath + kAppKeyValue + "/v3.1/preferences/generatecode"
 let GetParentalPinDetailUrl = basePath + kAppKeyValue + "/v3.1/preferences/get"
@@ -102,6 +103,7 @@ let kAppKey = "appkey"
 
 //Values
 let kAppKeyValue = "06758e99be484fca56fb"
+let apIKey = "l7xxe187b7105c2f4f6ab71c078bd5fc165c"
 
 //StoryBoard Ids
 let loginVCStoryBoardId = "kLoginVC"
@@ -138,12 +140,13 @@ let BaseViewControllerNibIdentifier = "BaseViewController"
 
 
 //Constant Values
-let heightOfCarouselSection = 600
+let heightOfCarouselSection : CGFloat = 670
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
 let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")
 let didSetDisneyTVWatchlist = Notification.Name("didSetDisneyTVWatchList")
 let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList")
+
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
@@ -152,13 +155,25 @@ let isParentalControlShown = "isParentalControlShown"
 struct AppNotification {
     static let reloadResumeWatch = Notification.Name("resumeWatchReload")
     static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
+    static let serchViewUnloading = Notification.Name("SearchViewUnloading")
 }
 struct ViewColor {
     static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
     static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
+    
+    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 1)
+    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.6285945773, green: 0.09878890961, blue: 0.2734127343, alpha: 1)
+//    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.01960784314, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+//    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+    
+//    Cinema Left Menu Background Color  : #8D0536
+    
     static let searchBackGround: UIColor = .black
     static let clearBackGround: UIColor = .clear
     static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
+    static let selectionBarOnLeftNavigationColorForDisney: UIColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+
 }
 
 
@@ -212,12 +227,23 @@ let SHOW_LESS = "Show Less"
 
 
 //MARK:- Tablecell Row height
-let rowHeightForPotrait: CGFloat = 561
-let rowHeightForLandscape: CGFloat = 397
+
+let itemHeightForPortrait: CGFloat = 450
+let itemHeightForLandscape: CGFloat = 360
+let itemWidthForPortrait: CGFloat = 270
+let itemWidthForLadscape: CGFloat = 480
+
+let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90 + 14//561
+let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90 + 14//397
 let widthToHeightPropertionForPotrat: CGFloat = 277/475
 let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
+
+struct SideNavigationConstants {
+    static let expandedWidth: CGFloat = 400
+    static let collapsedWidth: CGFloat = 132
+}
 
 struct LanguageGenreScene {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
@@ -231,13 +257,13 @@ struct LanguageGenreScene {
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForLandscape)
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForPotrait)
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     
@@ -254,21 +280,21 @@ struct PlayerRecommendationSize {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
     static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
     static var landscapeRowHeight: CGFloat {
-        let height: CGFloat = 306 + 30//rowHeightForLandscape
+        let height: CGFloat =  rowHeightForLandscape// 306 + 30//rowHeightForLandscape
         return height
     }
     static var potraitRowHeight: CGFloat {
-        let height: CGFloat = 470 + 30 //rowHeightForPotrait
+        let height: CGFloat = rowHeightForPotrait//470 + 30 //rowHeightForPotrait
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = landscapeRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForLandscape)
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = potraitRowHeight - 40
-        let width = (height / heightToWidthRatioOfItemCellForPotrait)
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }
     

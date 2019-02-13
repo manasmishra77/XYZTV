@@ -65,8 +65,8 @@ class BaseViewModel: NSObject  {
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items{
-                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 650)
-                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: true, sepration: 20, visiblePercentageOfPeekingCell: 0.2, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: true, setImage: self)
+                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: heightOfCarouselSection - 120)
+                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
 //            if let items = baseDataModel?.data?[0].items {
 //                var isDisney = false
@@ -105,6 +105,8 @@ class BaseViewModel: NSObject  {
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
     var errorMsg: String?
+    var tappedItem: Item?
+
     
     var totalPage: Int {// Reference for Downloading base page
         return baseDataModel?.totalPages ?? 1
@@ -158,6 +160,14 @@ class BaseViewModel: NSObject  {
         isWatchListUpdated = true
     }
     
+    // Play item after refresh sso failed after doing login
+    func playItemAfterRefreshSSOFailed() {
+        guard let item = self.tappedItem else {return}
+        checkLoginAndPlay(item, categoryName: "Played After RefreshSSO", categoryIndex: -1)
+    }
+    
+
+    
     //For after login function
     fileprivate var itemAfterLogin: Item? = nil
     fileprivate var categoryIndexAfterLogin: Int? = nil
@@ -197,7 +207,7 @@ class BaseViewModel: NSObject  {
 //        return 0
         if section == 0 {
             if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
-                return 650
+                return heightOfCarouselSection
             }
             return 0
         } else {
@@ -212,7 +222,7 @@ class BaseViewModel: NSObject  {
         case .disneyMovies, .disneyKids, .disneyTVShow:
             return 0
         default:
-            return 0//80
+            return SideNavigationConstants.collapsedWidth
         }
     }
     
@@ -286,7 +296,7 @@ class BaseViewModel: NSObject  {
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "Watch List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
+                return (title: dataContainer.title ?? "My List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
             }
         }
         return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
@@ -355,33 +365,33 @@ fileprivate extension BaseViewModel {
     }
 }
 
-extension BaseViewModel: JCCarouselCellDelegate {
-    func didTapOnCarouselItem(_ item: Any?) {
-        guard let item = item as? Item else {return}
-        self.itemCellTapped(item, selectedIndexPath: nil)
-    }
-    
-    func presentVCOnButtonTap(tag: Int) {
-        switch tag {
-        case 1:
-            let disneyMovies = BaseViewController(.disneyMovies)
-            delegate?.presentVC(disneyMovies)
-        case 2:
-            let disneyTVShow = BaseViewController(.disneyTVShow)
-            delegate?.presentVC(disneyTVShow)
-        case 3:
-            let disneyKids = BaseViewController(.disneyKids)
-            delegate?.presentVC(disneyKids)
-        default:
-            return
-        }
-    }
-    enum ButtonType : Int {
-        case Movies = 1
-        case TVShow = 2
-        case Kids = 3
-    }
-}
+//extension BaseViewModel: DisneyButtonTapDelegate {
+////    func didTapOnCarouselItem(_ item: Any?) {
+////        guard let item = item as? Item else {return}
+////        self.itemCellTapped(item, selectedIndexPath: nil)
+////    }
+////    
+//    func presentVCOnButtonTap(tag: Int) {
+//        switch tag {
+//        case 1:
+//            let disneyMovies = BaseViewController(.disneyMovies)
+//            delegate?.presentVC(disneyMovies)
+//        case 2:
+//            let disneyTVShow = BaseViewController(.disneyTVShow)
+//            delegate?.presentVC(disneyTVShow)
+//        case 3:
+//            let disneyKids = BaseViewController(.disneyKids)
+//            delegate?.presentVC(disneyKids)
+//        default:
+//            return
+//        }
+//    }
+//    enum ButtonType : Int {
+//        case Movies = 1
+//        case TVShow = 2
+//        case Kids = 3
+//    }
+//}
 
 extension BaseViewModel {
     func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
@@ -389,12 +399,14 @@ extension BaseViewModel {
         let indexFromArray = selectedIndexPath?.row ?? 0
         let dataContainer = getDataContainer(indexFromArray)
         let categoryName = dataContainer?.title ?? "Carousal"
-        
+        self.tappedItem = item
         switch item.appType {
         case .Movie:
-            if let duration = item.duration, duration > 0 {
+            if let duration = item.duration, duration > 0  {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-            } else {
+            }else if ((item.isPlaylist ?? false) && (selectedIndexPath?.section == 0)) {
+                checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
+            }else {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
@@ -416,7 +428,6 @@ extension BaseViewModel {
         default:
             print("Default")
         }
-        
     }
     
     func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{
@@ -447,18 +458,24 @@ extension BaseViewModel {
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         switch itemToBePlayed.appType {
         case .Clip, .Music, .Trailer:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "",latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         case .Episode:
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "",latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
         case .Movie:
+            if itemToBePlayed.isPlaylist ?? false {
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,playListId: itemToBePlayed.playlistId ?? "",latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
+                delegate?.presentVC(playerVC)
+            } else {
             print("Play Movie")
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
+            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
             delegate?.presentVC(playerVC)
+            }
         default:
             print("No Item")
         }
+
     }
     
     func presentLoginVC() {
@@ -467,6 +484,12 @@ extension BaseViewModel {
     }
 }
 extension BaseViewModel : CarousalImageDelegate {
+    func didTapOnCell(_ index: IndexPath, _ collectionView: UICollectionView) {
+        if let items = baseDataModel?.data?[0].items {
+        itemCellTapped(items[index.row], selectedIndexPath: index)
+        }
+    }
+    
     func setImageFor(_ imageView: UIImageView, for index: Int) {
         if let urlString = baseDataModel?.data?[0].items?[index].imageUrlForCarousel{
             let url = URL(string: urlString)
@@ -474,6 +497,7 @@ extension BaseViewModel : CarousalImageDelegate {
         }
         
     }
+    
     
 }
 

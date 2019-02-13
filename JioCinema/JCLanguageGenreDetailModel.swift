@@ -32,7 +32,17 @@ struct LanguageGenreDetailModel: Codable {
         message = try values.decodeIfPresent(String.self, forKey: .message)
         totalItems = try values.decodeIfPresent(Int.self, forKey: .totalItems)
         pageCount = try values.decodeIfPresent(Int.self, forKey: .pageCount)
-        layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        do {
+            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        } catch {
+            do {
+                if let layoutString = try values.decodeIfPresent(Int.self, forKey: .layout){
+                    layout = Int(layoutString)
+                }
+            } catch {
+                print(error)
+            }
+        }
         data = try values.decodeIfPresent(LanguageGenreDataContainer.self, forKey: .data)
     }
 }

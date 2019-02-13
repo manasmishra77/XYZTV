@@ -98,15 +98,15 @@ class JCSplashVC: UIViewController {
     func navigateToHomeVC() {
         DispatchQueue.main.async {
             
-//            let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
-//            let navController = UINavigationController(rootViewController: sideNavVC)
-//            navController.navigationBar.isHidden = true
-//            self.view.window?.rootViewController = navController
-            
-            let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-            let navController = UINavigationController(rootViewController: tabBarVC)
+            let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
+            let navController = UINavigationController(rootViewController: sideNavVC)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
+            
+//            let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
+//            let navController = UINavigationController(rootViewController: tabBarVC)
+//            navController.navigationBar.isHidden = true
+//            self.view.window?.rootViewController = navController
         }
     }
     

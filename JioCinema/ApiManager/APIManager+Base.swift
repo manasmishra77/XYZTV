@@ -13,6 +13,7 @@ struct Response<T> {
     var model: T?
     var isSuccess: Bool = false
     var errorMsg: String?
+    var code: Int?
 }
 
 enum RequestType: String {
@@ -22,6 +23,16 @@ enum RequestType: String {
 }
 struct NoModel: Codable {
     
+}
+enum CommonResponseCode: Int {
+    case noNetwork = 460
+    case requestColdnotFormed = 461
+    case success = 200
+    case parsingEror = 462
+    case noResponse = 463
+    case notLoggedIn = 464
+    case refreshSSOFailed = 465
+    case commonFailure = 466
 }
 
 

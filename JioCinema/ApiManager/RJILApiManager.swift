@@ -69,7 +69,7 @@ class RJILApiManager {
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
             _commonHeaders["x-multilang"] = "true"
-            _commonHeaders["X-API-Key"] = "RJIL_JioCinema"
+            _commonHeaders["X-API-Key"] = apIKey
             _commonHeaders["app-name"] = "RJIL_JioCinema"
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
@@ -95,7 +95,7 @@ class RJILApiManager {
     var otpHeaders:[String:String]{
         get{
             var _otpHeaders = [String:String]()
-            _otpHeaders["X-API-Key"] = "l7xxe187b7105c2f4f6ab71c078bd5fc165c"
+            _otpHeaders["X-API-Key"] = apIKey
             _otpHeaders["app-name"] = "RJIL_JioCinema"
             _otpHeaders["Content-Type"] = "application/json"
             
@@ -330,8 +330,11 @@ class RJILApiManager {
                         RJILApiManager.defaultManager.post(request: refreshingTokenRequest!, completion: { (data, response, error) in
                             guard error == nil else{
                                 var errorInfo:[String:String] = [String:String]()
-                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
-                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+//                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+//                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+                                errorInfo[NSLocalizedDescriptionKey] = "Refresh SSO Failed!!!"
+                                completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: errorInfo))
+
                                 return
                             }
                             if let responseData = data{
@@ -348,7 +351,9 @@ class RJILApiManager {
                                 else{
                                     self.isRefreshingToken = false
                                     //LogOutUser and show login page
-                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+//                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                    completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: nil))
+
                                 }
                             }
                             self.pendingTasks.removeAll()

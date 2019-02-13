@@ -27,43 +27,60 @@ extension RJILApiManager {
         if shouldCheckNetWork {
             // Used only for getconfig and check version
             guard Utility.sharedInstance.isNetworkAvailable else {
-                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network")
+//                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network")
+                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network", code: CommonResponseCode.noNetwork.rawValue)
+
                 completion(response)
                 return
             }
         }
         
         guard let request = RJILApiManager.defaultManager.prepareRequest(path: path, headerType: headerType, params: params, encoding: paramEncoding) else {
-            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed")
+//            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed")
+            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed", code: CommonResponseCode.requestColdnotFormed.rawValue)
+
             completion(response)
             return
         }
         RJILApiManager.defaultManager.createDataTask(withRequest: request, httpMethod: postType.rawValue) { (data, response, error) in
             if let error = error as NSError? {
-                let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription)
-                completion(response)
-                return
+//                let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription)
+//                completion(response)
+//                return
+                if error.code == CommonResponseCode.refreshSSOFailed.rawValue {
+                    let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription, code: error.code)
+                    JCLoginManager.sharedInstance.logoutUser()
+                    completion(response)
+                } else {
+                    let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription, code: error.code)
+                    completion(response)
+                    return
+                }
+                
             }
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
                 case 200...299:
                     if let responseModel = RJILApiManager.parseData(data, modelType: reponseModelType) {
-                        let response = Response<T>(model: responseModel, isSuccess: true, errorMsg: nil)
+                        let response = Response<T>(model: responseModel, isSuccess: true, errorMsg: nil, code: CommonResponseCode.success.rawValue)
                         completion(response)
                     } else {
-                        var response = Response<T>(model: nil, isSuccess: false, errorMsg: "Couldn't parse")
+                        //                        var response = Response<T>(model: nil, isSuccess: false, errorMsg: "Couldn't parse")
+                        var response = Response<T>(model: nil, isSuccess: false, errorMsg: "Couldn't parse", code: CommonResponseCode.parsingEror.rawValue)
                         if reponseModelType == NoModel.self {
-                            response = Response<T>(model: nil, isSuccess: true, errorMsg: "No respnse!")
+                                                        response = Response<T>(model: nil, isSuccess: true, errorMsg: "No respnse!", code: httpResponse.statusCode)
                         }
                         completion(response)
                     }
                 default:
-                    let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Something missing")
+                    let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Something missing", code: CommonResponseCode.commonFailure.rawValue)
                     completion(response)
                 }
                 return
             } else {
-                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Response is missing")
+//                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Response is missing")
+                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Response is missing", code: CommonResponseCode.noResponse.rawValue)
+
                 completion(response)
             }
         }

@@ -16,24 +16,24 @@
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xaf-Gz-OVH">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1050"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aPh-BB-LvP">
+                <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Xaf-Gz-OVH">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1040"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="20" minimumInteritemSpacing="20" id="aPh-BB-LvP">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="sectionInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="dL5-80-tQ8">
-                    <rect key="frame" x="0.0" y="1050" width="1920" height="30"/>
+                    <rect key="frame" x="0.0" y="1040" width="1920" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="upk-YG-AOU"/>
                     </constraints>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="dL5-80-tQ8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CfC-T9-O0Y"/>
                 <constraint firstAttribute="trailing" secondItem="dL5-80-tQ8" secondAttribute="trailing" id="OWp-Eb-pMI"/>
@@ -41,7 +41,7 @@
                 <constraint firstItem="dL5-80-tQ8" firstAttribute="top" secondItem="Xaf-Gz-OVH" secondAttribute="bottom" id="YQU-AZ-XHC"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YS1-8a-Nee"/>
                 <constraint firstItem="Xaf-Gz-OVH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aAa-nD-kJ5"/>
-                <constraint firstAttribute="bottom" secondItem="dL5-80-tQ8" secondAttribute="bottom" id="nzF-KS-vuG"/>
+                <constraint firstAttribute="bottom" secondItem="dL5-80-tQ8" secondAttribute="bottom" constant="10" id="nzF-KS-vuG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
             <connections>

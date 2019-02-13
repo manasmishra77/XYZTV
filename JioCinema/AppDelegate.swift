@@ -8,6 +8,7 @@
 
 //http://dev.media.jio.com/apidocSit/html/#api-Appkey-Resumewatch_Add
 
+
 import UIKit
 import Crashlytics
 import Fabric
@@ -46,11 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         JCAnalyticsEvent.sharedInstance.sendAppLaunchEvent()
-        if let _ = topShelfContentModel{
-            if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
-                    tabVc.selectedIndex = 0
-            }
-        }
+//        if let _ = topShelfContentModel{
+//            if let navVc = window?.rootViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? JCTabBarController {
+//                    tabVc.selectedIndex = 0
+//            }
+//        }
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
