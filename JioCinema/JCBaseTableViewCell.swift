@@ -161,7 +161,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let item = episodes[indexPath.row].getItem
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
         let layoutType: ItemCellLayoutType = .landscapeWithLabels
-        let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+        let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
 //        let imageUrl = episodes[indexPath.row].banner ?? ""
 //
@@ -181,7 +181,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
         let layoutType: ItemCellLayoutType = .potrait
-        let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+        let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
 //        let url = URL(string: imageBaseURL + imageUrl)

@@ -108,14 +108,18 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
 //        return cell
     }
     
-    func getCellItems(_ index: Int) -> TableCellItemsTuple {
+    func getCellItems(_ index: Int) -> BaseTableCellModel {
+        var baseTableCellModel : BaseTableCellModel = BaseTableCellModel(title: "", items: [], cellType: .base, layoutType: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: nil)
         if let items = searchResultArray[index].resultItems {
-            let title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
-            let cellType: ItemCellType = .search
-            let layout: ItemCellLayoutType = getLayoutOfCellForItemType(items.first)
-            return (title: title, items: items, cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
+            baseTableCellModel.title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
+            baseTableCellModel.cellType = .search
+            baseTableCellModel.layoutType = getLayoutOfCellForItemType(items.first)
+            baseTableCellModel.items = items
+            baseTableCellModel.charItems = nil
+            baseTableCellModel.sectionLanguage = .english
+            return baseTableCellModel
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
+        return baseTableCellModel
     }
     
     func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {

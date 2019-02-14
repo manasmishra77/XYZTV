@@ -27,7 +27,7 @@ class DisneyHomeViewModel: BaseViewModel {
         fetchAllDisneyHomeData()
     }
     
-    override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> TableCellItemsTuple {
+    override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> BaseTableCellModel {
         return getHomeCellItems(for: index)
     }
     override func populateTableIndexArray() {
@@ -143,9 +143,10 @@ class DisneyHomeViewModel: BaseViewModel {
         self.isResumeWatchListUpdated = true
     }
     
-    func getHomeCellItems(for index: Int) -> TableCellItemsTuple  {
+    func getHomeCellItems(for index: Int) -> BaseTableCellModel  {
         let itemIndexTuple = homeTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
+        var baseTableCellModel = BaseTableCellModel(title: "", items: [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainerArr = baseDataModel?.data {
@@ -153,19 +154,33 @@ class DisneyHomeViewModel: BaseViewModel {
                 if itemIndexTuple.1 == dataContainerArr.count - 2 {
                      fetchBaseData()
                 }
-            
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: data.categoryLanguage, charItems: data.characterItems ?? [] )
+                baseTableCellModel.title = data.title
+                baseTableCellModel.items = data.items
+                baseTableCellModel.cellType = .disneyCommon
+                baseTableCellModel.sectionLanguage = data.categoryLanguage
+                baseTableCellModel.charItems = data.characterItems
+                return baseTableCellModel
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: "Resume Watching", items: dataContainer.items ?? [], cellType: .resumeWatchDisney, layout: layout, sectionLanguage: .english, charItems: [])
+                baseTableCellModel.title = "Resume Watching"
+                baseTableCellModel.items = dataContainer.items
+                baseTableCellModel.cellType = .resumeWatchDisney
+                baseTableCellModel.sectionLanguage = .english
+                baseTableCellModel.charItems = dataContainer.characterItems
+                return baseTableCellModel
             }
         case .character:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .disneyCommon, layout: layout, sectionLanguage: .english, charItems: [])
+                baseTableCellModel.title = dataContainer.title
+                baseTableCellModel.items = dataContainer.items
+                baseTableCellModel.cellType = .disneyCommon
+                baseTableCellModel.sectionLanguage = .english
+                baseTableCellModel.charItems = dataContainer.characterItems
+                return baseTableCellModel
             }
         }
-        return (title: "", items: [], cellType: .disneyCommon, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
+        return baseTableCellModel
     }
     
     //Used when logging in

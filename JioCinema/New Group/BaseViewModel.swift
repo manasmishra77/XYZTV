@@ -8,9 +8,11 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage, charItems: [DisneyCharacterItems])
+typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage, charItems: [DisneyCharacterItems]?)
 
-
+struct TabelCellItems {
+    
+}
 protocol BaseViewModelDelegate {
     func presentVC(_ vc: UIViewController)
     func presentMetadataOfIcarousel(_ itemId : Any)
@@ -61,34 +63,34 @@ class BaseViewModel: NSObject  {
             return nil
         }
     }
-
+    
     var carouselView : UIView? {
         if carousal == nil {
             if let items = baseDataModel?.data?[0].items{
                 let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: heightOfCarouselSection - 120)
                 carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
-//            if let items = baseDataModel?.data?[0].items {
-//                var isDisney = false
-//                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
-//                isDisney = true
-//                }
-//
-//                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
-//
-//                DispatchQueue.main.async {
-//                    if self.vcType == .disneyHome {
-//                        self.carousal?.viewOfButtons.isHidden = false
-//                        self.carousal?.disneyViewHeight.constant = 200
-//                    }
-//                    else {
-//                        self.carousal?.viewOfButtons.isHidden = true
-//                        self.carousal?.disneyViewHeight.constant = 0
-//                    }
-//                }
-//
-//
-//            }
+            //            if let items = baseDataModel?.data?[0].items {
+            //                var isDisney = false
+            //                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
+            //                isDisney = true
+            //                }
+            //
+            //                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
+            //
+            //                DispatchQueue.main.async {
+            //                    if self.vcType == .disneyHome {
+            //                        self.carousal?.viewOfButtons.isHidden = false
+            //                        self.carousal?.disneyViewHeight.constant = 200
+            //                    }
+            //                    else {
+            //                        self.carousal?.viewOfButtons.isHidden = true
+            //                        self.carousal?.disneyViewHeight.constant = 0
+            //                    }
+            //                }
+            //
+            //
+            //            }
         }
         return carousal
     }
@@ -100,13 +102,13 @@ class BaseViewModel: NSObject  {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-   
+    
     var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
     var errorMsg: String?
     var tappedItem: Item?
-
+    
     
     var totalPage: Int {// Reference for Downloading base page
         return baseDataModel?.totalPages ?? 1
@@ -152,7 +154,7 @@ class BaseViewModel: NSObject  {
     
     // may be used to get updated watchlist after adding or removing in watchlist
     func getUpdatedWatchListFor(vcType: BaseVCType) {
-       fetchAfterLoginUserDataWithoutCompletion()        
+        fetchAfterLoginUserDataWithoutCompletion()
     }
     //Used when logging in
     func fetchAfterLoginUserDataWithoutCompletion() {
@@ -166,7 +168,7 @@ class BaseViewModel: NSObject  {
         checkLoginAndPlay(item, categoryName: "Played After RefreshSSO", categoryIndex: -1)
     }
     
-
+    
     
     //For after login function
     fileprivate var itemAfterLogin: Item? = nil
@@ -184,7 +186,7 @@ class BaseViewModel: NSObject  {
         getBaseWatchListData()
     }
     
-
+    
     func fetchBaseData() {
         guard pageNumber < totalPage else {return}
         RJILApiManager.getBaseModel(pageNum: pageNumber, type: vcType) {[weak self] (isSuccess, errMsg) in
@@ -201,10 +203,10 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableHeader(section : Int) -> CGFloat {
-//        if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
-//            return (vcType == .disneyHome) ? 850 : 650
-//        }
-//        return 0
+        //        if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
+        //            return (vcType == .disneyHome) ? 850 : 650
+        //        }
+        //        return 0
         if section == 0 {
             if let data = baseDataModel?.data, data.count > 0, data[0].isCarousal == true {
                 return heightOfCarouselSection
@@ -230,9 +232,9 @@ class BaseViewModel: NSObject  {
         if index.section == 0 {
             return 0
         } else {
-        let layout = itemCellLayoutType(index: index.row)
-        let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow)) ? rowHeightForPotrait : rowHeightForLandscape
-        return height
+            let layout = itemCellLayoutType(index: index.row)
+            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
+            return height
         }
     }
     
@@ -278,28 +280,38 @@ class BaseViewModel: NSObject  {
     
     
     
-    func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> TableCellItemsTuple {
+    func getTableCellItems(for index: Int, completion: @escaping (_ isSuccess: Bool) -> ()) -> BaseTableCellModel {
         viewResponseBlock = completion
         let itemIndexTuple = baseTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
         var cellType: ItemCellType = .base
+        
         if vcType.isDisney {
             cellType = .disneyCommon
         }
+        var basetableCellModel = BaseTableCellModel(title: "", items: [], cellType: cellType, layoutType: layout, sectionLanguage: .english, charItems: nil)
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainerArr = baseDataModel?.data, let dataContainer = getDataContainer(index) {
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = dataContainer.title
+                basetableCellModel.sectionLanguage = dataContainer.categoryLanguage
                 if itemIndexTuple.1 == dataContainerArr.count - 1 {
                     fetchBaseData()
                 }
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: dataContainer.categoryLanguage, charItems: dataContainer.characterItems ?? [])
+                return basetableCellModel
             }
         case .watchlist:
             if let dataContainer = getDataContainer(index) {
-                return (title: dataContainer.title ?? "My List", items: dataContainer.items ?? [], cellType: cellType, layout: layout, sectionLanguage: .english, charItems: [])
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = "My List"
+                basetableCellModel.sectionLanguage = .english
+                return basetableCellModel
             }
         }
-        return (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: [])
+        return basetableCellModel
     }
     
     func getDataContainer(_ index: Int) -> DataContainer? {
@@ -468,14 +480,14 @@ extension BaseViewModel {
                 let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,playListId: itemToBePlayed.playlistId ?? "",latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
                 delegate?.presentVC(playerVC)
             } else {
-            print("Play Movie")
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
-            delegate?.presentVC(playerVC)
+                print("Play Movie")
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
+                delegate?.presentVC(playerVC)
             }
         default:
             print("No Item")
         }
-
+        
     }
     
     func presentLoginVC() {
@@ -486,7 +498,7 @@ extension BaseViewModel {
 extension BaseViewModel : CarousalImageDelegate {
     func didTapOnCell(_ index: IndexPath, _ collectionView: UICollectionView) {
         if let items = baseDataModel?.data?[0].items {
-        itemCellTapped(items[index.row], selectedIndexPath: index)
+            itemCellTapped(items[index.row], selectedIndexPath: index)
         }
     }
     

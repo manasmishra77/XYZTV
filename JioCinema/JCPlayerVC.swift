@@ -1796,7 +1796,7 @@
             let item = model.getItem
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
-            let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             cell.configureView(cellItems)
             
         }
@@ -1809,7 +1809,7 @@
             let item = moreArray[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
-            let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             cell.configureView(cellItems)
             
         }

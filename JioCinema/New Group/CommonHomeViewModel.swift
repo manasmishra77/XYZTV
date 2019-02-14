@@ -39,7 +39,7 @@ class CommonHomeViewModel: BaseViewModel {
         viewResponseBlock = completion
         fetchAllHomeData()
     }
-    override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> TableCellItemsTuple {
+    override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> BaseTableCellModel {
         return getHomeCellItems(for: index)
     }
     override func populateTableIndexArray() {
@@ -135,36 +135,67 @@ class CommonHomeViewModel: BaseViewModel {
     }
     
     // HOMEVC
-    func getHomeCellItems(for index: Int) -> TableCellItemsTuple  {
+    func getHomeCellItems(for index: Int) -> BaseTableCellModel  {
         let itemIndexTuple = homeTableIndexArray[index]
         let layout = itemCellLayoutType(index: index)
+        var basetableCellModel = BaseTableCellModel(title: "", items: [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
+        basetableCellModel.layoutType = layout
         switch itemIndexTuple.0 {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[itemIndexTuple.1]
+                basetableCellModel.cellType = .base
+                basetableCellModel.charItems = data.characterItems
+                basetableCellModel.items = data.items
+                basetableCellModel.title = data.title
+                basetableCellModel.sectionLanguage = data.categoryLanguage
                 if itemIndexTuple.1 == dataContainer.count - 2 {
                     fetchBaseData()
                 }
-                return (title: data.title ?? "", items: data.items ?? [], cellType: .base, layout: layout, sectionLanguage: data.categoryLanguage, charItems: data.characterItems ?? [])
+                return basetableCellModel
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .resumeWatch, layout: layout, sectionLanguage: .english, charItems: [])
+                basetableCellModel.cellType = .resumeWatch
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = dataContainer.title
+                basetableCellModel.sectionLanguage = .english
+                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [] , cellType: .resumeWatch, layoutType: layout, sectionLanguage: .english, charItems: nil)
+                return basetableCellModel
             }
         case .recommendation:
             if let dataContainer = JCDataStore.sharedDataStore.userRecommendationList?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: dataContainer.categoryLanguage, charItems: [])
+                basetableCellModel.cellType = .base
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = dataContainer.title
+                basetableCellModel.sectionLanguage = dataContainer.categoryLanguage
+                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [] , cellType: .base, layoutType: layout, sectionLanguage: dataContainer.categoryLanguage, charItems: nil)
+                return basetableCellModel
             }
         case .language:
             if let dataContainer = JCDataStore.sharedDataStore.languageData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english, charItems: [])
+                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
+                basetableCellModel.cellType = .base
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = dataContainer.title
+                basetableCellModel.sectionLanguage = .english
+                return basetableCellModel
             }
         case .genre:
             if let dataContainer = JCDataStore.sharedDataStore.genreData?.data?[itemIndexTuple.1] {
-                return (title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layout: layout, sectionLanguage: .english, charItems: [])
+                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
+                basetableCellModel.cellType = .base
+                basetableCellModel.charItems = dataContainer.characterItems
+                basetableCellModel.items = dataContainer.items
+                basetableCellModel.title = dataContainer.title
+                basetableCellModel.sectionLanguage = .english
+                return basetableCellModel
             }
         }
-        return (title: "", items: [], cellType: .base, layout: layout, sectionLanguage: .english, charItems: [])
+        return basetableCellModel
     }
     
     fileprivate func fetchAllHomeData() {

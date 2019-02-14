@@ -116,7 +116,7 @@ extension RJILApiManager {
         var newModel = model
         newModel.data?.removeAll()
         for each in (model.data ?? []) {
-            if (each.items?.count ?? 0 > 0) || (each.characterItems?.count ?? 0 > 0) {
+            if (each.items?.count ?? 0 > 0) || (each.characterItems != nil) {
                 newModel.data?.append(each)
             }
 

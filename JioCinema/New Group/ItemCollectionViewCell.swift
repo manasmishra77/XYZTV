@@ -14,13 +14,15 @@ typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: 
 
 //To be used in place of BaseItemCellModels Tuple
 struct BaseItemCellModel {
-    let item: Item!
+    let item: Item?
     let cellType: ItemCellType!
     let layoutType: ItemCellLayoutType!
-    init(item: Item, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels) {
+    var charactorItems: DisneyCharacterItems?
+    init(item: Item?, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, charactorItems : DisneyCharacterItems?) {
         self.item = item
         self.cellType = cellType
         self.layoutType = layoutType
+        self.charactorItems = charactorItems
     }
 }
 
@@ -32,14 +34,13 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
-    @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
-    
+    @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!    
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     
     var timer:Timer?
     var nameLabelMaxWidth: Int = 0
     
-    var cellItem : BaseItemCellModels?
+    var cellItem : BaseItemCellModel?
     
     override func prepareForReuse() {
         self.resetNameLabel()
@@ -47,12 +48,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     
 
-    func configureView(_ cellItems: BaseItemCellModels) {
+    func configureView(_ cellItems: BaseItemCellModel) {
         cellItem = cellItems
         //configureView(cellItems)
         configureNameLabelPatchView(cellItems)
-        nameLabel.text = cellItems.item.name ?? ""
-        subtitle.text = cellItems.item.subtitle
+        nameLabel.text = cellItems.item?.name ?? ""
+        subtitle.text = cellItems.item?.subtitle
         
 //        self.backgroundColor = .brown
 //        if let newSubtitle = cellItems.item.subtitle?.split(separator: "|"){
@@ -73,7 +74,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
         self.setImageForLayoutType(cellItems)
         configureCellLabelVisibility(cellItems.layoutType)
 
-        switch cellItems.cellType {
+        guard let cellType = cellItems.cellType else {
+            return
+        }
+        switch cellType {
         case .base:
             return
         case .resumeWatch:
@@ -97,8 +101,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     //Used for background color of namelabel patchview
-    func configureNameLabelPatchView(_ cellItems: BaseItemCellModels) {
-        switch cellItems.cellType {
+    func configureNameLabelPatchView(_ cellItems: BaseItemCellModel) {
+        guard let cellType = cellItems.cellType else {
+            return
+        }
+        switch cellType {
         case .search:
             patchForTitleLabelLeading.backgroundColor = ViewColor.searchBackGround
         case .disneyPlayer, .player:
@@ -113,16 +120,23 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     
-    private func setImageForLayoutType(_ cellItems: BaseItemCellModels) {
+    private func setImageForLayoutType(_ cellItems: BaseItemCellModel) {
         //Load Image
-        switch cellItems.layoutType {
+        guard let layoutType = cellItems.layoutType else {
+            return
+        }
+        switch layoutType {
         case .potrait, .potraitWithLabelAlwaysShow:
-            if let imageURL = URL(string: cellItems.item.imageUrlPortraitContent) {
+            if let imageURL = URL(string: cellItems.item?.imageUrlPortraitContent ?? "") {
                 setImageOnCell(url: imageURL)
             }
         case .landscapeWithTitleOnly, .landscapeForLangGenre, .landscapeForResume, .landscapeWithLabels, .landscapeWithLabelsAlwaysShow:
-            if let imageURL = URL(string: cellItems.item.imageUrlLandscapContent) {
+            if let imageURL = URL(string: cellItems.item?.imageUrlLandscapContent ?? "") {
                 setImageOnCell(url: imageURL)
+            }
+        case .disneyCharacter:
+            if let logoURL = URL(string: cellItems.charactorItems?.LogoUrlForDisneyChar ?? ""){
+                setImageOnCell(url: logoURL)
             }
         }
     }
@@ -132,7 +146,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .potrait:
             subtitle.text = ""
             if isFocused {
-                nameLabel.text = cellItem?.item.name ?? ""
+                nameLabel.text = cellItem?.item?.name ?? ""
             } else {
                 nameLabel.text = ""
             }
@@ -141,7 +155,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithTitleOnly:
             subtitle.text = ""
             if isFocused {
-               nameLabel.text = cellItem?.item.name ?? ""
+               nameLabel.text = cellItem?.item?.name ?? ""
             } else {
                nameLabel.text = ""
             }
@@ -152,18 +166,21 @@ class ItemCollectionViewCell: UICollectionViewCell {
             subtitle.text = ""
         case .landscapeWithLabels:
             if isFocused {
-                nameLabel.text = cellItem?.item.name ?? ""
-                subtitle.text = cellItem?.item.subtitle ?? ""
+                nameLabel.text = cellItem?.item?.name ?? ""
+                subtitle.text = cellItem?.item?.subtitle ?? ""
             } else {
                 nameLabel.text = ""
                 subtitle.text = ""
             }
         case .landscapeWithLabelsAlwaysShow:
             break
+        case .disneyCharacter:
+            nameLabel.text = ""
+            subtitle.text = ""
         }
         
     }
-    private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModels) {
+    private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModel) {
          heightConstraintForProgressBar.constant = 10
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
         let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
@@ -171,7 +188,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         progressBar.progressTintColor = progressColor
         progressBar.trackTintColor = progressDefaultColor
         var progress: Float = 0.0
-        if let duration = cellItems.item.duration, let totalDuration = cellItems.item.totalDuration {
+        if let duration = cellItems.item?.duration, let totalDuration = cellItems.item?.totalDuration {
             progress = Float(duration) / Float(totalDuration)
             self.progressBar.setProgress(progress, animated: false)
         } else {
@@ -223,7 +240,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         nameLabelLeadingConstraint.constant = 15
         timer?.invalidate()
         timer = nil
-        nameLabel.text = cellItem?.item.name ?? ""
+        nameLabel.text = cellItem?.item?.name ?? ""
     }
     
     @objc func moveText() {
@@ -266,6 +283,7 @@ enum ItemCellLayoutType {
     case landscapeForLangGenre
     case landscapeWithLabels
     case landscapeWithLabelsAlwaysShow
+    case disneyCharacter
     
     init(layout : Int) {
         switch layout {

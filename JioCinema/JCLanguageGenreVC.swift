@@ -435,8 +435,8 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         } else if item.appType == .TVShow {
             layoutType = .landscapeWithTitleOnly
         }
-        
-        let cellItems: BaseItemCellModels = (item: item, cellType: cellType, layoutType: layoutType)
+        //(item: item, cellType: cellType, layoutType: layoutType)
+        let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
         
 //        cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""

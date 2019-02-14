@@ -141,32 +141,32 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         indexOfCellBeforeDragging = indexOfMajorCell()
     }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-        return
-        print(velocity)
-
-        // Stop scrollView sliding:
-        targetContentOffset.pointee = scrollView.contentOffset
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        
+//        return
+//        print(velocity)
 //
-//        // calculate where scrollView should snap to:
-        let indexOfMajorCell = self.indexOfMajorCell()
-        indexpathVar.row = indexOfMajorCell
-        // calculate conditions:
-        let swipeVelocityThreshold: CGFloat = 0.05 // after some trail and error
-        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < countOfArray && velocity.x > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
-        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
-        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-
-        if didUseSwipeToSkipCell {
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            indexpathVar.row = snapToIndex
-        } else {
-            indexpathVar.row = indexOfMajorCell
-        }
-        scrollToSpecificPosition(index: indexpathVar)
-    }
+//        // Stop scrollView sliding:
+//        targetContentOffset.pointee = scrollView.contentOffset
+////
+////        // calculate where scrollView should snap to:
+//        let indexOfMajorCell = self.indexOfMajorCell()
+//        indexpathVar.row = indexOfMajorCell
+//        // calculate conditions:
+//        let swipeVelocityThreshold: CGFloat = 0.05 // after some trail and error
+//        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < countOfArray && velocity.x > swipeVelocityThreshold
+//        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
+//        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
+//        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
+//
+//        if didUseSwipeToSkipCell {
+//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+//            indexpathVar.row = snapToIndex
+//        } else {
+//            indexpathVar.row = indexOfMajorCell
+//        }
+//        scrollToSpecificPosition(index: indexpathVar)
+//    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countOfArray
     }

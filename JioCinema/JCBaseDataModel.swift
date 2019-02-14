@@ -197,7 +197,7 @@ struct DataContainer: Codable {
         case layout = "layout"
         case position = "position"
         case defaultAudioLanguage
-        case characterItems
+        case characterItems = "characterItems"
         case backgroundImage
         case isCharCategory = "isCharCat"
     }
@@ -244,7 +244,7 @@ struct DataContainer: Codable {
             characterItems = try values.decodeIfPresent([DisneyCharacterItems].self, forKey: .characterItems)
             backgroundImage = try values.decodeIfPresent(String.self, forKey: .backgroundImage)
             do{
-                var isCharCat = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
+                let isCharCat = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
                 isCharCategory = isCharCat
             } catch {
                 let isCharCatBool = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
@@ -680,6 +680,20 @@ struct DisneyCharacterItems : Codable {
         logo = try values.decodeIfPresent(String.self, forKey: .logo)
         url = try values.decodeIfPresent(String.self, forKey: .url)
         items = try values.decodeIfPresent([Item].self, forKey: .items)
+    }
+    var LogoUrlForDisneyChar: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let logoStr = logo{
+            return baseImageUrl + logoStr
+        }
+        return ""
+    }
+    var ImageUrlForDisneyChar: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = image{
+            return baseImageUrl + imageStr
+        }
+        return ""
     }
     
 }

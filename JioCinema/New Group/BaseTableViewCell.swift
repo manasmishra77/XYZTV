@@ -13,15 +13,20 @@ protocol BaseTableViewCellDelegate {
 }
 //To be used in place of TableCellItemsTuple Tuple
 struct BaseTableCellModel {
-    let items: [Item]!
-    let cellType: ItemCellType!
-    let layoutType: ItemCellLayoutType!
-    let sectionLanguage: AudioLanguage!
-    init(items: [Item], cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .none) {
+    var title: String!
+    var items: [Item]?
+    var cellType: ItemCellType!
+    var layoutType: ItemCellLayoutType!
+    var sectionLanguage: AudioLanguage!
+    var charItems: [DisneyCharacterItems]?
+    
+    init(title: String, items: [Item]?, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .none, charItems : [DisneyCharacterItems]?) {
+        self.title = title
         self.items = items
         self.cellType = cellType
         self.layoutType = layoutType
         self.sectionLanguage = sectionLanguage
+        self.charItems = charItems
     }
 }
 
@@ -30,7 +35,8 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .none, charItems: [])
+    //(title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .none)
+    var cellItems: BaseTableCellModel = BaseTableCellModel(title: "", items: nil, cellType: .base, layoutType: .landscapeWithTitleOnly , sectionLanguage: .none , charItems: nil)
     
     //audio lang from category
     var defaultAudioLanguage: AudioLanguage?
@@ -56,7 +62,7 @@ class BaseTableViewCell: UITableViewCell {
         itemCollectionView.dataSource = self
     }
     
-    func configureView(_ cellItems: TableCellItemsTuple, delegate: BaseTableViewCellDelegate) {
+    func configureView(_ cellItems: BaseTableCellModel, delegate: BaseTableViewCellDelegate) {
         self.cellItems = cellItems
         self.delegate = delegate
         self.defaultAudioLanguage = cellItems.sectionLanguage
@@ -78,18 +84,29 @@ class BaseTableViewCell: UITableViewCell {
 
 extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellItems.items.count
+        if cellItems.charItems != nil {
+            cellItems.layoutType = .disneyCharacter
+            return cellItems.charItems?.count ?? 0
+        }
+        return cellItems.items?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
-        cell.configureView((item: cellItems.items[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layout))
+        let baseItemCellModel : BaseItemCellModel = BaseItemCellModel(item: cellItems.items?[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layoutType, charactorItems: cellItems.charItems?[indexPath.row])
+        cell.configureView(baseItemCellModel)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var newItem = cellItems.items[indexPath.row]
-        newItem.setDefaultAudioLanguage(defaultAudioLanguage)
-        delegate?.didTapOnItemCell(self, newItem)
+        if let item = cellItems.items {
+            var newItem = item[indexPath.row]
+            newItem.setDefaultAudioLanguage(defaultAudioLanguage)
+            delegate?.didTapOnItemCell(self, newItem)
+        }
+        if let item = cellItems.charItems {
+            var newCharItem = item[indexPath.row]
+            //disney character click to be handled
+        }
     }
 }
 
@@ -104,7 +121,7 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
 //        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
 //        return CGSize(width: width, height: height)
         let height = collectionView.frame.height
-        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? itemWidthForPortrait : itemWidthForLadscape
+        let width = ((cellItems.layoutType == .potrait) || (cellItems.layoutType == .potraitWithLabelAlwaysShow) || (cellItems.layoutType == .disneyCharacter)) ? itemWidthForPortrait : itemWidthForLadscape
         return CGSize(width: width, height: height)
     }
     
