@@ -405,6 +405,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
 }
 
 extension JCSearchResultViewController: BaseTableViewCellDelegate {
+    func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems) {
+        return
+    }
+    
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
         let indexFromArray = selectedIndexPath?.row ?? -1

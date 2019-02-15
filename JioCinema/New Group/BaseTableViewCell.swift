@@ -10,6 +10,7 @@ import UIKit
 
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
+    func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
 }
 //To be used in place of TableCellItemsTuple Tuple
 struct BaseTableCellModel {
@@ -85,7 +86,6 @@ class BaseTableViewCell: UITableViewCell {
 extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if cellItems.charItems != nil {
-            cellItems.layoutType = .disneyCharacter
             return cellItems.charItems?.count ?? 0
         }
         return cellItems.items?.count ?? 0
@@ -104,7 +104,8 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
             delegate?.didTapOnItemCell(self, newItem)
         }
         if let item = cellItems.charItems {
-            var newCharItem = item[indexPath.row]
+            let newCharItem = item[indexPath.row]
+            delegate?.didTapOnCharacterItem(self, newCharItem)
             //disney character click to be handled
         }
     }

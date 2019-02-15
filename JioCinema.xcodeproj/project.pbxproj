@@ -149,6 +149,7 @@
 		847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04C2201D19900FB5B2A /* JioType-Light.ttf */; };
 		9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */; };
 		9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */; };
+		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
 		9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */; };
 		9966543621D381360026CC8D /* CarouselCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */; };
@@ -340,6 +341,7 @@
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
 		9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CarouselViewForDisney.xib; sourceTree = "<group>"; };
+		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
 		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
 		9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CarouselCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
+				9944B333221695250048BC3B /* CharHeroViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1055,6 +1058,7 @@
 				53DDCB2021BF90F9004F0A6A /* AutoScrollLabel.swift in Sources */,
 				19B4A62221AFC5F200B13C77 /* MultiAudioManager.swift in Sources */,
 				192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */,
+				9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */,
 				7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */,
 				7BABC1D01F4B126B00B4B1AA /* JCSeasonCollectionViewCell.swift in Sources */,
 				530C0E1A21B8F8E40029C4D8 /* SideNavigationTableCell.swift in Sources */,

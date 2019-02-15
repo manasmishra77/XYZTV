@@ -420,6 +420,49 @@
             </objects>
             <point key="canvasLocation" x="6810" y="2878"/>
         </scene>
+        <!--Char Hero View Controller-->
+        <scene sceneID="dTT-Dv-zLo">
+            <objects>
+                <viewController storyboardIdentifier="CharHeroViewController" id="LAe-ne-qJo" customClass="CharHeroViewController" customModule="JioCinema" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gH2-V7-Ia3"/>
+                        <viewControllerLayoutGuide type="bottom" id="va9-rj-tZH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QxM-Qn-6cS">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gPi-zT-Hsj">
+                                <rect key="frame" x="0.0" y="0.0" width="615" height="697"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="615" id="vSG-cz-Vkc"/>
+                                    <constraint firstAttribute="height" constant="697" id="z2i-4u-Cwv"/>
+                                </constraints>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="H0b-UY-ghP">
+                                <rect key="frame" x="615" y="60" width="1195" height="960"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.023529411760000001" green="0.12941176469999999" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="H0b-UY-ghP" secondAttribute="bottom" id="1hB-BP-12B"/>
+                            <constraint firstItem="H0b-UY-ghP" firstAttribute="leading" secondItem="gPi-zT-Hsj" secondAttribute="trailing" id="2PR-Z2-WfJ"/>
+                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="leading" secondItem="QxM-Qn-6cS" secondAttribute="leading" id="Fm0-Ed-lHI"/>
+                            <constraint firstItem="H0b-UY-ghP" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="topMargin" id="PYr-Jr-HIf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="H0b-UY-ghP" secondAttribute="trailing" id="TdL-tN-xJY"/>
+                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="top" id="uBs-zQ-Z4K"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="characterLogo" destination="gPi-zT-Hsj" id="qwS-AH-ctK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V8G-oO-Plw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6810" y="4129"/>
+        </scene>
         <!--MetadataVC-->
         <scene sceneID="bjo-sh-lAw">
             <objects>
@@ -679,7 +722,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rR-xw-boL">
-                                <rect key="frame" x="899" y="70" width="123" height="59"/>
+                                <rect key="frame" x="894" y="70" width="132" height="59"/>
                                 <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>

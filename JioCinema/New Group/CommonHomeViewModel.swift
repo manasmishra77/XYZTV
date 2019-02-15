@@ -58,7 +58,7 @@ class CommonHomeViewModel: BaseViewModel {
         case .base:
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first)
+                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first, data.characterItems?.first)
                 return layout
             }
         case .reumeWatch:
@@ -68,7 +68,7 @@ class CommonHomeViewModel: BaseViewModel {
         case .recommendation:
             if let dataContainer = recommendationModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
-                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first)
+                let layout: ItemCellLayoutType = getLayoutOfCellForItemType(data.items?.first, data.characterItems?.first)
                 return layout
             }
         case .language, .genre:

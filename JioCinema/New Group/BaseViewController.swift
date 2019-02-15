@@ -158,6 +158,11 @@ extension BaseViewController {
     }
 }
 extension BaseViewController: BaseTableViewCellDelegate {
+    func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems) {
+        let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
+        baseViewModel.charItemCellTapped(charItem, selectedIndexPath: selectedIndexPath)
+    }
+    
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
         baseViewModel.itemCellTapped(item, selectedIndexPath: selectedIndexPath)

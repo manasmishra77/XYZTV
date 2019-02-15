@@ -241,7 +241,7 @@ class BaseViewModel: NSObject  {
     func populateTableIndexArray() {
         populateBaseTableArray()
     }
-    func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
+    func getLayoutOfCellForItemType(_ item : Item?,_ charItem : DisneyCharacterItems?) -> ItemCellLayoutType {
         if let appType = item?.appType {
             switch appType {
             case .Episode, .Clip, .Music, .Search:
@@ -254,6 +254,11 @@ class BaseViewModel: NSObject  {
                 return .landscapeWithTitleOnly
             }
         }
+        if let charItem = charItem {
+            if (charItem.items?.count ?? 0) > 0 {
+            return .disneyCharacter
+            }
+        }
         return .landscapeWithTitleOnly
     }
     func itemCellLayoutType(index: Int) -> ItemCellLayoutType {
@@ -263,7 +268,7 @@ class BaseViewModel: NSObject  {
             if let dataContainer = baseDataModel?.data {
                 let data = dataContainer[(itemIndexTuple.1)]
                 var _: ItemCellLayoutType = data.layoutType
-                return getLayoutOfCellForItemType(data.items?.first)
+                return getLayoutOfCellForItemType(data.items?.first, data.characterItems?.first)
             }
         case .watchlist:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
@@ -440,6 +445,11 @@ extension BaseViewModel {
         default:
             print("Default")
         }
+    }
+    func charItemCellTapped(_ item: DisneyCharacterItems, selectedIndexPath: IndexPath?) {
+        let charHeroVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CharHeroViewController") as! CharHeroViewController
+        charHeroVC.charItem = item
+        delegate?.presentVC(charHeroVC)
     }
     
     func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{

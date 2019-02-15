@@ -49,6 +49,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
 
     func configureView(_ cellItems: BaseItemCellModel) {
+        if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
+            imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+        }
         cellItem = cellItems
         //configureView(cellItems)
         configureNameLabelPatchView(cellItems)
