@@ -106,6 +106,7 @@ struct MetadataModel: Codable {
     var inQueue:Bool?
     var filter:[Filter]?
     var maturityRating: String?
+    var subtitles: String?
     
     var maturityAgeGrp: AgeGroup {
         if let value = self.maturityRating {
@@ -216,6 +217,7 @@ struct MetadataModel: Codable {
         case filter = "filter"
         case maturityRating = "maturityRating"
         case multipleAudio = "audios"
+        case subtitles
     }
     init(from decoder: Decoder) throws {
         do {
@@ -582,6 +584,7 @@ struct MetadataModel: Codable {
             filter = try values.decodeIfPresent([Filter].self, forKey: .filter)
             maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
             multipleAudio = try values.decodeIfPresent(String.self, forKey: .multipleAudio)
+            subtitles = try values.decodeIfPresent(String.self, forKey: .subtitles)
         } catch {
             print(error)
         }
