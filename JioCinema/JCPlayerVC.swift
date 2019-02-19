@@ -917,15 +917,13 @@
     }
     
     //MARK:- Swipe Up Recommendation View
-    func swipeUpRecommendationView()
-    {
+    func swipeUpRecommendationView() {
         recommendationViewchangeTo(1.0, visibility: true, animationDuration: 0.0)
-        
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
             UIView.animate(withDuration: 0.5, animations: {
-                self.bottomConstarintRecommendationView.constant = 0
+                self.bottomConstarintRecommendationView.constant = 60
                 self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
@@ -949,7 +947,7 @@
     
     
     //MARK:- Show Alert
-    func showAlert(alertTitle:String, alertMessage:String, completionHandler:(()->Void)?)
+    func showAlert(alertTitle: String, alertMessage: String, completionHandler: (()->Void)?)
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
