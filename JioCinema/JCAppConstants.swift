@@ -240,6 +240,14 @@ let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
+var sideNavigationVC: SideNavigationVC? {
+    let window = appDelegate?.window
+    let rootNavVC = window?.rootViewController as? UINavigationController
+    let navVc = rootNavVC?.viewControllers.first as? SideNavigationVC
+    return navVc
+}
+
+
 struct SideNavigationConstants {
     static let expandedWidth: CGFloat = 400
     static let collapsedWidth: CGFloat = 132

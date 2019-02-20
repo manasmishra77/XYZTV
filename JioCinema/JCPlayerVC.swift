@@ -1702,8 +1702,7 @@
                 }
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                 preparePlayerVC()
-            }
-            else{
+            } else {
                 let newItem = moreArray[indexPath.row]
                 if (newItem.id ?? "") == id {
                     isRecommendationCollectionViewEnabled = true
@@ -1716,34 +1715,34 @@
                     sendRecommendationEvent(videoName: newItem.name ?? "")
                 }
                 
-                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt){
+                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt) {
                     if newAppType == .Movie {
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
-                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
-                            metaDataVC.defaultAudioLanguage = audioLanguage
+//                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
+//                            metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
                             })
-                        } else if let navVc = self.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers.first as? JCTabBarController, let homeVc = tabVc.viewControllers?.first as? JCHomeVC {
+                        } else if let navVc = self.presentingViewController as? UINavigationController, let sideNavigationVC = navVc.viewControllers.first as? SideNavigationVC, let homeVc = sideNavigationVC.selectedVC as? BaseViewController {
                             homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
                             self.resetPlayer()
-                            self.dismiss(animated: true, completion: {
+                            self.dismiss(animated: false, completion: {
                                 let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
-                                tabVc.present(metaVc, animated: false, completion: nil)
+                                sideNavigationVC.present(metaVc, animated: false, completion: nil)
                             })
                         }
                     }
-                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer{
+                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer {
                         changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                         preparePlayerVC()
                     }
                 }
             }
         }
-        else if isEpisodeDataAvailable{
+        else if isEpisodeDataAvailable {
             let newItem = episodeArray[indexPath.row]
             if id == newItem.id {
                 isRecommendationCollectionViewEnabled = true
