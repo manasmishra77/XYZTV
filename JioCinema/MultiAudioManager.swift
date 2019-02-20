@@ -10,13 +10,13 @@ import UIKit
 
 class MultiAudioManager: NSObject {
 
-    class func getItemAudioLanguage(languageIndex: LanguageIndex?, defaultAudioLanguage: String?, displayLanguage: String?) -> AudioLanguage {
+    class func getItemAudioLanguage(languageIndex: LanguageIndex?, defaultAudioLanguage: String?, displayLanguage: String?) -> AudioLanguage? {
         if let language = languageIndex?.name ?? defaultAudioLanguage ?? displayLanguage {
             if let audioLanguage = AudioLanguage(rawValue: language.lowercased()) {
                 return audioLanguage
             }
         }
-        return .none
+        return nil
     }
     
     //Check in my watchlist
@@ -60,7 +60,7 @@ class MultiAudioManager: NSObject {
         return iteMatched
     }
     
-    class func getAudioLanguageForLangGenreVC(defaultAudioLanguage: AudioLanguage?, item: Item) -> AudioLanguage {
+    class func getAudioLanguageForLangGenreVC(defaultAudioLanguage: AudioLanguage?, item: Item) -> AudioLanguage? {
         return defaultAudioLanguage ?? item.audioLanguage
     }
     
@@ -71,14 +71,14 @@ class MultiAudioManager: NSObject {
     
    
     
-    class func getFinalAudioLanguage(itemIdToBeChecked: String, appType: VideoType, defaultLanguage: AudioLanguage?) -> AudioLanguage {
+    class func getFinalAudioLanguage(itemIdToBeChecked: String, appType: VideoType, defaultLanguage: AudioLanguage?) -> AudioLanguage? {
         if let item = MultiAudioManager.checkAndReturnFromResumeWatchList(itemIdToBeChecked: itemIdToBeChecked) {
             return item.audioLanguage
         }
         if let item = MultiAudioManager.checkAndReturnFromMyWatchList(itemIdToBeChecked: itemIdToBeChecked, appType: appType) {
             return item.audioLanguage
         }
-        return defaultLanguage ?? .none
+        return defaultLanguage
     }
 }
 //Additon for multi-audio analytics
@@ -109,7 +109,7 @@ enum AudioLanguage: String {
     case gujarati
     case bhojpuri
     case malayalam
-    case none
+    //case none
     
     var code: String {
         return self.rawValue.subString(start: 0, end: 1)

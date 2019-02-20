@@ -17,7 +17,7 @@ struct BaseTableCellModel {
     let cellType: ItemCellType!
     let layoutType: ItemCellLayoutType!
     let sectionLanguage: AudioLanguage!
-    init(items: [Item], cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .none) {
+    init(items: [Item], cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage? = nil) {
         self.items = items
         self.cellType = cellType
         self.layoutType = layoutType
@@ -30,7 +30,7 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .none)
+    var cellItems: TableCellItemsTuple = (title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: nil)
     
     //audio lang from category
     var defaultAudioLanguage: AudioLanguage?

@@ -172,8 +172,8 @@ struct DataContainer: Codable {
     //Multiple Audio Parameter
     private var defaultAudioLanguage: String?
     
-    var categoryLanguage: AudioLanguage {
-        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "") ?? .none
+    var categoryLanguage: AudioLanguage? {
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "")
     }
     //to decide rowheight from category-> layout
     private var layout: Int?
@@ -312,7 +312,7 @@ struct Item: Codable {
         defaultAudioLanguage = audioLang?.name
     }
     
-    var audioLanguage: AudioLanguage {
+    var audioLanguage: AudioLanguage? {
         return MultiAudioManager.getItemAudioLanguage(languageIndex: languageIndex, defaultAudioLanguage: defaultAudioLanguage, displayLanguage: language)
     }
     

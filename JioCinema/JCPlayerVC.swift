@@ -390,10 +390,8 @@
     }
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
-        
         let rule = AVTextStyleRule.init(textMarkupAttributes: [kCMTextMarkupAttribute_RelativeFontSize as String : 80])
         playerItem?.textStyleRules = [rule] as? [AVTextStyleRule]
-        
         self.addMetadataToPlayer()
         if playerController == nil {
             playerController = AVPlayerViewController()
@@ -413,13 +411,16 @@
             player = AVPlayer(playerItem: playerItem)
         }
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage)
-        self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
+            
+        }
+        if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage) {
+            self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        }
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
-        
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)      
         
@@ -498,7 +499,7 @@
             scrollCollectionViewToRow(row: i)
         } else {
             if isPlayList, appType == .Episode {
-                callWebServiceForMoreLikeData(id: playListId)
+                callWebServiceForMoreLikeData(id: id)
             } else if isPlayList {
                 callWebServiceForPlayListData(id: playListId)
             } else {
@@ -594,30 +595,26 @@
                 swipeDownRecommendationView()
             }
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
-        {
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty) {
             startTime_BufferDuration = Date()
             //bufferCount = bufferCount + 1
             
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
-        {
-            var currentTimeDuration : Int = 0
-            if(player?.timeControlStatus == .playing)
-            {
-                
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && (audioLanguage?.name != nil && audioLanguage?.name != "None") {
-                        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
-                            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
-                            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
-                            timeSpent = timeSpent > 0 ? timeSpent : 0
-
-                            //audio lang for next item 
-                            let newAudionLanguage : AudioLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "") ?? .none
-                            audioLanguage = newAudionLanguage
-                            let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
-                            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
-                            }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp) {
+            let currentTimeDuration : Int = 0
+            if(player?.timeControlStatus == .playing) {
+                if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && (audioLanguage?.name != nil) {
+                    if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
+                        let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+                        var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+                        timeSpent = timeSpent > 0 ? timeSpent : 0
+                        
+                        //audio lang for next item
+                        let newAudionLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "")
+                        audioLanguage = newAudionLanguage
+                        let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
+                        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
+                    }
                     self.sendAudioChangedCleverTapEvent(duration: String(currentTimeDuration))
                 }
                 
@@ -1296,7 +1293,6 @@
             }
             self.playbackRightsData = response.model
             DispatchQueue.main.async {
-                
                 if((self.player) != nil) {
                     self.player?.pause()
                     self.resetPlayer()
@@ -1544,7 +1540,7 @@
         setRecommendationConstarints(appType)
         switch appType {
         case .Movie:
-            if isPlayList , id == ""{
+            if isPlayList, id == ""{
                 self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlayListData(id: playListId)
             } else {
@@ -1656,7 +1652,6 @@
 //    @objc func dismissPlayerVC() {
     @objc func dismissPlayerVC(completion: (() -> ())? = nil) {
         self.resetPlayer()
-        //        self.dismiss(animated: true, completion: nil)
         self.dismiss(animated: true, completion: completion)
     }
     
@@ -1767,10 +1762,10 @@
  extension JCPlayerVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isEpisodeDataAvailable{
+        if isEpisodeDataAvailable {
             return episodeArray.count
         }
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             return moreArray.count
         }
         return 0
