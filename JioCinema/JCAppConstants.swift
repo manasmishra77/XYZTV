@@ -90,6 +90,8 @@ let disneyTVShowDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/64/"
 let disneyKidsDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/68/"
 //"http://10.130.9.92:8000/apis/06758e99be484fca56fb/v3/disneyhome/get/60/0"
 let disneyResumeWatchListUrl = basePath + kAppKeyValue + "/v3/resumewatch/get"
+let disneyCharacterherosDataUrl = basePath + "common/v3.1/character/get/"
+
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()

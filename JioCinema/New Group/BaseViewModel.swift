@@ -448,7 +448,9 @@ extension BaseViewModel {
     }
     func charItemCellTapped(_ item: DisneyCharacterItems, selectedIndexPath: IndexPath?) {
         let charHeroVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CharHeroViewController") as! CharHeroViewController
-        charHeroVC.charItem = item
+        charHeroVC.charLogo = item.LogoUrlForDisneyChar
+        charHeroVC.charName = item.name
+        charHeroVC.id = item.id
         delegate?.presentVC(charHeroVC)
     }
     

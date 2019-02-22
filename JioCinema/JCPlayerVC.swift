@@ -602,7 +602,7 @@
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
         {
-            var currentTimeDuration : Int = 0
+            let currentTimeDuration : Int = 0
             if(player?.timeControlStatus == .playing)
             {
                 

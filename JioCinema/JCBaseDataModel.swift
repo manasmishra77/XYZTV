@@ -554,7 +554,7 @@ enum BaseVCType: String {
     case home, movie, tv, music, clip, search, disneyHome, disneyMovies, disneyKids, disneyTVShow
     
     var isDisney: Bool {
-        if self == .disneyHome || self == .disneyMovies || self == .disneyKids || self == .disneyTVShow {
+        if self == .disneyHome || self == .disneyMovies || self == .disneyKids || self == .disneyTVShow{
             return true
         }
         return false
@@ -655,6 +655,9 @@ struct DisneyCharacterItems : Codable {
     let image : String?
     let logo : String?
     let url : String?
+    let totalPages : Int?
+    let totalItems : Int?
+    let tabId : String?
     let items : [Item]?
     
     enum CodingKeys: String, CodingKey {
@@ -663,6 +666,9 @@ struct DisneyCharacterItems : Codable {
         case image
         case logo
         case url
+        case totalPages
+        case totalItems
+        case tabId
         case items
     }
     
@@ -679,6 +685,35 @@ struct DisneyCharacterItems : Codable {
         image = try values.decodeIfPresent(String.self, forKey: .image)
         logo = try values.decodeIfPresent(String.self, forKey: .logo)
         url = try values.decodeIfPresent(String.self, forKey: .url)
+        do {
+            let formatInt = try values.decodeIfPresent(Int.self, forKey: .totalPages)
+            totalPages = formatInt
+        } catch {
+            do {
+                let formatString = try values.decodeIfPresent(String.self, forKey: .totalPages)
+                totalPages = Int(formatString ?? "0")
+            } catch {
+                totalPages = nil
+            }
+        }
+        do {
+            let formatInt = try values.decodeIfPresent(Int.self, forKey: .totalItems)
+            totalItems = formatInt
+        } catch {
+            do {
+                let formatString = try values.decodeIfPresent(String.self, forKey: .totalItems)
+                totalItems = Int(formatString ?? "0")
+            } catch {
+                totalItems = nil
+            }
+        }
+        do {
+            let itemIdNum = try values.decodeIfPresent(Int.self, forKey: .tabId)
+            tabId = "\(itemIdNum ?? -1)"
+        } catch {
+            let itemIdString = try values.decodeIfPresent(String.self, forKey: .tabId)
+            tabId = itemIdString
+        }
         items = try values.decodeIfPresent([Item].self, forKey: .items)
     }
     var LogoUrlForDisneyChar: String {

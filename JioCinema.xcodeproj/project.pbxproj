@@ -147,6 +147,8 @@
 		847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */; };
 		847BC0562201D19A00FB5B2A /* JioType-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */; };
 		847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04C2201D19900FB5B2A /* JioType-Light.ttf */; };
+		9917FB29221EAF6E00F5E15B /* CharacterItemSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9917FB28221EAF6E00F5E15B /* CharacterItemSuperModel.swift */; };
+		9917FB2C221FCB5300F5E15B /* DisneyCharacterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9917FB2B221FCB5300F5E15B /* DisneyCharacterViewModel.swift */; };
 		9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */; };
 		9918EF922150D3DE004096E1 /* CarouselViewForDisney.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9918EF902150D3DE004096E1 /* CarouselViewForDisney.xib */; };
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
@@ -337,6 +339,8 @@
 		847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
 		847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
 		847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
+		9917FB28221EAF6E00F5E15B /* CharacterItemSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterItemSuperModel.swift; sourceTree = "<group>"; };
+		9917FB2B221FCB5300F5E15B /* DisneyCharacterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisneyCharacterViewModel.swift; sourceTree = "<group>"; };
 		9918EF89214F8011004096E1 /* DisneyButtonsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisneyButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		9918EF8A214F8012004096E1 /* DisneyButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisneyButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9918EF8F2150D3DD004096E1 /* CarouselViewForDisney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewForDisney.swift; sourceTree = "<group>"; };
@@ -507,6 +511,7 @@
 		7B78D7C01F13A91900F319BF /* JioCinema */ = {
 			isa = PBXGroup;
 			children = (
+				9917FB2A221FCAC700F5E15B /* DisneyCharacterScene */,
 				19BF8A7A214651C8001C58DD /* BaseScene */,
 				53D1E2E421B7B836003BD5C1 /* SideNavigationScene */,
 				19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */,
@@ -643,7 +648,6 @@
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
-				9944B333221695250048BC3B /* CharHeroViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -714,6 +718,16 @@
 				847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9917FB2A221FCAC700F5E15B /* DisneyCharacterScene */ = {
+			isa = PBXGroup;
+			children = (
+				9917FB28221EAF6E00F5E15B /* CharacterItemSuperModel.swift */,
+				9944B333221695250048BC3B /* CharHeroViewController.swift */,
+				9917FB2B221FCB5300F5E15B /* DisneyCharacterViewModel.swift */,
+			);
+			name = DisneyCharacterScene;
 			sourceTree = "<group>";
 		};
 		991FCC032C29485454E4C5A0 /* Frameworks */ = {
@@ -1048,6 +1062,7 @@
 				539618E221219B1500B576BF /* ParentalControlVC.swift in Sources */,
 				B65E074C1F78E07D00D4FA9E /* CarouselViewButton.swift in Sources */,
 				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
+				9917FB2C221FCB5300F5E15B /* DisneyCharacterViewModel.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
@@ -1055,6 +1070,7 @@
 				9918EF912150D3DE004096E1 /* CarouselViewForDisney.swift in Sources */,
 				7BE0EA511F30695700151D23 /* JCClipsVC.swift in Sources */,
 				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
+				9917FB29221EAF6E00F5E15B /* CharacterItemSuperModel.swift in Sources */,
 				53DDCB2021BF90F9004F0A6A /* AutoScrollLabel.swift in Sources */,
 				19B4A62221AFC5F200B13C77 /* MultiAudioManager.swift in Sources */,
 				192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */,

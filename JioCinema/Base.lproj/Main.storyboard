@@ -191,7 +191,7 @@
                         <viewControllerLayoutGuide type="top" id="Zyd-cn-lgC"/>
                         <viewControllerLayoutGuide type="bottom" id="d3Q-X8-goK"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="qDA-Z1-tmP">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qDA-Z1-tmP">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -428,35 +428,56 @@
                         <viewControllerLayoutGuide type="top" id="gH2-V7-Ia3"/>
                         <viewControllerLayoutGuide type="bottom" id="va9-rj-tZH"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QxM-Qn-6cS">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QxM-Qn-6cS">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gPi-zT-Hsj">
-                                <rect key="frame" x="0.0" y="0.0" width="615" height="697"/>
+                                <rect key="frame" x="60" y="68" width="396" height="480"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="615" id="vSG-cz-Vkc"/>
-                                    <constraint firstAttribute="height" constant="697" id="z2i-4u-Cwv"/>
+                                    <constraint firstAttribute="width" constant="396" id="vSG-cz-Vkc"/>
+                                    <constraint firstAttribute="height" constant="480" id="z2i-4u-Cwv"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="H0b-UY-ghP">
-                                <rect key="frame" x="615" y="60" width="1195" height="960"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zo8-vi-DBx">
+                                <rect key="frame" x="516" y="64" width="1394" height="0.0"/>
+                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="64"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="H0b-UY-ghP">
+                                <rect key="frame" x="516" y="128" width="1384" height="952"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DYW-D6-Qyl">
+                                <rect key="frame" x="516" y="64" width="1384" height="4"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="Kar-FZ-rjM"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.023529411760000001" green="0.12941176469999999" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="H0b-UY-ghP" secondAttribute="bottom" id="1hB-BP-12B"/>
-                            <constraint firstItem="H0b-UY-ghP" firstAttribute="leading" secondItem="gPi-zT-Hsj" secondAttribute="trailing" id="2PR-Z2-WfJ"/>
-                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="leading" secondItem="QxM-Qn-6cS" secondAttribute="leading" id="Fm0-Ed-lHI"/>
-                            <constraint firstItem="H0b-UY-ghP" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="topMargin" id="PYr-Jr-HIf"/>
+                            <constraint firstItem="H0b-UY-ghP" firstAttribute="leading" secondItem="gPi-zT-Hsj" secondAttribute="trailing" constant="60" id="2PR-Z2-WfJ"/>
+                            <constraint firstItem="DYW-D6-Qyl" firstAttribute="top" secondItem="zo8-vi-DBx" secondAttribute="bottom" id="79e-jE-zVu"/>
+                            <constraint firstItem="zo8-vi-DBx" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="top" constant="64" id="Ahw-k8-gRX"/>
+                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="leading" secondItem="QxM-Qn-6cS" secondAttribute="leading" constant="60" id="Fm0-Ed-lHI"/>
+                            <constraint firstItem="DYW-D6-Qyl" firstAttribute="width" secondItem="H0b-UY-ghP" secondAttribute="width" id="SP8-R2-F9I"/>
+                            <constraint firstAttribute="trailing" secondItem="zo8-vi-DBx" secondAttribute="trailing" constant="10" id="SlU-8s-3F5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="H0b-UY-ghP" secondAttribute="trailing" id="TdL-tN-xJY"/>
-                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="top" id="uBs-zQ-Z4K"/>
+                            <constraint firstItem="zo8-vi-DBx" firstAttribute="leading" secondItem="H0b-UY-ghP" secondAttribute="leading" id="VfI-Sc-etc"/>
+                            <constraint firstItem="H0b-UY-ghP" firstAttribute="top" secondItem="DYW-D6-Qyl" secondAttribute="bottom" constant="60" id="nkz-nk-2jA"/>
+                            <constraint firstItem="gPi-zT-Hsj" firstAttribute="top" secondItem="QxM-Qn-6cS" secondAttribute="top" constant="68" id="uBs-zQ-Z4K"/>
+                            <constraint firstItem="DYW-D6-Qyl" firstAttribute="leading" secondItem="H0b-UY-ghP" secondAttribute="leading" id="yhK-vW-jVh"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="charTableView" destination="H0b-UY-ghP" id="syr-AT-8QU"/>
                         <outlet property="characterLogo" destination="gPi-zT-Hsj" id="qwS-AH-ctK"/>
+                        <outlet property="characterName" destination="zo8-vi-DBx" id="TQG-n8-p0J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V8G-oO-Plw" userLabel="First Responder" sceneMemberID="firstResponder"/>

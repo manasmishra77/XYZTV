@@ -128,6 +128,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                             else if let vc = vc as? BaseViewModel {
                                 vc.playItemAfterLogin()
                             }
+                            else if let vc = vc as? DisneyCharacterViewModel {
+                                vc.playItemAfterLogin()
+                            }
                         }
                         else if presentedFromAddToWatchList {
                             if (vc as? JCMetadataVC) != nil{
