@@ -390,10 +390,8 @@
     }
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
-        
         let rule = AVTextStyleRule.init(textMarkupAttributes: [kCMTextMarkupAttribute_RelativeFontSize as String : 80])
         playerItem?.textStyleRules = [rule] as? [AVTextStyleRule]
-        
         self.addMetadataToPlayer()
         if playerController == nil {
             playerController = AVPlayerViewController()
@@ -413,13 +411,16 @@
             player = AVPlayer(playerItem: playerItem)
         }
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage)
-        self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
+            
+        }
+        if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage) {
+            self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        }
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
-        
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)      
         
@@ -498,7 +499,7 @@
             scrollCollectionViewToRow(row: i)
         } else {
             if isPlayList, appType == .Episode {
-                callWebServiceForMoreLikeData(id: playListId)
+                callWebServiceForMoreLikeData(id: id)
             } else if isPlayList {
                 callWebServiceForPlayListData(id: playListId)
             } else {
@@ -594,30 +595,27 @@
                 swipeDownRecommendationView()
             }
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
-        {
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty) {
             startTime_BufferDuration = Date()
             //bufferCount = bufferCount + 1
             
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
-        {
-            let currentTimeDuration : Int = 0
-            if(player?.timeControlStatus == .playing)
-            {
-                
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && (audioLanguage?.name != nil && audioLanguage?.name != "None") {
-                        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
-                            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
-                            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
-                            timeSpent = timeSpent > 0 ? timeSpent : 0
 
-                            //audio lang for next item 
-                            let newAudionLanguage : AudioLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "") ?? .none
-                            audioLanguage = newAudionLanguage
-                            let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
-                            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
-                            }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp) {
+            let currentTimeDuration : Int = 0
+            if(player?.timeControlStatus == .playing) {
+                if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && (audioLanguage?.name != nil) {
+                    if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
+                        let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+                        var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+                        timeSpent = timeSpent > 0 ? timeSpent : 0
+                        
+                        //audio lang for next item
+                        let newAudionLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "")
+                        audioLanguage = newAudionLanguage
+                        let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
+                        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
+                    }
                     self.sendAudioChangedCleverTapEvent(duration: String(currentTimeDuration))
                 }
                 
@@ -917,15 +915,13 @@
     }
     
     //MARK:- Swipe Up Recommendation View
-    func swipeUpRecommendationView()
-    {
+    func swipeUpRecommendationView() {
         recommendationViewchangeTo(1.0, visibility: true, animationDuration: 0.0)
-        
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
             UIView.animate(withDuration: 0.5, animations: {
-                self.bottomConstarintRecommendationView.constant = 0
+                self.bottomConstarintRecommendationView.constant = 60
                 self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
@@ -949,7 +945,7 @@
     
     
     //MARK:- Show Alert
-    func showAlert(alertTitle:String, alertMessage:String, completionHandler:(()->Void)?)
+    func showAlert(alertTitle: String, alertMessage: String, completionHandler: (()->Void)?)
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
@@ -1298,7 +1294,6 @@
             }
             self.playbackRightsData = response.model
             DispatchQueue.main.async {
-                
                 if((self.player) != nil) {
                     self.player?.pause()
                     self.resetPlayer()
@@ -1546,7 +1541,7 @@
         setRecommendationConstarints(appType)
         switch appType {
         case .Movie:
-            if isPlayList , id == ""{
+            if isPlayList, id == ""{
                 self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlayListData(id: playListId)
             } else {
@@ -1658,7 +1653,6 @@
 //    @objc func dismissPlayerVC() {
     @objc func dismissPlayerVC(completion: (() -> ())? = nil) {
         self.resetPlayer()
-        //        self.dismiss(animated: true, completion: nil)
         self.dismiss(animated: true, completion: completion)
     }
     
@@ -1704,8 +1698,7 @@
                 }
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                 preparePlayerVC()
-            }
-            else{
+            } else {
                 let newItem = moreArray[indexPath.row]
                 if (newItem.id ?? "") == id {
                     isRecommendationCollectionViewEnabled = true
@@ -1718,34 +1711,34 @@
                     sendRecommendationEvent(videoName: newItem.name ?? "")
                 }
                 
-                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt){
+                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt) {
                     if newAppType == .Movie {
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
-                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
-                            metaDataVC.defaultAudioLanguage = audioLanguage
+//                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
+//                            metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
                             })
-                        } else if let navVc = self.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers.first as? JCTabBarController, let homeVc = tabVc.viewControllers?.first as? JCHomeVC {
+                        } else if let navVc = self.presentingViewController as? UINavigationController, let sideNavigationVC = navVc.viewControllers.first as? SideNavigationVC, let homeVc = sideNavigationVC.selectedVC as? BaseViewController {
                             homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
                             self.resetPlayer()
-                            self.dismiss(animated: true, completion: {
+                            self.dismiss(animated: false, completion: {
                                 let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
-                                tabVc.present(metaVc, animated: false, completion: nil)
+                                sideNavigationVC.present(metaVc, animated: false, completion: nil)
                             })
                         }
                     }
-                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer{
+                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer {
                         changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                         preparePlayerVC()
                     }
                 }
             }
         }
-        else if isEpisodeDataAvailable{
+        else if isEpisodeDataAvailable {
             let newItem = episodeArray[indexPath.row]
             if id == newItem.id {
                 isRecommendationCollectionViewEnabled = true
@@ -1770,10 +1763,10 @@
  extension JCPlayerVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isEpisodeDataAvailable{
+        if isEpisodeDataAvailable {
             return episodeArray.count
         }
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             return moreArray.count
         }
         return 0

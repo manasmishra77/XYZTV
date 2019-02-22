@@ -50,7 +50,9 @@ class SideNavigationVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        didSelectRowInNavigationTable(menuItem: (sideNavigationView?.itemsList[(sideNavigationView?.selectedIndex)!])!)
+        if let navView = sideNavigationView {
+            didSelectRowInNavigationTable(menuItem: navView.itemsList[navView.selectedIndex])
+        }
     }
    
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
@@ -83,9 +85,6 @@ class SideNavigationVC: UIViewController {
 }
 
 extension SideNavigationVC: SideNavigationTableProtocol {
-
-    
-    
     func sideNavigationSwipeEnd(side: UIFocusHeading) {
         var navigationWidth = SideNavigationConstants.expandedWidth
         if side == .right {
@@ -107,8 +106,6 @@ extension SideNavigationVC: SideNavigationTableProtocol {
     }
     
     func didSelectRowInNavigationTable(menuItem: MenuItem) {
-        
-
         sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
         if let vc = menuItem.viewControllerObject {
             

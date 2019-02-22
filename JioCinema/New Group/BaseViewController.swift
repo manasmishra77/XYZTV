@@ -13,6 +13,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     var carousalView : ViewForCarousel?
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
+    var isMetadataScreenToBePresentedFromResumeWatchCategory: Bool = false
     var viewLoadingStatus: ViewLoadingStatus = .none {
         didSet {
             if viewLoadingStatus == .viewLoaded, ((oldValue == .viewNotLoadedDataFetched) || (oldValue == .viewNotLoadedDataFetchedWithError)) {
@@ -77,6 +78,24 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         // Do any additional setup after loading the view.
         configureViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if isMetadataScreenToBePresentedFromResumeWatchCategory {
+            isMetadataScreenToBePresentedFromResumeWatchCategory = false
+            let coverView = UIView(frame: sideNavigationVC?.view.bounds ?? CGRect.zero)
+            if self.baseViewModel.vcType.isDisney {
+               coverView.backgroundColor = ViewColor.disneyBackground
+            } else {
+                coverView.backgroundColor = ViewColor.commonBackground
+            }
+            sideNavigationVC?.view.addSubview(coverView)
+            sideNavigationVC?.view.bringSubview(toFront: coverView)
+            DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                coverView.removeFromSuperview()
+            }
+        }
+        
+    }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.delegate = self
         if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
@@ -86,7 +105,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
-//        baseTableView.remembersLastFocusedIndexPath = true
         let cellNib = UINib(nibName: BaseTableCellNibIdentifier, bundle: nil)
         baseTableView.register(cellNib, forCellReuseIdentifier: BaseTableCellNibIdentifier)
         baseTableLeadingConstraint.constant = baseViewModel.leadingConstraintBaseTable()

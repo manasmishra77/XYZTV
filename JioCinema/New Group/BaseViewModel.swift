@@ -10,6 +10,7 @@ import UIKit
 
 typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage, charItems: [DisneyCharacterItems]?)
 
+
 struct TabelCellItems {
     
 }
@@ -421,9 +422,9 @@ extension BaseViewModel {
         case .Movie:
             if let duration = item.duration, duration > 0  {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-            }else if ((item.isPlaylist ?? false) && (selectedIndexPath?.section == 0)) {
+            } else if ((item.isPlaylist ?? false) && (selectedIndexPath?.section == 0)) {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
-            }else {
+            } else {
                 let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
@@ -440,7 +441,7 @@ extension BaseViewModel {
                 delegate?.presentVC(metadataVC)
             }
         case .Language,.Genre:
-            let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage.name)
+            let languageGenreVC = self.presentLanguageGenreController(item: item , audioLanguage: item.audioLanguage?.name)
             delegate?.presentVC(languageGenreVC)
         default:
             print("Default")
@@ -454,10 +455,10 @@ extension BaseViewModel {
         delegate?.presentVC(charHeroVC)
     }
     
-    func presentLanguageGenreController(item: Item, audioLanguage : String) -> UIViewController{
+    func presentLanguageGenreController(item: Item, audioLanguage : String?) -> UIViewController{
         let languageGenreVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: languageGenreStoryBoardId) as! JCLanguageGenreVC
         languageGenreVC.item = item
-        languageGenreVC.defaultLanguage = AudioLanguage(rawValue: audioLanguage)
+        languageGenreVC.defaultLanguage = AudioLanguage(rawValue: audioLanguage ?? "")
         return languageGenreVC
     }
     func checkLoginAndPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {

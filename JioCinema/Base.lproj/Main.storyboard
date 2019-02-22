@@ -12,6 +12,9 @@
         <array key="JioType-Bold.ttf">
             <string>JioType-Bold</string>
         </array>
+        <array key="JioType-Light.ttf">
+            <string>JioType-Light</string>
+        </array>
         <array key="JioType-Medium.ttf">
             <string>JioType-Medium</string>
         </array>
@@ -582,7 +585,7 @@
                                 <rect key="frame" x="0.0" y="60" width="1920" height="1020"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Malayalam" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmG-gv-hHK">
-                                        <rect key="frame" x="839" y="20" width="243" height="64"/>
+                                        <rect key="frame" x="847" y="20" width="227" height="64"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="64" id="fkq-5v-9DO"/>
                                         </constraints>
@@ -627,7 +630,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No video available!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOE-UX-E5Z">
-                                        <rect key="frame" x="780" y="477" width="361" height="47"/>
+                                        <rect key="frame" x="786" y="477" width="349" height="47"/>
                                         <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="40"/>
                                         <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1423,11 +1426,29 @@
                                             <constraint firstAttribute="width" constant="400" id="xlr-hN-eaN"/>
                                         </constraints>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlh-Us-6ip">
+                                        <rect key="frame" x="0.0" y="788" width="960" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMW-P1-JpC">
+                                        <rect key="frame" x="0.0" y="804" width="960" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="36"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="bXi-OJ-zSf" firstAttribute="centerY" secondItem="ns8-il-pSj" secondAttribute="centerY" id="G6A-wH-Eca"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="width" secondItem="mlh-Us-6ip" secondAttribute="width" id="Hkg-Ff-mKV"/>
                                     <constraint firstItem="bXi-OJ-zSf" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="IQK-ii-wTM"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="R4N-w8-jbR"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="top" secondItem="mlh-Us-6ip" secondAttribute="bottom" constant="16" id="Rua-0E-BEC"/>
+                                    <constraint firstItem="eMW-P1-JpC" firstAttribute="centerX" secondItem="ns8-il-pSj" secondAttribute="centerX" id="Woi-A0-RCs"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="top" secondItem="bXi-OJ-zSf" secondAttribute="bottom" constant="48" id="hsv-LB-1ih"/>
+                                    <constraint firstItem="mlh-Us-6ip" firstAttribute="width" secondItem="ns8-il-pSj" secondAttribute="width" id="uvn-pc-cgS"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUu-Mq-dHq">
@@ -1437,8 +1458,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="960" height="200"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZL-rz-ek8">
-                                                <rect key="frame" x="409" y="77" width="143" height="46"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <rect key="frame" x="388" y="72" width="184" height="57"/>
+                                                <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="48"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1481,6 +1502,8 @@
                     </view>
                     <connections>
                         <outlet property="headerLabel" destination="AZL-rz-ek8" id="TTL-Gk-wHQ"/>
+                        <outlet property="jioIDLabel" destination="mlh-Us-6ip" id="oJc-FD-ams"/>
+                        <outlet property="name" destination="eMW-P1-JpC" id="8md-84-auF"/>
                         <outlet property="settingsImageView" destination="bXi-OJ-zSf" id="Nev-T0-5eB"/>
                         <outlet property="settingsTableView" destination="MhF-TE-sxZ" id="125-Jw-Gg5"/>
                     </connections>

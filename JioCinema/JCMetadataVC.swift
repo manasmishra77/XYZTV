@@ -996,6 +996,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         headerCell.maturityRating.borderWidth = 2
         headerCell.maturityRating.borderColor = .white
         headerCell.maturityRating.cornerRadius = 5
+        headerCell.maturityRating.textColor = .white
         if var maturityRating = metadata?.maturityRating {
             if  maturityRating.capitalized == "All"  {
                 maturityRating = " 3+ "
@@ -1053,16 +1054,19 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         //Static labels height
         if metadata?.directors?.count == 0 || metadata?.directors == nil{
             headerCell.heightOFDirectorStatic.constant = 0
+            headerCell.directorLabel.text = ""
         } else {
             headerCell.heightOFDirectorStatic.constant = 38
         }
         if metadata?.artist?.count == 0 || metadata?.artist == nil{
             headerCell.heightOfStarringStatic.constant = 0
+            headerCell.starringLabel.text = ""
         } else {
             headerCell.heightOfStarringStatic.constant = 38
         }
         if metadata?.multipleAudio == "" || metadata?.multipleAudio == nil{
             headerCell.heightOfAudioStatic.constant = 0
+            headerCell.multiAudioLanguge.text = ""
         } else {
             headerCell.heightOfAudioStatic.constant = 38
         }

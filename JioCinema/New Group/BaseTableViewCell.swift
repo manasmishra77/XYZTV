@@ -21,7 +21,7 @@ struct BaseTableCellModel {
     var sectionLanguage: AudioLanguage!
     var charItems: [DisneyCharacterItems]?
     
-    init(title: String, items: [Item]?, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .none, charItems : [DisneyCharacterItems]?) {
+    init(title: String, items: [Item]?, cellType: ItemCellType = .base, layoutType: ItemCellLayoutType = .landscapeWithLabels, sectionLanguage: AudioLanguage = .english, charItems : [DisneyCharacterItems]?) {
         self.title = title
         self.items = items
         self.cellType = cellType
@@ -36,8 +36,8 @@ class BaseTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
     var delegate: BaseTableViewCellDelegate?
-    //(title: "", items: [], cellType: .base, layout: .landscapeWithTitleOnly, sectionLanguage: .none)
-    var cellItems: BaseTableCellModel = BaseTableCellModel(title: "", items: nil, cellType: .base, layoutType: .landscapeWithTitleOnly , sectionLanguage: .none , charItems: nil)
+    var cellItems: BaseTableCellModel = BaseTableCellModel(title: "", items: nil, cellType: .base, layoutType: .landscapeWithTitleOnly , sectionLanguage: .english , charItems: nil)
+
     
     //audio lang from category
     var defaultAudioLanguage: AudioLanguage?
@@ -118,9 +118,6 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let height = collectionView.frame.height
-//        let width = ((cellItems.layout == .potrait) || (cellItems.layout == .potraitWithLabelAlwaysShow)) ? (height * widthToHeightPropertionForPotrat) + 30 : (height * widthToHeightPropertionForLandScape) + 30
-//        return CGSize(width: width, height: height)
         let height = collectionView.frame.height
         let width = ((cellItems.layoutType == .potrait) || (cellItems.layoutType == .potraitWithLabelAlwaysShow) || (cellItems.layoutType == .disneyCharacter)) ? itemWidthForPortrait : itemWidthForLadscape
         return CGSize(width: width, height: height)
