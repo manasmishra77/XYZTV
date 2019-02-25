@@ -1773,16 +1773,10 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        
-        var imageUrl    = ""
         if isEpisodeDataAvailable {
             let model = episodeArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner {
-                imageUrl = bannerUrl
-            }
             if appType == .Episode {
                 isPlayList = true
             }
@@ -1790,34 +1784,21 @@
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            cell.configureView(cellItems)
+            let isPlayingNow = model.id == id
+            cell.configureView(cellItems, isPlayingNow: isPlayingNow)
+
             
         }
         else if isMoreDataAvailable {
             let model = moreArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner {
-                imageUrl = bannerUrl
-            }
             let item = moreArray[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            cell.configureView(cellItems)
-            
+            let isPlayingNow = model.id == id
+            cell.configureView(cellItems, isPlayingNow: isPlayingNow)
         }
-//        if indexPath.row == currentPlayingIndex {
-//            cell.nowPlayingImageView.isHidden = !isPlayList
-//
-//        } else {
-//            cell.nowPlayingImageView.isHidden = true
-//        }
-//        if let urlString = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl) {
-//            let url = URL(string: urlString)
-//            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-//            });
-//        }
         return cell
     }
  }

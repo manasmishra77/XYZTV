@@ -34,7 +34,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nowPlayingLabel: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
-    @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!    
+    @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
+
+    @IBOutlet weak var imageViewCoverview: UIView!
+    
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     
     var timer:Timer?
@@ -48,31 +51,21 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     
 
-    func configureView(_ cellItems: BaseItemCellModel) {
+    func configureView(_ cellItems: BaseItemCellModels, isPlayingNow: Bool = false) {
         if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
             imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
         }
         cellItem = cellItems
-        //configureView(cellItems)
         configureNameLabelPatchView(cellItems)
-        nameLabel.text = cellItems.item?.name ?? ""
-        subtitle.text = cellItems.item?.subtitle
-        
-//        self.backgroundColor = .brown
-//        if let newSubtitle = cellItems.item.subtitle?.split(separator: "|"){
-//        if cellItems.cellType == .resumeWatch || cellItems.cellType == .resumeWatchDisney{
-//            if newSubtitle[1].trimmingCharacters(in: .whitespaces) == cellItems.item.language && newSubtitle.count == 3 {
-//            subtitle.text = "\(newSubtitle[0])" + "|\(newSubtitle[2])"
-//            }
-//        }
-//        }
-        //subtitle.text = "\(newSubtitle[0])" + "\(newSubtitle[3])"
-        
+
+        nameLabel.text = cellItems.item.name ?? ""
+        subtitle.text = cellItems.item.subtitle
         progressBar.isHidden = true
         nameLabel.isHidden = false
         subtitle.isHidden = false
         heightConstraintForProgressBar.constant = 0
-        
+        nowPlayingLabel.isHidden = true
+        imageViewCoverview.isHidden = true
         //Load Image
         self.setImageForLayoutType(cellItems)
         configureCellLabelVisibility(cellItems.layoutType)
@@ -92,12 +85,20 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .artist:
             return
         case .player:
+            if isPlayingNow {
+                imageViewCoverview.isHidden = false
+                nowPlayingLabel.isHidden = false
+            }
             return
         case .disneyCommon:
             return
         case .disneyArtist:
             return
         case .disneyPlayer, .search:
+            if isPlayingNow {
+                imageViewCoverview.isHidden = false
+                nowPlayingLabel.isHidden = false
+            }
             return
         }
 

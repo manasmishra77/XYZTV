@@ -243,6 +243,8 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged Out", properties: eventProperties)
                 settingsTableView.reloadData()
                 JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
+                self.name.text = nil
+                self.jioIDLabel.text = nil
             } else {
                 let loginVc = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: false, presentingVC: self)
                 self.present(loginVc, animated: true, completion: nil)
