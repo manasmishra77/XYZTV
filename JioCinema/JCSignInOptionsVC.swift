@@ -29,7 +29,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
     }
     override func viewWillDisappear(_ animated: Bool) {
-      //self.changingSearchNCRootVC()
+        //self.changingSearchNCRootVC()
     }
     deinit {
         print("In SignInOptionVC Screen Deinit")
@@ -43,124 +43,119 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     @IBAction func didClickOnJioIDSignInButton(_ sender: Any) {
 //        jioIdTextField.text     = "pallavtrivedi-4"
 //        passwordTextField.text  = "pallav@1010"
+        
+//                     jioIdTextField.text     = "poonam2016"
+//                     passwordTextField.text  = "poonam@12"
+//        jioIdTextField.text     = "prabhu.p"
+//        passwordTextField.text  = "ril@1234"
 
-        
-//             jioIdTextField.text     = "poonam2016"
-//             passwordTextField.text  = "poonam@12"
-        
-        if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0)
-        {
-            self.showAlert(alertString: "Jio ID/Password cannot be empty")
-        }
-        else
-        {
-            let params:[String:String]? = ["os": "Android","username": jioIdTextField.text!, "password": passwordTextField.text!, "deviceId":"12345"]
-            let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: loginUrl, params: params!, encoding: .BODY)
-            weak var weakSelf = self
-            
-            RJILApiManager.defaultManager.post(request: loginRequest)
-            {
-                (data, response, error) in
-                if let responseError = error
-                {
-                    print(responseError)
+        if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
+            Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
+        } else {
+            RJILApiManager.signInViaJioId(id: jioIdTextField.text ?? "", password: passwordTextField.text ?? "") {[weak self] (isSuccess, errMsg) in
+                guard let self = self else {return}
+                guard isSuccess else {
                     DispatchQueue.main.async {
-                        weakSelf?.handleAlertForSignInFailure()
+                        self.handleAlertForSignInFailure()
                     }
-                    //Analytics for Login Fail
-                    self.sendLoggedInAnalyticsEventWithFailure(errorMessage: (error?.localizedDescription)!)
+                    self.sendLoggedInAnalyticsEventWithFailure(errorMessage: errMsg ?? "")
                     return
                 }
                 
-                if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-                {
-                    let code = parsedResponse["code"] as? Int ?? 0
-                    if(code == 200)
-                    {
-                        weakSelf?.setUserData(userData: parsedResponse)
-                        JCLoginManager.sharedInstance.setUserToDefaults()
-                        let vc = weakSelf?.presentingVCOfLoginVc
-                        let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist ?? false
-                        let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData ?? false
-                        let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell ?? false
-                        
-                        ParentalPinManager.shared.setParentalPinModel()
-                        //Updates after login
-                        if let navVc = (weakSelf?.presentingViewController?.presentingViewController ?? weakSelf?.presentingViewController?.presentingViewController?.presentingViewController) as? UINavigationController, let tabVc = navVc.viewControllers[0] as? UITabBarController{
-                            if let homevc = tabVc.viewControllers![0] as? JCHomeVC{
-                                homevc.callWebServiceForResumeWatchData()
-                                homevc.callWebServiceForUserRecommendationList()
-                            }
-                            if let movieVC = tabVc.viewControllers![1] as? JCMoviesVC{
-                                movieVC.callWebServiceForMoviesWatchlist()
-                            }
-                            if let tvVc = tabVc.viewControllers![2] as? JCTVVC{
-                                tvVc.callWebServiceForTVWatchlist()
-                            }
-                        }
-                        
-                        DispatchQueue.main.async {
-                            weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                                if loginPresentedFromItemCell{
-                                    if let vc = vc as? JCHomeVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCMoviesVC {
-                                        //vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCTVVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCMusicVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCClipsVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCSearchResultViewController {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCMetadataVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                    else if let vc = vc as? JCLanguageGenreVC {
-                                        vc.playItemAfterLogin()
-                                    }
-                                }
-                                else if presentedFromAddToWatchList {
-                                    if (vc as? JCMetadataVC) != nil{
-                                        //Change Add to watchlist button status
-                                        
-                                    }
-                                }
-                                else if presentedFromPlayNowButtonOfMetadata{
-                                    if let vc = vc as? JCMetadataVC{
-                                        //Play after login
-                                        vc.didClickOnWatchNowButton(nil)
-                                    }
-                                }
-                            })
-                        }
-                        self.sendLoggedInAnalyticsEventWithSuccess()
-                        
-                        
+                
+                JCLoginManager.sharedInstance.setUserToDefaults()
+                let vc = self.presentingVCOfLoginVc
+                let presentedFromAddToWatchList = self.isLoginPresentedFromAddToWatchlist
+                let presentedFromPlayNowButtonOfMetadata = self.isLoginPresentedFromPlayNowButtonOfMetaData
+                let loginPresentedFromItemCell = self.isLoginPresentedFromItemCell
+                
+                ParentalPinManager.shared.setParentalPinModel()
+                //Updates after login
+                
+                var navVC: UINavigationController? = nil
+                if let vc = self.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                } else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                }  else if let vc = self.presentingViewController?.presentingViewController?.presentingViewController?.presentingViewController as? UINavigationController {
+                    navVC = vc
+                }
+
+                if let sideNavigationVC = navVC?.viewControllers[0] as? SideNavigationVC {
+                    if let disneyHomeVC = sideNavigationVC.sideNavigationView?.itemsList[4].viewControllerObject as? BaseViewController {
+                        disneyHomeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    else if(code == 400)
-                    {
-                        self.showAlert(alertString: parsedResponse["message"] as? String ?? "")
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
+                    if let homeVC = sideNavigationVC.sideNavigationView?.itemsList[1].viewControllerObject as? BaseViewController {
+                            homeVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
-                    else{
-                        self.sendLoggedInAnalyticsEventWithFailure(errorMessage: parsedResponse["message"] as? String ?? "")
+                    if let movieVC = sideNavigationVC.sideNavigationView?.itemsList[2].viewControllerObject as? BaseViewController {
+                            movieVC.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
+                    }
+                    if let tvVc = sideNavigationVC.sideNavigationView?.itemsList[3].viewControllerObject as? BaseViewController {
+                            tvVc.baseViewModel.fetchAfterLoginUserDataWithoutCompletion()
                     }
                 }
+                
+                DispatchQueue.main.async {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                        
+                        if loginPresentedFromItemCell {
+                            
+                            if let vc = vc as? JCHomeVC {
+                                vc.playItemAfterLogin()
+                            }
+                            else if (vc as? JCMoviesVC) != nil {
+                                //vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? JCTVVC {
+                                vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? JCMusicVC {
+                                vc.playItemAfterLogin()
+                            }
+//                            else if let vc = vc as? JCClipsVC {
+//                                vc.playItemAfterLogin()
+//                            }
+                            else if let vc = vc as? JCSearchResultViewController {
+                                vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? JCMetadataVC {
+                                vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? JCLanguageGenreVC {
+                                vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? BaseViewModel {
+                                vc.playItemAfterLogin()
+                            }
+                            else if let vc = vc as? DisneyCharacterViewModel {
+                                vc.playItemAfterLogin()
+                            }
+                        }
+                        else if presentedFromAddToWatchList {
+                            if (vc as? JCMetadataVC) != nil{
+                                //Change Add to watchlist button status
+                                
+                            }
+
+                        }
+                        else if presentedFromPlayNowButtonOfMetadata {
+                            if let vc = vc as? JCMetadataVC {
+                                //Play after login
+                                vc.didClickOnWatchNowButton(nil)
+                            }
+                        }
+                    })
+                }
+                self.sendLoggedInAnalyticsEventWithSuccess()
+                
+                
             }
+            
         }
-        
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField)
-    {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
         if(textField.isEqual(jioIdTextField))
         {
@@ -188,8 +183,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     
     
     func setUserData(userData: [String:Any])  {
-        let result = userData["result"] as? [String:Any]
-        
+        let result = userData["result"] as? [String: Any]
         JCAppUser.shared.lbCookie = result?["lbCookie"] as? String ?? ""
         JCAppUser.shared.ssoLevel = ""
         JCAppUser.shared.ssoToken = result?["ssoToken"] as? String ?? ""

@@ -14,6 +14,8 @@ class JCSettingsVC: UIViewController {
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var headerLabel: UILabel!
     
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var jioIDLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -28,13 +30,21 @@ class JCSettingsVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(_ animated: Bool)
-    {
+    override func viewDidAppear(_ animated: Bool) {
         settingsTableView.reloadData()
         
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "Settings", "Platform": "TVOS","Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if JCLoginManager.sharedInstance.isUserLoggedIn() {
+            name.text = JCAppUser.shared.commonName
+            jioIDLabel.text = JCAppUser.shared.uid
+        } else {
+            name.text = ""
+            jioIDLabel.text = ""
+        }
     }
     
 
@@ -78,18 +88,15 @@ class JCSettingsVC: UIViewController {
 
 extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
 {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 9
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = settingsTableView.dequeueReusableCell(withIdentifier: SettingCellIdentifier, for: indexPath) as! JCSettingsTableViewCell
         cell.textLabel?.textColor = #colorLiteral(red: 0.7233663201, green: 0.7233663201, blue: 0.7233663201, alpha: 1)
         cell.cellAccessoryImage.isHidden = false
@@ -164,8 +171,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
     
     
     
-    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
-    {
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         headerLabel.isHidden = false
         
         if let nextFocussedCell = context.nextFocusedView as? JCSettingsTableViewCell {
@@ -237,6 +243,8 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged Out", properties: eventProperties)
                 settingsTableView.reloadData()
                 JCLoginManager.sharedInstance.isLoginFromSettingsScreen = false
+                self.name.text = nil
+                self.jioIDLabel.text = nil
             } else {
                 let loginVc = Utility.sharedInstance.prepareLoginVC(fromAddToWatchList: false, fromPlayNowBotton: false, fromItemCell: false, presentingVC: self)
                 self.present(loginVc, animated: true, completion: nil)

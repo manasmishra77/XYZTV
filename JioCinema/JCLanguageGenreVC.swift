@@ -49,7 +49,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.languageGenreCollectionView.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        self.languageGenreCollectionView.register(UINib.init(nibName: "ItemCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ItemCollectionViewCell")
         
         if item?.app?.type == VideoType.Language.rawValue
         {
@@ -113,9 +113,55 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             params["filter"] = 0
             params["key"] = "genre"
         }
-        let languageGenreDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
-        weak var weakself = self
-        
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: LanguageGenreDetailModel.self) {[weak self] (response) in
+            guard let self = self else{return}
+            DispatchQueue.main.async {
+                self.videoCategoryButton.isEnabled = true
+                self.languageGenreButton.isEnabled = true
+            }
+            guard response.isSuccess else {
+                print(response.errorMsg ?? "")
+                return
+            }
+            if self.loadedPage == 0
+            {
+                self.languageGenreDetailModel = response.model
+                if self.languageGenreDetailModel?.data?.items?.count != 0 && self.languageGenreDetailModel?.data?.items?.count != nil{
+                    DispatchQueue.main.async {
+                        JCDataStore.sharedDataStore.languageGenreDetailModel = self.languageGenreDetailModel
+                        
+                        self.languageGenreButton.isEnabled = true
+                        self.languageGenreCollectionView.isHidden = false
+                        self.noVideosAvailableLabel.isHidden = true
+                        self.prepareView()
+                    }
+                    
+                }
+                else{
+                    DispatchQueue.main.async {
+                        self.languageGenreButton.isEnabled = false
+                        self.languageGenreCollectionView.isHidden = true
+                        self.noVideosAvailableLabel.isHidden = false
+                        self.prepareView()
+                    }
+                }
+            }
+            else
+            {
+                let tempData = response.model
+                if let items = tempData?.data?.items{
+                    for item in items
+                    {
+                        self.languageGenreDetailModel?.data?.items?.append(item)
+                    }
+                    DispatchQueue.main.async {
+                       self.languageGenreCollectionView.reloadData()
+                    }
+                }
+                
+            }
+            
+        }/*
         RJILApiManager.defaultManager.post(request: languageGenreDataRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 weakself?.videoCategoryButton.isEnabled = true
@@ -169,7 +215,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
                     }
                 }
             }
-        }
+        }*/
     }
     
     func prepareView()
@@ -290,11 +336,11 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
         let audioLanguage = MultiAudioManager.getAudioLanguageForLangGenreVC(defaultAudioLanguage: defaultLanguage, item: itemToBePlayed)
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode{
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
+                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "",latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
         }
@@ -332,35 +378,76 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     
 }
 
-extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
-{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
+extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var itemCellSize: CGSize {
+        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
+//            let height = rowHeightForPotraitForLanguageGenreScreen
+//            let widht = height*widthToHeightPropertionForPotratOLD
+            return LanguageGenreScene.potraitCellSize
+        } else {
+//            let height = rowHeightForLandscapeForLanguageGenreScreen
+//            let widht = height*widthToHeightPropertionForLandScapeOLD
+//            return CGSize(width: widht, height: height)
+            return LanguageGenreScene.landscapeCellSize
+
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return itemCellSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = languageGenreDetailModel?.data?.items?.count {
             return count
         }
         return 0
         
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 25
+    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-
-        if let imageUrl = languageGenreDetailModel?.data?.items?[indexPath.row].banner
-        {
-
-            cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
-            if let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image {
-                let url = URL(string: baseImageUrl + imageUrl)
-                cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                    (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                });
-            }
-
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        var padding : CGFloat = 0
+        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
+            padding = (collectionView.frame.width - 5*(itemCellSize.width) - 4*(25))/2
+        } else {
+            padding = (collectionView.frame.width - 3*(itemCellSize.width) - 2*(25))/2
         }
+
+        return UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
+        let item = languageGenreDetailModel?.data?.items?[indexPath.row] ?? Item()
+        let cellType: ItemCellType = .base
+        var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
+        if item.appType == .Movie {
+            layoutType = .potrait
+        } else if item.appType == .TVShow {
+            layoutType = .landscapeWithTitleOnly
+        }
+        //(item: item, cellType: cellType, layoutType: layoutType)
+        let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
+        cell.configureView(cellItems)
         
-        DispatchQueue.main.async {
+//        cell.nameLabel.text = languageGenreDetailModel?.data?.items?[indexPath.row].name ?? ""
+//        var urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlLandscapContent ?? ""
+//        if languageGenreDetailModel?.data?.items?[indexPath.row].appType == .Movie {
+//            urlString = languageGenreDetailModel?.data?.items?[indexPath.row].imageUrlPortraitContent ?? ""
+//        }
+//        let url = URL(string: urlString)
+//        cell.imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//        });
         if(indexPath.row == (self.languageGenreDetailModel?.data?.items?.count ?? 0) - 1)
         {
             if(self.loadedPage < (self.languageGenreDetailModel?.pageCount ?? 0) - 1)
@@ -376,7 +463,6 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
                 self.loadedPage += 1
             }
         }
-        }
         return cell
     }
     
@@ -388,11 +474,11 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource
             switch videoType {
             case .Movie:
                 print("At Movie")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, modelForPresentedVC: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .TVShow:
                 print("At TvShow")
-                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, languageData: item, defaultAudioLanguage : audioLang)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: videoType, fromScreen: fromScreen, categoryName: categoryName, categoryIndex: indexPath.row, tabBarIndex: 0, modelForPresentedVC: item, defaultAudioLanguage : audioLang)
                 self.present(metadataVC, animated: true, completion: nil)
             case .Music, .Clip, .Episode, .Trailer:
                 checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexPath.row)

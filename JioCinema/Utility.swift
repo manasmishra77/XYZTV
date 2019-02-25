@@ -63,8 +63,8 @@ class Utility {
         var style: UIAlertActionStyle
     }
     //MARK: Apply Gradient
-    class func applyGradient(_ view: UIView) {
-        let initalColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1).cgColor
+    class func applyGradient(_ view: UIView, _ initialColor : CGColor) {
+        let initalColor  = initialColor
         let finalColor = UIColor.clear.cgColor
         
         let colors2 = [initalColor, finalColor, finalColor, finalColor]
@@ -145,7 +145,7 @@ class Utility {
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "", isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
+    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "",latestId : String?, isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
         
         let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
         
@@ -158,6 +158,7 @@ class Utility {
         playerVC.appType = appType
         playerVC.isPlayList = isPlayList
         playerVC.playListId = playListId
+        playerVC.latestId = latestId
         
         playerVC.fromScreen = fromScreen
         playerVC.fromCategory = fromCategory
@@ -166,14 +167,15 @@ class Utility {
         playerVC.isEpisodeDataAvailable = isEpisodeAvailable
         playerVC.isMoreDataAvailable = isMoreDataAvailable
         
+        playerVC.isDisney = isDisney
         playerVC.audioLanguage = audioLanguage
         playerVC.defaultLanguage = fromLanguage
         
-        if isEpisodeAvailable{
+        if isEpisodeAvailable {
             playerVC.episodeArray = recommendationArray as! [Episode]
         }
-        else if isMoreDataAvailable{
-            playerVC.moreArray = recommendationArray as! [More]
+        else if isMoreDataAvailable {
+            playerVC.moreArray = recommendationArray as! [Item]
         }
         playerVC.director = director ?? ""
         playerVC.starCast = starCast ?? ""
@@ -182,7 +184,8 @@ class Utility {
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, languageData: Any? = nil, defaultAudioLanguage: AudioLanguage? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int?, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, modelForPresentedVC: Any? = nil, vcTypeForArtist: VCTypeForArtist? = nil, isDisney: Bool = false, defaultAudioLanguage: AudioLanguage? = nil) -> JCMetadataVC {
+
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
         metadataVC.itemId = itemToBePlayedId
@@ -193,20 +196,23 @@ class Utility {
         metadataVC.tabBarIndex = tabBarIndex
         metadataVC.shouldUseTabBarIndex = shouldUseTabBarIndex
         metadataVC.isMetaDataAvailable = isMetaDataAvailable
-        if let metaData = metaData as? MetadataModel{
+        if let metaData = metaData as? MetadataModel {
             metadataVC.metadata = metaData
         }
-        if let langData = languageData as? Item {
-            metadataVC.languageModel = langData
+        if let vcType = vcTypeForArtist {
+            metadataVC.presentingVcTypeForArtist = vcType
+        }
+        if let langData = modelForPresentedVC as? Item {
+            metadataVC.modelForPresentedVC = langData
         }
         metadataVC.defaultAudioLanguage = defaultAudioLanguage
-       // metadataVC.modalPresentationStyle = .overFullScreen
-        //metadataVC.modalTransitionStyle = .coverVertical
+        
+        metadataVC.isDisney = isDisney
         return metadataVC
     }
-    
+
     //MARK:- Login View Controller Preparation method
-    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: UIViewController?) -> JCLoginVC
+    func prepareLoginVC(fromAddToWatchList: Bool = false, fromPlayNowBotton: Bool = false, fromItemCell: Bool = false, presentingVC: Any?) -> JCLoginVC
     {
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: loginVCStoryBoardId) as! JCLoginVC
         loginVC.isLoginPresentedFromItemCell = fromItemCell
@@ -257,10 +263,12 @@ class Utility {
         return searchViewController
     }
     //MARK:- Converting Item array to More Array
-    func convertingItemArrayToMoreArray(_ itemArray: [Item]) -> [More] {
-        var moreArray = [More]()
+    func convertingItemArrayToMoreArray(_ itemArray: [Item]) -> [Item] {
+        return itemArray
+        /*
+        var moreArray = [Item]()
         for each in itemArray{
-            let more = More()
+            var more = Item()
             more.id = each.id
             more.name = each.name
             more.subtitle = each.subtitle
@@ -269,14 +277,14 @@ class Utility {
             more.language = each.language
             more.app = each.app
             more.description = each.description
-            more.totalDuration = each.totalDurationInt
+            more.totalDuration = each.totalDuration
             more.srt = ""
             more.totalDurationString = each.totalDuration
             more.image = each.image
             moreArray.append(more)
         }
         return moreArray
-        
+        */
     }
     
     //MARK:- Getting Xibs
@@ -288,8 +296,9 @@ class Utility {
     
     
     //MARK: Getting Carousal View in TableViewHeader
-    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item]) -> InfinityScrollView {
+    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item], isDisney: Bool = false) -> InfinityScrollView {
         let carousalView = Bundle.main.loadNibNamed("kInfinityScrollView", owner: delegate, options: nil)?.first as! InfinityScrollView
+            carousalView.isDisney = isDisney
             carousalView.carouselArray = carouselItems
             carousalView.loadViews()
             carousalView.carouselDelegate = delegate
@@ -325,6 +334,18 @@ class Utility {
         }
     }
     
+    class func baseTableViewInBaseViewController(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath {
+            guard nextIndexPath != prevIndexPath else {return}
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1))
+        } else if let nextIndexPath = context.nextFocusedIndexPath {
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
+        } else if let prevIndexPath = context.previouslyFocusedIndexPath {
+            Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: .white)
+        }
+    }
+    
     //MARK: ChangingTheAlpha when focus shifted from tab bar item to view controller view
    class func changingAlphaTabAbrToVC(carousalView: InfinityScrollView?, tableView: UITableView, toChange: inout Bool) {
         if toChange {
@@ -353,6 +374,10 @@ class Utility {
         }
         for each in tableView.visibleCells {
             each.contentView.alpha = 1
+            if let each = each as? BaseTableViewCell {
+                each.categoryTitleLabel.textColor = .white
+                each.itemCollectionView.alpha = 1
+            }
         }
     }
     
@@ -362,9 +387,15 @@ class Utility {
         cell.contentView.alpha = alpha
     }
     
+    class func changeTableCellAlphaForbaseTableView(_ tableView: UITableView, indexpath: IndexPath, alpha: CGFloat, textColor: UIColor) {
+        let cell = tableView.cellForRow(at: indexpath) as! BaseTableViewCell
+        cell.categoryTitleLabel.textColor = textColor
+        cell.itemCollectionView.alpha = alpha
+    }
+    
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "HelveticaNeue-Bold"
+        var fontName = "JioType-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -374,7 +405,7 @@ class Utility {
             if let font = UIFont(name: fontName, size: fontSize!) {
                 return font
             } else {
-                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize!)!
             }
             
         }
@@ -382,7 +413,7 @@ class Utility {
     
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
@@ -437,7 +468,7 @@ extension String {
     
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "HelveticaNeue-Bold"
+        var fontName = "JioType-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -447,12 +478,12 @@ extension String {
             if let font = UIFont(name: fontName, size: fontSize!) {
                 return font
             } else {
-                return UIFont(name: "HelveticaNeue-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize!)!
             }
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
@@ -480,7 +511,7 @@ extension UIView {
             layer.masksToBounds = newValue > 0
         }
     }
-    
+
     @IBInspectable var borderWidth: CGFloat {
         get {
             return layer.borderWidth
@@ -489,7 +520,7 @@ extension UIView {
             layer.borderWidth = newValue
         }
     }
-    
+
     @IBInspectable var borderColor: UIColor? {
         get {
             return UIColor(cgColor: layer.borderColor!)

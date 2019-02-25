@@ -46,30 +46,31 @@ class RJILApiManager {
     
     
     /*
-     devicetype	String deviceType (phone,tablet etc)
+     devicetype    String deviceType (phone,tablet etc)
      
-     os	String os of device (ios,android etc)
+     os    String os of device (ios,android etc)
      
-     deviceid	String device Id
+     deviceid    String device Id
      
-     uniqueid	String UniqueId of user (Except for login)
+     uniqueid    String UniqueId of user (Except for login)
      
-     ssotoken	String AccessToken required to maintain user session(Valid for 24 hrs).
+     ssotoken    String AccessToken required to maintain user session(Valid for 24 hrs).
      
-     usergroup	String Specifies the type of user
+     usergroup    String Specifies the type of user
      */
     
     
     //TODO: similar AppUser class will be made?
     var commonHeaders:[String:String]{
-        get{
+        get {
             var _commonHeaders = [String:String]()
             _commonHeaders["os"] = "ios"
             _commonHeaders["deviceType"] = "stb"
             _commonHeaders[kAppKey] = kAppKeyValue
             _commonHeaders["deviceid"] = UIDevice.current.identifierForVendor?.uuidString //UniqueDeviceID
             _commonHeaders["x-multilang"] = "true"
-
+            _commonHeaders["X-API-Key"] = apIKey
+            _commonHeaders["app-name"] = "RJIL_JioCinema"
             
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
@@ -94,7 +95,7 @@ class RJILApiManager {
     var otpHeaders:[String:String]{
         get{
             var _otpHeaders = [String:String]()
-            _otpHeaders["X-API-Key"] = "l7xxe187b7105c2f4f6ab71c078bd5fc165c"
+            _otpHeaders["X-API-Key"] = apIKey
             _otpHeaders["app-name"] = "RJIL_JioCinema"
             _otpHeaders["Content-Type"] = "application/json"
             
@@ -128,6 +129,19 @@ class RJILApiManager {
         }
     }
     
+    var disneyHeaders: [String:String] {
+        get{
+            var headers = [String:String]()
+            headers["Content-Type"] = "application/json"
+            headers[kAppKey] = kAppKeyValue
+            headers["cache-control"] = "no-cache"
+            headers["x-disney"] = "true"
+            headers["x-charcat"] = "true"
+            headers["x-apisignatures"] = "5772987293"
+            return headers
+        }
+    }
+    
     static func parse(data:Data) -> [String:Any]? {
         
         do {
@@ -157,7 +171,8 @@ class RJILApiManager {
         
     }
     
-    func prepareRequest(path: String, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest {
+    func prepareRequest(path: String, headerType: RequestHeaderType = .baseCommon, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest? {
+
         var request:URLRequest?
         
         if let params = params {
@@ -222,28 +237,22 @@ class RJILApiManager {
                 request?.setValue(key, forHTTPHeaderField: value)
             }
         }
-        if path.contains(checkVersionUrl)
-        {
+        if path.contains(checkVersionUrl) {
             request?.allHTTPHeaderFields = checkVersionHeaders
-        }
-        else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) == false
-        {
-            if(JCLoginManager.sharedInstance.loggingInViaSubId)
-            {
-                request?.allHTTPHeaderFields = subIdHeaders
-            }
-            else
-            {
-                request?.allHTTPHeaderFields = commonHeaders
-            }
-            
-        }
-        else
-        {
+        } else if (path.contains(loginViaSubIdUrl)) {
+            request?.allHTTPHeaderFields = subIdHeaders
+        } else if (path.contains(getOTPUrl) || path.contains(verifyOTPUrl)) {
             request?.allHTTPHeaderFields = otpHeaders
+        } else {
+            request?.allHTTPHeaderFields = commonHeaders
         }
         
-        return request!
+        if headerType == .disneyCommon {
+            request?.allHTTPHeaderFields = nil
+            request?.allHTTPHeaderFields = disneyHeaders
+        }
+        
+        return request
     }
     
     func downloadData(withURL urlString:String,completion:@escaping (_ urlString:String, _ responseData:Data?)->()){
@@ -273,7 +282,7 @@ class RJILApiManager {
     
     private init() {} //This prevents others from using the default '()' initializer for this class.
     
-    private func createDataTask(withRequest request:URLRequest,httpMethod method:String, completion:@escaping RequestCompletionBlock) {
+    func createDataTask(withRequest request:URLRequest,httpMethod method:String, completion:@escaping RequestCompletionBlock) {
         var originalRequest = request
         originalRequest.httpMethod = method
         originalRequest.timeoutInterval = 30.0
@@ -318,11 +327,14 @@ class RJILApiManager {
                         let params = ["mtoken": JCAppUser.shared.mToken]
                         
                         let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
-                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest, completion: { (data, response, error) in
+                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest!, completion: { (data, response, error) in
                             guard error == nil else{
                                 var errorInfo:[String:String] = [String:String]()
-                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
-                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+//                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+//                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+                                errorInfo[NSLocalizedDescriptionKey] = "Refresh SSO Failed!!!"
+                                completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: errorInfo))
+
                                 return
                             }
                             if let responseData = data{
@@ -339,7 +351,9 @@ class RJILApiManager {
                                 else{
                                     self.isRefreshingToken = false
                                     //LogOutUser and show login page
-                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+//                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                    completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: nil))
+
                                 }
                             }
                             self.pendingTasks.removeAll()
@@ -363,14 +377,14 @@ class RJILApiManager {
                 
                 completion(nil, nil, NSError(domain: "some error domain", code: 504, userInfo: errorInfo))
             }
-            else if self.httpStatusCode == 200 {//Success
+            else if self.httpStatusCode == 200 || self.httpStatusCode == 204 {//Success
                 completion(data, response, error)
             }
             else {
                 var errorInfo: [String:String] = [String:String]()
                 let errorDescription = "Unexpected Response : HTTP Status Code :\(String(describing: self.httpStatusCode))"
                 if let receivedData = data {
-                    let dict = RJILApiManager.parse(data: receivedData)
+                    // let dict = RJILApiManager.parse(data: receivedData)
                     let responseString = String(data: receivedData, encoding:.utf8)
                     self.errorMessage = errorDescription + " " + responseString!
                 }

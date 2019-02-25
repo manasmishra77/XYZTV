@@ -19,20 +19,16 @@ let screenWidth:CGFloat = UIScreen.main.bounds.width
 let isNetworkAvailable = Utility.sharedInstance.isNetworkAvailable
 let networkErrorMessage = "Please check your device's network and retry!"
 
-//var collectionIndex = -1
-//var selectedItemFromViewController:VideoType = VideoType.Home
-//var categoryTitle = ""
-//var referenceFromPlayerVC = ""
-
 
 //BasePath
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-//let basePath = prodBase
-let basePath = qaBase
+let basePath = prodBase
+//let basePath = qaBase
 
 //Config
+let common = "common/v3/"
 let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
 
 //Login
@@ -58,10 +54,21 @@ let clipsDataUrl = (basePath.appending(kAppKeyValue)).appending("/v3.1/home/get/
 let playbackRightsURL = basePath.appending("common/v3/playbackrights/get/")
 let playbackDataURL = basePath.appending("common/v3/playlistdata/get/")
 let metadataUrl = basePath.appending("common/v3/metamore/get/")
+let playBackForPlayList = basePath.appending("common/v3/playlistdata/get/")
+//From DisneyBranch
+let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
+let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
+let disneyTvWatchListUrl = basePath.appending("common/v3/metalist/get/33")
+let disneyMoviesWatchListUrl = basePath.appending("common/v3/metalist/get/32")
+/*
+ From Head
+=======
 //let moviesWatchListUrl = basePath.appending("common/v3/metalist/get/12")
 let moviesWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
 //let tvWatchListUrl = basePath.appending("common/v3/metalist/get/13")
 let tvWatchListUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
+ */
 let addToWatchListUrl = basePath.appending("common/v3/list/add")
 let removeFromWatchListUrl = basePath.appending("common/v3/list/deletecontent")
 let resumeWatchGetUrl = basePath.appending("06758e99be484fca56fb/v3/resumewatch/get")
@@ -73,10 +80,18 @@ let genreListUrl = basePath.appending("common/v3/conflist/get/39ee6ded40812c593e
 let langGenreDataUrl = basePath.appending("common/v3/langgenre/get/")
 let checkVersionUrl = basePath.appending("common/v3/checkversion/checkversion")
 let userRecommendationURL = basePath.appending("common/v3.1/userrecommendation/get")
-let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")
+let refreshTokenUrl = basePath.appending("common/v3/accesstoken/get")   
 let TrendingSearchTextURL = basePath + "common/v3/getpopular/getpopular​"
 let SetParentalPinUrl = basePath + kAppKeyValue + "/v3.1/preferences/generatecode"
 let GetParentalPinDetailUrl = basePath + kAppKeyValue + "/v3.1/preferences/get"
+let disneyHomeDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/60/"
+let disneyMoviesDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/62/"
+let disneyTVShowDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/64/"
+let disneyKidsDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/68/"
+//"http://10.130.9.92:8000/apis/06758e99be484fca56fb/v3/disneyhome/get/60/0"
+let disneyResumeWatchListUrl = basePath + kAppKeyValue + "/v3/resumewatch/get"
+let disneyCharacterherosDataUrl = basePath + "common/v3.1/character/get/"
+
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
@@ -90,6 +105,7 @@ let kAppKey = "appkey"
 
 //Values
 let kAppKeyValue = "06758e99be484fca56fb"
+let apIKey = "l7xxe187b7105c2f4f6ab71c078bd5fc165c"
 
 //StoryBoard Ids
 let loginVCStoryBoardId = "kLoginVC"
@@ -120,24 +136,47 @@ let languageGenreSelectionCellIdentifier = "kLanguageGenreSelectionPrototypeCell
 let SettingCellIdentifier = "kSettingsTableViewCell"
 let SearchRecommendationCellIdentifier = "SearchRecommendationCellIdentifier"
 let EnterParentalPinViewIdentifier = "EnterParentalPinView"
+let BaseItemCellNibIdentifier = "ItemCollectionViewCell"
+let BaseTableCellNibIdentifier = "BaseTableViewCell"
+let BaseViewControllerNibIdentifier = "BaseViewController"
 
 
 //Constant Values
-let heightOfCarouselSection = 600
+let heightOfCarouselSection : CGFloat = 670
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
-let cellTapNotificationName = Notification.Name("didClickOnCellNotification")
-let playerDismissNotificationName = Notification.Name("playerDismissed")
-let watchNowNotificationName = Notification.Name("didClickOnWatchNowNotification")
-let metadataCellTapNotificationName = Notification.Name("didClickOnMetadataCell")
-let showLoginFromMetadataNotificationName = Notification.Name("showLoginFromMetadata")
-let loginSuccessNotificationName = Notification.Name("loginSuccessful")
-let readyToPlayNotificationName = Notification.Name("readyToPlay")
-let openSearchVCNotificationName = Notification.Name("openSearchVC")
+let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")
+let didSetDisneyTVWatchlist = Notification.Name("didSetDisneyTVWatchList")
+let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList")
+
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
-let resumeWatchReloadNotification = Notification.Name("resumeWatchReload")
+
+
+struct AppNotification {
+    static let reloadResumeWatch = Notification.Name("resumeWatchReload")
+    static let reloadResumeWatchForDisney = Notification.Name("ReloadDisneyResumeWatch")
+    static let serchViewUnloading = Notification.Name("SearchViewUnloading")
+}
+struct ViewColor {
+    static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+    static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
+    
+    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 1)
+    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.6285945773, green: 0.09878890961, blue: 0.2734127343, alpha: 1)
+//    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.01960784314, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+//    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+    
+//    Cinema Left Menu Background Color  : #8D0536
+    
+    static let searchBackGround: UIColor = .black
+    static let clearBackGround: UIColor = .clear
+    static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
+    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
+    static let selectionBarOnLeftNavigationColorForDisney: UIColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+
+}
 
 
 //Google Analytics
@@ -164,6 +203,7 @@ let subscriberIdKey = "subscriberId"
 //Screen Name
 let HOME_SCREEN = "Home Screen"
 let MOVIE_SCREEN = "Movie Screen"
+let DISNEY_SCREEN = "Disney Screen"
 let TV_SCREEN = "TV Screen"
 let MUSIC_SCREEN = "Music Screen"
 let CLIP_SCREEN = "Clip Screen"
@@ -186,6 +226,97 @@ let REMOVE_FROM_WATCHLIST = "Remove From Watchlist"
 
 let SHOW_MORE = "Show More"
 let SHOW_LESS = "Show Less"
+
+
+//MARK:- Tablecell Row height
+
+let itemHeightForPortrait: CGFloat = 450
+let itemHeightForLandscape: CGFloat = 360
+let itemWidthForPortrait: CGFloat = 270
+let itemWidthForLadscape: CGFloat = 480
+
+let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90 + 14//561
+let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90 + 14//397
+let widthToHeightPropertionForPotrat: CGFloat = 277/475
+let widthToHeightPropertionForLandScape: CGFloat = 365/311
+let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
+let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
+
+var sideNavigationVC: SideNavigationVC? {
+    let window = appDelegate?.window
+    let rootNavVC = window?.rootViewController as? UINavigationController
+    let navVc = rootNavVC?.viewControllers.first as? SideNavigationVC
+    return navVc
+}
+
+
+struct SideNavigationConstants {
+    static let expandedWidth: CGFloat = 400
+    static let collapsedWidth: CGFloat = 132
+}
+
+struct LanguageGenreScene {
+    static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
+    static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
+    static var landscapeRowHeight: CGFloat {
+        let height: CGFloat = 306 + 30//rowHeightForLandscape
+        return height
+    }
+    static var potraitRowHeight: CGFloat {
+        let height: CGFloat = 470 + 30 //rowHeightForPotrait
+        return height
+    }
+    static var landscapeCellSize: CGSize {
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
+        return CGSize(width: width, height: height)
+    }
+    static var potraitCellSize: CGSize {
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
+        return CGSize(width: width, height: height)
+    }
+    
+}
+
+var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
+    return rowHeightForPotrait
+}
+var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
+    return rowHeightForLandscape
+}
+
+struct PlayerRecommendationSize {
+    static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
+    static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
+    static var landscapeRowHeight: CGFloat {
+        let height: CGFloat =  rowHeightForLandscape// 306 + 30//rowHeightForLandscape
+        return height
+    }
+    static var potraitRowHeight: CGFloat {
+        let height: CGFloat = rowHeightForPotrait//470 + 30 //rowHeightForPotrait
+        return height
+    }
+    static var landscapeCellSize: CGSize {
+        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
+        return CGSize(width: width, height: height)
+    }
+    static var potraitCellSize: CGSize {
+        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
+        return CGSize(width: width, height: height)
+    }
+    
+    static func bottomConstarint(_ appType: VideoType) -> CGFloat {
+        if appType == .Movie {
+            return -(rowHeightForPotrait - 60)
+        } else {
+            return -(rowHeightForLandscape - 60)
+        }
+        
+    }
+}
 
 
 //MARK:- Google Analytics Constants

@@ -11,15 +11,18 @@ import UIKit
 class JCSeasonCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var seasonNumberLabel: UILabel!
-    
+    var isDisney = false
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        self.layer.cornerRadius = 10.0
+        self.layer.cornerRadius = 3.0
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
             seasonNumberLabel.textColor = UIColor.white
             self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            if isDisney {
+                self.backgroundColor = ViewColor.disneyButtonColor
+            }
         }
         else
         {

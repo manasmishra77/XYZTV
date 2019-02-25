@@ -9,6 +9,736 @@
 import Foundation
 import ObjectMapper
 
+struct BaseDataModel: Codable {
+    var code: Int?
+    var message: String?
+    var totalPages: Int?
+    var data: [DataContainer]?
+    
+    //For Resume-watch response
+    var title: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case message = "message"
+        case totalPages = "totalPages"
+        case data = "data"
+        
+        //For Resume-watch response
+        case title = "title"
+    }
+    
+    init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            code = try values.decodeIfPresent(Int.self, forKey: .code)
+            message = try values.decodeIfPresent(String.self, forKey: .message)
+            totalPages = try values.decodeIfPresent(Int.self, forKey: .totalPages)
+            do {
+                let containerArr = try values.decodeIfPresent([DataContainer].self, forKey: .data)
+                self.data = containerArr
+            } catch {
+                //For recumewatchlist response
+                if let container = try values.decodeIfPresent(DataContainer.self, forKey: .data) {
+                    self.data = [container]
+                }
+            }
+            //For recumewatchlist response
+            title = try values.decodeIfPresent(String.self, forKey: .title)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+struct WatchListDataModel: Codable {
+    var code: Int?
+    var message: String?
+    var data: DataContainer?
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case message = "message"
+        case data = "data"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(Int.self, forKey: .code)
+        message = try values.decodeIfPresent(String.self, forKey: .message)
+        data = try values.decodeIfPresent(DataContainer.self, forKey: .data)
+    }
+}
+
+struct LanguageGenreDataModel: Codable {
+    var code: Int?
+    var message: String?
+    var data: DataContainer?
+    var name: String?
+    var `default`: String?
+    var label: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case message = "message"
+        case data = "data"
+        case name = "name"
+        case `default` = "default"
+        case label = "label"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(Int.self, forKey: .code)
+        message = try values.decodeIfPresent(String.self, forKey: .message)
+        data = try values.decodeIfPresent(DataContainer.self, forKey: .data)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        `default` = try values.decodeIfPresent(String.self, forKey: .`default`)
+        label = try values.decodeIfPresent(String.self, forKey: .label)
+    }
+}
+
+
+struct ResumeWatchListDataModel: Codable {
+    var code: Int?
+    var message: String?
+    var data: DataContainer?
+    var title: String?
+    var pageCount: Int?
+    var seeMore: Bool?
+    var layout: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case message = "message"
+        case data = "data"
+        case title = "title"
+        case pageCount = "pageCount"
+        case seeMore = "seeMore"
+        case layout = "layout"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(Int.self, forKey: .code)
+        message = try values.decodeIfPresent(String.self, forKey: .message)
+        data = try values.decodeIfPresent(DataContainer.self, forKey: .data)
+        title = try values.decodeIfPresent(String.self, forKey: .title)
+        pageCount = try values.decodeIfPresent(Int.self, forKey: .pageCount)
+        seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
+        do {
+            layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+        } catch{
+            do {
+                if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                layout = Int(layoutString)
+                }
+            } catch {
+            }
+        }
+            
+    }
+}
+
+struct UserRecommendationListDataModel: Codable {
+    var code: Int?
+    var message: String?
+    var data: [DataContainer]?
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case message = "message"
+        case data = "data"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(Int.self, forKey: .code)
+        message = try values.decodeIfPresent(String.self, forKey: .message)
+        data = try values.decodeIfPresent([DataContainer].self, forKey: .data)
+    }
+}
+
+struct DataContainer: Codable {
+    var items: [Item]?
+    var url: String?
+    var title: String?
+    var seeMore: Bool?
+    var order: Int?
+    var isCarousal: Bool?
+    var id: String?
+    var position: Int?
+    
+    //Added For Disney Character
+    var characterItems: [DisneyCharacterItems]?
+    var backgroundImage: String?
+    var isCharCategory: Bool?
+    
+    //Multiple Audio Parameter
+    private var defaultAudioLanguage: String?
+    
+    var categoryLanguage: AudioLanguage? {
+        return AudioLanguage(rawValue: defaultAudioLanguage?.lowercased() ?? "")
+    }
+    //to decide rowheight from category-> layout
+    private var layout: Int?
+    var layoutType: ItemCellLayoutType {
+        return ItemCellLayoutType(layout: self.layout ?? 0)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case items = "items"
+        case url = "url"
+        case title = "title"
+        case seeMore = "seeMore"
+        case order = "order"
+        case isCarousal = "isCarousal"
+        case id = "id"
+        case layout = "layout"
+        case position = "position"
+        case defaultAudioLanguage
+        case characterItems = "characterItems"
+        case backgroundImage
+        case isCharCategory = "isCharCat"
+    }
+    
+    init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            do {
+                items = try values.decodeIfPresent([Item].self, forKey: .items)
+            } catch  {
+                print(error)
+            }
+            
+            url = try values.decodeIfPresent(String.self, forKey: .url)
+            title = try values.decodeIfPresent(String.self, forKey: .title)
+            seeMore = try values.decodeIfPresent(Bool.self, forKey: .seeMore)
+            do {
+            isCarousal = try values.decodeIfPresent(Bool.self, forKey: .isCarousal)
+            } catch {
+                isCarousal = false
+            }
+            order = try values.decodeIfPresent(Int.self, forKey: .order)
+            
+            do {
+                let valString = try values.decodeIfPresent(String.self, forKey: .id)
+                self.id = valString
+            } catch {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .id)
+                self.id = "\(valNum ?? -1)"
+            }
+            do{
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                }
+                
+            }
+            position = try values.decodeIfPresent(Int.self, forKey: .position)
+            defaultAudioLanguage = try values.decodeIfPresent(String.self, forKey: .defaultAudioLanguage)
+            characterItems = try values.decodeIfPresent([DisneyCharacterItems].self, forKey: .characterItems)
+            backgroundImage = try values.decodeIfPresent(String.self, forKey: .backgroundImage)
+            do{
+                let isCharCat = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
+                isCharCategory = isCharCat
+            } catch {
+                let isCharCatBool = try values.decodeIfPresent(Bool.self, forKey: .isCharCategory)
+                isCharCategory = isCharCatBool ?? false
+            }
+        } catch  {
+            print(error)
+        }
+        
+    }
+}
+
+struct Item: Codable {
+    var id: String?
+    var name: String?
+    var showname: String?
+    var subtitle: String?
+    var image: String?
+    var tvImage: String?
+    var description: String?
+    var banner: String?
+    var format: Int?
+    var language: String?
+    var genre: String?
+    var vendor: String?
+    var app: App?
+    var latestId:String?
+    var layout:Int?
+    var duration: Int?
+    var isPlaylist: Bool? = false
+    var playlistId: String?
+    var totalDuration: Int?
+    var episodeId: String?
+    var list:[List]?
+    
+    var imageUrlPortraitContent: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = image {
+            return baseImageUrl + imageStr
+        } else if let imageStr = banner {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+    
+    var imageUrlLandscapContent: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = banner {
+            return baseImageUrl + imageStr
+        } else if let imageStr = image {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+    
+    var imageUrlForCarousel: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = tvImage {
+            return baseImageUrl + imageStr
+        } else if let imageStr = banner {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+    var appType: VideoType {
+        let videoType = VideoType(rawValue: self.app?.type ?? -111)
+        return videoType ?? .None
+    }
+    
+    // For Metadata Items
+    var rating: Int? //
+    var year:Int? //
+    var genres:[String]? //
+    var srt:String? //
+    
+    
+    //multiaudio parameter
+    private var languageIndex : LanguageIndex?
+    //Local Variable used for defult audio
+    private var defaultAudioLanguage: String?
+    mutating func setDefaultAudioLanguage(_ audioLang: AudioLanguage?) {
+        defaultAudioLanguage = audioLang?.name
+    }
+    
+    var audioLanguage: AudioLanguage? {
+        return MultiAudioManager.getItemAudioLanguage(languageIndex: languageIndex, defaultAudioLanguage: defaultAudioLanguage, displayLanguage: language)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case showname = "showname"
+        case subtitle = "subtitle"
+        case image = "image"
+        case tvImage = "tvImage"
+        case description = "description"
+        case banner = "banner"
+        case format = "format"
+        case language = "language"
+        case genre = "genre"
+        case vendor = "vendor"
+        case app = "app"
+        case latestId = "latestId"
+        case layout = "layout"
+        case duration = "duration"
+        case isPlaylist = "isPlaylist"
+        case playlistId = "playlistId"
+        case totalDuration = "totalDuration"
+        case episodeId = "episodeId"
+        case list = "list"
+        
+        // For Metadata Items
+        case rating = "rating"
+        case year = "year"
+        case genres = "genres"
+        case srt = "srt"
+        case languageIndex
+    }
+    init() {
+        
+    }
+    
+    init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            do {
+                let valString = try values.decodeIfPresent(String.self, forKey: .id)
+                self.id = valString
+            } catch {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .id)
+                self.id = "\(valNum ?? -1)"
+            }
+            name = try values.decodeIfPresent(String.self, forKey: .name)
+            showname = try values.decodeIfPresent(String.self, forKey: .showname)
+            subtitle = try values.decodeIfPresent(String.self, forKey: .subtitle)
+            image = try values.decodeIfPresent(String.self, forKey: .image)
+            tvImage = try values.decodeIfPresent(String.self, forKey: .tvImage)
+            description = try values.decodeIfPresent(String.self, forKey: .description)
+            banner = try values.decodeIfPresent(String.self, forKey: .banner)
+            do {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .format)
+                self.format = valNum
+            } catch {
+                let valString = try values.decodeIfPresent(String.self, forKey: .format)
+                self.format = Int(valString ?? "0")
+            }
+            do {
+                language = try values.decodeIfPresent(String.self, forKey: .language)
+            } catch {
+            }
+            genre = try values.decodeIfPresent(String.self, forKey: .genre)
+            vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
+            app = try values.decodeIfPresent(App.self, forKey: .app)
+            do {
+                let valString = try values.decodeIfPresent(String.self, forKey: .latestId)
+                self.latestId = valString
+            } catch {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .latestId)
+                self.latestId = "\(valNum ?? -1)"
+            }
+            do {
+                layout = try values.decodeIfPresent(Int.self, forKey: .layout)
+            } catch {
+                do {
+                    if let layoutString = try values.decodeIfPresent(String.self, forKey: .layout){
+                        layout = Int(layoutString)
+                    }
+                } catch {
+                }
+            }
+            
+            do {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .duration)
+                self.duration = valNum
+            } catch {
+                let valString = try values.decodeIfPresent(String.self, forKey: .duration)
+                self.duration = Int(valString ?? "0")
+            }
+            isPlaylist = try values.decodeIfPresent(Bool.self, forKey: .isPlaylist)
+            
+            do {
+                self.playlistId = try values.decodeIfPresent(String.self, forKey: .playlistId)
+            } catch {
+                do {
+                    let valNum = try values.decodeIfPresent(Int.self, forKey: .playlistId)
+                    self.playlistId = "\(valNum ?? -1)"
+                } catch {
+                    print(error)
+                }
+            }
+            do {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
+                self.totalDuration = valNum
+            } catch {
+                let valString = try values.decodeIfPresent(String.self, forKey: .totalDuration)
+                self.totalDuration = Int(valString ?? "0")
+            }
+            
+            episodeId = try values.decodeIfPresent(String.self, forKey: .episodeId)
+            list = try values.decodeIfPresent([List].self, forKey: .list)
+            
+            // For Metadata Items
+            do {
+                let valNum = try values.decodeIfPresent(Int.self, forKey: .rating)
+                self.rating = valNum
+            } catch {
+                do {
+                    let valDouble = try values.decodeIfPresent(Double.self, forKey: .rating)
+                    self.rating = Int(valDouble ?? 0.0)
+                } catch  {
+                    let valString = try values.decodeIfPresent(String.self, forKey: .rating)
+                    self.rating = Int(valString ?? "0")
+                }
+                
+            }
+            //year = try values.decodeIfPresent(Int.self, forKey: .year)
+            do {
+                year = try values.decodeIfPresent(Int.self, forKey: .year)
+            }   catch {
+                do{
+                    if let yearString = try values.decodeIfPresent(String.self, forKey: .year){
+                        year = Int(yearString)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+
+            genres = try values.decodeIfPresent([String].self, forKey: .genres)
+            srt = try values.decodeIfPresent(String.self, forKey: .srt)
+            languageIndex = try values.decodeIfPresent(LanguageIndex.self, forKey: .languageIndex)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+struct LanguageIndex: Codable {
+    var name: String?
+    var code: String?
+    var index: Int?
+    enum CodingKeys: String, CodingKey {
+        case code
+        case name
+        case index
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decodeIfPresent(String.self, forKey: .code)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        do {
+            index = try values.decodeIfPresent(Int.self, forKey: .index)
+        } catch {
+        }
+        
+    }
+}
+
+struct List: Codable {
+    var id: Int?
+    var name: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            id = try values.decodeIfPresent(Int.self, forKey: .id)
+            name = try values.decodeIfPresent(String.self, forKey: .name)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+
+struct App: Codable {
+    var resolution: Int?
+    var isNew: Bool?
+    var type: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case resolution = "resolution"
+        case isNew = "isNew"
+        case type = "type"
+    }
+    
+    init() {
+        
+    }
+    init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            resolution = try values.decodeIfPresent(Int.self, forKey: .resolution)
+            isNew = try values.decodeIfPresent(Bool.self, forKey: .isNew)
+            type = try values.decodeIfPresent(Int.self, forKey: .type)
+        } catch {
+            print(error)
+        }
+    }
+}
+enum BaseVCType: String {
+    case home, movie, tv, music, clip, search, disneyHome, disneyMovies, disneyKids, disneyTVShow
+    
+    var isDisney: Bool {
+        if self == .disneyHome || self == .disneyMovies || self == .disneyKids || self == .disneyTVShow{
+            return true
+        }
+        return false
+    }
+    var name: String {
+        if isDisney {
+            return "Disney"
+        }
+        if self == .movie{
+            return "Movies"
+        }
+        if self == .tv {
+            return self.rawValue.uppercased()
+        }
+        return self.rawValue.capitalized
+    }
+    var tabBarIndex: Int? {
+        switch self {
+        case .home:
+            return 0
+        case .movie:
+            return 1
+        case .tv:
+            return 2
+        case .music:
+            return 3
+        case .search:
+            return 5
+        case .disneyHome:
+            return 4
+        default:
+            return nil
+        }
+    }
+    
+}
+/*
+enum LayoutType {
+    case Square
+    case Potrait
+    case Landscape
+    case Carousel
+    
+    init(layout : Int) {
+        switch layout {
+        case 1,9: self = .Carousel
+        case 2,4,7,5: self = .Landscape
+        case 12: self = .Square
+        case 3:  self = .Potrait
+        default: self = .Landscape
+        }
+    }
+}*/
+
+
+enum VideoType: Int {
+    case Search             = -2
+    case Home               = -1
+    case Movie              = 0
+    case TVShow             = 1
+    case Music              = 2
+    case Trailer            = 3
+    case Clip               = 6
+    case Episode            = 7
+    case ResumeWatching     = 8
+    case Language           = 9
+    case Genre              = 10
+    case None               = -111
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
+}
+
+enum Month: Int {
+    case Jan = 1
+    case Feb = 2
+    case Mar = 3
+    case Apr = 4
+    case May = 5
+    case Jun = 6
+    case Jul = 7
+    case Aug  = 8
+    case Sep = 9
+    case Oct = 10
+    case Nov  = 11
+    case Dec  = 12
+    case None = 0
+    
+    var name: String {
+        get { return String(describing: self) }
+    }
+    
+}
+struct DisneyCharacterItems : Codable {
+    let id : String?
+    let name : String?
+    let image : String?
+    let logo : String?
+    let url : String?
+    let totalPages : Int?
+    let totalItems : Int?
+    let tabId : String?
+    let items : [Item]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case image
+        case logo
+        case url
+        case totalPages
+        case totalItems
+        case tabId
+        case items
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            let itemIdNum = try values.decodeIfPresent(Int.self, forKey: .id)
+            id = "\(itemIdNum ?? 0)"
+        } catch {
+            let itemIdString = try values.decodeIfPresent(String.self, forKey: .id)
+            id = itemIdString
+        }
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        image = try values.decodeIfPresent(String.self, forKey: .image)
+        logo = try values.decodeIfPresent(String.self, forKey: .logo)
+        url = try values.decodeIfPresent(String.self, forKey: .url)
+        do {
+            let formatInt = try values.decodeIfPresent(Int.self, forKey: .totalPages)
+            totalPages = formatInt
+        } catch {
+            do {
+                let formatString = try values.decodeIfPresent(String.self, forKey: .totalPages)
+                totalPages = Int(formatString ?? "0")
+            } catch {
+                totalPages = nil
+            }
+        }
+        do {
+            let formatInt = try values.decodeIfPresent(Int.self, forKey: .totalItems)
+            totalItems = formatInt
+        } catch {
+            do {
+                let formatString = try values.decodeIfPresent(String.self, forKey: .totalItems)
+                totalItems = Int(formatString ?? "0")
+            } catch {
+                totalItems = nil
+            }
+        }
+        do {
+            let itemIdNum = try values.decodeIfPresent(Int.self, forKey: .tabId)
+            tabId = "\(itemIdNum ?? -1)"
+        } catch {
+            let itemIdString = try values.decodeIfPresent(String.self, forKey: .tabId)
+            tabId = itemIdString
+        }
+        items = try values.decodeIfPresent([Item].self, forKey: .items)
+    }
+    var LogoUrlForDisneyChar: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let logoStr = logo{
+            return baseImageUrl + logoStr
+        }
+        return ""
+    }
+    var ImageUrlForDisneyChar: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = image{
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+    
+}
+
+
+
+
+
+
+/*
 class BaseDataModel:Mappable
 {
     var code:Int?
@@ -342,4 +1072,4 @@ enum Month: Int {
     }
 }
 
-
+*/

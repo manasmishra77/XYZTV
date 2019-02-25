@@ -33,4 +33,34 @@ class JCButton: UIButton
     }
     */
 
+    
+}
+class JCDisneyButton: UIButton
+{
+    
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
+    {
+        if (context.nextFocusedView == self)
+        {
+            self.cornerRadius = 10
+            self.borderWidth = 5
+            self.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+            self.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
+        }
+        else
+        {
+            self.borderWidth = 0
+            self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+        }
+        
+    }
+    /*
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
+    
 }

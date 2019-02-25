@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+/*
 class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, JCBaseTableViewCellDelegate, JCCarouselCellDelegate {
     var loadedPage = 0
     fileprivate var screenAppearTiming = Date()
@@ -286,3 +286,4 @@ class JCClipsVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarC
   
     
 }
+*/

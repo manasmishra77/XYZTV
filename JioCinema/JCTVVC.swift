@@ -46,7 +46,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         screenAppearTiming = Date()
 
         self.tabBarController?.delegate = self
-        
+
         //Clevertap Navigation Event
         let eventProperties = ["Screen Name": "TV", "Platform": "TVOS", "Metadata Page": ""]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
@@ -77,15 +77,14 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+       return rowHeightForLandscape
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        
         //dataItemsForTableview.removeAll()
         if (JCDataStore.sharedDataStore.tvData?.data) != nil {
-           changingDataSourceForBaseTableView()
+           self.changingDataSourceForBaseTableView()
             return dataItemsForTableview.count
         }
         else
@@ -104,8 +103,8 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             if dataItemsForTableview[0].isCarousal ?? false {
                 dataItemsForTableview.remove(at: 0)
             }
-            if isTVWatchlistAvailable{
-                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data, (watchListData.items?.count ?? 0) > 0 {
+            if isTVWatchlistAvailable {
+                if let watchListData = JCDataStore.sharedDataStore.tvWatchList?.data?[0], (watchListData.items?.count ?? 0) > 0 {
                     dataItemsForTableview.insert(watchListData, at: 0)
                 }
             }
@@ -182,6 +181,30 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
             return
         }
         isTVDataBeingCalled = true
+        RJILApiManager.getBaseModel(pageNum: page, type: .tv) {[unowned self] (isSuccess, erroMsg) in
+            guard isSuccess else {
+                self.isTVDataBeingCalled = false
+                return
+            }
+            //Success
+            if(self.loadedPage == 0) {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isTVDataBeingCalled = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadedPage += 1
+                    self.activityIndicator.isHidden = true
+                    self.baseTableView.reloadData()
+                    self.baseTableView.layoutIfNeeded()
+                    self.isTVDataBeingCalled = false
+                }
+            }
+        }/*
         let url = tvDataUrl.appending(String(page))
         let tvDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
         weak var weakSelf = self
@@ -199,7 +222,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 weakSelf?.evaluateTVData(dictionaryResponseData: responseData)
                 return
             }
-        }
+        }*/
     }
     
     func evaluateTVData(dictionaryResponseData responseData:Data)
@@ -231,6 +254,29 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
 
     func callWebServiceForTVWatchlist()
     {
+        RJILApiManager.getWatchListData(isDisney : false, type: .tv) {[weak self] (isSuccess, errorMsg) in
+            guard let self = self else {return}
+            guard isSuccess else {return}
+            if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count ?? 0) > 0 {
+                self.isTVWatchlistAvailable = true
+                self.changingDataSourceForBaseTableView()
+                DispatchQueue.main.async {
+                    JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "My Watchlist"
+                    if self.baseTableView != nil{
+                        self.baseTableView.reloadData()
+                        self.baseTableView.layoutIfNeeded()
+                    }
+                }
+            } else if JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count == nil {
+                self.isTVWatchlistAvailable = false
+                DispatchQueue.main.async {
+                    if self.baseTableView != nil{
+                        self.baseTableView.reloadData()
+                    }
+                }
+            }
+        }
+        /*
         let url = tvWatchListUrl
         let uniqueID = JCAppUser.shared.unique
         var params: Dictionary<String, Any> = [:]
@@ -262,36 +308,36 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
                 }
                 return
             }
-        }
+        }*/
     }
     
-    func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
-    {
-        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
-        if (JCDataStore.sharedDataStore.tvWatchList?.data?.items?.count ?? 0) > 0 {
-            weak var weakSelf = self
-            weakSelf?.isTVWatchlistAvailable = true
-            weakSelf?.changingDataSourceForBaseTableView()
-            DispatchQueue.main.async {
-                JCDataStore.sharedDataStore.tvWatchList?.data?.title = "Watch List"
-                if weakSelf?.baseTableView != nil{
-                    weakSelf?.baseTableView.reloadData()
-                    weakSelf?.baseTableView.layoutIfNeeded()
-                }
-            }
-        }
-        else {
-            weak var weakSelf = self
-            DispatchQueue.main.async {
-                if weakSelf?.baseTableView != nil{
-                    weakSelf?.baseTableView.reloadData()
-                    weakSelf?.baseTableView.layoutIfNeeded()
-                }
-            }
-        }
-
-    }
-    
+//    func evaluateTVWatchlistData(dictionaryResponseData responseData:Data)
+//    {
+//        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .TVWatchList)
+//        if (JCDataStore.sharedDataStore.tvWatchList?.data?[0].items?.count)! > 0 {
+//            weak var weakSelf = self
+//            weakSelf?.isTVWatchlistAvailable = true
+//            weakSelf?.changingDataSourceForBaseTableView()
+//            DispatchQueue.main.async {
+//                JCDataStore.sharedDataStore.tvWatchList?.data?[0].title = "Watch List"
+//                if weakSelf?.baseTableView != nil{
+//                    weakSelf?.baseTableView.reloadData()
+//                    weakSelf?.baseTableView.layoutIfNeeded()
+//                }
+//            }
+//        }
+//        else {
+//            weak var weakSelf = self
+//            DispatchQueue.main.async {
+//                if weakSelf?.baseTableView != nil{
+//                    weakSelf?.baseTableView.reloadData()
+//                    weakSelf?.baseTableView.layoutIfNeeded()
+//                }
+//            }
+//        }
+//
+//    }
+//    
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true
     
@@ -360,7 +406,7 @@ class JCTVVC: JCBaseVC,UITableViewDelegate,UITableViewDataSource, UITabBarContro
         if(JCLoginManager.sharedInstance.isUserLoggedIn())
         {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
-            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode , fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : itemToBePlayed.audioLanguage)
+            let playervc = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: itemToBePlayed.banner ?? "", itemTitle: itemToBePlayed.name ?? "", itemDuration: 0.0, totalDuration: 0.0, itemDesc: itemToBePlayed.description ?? "", appType: VideoType.Episode ,latestId: itemToBePlayed.latestId, fromScreen: TV_SCREEN, fromCategory: categoryName , fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : itemToBePlayed.audioLanguage)
             present(playervc, animated: true, completion: nil)
         }
         else

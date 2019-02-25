@@ -20,28 +20,17 @@ class JCSplashVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Utility.sharedInstance.startNetworkNotifier()
-
-        //Call config service
-        weak var weakSelf = self
-
+        
         if(JCLoginManager.sharedInstance.isUserLoggedIn()) {
             JCAppUser.shared = JCLoginManager.sharedInstance.getUserFromDefaults()
             callWebServiceToCheckVersion()
-        }
-        else
-        {
-            JCLoginManager.sharedInstance.performNetworkCheck(completion: { (isOnJioNetwork) in
+        } else {
+            JCLoginManager.sharedInstance.performNetworkCheck(completion: { [weak self] (isOnJioNetwork) in
+                guard let self = self else {return}
                 //user has been set in user defaults
-                if isOnJioNetwork {
-                    weakSelf?.callWebServiceToCheckVersion()
-                } else {
-                    weakSelf?.callWebServiceToCheckVersion()
-                }
+                self.callWebServiceToCheckVersion()
             })
         }
-        
-        
-        // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,97 +41,157 @@ class JCSplashVC: UIViewController {
     deinit {
         print("In Splash Screen Deinit")
     }
-    func callWebservicesForHomeData()
-    {
-        callWebServiceForHomeData(page: 0)
-        weak var weakSelf = self
-        dispatchGroup.notify(queue: DispatchQueue.main)
-        {
-            //weakSelf?.mergeDataArray()
-            if (weakSelf?.isHomeDataAvailable)!
-            {
-                weakSelf?.navigateToHomeVC()
+    //MARK:- Version check and update
+    func callWebServiceToCheckVersion() {
+        RJILApiManager.callWebServiceToCheckVersion {[weak self] (response) in
+            guard let self = self else {return}
+            if response.isSuccess {
+                self.tryAgainCount = 0
+                let checkModel =  response.model!
+                let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+                // If build number is coming from back-end
+                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel.result?.data?[0].version?.floatValue(), upComingBuildNumber != 0 {
+                    if upComingBuildNumber > currentBuildNumber {
+                        if let mandatory = checkModel.result?.data?[0].mandatory, mandatory {
+                            self.showUpdateAlert(isMandatory: true, alertMessage: checkModel.result?.data?[0].description ?? "", title: checkModel.result?.data?[0].heading ?? "")
+                        } else {
+                            self.showUpdateAlert(isMandatory: false, alertMessage: checkModel.result?.data?[0].description ?? "", title: checkModel.result?.data?[0].heading ?? "")
+                        }
+                        return
+                    }
+                }
+                self.callWebServiceForConfigData()
+            } else {
+                self.showAlertForCheckVersion(alertString: "")
             }
-            else
-            {
-                print("*********home data failed**********")
-                weakSelf?.showAlert(alertString: networkErrorMessage)
-            }
-        }
-    }
-    
-    func callWebServiceForConfigData()
-    {
-        let params = [kAppKey: kAppKeyValue]
-        
-        let configDataRequest = RJILApiManager.defaultManager.prepareRequest(path: configUrl, params: params, encoding: .URL)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.get(request: configDataRequest) { (data, response, error) in
             
-            if let responseError = error {
-                //TODO: handle error
-                print(responseError)
-                print("*********config data failed**********")
-                weakSelf?.showAlert(alertString: networkErrorMessage)
-                return
-            }
-            if let responseData = data
-            {
-                weakSelf?.evaluateConfigData(dictionaryResponseData: responseData)
-                weakSelf?.callWebservicesForHomeData()
-                return
-            }
         }
     }
-    
-    func evaluateConfigData(dictionaryResponseData responseData:Data) {
-        //Success
-        JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
-    }
-    
-    func callWebServiceForHomeData(page: Int)
-    {
-        let url = homeDataUrl.appending(String(page))
-        let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
-        weak var weakSelf = self
-        dispatchGroup.enter()
-        RJILApiManager.defaultManager.get(request: homeDataRequest) { (data, response, error) in
-            if error != nil {
-                //TODO: handle error
-                weakSelf?.isHomeDataAvailable = false
-                weakSelf?.dispatchGroup.leave()
-                return
-            }
-            if let responseData = data {
-                weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
+    func callWebServiceForConfigData() {
+        RJILApiManager.getConfigData {[weak self] (isSuccess, errorMsg) in
+            guard let self = self else {return}
+            if isSuccess {
                 ParentalPinManager.shared.setParentalPinModel()
-                weakSelf?.isHomeDataAvailable = true
-                weakSelf?.dispatchGroup.leave()
-                return
+                self.callWebServiceForHomeData(page: 0)
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlert(alertString: networkErrorMessage)
+                }
             }
         }
     }
     
-    func evaluateHomeData(dictionaryResponseData responseData:Data) {
-        //Success
-        JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
+    func callWebServiceForHomeData(page: Int) {
+        RJILApiManager.getBaseModel(pageNum: page, type: .home) {[weak self] (isSuccess, erroMsg) in
+            guard let self = self else {return}
+            guard isSuccess else {
+                DispatchQueue.main.async {
+                    self.showAlert(alertString: networkErrorMessage)
+                }
+                return
+            }
+            self.navigateToHomeVC()
+        }
     }
     
     
     func navigateToHomeVC() {
         DispatchQueue.main.async {
             
-            let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-            let navController = UINavigationController(rootViewController: tabBarVC)
+            let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
+            let navController = UINavigationController(rootViewController: sideNavVC)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
+            
+//            let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
+//            let navController = UINavigationController(rootViewController: tabBarVC)
+//            navController.navigationBar.isHidden = true
+//            self.view.window?.rootViewController = navController
         }
     }
     
-
     
-    func showAlert(alertString: String)
-    {
+    /*
+     func callWebservicesForHomeData() {
+     callWebServiceForHomeData(page: 0)
+     weak var weakSelf = self
+     dispatchGroup.notify(queue: DispatchQueue.main)
+     {
+     //weakSelf?.mergeDataArray()
+     if (weakSelf?.isHomeDataAvailable)!
+     {
+     weakSelf?.navigateToHomeVC()
+     }
+     else
+     {
+     print("*********home data failed**********")
+     weakSelf?.showAlert(alertString: networkErrorMessage)
+     }
+     }
+     }
+     
+     
+     /*
+     let params = [kAppKey: kAppKeyValue]
+     
+     let configDataRequest = RJILApiManager.defaultManager.prepareRequest(path: configUrl, params: params, encoding: .URL)
+     weak var weakSelf = self
+     RJILApiManager.defaultManager.get(request: configDataRequest!) { (data, response, error) in
+     
+     if let responseError = error {
+     //TODO: handle error
+     print(responseError)
+     print("*********config data failed**********")
+     weakSelf?.showAlert(alertString: networkErrorMessage)
+     return
+     }
+     if let responseData = data
+     {
+     weakSelf?.evaluateConfigData(dictionaryResponseData: responseData)
+     weakSelf?.callWebservicesForHomeData()
+     return
+     }
+     }*/
+     }
+     
+     func evaluateConfigData(dictionaryResponseData responseData:Data) {
+     //Success
+     //JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
+     }
+     
+     
+     func callWebServiceForHomeData(page: Int) {
+     let url = homeDataUrl.appending(String(page))
+     let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
+     weak var weakSelf = self
+     dispatchGroup.enter()
+     RJILApiManager.defaultManager.get(request: homeDataRequest!) { (data, response, error) in
+     if error != nil {
+     //TODO: handle error
+     weakSelf?.isHomeDataAvailable = false
+     weakSelf?.dispatchGroup.leave()
+     return
+     }
+     if let responseData = data {
+     weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
+     ParentalPinManager.shared.setParentalPinModel()
+     weakSelf?.isHomeDataAvailable = true
+     weakSelf?.dispatchGroup.leave()
+     return
+     }
+     }
+     }
+     
+     func evaluateHomeData(dictionaryResponseData responseData:Data) {
+     //Success
+     JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
+     }*/
+    
+    
+    
+    
+    
+    func showAlert(alertString: String) {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",
                                       message: alertString,
@@ -165,54 +214,40 @@ class JCSplashVC: UIViewController {
         }
         
     }
-    //MARK:- Version check and update
-    func callWebServiceToCheckVersion() {
-        let url = checkVersionUrl
-        var checkVersionRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+    
+    func showAlertForCheckVersion(alertString: String) {
         weak var weakSelf = self
-        checkVersionRequest.timeoutInterval = 5
-        //dispatchGroup.enter()
-        RJILApiManager.defaultManager.get(request: checkVersionRequest) { (data, response, error) in
-            if error != nil {
-                //print(error)
-                weakSelf?.callWebServiceForConfigData()
-                return
-            }
-            if let responseData = data {
-                let checkModel = weakSelf?.parseCheckVersionData(responseData)
-                _ = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1000"
-                let versionBuildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
-                
-                // If build number is coming from back-end
-                if let currentBuildNumber = Float(versionBuildNumber), let upComingBuildNumber = checkModel?.result?.data?[0].version?.floatValue(), upComingBuildNumber != 0 {
-                    if upComingBuildNumber > currentBuildNumber{
-                        if let mandatory = checkModel?.result?.data?[0].mandatory, mandatory{
-                            weakSelf?.showUpdateAlert(isMandatory: true, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
-                        }else{
-                            weakSelf?.showUpdateAlert(isMandatory: false, alertMessage: checkModel?.result?.data?[0].description ?? "", title: checkModel?.result?.data?[0].heading ?? "")
-                        }
-                    }
-                    else {
-                        weakSelf?.callWebServiceForConfigData()
-                    }
+        let alert = UIAlertController(title: "Connection Error",
+                                      message: alertString,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
+            weakSelf?.tryAgainCount += 1
+            if let count = weakSelf?.tryAgainCount {
+                if count < 4 {
+                    weakSelf?.callWebServiceToCheckVersion()
+                } else {
+                    exit(0)
                 }
-                else
-                {
-                    weakSelf?.callWebServiceForConfigData()
-                }
-                return
             }
         }
+        
+        alert.addAction(cancelAction)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
     }
     
-    func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
-        do {
-               return try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
-        } catch {
-            print("Error deserializing JSON: \(error)")
-        }
-        return nil
-    }
+    
+    //    func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
+    //        do {
+    //               return try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
+    //        } catch {
+    //            print("Error deserializing JSON: \(error)")
+    //        }
+    //        return nil
+    //    }
     
     func showUpdateAlert(isMandatory: Bool, alertMessage: String, title: String) {
         weak var weakSelf = self
@@ -240,6 +275,7 @@ class JCSplashVC: UIViewController {
         }
         
     }
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if presses.first?.type == UIPressType.menu {
             exit(0)

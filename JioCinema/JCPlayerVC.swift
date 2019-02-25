@@ -64,6 +64,10 @@
     @IBOutlet weak var nextVideoThumbnail               :UIImageView!
     @IBOutlet weak var collectionView_Recommendation    :UICollectionView!
     
+    @IBOutlet weak var heightRecommendationView: NSLayoutConstraint!
+    
+    @IBOutlet weak var bottomConstarintRecommendationView: NSLayoutConstraint!
+    
     //Player changes
     var id: String = ""
     var bannerUrlString: String = ""
@@ -73,8 +77,9 @@
     var currentDuration: Float = 0.0
     var appType: VideoType = VideoType.Clip
     var isPlayList: Bool = false
+    var latestId : String?
     var episodeArray = [Episode]()
-    var moreArray = [More]()
+    var moreArray = [Item]()
     var isMoreDataAvailable = false
     var isEpisodeDataAvailable = false
     var playListId: String = ""
@@ -100,6 +105,8 @@
     var defaultLanguage = ""
     
     var audioLanguage : AudioLanguage?
+    
+    var isDisney = false
     
     fileprivate var isPlayListFirstItemToBePlayed = false
     fileprivate var videoViewingLapsedTime = 0.0
@@ -164,6 +171,8 @@
         preparePlayerVC()
         addSwipeGesture()
         self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
+        let cellNib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
+        collectionView_Recommendation.register(cellNib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
     }
     
     override func didReceiveMemoryWarning() {
@@ -209,16 +218,15 @@
                     if remainingTime <= 5
                     {
                         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
-                        if autoPlayOn, (self?.isPlayList ?? false), (self?.nextVideoView.isHidden ?? false){
-                            if self?.appType == .Music || self?.appType == .Clip || self?.appType == .Trailer{
+                        if autoPlayOn, (self?.isPlayList ?? false), (self?.nextVideoView.isHidden ?? false) {
+                             if self?.appType == .Episode {
+                                if let nextItem = self?.gettingNextEpisode(episodes: (self?.episodeArray ?? [Episode]()), index: (self?.currentPlayingIndex ?? -1)) {
+                                    self?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
+                                }
+                            } else {
                                 if (self?.currentPlayingIndex)! + 1 < (self?.moreArray.count)! {
                                     let nextItem = self?.moreArray[(self?.currentPlayingIndex)! + 1]
                                     self?.showNextVideoView(videoName: nextItem?.name ?? "", remainingTime: Int(remainingTime), banner: nextItem?.banner ?? "")
-                                }
-                            }
-                            else if self?.appType == .Episode {
-                                if let nextItem = self?.gettingNextEpisode(episodes: (self?.episodeArray ?? [Episode]()), index: (self?.currentPlayingIndex ?? -1)) {
-                                    self?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
                                 }
                             }
                         }
@@ -274,8 +282,9 @@
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
+            let totalDurationFloat = Double(totalDuration.floatValue() ?? 0)
             
-            if timeDifference < 300 {
+            if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist(id)
             } else {
                 let audio = self.playerItem?.selected(type: .audio) ?? ""
@@ -327,7 +336,7 @@
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
                 _ = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
-                guard let assetUrl = URL(string: changedUrl) else {
+                guard let assetUrl = URL(string: absoluteUrlString) else {
                     return
                 }
                 videoAsset = AVURLAsset(url: assetUrl, options: header)
@@ -381,6 +390,8 @@
     }
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
+        let rule = AVTextStyleRule.init(textMarkupAttributes: [kCMTextMarkupAttribute_RelativeFontSize as String : 80])
+        playerItem?.textStyleRules = [rule] as? [AVTextStyleRule]
         self.addMetadataToPlayer()
         if playerController == nil {
             playerController = AVPlayerViewController()
@@ -400,13 +411,16 @@
             player = AVPlayer(playerItem: playerItem)
         }
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage)
-        self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
+            
+        }
+        if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: id, appType: appType, defaultLanguage: audioLanguage) {
+            self.playerAudioLanguage(audioLanguageToBePlayed.name)
+        }
         addPlayerNotificationObserver()
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
-        
         self.view.bringSubview(toFront: self.nextVideoView)
         self.view.bringSubview(toFront: self.view_Recommendation)      
         
@@ -415,7 +429,10 @@
 
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
-        guard isAutoPlaySubtitle else {return}
+        guard isAutoPlaySubtitle else {
+             //_ = player?.currentItem?.selectedMediaOption(in: <#T##AVMediaSelectionGroup#>)
+            return
+        }
         let subtitles = player?.currentItem?.tracks(type: .subtitle)
         // Select track with displayName
         guard (subtitles?.count ?? 0) > 0 else {return}
@@ -438,22 +455,21 @@
     }
     
     func handleForPlayerReference() {
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             collectionView_Recommendation.reloadData()
             if isPlayList{
                 var i = 0
                 var isMatched = false
-                for each in moreArray{
+                for each in moreArray {
                     if each.id == id{
                         isMatched = true
                         break
                     }
                     i = i + 1
                 }
-                if isMatched,i == moreArray.count{
+                if isMatched,i == moreArray.count {
                     i = i - 1
-                }
-                else if i == moreArray.count{
+                } else if i == moreArray.count {
                     i = 0
                 }
                 scrollCollectionViewToRow(row: i)
@@ -461,11 +477,10 @@
                 scrollCollectionViewToRow(row: 0)
             }
             
-        }
-        else if isEpisodeDataAvailable{
+        } else if isEpisodeDataAvailable {
             var i = 0
             var isMatched = false
-            for each in episodeArray{
+            for each in episodeArray {
                 if each.id == id{
                     isMatched = true
                     episodeNumber = each.episodeNo
@@ -474,9 +489,9 @@
                 i = i + 1
             }
             if i == episodeArray.count{
-                if isMatched{
+                if isMatched {
                     i = i - 1
-                }else{
+                } else {
                     i = 0
                 }
             }
@@ -484,7 +499,7 @@
             scrollCollectionViewToRow(row: i)
         } else {
             if isPlayList, appType == .Episode {
-                callWebServiceForMoreLikeData(id: playListId)
+                callWebServiceForMoreLikeData(id: id)
             } else if isPlayList {
                 callWebServiceForPlayListData(id: playListId)
             } else {
@@ -580,30 +595,27 @@
                 swipeDownRecommendationView()
             }
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty)
-        {
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackBufferEmpty) {
             startTime_BufferDuration = Date()
             //bufferCount = bufferCount + 1
             
         }
-        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp)
-        {
-            var currentTimeDuration : Int = 0
-            if(player?.timeControlStatus == .playing)
-            {
-                
-                    if audioLanguage?.name != player?.currentItem?.selected(type: .audio) {
-                        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
-                            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
-                            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
-                            timeSpent = timeSpent > 0 ? timeSpent : 0
 
-                            //audio lang for next item 
-                            let newAudionLanguage : AudioLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "") ?? .none
-                            audioLanguage = newAudionLanguage
-                            let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
-                            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
-                            }
+        else if keyPath == #keyPath(JCPlayerVC.player.currentItem.isPlaybackLikelyToKeepUp) {
+            let currentTimeDuration : Int = 0
+            if(player?.timeControlStatus == .playing) {
+                if audioLanguage?.name != player?.currentItem?.selected(type: .audio) && (audioLanguage?.name != nil) {
+                    if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
+                        let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+                        var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+                        timeSpent = timeSpent > 0 ? timeSpent : 0
+                        
+                        //audio lang for next item
+                        let newAudionLanguage = AudioLanguage(rawValue: player?.currentItem?.selected(type: .audio)?.lowercased() ?? "")
+                        audioLanguage = newAudionLanguage
+                        let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(currentTimeDuration), contentId: id, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
+                        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
+                    }
                     self.sendAudioChangedCleverTapEvent(duration: String(currentTimeDuration))
                 }
                 
@@ -648,7 +660,7 @@
                     isFpsUrl = false
                     self.handleAESStreamingUrl(videoUrl: self.playbackRightsData?.aesUrl ?? "")
                 } else {
-                    /*
+                    
                     //AES url failed
                     failureType = "AES"
                     let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
@@ -662,7 +674,7 @@
                     alert.addAction(cancelAction)
                     DispatchQueue.main.async {
                         self.present(alert, animated: false, completion: nil)
-                    }*/
+                    }
                 }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
@@ -683,8 +695,8 @@
     }
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList{
-            if self.appType == .Music || self.appType == .Clip || self.appType == .Trailer{
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
+            if self.appType == .Music || self.appType == .Clip || self.appType == .Trailer || self.appType == .Movie {
                 if (self.currentPlayingIndex) + 1 < (self.moreArray.count) {
                     let nextItem = self.moreArray[(self.currentPlayingIndex) + 1]
                     if isMediaEndAnalyticsEventNotSent{
@@ -693,12 +705,13 @@
                     }
                     changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: nextItem.description ?? "", appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                     preparePlayerVC()
-                }else{
+                } else {
                     dismissPlayerVC()
                 }
             }
             else if self.appType == .Episode {
                 if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
+                    updateResumeWatchList()
                     changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                     preparePlayerVC()
                 } else {
@@ -792,7 +805,8 @@
                 self.collectionView_Recommendation.isScrollEnabled = true
                 let path = IndexPath(row: row, section: 0)
                 
-                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
+                self.collectionView_Recommendation.layoutIfNeeded()
                 let cell = self.collectionView_Recommendation.cellForItem(at: path)
                 self.currentPlayingIndex = row
                 self.myPreferredFocusView = cell
@@ -808,11 +822,11 @@
         Log.DLog(message: "openMetaDataVC" as AnyObject)
         if let topController = UIApplication.topViewController() {
             Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
-            let tempItem = Item()
+            var tempItem = Item()
             tempItem.id = model.id
             tempItem.name = model.name
             tempItem.banner = model.banner
-            let app = App()
+            var app = App()
             app.type = VideoType.Movie.rawValue
             tempItem.app = app
             
@@ -901,17 +915,14 @@
     }
     
     //MARK:- Swipe Up Recommendation View
-    func swipeUpRecommendationView()
-    {
+    func swipeUpRecommendationView() {
         recommendationViewchangeTo(1.0, visibility: true, animationDuration: 0.0)
-        
         Log.DLog(message: "swipeUpRecommendationView" as AnyObject)
         DispatchQueue.main.async {
             
             UIView.animate(withDuration: 0.5, animations: {
-                let tempFrame = self.nextVideoView.frame
-                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y - 300, width: tempFrame.size.width, height: tempFrame.size.height)
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight - 300, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.bottomConstarintRecommendationView.constant = 60
+                self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: true)
             })
@@ -922,11 +933,9 @@
         Log.DLog(message: "swipeDownRecommendationView" as AnyObject)
         collectionView_Recommendation.isScrollEnabled = false
         DispatchQueue.main.async {
-            
             UIView.animate(withDuration: 0.5, animations: {
-                let tempFrame = self.nextVideoView.frame
-                self.nextVideoView.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y + 300, width: tempFrame.size.width, height: tempFrame.size.height)
-                self.view_Recommendation.frame = CGRect(x: 0, y: screenHeight-60, width: screenWidth, height: self.view_Recommendation.frame.height)
+                self.bottomConstarintRecommendationView.constant = -self.heightRecommendationView.constant + 60
+                self.view.layoutIfNeeded()
             }, completion: { (completed) in
                 self.setCustomRecommendationViewSetting(state: false)
                 self.recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
@@ -936,7 +945,7 @@
     
     
     //MARK:- Show Alert
-    func showAlert(alertTitle:String, alertMessage:String, completionHandler:(()->Void)?)
+    func showAlert(alertTitle: String, alertMessage: String, completionHandler: (()->Void)?)
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
@@ -953,12 +962,63 @@
     //MARK:- Web service methods
     func callWebServiceForMoreLikeData(id: String) {
         let url = metadataUrl.appending(id)
+        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                return
+            }
+            var i = 0
+            if let recommendationItems = response.model?.more {
+                self.isMoreDataAvailable = false
+                self.moreArray.removeAll()
+                if recommendationItems.count > 0 {
+                    self.isMoreDataAvailable = true
+                    self.moreArray = recommendationItems
+                }
+                
+            } else if let episodes = response.model?.episodes {
+                self.isEpisodeDataAvailable = false
+                
+                self.episodeArray.removeAll()
+                if episodes.count > 0{
+                    self.episodeArray.removeAll()
+                    if episodes.count > 0{
+                        self.isEpisodeDataAvailable = true
+                        for each in episodes{
+                            if each.id == self.id {
+                                self.episodeNumber = each.episodeNo
+                                break
+                            }
+                            i = i + 1
+                        }
+                        if i == episodes.count{
+                            i = i - 1
+                        }
+                        self.episodeArray = episodes
+                    }
+                    self.isEpisodeDataAvailable = true
+                    self.episodeArray = episodes
+                }
+            }
+            if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+                DispatchQueue.main.async {
+                    self.collectionView_Recommendation.reloadData()
+                    self.scrollCollectionViewToRow(row: i)
+                }
+            }
+        }
+        /*
         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+<<<<<<< HEAD
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.get(request: metadataRequest!) { (data, response, error) in
+=======
         RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
 
             guard let self = self else {
                 return
             }
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
             
             if let responseError = error as NSError?
             {
@@ -998,9 +1058,15 @@
                         self.episodeArray = episodes
                     }
                 }
+<<<<<<< HEAD
+                else if let mores = recommendationItems as? [Item]{
+                    weakSelf?.isMoreDataAvailable = false
+                    weakSelf?.moreArray.removeAll()
+=======
                 else if let mores = recommendationItems as? [More]{
                     self.isMoreDataAvailable = false
                     self.moreArray.removeAll()
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
                     if mores.count > 0{
                         self.isMoreDataAvailable = true
                         self.moreArray = mores
@@ -1014,9 +1080,10 @@
                 }
                 return
             }
-        }
+        }*/
     }
     
+    /*
     func evaluateMoreLikeData(dictionaryResponseData responseData:Data) -> [Any]
     {
         //Success
@@ -1032,12 +1099,67 @@
             }
         }
         return [More]()
-    }
+    }*/
     
     func callWebServiceForPlayListData(id:String) {
         //playerId = id
-        let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
-        let params = ["id": id,"contentId":""]
+        var url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
+        var params = ["id": id,"contentId":""]
+                if isPlayList && self.id == ""{
+                    //url = playBackForPlayList.appending(playListId)
+                    //params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+                }
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                var failureType = ""
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.loaderCoverView.isHidden = false
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
+                failureType = "Playlist service failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemTitle, contentId: self.id, videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription, playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+            let playList = response.model!
+            if let mores = playList.more {
+                self.moreArray.removeAll()
+                if mores.count > 0{
+                    self.isMoreDataAvailable = true
+                    var i = 0
+                    for each in mores{
+                        if each.id == self.id{
+                            break
+                        }
+                        i = i + 1
+                    }
+                    if i == mores.count{
+                        i = i - 1
+                    }
+                    self.moreArray = mores
+                    if (self.isPlayListFirstItemToBePlayed) {
+                        self.isPlayListFirstItemToBePlayed = false
+                        let playlistFirstItem = mores[0]
+                        self.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: playlistFirstItem.appType, isPlayList: true, playListId: self.playListId , isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: self.fromScreen, fromCategory: self.fromCategory, fromCategoryIndex: self.fromCategoryIndex )
+                        self.preparePlayerVC()
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.collectionView_Recommendation.reloadData()
+                            self.scrollCollectionViewToRow(row: i)
+                        }
+                    }
+                }
+            }
+            
+        }
+        /*
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
             
@@ -1116,8 +1238,10 @@
                 }
                 return
             }
-        }
+        }*/
     }
+    
+    
     
     func callWebServiceForPlaybackRights(id:String) {
         isSwipingAllowed_RecommendationView = true
@@ -1126,8 +1250,82 @@
         }
         print("Playback rights id is === \(id)")
         //playerId = id
+
         let url = playbackRightsURL.appending(id)
         let params = ["id": id, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+//        if isPlayList && id == ""{
+//            url = playBackForPlayList.appending(playListId)
+//            params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+//        }
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self) { [weak self](response) in
+        guard let self = self else {return}
+            DispatchQueue.main.async {
+                self.activityIndicatorOfLoaderView.stopAnimating()
+                
+            }
+            guard response.isSuccess else {
+                if response.code == CommonResponseCode.refreshSSOFailed.rawValue {
+                    //Logout User
+                    let presentingVC = self.presentingViewController
+//                    self.dismissPlayerVC(completion: {
+//                        // Logout user
+//                        if let metaVc = presentingVC as? JCMetadataVC {
+//                            metaVc.didClickOnWatchNowButton(nil)
+//                        } else {
+//                        
+//                            
+//                        }
+//                    })
+                    
+                }
+
+                var failuretype = ""
+                DispatchQueue.main.async {
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.loaderCoverView.isHidden = false
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
+                failuretype = "Playbackrights failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemTitle, contentId: self.id, videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription, playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+            self.playbackRightsData = response.model
+            DispatchQueue.main.async {
+                if((self.player) != nil) {
+                    self.player?.pause()
+                    self.resetPlayer()
+                }
+//                self.playbackRightsData?.url = nil
+//                self.playbackRightsData?.aesUrl = nil
+                //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
+                if let fpsUrl = self.playbackRightsData?.url {
+                    self.doParentalCheck(with: fpsUrl, isFps: true)
+                } else if let aesUrl = self.playbackRightsData?.aesUrl {
+                    self.doParentalCheck(with: aesUrl, isFps: false)
+                } else {
+                    let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                        DispatchQueue.main.async {
+                            print("dismiss")
+                            self.dismissPlayerVC()
+                        }
+                    }
+                    alert.addAction(cancelAction)
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: false, completion: nil)
+                    }
+                }
+            }
+            
+        }
+        /*
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
         //let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: nil)
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
@@ -1199,6 +1397,7 @@
                             self.resetPlayer()
                         }
 //                        self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.aesUrl = "http://rcpems02.cdnsrv.ril.com/vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1530619201851.smil/playn.m3u8"
                         if let fpsUrl = self.playbackRightsData?.url {
                             self.doParentalCheck(with: fpsUrl, isFps: true)
                         } else if let aesUrl = self.playbackRightsData?.aesUrl {
@@ -1221,14 +1420,28 @@
                 }
                 return
             }
-        }
+        }*/
     }
     
     
     func callWebServiceForRemovingResumedWatchlist(_ itemId: String) {
         let json = ["id": id]
-        let params = ["uniqueId": JCAppUser.shared.unique,"listId": "10","json": json] as [String : Any]
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { [weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                return
+            }
+            if self.isDisney {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
+            }
+            else {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
+            }
+        }
+        /*
         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
             if let responseError = error as NSError?
@@ -1247,27 +1460,48 @@
             {
                 NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
             }
-        }
+        }*/
     }
     
     func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, selectedAudio: String)
     {
         let url = addToResumeWatchlistUrl
-
+        
         let id = itemId
-        let lang: String = selectedAudio.lowercased() ?? ""
-        let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) ?? .none
-        let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
 
-        let json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration, "languageIndex": languageIndexDict]
+        let lang: String = selectedAudio.lowercased()
+        var json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
+        
+        if let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) {
+            let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsData?.languageIndex?.index ?? 0]
+            json["languageIndex"] = languageIndexDict
+        }
         
         var params: Dictionary<String, Any> = [:]
         params["uniqueId"] = JCAppUser.shared.unique
-        params["listId"] = 10
+        params["listId"] = isDisney ? "30" : "10"
         params["json"] = json
         params["id"] = id
         params["duration"] = currentTimeDuration
         params["totalDuration"] = totalDuration
+        
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        
+        weak var weakSelf = self.presentingViewController
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                return
+            }
+
+            if self.isDisney {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
+            } else {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
+            }
+        }
+        /*
+
         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
             if let responseError = error
@@ -1279,7 +1513,7 @@
                 NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
                 return
             }
-        }
+        }*/
     }
     //MARK:- Resume watch view methods
     @IBAction func didClickOnResumeWatchingButton(_ sender: Any) {
@@ -1302,16 +1536,23 @@
         isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
         isMediaStartEventSent = false
-        //audioLanguage = checkItemAudioLanguage(id)
+        
+       // audioLanguage = checkItemAudioLanguage(id)
+        setRecommendationConstarints(appType)
         switch appType {
         case .Movie:
-            currentDuration = checkInResumeWatchListForDuration(id)
-            if currentDuration > 0 {
-                isSwipingAllowed_RecommendationView = false
-                resumeWatchView.isHidden = false
+            if isPlayList, id == ""{
+                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlayListData(id: playListId)
             } else {
-                resumeWatchView.isHidden = true
-                callWebServiceForPlaybackRights(id: id)
+                currentDuration = checkInResumeWatchListForDuration(id)
+                if currentDuration > 0 {
+                    isSwipingAllowed_RecommendationView = false
+                    resumeWatchView.isHidden = false
+                } else {
+                    resumeWatchView.isHidden = true
+                    callWebServiceForPlaybackRights(id: id)
+                }
             }
         case .Episode:
             currentDuration = checkInResumeWatchListForDuration(id)
@@ -1336,12 +1577,14 @@
         }
     }
     
-//    private func checkItemAudioLanguage(_ id: String) -> LanguageIndex? {
-//        if let item = checkInResumeWatchList(id) ?? checkInMyWatchList(id) {
-//            return item.languageIndex
-//        }
-//        return audioLanguage
-//    }
+    func setRecommendationConstarints(_ appType: VideoType) {
+        if appType == .Movie {
+            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
+        } else {
+            self.heightRecommendationView.constant = PlayerRecommendationSize.landscapeRowHeight
+        }
+        self.bottomConstarintRecommendationView.constant = PlayerRecommendationSize.bottomConstarint(appType)
+    }
     
     //PlayerVc changing when an item is played from playervc recommendation
     func changePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool, playListId: String, isMoreDataAvailable: Bool, isEpisodeAvailable: Bool, recommendationArray: [Any] = [Any](), fromScreen: String, fromCategory: String, fromCategoryIndex: Int) {
@@ -1380,43 +1623,37 @@
     }
     
     //Check in resume watchlist
+
     private func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
         let itemMatched = self.checkInResumeWatchList(itemIdToBeChecked)
-        if let drn = itemMatched?.duration?.floatValue() {
-            return drn
+        if let drn = itemMatched?.duration {
+            return Float(drn)
         }
         return 0.0
     }
     
-    //Check in my watchlist
-    private func checkInMyWatchList(_ itemIdToBeChecked: String) -> Item? {
-        if appType == .Movie {
-            if let movieWatchListArray = JCDataStore.sharedDataStore.moviesWatchList?.data?.items {
-                let itemMatched = movieWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
-            }
-        } else if appType == .TVShow || appType == .Episode {
-            if let tvWatchListArray = JCDataStore.sharedDataStore.tvWatchList?.data?.items {
-                let itemMatched = tvWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-                return itemMatched
-            }
-        }
-        return nil
-    }
-    //Check in my watchlist
+    //Check in resume watchlist
     private func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Item? {
-        if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?.items {
-            let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
-            return itemMatched
+        if isDisney {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        } else {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
         }
         return nil
     }
     
 
     //MARK:- Dismiss Viewcontroller
-    @objc func dismissPlayerVC() {
+//    @objc func dismissPlayerVC() {
+    @objc func dismissPlayerVC(completion: (() -> ())? = nil) {
         self.resetPlayer()
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: completion)
     }
     
     //MARK:- Change recommendation view visibility
@@ -1429,8 +1666,13 @@
  }
  
  //MARK:- UICOLLECTIONVIEW DELEGATE
- extension JCPlayerVC: UICollectionViewDelegate
+ extension JCPlayerVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
  {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
+        return size
+    }
+    
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return isRecommendationView
         //return true
@@ -1456,8 +1698,7 @@
                 }
                 changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                 preparePlayerVC()
-            }
-            else{
+            } else {
                 let newItem = moreArray[indexPath.row]
                 if (newItem.id ?? "") == id {
                     isRecommendationCollectionViewEnabled = true
@@ -1470,34 +1711,34 @@
                     sendRecommendationEvent(videoName: newItem.name ?? "")
                 }
                 
-                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt){
+                if let newAppTypeInt = newItem.app?.type, let newAppType = VideoType(rawValue: newAppTypeInt) {
                     if newAppType == .Movie {
                         //Present Metadata
                         if let metaDataVC = self.presentingViewController as? JCMetadataVC {
                             metaDataVC.isUserComingFromPlayerScreen = true
-                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio) ?? "")
-                            metaDataVC.defaultAudioLanguage = audioLanguage
+//                            let audioLanguage = AudioLanguage(rawValue: self.playerItem?.selected(type: .audio)?.lowercased() ?? "")
+//                            metaDataVC.defaultAudioLanguage = audioLanguage
                             self.resetPlayer()
                             self.dismiss(animated: true, completion: {
                                 metaDataVC.callWebServiceForMetadata(id: newItem.id ?? "", newAppType: newAppType)
                             })
-                        } else if let navVc = self.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers.first as? JCTabBarController, let homeVc = tabVc.viewControllers?.first as? JCHomeVC {
+                        } else if let navVc = self.presentingViewController as? UINavigationController, let sideNavigationVC = navVc.viewControllers.first as? SideNavigationVC, let homeVc = sideNavigationVC.selectedVC as? BaseViewController {
                             homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
                             self.resetPlayer()
-                            self.dismiss(animated: true, completion: {
-                                let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0)
-                                tabVc.present(metaVc, animated: false, completion: nil)
+                            self.dismiss(animated: false, completion: {
+                                let metaVc = Utility.sharedInstance.prepareMetadata(newItem.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
+                                sideNavigationVC.present(metaVc, animated: false, completion: nil)
                             })
                         }
                     }
-                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer{
+                    else if newAppType == .Clip || newAppType == .Music || newAppType == .Trailer {
                         changePlayerVC(newItem.id ?? "", itemImageString: (newItem.banner) ?? "", itemTitle: (newItem.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (self.itemDescription), appType: appType, isPlayList: (self.isPlayList) , playListId: (self.playListId), isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: moreArray, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
                         preparePlayerVC()
                     }
                 }
             }
         }
-        else if isEpisodeDataAvailable{
+        else if isEpisodeDataAvailable {
             let newItem = episodeArray[indexPath.row]
             if id == newItem.id {
                 isRecommendationCollectionViewEnabled = true
@@ -1522,48 +1763,41 @@
  extension JCPlayerVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isEpisodeDataAvailable{
+        if isEpisodeDataAvailable {
             return episodeArray.count
         }
-        if isMoreDataAvailable{
+        if isMoreDataAvailable {
             return moreArray.count
         }
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! JCItemCell
-        var imageUrl    = ""
-        if isEpisodeDataAvailable
-        {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
+        if isEpisodeDataAvailable {
             let model = episodeArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner {
-                imageUrl = bannerUrl
-            }
             if appType == .Episode {
                 isPlayList = true
             }
+            let item = model.getItem
+            let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
+            let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
+            let isPlayingNow = model.id == id
+            cell.configureView(cellItems, isPlayingNow: isPlayingNow)
+
+            
         }
-        else if isMoreDataAvailable{
+        else if isMoreDataAvailable {
             let model = moreArray[indexPath.row]
             cell.nameLabel.text = model.name
-            if let bannerUrl = model.banner {
-                imageUrl = bannerUrl
-            }
-            
-        }
-        if indexPath.row == currentPlayingIndex {
-            cell.nowPlayingImageView.isHidden = !isPlayList
-            
-        } else {
-            cell.nowPlayingImageView.isHidden = true
-        }
-        if let urlString = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(imageUrl) {
-            let url = URL(string: urlString)
-            cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
+            let item = moreArray[indexPath.row]
+            let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
+            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
+            let isPlayingNow = model.id == id
+            cell.configureView(cellItems, isPlayingNow: isPlayingNow)
         }
         return cell
     }
@@ -1757,7 +1991,7 @@
             //this is data request so processing the url. change the scheme to http
             
             if (urlString.contains("fakeHttp")), (urlString.contains("token")) {
-                print(urlString)
+                //print(urlString)
                 urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
                 guard let url = URL(string: urlString) else {
                     return false
@@ -1772,8 +2006,7 @@
                 }
                 return true
             }
-            if (urlString.contains(".m3u8"))
-            {
+            if (urlString.contains(".m3u8")) {
 //                if urlString.contains("subtitlelist"){
 //                    print("subtitlelist = = \(urlString)")
 //                    urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
@@ -1791,8 +2024,8 @@
 //                    }
 //                }
 //                else{
-                if urlString.contains("subtitlelist"){
-                    print("m3u8 = \(urlString)")
+                if urlString.contains("subtitlelist") {
+                    //print("m3u8 = \(urlString)")
                 }
                     let expiryTime:String = self.getExpireTime()
                     urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
@@ -1802,7 +2035,7 @@
                     guard let url = URL(string: urlString) else {
                         return false
                     }
-                    print("printing value of url \(urlString)")
+                    //print("printing value of url \(urlString)")
                     do {
                         let data = try Data(contentsOf: url)
                         dataRequest?.respond(with: data)
@@ -1816,7 +2049,7 @@
                 
                 return true
             }
-            if(urlString.contains(".ts")) {
+            if(urlString.contains(".ts")) || (urlString.contains(".webvtt")) {
                 urlString = urlString.replacingOccurrences(of: "fakeHttp", with: "http")
                 if let redirect = self.generateRedirectURL(sourceURL: urlString), let url = URL(string: urlString) {
                     //Step 9 and 10:-
@@ -1861,6 +2094,9 @@
     func playerViewController(_ playerViewController: AVPlayerViewController, didPresent interstitial: AVInterstitialTimeRange) {
         print("Gotit")
     }
+ }
+ extension JCPlayerVC: AVPlayerItemLegibleOutputPushDelegate {
+    
  }
  
  

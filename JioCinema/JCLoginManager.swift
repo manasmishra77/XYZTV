@@ -43,7 +43,10 @@ class JCLoginManager: UIViewController {
     }
     
     func performNetworkCheck(completion: @escaping NetworkCheckCompletionBlock) {
-        let networkCheckRequest = RJILApiManager.defaultManager.prepareRequest(path: networkCheckUrl, encoding: .JSON)
+        guard let networkCheckRequest = RJILApiManager.defaultManager.prepareRequest(path: networkCheckUrl, encoding: .JSON) else {
+            completion(false)
+            return
+        }
         RJILApiManager.defaultManager.post(request: networkCheckRequest) { (data, response, error) in
             
             //non jio network
@@ -60,7 +63,10 @@ class JCLoginManager: UIViewController {
                 let isOnJioNetwork = data?["isJio"] as? Bool ?? false
                 if isOnJioNetwork == true
                 {
-                    let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL)
+                    guard let zlaUserDataRequest = RJILApiManager.defaultManager.prepareRequest(path: zlaUserDataUrl, encoding: .URL) else {
+                        completion(false)
+                        return
+                    }
                     RJILApiManager.defaultManager.get(request: zlaUserDataRequest, completion: { (data, response, error) in
                         if let responseError = error {
                             //self.navigateToLoginVC()
@@ -97,12 +103,15 @@ class JCLoginManager: UIViewController {
         
         JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
         JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
-        let subId = user!["subscriberId"] as? String ?? ""
+        let subId = user?["subscriberId"] as? String ?? ""
         
         let params = [subscriberIdKey:subId]
         
         let url = basePath.appending(loginViaSubIdUrl)
-        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
+        guard let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON) else {
+            completion(false)
+            return
+        }
         weak var weakSelf = self
         RJILApiManager.defaultManager.post(request: loginRequest) { (data, response, error) in
             
@@ -121,7 +130,7 @@ class JCLoginManager: UIViewController {
                 let code = parsedResponse["messageCode"] as? Int ?? 0
                 if(code == 200)
                 {
-                    weakSelf?.setUserData(data: parsedResponse) 
+                    weakSelf?.setUserData(data: parsedResponse)
                     
                     let eventProperties = ["Source": "4G", "Platform": "TVOS", "Userid": Utility.sharedInstance.encodeStringWithBase64(aString: JCAppUser.shared.uid)]
                     JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Logged In", properties: eventProperties)
@@ -172,10 +181,13 @@ class JCLoginManager: UIViewController {
         JCAppUser.shared = JCAppUser()
         ParentalPinManager.shared.resetManager()
         UserDefaults.standard.set(encodedData, forKey: savedUserKey)
-        JCDataStore.sharedDataStore.tvWatchList?.data = nil
-        JCDataStore.sharedDataStore.moviesWatchList?.data = nil
+        JCDataStore.sharedDataStore.tvWatchList = nil
+        JCDataStore.sharedDataStore.moviesWatchList = nil
         JCDataStore.sharedDataStore.resumeWatchList = nil
         JCDataStore.sharedDataStore.userRecommendationList = nil
+        JCDataStore.sharedDataStore.disneyTVWatchList = nil
+        JCDataStore.sharedDataStore.disneyMovieWatchList = nil
+        JCDataStore.sharedDataStore.disneyResumeWatchList = nil
     }
     
     

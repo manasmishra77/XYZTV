@@ -20,23 +20,29 @@ class MetadataHeaderView: UIView {
     
     weak var delegate: MetadataHeaderCellDelegate? = nil
     
+    var isDisney = false
     @IBOutlet weak var tvShowLabel: UILabel!
+    @IBOutlet weak var maturityRating: UILabel!
     @IBOutlet weak var addToWatchListButton: JCMetadataButton!
     @IBOutlet weak var directorStaticLabel: UILabel!
     @IBOutlet weak var playButton: JCMetadataButton!
     @IBOutlet weak var starringStaticLabel: UILabel!
+    @IBOutlet weak var audioStaticLabel: UILabel!
     @IBOutlet weak var tvShowSubtitleLabel: UILabel!
-    @IBOutlet weak var imdbImageLogo: UIImageView!
     @IBOutlet weak var starringLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
+    @IBOutlet weak var multiAudioLanguge: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var watchlistLabel: UILabel!
     @IBOutlet weak var constarintForContainer: NSLayoutConstraint!
     
+    @IBOutlet weak var backgroudImage: UIImageView!
     
-    @IBOutlet weak var imdbLogoWidth: NSLayoutConstraint!
+    @IBOutlet weak var heightOFDirectorStatic: NSLayoutConstraint!
+    @IBOutlet weak var heightOfStarringStatic: NSLayoutConstraint!
+    @IBOutlet weak var heightOfAudioStatic: NSLayoutConstraint!
+    
     @IBOutlet weak var monthCollectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var heightOfContainerView: NSLayoutConstraint!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -48,7 +54,6 @@ class MetadataHeaderView: UIView {
     @IBOutlet weak var monthsCollectionView: UICollectionView!
     @IBOutlet weak var seasonCollectionView: UICollectionView!
     @IBOutlet weak var seasonsLabel: UILabel!
-    @IBOutlet weak var multiAudioLanguge: UILabel!
     
     
     //Constraints for all the view
@@ -61,16 +66,18 @@ class MetadataHeaderView: UIView {
         super.awakeFromNib()
         // Initialization code
         print(self)
-        configureViews()
     }
     
-    func configureViews() {
-      Utility.applyGradient(self.bannerImageView)
+    func configureViews(_ isDisney : Bool = false) {
+//        if isDisney {
+//            Utility.applyGradient(self.bannerImageView, UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0).cgColor)
+//        } else {
+//            Utility.applyGradient(self.bannerImageView, #colorLiteral(red: 0.08235294118, green: 0.09019607843, blue: 0.07843137255, alpha: 1).cgColor)
+//        }
     }
     
     func resetView() -> UIView {
         titleLabel.text = ""
-        ratingLabel.text = ""
         subtitleLabel.text = ""
         directorLabel.text = ""
         starringLabel.text = ""
