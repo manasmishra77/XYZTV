@@ -114,9 +114,9 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         case 0:
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 cell.textLabel?.text = "Logout"
-                cell.settingsDetailLabel.isHidden = false
-                cell.settingsDetailLabel.text = JCAppUser.shared.commonName
-            } else {                
+                cell.settingsDetailLabel.isHidden = true
+//                cell.settingsDetailLabel.text = JCAppUser.shared.commonName
+            } else {
                 cell.textLabel?.text = "Sign In"
             }
             

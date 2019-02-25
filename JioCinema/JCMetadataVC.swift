@@ -1119,157 +1119,157 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     //MARK:- JCBaseTableViewCellDelegate methods, More tableview cell delegate methods
-    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
-        if !Utility.sharedInstance.isNetworkAvailable {
-            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
-            return
-        }
-        if let tappedItem = item as? Item {
-            let itemToBePlayed = self.convertingMoreToItem(tappedItem, currentItem: Item())
-            if let itemId = itemToBePlayed.id {
-                self.item = itemToBePlayed
-                if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
-                    self.didClickOnShowMoreDescriptionButton(self.headerCell, toShowMore: false)
-                    self.callWebServiceForMetadata(id: itemId, newAppType: appType)
-                }
-            }
-        }
-        else if let tappedItem = item as? Episode {
-            print("In episode")
-            checkLoginAndPlay(tappedItem, categoryName: MORELIKE, categoryIndex: 0)
-        }
-        else if let tappedItem = item as? String {
-            print("In Artist")
-            //present search from here
-            
-            //Google Analytics for Artist Click
-            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
-            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
-            
-            
-//            if let superNav = (((self.presentingViewController as? UINavigationController)?.presentingViewController as? UINavigationController)?.viewControllers[0] as? SideNavigationVC)?.sideNavigationView?.itemsList[0].viewControllerObject
-            
-            
-            if let searchNavController = self.presentingViewController as? SearchNavigationController {
-                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
-                self.dismiss(animated: false) {
-                    
-                }
-            }
-            else {
-                let searchNavController = self.getSearchController()
-                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
-                self.present(searchNavController, animated: false) {
-                    
-                }
-            }
-
-            return
-            
-
-
-            
-            
-//            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
-            //searchResultForkey(with: tappedItem)
-            
-
-            
-//            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.dismiss(animated: false) {
-//
+//    func didTapOnItemCell(_ baseCell: JCBaseTableViewCell?, _ item: Any?, _ indexFromArray: Int) {
+//        if !Utility.sharedInstance.isNetworkAvailable {
+//            Utility.sharedInstance.showDismissableAlert(title: networkErrorMessage, message: "")
+//            return
+//        }
+//        if let tappedItem = item as? Item {
+//            let itemToBePlayed = self.convertingMoreToItem(tappedItem, currentItem: Item())
+//            if let itemId = itemToBePlayed.id {
+//                self.item = itemToBePlayed
+//                if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt) {
+//                    self.didClickOnShowMoreDescriptionButton(self.headerCell, toShowMore: false)
+//                    self.callWebServiceForMetadata(id: itemId, newAppType: appType)
+//                }
 //            }
-            
-            
-            
-            if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
-                if (presentingVcTypeForArtist == .disneyMovie) || (presentingVcTypeForArtist == .disneyTV) || (presentingVcTypeForArtist == .disneyKids) {
-                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
-                            }
-                        }
-                    }
-                    self.dismiss(animated: false, completion: nil)
-                    return
-                } else if presentingVcTypeForArtist == .languageGenre {
-                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
-                            }
-                        }
-                    }
-                    self.dismiss(animated: false, completion: nil)
-                    return
-                }
-                if isDisney {
-                    var metaDataTabBarIndex = tabController.selectedIndex
-                    if let index = tabBarIndex {
-                        metaDataTabBarIndex = index
-                    }
-                    tabController.selectedIndex = 5
-                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: .disneyHome)
-                            }
-                        }
-                    }
-                } else {
-                    var metaDataTabBarIndex = tabController.selectedIndex
-                    if let index = tabBarIndex {
-                        metaDataTabBarIndex = index
-                    }
-                    tabController.selectedIndex = 5
-                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: nil)
-                            }
-                        }
-                    }
-                }
-                self.dismiss(animated: true, completion: nil)
-            } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
-                tabController.selectedIndex = 5
-                if let langVC = superNav.presentedViewController as? JCLanguageGenreVC {
-                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
-                            }
-                        }
-                    }
-                    self.dismiss(animated: false, completion: {
-                        langVC.dismiss(animated: false, completion: nil)
-                    })
-                }
-                if isDisney {
-                    if let baseVC = superNav.presentedViewController as? BaseViewController {
-                        var vcType: VCTypeForArtist = .disneyMovie
-                        if baseVC.baseViewModel.vcType == .disneyMovies {
-                            vcType = .disneyMovie
-                        } else if baseVC.baseViewModel.vcType == .disneyTVShow {
-                            vcType = .disneyTV
-                        } else if baseVC.baseViewModel.vcType == .disneyKids {
-                            vcType = .disneyKids
-                        }
-                        if let searchVcNav = tabController.selectedViewController as? UINavigationController {
-                            if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
-                                if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
-                                    searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: vcType)
-                                }
-                            }
-                        }
-                        self.dismiss(animated: false, completion: {
-                            baseVC.dismiss(animated: false, completion: nil)
-                        })
-                    }
-                }
-            }
-        }
-    }
+//        }
+//        else if let tappedItem = item as? Episode {
+//            print("In episode")
+//            checkLoginAndPlay(tappedItem, categoryName: MORELIKE, categoryIndex: 0)
+//        }
+//        else if let tappedItem = item as? String {
+//            print("In Artist")
+//            //present search from here
+//
+//            //Google Analytics for Artist Click
+//            let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+//            JCAnalyticsManager.sharedInstance.event(category: PLAYER_OPTIONS, action: "Artist Click", label: metadata?.name, customParameters: customParams)
+//
+//
+////            if let superNav = (((self.presentingViewController as? UINavigationController)?.presentingViewController as? UINavigationController)?.viewControllers[0] as? SideNavigationVC)?.sideNavigationView?.itemsList[0].viewControllerObject
+//
+//
+//            if let searchNavController = self.presentingViewController as? SearchNavigationController {
+//                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+//                self.dismiss(animated: false) {
+//
+//                }
+//            }
+//            else {
+//                let searchNavController = self.getSearchController()
+//                searchNavController.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+//                self.present(searchNavController, animated: false) {
+//
+//                }
+//            }
+//
+//            return
+//
+//
+//
+//
+//
+////            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+//            //searchResultForkey(with: tappedItem)
+//
+//
+//
+////            (self.presentingViewController as? SearchNavigationController)?.jCSearchVC?.dismiss(animated: false) {
+////
+////            }
+//
+//
+//
+//            if let superNav = self.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
+//                if (presentingVcTypeForArtist == .disneyMovie) || (presentingVcTypeForArtist == .disneyTV) || (presentingVcTypeForArtist == .disneyKids) {
+//                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: presentingVcTypeForArtist)
+//                            }
+//                        }
+//                    }
+//                    self.dismiss(animated: false, completion: nil)
+//                    return
+//                } else if presentingVcTypeForArtist == .languageGenre {
+//                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
+//                            }
+//                        }
+//                    }
+//                    self.dismiss(animated: false, completion: nil)
+//                    return
+//                }
+//                if isDisney {
+//                    var metaDataTabBarIndex = tabController.selectedIndex
+//                    if let index = tabBarIndex {
+//                        metaDataTabBarIndex = index
+//                    }
+//                    tabController.selectedIndex = 5
+//                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: .disneyHome)
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    var metaDataTabBarIndex = tabController.selectedIndex
+//                    if let index = tabBarIndex {
+//                        metaDataTabBarIndex = index
+//                    }
+//                    tabController.selectedIndex = 5
+//                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: metaDataTabBarIndex, metaData: metadata ?? false, vcTypeForMetadata: nil)
+//                            }
+//                        }
+//                    }
+//                }
+//                self.dismiss(animated: true, completion: nil)
+//            } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabController = superNav.viewControllers[0] as? JCTabBarController {
+//                tabController.selectedIndex = 5
+//                if let langVC = superNav.presentedViewController as? JCLanguageGenreVC {
+//                    if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                        if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                            if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 0, metaData: metadata ?? false, languageModel: modelForPresentedVC, vcTypeForMetadata: .languageGenre)
+//                            }
+//                        }
+//                    }
+//                    self.dismiss(animated: false, completion: {
+//                        langVC.dismiss(animated: false, completion: nil)
+//                    })
+//                }
+//                if isDisney {
+//                    if let baseVC = superNav.presentedViewController as? BaseViewController {
+//                        var vcType: VCTypeForArtist = .disneyMovie
+//                        if baseVC.baseViewModel.vcType == .disneyMovies {
+//                            vcType = .disneyMovie
+//                        } else if baseVC.baseViewModel.vcType == .disneyTVShow {
+//                            vcType = .disneyTV
+//                        } else if baseVC.baseViewModel.vcType == .disneyKids {
+//                            vcType = .disneyKids
+//                        }
+//                        if let searchVcNav = tabController.selectedViewController as? UINavigationController {
+//                            if let sc = searchVcNav.viewControllers[0] as? UISearchContainerViewController {
+//                                if let searchVc = sc.searchController.searchResultsController as? JCSearchResultViewController {
+//                                    searchVc.searchArtist(searchText: tappedItem, metaDataItemId: itemId, metaDataAppType: itemAppType, metaDataFromScreen: fromScreen ?? "", metaDataCategoryName: categoryName ?? "", metaDataCategoryIndex: categoryIndex ?? 0, metaDataTabBarIndex: 4, metaData: metadata ?? false, baseVCModel: nil, vcTypeForMetadata: vcType)
+//                                }
+//                            }
+//                        }
+//                        self.dismiss(animated: false, completion: {
+//                            baseVC.dismiss(animated: false, completion: nil)
+//                        })
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func prepareToPlay(_ itemToBePlayed: Episode, categoryName: String, categoryIndex: Int) {
         var isEpisodeAvailable = false
@@ -1347,8 +1347,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         if  presses.first?.type == .menu, shouldUseTabBarIndex, (tabBarIndex != nil) {
-            if let superNav = self.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
-                tabc.selectedIndex = tabBarIndex!
+            if let superNav = self.presentingViewController as? UINavigationController{
                 if let vcType = presentingVcTypeForArtist {
                     switch vcType {
                     case .languageGenre:
@@ -1366,9 +1365,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                         }
                     }
                 }
-            } else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? JCTabBarController {
-                tabc.selectedIndex = tabBarIndex ?? 0
-            } else {
+            }
+//            else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? SideNavigationVC {
+////                tabc.selectedIndex = tabBarIndex ?? 0
+//            }
+            else {
                 self.dismiss(animated: true, completion: nil)
             }
         } else {

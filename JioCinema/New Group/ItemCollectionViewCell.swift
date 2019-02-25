@@ -9,9 +9,6 @@
 import UIKit
 import SDWebImage
 
-typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: ItemCellLayoutType)
-
-
 //To be used in place of BaseItemCellModels Tuple
 struct BaseItemCellModel {
     let item: Item?
@@ -51,15 +48,15 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     
 
-    func configureView(_ cellItems: BaseItemCellModels, isPlayingNow: Bool = false) {
+    func configureView(_ cellItems: BaseItemCellModel, isPlayingNow: Bool = false) {
         if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
             imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
         }
         cellItem = cellItems
         configureNameLabelPatchView(cellItems)
 
-        nameLabel.text = cellItems.item.name ?? ""
-        subtitle.text = cellItems.item.subtitle
+        nameLabel.text = cellItems.item?.name ?? ""
+        subtitle.text = cellItems.item?.subtitle
         progressBar.isHidden = true
         nameLabel.isHidden = false
         subtitle.isHidden = false

@@ -101,21 +101,9 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
                         
                         if loginPresentedFromItemCell {
                             
-                            if let vc = vc as? JCHomeVC {
-                                vc.playItemAfterLogin()
+                            if let vc = vc as? BaseViewController {
+                                vc.baseViewModel.playItemAfterLogin()
                             }
-                            else if (vc as? JCMoviesVC) != nil {
-                                //vc.playItemAfterLogin()
-                            }
-                            else if let vc = vc as? JCTVVC {
-                                vc.playItemAfterLogin()
-                            }
-                            else if let vc = vc as? JCMusicVC {
-                                vc.playItemAfterLogin()
-                            }
-//                            else if let vc = vc as? JCClipsVC {
-//                                vc.playItemAfterLogin()
-//                            }
                             else if let vc = vc as? JCSearchResultViewController {
                                 vc.playItemAfterLogin()
                             }
@@ -163,13 +151,6 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
             if(textField.text?.count == 0)
             {
                 self.showAlert(alertString: "JioID can't be empty")
-                //                let animation = CABasicAnimation(keyPath: "position")
-                //                animation.duration = 0.07
-                //                animation.repeatCount = 4
-                //                animation.autoreverses = true
-                //                animation.fromValue = NSValue.init(cgPoint: CGPoint(x: textField.center.x-10, y: textField.center.y))
-                //                animation.toValue = NSValue.init(cgPoint: CGPoint(x: textField.center.x+10, y: textField.center.y))
-                //                textField.layer.add(animation, forKey: "position")
             }
         }
         

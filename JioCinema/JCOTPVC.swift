@@ -355,18 +355,18 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
                     
                     if loginPresentedFromItemCell {
                         
-                        if let vc = vc as? JCHomeVC {
-                            vc.playItemAfterLogin()
+                        if let vc = vc as? BaseViewController {
+                            vc.baseViewModel.playItemAfterLogin()
                         }
-                        else if (vc as? JCMoviesVC) != nil {
-                            //vc.playItemAfterLogin()
-                        }
-                        else if let vc = vc as? JCTVVC {
-                            vc.playItemAfterLogin()
-                        }
-                        else if let vc = vc as? JCMusicVC {
-                            vc.playItemAfterLogin()
-                        }
+//                        else if (vc as? JCMoviesVC) != nil {
+//                            //vc.playItemAfterLogin()
+//                        }
+//                        else if let vc = vc as? JCTVVC {
+//                            vc.playItemAfterLogin()
+//                        }
+//                        else if let vc = vc as? JCMusicVC {
+//                            vc.playItemAfterLogin()
+//                        }
                             //                            else if let vc = vc as? JCClipsVC {
                             //                                vc.playItemAfterLogin()
                             //                            }
@@ -405,143 +405,7 @@ class JCOTPVC: UIViewController,UISearchBarDelegate
         }
         
     }
-        /*
-         let params = [identifierKey:enteredNumber,otpKey:otp,upgradeAuthKey:upgradAuthValue,returnSessionDetailsKey:returnSessionDetailsValue]
-         
-         let otpVerficationRequest = RJILApiManager.defaultManager.prepareRequest(path: verifyOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
-         weak var weakSelf = self
-         RJILApiManager.defaultManager.post(request: otpVerficationRequest!) { (data, response, error) in
-         
-         if let responseError = error
-         {
-         //TODO: handle error
-         print(responseError)
-         self.showAlert(alertTitle: "Invalid OTP", alertMessage: "Please Enter Valid OTP")
-         DispatchQueue.main.async {
-         self.activityIndicator?.stopAnimating()
-         }
-         }
-         if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-         {
-         weakSelf?.callWebServiceToLoginViaSubId(info: parsedResponse )
-         }
-         }*/
-    
-    
-    fileprivate func callWebServiceToLoginViaSubId(info:[String:Any]) {
-        JCLoginManager.sharedInstance.loggingInViaSubId = true
-        
-        let sessionAttributes = info["sessionAttributes"] as? [String:Any]
-        let userData = sessionAttributes!["user"] as? [String:Any]
-        let subId = userData!["subscriberId"] as? String ?? ""
-        let params = [subscriberIdKey:subId]
-        JCAppUser.shared.lbCookie = info["lbCookie"] as? String ?? ""
-        JCAppUser.shared.ssoToken = info["ssoToken"] as? String ?? ""
-        
-        let url = basePath.appending(loginViaSubIdUrl)
-        let loginRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
-        weak var weakSelf = self
-        RJILApiManager.defaultManager.post(request: loginRequest!) { (data, response, error) in
-            
-            DispatchQueue.main.async {
-                weakSelf?.activityIndicator?.stopAnimating()
-            }
-            if let responseError = error
-            {
-                //TODO: handle error
-                print(responseError)
-                print(responseError)
-                self.showAlert(alertTitle: "Try Again!!!", alertMessage: "Some error occuered!!")
-                DispatchQueue.main.async {
-                    self.activityIndicator?.stopAnimating()
-                }
-                
-                self.sendLoggedInAnalyticsEventWithFailure(errorMessage: responseError.localizedDescription)
-                
-                return
-            }
-            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-            {
-                JCLoginManager.sharedInstance.loggingInViaSubId = false
-                let code = parsedResponse["messageCode"] as? Int ?? 0
-                if(code == 200)
-                {
-                    
-                    weakSelf?.setUserData(data: parsedResponse)
-                    JCLoginManager.sharedInstance.setUserToDefaults()
-                    let vc = weakSelf?.presentingVCOfLoginVc
-                    let presentedFromAddToWatchList = weakSelf?.isLoginPresentedFromAddToWatchlist
-                    let presentedFromPlayNowButtonOfMetadata = weakSelf?.isLoginPresentedFromPlayNowButtonOfMetaData
-                    let loginPresentedFromItemCell = weakSelf?.isLoginPresentedFromItemCell
-                    
-                    //Updates after login
-                    ParentalPinManager.shared.setParentalPinModel()
-                    if let navVc = weakSelf?.presentingViewController?.presentingViewController as? UINavigationController, let tabVc = navVc.viewControllers[0] as? SideNavigationVC {
-                        if let homevc = tabVc.sideNavigationView?.itemsList[1].viewControllerObject as? JCHomeVC {
-                         homevc.callWebServiceForResumeWatchData()
-                         homevc.callWebServiceForUserRecommendationList()
-                         }
-                         if let movieVC = tabVc.sideNavigationView?.itemsList[2].viewControllerObject as? JCMoviesVC {
-                         movieVC.callWebServiceForMoviesWatchlist()
-                         }
-                         if let tvVc = tabVc.sideNavigationView?.itemsList[3].viewControllerObject as? JCTVVC{
-                         tvVc.callWebServiceForTVWatchlist()
-                         }
-                    }
-                    
-                    DispatchQueue.main.async {
-                        weakSelf?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-                            if loginPresentedFromItemCell!{
-                                if let vc = vc as? JCHomeVC {
-                                    vc.playItemAfterLogin()
-                                }
-                                else if (vc as? JCMoviesVC) != nil {
-                                    //vc.playItemAfterLogin()
-                                }
-                                else if (vc as? JCTVVC) != nil {
-                                    //vc.playItemAfterLogin()
-                                }
-                                else if let vc = vc as? JCMusicVC {
-                                    vc.playItemAfterLogin()
-                                }
-//                                else if let vc = vc as? JCClipsVC {
-//                                    vc.playItemAfterLogin()
-//                                }
-                                else if let vc = vc as? JCSearchResultViewController {
-                                    vc.playItemAfterLogin()
-                                }
-                                else if let vc = vc as? JCMetadataVC {
-                                    vc.playItemAfterLogin()
-                                }
-                                else if let vc = vc as? DisneyCharacterViewModel {
-                                    vc.playItemAfterLogin()
-                                }
-                            }
-                            if presentedFromAddToWatchList!{
-                                if (vc as? JCMetadataVC) != nil{
-                                    //Change Add to watchlist button status
-                                    
-                                }
-                            }
-                            if presentedFromPlayNowButtonOfMetadata!{
-                                if let vc = vc as? JCMetadataVC{
-                                    //Play after login
-                                    vc.didClickOnWatchNowButton(nil)
-                                }
-                            }
-                        })
-                    }
-                    self.sendLoggedInAnalyticsEventWithSuccess()
-                }
-                else
-                {
-                    self.sendLoggedInAnalyticsEventWithFailure(errorMessage: MESSAGE_LOGINWITHOUTERROR)
-                }
-            }
-        }
-}
-    
-    
+
     func setUserData(data:[String:Any])
     {
         JCAppUser.shared.lbCookie = data["lbCookie"] as? String ?? ""

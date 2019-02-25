@@ -102,94 +102,12 @@ class JCSplashVC: UIViewController {
             let navController = UINavigationController(rootViewController: sideNavVC)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
-            
-//            let tabBarVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: tabBarStoryBoardId)
-//            let navController = UINavigationController(rootViewController: tabBarVC)
-//            navController.navigationBar.isHidden = true
-//            self.view.window?.rootViewController = navController
+
         }
     }
     
     
-    /*
-     func callWebservicesForHomeData() {
-     callWebServiceForHomeData(page: 0)
-     weak var weakSelf = self
-     dispatchGroup.notify(queue: DispatchQueue.main)
-     {
-     //weakSelf?.mergeDataArray()
-     if (weakSelf?.isHomeDataAvailable)!
-     {
-     weakSelf?.navigateToHomeVC()
-     }
-     else
-     {
-     print("*********home data failed**********")
-     weakSelf?.showAlert(alertString: networkErrorMessage)
-     }
-     }
-     }
-     
-     
-     /*
-     let params = [kAppKey: kAppKeyValue]
-     
-     let configDataRequest = RJILApiManager.defaultManager.prepareRequest(path: configUrl, params: params, encoding: .URL)
-     weak var weakSelf = self
-     RJILApiManager.defaultManager.get(request: configDataRequest!) { (data, response, error) in
-     
-     if let responseError = error {
-     //TODO: handle error
-     print(responseError)
-     print("*********config data failed**********")
-     weakSelf?.showAlert(alertString: networkErrorMessage)
-     return
-     }
-     if let responseData = data
-     {
-     weakSelf?.evaluateConfigData(dictionaryResponseData: responseData)
-     weakSelf?.callWebservicesForHomeData()
-     return
-     }
-     }*/
-     }
-     
-     func evaluateConfigData(dictionaryResponseData responseData:Data) {
-     //Success
-     //JCDataStore.sharedDataStore.setConfigData(withResponseData: responseData)
-     }
-     
-     
-     func callWebServiceForHomeData(page: Int) {
-     let url = homeDataUrl.appending(String(page))
-     let homeDataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .BODY)
-     weak var weakSelf = self
-     dispatchGroup.enter()
-     RJILApiManager.defaultManager.get(request: homeDataRequest!) { (data, response, error) in
-     if error != nil {
-     //TODO: handle error
-     weakSelf?.isHomeDataAvailable = false
-     weakSelf?.dispatchGroup.leave()
-     return
-     }
-     if let responseData = data {
-     weakSelf?.evaluateHomeData(dictionaryResponseData: responseData)
-     ParentalPinManager.shared.setParentalPinModel()
-     weakSelf?.isHomeDataAvailable = true
-     weakSelf?.dispatchGroup.leave()
-     return
-     }
-     }
-     }
-     
-     func evaluateHomeData(dictionaryResponseData responseData:Data) {
-     //Success
-     JCDataStore.sharedDataStore.setData(withResponseData: responseData, category: .Home)
-     }*/
-    
-    
-    
-    
+
     
     func showAlert(alertString: String) {
         weak var weakSelf = self
@@ -238,16 +156,6 @@ class JCSplashVC: UIViewController {
         }
         
     }
-    
-    
-    //    func parseCheckVersionData(_ responseData: Data) -> CheckVersionModel? {
-    //        do {
-    //               return try JSONDecoder().decode(CheckVersionModel.self, from: responseData)
-    //        } catch {
-    //            print("Error deserializing JSON: \(error)")
-    //        }
-    //        return nil
-    //    }
     
     func showUpdateAlert(isMandatory: Bool, alertMessage: String, title: String) {
         weak var weakSelf = self
