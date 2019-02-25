@@ -294,22 +294,6 @@ class Utility {
         return view
     }
     
-    
-    //MARK: Getting Carousal View in TableViewHeader
-    class func getHeaderForTableView(for delegate: JCCarouselCellDelegate, with carouselItems: [Item], isDisney: Bool = false) -> InfinityScrollView {
-        let carousalView = Bundle.main.loadNibNamed("kInfinityScrollView", owner: delegate, options: nil)?.first as! InfinityScrollView
-            carousalView.isDisney = isDisney
-            carousalView.carouselArray = carouselItems
-            carousalView.loadViews()
-            carousalView.carouselDelegate = delegate
-        return carousalView
-    }
-    
-    class func getFooterForTableView(for controller: UIViewController) -> JCBaseTableViewFooterView {
-        let footerView = Bundle.main.loadNibNamed("JCBaseTableViewFooterView", owner: controller, options: nil)?.first as! JCBaseTableViewFooterView
-        return footerView
-    }
-    
     class func getFooterHeight(_ data: BaseDataModel?, loadedPage: Int) -> CGFloat {
         if let data = data {
             if loadedPage >= ((data.totalPages ?? 0) ) {
@@ -321,19 +305,6 @@ class Utility {
         return 0
     }
     
-    //MARK: Changing TableCell Alpha in focus
-    class func baseTableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath {
-            guard nextIndexPath != prevIndexPath else {return}
-            Utility.changeTableCellAlpha(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
-            Utility.changeTableCellAlpha(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1))
-        } else if let nextIndexPath = context.nextFocusedIndexPath {
-            Utility.changeTableCellAlpha(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
-        } else if let prevIndexPath = context.previouslyFocusedIndexPath {
-            Utility.changeTableCellAlpha(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: .white)
-        }
-    }
-    
     class func baseTableViewInBaseViewController(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let nextIndexPath = context.nextFocusedIndexPath, let prevIndexPath = context.previouslyFocusedIndexPath {
             guard nextIndexPath != prevIndexPath else {return}
@@ -343,41 +314,6 @@ class Utility {
             Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: nextIndexPath, alpha: 1.0, textColor: .white)
         } else if let prevIndexPath = context.previouslyFocusedIndexPath {
             Utility.changeTableCellAlphaForbaseTableView(tableView, indexpath: prevIndexPath, alpha: 0.5, textColor: .white)
-        }
-    }
-    
-    //MARK: ChangingTheAlpha when focus shifted from tab bar item to view controller view
-   class func changingAlphaTabAbrToVC(carousalView: InfinityScrollView?, tableView: UITableView, toChange: inout Bool) {
-        if toChange {
-            let cells = tableView.visibleCells
-            toChange = false
-            for cell in cells {
-                if cell != cells.first {
-                    cell.contentView.alpha = 0.5
-                }
-            }
-            if cells.count <= 2 {
-                cells.first?.contentView.alpha = 0.5
-            } else {
-                if let headerViewOfTableSection = carousalView {
-                    headerViewOfTableSection.middleButton.alpha = 0.5
-                }
-            }
-        }
-    }
-    
-    //MARK: ChangingTheAlpha when tab bar item selected
-    class func changeAlphaWhenTabBarSelected(_ tableView: UITableView, carousalView: InfinityScrollView?, toChange: inout Bool) {
-        toChange = true
-        if let headerViewOfTableSection = carousalView {
-            headerViewOfTableSection.middleButton.alpha = 1
-        }
-        for each in tableView.visibleCells {
-            each.contentView.alpha = 1
-            if let each = each as? BaseTableViewCell {
-                each.categoryTitleLabel.textColor = .white
-                each.itemCollectionView.alpha = 1
-            }
         }
     }
     
@@ -528,5 +464,21 @@ extension UIView {
         set {
             layer.borderColor = newValue?.cgColor
         }
+    }
+}
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? UITabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
     }
 }

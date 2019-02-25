@@ -170,7 +170,6 @@
         loaderCoverView.isHidden = true
         preparePlayerVC()
         addSwipeGesture()
-        self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
         let cellNib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
         collectionView_Recommendation.register(cellNib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
     }
@@ -178,9 +177,6 @@
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        
     }
     deinit {
         print("In Player deinit")
@@ -816,33 +812,7 @@
             }
         }
     }
-    
-    //MARK:- Open MetaDataVC
-    func openMetaDataVC(model:More) {
-        Log.DLog(message: "openMetaDataVC" as AnyObject)
-        if let topController = UIApplication.topViewController() {
-            Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
-            var tempItem = Item()
-            tempItem.id = model.id
-            tempItem.name = model.name
-            tempItem.banner = model.banner
-            var app = App()
-            app.type = VideoType.Movie.rawValue
-            tempItem.app = app
-            
-            let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = tempItem
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
-            topController.present(metadataVC, animated: true, completion: nil)
-        }
-    }
-    //MARK:- Hide/Unhide Now Playing
-    func hideUnhideNowPlayingView(cell: JCItemCell, state: Bool) {
-        DispatchQueue.main.async {
-            cell.nowPlayingImageView.isHidden = state
-        }
-    }
+
     //MARK:- Show Next Video View
     
     func showNextVideoView(videoName: String, remainingTime: Int, banner: String) {

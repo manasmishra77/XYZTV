@@ -44,7 +44,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         let cellNib = UINib(nibName: "BaseTableViewCell", bundle: nil)
         baseTableView.register(cellNib, forCellReuseIdentifier: "BaseTableViewCell")
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -95,17 +94,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         let cellData = getCellItems(indexPath.row)
         cell.configureView(cellData, delegate: self)
         return cell
-//        let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-//        cell.itemFromViewController = .Search
-//        cell.tag = indexPath.row
-//        cell.itemsArray = searchResultArray[indexPath.row].resultItems
-//        let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.itemsArray?.count ?? 0))"
-//        cell.categoryTitleLabel.text = categoryTitle
-//
-//        cell.cellDelgate = self
-//
-//        cell.tableCellCollectionView.reloadData()
-//        return cell
     }
     
     func getCellItems(_ index: Int) -> BaseTableCellModel {

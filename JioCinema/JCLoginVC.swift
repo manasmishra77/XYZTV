@@ -29,9 +29,6 @@ class JCLoginVC: UIViewController {
         
         signInOTPButton.layer.cornerRadius = 8
         signInJioIDButton.layer.cornerRadius = 8
-        // Do any additional setup after loading the view.
-        //otpView.isHidden = true
-        //signInWithJioIdView.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,7 +68,6 @@ class JCLoginVC: UIViewController {
         singInOptionsVC.view.layer.speed = 0.7
 
         self.present(singInOptionsVC, animated: true, completion: {
-            //self.changingSearchNCRootVC()
         })
     }
  

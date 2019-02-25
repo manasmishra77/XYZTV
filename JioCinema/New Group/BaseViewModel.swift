@@ -8,9 +8,6 @@
 
 import UIKit
 
-typealias TableCellItemsTuple = (title: String, items: [Item], cellType: ItemCellType, layout: ItemCellLayoutType, sectionLanguage: AudioLanguage, charItems: [DisneyCharacterItems]?)
-
-
 struct TabelCellItems {
     
 }
@@ -71,27 +68,6 @@ class BaseViewModel: NSObject  {
                 let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: heightOfCarouselSection - 120)
                 carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
             }
-            //            if let items = baseDataModel?.data?[0].items {
-            //                var isDisney = false
-            //                if vcType == .disneyHome || vcType == .disneyKids || vcType == .disneyTVShow || vcType == .disneyMovies{
-            //                isDisney = true
-            //                }
-            //
-            //                carousal = Utility.getHeaderForTableView(for: self, with: items, isDisney: isDisney)
-            //
-            //                DispatchQueue.main.async {
-            //                    if self.vcType == .disneyHome {
-            //                        self.carousal?.viewOfButtons.isHidden = false
-            //                        self.carousal?.disneyViewHeight.constant = 200
-            //                    }
-            //                    else {
-            //                        self.carousal?.viewOfButtons.isHidden = true
-            //                        self.carousal?.disneyViewHeight.constant = 0
-            //                    }
-            //                }
-            //
-            //
-            //            }
         }
         return carousal
     }
