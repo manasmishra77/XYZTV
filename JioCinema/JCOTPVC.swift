@@ -11,8 +11,7 @@ import UIKit
 let MESSAGE_LOGINWITHOUTERROR   = "Login Failed"
 
 
-class JCOTPVC: UIViewController,UISearchBarDelegate
-{
+class JCOTPVC: UIViewController {
     
     @IBOutlet weak var keyBoardButton1: JCKeyboardButton!
     @IBOutlet weak var jioNumberTFLabel: UILabel!
