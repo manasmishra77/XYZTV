@@ -40,6 +40,9 @@ class AutoScrollLabel: UIView {
         textLabel?.backgroundColor = .blue
         textLabel?.textColor = .black
         textLabel?.textAlignment = NSTextAlignment.left
+        if textLabel == nil {
+            return
+        }
         self.addSubview(textLabel!)
     }
     

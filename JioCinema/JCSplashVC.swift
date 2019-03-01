@@ -261,8 +261,8 @@ class JCSplashVC: UIViewController {
         }
         let updateAction = UIAlertAction(title: "Update", style: .default) { (action) in
             let urlString = "com.apple.TVAppStore://itunes.apple.com/in/app/jiocinema/id1067316596?mt=8"
-            let url = URL(string: urlString)
-            UIApplication.shared.open(url!, options: ["": ""], completionHandler: { (bool) in
+            guard let url = URL(string: urlString) else {return}
+            UIApplication.shared.open(url, options: ["": ""], completionHandler: { (bool) in
                 exit(0)
             })
         }

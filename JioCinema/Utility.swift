@@ -27,7 +27,7 @@ class Utility {
     }
     
     @objc func reachabilityChanged(note: Notification) {
-        let r = note.object as! Reachability
+        guard let r = note.object as? Reachability else {return}
         if r.isReachable {
             isNetworkAvailable = true
             if let isRechable = (reachability?.isReachableViaWiFi), isRechable {
@@ -115,7 +115,7 @@ class Utility {
         {
             let encodedData = aString?.data(using: .utf8)
             let encodedString = encodedData?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-            return encodedString!
+            return encodedString ?? ""
         }
         return ""
     }
@@ -172,10 +172,10 @@ class Utility {
         playerVC.defaultLanguage = fromLanguage
         
         if isEpisodeAvailable {
-            playerVC.episodeArray = recommendationArray as! [Episode]
+            playerVC.episodeArray = recommendationArray as? [Episode] ?? []
         }
         else if isMoreDataAvailable {
-            playerVC.moreArray = recommendationArray as! [Item]
+            playerVC.moreArray = recommendationArray as? [Item] ?? []
         }
         playerVC.director = director ?? ""
         playerVC.starCast = starCast ?? ""
@@ -402,10 +402,10 @@ class Utility {
         var color: UIColor = .black
         
         var fontOfText: UIFont {
-            if let font = UIFont(name: fontName, size: fontSize!) {
+            if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
             }
             
         }
@@ -413,7 +413,7 @@ class Utility {
     
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
@@ -475,15 +475,15 @@ extension String {
         var color: UIColor = .black
         
         var fontOfText: UIFont {
-            if let font = UIFont(name: fontName, size: fontSize!) {
+            if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
             }
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
             let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
@@ -523,7 +523,7 @@ extension UIView {
 
     @IBInspectable var borderColor: UIColor? {
         get {
-            return UIColor(cgColor: layer.borderColor!)
+            return UIColor(cgColor: layer.borderColor ?? UIColor.clear.cgColor)
         }
         set {
             layer.borderColor = newValue?.cgColor

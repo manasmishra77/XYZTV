@@ -29,7 +29,7 @@ let basePath = prodBase
 
 //Config
 let common = "common/v3/"
-let configUrl = "getconfig/geturl/39ee6ded40812c593ed8"
+let configUrl = "common/v3.1/" + "getconfig/geturl/39ee6ded40812c593ed8"
 
 //Login
 let loginUrl = "login/login"

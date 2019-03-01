@@ -227,8 +227,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
 
         //Pagination call
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count ?? 0) - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages ?? 0)) {
                 callWebServiceForHomeData(page: loadedPage)
             }
         }
