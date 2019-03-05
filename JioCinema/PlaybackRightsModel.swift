@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ObjectMapper
 
 struct PlaybackRightsModel: Codable {
     var code:Int?

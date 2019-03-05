@@ -15,25 +15,8 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomPlayerView" customModule="JioCinema" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekJ-Pb-4Zh">
-                    <rect key="frame" x="190" y="620" width="1540" height="300"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="300" id="qbK-SJ-PK7"/>
-                    </constraints>
-                </view>
-            </subviews>
             <color key="backgroundColor" red="0.58081901069999997" green="0.088427625600000004" blue="0.31863921880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="Pmt-tb-8Ig" firstAttribute="bottom" secondItem="ekJ-Pb-4Zh" secondAttribute="bottom" constant="100" id="D9K-6R-W5W"/>
-                <constraint firstItem="ekJ-Pb-4Zh" firstAttribute="leading" secondItem="Pmt-tb-8Ig" secondAttribute="leading" constant="100" id="DLQ-DQ-9Bb"/>
-                <constraint firstItem="Pmt-tb-8Ig" firstAttribute="trailing" secondItem="ekJ-Pb-4Zh" secondAttribute="trailing" constant="100" id="E8R-iZ-YvC"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
-            <connections>
-                <outlet property="playerControlView" destination="ekJ-Pb-4Zh" id="Ztx-aM-992"/>
-            </connections>
         </view>
     </objects>
 </document>

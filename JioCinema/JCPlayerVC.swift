@@ -7,7 +7,6 @@
  //
  
  import UIKit
- import ObjectMapper
  import AVKit
  import AVFoundation
  import SDWebImage

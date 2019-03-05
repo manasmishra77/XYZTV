@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 struct BaseDataModel: Codable {
     var code: Int?
