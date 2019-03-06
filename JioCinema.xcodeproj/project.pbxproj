@@ -136,6 +136,7 @@
 		993E0D5122269AAA0064C194 /* CustomPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 993E0D4C22269AAA0064C194 /* CustomPlayerView.xib */; };
 		993E0D5322269AAA0064C194 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993E0D4E22269AAA0064C194 /* PlayerViewController.swift */; };
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
+		99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 99606317222FA10C007A9D48 /* SampleVideo.mp4 */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
 		9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */; };
 		9966543621D381360026CC8D /* CarouselCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */; };
@@ -314,7 +315,7 @@
 		993E0D4C22269AAA0064C194 /* CustomPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomPlayerView.xib; sourceTree = "<group>"; };
 		993E0D4E22269AAA0064C194 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
-		99606314222F9C21007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
+		99606317222FA10C007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
 		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
 		9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CarouselCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -460,7 +461,7 @@
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
-				99606315222F9C30007A9D48 /* Video */,
+				99606316222FA10C007A9D48 /* SampleVideo */,
 				847BC04A2201D18900FB5B2A /* Fonts */,
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
@@ -703,13 +704,12 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		99606315222F9C30007A9D48 /* Video */ = {
+		99606316222FA10C007A9D48 /* SampleVideo */ = {
 			isa = PBXGroup;
 			children = (
-				99606314222F9C21007A9D48 /* SampleVideo.mp4 */,
+				99606317222FA10C007A9D48 /* SampleVideo.mp4 */,
 			);
-			name = Video;
-			path = "New Group";
+			path = SampleVideo;
 			sourceTree = "<group>";
 		};
 		B28F13A3B3AA96161C298489 /* Pods */ = {
@@ -853,6 +853,7 @@
 				847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */,
 				7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */,
 				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
+				99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */,
 				847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */,
 				53D1E2E821B7B881003BD5C1 /* SideNavigationVC.xib in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,

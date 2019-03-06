@@ -23,13 +23,7 @@ class CustomPlayerView: UIView {
     var timer: Timer!
     var delegate : DelegateToUpdateProgressBar?
     var myPreferedFocusView : UIView?
-//    override var preferredFocusEnvironments: [UIFocusEnvironment]{
-//        if let preferredView = myPreferedFocusView {
-//            preferredView.alpha = 1
-//            return [preferredView]
-//        }
-//        return []
-//    }
+    
     func configureView(url: URL, superView: UIView) {
         self.url = url
         playerItem = AVPlayerItem(url: url)
@@ -40,13 +34,9 @@ class CustomPlayerView: UIView {
         playerLayer.frame = self.bounds
         self.clipsToBounds = true
         self.layer.addSublayer(playerLayer)
-//        addControlsView()
+        
         addPlayersControlView()
-//        if self.controlsView != nil {
-//            DispatchQueue.main.async {
-//                self.myPreferedFocusView = self
-//            }
-//        }
+        
         self.updateFocusIfNeeded()
         self.setNeedsFocusUpdate()
     }
@@ -56,6 +46,26 @@ class CustomPlayerView: UIView {
         controlsView?.delegate = self
         controlsView?.addAsSubviewWithFourConstraintsFromBottomWithConstantHeight(self, height: 400, bottom: -100, leading: 0, trailing: 0)
     }
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        for press in presses {
+//            switch press.type{
+//            case .downArrow:
+//                print("DownArrow")
+//            case .leftArrow:
+//                print("leftArrow")
+//            case .menu:
+//                print("menu")
+//            case .playPause:
+//                print("playPause")
+//            case .rightArrow:
+//                print("rightArrow")
+//            case .upArrow:
+//                print("upArrow")
+//            case .select:
+//                print("select")
+//            }
+//        }
+//    }
 
 //    @objc func updateProgressBar() {
 //        if let duration = playerItem?.asset.duration, let currentTime = playerItem?.currentTime(){
