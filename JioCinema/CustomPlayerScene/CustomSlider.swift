@@ -30,9 +30,6 @@ class CustomSlider: UIView {
         progressBar.tintColor = .red
         backgroundFocusableButton.delegate = self
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("ghsva")
-    }
 //    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
 //        for press in presses {
 //            if press.type == .playPause{

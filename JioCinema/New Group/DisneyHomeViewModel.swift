@@ -163,7 +163,7 @@ class DisneyHomeViewModel: BaseViewModel {
             }
         case .reumeWatch:
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
-                baseTableCellModel.title = "Resume Watching"
+                baseTableCellModel.title = dataContainer.title
                 baseTableCellModel.items = dataContainer.items
                 baseTableCellModel.cellType = .resumeWatchDisney
                 baseTableCellModel.sectionLanguage = .english

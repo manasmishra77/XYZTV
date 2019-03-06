@@ -22,7 +22,7 @@ class JCSliderButton: UIButton
         delegate?.touchBeganCalledSetSliderValue()
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touchesEnded")
+//        print("touchesEnded")
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
@@ -37,6 +37,6 @@ class JCSliderButton: UIButton
         }
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touchesCancelled")
+//        print("touchesCancelled")
     }
 }
