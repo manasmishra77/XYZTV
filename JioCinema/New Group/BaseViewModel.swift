@@ -401,7 +401,7 @@ extension BaseViewModel {
             } else if ((item.isPlaylist ?? false) && (selectedIndexPath?.section == 0)) {
                 checkLoginAndPlay(item, categoryName: categoryName, categoryIndex: indexFromArray)
             } else {
-                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id!, appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
+                let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: vcType.name, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: vcType.tabBarIndex, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: vcType.isDisney, defaultAudioLanguage: item.audioLanguage)
                 delegate?.presentVC(metadataVC)
             }
         case .Music, .Episode, .Clip, .Trailer:
@@ -450,7 +450,8 @@ extension BaseViewModel {
     }
     
     func playItemAfterLogin() {
-        checkLoginAndPlay(itemAfterLogin!, categoryName: categoryNameAfterLogin!, categoryIndex: categoryIndexAfterLogin!)
+        guard let itemAfterLogin = itemAfterLogin, let categoryName = categoryNameAfterLogin, let categoryIndex = categoryIndexAfterLogin else {return}
+        checkLoginAndPlay(itemAfterLogin, categoryName: categoryName, categoryIndex: categoryIndex)
         self.itemAfterLogin = nil
         self.categoryIndexAfterLogin = nil
         self.categoryNameAfterLogin = nil

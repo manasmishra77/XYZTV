@@ -98,9 +98,32 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         }
     }
     
+
+//    func resumeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
+//        guard let items = itemsArray as? [Item] else {return resumeWatchCell}
+//        resumeWatchCell.nameLabel.text = items[indexPath.row].name ?? ""
+//
+//        if let imageUrl = items[indexPath.row].banner {
+//            let progress: Float?
+//            if let duration = items[indexPath.row].duration, let totalDuration = items[indexPath.row].totalDuration {
+//                progress = Float(duration) / Float(totalDuration)
+//                resumeWatchCell.progressBar.setProgress(progress ?? 0, animated: false)
+//            } else {
+//                resumeWatchCell.progressBar.setProgress(0, animated: false)
+//            }
+//
+//            let url = URL(string: imageBaseURL + imageUrl)
+//            resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//            });
+//        }
+//        return resumeWatchCell
+//    }
+    
     func itemCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        let items = itemsArray as! [Item]
+        guard let items = itemsArray as? [Item] else {return cell}
         var thumbnailTitle = ""
         if let nameOfThumbnail = items[indexPath.row].name, nameOfThumbnail != ""{
             thumbnailTitle = nameOfThumbnail
@@ -115,7 +138,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
     func episodesCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        let episodes = itemsArray as! [Episode]
+        guard let episodes = itemsArray as? [Episode] else {return cell}
         cell.nameLabel.text = episodes[indexPath.row].name
         let item = episodes[indexPath.row].getItem
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
@@ -135,7 +158,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func moreLikeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        let moreArray = itemsArray as! [Item]
+        guard let moreArray = itemsArray as? [Item] else {return cell}
         cell.nameLabel.text = moreArray[indexPath.row].name
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
@@ -159,7 +182,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.artistNameInitialButton.layer.cornerRadius = cell.artistNameInitialButton.frame.size.height / 2
         
         cell.artistNameLabel.textAlignment = .center
-        let artistImagesArray = self.itemsArray as! [(String, String)]
+        guard let artistImagesArray = self.itemsArray as? [(String, String)] else {return cell}
         let artistNameKey = artistImagesArray[indexPath.row].0
         let imageUrl = artistImagesArray[indexPath.row].1
         
@@ -167,7 +190,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let artistNameSubGroup = artistNameKey.components(separatedBy: " ")
         var artistInitial = ""
         for each in artistNameSubGroup {
-            if each.first != nil{
+            if each.first != nil {
                 artistInitial = artistInitial + String(describing: each.first!)
             }
         }
@@ -194,18 +217,18 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch itemArrayType {
         case .item:
-            let items = itemsArray as! [Item]
+            guard let items = itemsArray as? [Item] else {return}
             var item = items[indexPath.row]
             item.setDefaultAudioLanguage(defaultAudioLanguage)
             cellDelgate?.didTapOnItemCell?(self, item, self.tag)
         case .more:
-            let items = itemsArray as! [Item]
+            guard let items = itemsArray as? [Item] else {return}
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
         case .episode:
-            let items = itemsArray as! [Episode]
+            guard let items = itemsArray as? [Episode] else {return}
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row], self.tag)
         case .artistImages:
-            let items = itemsArray as! [(String, String)]
+            guard let items = itemsArray as? [(String, String)] else {return}
             cellDelgate?.didTapOnItemCell?(self, items[indexPath.row].0, self.tag)
         }
     }

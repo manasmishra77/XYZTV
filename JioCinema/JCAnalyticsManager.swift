@@ -23,8 +23,8 @@ class JCAnalyticsManager {
     init()
     {
         self.tid = googleAnalyticsTId
-        self.appName = Bundle.main.infoDictionary!["CFBundleName"] as? String
-        let appVsn: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
+        self.appName = Bundle.main.infoDictionary?["CFBundleName"] as? String
+        let appVsn: AnyObject? = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as AnyObject
         self.appVersion = appVsn as? String
         self.ua = "Mozilla/5.0 (Apple TV; CPU iPhone OS 9_0 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13T534YI"
        // self.MPVersion = "1"
@@ -38,8 +38,8 @@ class JCAnalyticsManager {
         }
         
         let language = NSLocale.preferredLanguages.first
-        if (language?.count)! > 0 {
-            self.ul = language!
+        if (language?.count ?? 0) > 0, let lang = language {
+            self.ul = lang
         } else {
             self.ul = "(not set)"
         }
@@ -101,9 +101,11 @@ class JCAnalyticsManager {
         let mandatoryParams = ["an":self.appName,"tid":self.tid,"av":self.appVersion,"cid":self.cid,"t":eventType,"ua":self.ua,"ul":self.ul]
         
         for (key, value) in mandatoryParams {
-            let escapedKey = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-            let escapedValue = (value as AnyObject).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-            parameters += escapedKey! + "=" + escapedValue! + "&"
+            if let escapedKey = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
+                if let escapedValue = (value as AnyObject).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
+                    parameters += escapedKey + "=" + escapedValue + "&"
+                }
+            }
         }
        
         for (key, value) in params {
@@ -114,13 +116,13 @@ class JCAnalyticsManager {
         if let paramEndcode = parameters.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         {
             let urlString = endpoint + paramEndcode
-            let url = URL.init(string: urlString)
+            guard let url = URL.init(string: urlString) else {return}
             
             #if DEBUG
                 //print(urlString)
             #endif
             
-            let task = URLSession.shared.dataTask(with: url!) { (data, response, error)  in
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error)  in
                 if let httpReponse = response as? HTTPURLResponse {
                     let statusCode = httpReponse.statusCode
                     #if DEBUG

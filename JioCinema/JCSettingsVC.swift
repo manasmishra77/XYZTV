@@ -38,13 +38,6 @@ class JCSettingsVC: UIViewController {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Navigation", properties: eventProperties)
     }
     override func viewWillAppear(_ animated: Bool) {
-        if JCLoginManager.sharedInstance.isUserLoggedIn() {
-            name.text = JCAppUser.shared.commonName
-            jioIDLabel.text = JCAppUser.shared.uid
-        } else {
-            name.text = ""
-            jioIDLabel.text = ""
-        }
     }
     
 
@@ -56,6 +49,21 @@ class JCSettingsVC: UIViewController {
         // For Internal Analytics Event
         let parentalPinTileSelectEvent = JCAnalyticsEvent.sharedInstance.getParentalControlTileSelectEvent()
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: parentalPinTileSelectEvent)
+    }
+    
+    func setUserIdAndName(_ toSet: Bool) {
+        if toSet {
+            if JCLoginManager.sharedInstance.isUserLoggedIn() {
+                name.text = JCAppUser.shared.commonName
+                jioIDLabel.text = JCAppUser.shared.uid
+            } else {
+                name.text = ""
+                jioIDLabel.text = ""
+            }
+        } else {
+            name.text = ""
+            jioIDLabel.text = ""
+        }
     }
     
     
@@ -114,9 +122,10 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         case 0:
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 cell.textLabel?.text = "Logout"
-                cell.settingsDetailLabel.isHidden = true
-//                cell.settingsDetailLabel.text = JCAppUser.shared.commonName
-            } else {
+
+                cell.settingsDetailLabel.isHidden = false
+                cell.settingsDetailLabel.text = ""
+            } else {                
                 cell.textLabel?.text = "Sign In"
             }
             
@@ -179,6 +188,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             nextFocussedCell.textLabel?.textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
             nextFocussedCell.settingsDetailLabel.textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
             nextFocussedCell.cellAccessoryImage.image = #imageLiteral(resourceName: "ArrowPink.png")
+            setUserIdAndName(false)
             
             switch nextFocussedCell.cellIndexpath {
             case 0:
@@ -188,7 +198,7 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 } else {
                     self.settingsImageView.image = #imageLiteral(resourceName: "MyAccount.png")
                 }
-                
+                setUserIdAndName(true)
             case 1:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Autoplay.png")
                 

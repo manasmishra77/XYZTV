@@ -35,7 +35,9 @@ class SideNavigationVC: UIViewController {
     
     @objc func onSerchNavRemoving(_ notification:Notification) {
         self.presentedViewController?.dismiss(animated: true, completion: {
-            self.sideNavigationView?.performNavigationTableSelection(index: (self.sideNavigationView?.selectedIndex)!)
+            if let index = self.sideNavigationView?.selectedIndex {
+                self.sideNavigationView?.performNavigationTableSelection(index: index)
+            }
         })
     }
     
