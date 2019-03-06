@@ -93,7 +93,7 @@ extension RJILApiManager {
 extension RJILApiManager {
     class func getConfigData(completion: @escaping APISuccessBlock) {
         let params = [kAppKey: kAppKeyValue]
-        let path = basePath + common + configUrl
+        let path = basePath + configUrl
         RJILApiManager.getReponse(path: path, shouldCheckNetWork: false, params: params, postType: .GET, paramEncoding: .URL, shouldShowIndicator: true, reponseModelType: ConfigData.self) { (response) in
             if response.isSuccess {
                JCDataStore.setConfigData(with: response.model!)

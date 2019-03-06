@@ -151,7 +151,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -160,7 +160,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
                 case .Music, .Episode, .Clip, .Trailer:
@@ -295,7 +295,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     //MARK:- Analytics Event Methods
     func sendSearchAnalyticsEvent() {
         // For Internal Analytics Event
-        let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text!)!, isvoice: "false", queryResultCount: String(self.searchResultArray.count))
+        let searchInternalEvent = JCAnalyticsEvent.sharedInstance.getSearchEventForInternalAnalytics(query: (self.searchViewController?.searchBar.text ?? ""), isvoice: "false", queryResultCount: String(self.searchResultArray.count))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: searchInternalEvent)
     }
     
@@ -412,7 +412,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -421,7 +421,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id!, appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
                 case .Music, .Episode, .Clip, .Trailer:
