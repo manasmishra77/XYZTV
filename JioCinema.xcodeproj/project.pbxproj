@@ -135,7 +135,6 @@
 		993E0D4F22269AAA0064C194 /* CustomPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993E0D4A22269AA90064C194 /* CustomPlayerView.swift */; };
 		993E0D5122269AAA0064C194 /* CustomPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 993E0D4C22269AAA0064C194 /* CustomPlayerView.xib */; };
 		993E0D5322269AAA0064C194 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993E0D4E22269AAA0064C194 /* PlayerViewController.swift */; };
-		993E0D572226A0D80064C194 /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 993E0D542226A0D70064C194 /* SampleVideo.mp4 */; };
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
 		9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */; };
@@ -314,8 +313,8 @@
 		993E0D4A22269AA90064C194 /* CustomPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPlayerView.swift; sourceTree = "<group>"; };
 		993E0D4C22269AAA0064C194 /* CustomPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomPlayerView.xib; sourceTree = "<group>"; };
 		993E0D4E22269AAA0064C194 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
-		993E0D542226A0D70064C194 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = SampleVideo.mp4; path = ../SampleVideo.mp4; sourceTree = "<group>"; };
 		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
+		99606314222F9C21007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
 		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
 		9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CarouselCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -461,8 +460,8 @@
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
+				99606315222F9C30007A9D48 /* Video */,
 				847BC04A2201D18900FB5B2A /* Fonts */,
-				993E0D552226A0D70064C194 /* Video */,
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
 				19491EDD2018522600870794 /* JCTopShelf */,
@@ -704,12 +703,13 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		993E0D552226A0D70064C194 /* Video */ = {
+		99606315222F9C30007A9D48 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				993E0D542226A0D70064C194 /* SampleVideo.mp4 */,
+				99606314222F9C21007A9D48 /* SampleVideo.mp4 */,
 			);
-			path = Video;
+			name = Video;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		B28F13A3B3AA96161C298489 /* Pods */ = {
@@ -867,7 +867,6 @@
 				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
 				99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
-				993E0D572226A0D80064C194 /* SampleVideo.mp4 in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				199DE87821649ACF0052CA54 /* DisneyMovies.png in Resources */,
