@@ -15,73 +15,93 @@ protocol DelegateToUpdateProgressBar {
 }
 
 class CustomPlayerView: UIView {
+    
+    fileprivate var playerViewModel: PlayerViewModel?
+    fileprivate var playbackRightModel : PlaybackRightsModel?
+    fileprivate var enterParentalPinView: EnterParentalPinView?
+    fileprivate var enterPinViewModel: EnterPinViewModel?
+    fileprivate var playerItem: Item?
+    
     var controlsView : PlayersControlView?
-
-    var player : AVPlayer?
-    var playerItem : AVPlayerItem?
-    var url: URL?
+    
+    @IBOutlet weak var playerHolderView: UIView!
+    @IBOutlet weak var controlHolderView: UIView!
+    
     var timer: Timer!
     var delegate : DelegateToUpdateProgressBar?
     var myPreferedFocusView : UIView?
     
-    func configureView(url: URL, superView: UIView) {
-        self.url = url
-        playerItem = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: playerItem)
-        player?.play()
-        //self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = self.bounds
-        self.clipsToBounds = true
-        self.layer.addSublayer(playerLayer)
-        
+    func configureView(item: Item, superView: UIView) {
+        playerViewModel = PlayerViewModel(item: item)
+        playerViewModel?.delegate = self
+        self.playerItem = item
         addPlayersControlView()
-        
-        self.updateFocusIfNeeded()
-        self.setNeedsFocusUpdate()
     }
+    
+    
     func addPlayersControlView() {
         controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
         controlsView?.configurePlayersControlView()
         controlsView?.delegate = self
-        controlsView?.addAsSubviewWithFourConstraintsFromBottomWithConstantHeight(self, height: 400, bottom: -100, leading: 0, trailing: 0)
+        controlsView?.frame = controlHolderView.frame
+        self.controlHolderView.addSubview(controlsView!)
+//        self.bringSubview(toFront: controlHolderView)
     }
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        for press in presses {
-//            switch press.type{
-//            case .downArrow:
-//                print("DownArrow")
-//            case .leftArrow:
-//                print("leftArrow")
-//            case .menu:
-//                print("menu")
-//            case .playPause:
-//                print("playPause")
-//            case .rightArrow:
-//                print("rightArrow")
-//            case .upArrow:
-//                print("upArrow")
-//            case .select:
-//                print("select")
-//            }
-//        }
-//    }
-
-//    @objc func updateProgressBar() {
-//        if let duration = playerItem?.asset.duration, let currentTime = playerItem?.currentTime(){
-//            let newValue = currentTime.seconds / duration.seconds
-//            controlsView?.updateProgressBar(progress: Float(newValue))
-//        }
-//    }
-//    var start:CGPoint?
-
 }
+
 extension CustomPlayerView : PlayerControlsDelegate {
     func playTapped(_ isPaused: Bool) {
         if !isPaused {
-            player?.pause()
+//            player?.pause()
         } else {
-            player?.play()
+//            player?.play()
         }
+    }
+}
+
+
+
+extension CustomPlayerView: EnterPinViewModelDelegate {
+    func pinVerification(_ isSucceed: Bool) {
+        if isSucceed {
+            enterPinViewModel = nil
+            enterParentalPinView?.removeFromSuperview()
+            enterParentalPinView = nil
+            playerViewModel?.instantiatePlayerAfterParentalCheck()
+        }
+    }
+}
+
+extension CustomPlayerView: PlayerViewModelDelegate {
+    func checkParentalControlFor(playbackRightModel: PlaybackRightsModel) {
+        self.playbackRightModel = playbackRightModel
+        let ageGroup:AgeGroup = self.playbackRightModel?.maturityAgeGrp ?? .allAge
+        if ParentalPinManager.shared.checkParentalPin(ageGroup) {
+            enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
+            enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
+            enterParentalPinView?.delegate = enterPinViewModel
+            enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
+            enterParentalPinView?.frame = self.frame
+            self.addSubview(enterParentalPinView!)
+        }
+        else {
+            playerViewModel?.instantiatePlayerAfterParentalCheck()
+        }
+    }
+    
+    func addAvPlayerControllerToController() {
+        if let player = playerViewModel?.player {
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.bounds
+            playerLayer.videoGravity = .resizeAspectFill
+            self.clipsToBounds = true
+            playerHolderView.layer.addSublayer(playerLayer)
+            player.play()
+//            self.bringSubview(toFront: controlHolderView)
+        }
+    }
+    
+    func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
+        //vinit_comment handle player error
     }
 }
