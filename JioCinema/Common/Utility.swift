@@ -184,7 +184,7 @@ class Utility {
     }
     
     //MARK:- Metadata View Controller Preparation method
-    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int?, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, modelForPresentedVC: Any? = nil, vcTypeForArtist: VCTypeForArtist? = nil, isDisney: Bool = false, defaultAudioLanguage: AudioLanguage? = nil) -> JCMetadataVC {
+    func prepareMetadata(_ itemToBePlayedId: String, appType: VideoType, fromScreen: String, categoryName: String, categoryIndex: Int, tabBarIndex: Int?, shouldUseTabBarIndex: Bool = false, isMetaDataAvailable: Bool = false, metaData: Any? = nil, modelForPresentedVC: Any? = nil, vcTypeForArtist: VCTypeForArtist? = nil, isDisney: Bool = false, defaultAudioLanguage: AudioLanguage? = nil, currentItem: Item? = nil) -> JCMetadataVC {
 
         print("show metadata")
         let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
@@ -196,6 +196,8 @@ class Utility {
         metadataVC.tabBarIndex = tabBarIndex
         metadataVC.shouldUseTabBarIndex = shouldUseTabBarIndex
         metadataVC.isMetaDataAvailable = isMetaDataAvailable
+        
+        metadataVC.item = currentItem
         if let metaData = metaData as? MetadataModel {
             metadataVC.metadata = metaData
         }
@@ -504,11 +506,15 @@ extension UIView {
     func addAsSubviewWithFourConstraintsFromBottomWithConstantHeight(_ superview: UIView, height: CGFloat, bottom: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0) {
         self.frame = superview.bounds
         superview.addSubview(self)
+
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: height).isActive = true
         self.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom).isActive = true
         self.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading).isActive = true
         self.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing).isActive = true
+
+        superview.bringSubview(toFront: self)
+        
     }
 }
 extension UIApplication {

@@ -15,8 +15,33 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomPlayerView" customModule="JioCinema" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gM3-hv-dnP">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <viewLayoutGuide key="safeArea" id="GsT-Jw-Qxy"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWO-Ep-Kyn">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
             <color key="backgroundColor" red="0.58081901069999997" green="0.088427625600000004" blue="0.31863921880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="oWO-Ep-Kyn" secondAttribute="trailing" id="6Df-IH-g83"/>
+                <constraint firstItem="oWO-Ep-Kyn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9z8-bE-Vza"/>
+                <constraint firstAttribute="bottom" secondItem="gM3-hv-dnP" secondAttribute="bottom" id="AGQ-72-cSM"/>
+                <constraint firstItem="oWO-Ep-Kyn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ssg-x5-QT1"/>
+                <constraint firstItem="gM3-hv-dnP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YWK-rK-lSP"/>
+                <constraint firstAttribute="trailing" secondItem="gM3-hv-dnP" secondAttribute="trailing" id="dkz-y9-vZq"/>
+                <constraint firstItem="gM3-hv-dnP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="seb-ym-Zz7"/>
+                <constraint firstAttribute="bottom" secondItem="oWO-Ep-Kyn" secondAttribute="bottom" id="ze0-lf-g33"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
+            <connections>
+                <outlet property="controlHolderView" destination="oWO-Ep-Kyn" id="Izz-zx-mO3"/>
+                <outlet property="playerHolderView" destination="gM3-hv-dnP" id="6u4-Ki-GUv"/>
+            </connections>
         </view>
     </objects>
 </document>

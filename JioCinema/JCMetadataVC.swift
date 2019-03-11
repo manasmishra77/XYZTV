@@ -1284,7 +1284,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if let artistArray = metadata?.artist {
             artists = artistArray.reduce("", +)
         }
-        
         let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "",latestId: nil , isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
         
         self.present(playerVC, animated: false, completion: nil)
@@ -1331,8 +1330,14 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 recommendationArray = moreArray
             }
             
-            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "",latestId: nil, isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
-            self.present(playerVC, animated: false, completion: nil)
+//            let playerVC = Utility.sharedInstance.preparePlayerVC(itemId, itemImageString: (metadata?.banner) ?? "", itemTitle: (metadata?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (metadata?.description) ?? "", appType: .Movie, isPlayList: false, playListId: "",latestId: nil, isMoreDataAvailable: isMoreDataAvailable, isEpisodeAvailable: false, recommendationArray: recommendationArray ,fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
+//            self.present(playerVC, animated: false, completion: nil)
+
+            var playerVC = PlayerViewController.init(item: self.item!)
+            self.present(playerVC, animated: true) {
+                
+            }
+            
         } else if itemAppType == .TVShow {
             var isEpisodeAvailable = false
             var recommendationArray: Any = false
