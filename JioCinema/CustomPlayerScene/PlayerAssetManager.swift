@@ -42,7 +42,7 @@ class PlayerAssetManager: NSObject {
         super.init()
         delegate = listener as? PlayerAssetManagerDelegate
         self.isFps = isFps
-//        if (isFps) {
+        if (isFps) {
         let urlString = playBackModel.url ?? playBackModel.aesUrl
         asset = AVURLAsset(url: URL(string: urlString!)!)
             asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
@@ -54,10 +54,10 @@ class PlayerAssetManager: NSObject {
                     self.prepare(toPlay: self.asset!, withKeys: PlayerAssetManager.assetKeysRequiredToPlay)
                 })
             })
-//        }
-//        else {
-//            handleAESStreamingUrl(videoUrl: avUrl)
-//        }
+        }
+        else {
+            handleAESStreamingUrl(videoUrl: playBackModel.aesUrl!)
+        }
     }
     
     func handleAESStreamingUrl(videoUrl: String) {
@@ -66,9 +66,8 @@ class PlayerAssetManager: NSObject {
             if let absoluteUrlString = videoUrl?.absoluteString {
                 let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
                 let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
-//vinit_commented                _ = playbackRightsData?.isSubscribed
                 let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
-                guard let assetUrl = URL(string: changedUrl) else {
+                guard let assetUrl = URL(string: absoluteUrlString) else {
                     return
                 }
                 asset = AVURLAsset(url: assetUrl, options: header)

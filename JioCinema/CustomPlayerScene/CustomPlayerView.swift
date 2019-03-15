@@ -189,9 +189,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         if let player = playerViewModel?.player {
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.frame = self.bounds
-            playerLayer.videoGravity = .resizeAspectFill
+//            playerLayer.videoGravity = .resizeAspectFill
             self.clipsToBounds = true
+            playerLayer.videoGravity = .resize
             playerHolderView.layer.addSublayer(playerLayer)
+            playerViewModel?.addPlayerNotificationObserver()
             player.play()
 //            self.bringSubview(toFront: controlHolderView)
         }

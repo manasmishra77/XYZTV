@@ -71,7 +71,8 @@ class PlayerViewModel: NSObject {
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                               self.playbackRightsModel?.url = nil
+                self.playbackRightsModel?.url = nil
+                print("playbackRightsModel ===== \(self.playbackRightsModel)")
                 self.isFpsUrl = self.playbackRightsModel?.url != nil ? true : false
                 self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
             }
@@ -161,9 +162,6 @@ class PlayerViewModel: NSObject {
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
-        addPlayerNotificationObserver()
-//        playerController?.player = player
-//        playerController?.player?.play()
         delegate?.addAvPlayerControllerToController()
 //        handleForPlayerReference()
     }
