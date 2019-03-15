@@ -11,27 +11,40 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayersControlView" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayersControlView" customModule="JioCinema" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaf-pU-5fT">
-                    <rect key="frame" x="868" y="984" width="185" height="86"/>
+                    <rect key="frame" x="808" y="949" width="185" height="86"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Pause"/>
                     <connections>
                         <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Qnv-Kz-ONx"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
+                    <rect key="frame" x="0.0" y="729" width="1801" height="200"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="Cp9-jB-lTF"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" constant="10" id="6YI-s3-6jC"/>
+                <constraint firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" constant="20" id="6YI-s3-6jC"/>
                 <constraint firstItem="xaf-pU-5fT" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IX6-3Q-cUo"/>
+                <constraint firstItem="xaf-pU-5fT" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="YZB-BP-ny1"/>
+                <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
+                <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
             </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="playButton" destination="xaf-pU-5fT" id="P6b-dK-oS1"/>
+                <outlet property="sliderHolderView" destination="lJi-P7-V4r" id="ktK-uM-Rha"/>
             </connections>
+            <point key="canvasLocation" x="9.5" y="94.5"/>
         </view>
     </objects>
 </document>

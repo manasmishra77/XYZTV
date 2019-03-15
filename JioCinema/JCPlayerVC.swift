@@ -1072,8 +1072,8 @@
     
     func callWebServiceForPlayListData(id:String) {
         //playerId = id
-        var url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
-        var params = ["id": id,"contentId":""]
+        let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
+        let params = ["id": id,"contentId":""]
                 if isPlayList && self.id == ""{
                     //url = playBackForPlayList.appending(playListId)
                     //params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
@@ -1756,7 +1756,6 @@
             let isPlayingNow = model.id == id
             cell.configureView(cellItems, isPlayingNow: isPlayingNow)
 
-            
         }
         else if isMoreDataAvailable {
             let model = moreArray[indexPath.row]

@@ -10,13 +10,14 @@ import Foundation
 import AVKit
 
 private var playerViewControllerKVOContext = 0
-
 protocol PlayerViewModelDelegate {
     func addAvPlayerControllerToController()
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
+    func reloadMoreLikeCollectionView(i: Int)
+    func currentTimevalueChanged(newTime : Double, duration: Double)
+    func getDuration(duration: Double)
 }
-
 class PlayerViewModel: NSObject {
     
     fileprivate var itemToBePlayed: Item
@@ -25,7 +26,10 @@ class PlayerViewModel: NSObject {
     fileprivate var didSeek :Bool = false
     fileprivate var isFpsUrl = false
     fileprivate var playerTimeObserverToken: Any?
+    var moreArray: [Item]?
+    var episodeArray: [Episode]?
     
+    var isPlayList: Bool = false
     var totalDuration: Float = 0.0
     var currentDuration: Float = 0.0
     var appType: VideoType = VideoType.None
@@ -39,6 +43,10 @@ class PlayerViewModel: NSObject {
     fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var playbackRightsModel: PlaybackRightsModel?
+    fileprivate var episodeNumber :Int? = nil
+    
+    var isMoreDataAvailable: Bool = false
+    var isEpisodeDataAvailable: Bool = false
     var bannerUrlString: String = ""
     
     init(item: Item) {
@@ -46,8 +54,12 @@ class PlayerViewModel: NSObject {
         super.init()
         self.setVideoType(item: item)
         callWebServiceForPlaybackRights(id: item.id!)
+        updateValues(item: item)
     }
-    
+    func updateValues(item: Item){
+        appType = item.appType
+        
+    }
     
     func setVideoType(item: Item) {
         if let appTypeInt = item.app?.type {
@@ -55,6 +67,52 @@ class PlayerViewModel: NSObject {
         }
     }
     
+    func callWebServiceForMoreLikeData() {
+        let url = metadataUrl.appending(itemToBePlayed.id ?? "")
+        RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                return
+            }
+            var i = 0
+            if let recommendationItems = response.model?.more {
+                self.isMoreDataAvailable = false
+                self.moreArray?.removeAll()
+                if recommendationItems.count > 0 {
+                    self.isMoreDataAvailable = true
+                    self.moreArray = recommendationItems
+                }
+            } else if let episodes = response.model?.episodes {
+                self.isEpisodeDataAvailable = false
+                
+                self.episodeArray?.removeAll()
+                if episodes.count > 0{
+                    self.episodeArray?.removeAll()
+                    if episodes.count > 0{
+                        self.isEpisodeDataAvailable = true
+                        for each in episodes{
+                            if each.id == self.itemToBePlayed.id {
+                                self.episodeNumber = each.episodeNo
+                                break
+                            }
+                            i = i + 1
+                        }
+                        if i == episodes.count{
+                            i = i - 1
+                        }
+                        self.episodeArray = episodes
+                    }
+                    self.isEpisodeDataAvailable = true
+                    self.episodeArray = episodes
+                }
+            }
+                if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+                DispatchQueue.main.async {
+                    self.delegate?.reloadMoreLikeCollectionView(i: i)
+                }
+                }
+        }
+    }
     
     func callWebServiceForPlaybackRights(id: String) {
         RJILApiManager.getPlaybackRightsModel(contentId: id) {[unowned self](response) in
@@ -71,7 +129,7 @@ class PlayerViewModel: NSObject {
                     self.player?.pause()
                     self.resetPlayer()
                 }
-                               self.playbackRightsModel?.url = nil
+                self.playbackRightsModel?.url = nil
                 self.isFpsUrl = self.playbackRightsModel?.url != nil ? true : false
                 self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
             }
@@ -93,7 +151,7 @@ class PlayerViewModel: NSObject {
         if let player = player {
             player.pause()
             self.removePlayerObserver()
-//            self.playerController = nil
+            //            self.playerController = nil
         }
     }
     
@@ -110,9 +168,9 @@ class PlayerViewModel: NSObject {
     //MARK:- Remove Player Observer
     func removePlayerObserver() {
         //sendMediaEndAnalyticsEvent()
-//        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
-            updateResumeWatchList()
-//        } //vinit_commented
+        //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
+        updateResumeWatchList()
+        //        } //vinit_commented
         if let timeObserverToken = playerTimeObserverToken {
             self.player?.removeTimeObserver(timeObserverToken)
         }
@@ -127,11 +185,16 @@ class PlayerViewModel: NSObject {
     }
     
     func updateResumeWatchList() {
-//vinit_edited
+        //vinit_edited
     }
     
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
+            //handle play list
+        } else {
+            //dismiss Player
+        }
         //vinit_commented
     }
     
@@ -143,18 +206,17 @@ class PlayerViewModel: NSObject {
         
     }
     
-    
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
-      //  self.addMetadataToPlayer()
+        //  self.addMetadataToPlayer()
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-//        if playerController == nil {
-//            playerController = AVPlayerViewController()
-//            playerController?.delegate = self as? AVPlayerViewControllerDelegate
-//            if let player = player, let timeScale = player.currentItem?.asset.duration.timescale {
-//                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), timeScale))
-//            }
-//        }
+        //        if playerController == nil {
+        //            playerController = AVPlayerViewController()
+        //            playerController?.delegate = self as? AVPlayerViewControllerDelegate
+        //            if let player = player, let timeScale = player.currentItem?.asset.duration.timescale {
+        //                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), timeScale))
+        //            }
+        //        }
         if let player = player {
             player.replaceCurrentItem(with: playerItem)
         } else {
@@ -162,20 +224,20 @@ class PlayerViewModel: NSObject {
             player = AVPlayer(playerItem: playerItem)
         }
         addPlayerNotificationObserver()
-//        playerController?.player = player
-//        playerController?.player?.play()
+        //        playerController?.player = player
+        //        playerController?.player?.play()
         delegate?.addAvPlayerControllerToController()
-//        handleForPlayerReference()
+        //        handleForPlayerReference()
     }
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
         guard isAutoPlaySubtitle else {return}
         /*
-        let subtitles = player?.currentItem?.tracks(type: .subtitle)
-        // Select track with displayName
-        guard (subtitles?.count ?? 0) > 0 else {return}
-        _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
- *///vinit_commented
+         let subtitles = player?.currentItem?.tracks(type: .subtitle)
+         // Select track with displayName
+         guard (subtitles?.count ?? 0) > 0 else {return}
+         _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
+         *///vinit_commented
     }
     
     func handleForPlayerReference() {
@@ -259,7 +321,7 @@ class PlayerViewModel: NSObject {
                     isVideoUrlFailedOnce = true
                     failureType = "FPS"
                     isFpsUrl = false
-//vinit_commented                    self.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
+                    //vinit_commented                    self.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
                 } else {
                     //AES url failed
                     failureType = "AES"
@@ -268,20 +330,20 @@ class PlayerViewModel: NSObject {
                     let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                         DispatchQueue.main.async {
                             print("dismiss")
-//vinit_commented                            self.dismissPlayerVC()
+                            //vinit_commented                            self.dismissPlayerVC()
                         }
                     }
                     alert.addAction(cancelAction)
                     DispatchQueue.main.async {
-//vinit_commented                        self.present(alert, animated: false, completion: nil)
+                        //vinit_commented                        self.present(alert, animated: false, completion: nil)
                     }
                 }
                 /*
-                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
-                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
-                
-                sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
-                */ //vinit_commented
+                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                 
+                 sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+             */ //vinit_commented
             default:
                 print("unknown")
             }
@@ -301,11 +363,13 @@ class PlayerViewModel: NSObject {
                 
                 if self?.player != nil {
                     let currentPlayerTime = Double(CMTimeGetSeconds(time))
+                    self?.delegate?.currentTimevalueChanged(newTime: currentPlayerTime, duration: self?.getPlayerDuration() ?? 0)
+                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
                     let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
                     
                     if remainingTime <= 5
                     {
-                         //vinit_commented //show next item to play code
+                        //vinit_commented //show next item to play code
                     }
                 } else {
                     self?.playerTimeObserverToken = nil
@@ -333,15 +397,15 @@ extension PlayerViewController: AVPlayerViewControllerDelegate {
     //MARK:- Player Controller Delegate methods
     func playerViewController(_ playerViewController: AVPlayerViewController, willResumePlaybackAfterUserNavigatedFrom oldTime: CMTime, to targetTime: CMTime) {
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
- //vinit_commented       videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
+        //vinit_commented       videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
     
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
         /*
-        if visible, !isRecommendationViewVisible {
-            recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
-            recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
-        }
+         if visible, !isRecommendationViewVisible {
+         recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
+         recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
+         }
          */ //vinit_commented
     }
 }
@@ -364,7 +428,7 @@ extension PlayerViewModel {
         titleMetadataItem.keySpace = AVMetadataKeySpace.common
         let itemName = itemToBePlayed.name ?? ""
         titleMetadataItem.value = itemName as NSCopying & NSObjectProtocol
-
+        
         
         let descriptionMetadataItem = AVMutableMetadataItem()
         descriptionMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierDescription
@@ -374,7 +438,7 @@ extension PlayerViewModel {
         descriptionMetadataItem.keySpace = AVMetadataKeySpace.common
         let itemDescription = itemToBePlayed.description ?? ""
         descriptionMetadataItem.value = itemDescription as NSCopying & NSObjectProtocol
-
+        
         let imageMetadataItem = AVMutableMetadataItem()
         imageMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierArtwork
         imageMetadataItem.extendedLanguageTag = "und"

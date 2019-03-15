@@ -10,11 +10,13 @@ import Foundation
 
 class CustomSlider: UIView {
     @IBOutlet weak var sliderLeading: NSLayoutConstraint!
+    @IBOutlet weak var sliderLeadingForSeeking: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var backgroundFocusableButton: JCSliderButton!
     @IBOutlet weak var staringTime: UILabel!
     @IBOutlet weak var endingTime: UILabel!
     @IBOutlet weak var sliderCursor: UIButton!
+    @IBOutlet weak var sliderCursorForSeeking: UIButton!
     
     var isPaused = false
     
@@ -46,38 +48,46 @@ class CustomSlider: UIView {
     
 }
 extension CustomSlider: SliderDelegate{
+    func pressesBeganCalled() {
+        if backgroundFocusableButton.isFocused {
+            sliderLeading.constant = sliderLeadingForSeeking.constant
+        }
+    }
+    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self.backgroundFocusableButton{
                 self.sliderCursor.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.sliderCursor.backgroundColor = .lightGray
             
         } else {
+            self.sliderLeadingForSeeking.constant = self.sliderLeading.constant
             self.sliderCursor.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.sliderCursor.backgroundColor = .darkGray
         }
     }
-    func updateProgressBar(progress: Float, dueToScrubing: Bool = false) {
+    func updateProgressBar(currentTime: Float, duration: Float, dueToScrubing: Bool = false) {
+        let progress = currentTime / duration
         let maxLeading : Float = widthOfProgressBar - widthOfSlider
         if dueToScrubing {
-            progressBar.progress = (progressWhentouchBeganCalled + progress)
+            //progressBar.progress = (progressWhentouchBeganCalled + progress)
             let newSliderValue: Float =  Float(slidersValueWhentouchBeganCalled) + progress * maxLeading
             if newSliderValue >= 0 && newSliderValue <= maxLeading {
-                sliderLeading.constant = (slidersValueWhentouchBeganCalled + CGFloat(progress * maxLeading))
+                sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(progress * maxLeading))
             }
             else if newSliderValue < 0 {
-                sliderLeading.constant = 0
+                sliderLeadingForSeeking.constant = 0
             }
             else if newSliderValue > maxLeading {
-                sliderLeading.constant = CGFloat(maxLeading)
+                sliderLeadingForSeeking.constant = CGFloat(maxLeading)
             }
         } else {
             progressBar.progress = progress
-            sliderLeading.constant = (CGFloat(progress) * CGFloat(maxLeading))
+            sliderLeadingForSeeking.constant = (CGFloat(progress) * CGFloat(maxLeading))
         }
         progressBar.setProgress(progressBar.progress, animated: true)
     }
     func touchBeganCalledSetSliderValue() {
-        slidersValueWhentouchBeganCalled = sliderLeading.constant
+        slidersValueWhentouchBeganCalled = sliderLeadingForSeeking.constant
         progressWhentouchBeganCalled = progressBar.progress
     }
 }

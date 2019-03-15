@@ -11,7 +11,15 @@ import UIKit
 class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var moreLikeCollectionView: UICollectionView!
+    var moreArray: [Item]?
+    var episodesArray: [Episode]?
     
+    var appType = VideoType.None
+    var isMoreDataAvailable: Bool = false
+    var isEpisodeDataAvailable: Bool = false
+    var isPlayList: Bool = false
+    var isDisney: Bool = false
+    var id: String?
     func configMoreLikeView() {
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self
@@ -21,27 +29,52 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        if moreArray?.count ?? 0 > 0 {
+            isMoreDataAvailable = true
+            return moreArray?.count ?? 0
+        } else if episodesArray?.count ?? 0 > 0 {
+            isEpisodeDataAvailable = true
+            return episodesArray?.count ?? 0
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
+        let cellData = getCellData(indexPath: indexPath)
+        cell.nameLabel.text = cellData.2
+        cell.configureView(cellData.0, isPlayingNow: cellData.1)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = CGSize(width: 300, height: 500)
+        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
         return size
     }
-    
-    
-
-    
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
+        let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
+        if isEpisodeDataAvailable {
+            let model = episodesArray?[indexPath.row]
+            
+            if appType == .Episode {
+                isPlayList = true
+            }
+            let item = model?.getItem
+            let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
+            let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
+            let isPlayingNow = model?.id == id
+            return (cellItems, isPlayingNow, model?.name ?? "")
+        }
+        else if isMoreDataAvailable {
+            let model = moreArray?[indexPath.row]
+            let item = moreArray?[indexPath.row]
+            let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
+            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+            let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
+            let isPlayingNow = model?.id == id
+            return (cellItems, isPlayingNow, model?.name ?? "")
+        }
+        return (cellItems, false, "")
     }
-    */
-
 }

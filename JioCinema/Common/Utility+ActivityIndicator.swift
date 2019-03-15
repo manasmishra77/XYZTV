@@ -30,7 +30,10 @@ extension Utility {
     
     func hideIndicator(){
         //Hide the Indicator
-        activityIndicator.stopAnimating()
-        activityIndicator.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
+        }
+
     }
 }

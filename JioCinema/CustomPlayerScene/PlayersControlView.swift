@@ -10,9 +10,11 @@ import UIKit
 
 protocol PlayerControlsDelegate {
     func playTapped(_ isPaused: Bool)
+    func getTimeDetails(_ currentTime: String,_ duration: String)
 }
 
 class PlayersControlView: UIView {
+    @IBOutlet weak var sliderHolderView: UIView!
     
     @IBOutlet weak var playButton: UIButton!
     var delegate : PlayerControlsDelegate?
@@ -26,11 +28,9 @@ class PlayersControlView: UIView {
     }
     func addCustomSlider() {
         sliderView = UINib(nibName: "CustomSlider", bundle: .main).instantiate(withOwner: nil, options: nil).first as? CustomSlider
+        sliderView?.frame = sliderHolderView.bounds
         sliderView?.configureControls()
-        sliderView?.addAsSubviewWithFourConstraintsFromBottomWithConstantHeight(self, height: 200, bottom: -200, leading: 0, trailing: 0)
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("abhdjk")
+        sliderHolderView.addSubview(sliderView!)
     }
     @IBAction func playButtonTapped(_ sender: Any) {
         delegate?.playTapped(isPaused)

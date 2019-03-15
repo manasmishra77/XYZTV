@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 protocol SliderDelegate {
-    func updateProgressBar(progress: Float,dueToScrubing: Bool)
+    func updateProgressBar(currentTime: Float, duration: Float,dueToScrubing: Bool)
     func touchBeganCalledSetSliderValue()
+    func pressesBeganCalled()
 }
 class JCSliderButton: UIButton
 {
@@ -32,11 +33,31 @@ class JCSliderButton: UIButton
                 var displacement : CGFloat = 0.0
                 displacement = (touch.location(in: self.superview).x - startingPoint)
                 let scale = displacement / maxDisplacement
-                delegate?.updateProgressBar(progress: Float(scale/4), dueToScrubing: true)
+                delegate?.updateProgressBar(currentTime: Float(displacement / 4), duration: Float(maxDisplacement / 4), dueToScrubing: true)
             }
         }
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        print("touchesCancelled")
+    }
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        for press in presses {
+            switch press.type{
+            case .select:
+                delegate?.pressesBeganCalled()
+            case .downArrow:
+                print("downArrow")
+            case .leftArrow:
+                print("leftArrow")
+            case .menu:
+                print("menu")
+            case .playPause:
+                print("playPause")
+            case .upArrow:
+                print("upArrow")
+            case .rightArrow:
+                print("rightArrow")
+            }
+        }
     }
 }
