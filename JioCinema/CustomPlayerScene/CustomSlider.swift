@@ -13,7 +13,7 @@ class CustomSlider: UIView {
     @IBOutlet weak var sliderLeadingForSeeking: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var backgroundFocusableButton: JCSliderButton!
-    @IBOutlet weak var staringTime: UILabel!
+    @IBOutlet weak var title: UILabel!
     @IBOutlet weak var endingTime: UILabel!
     @IBOutlet weak var sliderCursor: UIButton!
     @IBOutlet weak var sliderCursorForSeeking: UIButton!
@@ -70,9 +70,9 @@ extension CustomSlider: SliderDelegate{
         let maxLeading : Float = widthOfProgressBar - widthOfSlider
         if dueToScrubing {
             //progressBar.progress = (progressWhentouchBeganCalled + progress)
-            let newSliderValue: Float =  Float(slidersValueWhentouchBeganCalled) + progress * maxLeading
+            let newSliderValue: Float =  Float(slidersValueWhentouchBeganCalled) + (progress / 4) * maxLeading
             if newSliderValue >= 0 && newSliderValue <= maxLeading {
-                sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(progress * maxLeading))
+                sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat((progress/4) * maxLeading))
             }
             else if newSliderValue < 0 {
                 sliderLeadingForSeeking.constant = 0
@@ -82,7 +82,7 @@ extension CustomSlider: SliderDelegate{
             }
         } else {
             progressBar.progress = progress
-            sliderLeadingForSeeking.constant = (CGFloat(progress) * CGFloat(maxLeading))
+            sliderLeading.constant = (CGFloat(progress) * CGFloat(maxLeading))
         }
         progressBar.setProgress(progressBar.progress, animated: true)
     }

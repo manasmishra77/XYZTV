@@ -50,6 +50,7 @@ class CustomPlayerView: UIView {
         guard let controlsView = controlsView else {
             return
         }
+        self.controlsView?.sliderView?.title.text = playerItem?.name
         self.controlHolderView.addSubview(controlsView)
         //        self.bringSubview(toFront: controlHolderView)
     }
@@ -113,9 +114,9 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 
 extension CustomPlayerView: PlayerViewModelDelegate {
     func currentTimevalueChanged(newTime: Double, duration: Double) {
-        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
+//        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
         controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
-        controlsView?.sliderView?.updateProgressBar(currentTime: Float(newTime), duration: Float(duration), dueToScrubing: false)
+        controlsView?.sliderView?.updateProgressBar(currentTime: Float(newTime), duration: Float(duration), dueToScrubing: false) 
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
     }
     
@@ -157,6 +158,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addAvPlayerControllerToController() {
         if let player = playerViewModel?.player {
+            
+            print("ison main thread ====  \(Thread.isMainThread)")
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.frame = self.bounds
 //            playerLayer.videoGravity = .resizeAspectFill

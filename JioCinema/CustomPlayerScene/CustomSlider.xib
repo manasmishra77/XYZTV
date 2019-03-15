@@ -28,16 +28,10 @@
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0UN-6X-uMd">
                     <rect key="frame" x="100" y="130" width="832" height="10"/>
                 </progressView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsT-5Z-OyK">
-                    <rect key="frame" x="54" y="160" width="93" height="46"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sc-yp-zug">
-                    <rect key="frame" x="886" y="160" width="93" height="46"/>
+                    <rect key="frame" x="858" y="75" width="74" height="35"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXF-Lz-sjx">
@@ -68,25 +62,32 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sVT-cf-RAS">
+                    <rect key="frame" x="100" y="35" width="157" height="75"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="64"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="JXF-Lz-sjx" firstAttribute="leading" secondItem="0UN-6X-uMd" secondAttribute="leading" id="0J2-bf-568"/>
-                <constraint firstItem="wsT-5Z-OyK" firstAttribute="top" secondItem="0UN-6X-uMd" secondAttribute="bottom" constant="20" id="0Uh-qs-unF"/>
                 <constraint firstItem="JXF-Lz-sjx" firstAttribute="centerY" secondItem="0UN-6X-uMd" secondAttribute="centerY" id="CtC-tm-mSl"/>
+                <constraint firstItem="0UN-6X-uMd" firstAttribute="top" secondItem="sVT-cf-RAS" secondAttribute="bottom" constant="20" id="FKE-OA-svS"/>
+                <constraint firstItem="3Sc-yp-zug" firstAttribute="trailing" secondItem="0UN-6X-uMd" secondAttribute="trailing" id="Grj-qv-pbt"/>
                 <constraint firstItem="0UN-6X-uMd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="100" id="JgS-La-hon"/>
                 <constraint firstAttribute="bottom" secondItem="Kic-Lq-1By" secondAttribute="bottom" id="Pb8-E2-she"/>
                 <constraint firstAttribute="trailing" secondItem="0UN-6X-uMd" secondAttribute="trailing" constant="100" id="ZHK-F1-Jze"/>
                 <constraint firstItem="Kic-Lq-1By" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bg3-S2-rtD"/>
-                <constraint firstItem="wsT-5Z-OyK" firstAttribute="top" secondItem="3Sc-yp-zug" secondAttribute="top" id="bsd-IJ-Zjh"/>
                 <constraint firstItem="Kic-Lq-1By" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cCd-Ya-dRi"/>
-                <constraint firstItem="3Sc-yp-zug" firstAttribute="centerX" secondItem="0UN-6X-uMd" secondAttribute="trailing" id="gPI-Z1-TlE"/>
+                <constraint firstItem="3Sc-yp-zug" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sVT-cf-RAS" secondAttribute="trailing" constant="5" id="dh3-fB-Cdo"/>
+                <constraint firstItem="0UN-6X-uMd" firstAttribute="top" secondItem="3Sc-yp-zug" secondAttribute="bottom" constant="20" id="ejH-o2-br0"/>
                 <constraint firstItem="mjB-fU-AJo" firstAttribute="leading" secondItem="0UN-6X-uMd" secondAttribute="leading" id="huE-Lx-BzK"/>
                 <constraint firstAttribute="trailing" secondItem="Kic-Lq-1By" secondAttribute="trailing" id="ids-T2-iCB"/>
                 <constraint firstItem="mjB-fU-AJo" firstAttribute="centerY" secondItem="0UN-6X-uMd" secondAttribute="centerY" id="mHw-ed-as3"/>
-                <constraint firstItem="wsT-5Z-OyK" firstAttribute="centerX" secondItem="0UN-6X-uMd" secondAttribute="leading" id="tht-du-k51"/>
+                <constraint firstItem="sVT-cf-RAS" firstAttribute="leading" secondItem="0UN-6X-uMd" secondAttribute="leading" id="v6Z-Ty-3rc"/>
                 <constraint firstItem="0UN-6X-uMd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="xOS-Bj-2dK"/>
                 <constraint firstItem="0UN-6X-uMd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="xoc-Fo-Zi3"/>
             </constraints>
@@ -99,7 +100,7 @@
                 <outlet property="sliderCursorForSeeking" destination="JXF-Lz-sjx" id="bze-u1-EsN"/>
                 <outlet property="sliderLeading" destination="huE-Lx-BzK" id="ztX-JS-CLg"/>
                 <outlet property="sliderLeadingForSeeking" destination="0J2-bf-568" id="fUO-Vz-j1e"/>
-                <outlet property="staringTime" destination="wsT-5Z-OyK" id="GQN-Kt-iUC"/>
+                <outlet property="title" destination="sVT-cf-RAS" id="Nio-aV-bj8"/>
             </connections>
             <point key="canvasLocation" x="-375" y="-298.5"/>
         </view>

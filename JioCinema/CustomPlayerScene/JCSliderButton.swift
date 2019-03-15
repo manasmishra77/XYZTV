@@ -33,7 +33,7 @@ class JCSliderButton: UIButton
                 var displacement : CGFloat = 0.0
                 displacement = (touch.location(in: self.superview).x - startingPoint)
                 let scale = displacement / maxDisplacement
-                delegate?.updateProgressBar(currentTime: Float(displacement / 4), duration: Float(maxDisplacement / 4), dueToScrubing: true)
+                delegate?.updateProgressBar(currentTime: Float(displacement), duration: Float(maxDisplacement), dueToScrubing: true)
             }
         }
     }

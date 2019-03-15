@@ -7,6 +7,9 @@
 //
 
 import UIKit
+protocol playerMoreLikeDelegate {
+    func moreLikeTapped(indexpath: IndexPath)
+}
 
 class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
@@ -20,6 +23,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     var isPlayList: Bool = false
     var isDisney: Bool = false
     var id: String?
+    var delegate: playerMoreLikeDelegate?
     func configMoreLikeView() {
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self
@@ -50,6 +54,9 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
         return size
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.moreLikeTapped(indexpath: indexPath)
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
