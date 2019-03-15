@@ -223,9 +223,7 @@ class PlayerViewModel: NSObject {
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
-        addPlayerNotificationObserver()
-        //        playerController?.player = player
-        //        playerController?.player?.play()
+
         delegate?.addAvPlayerControllerToController()
         //        handleForPlayerReference()
     }
