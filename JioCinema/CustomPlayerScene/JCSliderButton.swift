@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 protocol SliderDelegate {
-    func updateProgressBar(currentTime: Float, duration: Float,dueToScrubing: Bool)
+    func updateProgressBar(currentTime: CGFloat, duration: CGFloat,dueToScrubing: Bool)
     func touchBeganCalledSetSliderValue()
     func pressesBeganCalled()
 }
@@ -25,6 +25,7 @@ class JCSliderButton: UIButton
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        print("touchesEnded")
     }
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             if self.isFocused {
@@ -33,7 +34,7 @@ class JCSliderButton: UIButton
                 var displacement : CGFloat = 0.0
                 displacement = (touch.location(in: self.superview).x - startingPoint)
                 let scale = displacement / maxDisplacement
-                delegate?.updateProgressBar(currentTime: Float(displacement / 4), duration: Float(maxDisplacement / 4), dueToScrubing: true)
+                delegate?.updateProgressBar(currentTime: CGFloat(displacement / 4), duration: CGFloat(maxDisplacement / 4), dueToScrubing: true)
             }
         }
     }

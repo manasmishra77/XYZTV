@@ -21,7 +21,7 @@
  let AVPLAYER_BUFFER_KEEP_UP = "playbackLikelyToKeepUp"
  let AVPLAYER_BUFFER_EMPTY = "playbackBufferEmpty"
  
- private var playerViewControllerKVOContext = 0
+// private var playerViewControllerKVOContext = 0
  
  private func globalNotificationQueue() -> DispatchQueue {
     var globalQueue: DispatchQueue? = nil

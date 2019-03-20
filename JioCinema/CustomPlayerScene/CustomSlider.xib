@@ -12,11 +12,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomSlider" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1032" height="269"/>
+            <rect key="frame" x="0.0" y="0.0" width="1351" height="550"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kic-Lq-1By" customClass="JCSliderButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="1032" height="269"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1351" height="550"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -26,22 +26,22 @@
                     </state>
                 </button>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0UN-6X-uMd">
-                    <rect key="frame" x="100" y="130" width="832" height="10"/>
+                    <rect key="frame" x="100" y="270" width="1151" height="10"/>
                 </progressView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsT-5Z-OyK">
-                    <rect key="frame" x="54" y="160" width="93" height="46"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="54" y="300" width="93" height="46"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="0.30040667808219179" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sc-yp-zug">
-                    <rect key="frame" x="886" y="160" width="93" height="46"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="1205" y="300" width="93" height="46"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="0.30040667808219179" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXF-Lz-sjx">
-                    <rect key="frame" x="100" y="120" width="30" height="30"/>
+                    <rect key="frame" x="100" y="260" width="30" height="30"/>
                     <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="NLu-lg-MQe"/>
@@ -55,7 +55,7 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mjB-fU-AJo">
-                    <rect key="frame" x="100" y="120" width="30" height="30"/>
+                    <rect key="frame" x="100" y="260" width="30" height="30"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="B11-IL-bS5"/>
@@ -101,7 +101,7 @@
                 <outlet property="sliderLeadingForSeeking" destination="0J2-bf-568" id="fUO-Vz-j1e"/>
                 <outlet property="staringTime" destination="wsT-5Z-OyK" id="GQN-Kt-iUC"/>
             </connections>
-            <point key="canvasLocation" x="-375" y="-298.5"/>
+            <point key="canvasLocation" x="-215.5" y="-158"/>
         </view>
     </objects>
 </document>

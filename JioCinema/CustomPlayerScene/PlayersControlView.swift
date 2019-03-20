@@ -11,6 +11,7 @@ import UIKit
 protocol PlayerControlsDelegate {
     func playTapped(_ isPaused: Bool)
     func getTimeDetails(_ currentTime: String,_ duration: String)
+    func setPlayerSeekTo(seekValue: CGFloat)
 }
 
 class PlayersControlView: UIView {
@@ -26,15 +27,24 @@ class PlayersControlView: UIView {
     func configurePlayersControlView() {
         addCustomSlider()
     }
+    
     func addCustomSlider() {
         sliderView = UINib(nibName: "CustomSlider", bundle: .main).instantiate(withOwner: nil, options: nil).first as? CustomSlider
         sliderView?.frame = sliderHolderView.bounds
         sliderView?.configureControls()
+        sliderView?.sliderDelegate = self
         sliderHolderView.addSubview(sliderView!)
     }
+    
     @IBAction func playButtonTapped(_ sender: Any) {
         delegate?.playTapped(isPaused)
         isPaused = !isPaused
         playButton.setTitle(isPaused ? "Play" : "Pause", for: .normal)
+    }
+}
+
+extension PlayersControlView: CustomSliderProtocol {
+    func pressedPositionX(pointX: CGFloat) {
+        delegate?.setPlayerSeekTo(seekValue: pointX)
     }
 }

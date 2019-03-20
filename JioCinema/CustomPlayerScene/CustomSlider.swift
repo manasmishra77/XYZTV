@@ -8,6 +8,10 @@
 import UIKit
 import Foundation
 
+protocol CustomSliderProtocol: NSObjectProtocol {
+    func pressedPositionX(pointX: CGFloat)
+}
+
 class CustomSlider: UIView {
     @IBOutlet weak var sliderLeading: NSLayoutConstraint!
     @IBOutlet weak var sliderLeadingForSeeking: NSLayoutConstraint!
@@ -18,39 +22,30 @@ class CustomSlider: UIView {
     @IBOutlet weak var sliderCursor: UIButton!
     @IBOutlet weak var sliderCursorForSeeking: UIButton!
     
+    weak var sliderDelegate: CustomSliderProtocol?
+    
     var isPaused = false
     
     var slidersValueWhentouchBeganCalled: CGFloat = 0.0
-    var progressWhentouchBeganCalled: Float = 0.0
-    var widthOfProgressBar: Float = 1720
-    var widthOfSlider: Float = 30
+    var progressWhentouchBeganCalled: CGFloat = 0.0
+    var widthOfProgressBar: CGFloat = 1720
+    var widthOfSlider: CGFloat = 30
     
     func configureControls() {
-//        endingTime.text = "\(duration)"
         self.clipsToBounds = true
         progressBar.progress = 0.0
         progressBar.tintColor = .red
         backgroundFocusableButton.delegate = self
     }
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        for press in presses {
-//            if press.type == .playPause{
-//                if !isPaused {
-//                    delegate?.playTapped(false)
-//                } else {
-//                    delegate?.playTapped(true)
-//                }
-//                isPaused = !isPaused
-//            }
-//        }
-//
-//    }
+
     
 }
-extension CustomSlider: SliderDelegate{
+
+extension CustomSlider: SliderDelegate {
     func pressesBeganCalled() {
         if backgroundFocusableButton.isFocused {
             sliderLeading.constant = sliderLeadingForSeeking.constant
+            sliderDelegate?.pressedPositionX(pointX: CGFloat(sliderLeading.constant/(self.widthOfProgressBar)))
         }
     }
     
@@ -65,12 +60,13 @@ extension CustomSlider: SliderDelegate{
             self.sliderCursor.backgroundColor = .darkGray
         }
     }
-    func updateProgressBar(currentTime: Float, duration: Float, dueToScrubing: Bool = false) {
+    
+    func updateProgressBar(currentTime: CGFloat, duration: CGFloat, dueToScrubing: Bool = false) {
         let progress = currentTime / duration
-        let maxLeading : Float = widthOfProgressBar - widthOfSlider
+        let maxLeading : CGFloat = widthOfProgressBar - widthOfSlider
         if dueToScrubing {
             //progressBar.progress = (progressWhentouchBeganCalled + progress)
-            let newSliderValue: Float =  Float(slidersValueWhentouchBeganCalled) + progress * maxLeading
+            let newSliderValue =  CGFloat(slidersValueWhentouchBeganCalled) + progress * maxLeading
             if newSliderValue >= 0 && newSliderValue <= maxLeading {
                 sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(progress * maxLeading))
             }
@@ -81,13 +77,14 @@ extension CustomSlider: SliderDelegate{
                 sliderLeadingForSeeking.constant = CGFloat(maxLeading)
             }
         } else {
-            progressBar.progress = progress
+            progressBar.progress = Float(progress)
             sliderLeadingForSeeking.constant = (CGFloat(progress) * CGFloat(maxLeading))
         }
         progressBar.setProgress(progressBar.progress, animated: true)
     }
+    
     func touchBeganCalledSetSliderValue() {
         slidersValueWhentouchBeganCalled = sliderLeadingForSeeking.constant
-        progressWhentouchBeganCalled = progressBar.progress
+        progressWhentouchBeganCalled = CGFloat(progressBar.progress)
     }
 }

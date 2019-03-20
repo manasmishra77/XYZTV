@@ -10,28 +10,39 @@ import UIKit
 import AVFoundation
 import Foundation
 
+
+protocol CustomPlayerViewProtocol: NSObjectProtocol {
+    func removePlayerController()
+}
+
+var playerViewControllerKVOContext = 0
 class CustomPlayerView: UIView {
-    
     var moreLikeView: MoreLikeView?
     fileprivate var playerViewModel: PlayerViewModel?
-    fileprivate var playbackRightModel : PlaybackRightsModel?
+    var playbackRightModel : PlaybackRightsModel?
     fileprivate var enterParentalPinView: EnterParentalPinView?
     fileprivate var enterPinViewModel: EnterPinViewModel?
     fileprivate var playerItem: Item?
+    @objc var player: AVPlayer?
+    var playerLayer: AVPlayerLayer?
+    var playerTimeObserverToken: Any?
+    weak var delegate: CustomPlayerViewProtocol?
+    var currentDuration: Float = 0.0
+    var videoStartingTimeDuration = 0
+    var videoStartingTime = Date()
     
     var controlsView : PlayersControlView?
-    
+    fileprivate var didSeek :Bool = false
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
-    
     @IBOutlet weak var bottomSpaceOfMoreLikeInContainer: NSLayoutConstraint!
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
     
     var timer: Timer!
     var timerToHideControls : Timer!
     
-    func configureView(item: Item, superView: UIView) {
+    func configureView(item: Item) {
         playerViewModel = PlayerViewModel(item: item)
         playerViewModel?.callWebServiceForMoreLikeData()
         playerViewModel?.delegate = self
@@ -82,20 +93,51 @@ class CustomPlayerView: UIView {
             }
         }
     }
+    
+    func resetAndRemovePlayer() {
+            if let player = player {
+                print("1 inside player reset")
+                player.pause()
+                self.removePlayerObserver()
+                self.playerViewModel = nil
+                self.playerLayer?.removeFromSuperlayer()
+                self.playerLayer = nil
+            }
+            player = nil
+    }
+    
+    
+    func currentTimevalueChanged(newTime: Double, duration: Double) {
+        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
+        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
+        controlsView?.sliderView?.updateProgressBar(currentTime: CGFloat(newTime), duration: CGFloat(duration), dueToScrubing: false)
+        controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
+    }
+    
+    
 }
 
 extension CustomPlayerView : PlayerControlsDelegate {
     func getTimeDetails(_ currentTime: String, _ duration: String) {
-        playerViewModel?.getPlayerDuration()
+        getPlayerDuration()
     }
     
     func playTapped(_ isPaused: Bool) {
         if !isPaused {
-            //             player?.pause()
+            player?.pause()
         } else {
-            //            player?.play()
+            player?.play()
         }
     }
+    
+    func setPlayerSeekTo(seekValue: CGFloat) {
+        DispatchQueue.main.async {
+            var seekToValue = Double(seekValue) * self.getPlayerDuration()
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), 1))
+            self.currentDuration = Float(seekToValue)
+        }
+    }
+    
 }
 
 
@@ -112,12 +154,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
-    func currentTimevalueChanged(newTime: Double, duration: Double) {
-        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
-        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
-        controlsView?.sliderView?.updateProgressBar(currentTime: Float(newTime), duration: Float(duration), dueToScrubing: false)
-        controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
-    }
+
     
     func getCurrentTimeInFormat(time: Double) -> String {
         var seconds = 0
@@ -126,8 +163,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         seconds = Int(time) % 60
         hours = Int(time) / 3600
         min = (Int(time) - hours * 3600) / 60
-        return "\(hours):\(min):\(seconds)"
+        var formatedTimeString = "\(hours):\(min):\(seconds)"
+        if hours == 0 {
+            formatedTimeString = "\(min):\(seconds)"
+        }
+        return formatedTimeString
     }
+    
     func getDuration(duration: Double){
 //        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
     }
@@ -155,24 +197,190 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
     }
     
-    func addAvPlayerControllerToController() {
-        if let player = playerViewModel?.player {
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = self.bounds
-//            playerLayer.videoGravity = .resizeAspectFill
-            self.clipsToBounds = true
-            playerLayer.videoGravity = .resize
-            playerHolderView.layer.addSublayer(playerLayer)
-            playerViewModel?.addPlayerNotificationObserver()
-            player.play()
-            //            self.bringSubview(toFront: controlHolderView)
+    func addAvPlayerToController() {
+        
+        DispatchQueue.main.async {
+            self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
+            self.playerLayer = AVPlayerLayer(player: self.player)
+            self.playerLayer?.frame = self.bounds
+            self.playerLayer?.videoGravity = .resize
+            self.playerHolderView.layer.addSublayer(self.playerLayer!)
+            self.didSeek = false
+            self.addPlayerNotificationObserver()
+            self.player?.play()
         }
     }
+    
+    func addPlayerNotificationObserver () {
+        NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        addObserver(self, forKeyPath: #keyPath(player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
+    }
+    
+    
+    //MARK:- Remove Player Observer
+    func removePlayerObserver() {
+        guard let viewModel = playerViewModel else {
+            return
+        }
+        //sendMediaEndAnalyticsEvent()
+        //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
+        viewModel.updateResumeWatchList()
+        //        } //vinit_commented
+        if let timeObserverToken = playerTimeObserverToken {
+            self.player?.removeTimeObserver(timeObserverToken)
+        }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+        removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(player.rate), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(player.currentItem.status), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
+        playerTimeObserverToken = nil
+//        self.player = nil
+    }
+    
+    
+    //MARK:- AVPlayer Finish Playing Item
+    @objc func playerDidFinishPlaying(note: NSNotification) {
+//        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
+//            //handle play list
+//        } else {
+//            //dismiss Player
+//        }
+//        //vinit_commented
+    }
+    
+    func getPlayerDuration() -> Double {
+        guard let currentItem = self.player?.currentItem else { return 0.0 }
+        return CMTimeGetSeconds(currentItem.duration)
+    }
+    
+    //Seek player
+    func seekPlayer() {
+        if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
+        } else {
+            didSeek = false
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        
+        guard context == &playerViewControllerKVOContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        guard self.player != nil else {
+            return
+        }
+        
+        if keyPath == #keyPath(player.currentItem.duration) {
+            // Update timeSlider and enable/disable controls when duration > 0.0
+            /*
+             Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
+             `player.currentItem` is nil.
+             */
+            let newDuration: CMTime
+            if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
+                newDuration = newDurationAsValue.timeValue
+            }
+            else {
+                newDuration = kCMTimeZero
+            }
+            Log.DLog(message: newDuration as AnyObject)
+        }
+        else if keyPath == #keyPath(player.rate) {
+            let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
+            
+            if newRate == 0
+            {
+                //vinit_commented swipeDownRecommendationView()
+            }
+        }
+        else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
+        {
+            playerViewModel?.startTime_BufferDuration = Date()
+        }
+        else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
+        {
+            playerViewModel?.updatePlayerBufferCount()
+            
+        }
+        else if keyPath == #keyPath(player.currentItem.status) {
+            let newStatus: AVPlayerItemStatus
+            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
+                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue) ?? .unknown
+            }
+            else {
+                newStatus = .unknown
+            }
+            switch newStatus {
+            case .readyToPlay:
+                self.seekPlayer()
+                videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
+                playerViewModel?.isItemToBeAddedInResumeWatchList = true
+//                self.isRecommendationCollectionViewEnabled = true
+                self.addPlayerPeriodicTimeObserver()
+                break
+            case .failed:
+                Log.DLog(message: "Failed" as AnyObject)
+                playerViewModel?.handlePlayerStatusFailed()
+//                self.isRecommendationCollectionViewEnabled = false
+                //If video failed once and valid fps url is there
+                /*
+                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+                 
+                 sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+             */ //vinit_commented
+            default:
+                print("unknown")
+            }
+            
+        }
+    }
+    
+    
+    func addPlayerPeriodicTimeObserver() {
+        let interval = CMTime(seconds: 1,
+                              preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let mainQueue = DispatchQueue.main
+        
+        // Add time observer
+        playerTimeObserverToken =
+            self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
+                [weak self] time in
+                
+                if self?.player != nil {
+                    let currentPlayerTime = Double(CMTimeGetSeconds(time))
+                    self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: self?.getPlayerDuration() ?? 0)
+                    //                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
+                    let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
+                    
+                    if remainingTime <= 5
+                    {
+                        //vinit_commented //show next item to play code
+                    }
+                } else {
+                    self?.playerTimeObserverToken = nil
+                }
+        }
+    }
+
+    
     
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
         //vinit_comment handle player error
     }
 }
+
+
+
+
 extension CustomPlayerView {
     func startTimer(){
         timerToHideControls = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.hideControlsView), userInfo: nil, repeats: true)
@@ -188,19 +396,25 @@ extension CustomPlayerView {
         self.controlsView?.isHidden = true
         self.moreLikeView?.isHidden = true
     }
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        super.pressesBegan(presses, with: event)
         for press in presses {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimer()
             case .menu:
                 print("menu")
+//                DispatchQueue.main.async {
+//                self.resetAndRemovePlayer()
+//                self.delegate?.removePlayerController()
+//                }
             case .playPause:
                 print("playPause")
-                if playerViewModel?.player?.rate == 0 {
-                    playerViewModel?.player?.play()
+                if player?.rate == 0 {
+                    player?.play()
                 } else {
-                    playerViewModel?.player?.pause()
+                    player?.pause()
                 }
             case .select:
                     print("select")

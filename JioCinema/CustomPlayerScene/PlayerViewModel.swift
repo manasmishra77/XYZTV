@@ -9,37 +9,28 @@
 import Foundation
 import AVKit
 
-private var playerViewControllerKVOContext = 0
 protocol PlayerViewModelDelegate {
-    func addAvPlayerControllerToController()
+    func addAvPlayerToController()
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(i: Int)
-    func currentTimevalueChanged(newTime : Double, duration: Double)
     func getDuration(duration: Double)
 }
+
 class PlayerViewModel: NSObject {
-    
     fileprivate var itemToBePlayed: Item
-    @objc var player: AVPlayer?
-    fileprivate var playerItem: AVPlayerItem?
-    fileprivate var didSeek :Bool = false
+    var playerItem: AVPlayerItem?
     fileprivate var isFpsUrl = false
-    fileprivate var playerTimeObserverToken: Any?
     var moreArray: [Item]?
     var episodeArray: [Episode]?
-    
     var isPlayList: Bool = false
     var totalDuration: Float = 0.0
-    var currentDuration: Float = 0.0
     var appType: VideoType = VideoType.None
     var delegate: PlayerViewModelDelegate?
-    fileprivate var startTime_BufferDuration: Date?
+    var startTime_BufferDuration: Date?
     fileprivate var totalBufferDurationTime = 0.0
     fileprivate var bufferCount = 0
-    fileprivate var videoStartingTime = Date()
-    fileprivate var videoStartingTimeDuration = 0
-    fileprivate var isItemToBeAddedInResumeWatchList = true
+    var isItemToBeAddedInResumeWatchList = true
     fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     fileprivate var playbackRightsModel: PlaybackRightsModel?
@@ -48,6 +39,7 @@ class PlayerViewModel: NSObject {
     var isMoreDataAvailable: Bool = false
     var isEpisodeDataAvailable: Bool = false
     var bannerUrlString: String = ""
+    var assetManager: PlayerAssetManager?
     
     init(item: Item) {
         self.itemToBePlayed = item
@@ -123,16 +115,9 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-            
-            DispatchQueue.main.async {
-                if(self.player != nil) {
-                    self.player?.pause()
-                    self.resetPlayer()
-                }
                 self.playbackRightsModel?.url = nil
                 self.isFpsUrl = self.playbackRightsModel?.url != nil ? true : false
                 self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
-            }
         }
     }
     
@@ -141,61 +126,16 @@ class PlayerViewModel: NSObject {
     }
     
     func instantiatePlayerAfterParentalCheck() {
-        player = nil
-        didSeek = true
-        _ = PlayerAssetManager(playBackModel: playbackRightsModel!, isFps: self.isFpsUrl, listener: self)
-    }
-    
-    //MARK:- AVPlayerViewController Methods
-    func resetPlayer() {
-        if let player = player {
-            player.pause()
-            self.removePlayerObserver()
-            //            self.playerController = nil
-        }
+        assetManager = nil
+        assetManager = PlayerAssetManager(playBackModel: playbackRightsModel!, isFps: self.isFpsUrl, listener: self)
     }
     
     //MARK:- Add Player Observer
-    func addPlayerNotificationObserver () {
-        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        addObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
-        addObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
-    }
     
-    //MARK:- Remove Player Observer
-    func removePlayerObserver() {
-        //sendMediaEndAnalyticsEvent()
-        //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
-        updateResumeWatchList()
-        //        } //vinit_commented
-        if let timeObserverToken = playerTimeObserverToken {
-            self.player?.removeTimeObserver(timeObserverToken)
-        }
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-        removeObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.duration), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.rate), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.status), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
-        removeObserver(self, forKeyPath: #keyPath(PlayerViewModel.player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
-        self.playerTimeObserverToken = nil
-        self.player = nil
-    }
+
     
     func updateResumeWatchList() {
         //vinit_edited
-    }
-    
-    //MARK:- AVPlayer Finish Playing Item
-    @objc func playerDidFinishPlaying(note: NSNotification) {
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
-            //handle play list
-        } else {
-            //dismiss Player
-        }
-        //vinit_commented
     }
     
     func sendMediaStartAnalyticsEvent() {
@@ -210,21 +150,15 @@ class PlayerViewModel: NSObject {
     func playVideoWithPlayerItem() {
         //  self.addMetadataToPlayer()
         self.autoPlaySubtitle(IsAutoSubtitleOn)
-        //        if playerController == nil {
-        //            playerController = AVPlayerViewController()
-        //            playerController?.delegate = self as? AVPlayerViewControllerDelegate
-        //            if let player = player, let timeScale = player.currentItem?.asset.duration.timescale {
-        //                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), timeScale))
-        //            }
-        //        }
-        if let player = player {
-            player.replaceCurrentItem(with: playerItem)
-        } else {
-            resetPlayer()
-            player = AVPlayer(playerItem: playerItem)
-        }
 
-        delegate?.addAvPlayerControllerToController()
+//        if let player = player {
+//            player.replaceCurrentItem(with: playerItem)
+//        } else {
+//            resetPlayer()
+//            player = AVPlayer(playerItem: playerItem)
+//            player?.play()
+//        }
+        delegate?.addAvPlayerToController()
         //        handleForPlayerReference()
     }
     
@@ -242,152 +176,46 @@ class PlayerViewModel: NSObject {
         
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        
-        guard context == &playerViewControllerKVOContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+    
+    func updatePlayerBufferCount() {
+        guard let startDuration = startTime_BufferDuration else {
             return
         }
-        guard self.player != nil else {
-            return
-        }
-        
-        if keyPath == #keyPath(PlayerViewModel.player.currentItem.duration) {
-            // Update timeSlider and enable/disable controls when duration > 0.0
-            
-            /*
-             Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
-             `player.currentItem` is nil.
-             */
-            let newDuration: CMTime
-            if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
-                newDuration = newDurationAsValue.timeValue
-            }
-            else {
-                newDuration = kCMTimeZero
-            }
-            Log.DLog(message: newDuration as AnyObject)
-        }
-        else if keyPath == #keyPath(PlayerViewModel.player.rate) {
-            let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
-            
-            if newRate == 0
-            {
-                //vinit_commented swipeDownRecommendationView()
-            }
-        }
-        else if keyPath == #keyPath(PlayerViewModel.player.currentItem.isPlaybackBufferEmpty)
-        {
+        let difference =  Date().timeIntervalSince(startDuration)
+        if (difference > 1) {
+            totalBufferDurationTime = difference + totalBufferDurationTime
+            bufferCount = bufferCount + 1
+        } else {
             startTime_BufferDuration = Date()
         }
-        else if keyPath == #keyPath(PlayerViewModel.player.currentItem.isPlaybackLikelyToKeepUp)
-        {
-            guard let startDuration = startTime_BufferDuration else {
-                return
-            }
-            let difference =  Date().timeIntervalSince(startDuration)
-            if (difference > 1) {
-                totalBufferDurationTime = difference + totalBufferDurationTime
-                bufferCount = bufferCount + 1
-            } else {
-                startTime_BufferDuration = Date()
-            }
-            
-        }
-        else if keyPath == #keyPath(PlayerViewModel.player.currentItem.status) {
-            let newStatus: AVPlayerItemStatus
-            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue) ?? .unknown
-            }
-            else {
-                newStatus = .unknown
-            }
-            switch newStatus {
-            case .readyToPlay:
-                self.seekPlayer()
-                videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
-                isItemToBeAddedInResumeWatchList = true
-                self.isRecommendationCollectionViewEnabled = true
-                self.addPlayerPeriodicTimeObserver()
-                break
-            case .failed:
-                Log.DLog(message: "Failed" as AnyObject)
-                self.isRecommendationCollectionViewEnabled = false
-                var failureType = "FPS"
-                //If video failed once and valid fps url is there
-                if !isVideoUrlFailedOnce, let _ = self.playbackRightsModel?.url {
-                    isVideoUrlFailedOnce = true
-                    failureType = "FPS"
-                    isFpsUrl = false
-                    //vinit_commented                    self.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
-                } else {
-                    //AES url failed
-                    failureType = "AES"
-                    let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                    
-                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                        DispatchQueue.main.async {
-                            print("dismiss")
-                            //vinit_commented                            self.dismissPlayerVC()
-                        }
-                    }
-                    alert.addAction(cancelAction)
-                    DispatchQueue.main.async {
-                        //vinit_commented                        self.present(alert, animated: false, completion: nil)
-                    }
-                }
-                /*
-                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
-                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
-                 
-                 sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
-             */ //vinit_commented
-            default:
-                print("unknown")
-            }
-            
-        }
     }
     
-    func addPlayerPeriodicTimeObserver() {
-        let interval = CMTime(seconds: 1,
-                              preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        let mainQueue = DispatchQueue.main
-        
-        // Add time observer
-        playerTimeObserverToken =
-            self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
-                [weak self] time in
-                
-                if self?.player != nil {
-                    let currentPlayerTime = Double(CMTimeGetSeconds(time))
-                    self?.delegate?.currentTimevalueChanged(newTime: currentPlayerTime, duration: self?.getPlayerDuration() ?? 0)
-                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
-                    let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
-                    
-                    if remainingTime <= 5
-                    {
-                        //vinit_commented //show next item to play code
-                    }
-                } else {
-                    self?.playerTimeObserverToken = nil
-                }
-        }
-    }
-    
-    func getPlayerDuration() -> Double {
-        guard let currentItem = self.player?.currentItem else { return 0.0 }
-        return CMTimeGetSeconds(currentItem.duration)
-    }
-    
-    //Seek player
-    func seekPlayer() {
-        if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
+    func handlePlayerStatusFailed() {
+        Log.DLog(message: "Failed" as AnyObject)
+        var failureType = "FPS"
+        if !isVideoUrlFailedOnce, let _ = self.playbackRightsModel?.url {
+            isVideoUrlFailedOnce = true
+            failureType = "FPS"
+            isFpsUrl = false
+            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
-            didSeek = false
+            //AES url failed
+            failureType = "AES"
+            let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                DispatchQueue.main.async {
+                    print("dismiss")
+                    //vinit_commented                            self.dismissPlayerVC()
+                }
+            }
+            alert.addAction(cancelAction)
+            DispatchQueue.main.async {
+                //vinit_commented                        self.present(alert, animated: false, completion: nil)
+            }
         }
+        
     }
+    
     
 }
 
@@ -406,6 +234,10 @@ extension PlayerViewController: AVPlayerViewControllerDelegate {
          }
          */ //vinit_commented
     }
+    
+    
+    
+    
 }
 
 
