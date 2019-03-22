@@ -12,6 +12,8 @@ protocol PlayerControlsDelegate {
     func playTapped(_ isPaused: Bool)
     func getTimeDetails(_ currentTime: String,_ duration: String)
     func setPlayerSeekTo(seekValue: CGFloat)
+    func cancelTimerForHideControl()
+    func resetTimerForHideControl()
 }
 
 class PlayersControlView: UIView {
@@ -41,10 +43,24 @@ class PlayersControlView: UIView {
         isPaused = !isPaused
         playButton.setTitle(isPaused ? "Play" : "Pause", for: .normal)
     }
+    
+    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+        return true
+    }
+    
+    
 }
 
 extension PlayersControlView: CustomSliderProtocol {
+    func resetTimerForShowControl() {
+        delegate?.resetTimerForHideControl()
+    }
+    
     func pressedPositionX(pointX: CGFloat) {
         delegate?.setPlayerSeekTo(seekValue: pointX)
+    }
+    
+    func cancelTimerForHideControl() {
+        delegate?.cancelTimerForHideControl()
     }
 }

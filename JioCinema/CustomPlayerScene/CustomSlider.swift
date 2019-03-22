@@ -10,6 +10,8 @@ import Foundation
 
 protocol CustomSliderProtocol: NSObjectProtocol {
     func pressedPositionX(pointX: CGFloat)
+    func cancelTimerForHideControl()
+    func resetTimerForShowControl()
 }
 
 class CustomSlider: UIView {
@@ -42,6 +44,10 @@ class CustomSlider: UIView {
 }
 
 extension CustomSlider: SliderDelegate {
+    func sliderTouchEnded() {
+        sliderDelegate?.resetTimerForShowControl()
+    }
+    
     func pressesBeganCalled() {
         if backgroundFocusableButton.isFocused {
             sliderLeading.constant = sliderLeadingForSeeking.constant
@@ -52,8 +58,7 @@ extension CustomSlider: SliderDelegate {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self.backgroundFocusableButton{
                 self.sliderCursor.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.sliderCursor.backgroundColor = .lightGray
-            
+                self.sliderCursor.backgroundColor = .white
         } else {
             self.sliderLeadingForSeeking.constant = self.sliderLeading.constant
             self.sliderCursor.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -86,5 +91,6 @@ extension CustomSlider: SliderDelegate {
     func touchBeganCalledSetSliderValue() {
         slidersValueWhentouchBeganCalled = sliderLeadingForSeeking.constant
         progressWhentouchBeganCalled = CGFloat(progressBar.progress)
+        sliderDelegate?.cancelTimerForHideControl()
     }
 }

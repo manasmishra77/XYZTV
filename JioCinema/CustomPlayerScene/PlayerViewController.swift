@@ -50,10 +50,6 @@ class PlayerViewController: UIViewController {
         viewforplayer?.delegate = self
         viewforplayer?.configureView(item: self.playerItem!)
     }
-    
-    deinit {
-        print("2 inside player controller deinit")
-    }
 }
 
 

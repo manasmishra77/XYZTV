@@ -79,8 +79,9 @@ class CustomPlayerView: UIView {
         
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        print("inside didupdatefocus")
+        resetTimer()
         if context.nextFocusedView is ItemCollectionViewCell{
-            resetTimer()
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 1) {
                 self.layoutIfNeeded()
@@ -118,6 +119,14 @@ class CustomPlayerView: UIView {
 }
 
 extension CustomPlayerView : PlayerControlsDelegate {
+    func cancelTimerForHideControl() {
+        timerToHideControls.invalidate()
+    }
+    
+    func resetTimerForHideControl() {
+        self.resetTimer()
+    }
+    
     func getTimeDetails(_ currentTime: String, _ duration: String) {
         getPlayerDuration()
     }
@@ -387,14 +396,17 @@ extension CustomPlayerView {
     }
     
     func resetTimer(){
+        timerToHideControls.invalidate()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
-        timerToHideControls.invalidate()
-        startTimer()
+        self.startTimer()
     }
+    
     @objc func hideControlsView() {
-        self.controlsView?.isHidden = true
-        self.moreLikeView?.isHidden = true
+        UIView.animate(withDuration: 0.1) {
+            self.controlsView?.isHidden = true
+            self.moreLikeView?.isHidden = true
+        }
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
@@ -405,10 +417,6 @@ extension CustomPlayerView {
                 resetTimer()
             case .menu:
                 print("menu")
-//                DispatchQueue.main.async {
-//                self.resetAndRemovePlayer()
-//                self.delegate?.removePlayerController()
-//                }
             case .playPause:
                 print("playPause")
                 if player?.rate == 0 {
@@ -421,6 +429,7 @@ extension CustomPlayerView {
             }
         }
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
             switch touch.type{
