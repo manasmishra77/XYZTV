@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol SliderDelegate {
-    func updateProgressBar(currentTime: CGFloat, duration: CGFloat,dueToScrubing: Bool)
+    func updateProgressBar(scale: CGFloat, dueToScrubing: Bool)
     func touchBeganCalledSetSliderValue()
     func pressesBeganCalled()
     func sliderTouchEnded()
@@ -35,7 +35,7 @@ class JCSliderButton: UIButton
                 var displacement : CGFloat = 0.0
                 displacement = (touch.location(in: self.superview).x - startingPoint)
                 let scale = displacement / maxDisplacement
-                delegate?.updateProgressBar(currentTime: CGFloat(displacement / 4), duration: CGFloat(maxDisplacement / 4), dueToScrubing: true)
+                delegate?.updateProgressBar(scale: scale / 4, dueToScrubing: true)
             }
         }
     }

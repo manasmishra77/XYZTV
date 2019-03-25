@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 protocol CustomSliderProtocol: NSObjectProtocol {
-    func pressedPositionX(pointX: CGFloat)
+    func seekPlayerTo(pointX: CGFloat)
     func cancelTimerForHideControl()
     func resetTimerForShowControl()
 }
@@ -24,16 +24,21 @@ class CustomSlider: UIView {
     @IBOutlet weak var sliderCursor: UIButton!
     @IBOutlet weak var sliderCursorForSeeking: UIButton!
     
+    @IBOutlet weak var seekTime: UILabel!
     weak var sliderDelegate: CustomSliderProtocol?
     
     var isPaused = false
     
+    let kTimeFormatInMinutes = DateFormatter()
+    let hourFormat = DateFormatter()
     var slidersValueWhentouchBeganCalled: CGFloat = 0.0
     var progressWhentouchBeganCalled: CGFloat = 0.0
     var widthOfProgressBar: CGFloat = 1720
     var widthOfSlider: CGFloat = 30
     
     func configureControls() {
+        kTimeFormatInMinutes.dateFormat = "mm:ss"
+        hourFormat.dateFormat = "HH:mm:ss"
         self.clipsToBounds = true
         progressBar.progress = 0.0
         progressBar.tintColor = .red
@@ -51,14 +56,16 @@ extension CustomSlider: SliderDelegate {
     func pressesBeganCalled() {
         if backgroundFocusableButton.isFocused {
             sliderLeading.constant = sliderLeadingForSeeking.constant
-            sliderDelegate?.pressedPositionX(pointX: CGFloat(sliderLeading.constant/(self.widthOfProgressBar)))
+            sliderDelegate?.seekPlayerTo(pointX: CGFloat(sliderLeading.constant/(self.widthOfProgressBar)))
+            sliderCursorForSeeking.isHidden = true
         }
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        sliderCursorForSeeking.isHidden = true
         if context.nextFocusedView == self.backgroundFocusableButton{
-                self.sliderCursor.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.sliderCursor.backgroundColor = .white
+            self.sliderCursor.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.sliderCursor.backgroundColor = .white
         } else {
             self.sliderLeadingForSeeking.constant = self.sliderLeading.constant
             self.sliderCursor.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -66,14 +73,16 @@ extension CustomSlider: SliderDelegate {
         }
     }
     
-    func updateProgressBar(currentTime: CGFloat, duration: CGFloat, dueToScrubing: Bool = false) {
-        let progress = currentTime / duration
-        let maxLeading : CGFloat = widthOfProgressBar - widthOfSlider
+    func updateProgressBar(scale: CGFloat, dueToScrubing: Bool = false) {
+        let maxLeading : CGFloat = widthOfProgressBar// - widthOfSlider
+        
         if dueToScrubing {
+            sliderCursorForSeeking.isHidden = false
+            
             //progressBar.progress = (progressWhentouchBeganCalled + progress)
-            let newSliderValue =  CGFloat(slidersValueWhentouchBeganCalled) + progress * maxLeading
+            let newSliderValue =  CGFloat(slidersValueWhentouchBeganCalled) + scale * maxLeading
             if newSliderValue >= 0 && newSliderValue <= maxLeading {
-                sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(progress * maxLeading))
+                sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(scale * maxLeading))
             }
             else if newSliderValue < 0 {
                 sliderLeadingForSeeking.constant = 0
@@ -82,8 +91,8 @@ extension CustomSlider: SliderDelegate {
                 sliderLeadingForSeeking.constant = CGFloat(maxLeading)
             }
         } else {
-            progressBar.progress = Float(progress)
-            sliderLeadingForSeeking.constant = (CGFloat(progress) * CGFloat(maxLeading))
+            progressBar.progress = Float(scale)
+            sliderLeading.constant = (CGFloat(scale) * CGFloat(maxLeading))
         }
         progressBar.setProgress(progressBar.progress, animated: true)
     }

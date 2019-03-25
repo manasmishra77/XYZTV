@@ -56,7 +56,7 @@ extension PlayersControlView: CustomSliderProtocol {
         delegate?.resetTimerForHideControl()
     }
     
-    func pressedPositionX(pointX: CGFloat) {
+    func seekPlayerTo(pointX: CGFloat) {
         delegate?.setPlayerSeekTo(seekValue: pointX)
     }
     
