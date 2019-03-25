@@ -43,7 +43,7 @@ class PlayerAssetManager: NSObject {
         delegate = listener as? PlayerAssetManagerDelegate
         self.isFps = isFps
         if (isFps) {
-        let urlString = playBackModel.url ?? playBackModel.aesUrl
+        let urlString = playBackModel.url
         asset = AVURLAsset(url: URL(string: urlString!)!)
             asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
             let requestedKeys: [Any] = [PLAYABLE_KEY]

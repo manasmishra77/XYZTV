@@ -8,23 +8,25 @@
 
 import Foundation
 import UIKit
+
 protocol SliderDelegate {
-    func updateProgressBar(currentTime: Float, duration: Float,dueToScrubing: Bool)
+    func updateProgressBar(currentTime: CGFloat, duration: CGFloat,dueToScrubing: Bool)
     func touchBeganCalledSetSliderValue()
     func pressesBeganCalled()
+    func sliderTouchEnded()
 }
+
 class JCSliderButton: UIButton
 {
     var delegate : SliderDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         if touches.count > 1 {
             return
         }
         delegate?.touchBeganCalledSetSliderValue()
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("touchesEnded")
-    }
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             if self.isFocused {
@@ -33,13 +35,21 @@ class JCSliderButton: UIButton
                 var displacement : CGFloat = 0.0
                 displacement = (touch.location(in: self.superview).x - startingPoint)
                 let scale = displacement / maxDisplacement
-                delegate?.updateProgressBar(currentTime: Float(displacement), duration: Float(maxDisplacement), dueToScrubing: true)
+                delegate?.updateProgressBar(currentTime: CGFloat(displacement / 4), duration: CGFloat(maxDisplacement / 4), dueToScrubing: true)
             }
         }
     }
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("touchesCancelled")
+    
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touchesEnded")
+        delegate?.sliderTouchEnded()
     }
+    
+//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print("touchesCancelled")
+//    }
+    
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         for press in presses {
             switch press.type{
