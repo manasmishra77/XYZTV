@@ -14,6 +14,8 @@ protocol PlayerControlsDelegate {
     func setPlayerSeekTo(seekValue: CGFloat)
     func cancelTimerForHideControl()
     func resetTimerForHideControl()
+    func settingsAudioAndSubtitlePressedOnControl()
+    func settingsVideoQualityPressedOnControl()
 }
 
 class PlayersControlView: UIView {

@@ -151,7 +151,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage, currentItem: tappedItem)
+                    
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -412,7 +413,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, currentItem: tappedItem)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")

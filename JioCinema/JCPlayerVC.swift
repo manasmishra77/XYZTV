@@ -1267,7 +1267,7 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-//                self.playbackRightsData?.url = nil
+                self.playbackRightsData?.url = nil
 //                self.playbackRightsData?.aesUrl = nil
                 //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {

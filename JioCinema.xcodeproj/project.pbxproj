@@ -58,6 +58,8 @@
 		530C0E1A21B8F8E40029C4D8 /* SideNavigationTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */; };
 		535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */; };
 		5360F84920C11EE600F9FC25 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */; };
+		538BF9402249438C00B0AB17 /* PlayerSettingMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */; };
+		538BF942224943CD00B0AB17 /* PlayerSettingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538BF941224943CD00B0AB17 /* PlayerSettingMenu.swift */; };
 		539618E221219B1500B576BF /* ParentalControlVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539618E021219B1500B576BF /* ParentalControlVC.swift */; };
 		539618E321219B1500B576BF /* ParentalControlVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 539618E121219B1500B576BF /* ParentalControlVC.xib */; };
 		539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 539618E921219BD900B576BF /* SetParentalPinView.xib */; };
@@ -239,6 +241,8 @@
 		530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationTableCell.swift; sourceTree = "<group>"; };
 		535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
+		538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerSettingMenu.xib; sourceTree = "<group>"; };
+		538BF941224943CD00B0AB17 /* PlayerSettingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingMenu.swift; sourceTree = "<group>"; };
 		539618E021219B1500B576BF /* ParentalControlVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentalControlVC.swift; sourceTree = "<group>"; };
 		539618E121219B1500B576BF /* ParentalControlVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParentalControlVC.xib; sourceTree = "<group>"; };
 		539618E921219BD900B576BF /* SetParentalPinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetParentalPinView.xib; sourceTree = "<group>"; };
@@ -695,6 +699,8 @@
 				99E4CB08222EAD940047861A /* CustomSlider.swift */,
 				991194AB222FF18E0070EF3E /* MoreLikeView.xib */,
 				991194AD222FF1A90070EF3E /* MoreLikeView.swift */,
+				538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */,
+				538BF941224943CD00B0AB17 /* PlayerSettingMenu.swift */,
 			);
 			path = CustomPlayerScene;
 			sourceTree = "<group>";
@@ -891,6 +897,7 @@
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
 				199DE87821649ACF0052CA54 /* DisneyMovies.png in Resources */,
 				847BC0512201D19A00FB5B2A /* JioType-MediumItalic.ttf in Resources */,
+				538BF9402249438C00B0AB17 /* PlayerSettingMenu.xib in Resources */,
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
 				99B07802222E7C26004F7DA0 /* PlayersControlView.xib in Resources */,
 				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
@@ -1078,6 +1085,7 @@
 				1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */,
 				B65FF5891F6A53C0004EBE6A /* JCKeyboardButton.swift in Sources */,
 				53E806062231237800F38927 /* APIManager+Player.swift in Sources */,
+				538BF942224943CD00B0AB17 /* PlayerSettingMenu.swift in Sources */,
 				19BF8A75214651A6001C58DD /* BaseViewModel.swift in Sources */,
 				53E806042230E85400F38927 /* PlayerViewModel.swift in Sources */,
 				539618F92122B80700B576BF /* SetParentalPinView.swift in Sources */,
