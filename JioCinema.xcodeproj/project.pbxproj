@@ -509,7 +509,6 @@
 				7BFEC4A71F154BDC001DFE6D /* ViewControllers */,
 				7B78D7D81F140D7300F319BF /* Models */,
 				7B78D7D51F13BCD400F319BF /* Constants */,
-				7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */,
 				7B78D7D01F13B92900F319BF /* ApiManager */,
 				7B78D7C51F13A91900F319BF /* Main.storyboard */,
 				7B78D7C81F13A91A00F319BF /* Assets.xcassets */,
@@ -607,6 +606,7 @@
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
+				7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";

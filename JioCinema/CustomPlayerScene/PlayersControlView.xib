@@ -11,33 +11,124 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayersControlView" customModule="JioCinema" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayersControlView" customModule="JioCinema" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaf-pU-5fT">
-                    <rect key="frame" x="808" y="949" width="185" height="86"/>
+                    <rect key="frame" x="853" y="939" width="96" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="96" id="53J-Gj-MRt"/>
+                        <constraint firstAttribute="height" constant="96" id="L8G-jj-0AZ"/>
+                    </constraints>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Pause"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="48"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Qnv-Kz-ONx"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
-                    <rect key="frame" x="0.0" y="729" width="1801" height="200"/>
+                    <rect key="frame" x="0.0" y="569" width="1801" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="200" id="Cp9-jB-lTF"/>
+                        <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAb-nv-zOT">
+                    <rect key="frame" x="683" y="939" width="96" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                    <state key="normal" title="&lt;"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="48"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="sWB-hN-OMY"/>
+                        <action selector="privioudButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jlY-BE-ccT"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fE-kI-bwF">
+                    <rect key="frame" x="439" y="939" width="96" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                    <state key="normal" title="s"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="48"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="vfk-S3-i35"/>
+                        <action selector="settingsButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="snc-Kx-Pva"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTg-5U-4GZ">
+                    <rect key="frame" x="1023" y="939" width="96" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                    <state key="normal" title="&gt;"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="48"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="nextButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="n5z-Uo-NwS"/>
+                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="6QW-6M-cAP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8UZ-vQ-hYk">
+                    <rect key="frame" x="1267" y="939" width="96" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                    <state key="normal" title="extra"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="48"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Faq-Qe-OYQ"/>
+                        <action selector="subtitleButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="ih8-ue-c7z"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" constant="20" id="6YI-s3-6jC"/>
+                <constraint firstItem="PAb-nv-zOT" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="DeW-KH-Auf"/>
+                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="HZh-FL-eDX"/>
                 <constraint firstItem="xaf-pU-5fT" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IX6-3Q-cUo"/>
+                <constraint firstItem="PAb-nv-zOT" firstAttribute="leading" secondItem="2fE-kI-bwF" secondAttribute="trailing" constant="148" id="Kfk-PV-XDr"/>
+                <constraint firstItem="qTg-5U-4GZ" firstAttribute="leading" secondItem="xaf-pU-5fT" secondAttribute="trailing" constant="74" id="O8q-rh-Tbo"/>
+                <constraint firstItem="qTg-5U-4GZ" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="Vhf-UV-Ar1"/>
                 <constraint firstItem="xaf-pU-5fT" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="YZB-BP-ny1"/>
+                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="ZZs-Ks-drU"/>
+                <constraint firstItem="PAb-nv-zOT" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="cYE-Hp-npz"/>
+                <constraint firstItem="qTg-5U-4GZ" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="doa-Ud-VWZ"/>
+                <constraint firstItem="PAb-nv-zOT" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="iK0-uS-191"/>
+                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="leading" secondItem="qTg-5U-4GZ" secondAttribute="trailing" constant="148" id="iqC-6t-xVV"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
+                <constraint firstItem="2fE-kI-bwF" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="oJT-Im-bpk"/>
+                <constraint firstItem="2fE-kI-bwF" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="pPM-jF-rpx"/>
+                <constraint firstItem="xaf-pU-5fT" firstAttribute="leading" secondItem="PAb-nv-zOT" secondAttribute="trailing" constant="74" id="poI-4o-IEF"/>
+                <constraint firstItem="2fE-kI-bwF" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="pqE-ga-JaW"/>
                 <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
+                <constraint firstItem="qTg-5U-4GZ" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="v0j-Rg-esN"/>
+                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="zCO-DC-j3A"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

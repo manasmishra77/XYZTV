@@ -61,6 +61,7 @@ class CustomPlayerView: UIView {
         guard let controlsView = controlsView else {
             return
         }
+        self.controlsView?.sliderView?.title.text = playerItem?.name
         self.controlHolderView.addSubview(controlsView)
         //        self.bringSubview(toFront: controlHolderView)
     }
@@ -103,8 +104,7 @@ class CustomPlayerView: UIView {
     
     
     func currentTimevalueChanged(newTime: Double, duration: Double) {
-        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
-        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
+        controlsView?.sliderView?.endingTime.text = "\(getCurrentTimeInFormat(time: newTime)) / \(getCurrentTimeInFormat(time: duration))"
         let scale : CGFloat = CGFloat(newTime / duration)
         controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)

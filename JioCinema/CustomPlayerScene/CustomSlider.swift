@@ -22,6 +22,7 @@ class CustomSlider: UIView {
     @IBOutlet weak var staringTime: UILabel!
     @IBOutlet weak var endingTime: UILabel!
     @IBOutlet weak var sliderCursor: UIButton!
+    @IBOutlet weak var title: UILabel!
     @IBOutlet weak var sliderCursorForSeeking: UIButton!
     
     @IBOutlet weak var seekTime: UILabel!
@@ -57,12 +58,12 @@ extension CustomSlider: SliderDelegate {
         if backgroundFocusableButton.isFocused {
             sliderLeading.constant = sliderLeadingForSeeking.constant
             sliderDelegate?.seekPlayerTo(pointX: CGFloat(sliderLeading.constant/(self.widthOfProgressBar)))
-            sliderCursorForSeeking.isHidden = true
+            hideThumbnails(requrestToHide: true)
         }
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        sliderCursorForSeeking.isHidden = true
+        hideThumbnails(requrestToHide: true)
         if context.nextFocusedView == self.backgroundFocusableButton{
             self.sliderCursor.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.sliderCursor.backgroundColor = .white
@@ -77,8 +78,7 @@ extension CustomSlider: SliderDelegate {
         let maxLeading : CGFloat = widthOfProgressBar// - widthOfSlider
         
         if dueToScrubing {
-            sliderCursorForSeeking.isHidden = false
-            
+            hideThumbnails(requrestToHide: false)
             //progressBar.progress = (progressWhentouchBeganCalled + progress)
             let newSliderValue =  CGFloat(slidersValueWhentouchBeganCalled) + scale * maxLeading
             if newSliderValue >= 0 && newSliderValue <= maxLeading {
@@ -101,5 +101,11 @@ extension CustomSlider: SliderDelegate {
         slidersValueWhentouchBeganCalled = sliderLeadingForSeeking.constant
         progressWhentouchBeganCalled = CGFloat(progressBar.progress)
         sliderDelegate?.cancelTimerForHideControl()
+    }
+    func hideThumbnails(requrestToHide: Bool) {
+        title.isHidden = !requrestToHide
+        endingTime.isHidden = !requrestToHide
+        sliderCursorForSeeking.isHidden = requrestToHide
+        seekTime.isHidden = requrestToHide
     }
 }

@@ -43,7 +43,15 @@ class PlayersControlView: UIView {
         isPaused = !isPaused
         playButton.setTitle(isPaused ? "Play" : "Pause", for: .normal)
     }
+    @IBAction func settingsButtonPressed(_ sender: Any) {
+    }
     
+    @IBAction func subtitleButtonPressed(_ sender: Any) {
+    }
+    @IBAction func nextButtonPressed(_ sender: Any) {
+    }
+    @IBAction func privioudButtonPressed(_ sender: Any) {
+    }
     override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
         return true
     }
