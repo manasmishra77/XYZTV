@@ -605,12 +605,12 @@
 				7B1CF54A1F1C9A05001C2B1D /* JCOTPVC.swift */,
 				7BB0E1FF1F1DECE600A1DB0B /* JCBaseVC.swift */,
 				7BB0E2001F1DECE600A1DB0B /* JCBaseVC.xib */,
-				7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */,
 				7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */,
 				2025F44C1F3AEE3C00C3B609 /* JCSettingsVC.swift */,
 				2025F4521F3B44DB00C3B609 /* JCSettingsDetailVC.swift */,
 				7BAE8D231F58487C00399F4D /* JCLanguageGenreVC.swift */,
 				7B7D0E7C1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift */,
+				7B6533001F2FB84C004D55B8 /* JCMetadataVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";

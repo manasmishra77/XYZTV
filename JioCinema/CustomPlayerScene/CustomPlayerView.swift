@@ -70,6 +70,7 @@ class CustomPlayerView: UIView {
         guard let controlsView = controlsView else {
             return
         }
+        self.controlsView?.sliderView?.title.text = playerItem?.name
         self.controlHolderView.addSubview(controlsView)
         //        self.bringSubview(toFront: controlHolderView)
     }
@@ -79,13 +80,7 @@ class CustomPlayerView: UIView {
         self.layoutIfNeeded()
         moreLikeView?.configMoreLikeView()
         moreLikeView?.frame = moreLikeHolderView.bounds
-        //        guard let moreLikeView = moreLikeView else {
-        //            return
-        //        }
         self.moreLikeHolderView.addSubview(moreLikeView!)
-        
-        //        moreLikeView?.delegate = self
-        
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         print("inside didupdatefocus")
@@ -118,9 +113,9 @@ class CustomPlayerView: UIView {
     
     
     func currentTimevalueChanged(newTime: Double, duration: Double) {
-        controlsView?.sliderView?.staringTime.text = getCurrentTimeInFormat(time: newTime)
-        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
-        controlsView?.sliderView?.updateProgressBar(currentTime: CGFloat(newTime), duration: CGFloat(duration), dueToScrubing: false)
+        controlsView?.sliderView?.endingTime.text = "\(getCurrentTimeInFormat(time: newTime)) / \(getCurrentTimeInFormat(time: duration))"
+        let scale : CGFloat = CGFloat(newTime / duration)
+        controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
     }
     
@@ -187,8 +182,6 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
 }
-
-
 
 extension CustomPlayerView: EnterPinViewModelDelegate {
     func pinVerification(_ isSucceed: Bool) {
@@ -443,6 +436,7 @@ extension CustomPlayerView {
     
     @objc func hideControlsView() {
         UIView.animate(withDuration: 0.1) {
+            self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
             self.controlsView?.isHidden = true
             self.moreLikeView?.isHidden = true
         }
