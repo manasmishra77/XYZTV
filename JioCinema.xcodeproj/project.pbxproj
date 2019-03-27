@@ -1132,8 +1132,8 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1161,8 +1161,8 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1171,7 +1171,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand.JCTopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "40aa479e-ec82-4258-b502-c9d14bf364f2";
-				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf appStore";
+				PROVISIONING_PROFILE_SPECIFIER = "com.jio.media.jioondemand.JCTopShelf Dev";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1295,8 +1295,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
@@ -1325,8 +1325,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
@@ -1339,7 +1339,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d83e4a74-14bf-4f58-affe-0c16d6c59933";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
+				PROVISIONING_PROFILE_SPECIFIER = JioCinemaTVOS_Development;
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;

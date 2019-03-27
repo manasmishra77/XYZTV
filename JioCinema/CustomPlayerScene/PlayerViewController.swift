@@ -11,12 +11,17 @@ import Foundation
 
 class PlayerViewController: UIViewController {
     var playerItem: Item?
+    var playerSubtitles: String?
+    var playerAudios: String?
     
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
     
-    init(item: Item) {
+    init(item: Item, subtitles: String? = nil, audios: String? = nil) {
         self.playerItem = item
+        self.playerAudios = audios
+        self.playerSubtitles = subtitles
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,7 +53,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.frame = playerHolder.frame
         playerHolder.addSubview(viewforplayer!)
         viewforplayer?.delegate = self
-        viewforplayer?.configureView(item: self.playerItem!)
+        viewforplayer?.configureView(item: self.playerItem!, subtitles: self.playerSubtitles, audios: self.playerAudios)
     }
 }
 

@@ -216,8 +216,9 @@ struct MetadataModel: Codable {
         case filter = "filter"
         case maturityRating = "maturityRating"
         case multipleAudio = "audios"
-        case subtitles
+        case subtitles = "subtitles"
     }
+    
     init(from decoder: Decoder) throws {
         do {
             let values = try decoder.container(keyedBy: CodingKeys.self)

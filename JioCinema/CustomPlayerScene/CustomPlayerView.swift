@@ -31,6 +31,10 @@ class CustomPlayerView: UIView {
     var videoStartingTimeDuration = 0
     var videoStartingTime = Date()
     
+    var playerSubtitles: String?
+    var playerAudios: String?
+    
+    
     var controlsView : PlayersControlView?
     fileprivate var didSeek :Bool = false
     @IBOutlet weak var playerHolderView: UIView!
@@ -38,6 +42,8 @@ class CustomPlayerView: UIView {
     @IBOutlet weak var moreLikeHolderView: UIView!
     @IBOutlet weak var bottomSpaceOfMoreLikeInContainer: NSLayoutConstraint!
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
+    
+    
     
     
     
@@ -50,7 +56,9 @@ class CustomPlayerView: UIView {
     var timer: Timer!
     var timerToHideControls : Timer!
     
-    func configureView(item: Item) {
+    func configureView(item: Item, subtitles: String?, audios: String?) {
+        self.playerSubtitles = subtitles
+        self.playerAudios = audios
         playerViewModel = PlayerViewModel(item: item)
         playerViewModel?.callWebServiceForMoreLikeData()
         playerViewModel?.delegate = self
@@ -74,6 +82,7 @@ class CustomPlayerView: UIView {
         self.controlHolderView.addSubview(controlsView)
         //        self.bringSubview(toFront: controlHolderView)
     }
+    
     func addMoreLikeView() {
         moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
         heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
@@ -136,7 +145,6 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
     func playTapped(_ isPaused: Bool) {
-        self.settingsAudioAndSubtitlePressedOnControl()
         if !isPaused {
             player?.pause()
         } else {
@@ -145,19 +153,37 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
     func settingsAudioAndSubtitlePressedOnControl(){
-        self.controlDetailView.isHidden = false
+        
+        var audioArray = [String]()
+        var subtitleArray = [String]()
+        
+        if let audio = self.playerAudios {
+           audioArray = audio.components(separatedBy: ",")
+        }
+        else {
+            audioArray.append("English")
+        }
+        
+        if let subtitles = self.playerSubtitles {
+            subtitleArray = subtitles.components(separatedBy: ",")
+        }
+        else {
+            subtitleArray.append("English")
+        }
+        
         controlDetailHolderWidth.constant = 1280
+        self.controlDetailView.isHidden = false
         
         self.controlDetailView.layoutIfNeeded()
         
         let audioMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         audioMenuTabelView.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        audioMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil","gujrati","bangali"], menuType: .multiaudio)
+        audioMenuTabelView.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudio)
         controlDetailHolderView.addSubview(audioMenuTabelView)
         
         let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil"], menuType: .multilanguage)
+        subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
         controlDetailHolderView.addSubview(subtitleMenuTabelView)
         
     }
