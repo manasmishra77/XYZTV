@@ -46,33 +46,44 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O2f-iE-9Xj">
                                     <rect key="frame" x="0.0" y="0.0" width="640" height="550"/>
-                                    <color key="backgroundColor" red="0.66666666669999997" green="0.66666668650000005" blue="0.66666668650000005" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="550" id="B0Z-B2-haH"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqs-Oj-7VP">
                                     <rect key="frame" x="0.0" y="550" width="640" height="105"/>
+                                    <color key="backgroundColor" red="0.10588235294117647" green="0.11764705882352941" blue="0.10196078431372549" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="640" id="X7O-We-naK"/>
                                         <constraint firstAttribute="height" constant="105" id="dIW-7D-601"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="Remember my setting"/>
+                                    <state key="normal" title="Remember my settings"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="120" y="690" width="400" height="80"/>
+                                    <color key="backgroundColor" red="0.4361188412" green="0.43612974879999999" blue="0.4361238778" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="80" id="GKZ-Ow-Qmw"/>
                                         <constraint firstAttribute="width" constant="400" id="Ur5-Iu-G2G"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="22"/>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="Button"/>
+                                    <state key="normal" title="OK">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.10588235294117647" green="0.11764705882352941" blue="0.10196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="640" id="8Hf-Py-G2N"/>
                                 <constraint firstItem="uqs-Oj-7VP" firstAttribute="top" secondItem="O2f-iE-9Xj" secondAttribute="bottom" id="I1x-7k-pIN"/>
@@ -86,7 +97,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.20352632705479451" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.42645547945205481" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerY" secondItem="tBz-cr-dSN" secondAttribute="centerY" id="MnL-e7-x9Q"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerX" secondItem="tBz-cr-dSN" secondAttribute="centerX" id="cnx-Ib-W4O"/>

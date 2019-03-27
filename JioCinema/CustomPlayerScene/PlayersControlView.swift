@@ -10,12 +10,16 @@ import UIKit
 
 protocol PlayerControlsDelegate {
     func playTapped(_ isPaused: Bool)
+    func subtitlesAndMultiaudioButtonPressed(todisplay: Bool)
+    func settingsButtonPressed(toDisplay: Bool)
+    func nextButtonPressed(toDisplay: Bool)
+    func previousButtonPressed(toDisplay: Bool)
     func getTimeDetails(_ currentTime: String,_ duration: String)
     func setPlayerSeekTo(seekValue: CGFloat)
     func cancelTimerForHideControl()
     func resetTimerForHideControl()
-    func settingsAudioAndSubtitlePressedOnControl()
-    func settingsVideoQualityPressedOnControl()
+//    func settingsAudioAndSubtitlePressedOnControl()
+//    func settingsVideoQualityPressedOnControl()
 }
 
 class PlayersControlView: UIView {
@@ -46,13 +50,16 @@ class PlayersControlView: UIView {
         playButton.setTitle(isPaused ? "Play" : "Pause", for: .normal)
     }
     @IBAction func settingsButtonPressed(_ sender: Any) {
+        delegate?.settingsButtonPressed(toDisplay: true)
     }
-    
     @IBAction func subtitleButtonPressed(_ sender: Any) {
+        delegate?.subtitlesAndMultiaudioButtonPressed(todisplay: true)
     }
     @IBAction func nextButtonPressed(_ sender: Any) {
+        delegate?.nextButtonPressed(toDisplay: true)
     }
-    @IBAction func privioudButtonPressed(_ sender: Any) {
+    @IBAction func previoudButtonPressed(_ sender: Any) {
+        delegate?.previousButtonPressed(toDisplay: true)
     }
     override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
         return true
