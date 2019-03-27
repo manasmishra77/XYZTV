@@ -44,9 +44,6 @@ class CustomPlayerView: UIView {
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
     
     
-    
-    
-    
     @IBOutlet weak var controlDetailView: UIView!
     @IBOutlet weak var controlDetailHolderView: UIView!
     
@@ -132,33 +129,14 @@ class CustomPlayerView: UIView {
 }
 
 extension CustomPlayerView : PlayerControlsDelegate {
-    func cancelTimerForHideControl() {
-        timerToHideControls.invalidate()
-    }
-    
-    func resetTimerForHideControl() {
-        self.resetTimer()
-    }
-    
-    func getTimeDetails(_ currentTime: String, _ duration: String) {
-        getPlayerDuration()
-    }
-    
-    func playTapped(_ isPaused: Bool) {
-        if !isPaused {
-            player?.pause()
-        } else {
-            player?.play()
-        }
-    }
-    
-    func settingsAudioAndSubtitlePressedOnControl(){
+
+    func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
         
         var audioArray = [String]()
         var subtitleArray = [String]()
         
         if let audio = self.playerAudios {
-           audioArray = audio.components(separatedBy: ",")
+            audioArray = audio.components(separatedBy: ",")
         }
         else {
             audioArray.append("English")
@@ -185,10 +163,9 @@ extension CustomPlayerView : PlayerControlsDelegate {
         subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
         subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
         controlDetailHolderView.addSubview(subtitleMenuTabelView)
-        
     }
     
-    func settingsVideoQualityPressedOnControl() {
+    func settingsButtonPressed(toDisplay: Bool) {
         self.controlDetailView.isHidden = false
         controlDetailHolderWidth.constant = 640
         self.controlDetailView.layoutIfNeeded()
@@ -197,6 +174,34 @@ extension CustomPlayerView : PlayerControlsDelegate {
         menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdeium","high"], menuType: .videobitratequality)
         controlDetailHolderView.addSubview(menuTabelView)
     }
+    
+    func nextButtonPressed(toDisplay: Bool) {
+    }
+    
+    func previousButtonPressed(toDisplay: Bool) {
+    }
+    
+    func cancelTimerForHideControl() {
+        timerToHideControls.invalidate()
+    }
+    
+    func resetTimerForHideControl() {
+        self.resetTimer()
+    }
+    
+    func getTimeDetails(_ currentTime: String, _ duration: String) {
+        getPlayerDuration()
+    }
+    
+    func playTapped(_ isPaused: Bool) {
+        
+        if !isPaused {
+            player?.pause()
+        } else {
+            player?.play()
+        }
+    }
+    
     
     
     func setPlayerSeekTo(seekValue: CGFloat) {
@@ -208,6 +213,39 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
 }
+
+//button press handling methods
+//extension CustomPlayerView {
+//    func settingsAudioAndSubtitlePressedOnControl(){
+//        self.controlDetailView.isHidden = false
+//        controlDetailHolderWidth.constant = 1280
+//        
+//        self.controlDetailView.layoutIfNeeded()
+//        
+//        let audioMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+//        audioMenuTabelView.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+//        audioMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil","gujrati","bangali"], menuType: .multiaudio)
+//        controlDetailHolderView.addSubview(audioMenuTabelView)
+//        
+//        let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+//        subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+//        subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil"], menuType: .multilanguage)
+//        controlDetailHolderView.addSubview(subtitleMenuTabelView)
+//        
+//    }
+//    
+//    func settingsVideoQualityPressedOnControl() {
+//        self.controlDetailView.isHidden = false
+//        controlDetailHolderWidth.constant = 640
+//        self.controlDetailView.layoutIfNeeded()
+//        let menuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+//        menuTabelView.frame = controlDetailHolderView.bounds
+//        menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdeium","high"], menuType: .videobitratequality)
+//        controlDetailHolderView.addSubview(menuTabelView)
+//    }
+//    
+//    
+//}
 
 extension CustomPlayerView: EnterPinViewModelDelegate {
     func pinVerification(_ isSucceed: Bool) {

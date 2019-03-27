@@ -54,7 +54,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="sWB-hN-OMY"/>
-                        <action selector="privioudButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jlY-BE-ccT"/>
+                        <action selector="previousButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jlY-BE-ccT"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fE-kI-bwF">
