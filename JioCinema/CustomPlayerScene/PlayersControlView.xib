@@ -53,7 +53,6 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="sWB-hN-OMY"/>
                         <action selector="previousButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jlY-BE-ccT"/>
                     </connections>
                 </button>
@@ -69,7 +68,6 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="vfk-S3-i35"/>
                         <action selector="settingsButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="snc-Kx-Pva"/>
                     </connections>
                 </button>
@@ -86,7 +84,6 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="nextButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="n5z-Uo-NwS"/>
-                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="6QW-6M-cAP"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8UZ-vQ-hYk">
@@ -101,7 +98,6 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Faq-Qe-OYQ"/>
                         <action selector="subtitleButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="ih8-ue-c7z"/>
                     </connections>
                 </button>

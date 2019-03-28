@@ -36,11 +36,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-cr-dSN">
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wOM-pX-Sdn">
-                            <rect key="frame" x="0.0" y="822" width="1920" height="258"/>
-                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                            <state key="normal" title="Button"/>
-                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRx-If-RQs">
                             <rect key="frame" x="640" y="130" width="640" height="820"/>
                             <subviews>
@@ -108,11 +103,8 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.3849529109589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="wOM-pX-Sdn" firstAttribute="leading" secondItem="tBz-cr-dSN" secondAttribute="leading" id="Bzx-e1-Oar"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerY" secondItem="tBz-cr-dSN" secondAttribute="centerY" id="MnL-e7-x9Q"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerX" secondItem="tBz-cr-dSN" secondAttribute="centerX" id="cnx-Ib-W4O"/>
-                        <constraint firstAttribute="trailing" secondItem="wOM-pX-Sdn" secondAttribute="trailing" id="kHp-dU-iWQ"/>
-                        <constraint firstAttribute="bottom" secondItem="wOM-pX-Sdn" secondAttribute="bottom" id="u7B-CM-H9k"/>
                     </constraints>
                 </view>
             </subviews>
