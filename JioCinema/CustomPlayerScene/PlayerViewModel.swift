@@ -9,12 +9,19 @@
 import Foundation
 import AVKit
 
-protocol PlayerViewModelDelegate {
+protocol PlayerViewModelDelegate: NSObjectProtocol {
     func addAvPlayerToController()
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(i: Int)
     func getDuration(duration: Double)
+}
+
+enum BitRatesType: String {
+    case auto = "Auto"
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
 }
 
 class PlayerViewModel: NSObject {
@@ -26,7 +33,7 @@ class PlayerViewModel: NSObject {
     var isPlayList: Bool = false
     var totalDuration: Float = 0.0
     var appType: VideoType = VideoType.None
-    var delegate: PlayerViewModelDelegate?
+    weak var delegate: PlayerViewModelDelegate?
     var startTime_BufferDuration: Date?
     fileprivate var totalBufferDurationTime = 0.0
     fileprivate var bufferCount = 0
@@ -40,6 +47,8 @@ class PlayerViewModel: NSObject {
     var isEpisodeDataAvailable: Bool = false
     var bannerUrlString: String = ""
     var assetManager: PlayerAssetManager?
+    var playerActiveUrl: String!
+    var playerActiveBitrate: BitRatesType?
     
     init(item: Item) {
         self.itemToBePlayed = item
@@ -115,9 +124,27 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-                self.playbackRightsModel?.url = nil
-                self.isFpsUrl = self.playbackRightsModel?.url != nil ? true : false
-                self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
+//                self.playbackRightsModel?.url = nil
+            self.decideURLPriorityForPlayer()
+            
+            if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
+                self.isFpsUrl = true
+            }
+            self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
+        }
+    }
+    
+    func decideURLPriorityForPlayer() {
+         if let fpsUrl = self.playbackRightsModel?.url {
+            playerActiveUrl = fpsUrl
+        } else if let aesUrl = self.playbackRightsModel?.aesUrl {
+            playerActiveUrl = aesUrl
+        } else if let fpsBitcodeUrl = self.playbackRightsModel?.fps {
+            playerActiveBitrate = .auto
+            playerActiveUrl = fpsBitcodeUrl.auto
+        } else if let aesBitcodeUrl = self.playbackRightsModel?.aes {
+            playerActiveBitrate = .auto
+            playerActiveUrl = aesBitcodeUrl.auto
         }
     }
     
@@ -127,7 +154,7 @@ class PlayerViewModel: NSObject {
     
     func instantiatePlayerAfterParentalCheck() {
         assetManager = nil
-        assetManager = PlayerAssetManager(playBackModel: playbackRightsModel!, isFps: self.isFpsUrl, listener: self)
+        assetManager = PlayerAssetManager(playBackModel: playbackRightsModel!, isFps: self.isFpsUrl, listener: self, activeUrl: self.playerActiveUrl)
     }
     
     //MARK:- Add Player Observer

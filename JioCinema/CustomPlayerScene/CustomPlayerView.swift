@@ -125,6 +125,9 @@ class CustomPlayerView: UIView {
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
     }
     
+    @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
+    }
+    
     
 }
 
@@ -171,7 +174,7 @@ extension CustomPlayerView : PlayerControlsDelegate {
         self.controlDetailView.layoutIfNeeded()
         let menuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         menuTabelView.frame = controlDetailHolderView.bounds
-        menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdeium","high"], menuType: .videobitratequality)
+        menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdieum","high"], menuType: .videobitratequality)
         controlDetailHolderView.addSubview(menuTabelView)
     }
     

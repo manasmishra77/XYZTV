@@ -25,7 +25,7 @@ protocol PlayerAssetManagerDelegate: NSObjectProtocol {
 
 class PlayerAssetManager: NSObject {
     var asset: AVURLAsset?
-    var delegate: PlayerAssetManagerDelegate?
+    weak var delegate: PlayerAssetManagerDelegate?
     let PLAYABLE_KEY = "playable"
     var isFps = false
     var playbackDataModel: PlaybackRightsModel?
@@ -38,13 +38,12 @@ class PlayerAssetManager: NSObject {
         "hasProtectedContent"
     ]
     
-    init(playBackModel: PlaybackRightsModel, isFps: Bool, listener: NSObject) {
+    init(playBackModel: PlaybackRightsModel, isFps: Bool, listener: NSObject, activeUrl: String) {
         super.init()
         delegate = listener as? PlayerAssetManagerDelegate
         self.isFps = isFps
         if (isFps) {
-        let urlString = playBackModel.url
-        asset = AVURLAsset(url: URL(string: urlString!)!)
+        asset = AVURLAsset(url: URL(string: activeUrl)!)
             asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
             let requestedKeys: [Any] = [PLAYABLE_KEY]
             // Tells the asset to load the values of any of the specified keys that are not already loaded.
@@ -56,7 +55,7 @@ class PlayerAssetManager: NSObject {
             })
         }
         else {
-            handleAESStreamingUrl(videoUrl: playBackModel.aesUrl!)
+            handleAESStreamingUrl(videoUrl: activeUrl)
         }
     }
     

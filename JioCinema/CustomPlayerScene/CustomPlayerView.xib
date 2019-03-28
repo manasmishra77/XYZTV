@@ -81,6 +81,9 @@
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="okButtonPressedForSavingMenuSetting:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="bQL-IF-Qbi"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.10588235294117647" green="0.11764705882352941" blue="0.10196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
