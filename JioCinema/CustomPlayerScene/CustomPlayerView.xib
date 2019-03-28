@@ -8,11 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="JioType-Medium.ttf">
-            <string>JioType-Medium</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -41,6 +36,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-cr-dSN">
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wOM-pX-Sdn">
+                            <rect key="frame" x="0.0" y="822" width="1920" height="258"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" title="Button"/>
+                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRx-If-RQs">
                             <rect key="frame" x="640" y="130" width="640" height="820"/>
                             <subviews>
@@ -51,16 +51,16 @@
                                         <constraint firstAttribute="height" constant="550" id="B0Z-B2-haH"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqs-Oj-7VP">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqs-Oj-7VP">
                                     <rect key="frame" x="0.0" y="550" width="640" height="105"/>
-                                    <color key="backgroundColor" red="0.10588235294117647" green="0.11764705882352941" blue="0.10196078431372549" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="640" id="X7O-We-naK"/>
                                         <constraint firstAttribute="height" constant="105" id="dIW-7D-601"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="Remember my settings"/>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
+                                    <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="200" maxY="0.0"/>
+                                    <state key="normal" title="Remember my settings" image="ArrowGrey"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="120" y="690" width="400" height="80"/>
@@ -77,7 +77,7 @@
                                     </state>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="5"/>
+                                            <real key="value" value="40"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
                                     </userDefinedRuntimeAttributes>
@@ -95,12 +95,21 @@
                                 <constraint firstItem="O2f-iE-9Xj" firstAttribute="leading" secondItem="ZRx-If-RQs" secondAttribute="leading" id="hhI-nx-7az"/>
                                 <constraint firstItem="uqs-Oj-7VP" firstAttribute="leading" secondItem="ZRx-If-RQs" secondAttribute="leading" id="i1r-c3-KBM"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
+                            </userDefinedRuntimeAttributes>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.42645547945205481" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.3849529109589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="wOM-pX-Sdn" firstAttribute="leading" secondItem="tBz-cr-dSN" secondAttribute="leading" id="Bzx-e1-Oar"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerY" secondItem="tBz-cr-dSN" secondAttribute="centerY" id="MnL-e7-x9Q"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerX" secondItem="tBz-cr-dSN" secondAttribute="centerX" id="cnx-Ib-W4O"/>
+                        <constraint firstAttribute="trailing" secondItem="wOM-pX-Sdn" secondAttribute="trailing" id="kHp-dU-iWQ"/>
+                        <constraint firstAttribute="bottom" secondItem="wOM-pX-Sdn" secondAttribute="bottom" id="u7B-CM-H9k"/>
                     </constraints>
                 </view>
             </subviews>
@@ -134,4 +143,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="ArrowGrey" width="20" height="36"/>
+    </resources>
 </document>

@@ -64,11 +64,6 @@ class PlayersControlView: UIView {
         delegate?.previousButtonPressed(toDisplay: true)
     }
     
-    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
-        return true
-    }
-    
-    
 }
 
 extension PlayersControlView: CustomSliderProtocol {

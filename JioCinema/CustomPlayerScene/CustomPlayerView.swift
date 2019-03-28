@@ -214,39 +214,6 @@ extension CustomPlayerView : PlayerControlsDelegate {
     
 }
 
-//button press handling methods
-//extension CustomPlayerView {
-//    func settingsAudioAndSubtitlePressedOnControl(){
-//        self.controlDetailView.isHidden = false
-//        controlDetailHolderWidth.constant = 1280
-//        
-//        self.controlDetailView.layoutIfNeeded()
-//        
-//        let audioMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-//        audioMenuTabelView.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-//        audioMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil","gujrati","bangali"], menuType: .multiaudio)
-//        controlDetailHolderView.addSubview(audioMenuTabelView)
-//        
-//        let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-//        subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-//        subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: ["English","Hindi","Tamil"], menuType: .multilanguage)
-//        controlDetailHolderView.addSubview(subtitleMenuTabelView)
-//        
-//    }
-//    
-//    func settingsVideoQualityPressedOnControl() {
-//        self.controlDetailView.isHidden = false
-//        controlDetailHolderWidth.constant = 640
-//        self.controlDetailView.layoutIfNeeded()
-//        let menuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-//        menuTabelView.frame = controlDetailHolderView.bounds
-//        menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdeium","high"], menuType: .videobitratequality)
-//        controlDetailHolderView.addSubview(menuTabelView)
-//    }
-//    
-//    
-//}
-
 extension CustomPlayerView: EnterPinViewModelDelegate {
     func pinVerification(_ isSucceed: Bool) {
         if isSucceed {

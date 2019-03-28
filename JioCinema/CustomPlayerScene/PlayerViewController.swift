@@ -50,7 +50,7 @@ class PlayerViewController: UIViewController {
     
     func configureView() {
         viewforplayer = UINib(nibName: "CustomPlayerView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? CustomPlayerView
-        viewforplayer?.frame = playerHolder.frame
+        viewforplayer?.frame = playerHolder.bounds
         playerHolder.addSubview(viewforplayer!)
         viewforplayer?.delegate = self
         viewforplayer?.configureView(item: self.playerItem!, subtitles: self.playerSubtitles, audios: self.playerAudios)

@@ -145,6 +145,8 @@
 		993E0D5322269AAA0064C194 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993E0D4E22269AAA0064C194 /* PlayerViewController.swift */; };
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
 		99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 99606317222FA10C007A9D48 /* SampleVideo.mp4 */; };
+		99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */; };
+		99651171224C9BC600E81D0F /* PlayerPopupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
 		9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */; };
 		9966543621D381360026CC8D /* CarouselCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */; };
@@ -332,6 +334,8 @@
 		993E0D4E22269AAA0064C194 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
 		99606317222FA10C007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
+		9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPopupTableViewCell.swift; sourceTree = "<group>"; };
+		9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerPopupTableViewCell.xib; sourceTree = "<group>"; };
 		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
 		9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CarouselCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -583,6 +587,8 @@
 				194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */,
 				9966543321D381360026CC8D /* CarouselCollectionViewCell.swift */,
 				9966543421D381360026CC8D /* CarouselCollectionViewCell.xib */,
+				9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */,
+				9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -908,6 +914,7 @@
 				2025F4511F3AF58300C3B609 /* JCSettingsTableViewCell.xib in Resources */,
 				9966543821D382FE0026CC8D /* ViewForCarousel.xib in Resources */,
 				991194AC222FF18E0070EF3E /* MoreLikeView.xib in Resources */,
+				99651171224C9BC600E81D0F /* PlayerPopupTableViewCell.xib in Resources */,
 				7BB0E2071F1DEE9800A1DB0B /* JCBaseTableViewCell.xib in Resources */,
 				53D1E2F421B7ED67003BD5C1 /* SideNavigationTableView.xib in Resources */,
 				53A70E3D220454AA00C48814 /* SideNavigationTableCell.xib in Resources */,
@@ -1027,6 +1034,7 @@
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
 				1966AC5F213FC5B300A98404 /* APIManager+Search.swift in Sources */,
+				99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */,
 				535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				99E4CB09222EAD940047861A /* CustomSlider.swift in Sources */,

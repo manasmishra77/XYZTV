@@ -25,7 +25,7 @@ class PlayerSettingMenu: UIView {
     
     
     override func awakeFromNib() {
-        menuTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        menuTable.register(UINib(nibName: "PlayerPopupTableViewCell", bundle: nil), forCellReuseIdentifier: "PlayerPopupTableViewCell")
         menuTable.delegate = self
         menuTable.dataSource = self
     }
@@ -47,10 +47,10 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = menuItems[indexPath.row]
-//        cell?.textLabel!.font.pointSize = 50
-        return cell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerPopupTableViewCell") as! PlayerPopupTableViewCell
+        cell.title.text = menuItems[indexPath.row]
+        cell.subtitle.text = "subtitle"
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
