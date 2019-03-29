@@ -34,7 +34,6 @@ class CustomPlayerView: UIView {
     var playerSubtitles: String?
     var playerAudios: String?
     
-    
     var controlsView : PlayersControlView?
     fileprivate var didSeek :Bool = false
     @IBOutlet weak var playerHolderView: UIView!
@@ -52,6 +51,16 @@ class CustomPlayerView: UIView {
     
     var timer: Timer!
     var timerToHideControls : Timer!
+    
+    var myPreferredFocusView:UIView? = nil
+    var rememberMyChoiceTapped: Bool = false
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferredView = myPreferredFocusView {
+            return [preferredView]
+        }
+        return []
+    }
     
     func configureView(item: Item, subtitles: String?, audios: String?) {
         self.playerSubtitles = subtitles
@@ -126,8 +135,20 @@ class CustomPlayerView: UIView {
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
+        myPreferredFocusView = nil
     }
     
+    @IBAction func rememberMyChoicePressed(_ sender: UIButton) {
+        rememberMyChoiceTapped = !rememberMyChoiceTapped
+        if rememberMyChoiceTapped {
+            sender.setImage(UIImage(named: "filledCheckBox"), for: .normal)
+            self.layoutIfNeeded()
+        } else {
+            sender.setImage(UIImage(named: "emptyCheckBox"), for: .normal)
+            self.layoutIfNeeded()
+        }
+        sender.isSelected = !sender.isSelected
+    }
     
 }
 
@@ -152,9 +173,9 @@ extension CustomPlayerView : PlayerControlsDelegate {
             subtitleArray.append("English")
         }
         
-        controlDetailHolderWidth.constant = 1280
+        controlDetailHolderWidth.constant = 1280.5
         self.controlDetailView.isHidden = false
-        
+        myPreferredFocusView = self.controlDetailView
         self.controlDetailView.layoutIfNeeded()
         
         let audioMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
@@ -163,13 +184,14 @@ extension CustomPlayerView : PlayerControlsDelegate {
         controlDetailHolderView.addSubview(audioMenuTabelView)
         
         let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        subtitleMenuTabelView.frame = CGRect.init(x: (controlDetailHolderWidth.constant/2) + 0.5, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
         subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
         controlDetailHolderView.addSubview(subtitleMenuTabelView)
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
         self.controlDetailView.isHidden = false
+        myPreferredFocusView = self.controlDetailView
         controlDetailHolderWidth.constant = 640
         self.controlDetailView.layoutIfNeeded()
         let menuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
@@ -197,7 +219,6 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
     func playTapped(_ isPaused: Bool) {
-        
         if !isPaused {
             player?.pause()
         } else {

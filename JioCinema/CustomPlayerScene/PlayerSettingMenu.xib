@@ -28,21 +28,32 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="6bE-II-NuB">
                     <rect key="frame" x="0.0" y="120" width="1372" height="752"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="iN0-l3-epB" id="BmT-bS-Hjg"/>
                         <outlet property="delegate" destination="iN0-l3-epB" id="3Nx-Dt-NK8"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dSn-fN-ubh" userLabel="horizontalSeprator">
+                    <rect key="frame" x="0.0" y="120" width="1372" height="0.0"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.29999999999999999" id="mqS-Bj-Tli"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="6bE-II-NuB" firstAttribute="top" secondItem="YCd-hE-Teh" secondAttribute="bottom" id="8e7-2y-mfj"/>
                 <constraint firstAttribute="bottom" secondItem="6bE-II-NuB" secondAttribute="bottom" id="J7B-7f-gOR"/>
                 <constraint firstAttribute="trailing" secondItem="YCd-hE-Teh" secondAttribute="trailing" id="J8S-8g-IWX"/>
+                <constraint firstItem="dSn-fN-ubh" firstAttribute="top" secondItem="YCd-hE-Teh" secondAttribute="bottom" id="Plf-2U-DTO"/>
                 <constraint firstItem="YCd-hE-Teh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Wpd-b4-h8S"/>
+                <constraint firstItem="dSn-fN-ubh" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="YSz-e7-mxd"/>
                 <constraint firstAttribute="trailing" secondItem="6bE-II-NuB" secondAttribute="trailing" id="faf-TJ-7jK"/>
                 <constraint firstItem="YCd-hE-Teh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="kui-ng-lid"/>
                 <constraint firstItem="6bE-II-NuB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ozU-yG-CoZ"/>
+                <constraint firstItem="dSn-fN-ubh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xwj-KX-Cqb"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

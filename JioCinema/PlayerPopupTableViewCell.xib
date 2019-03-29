@@ -41,7 +41,7 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowGrey" translatesAutoresizingMaskIntoConstraints="NO" id="gh6-gp-kNp">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="radioButton" translatesAutoresizingMaskIntoConstraints="NO" id="gh6-gp-kNp">
                         <rect key="frame" x="30" y="30" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="RW1-ZH-cQt"/>
@@ -66,6 +66,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ArrowGrey" width="20" height="36"/>
+        <image name="radioButton" width="20" height="20"/>
     </resources>
 </document>
