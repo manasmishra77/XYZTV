@@ -42,14 +42,14 @@ class JCDisneyButton: UIButton
     {
         if (context.nextFocusedView == self)
         {
-            self.cornerRadius = 10
-            self.borderWidth = 5
-            self.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+            self.layer.cornerRadius = 10
+            self.layer.borderWidth = 5
+            self.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
             self.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
         }
         else
         {
-            self.borderWidth = 0
+            self.layer.borderWidth = 0
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
         }
         

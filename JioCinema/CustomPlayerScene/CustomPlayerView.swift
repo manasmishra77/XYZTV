@@ -184,7 +184,7 @@ extension CustomPlayerView : PlayerControlsDelegate {
         controlDetailHolderView.addSubview(audioMenuTabelView)
         
         let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        subtitleMenuTabelView.frame = CGRect.init(x: (controlDetailHolderWidth.constant/2) + 0.5, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        subtitleMenuTabelView.frame = CGRect.init(x: (controlDetailHolderWidth.constant/2) + 2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
         subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
         controlDetailHolderView.addSubview(subtitleMenuTabelView)
     }
@@ -230,8 +230,8 @@ extension CustomPlayerView : PlayerControlsDelegate {
     
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
-            var seekToValue = Double(seekValue) * self.getPlayerDuration()
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), 1))
+            let seekToValue = Double(seekValue) * self.getPlayerDuration()
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
             self.currentDuration = Float(seekToValue)
         }
     }
@@ -358,7 +358,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //Seek player
     func seekPlayer() {
         if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), preferredTimescale: 1))
         } else {
             didSeek = false
         }
@@ -385,7 +385,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 newDuration = newDurationAsValue.timeValue
             }
             else {
-                newDuration = kCMTimeZero
+                newDuration = CMTime.zero
             }
             Log.DLog(message: newDuration as AnyObject)
         }
@@ -407,9 +407,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             
         }
         else if keyPath == #keyPath(player.currentItem.status) {
-            let newStatus: AVPlayerItemStatus
+            let newStatus: AVPlayerItem.Status
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue) ?? .unknown
+                newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) ?? .unknown
             }
             else {
                 newStatus = .unknown

@@ -228,7 +228,7 @@ class PlayerViewModel: NSObject {
         } else {
             //AES url failed
             failureType = "AES"
-            let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
             let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                 DispatchQueue.main.async {
                     print("dismiss")
@@ -309,7 +309,7 @@ extension PlayerViewModel {
             
             if let img = image {
                 DispatchQueue.main.async {
-                    let pngData = UIImagePNGRepresentation(img)
+                    let pngData = img.pngData()
                     imageMetadataItem.value = pngData as (NSCopying & NSObjectProtocol)?
                 }
             }

@@ -14,7 +14,7 @@ extension Utility {
     func addIndicator(){
         activityIndicator = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: screenWidth, height: screenHeight))
         //  indicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        activityIndicator.style = UIActivityIndicatorView.Style.whiteLarge
         activityIndicator.backgroundColor = UIColor.darkGray
         activityIndicator.alpha = 0.50
     }
@@ -24,7 +24,7 @@ extension Utility {
         activityIndicator.startAnimating()
         if let app = UIApplication.shared.delegate as? AppDelegate, let window = app.window {
             window.addSubview(activityIndicator)
-            window.bringSubview(toFront: activityIndicator)
+            window.bringSubviewToFront(activityIndicator)
         }
     }
     

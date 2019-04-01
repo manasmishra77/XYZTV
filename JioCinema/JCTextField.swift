@@ -15,14 +15,14 @@ class JCTextField: UITextField,UITextFieldDelegate
         if (context.nextFocusedView == self)
         {
             self.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
-            self.attributedPlaceholder = NSAttributedString(string: "Jio ID", attributes: [NSAttributedStringKey.foregroundColor:#colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)])
+            self.attributedPlaceholder = NSAttributedString(string: "Jio ID", attributes: [NSAttributedString.Key.foregroundColor:#colorLiteral(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)])
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
             self.textColor = .black
         }
         else
         {
             self.backgroundColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.3597708972)
-            self.attributedPlaceholder = NSAttributedString(string: "Jio ID", attributes: [NSAttributedStringKey.foregroundColor:#colorLiteral(red: 0.3607843137, green: 0.3607843137, blue: 0.3607843137, alpha: 1)])
+            self.attributedPlaceholder = NSAttributedString(string: "Jio ID", attributes: [NSAttributedString.Key.foregroundColor:#colorLiteral(red: 0.3607843137, green: 0.3607843137, blue: 0.3607843137, alpha: 1)])
         }
 
     }

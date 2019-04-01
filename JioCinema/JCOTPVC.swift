@@ -51,7 +51,7 @@ class JCOTPVC: UIViewController {
     func addSwipeGesture()
     {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
-        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeDown)
         
     }
@@ -59,9 +59,9 @@ class JCOTPVC: UIViewController {
     @objc func swipeGestureHandler(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.up:
+            case UISwipeGestureRecognizer.Direction.up:
                 break
-            case UISwipeGestureRecognizerDirection.down:
+            case UISwipeGestureRecognizer.Direction.down:
                 if signInButton.isHidden{
                     if getOTPButton.isFocused == false{
                         myPreferredFocuseView = getOTPButton
@@ -109,7 +109,7 @@ class JCOTPVC: UIViewController {
         }
         else
         {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            activityIndicator = UIActivityIndicatorView(style: .white)
             view.addSubview(activityIndicator!)
             activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
             activityIndicator?.startAnimating()
@@ -182,7 +182,7 @@ class JCOTPVC: UIViewController {
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)
@@ -196,7 +196,7 @@ class JCOTPVC: UIViewController {
     
     
     fileprivate func callWebServiceToGetOTP(number: String) {
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityIndicator = UIActivityIndicatorView(style: .white)
         view.addSubview(activityIndicator!)
         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
         activityIndicator?.startAnimating()

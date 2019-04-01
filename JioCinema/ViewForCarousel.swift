@@ -79,7 +79,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.collectionView.delegate = view
         view.collectionView.dataSource = view
         
-        view.collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        view.collectionView.decelerationRate = UIScrollView.DecelerationRate.fast
         
 //        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
 //        swipeRight.direction = [.right]
@@ -175,7 +175,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCollectionViewCell", for: indexPath) as! CarouselCollectionViewCell
         cell.rightSepration.constant = sepration / 2
         cell.leftSepration.constant = sepration / 2
-        cell.imageView.cornerRadius = 10
+        cell.imageView.layer.cornerRadius = 10
         
         cell.contentView.layer.cornerRadius = 20
         cell.contentView.layer.masksToBounds = true

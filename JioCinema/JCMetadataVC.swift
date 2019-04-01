@@ -993,9 +993,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
     }
     func appendMaturityRating() {
-        headerCell.maturityRating.borderWidth = 2
+        headerCell.maturityRating.layer.borderWidth = 2
         headerCell.maturityRating.borderColor = .white
-        headerCell.maturityRating.cornerRadius = 5
+        headerCell.maturityRating.layer.cornerRadius = 5
         headerCell.maturityRating.textColor = .white
         if var maturityRating = metadata?.maturityRating {
             if  maturityRating.capitalized == "All"  {
@@ -1399,11 +1399,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         if isDisney {
             colorToChange = ViewColor.disneyButtonColor
         }
-        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Light", size: 32.0)!])
-        fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
+        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Light", size: 32.0)!])
+        fontChangedText.addAttribute(NSAttributedString.Key.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
-            fontChangedText.addAttribute(NSAttributedStringKey.foregroundColor, value:  colorToChange, range: NSRange(location: text.count - range, length: range))
-            fontChangedText.addAttribute(NSAttributedStringKey.font, value: UIFont(name: "JioType-Medium", size: 30.0)!, range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSAttributedString.Key.foregroundColor, value:  colorToChange, range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "JioType-Medium", size: 30.0)!, range: NSRange(location: text.count - range, length: range))
         }
         
         return fontChangedText

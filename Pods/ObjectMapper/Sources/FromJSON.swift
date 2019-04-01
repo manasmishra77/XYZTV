@@ -6,7 +6,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2014-2016 Hearst
+//  Copyright (c) 2014-2016 Tristan Himmelman
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -40,10 +40,13 @@ internal final class FromJSON {
 		field = object
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped optional basic type
-//    class func optionalBasicType<FieldType>(_ field: inout FieldType!, object: FieldType?) {
-//        field = object
-//    }
+	class func optionalBasicType<FieldType>(_ field: inout FieldType!, object: FieldType?) {
+		field = object
+	}
+	#endif
 	
 	/// Mappable object
 	class func object<N: BaseMappable>(_ field: inout N, map: Map) {
@@ -64,14 +67,17 @@ internal final class FromJSON {
 		}
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped Optional Mappable Object
-//    class func optionalObject<N: BaseMappable>(_ field: inout N!, map: Map) {
-//        if let f = field , map.toObject && map.currentValue != nil {
-//            field = Mapper(context: map.context).map(JSONObject: map.currentValue, toObject: f)
-//        } else {
-//            field = Mapper(context: map.context).map(JSONObject: map.currentValue)
-//        }
-//    }
+	class func optionalObject<N: BaseMappable>(_ field: inout N!, map: Map) {
+		if let f = field , map.toObject && map.currentValue != nil {
+			field = Mapper(context: map.context).map(JSONObject: map.currentValue, toObject: f)
+		} else {
+			field = Mapper(context: map.context).map(JSONObject: map.currentValue)
+		}
+	}
+	#endif
 	
 	/// mappable object array
 	class func objectArray<N: BaseMappable>(_ field: inout Array<N>, map: Map) {
@@ -90,14 +96,17 @@ internal final class FromJSON {
 		}
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped optional mappable object array
-//    class func optionalObjectArray<N: BaseMappable>(_ field: inout Array<N>!, map: Map) {
-//        if let objects: Array<N> = Mapper(context: map.context).mapArray(JSONObject: map.currentValue) {
-//            field = objects
-//        } else {
-//            field = nil
-//        }
-//    }
+	class func optionalObjectArray<N: BaseMappable>(_ field: inout Array<N>!, map: Map) {
+		if let objects: Array<N> = Mapper(context: map.context).mapArray(JSONObject: map.currentValue) {
+			field = objects
+		} else {
+			field = nil
+		}
+	}
+	#endif
 	
 	/// mappable object array
 	class func twoDimensionalObjectArray<N: BaseMappable>(_ field: inout Array<Array<N>>, map: Map) {
@@ -111,10 +120,13 @@ internal final class FromJSON {
 		field = Mapper(context: map.context).mapArrayOfArrays(JSONObject: map.currentValue)
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped optional 2 dimentional mappable object array
-//    class func optionalTwoDimensionalObjectArray<N: BaseMappable>(_ field: inout Array<Array<N>>!, map: Map) {
-//        field = Mapper(context: map.context).mapArrayOfArrays(JSONObject: map.currentValue)
-//    }
+	class func optionalTwoDimensionalObjectArray<N: BaseMappable>(_ field: inout Array<Array<N>>!, map: Map) {
+		field = Mapper(context: map.context).mapArrayOfArrays(JSONObject: map.currentValue)
+	}
+	#endif
 	
 	/// Dctionary containing Mappable objects
 	class func objectDictionary<N: BaseMappable>(_ field: inout Dictionary<String, N>, map: Map) {
@@ -136,14 +148,17 @@ internal final class FromJSON {
 		}
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped Dictionary containing Mappable objects
-//    class func optionalObjectDictionary<N: BaseMappable>(_ field: inout Dictionary<String, N>!, map: Map) {
-//        if let f = field , map.toObject && map.currentValue != nil {
-//            field = Mapper(context: map.context).mapDictionary(JSONObject: map.currentValue, toDictionary: f)
-//        } else {
-//            field = Mapper(context: map.context).mapDictionary(JSONObject: map.currentValue)
-//        }
-//    }
+	class func optionalObjectDictionary<N: BaseMappable>(_ field: inout Dictionary<String, N>!, map: Map) {
+		if let f = field , map.toObject && map.currentValue != nil {
+			field = Mapper(context: map.context).mapDictionary(JSONObject: map.currentValue, toDictionary: f)
+		} else {
+			field = Mapper(context: map.context).mapDictionary(JSONObject: map.currentValue)
+		}
+	}
+	#endif
 	
 	/// Dictionary containing Array of Mappable objects
 	class func objectDictionaryOfArrays<N: BaseMappable>(_ field: inout Dictionary<String, [N]>, map: Map) {
@@ -157,10 +172,13 @@ internal final class FromJSON {
 		field = Mapper<N>(context: map.context).mapDictionaryOfArrays(JSONObject: map.currentValue)
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped Dictionary containing Array of Mappable objects
-//    class func optionalObjectDictionaryOfArrays<N: BaseMappable>(_ field: inout Dictionary<String, [N]>!, map: Map) {
-//        field = Mapper<N>(context: map.context).mapDictionaryOfArrays(JSONObject: map.currentValue)
-//    }
+	class func optionalObjectDictionaryOfArrays<N: BaseMappable>(_ field: inout Dictionary<String, [N]>!, map: Map) {
+		field = Mapper<N>(context: map.context).mapDictionaryOfArrays(JSONObject: map.currentValue)
+	}
+	#endif
 	
 	/// mappable object Set
 	class func objectSet<N: BaseMappable>(_ field: inout Set<N>, map: Map) {
@@ -174,8 +192,11 @@ internal final class FromJSON {
 		field = Mapper(context: map.context).mapSet(JSONObject: map.currentValue)
 	}
 	
+	// Code targeting the Swift 4.1 compiler and below.
+	#if !(swift(>=4.1.50) || (swift(>=3.4) && !swift(>=4.0)))
 	/// Implicitly unwrapped optional mappable object array
-//    class func optionalObjectSet<N: BaseMappable>(_ field: inout Set<N>!, map: Map) {
-//        field = Mapper(context: map.context).mapSet(JSONObject: map.currentValue)
-//    }    
+	class func optionalObjectSet<N: BaseMappable>(_ field: inout Set<N>!, map: Map) {
+		field = Mapper(context: map.context).mapSet(JSONObject: map.currentValue)
+	}
+	#endif
 }

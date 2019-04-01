@@ -157,7 +157,7 @@ class JCDataStore {
     private func setSecretCdnToken(recievedKey:String) {
         var token:String = ""
         let cdnEncryptorKey = ["R:18", "e:5", "l:12", "i:9", "a:1", "n:14", "c:3", "e:5", "J:10", "i:9", "o:15"]
-        let charArray = recievedKey.characters.map{String($0)}
+        let charArray = recievedKey.map{String($0)}
         for key in cdnEncryptorKey{
             let index = Int(key.components(separatedBy: ":").last!)
             token.append(charArray[index! - 1])
