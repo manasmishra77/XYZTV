@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -41,24 +40,35 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowGrey" translatesAutoresizingMaskIntoConstraints="NO" id="gh6-gp-kNp">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="radioButton" translatesAutoresizingMaskIntoConstraints="NO" id="gh6-gp-kNp">
                         <rect key="frame" x="30" y="30" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="RW1-ZH-cQt"/>
                             <constraint firstAttribute="width" constant="40" id="VQl-hm-v95"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uCu-VU-wKL">
+                        <rect key="frame" x="30" y="99" width="120" height="1"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="a7N-z7-A0Q"/>
+                        </constraints>
+                    </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Z7T-tH-xxa" firstAttribute="leading" secondItem="gh6-gp-kNp" secondAttribute="trailing" constant="50" id="Dna-03-R9B"/>
                     <constraint firstItem="gh6-gp-kNp" firstAttribute="top" secondItem="S0Q-fX-qc8" secondAttribute="top" constant="30" id="K7V-fw-8BA"/>
+                    <constraint firstItem="uCu-VU-wKL" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" constant="30" id="MnM-AJ-YPg"/>
                     <constraint firstItem="Z7T-tH-xxa" firstAttribute="centerY" secondItem="S0Q-fX-qc8" secondAttribute="centerY" id="Vmw-Yq-Qse"/>
                     <constraint firstItem="gh6-gp-kNp" firstAttribute="leading" secondItem="S0Q-fX-qc8" secondAttribute="leading" constant="30" id="dpW-LM-DHl"/>
-                    <constraint firstAttribute="bottom" secondItem="gh6-gp-kNp" secondAttribute="bottom" constant="30" id="xaV-Jl-DhF"/>
+                    <constraint firstAttribute="trailing" secondItem="uCu-VU-wKL" secondAttribute="trailing" constant="30" id="lXO-qY-2jN"/>
+                    <constraint firstAttribute="bottom" secondItem="uCu-VU-wKL" secondAttribute="bottom" id="tcj-nX-0Qc"/>
                 </constraints>
             </tableViewCellContentView>
-            <viewLayoutGuide key="safeArea" id="1ks-Xo-ai1"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="horizontalBaseLine" destination="uCu-VU-wKL" id="o67-96-i5J"/>
                 <outlet property="subtitle" destination="RnK-9c-IaU" id="Rtl-KH-kKz"/>
                 <outlet property="title" destination="uva-QW-zzD" id="niC-J5-oSX"/>
             </connections>
@@ -66,6 +76,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ArrowGrey" width="20" height="36"/>
+        <image name="radioButton" width="30" height="30"/>
     </resources>
 </document>

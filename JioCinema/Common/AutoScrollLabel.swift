@@ -57,7 +57,7 @@ class AutoScrollLabel: UIView {
             return
         }
         textLabel.text = text
-        let textSize: CGSize? = text?.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
+        let textSize: CGSize? = text?.size(withAttributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)])
         
         
         if (textSize?.width ?? 0.0) > self.frame.size.width {

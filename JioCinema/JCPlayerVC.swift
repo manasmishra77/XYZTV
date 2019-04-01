@@ -295,8 +295,8 @@
             player.pause()
             self.removePlayerObserver()
             playerController?.delegate = nil
-            playerController?.willMove(toParentViewController: nil)
-            playerController?.removeFromParentViewController()
+            playerController?.willMove(toParent: nil)
+            playerController?.removeFromParent()
             self.playerController = nil
         }
     }
@@ -392,10 +392,10 @@
             playerController = AVPlayerViewController()
             playerController?.delegate = self
             if let player = player, let timeScale = player.currentItem?.asset.duration.timescale {
-                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), timeScale))
+                player.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), preferredTimescale: timeScale))
             }
             
-            self.addChildViewController(playerController!)
+            self.addChild(playerController!)
             self.view.addSubview((playerController?.view)!)
             playerController?.view.frame = self.view.frame
         }
@@ -416,8 +416,8 @@
         playerController?.player = player
         player?.play()
         handleForPlayerReference()
-        self.view.bringSubview(toFront: self.nextVideoView)
-        self.view.bringSubview(toFront: self.view_Recommendation)      
+        self.view.bringSubviewToFront(self.nextVideoView)
+        self.view.bringSubviewToFront(self.view_Recommendation)
         
         self.nextVideoView.isHidden = true
     }
@@ -538,7 +538,7 @@
             
             if let img = image {
                 DispatchQueue.main.async {
-                    let pngData = UIImagePNGRepresentation(img)
+                    let pngData = img.pngData()
                     imageMetadataItem.value = pngData as (NSCopying & NSObjectProtocol)?
                 }
             }
@@ -578,7 +578,7 @@
                 newDuration = newDurationAsValue.timeValue
             }
             else {
-                newDuration = kCMTimeZero
+                newDuration = CMTime.zero
             }
             Log.DLog(message: newDuration as AnyObject)
         }
@@ -628,9 +628,9 @@
             
         }
         else if keyPath == #keyPath(JCPlayerVC.player.currentItem.status) {
-            let newStatus: AVPlayerItemStatus
+            let newStatus: AVPlayerItem.Status
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue) ?? .unknown
+                newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) ?? .unknown
             }
             else {
                 newStatus = .unknown
@@ -658,7 +658,7 @@
                     
                     //AES url failed
                     failureType = "AES"
-                    let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
                     
                     let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                         DispatchQueue.main.async {
@@ -684,7 +684,7 @@
     }
     
     func sendAudioChangedCleverTapEvent(duration : String){
-        var lang = playerItem?.selected(type: .audio)
+        let lang = playerItem?.selected(type: .audio)
         let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties)
     }
@@ -800,7 +800,7 @@
                 self.collectionView_Recommendation.isScrollEnabled = true
                 let path = IndexPath(row: row, section: 0)
                 
-                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
+                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: false)
                 self.collectionView_Recommendation.layoutIfNeeded()
                 let cell = self.collectionView_Recommendation.cellForItem(at: path)
                 self.currentPlayingIndex = row
@@ -859,11 +859,11 @@
     //MARK:- Add Swipe Gesture
     func addSwipeGesture() {
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
-        swipeUp.direction = UISwipeGestureRecognizerDirection.up
+        swipeUp.direction = UISwipeGestureRecognizer.Direction.up
         self.view.addGestureRecognizer(swipeUp)
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
-        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeDown)
     }
     
@@ -873,9 +873,9 @@
         }
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.up:
+            case UISwipeGestureRecognizer.Direction.up:
                 self.swipeUpRecommendationView()
-            case UISwipeGestureRecognizerDirection.down:
+            case UISwipeGestureRecognizer.Direction.down:
                 self.swipeDownRecommendationView()
             default:
                 break
@@ -918,7 +918,7 @@
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)
@@ -1275,7 +1275,7 @@
                 } else if let aesUrl = self.playbackRightsData?.aesUrl {
                     self.doParentalCheck(with: aesUrl, isFps: false)
                 } else {
-                    let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertController.Style.alert)
                     
                     let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                         DispatchQueue.main.async {
@@ -1529,7 +1529,7 @@
                 isSwipingAllowed_RecommendationView = false
                 resumeWatchView.isHidden = false
                 player?.pause()
-                self.view.bringSubview(toFront: self.resumeWatchView)
+                self.view.bringSubviewToFront(self.resumeWatchView)
             } else {
                 resumeWatchView.isHidden = true
                 callWebServiceForPlaybackRights(id: id)
@@ -1571,7 +1571,7 @@
     //Seek player
     func seekPlayer() {
         if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), 1))
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), preferredTimescale: 1))
         } else {
             didSeek = false
         }

@@ -60,7 +60,7 @@ class JCSettingsDetailVC: UIViewController {
         offButton.layer.cornerRadius = 10.0
         settingsDetailTextView.isSelectable = true
         settingsDetailTextView.isUserInteractionEnabled = true
-        settingsDetailTextView.panGestureRecognizer.allowedTouchTypes = [NSNumber.init(value: UITouchType.indirect.rawValue)]
+        settingsDetailTextView.panGestureRecognizer.allowedTouchTypes = [NSNumber.init(value: UITouch.TouchType.indirect.rawValue)]
         settingsDetailTitleLabel.text = titleText
         settingsDetailTextView.text = textViewDetail
     }

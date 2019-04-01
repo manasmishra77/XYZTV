@@ -21,11 +21,11 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-            self.superview?.bringSubview(toFront: self)
+            self.superview?.bringSubviewToFront(self)
         }
         else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.superview?.sendSubview(toBack: self)
+            self.superview?.sendSubviewToBack(self)
         }
     }
     

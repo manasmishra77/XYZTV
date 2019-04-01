@@ -47,11 +47,13 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuItems.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerPopupTableViewCell") as! PlayerPopupTableViewCell
         cell.title.text = menuItems[indexPath.row]
         cell.subtitle.text = "subtitle"
+        if indexPath.row == menuItems.count - 1 {
+            cell.horizontalBaseLine.isHidden = true
+        }
         return cell
     }
     

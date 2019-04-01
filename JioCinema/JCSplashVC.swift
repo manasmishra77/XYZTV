@@ -113,7 +113,7 @@ class JCSplashVC: UIViewController {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",
                                       message: alertString,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
             weakSelf?.tryAgainCount += 1
@@ -137,7 +137,7 @@ class JCSplashVC: UIViewController {
         weak var weakSelf = self
         let alert = UIAlertController(title: "Connection Error",
                                       message: alertString,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
             weakSelf?.tryAgainCount += 1
@@ -161,7 +161,7 @@ class JCSplashVC: UIViewController {
         weak var weakSelf = self
         let alert = UIAlertController(title: title,
                                       message: alertMessage,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let skipAction = UIAlertAction(title: "Skip", style: .default) { (action) in
             weakSelf?.callWebServiceForConfigData()
@@ -170,7 +170,7 @@ class JCSplashVC: UIViewController {
         let updateAction = UIAlertAction(title: "Update", style: .default) { (action) in
             let urlString = "com.apple.TVAppStore://itunes.apple.com/in/app/jiocinema/id1067316596?mt=8"
             guard let url = URL(string: urlString) else {return}
-            UIApplication.shared.open(url, options: ["": ""], completionHandler: { (bool) in
+            UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey(rawValue: ""): ""], completionHandler: { (bool) in
                 exit(0)
             })
         }
@@ -185,7 +185,7 @@ class JCSplashVC: UIViewController {
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if presses.first?.type == UIPressType.menu {
+        if presses.first?.type == UIPress.PressType.menu {
             exit(0)
         }
     }
