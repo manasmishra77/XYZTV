@@ -41,11 +41,16 @@ class PlayerViewController: UIViewController {
     }
     
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-        DispatchQueue.main.async {
-            self.viewforplayer?.resetAndRemovePlayer()
-            self.removePlayerController()
+        
+        if viewforplayer?.controlDetailView.isHidden == false {
+            viewforplayer!.removeControlDetailview()
         }
-        print("do nothing")
+        else {
+            DispatchQueue.main.async {
+                self.viewforplayer?.resetAndRemovePlayer()
+                self.removePlayerController()
+            }
+        }
     }
     
     func configureView() {

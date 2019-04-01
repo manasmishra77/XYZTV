@@ -22,6 +22,8 @@ class PlayerSettingMenu: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    var currentSelectedItem: String?
+    
     
     
     override func awakeFromNib() {
@@ -54,7 +56,7 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        currentSelectedItem = menuItems[indexPath.row]
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

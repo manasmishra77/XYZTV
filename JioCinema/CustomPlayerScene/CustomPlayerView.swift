@@ -46,6 +46,9 @@ class CustomPlayerView: UIView {
     
     @IBOutlet weak var controlDetailView: UIView!
     @IBOutlet weak var controlDetailHolderView: UIView!
+    weak var bitrateTableView: PlayerSettingMenu?
+    weak var multiAudioTableView: PlayerSettingMenu?
+    weak var subtitleTableView: PlayerSettingMenu?
     
     @IBOutlet weak var controlDetailHolderWidth: NSLayoutConstraint!
     
@@ -126,8 +129,93 @@ class CustomPlayerView: UIView {
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
+        self.removeControlDetailview()
     }
     
+    func removeControlDetailview() {
+
+//        DispatchQueue.main.async {
+            if bitrateTableView != nil {
+                if let selectedItem = bitrateTableView?.currentSelectedItem {
+                    self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
+                }
+        }
+        else {
+                self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
+        }
+        
+        subtitleTableView?.removeFromSuperview()
+        multiAudioTableView?.removeFromSuperview()
+        bitrateTableView?.removeFromSuperview()
+        
+        subtitleTableView = nil
+        multiAudioTableView = nil
+        bitrateTableView = nil
+        
+        
+        self.controlDetailView.isHidden = true
+    }
+    
+    
+    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
+        
+        player?.pause()
+        if let subtitle = subtitleLang {
+            self.playerSubTitleLanguage(subtitle)
+        }
+        if let audio = audioLang {
+            self.playerAudioLanguage(audio)
+        }
+        player?.play()
+    }
+    
+    private func playerAudioLanguage(_ audioLanguage: String?) {
+        guard let audioLanguage = audioLanguage else {
+            return
+        }
+        let audioes = player?.currentItem?.tracks(type: .audio)
+        // Select track with displayName
+        guard (audioes?.count ?? 0) > 0 else {
+            return
+        }
+
+        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
+            if let language = audioes?[langIndex] {
+                _ = player?.currentItem?.select(type: .audio, name: language)
+            }
+        }
+    }
+    
+    
+//    private func playerAudioLanguage(_ audioLanguage: String?) {
+//
+//        guard let audioLanguage = audioLanguage else {
+//            return
+//        }
+//        let audioes = player?.currentItem?.tracks(type: .audio)
+//        // Select track with displayName
+//        guard (audioes?.count ?? 0) > 0 else {return}
+//
+//
+//        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+//            _ = player?.currentItem?.select(type: .audio, name: language)
+//        }
+//    }
+    
+    private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
+        guard let language = subtitleLanguage else {
+            return
+        }
+        let subtitles = player?.currentItem?.tracks(type: .subtitle)
+        // Select track with displayName
+        guard (subtitles?.count ?? 0) > 0 else {return}
+        
+        
+        if let langIndex = subtitles?.index(where: {$0.lowercased() == language.lowercased()}), let language = subtitles?[langIndex] {
+            _ = player?.currentItem?.select(type: .subtitle, name: language)
+        }
+    }
+
     
 }
 
@@ -157,25 +245,25 @@ extension CustomPlayerView : PlayerControlsDelegate {
         
         self.controlDetailView.layoutIfNeeded()
         
-        let audioMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        audioMenuTabelView.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        audioMenuTabelView.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudio)
-        controlDetailHolderView.addSubview(audioMenuTabelView)
+        multiAudioTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+        multiAudioTableView?.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudio)
+        controlDetailHolderView.addSubview(multiAudioTableView!)
         
-        let subtitleMenuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        subtitleMenuTabelView.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        subtitleMenuTabelView.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
-        controlDetailHolderView.addSubview(subtitleMenuTabelView)
+        subtitleTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+        subtitleTableView?.frame = CGRect.init(x: controlDetailHolderWidth.constant/2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
+        controlDetailHolderView.addSubview(subtitleTableView!)
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
         self.controlDetailView.isHidden = false
         controlDetailHolderWidth.constant = 640
         self.controlDetailView.layoutIfNeeded()
-        let menuTabelView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        menuTabelView.frame = controlDetailHolderView.bounds
-        menuTabelView.configurePlayerSettingMenu(menuItems: ["low","mdieum","high"], menuType: .videobitratequality)
-        controlDetailHolderView.addSubview(menuTabelView)
+        bitrateTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
+        bitrateTableView?.frame = controlDetailHolderView.bounds
+        bitrateTableView?.configurePlayerSettingMenu(menuItems: ["low","mdieum","high"], menuType: .videobitratequality)
+        controlDetailHolderView.addSubview(bitrateTableView!)
     }
     
     func nextButtonPressed(toDisplay: Bool) {

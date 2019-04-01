@@ -124,7 +124,9 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-//                self.playbackRightsModel?.url = nil
+                self.playbackRightsModel?.url = nil
+                self.playbackRightsModel?.fps = nil
+                self.playbackRightsModel?.aes = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -242,6 +244,45 @@ class PlayerViewModel: NSObject {
         }
         
     }
+    
+    func changePlayerBitrateTye(bitrateQuality: BitRatesType) {
+        var bitcode: Bitcode?
+        if isFpsUrl == true {
+            bitcode = playbackRightsModel?.fps
+        }
+        else {
+            bitcode = playbackRightsModel?.aes
+        }
+        
+        if let bitcode = bitcode {
+            switch bitrateQuality {
+            case .auto:
+                playerActiveUrl = bitcode.auto
+                break
+            case .low:
+                playerActiveUrl = bitcode.low
+                break
+            case .medium:
+                playerActiveUrl = bitcode.medium
+                break
+            case .high:
+                playerActiveUrl = bitcode.high
+                break
+            }
+        }
+    }
+    
+//    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
+//        var playerLang = self.playerItem?.asset.accessibilityLanguage
+//
+//        if let subtitle = subtitleLang {
+//
+//        }
+//        if let audio = audioLang {
+//
+//        }
+        
+//    }
     
     
 }
