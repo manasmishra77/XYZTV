@@ -1,9 +1,1 @@
-# ignore all pods
 Pods/
-UserInterfaceState.xcuserstate
-.DS_Store
-*.xcsettings
-*.xcbkptlist
-*.xcuserstate
-*.ipa
-JioCinema.xcodeproj/xcuserdata/jio.xcuserdatad/xcschemes/xcschememanagement.plist
