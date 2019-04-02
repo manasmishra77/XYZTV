@@ -163,6 +163,7 @@
 		B811ED421F56BC4600E55FAD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B811ED411F56BC4600E55FAD /* Log.swift */; };
 		B822EBE01F84CE95002332B4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B822EBDF1F84CE94002332B4 /* Utility.swift */; };
 		B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EADF071F9DC90D0069671B /* JCAnalyticsEvent.swift */; };
+		E46A03BA61F2E98EC86D2FC0 /* Pods_JioCinema.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38BA4511E8E8D622B71884F2 /* Pods_JioCinema.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +238,7 @@
 		2025F45E1F3B51CE00C3B609 /* PrivacyPolicy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrivacyPolicy.png; sourceTree = "<group>"; };
 		2025F4621F3B51D800C3B609 /* Version.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Version.png; sourceTree = "<group>"; };
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
+		38BA4511E8E8D622B71884F2 /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationTableCell.swift; sourceTree = "<group>"; };
 		535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		53E806052231237800F38927 /* APIManager+Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Player.swift"; sourceTree = "<group>"; };
 		53E8060722319A9E00F38927 /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTableViewCell.xib; sourceTree = "<group>"; };
+		625FC02A9DF0DCC4CD36AAAE /* Pods-JioCinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.release.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.release.xcconfig"; sourceTree = "<group>"; };
 		797880F81F4ECB390032943E /* JCSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchResultViewController.swift; sourceTree = "<group>"; };
 		797880FA1F4ECB810032943E /* SearchDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataStore.swift; sourceTree = "<group>"; };
 		7B0979231F27884C00B47E68 /* RJILImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RJILImageDownloader.swift; sourceTree = "<group>"; };
@@ -345,6 +348,7 @@
 		99E4CB06222EA4DC0047861A /* JCSliderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSliderButton.swift; sourceTree = "<group>"; };
 		99E4CB08222EAD940047861A /* CustomSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		99E4CB0A222EAE6F0047861A /* CustomSlider.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomSlider.xib; sourceTree = "<group>"; };
+		AE4DB328C39E59CAA137CAEB /* Pods-JioCinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JioCinema.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema.debug.xcconfig"; sourceTree = "<group>"; };
 		B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCKeyboardButton.swift; sourceTree = "<group>"; };
 		B811ED411F56BC4600E55FAD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		B822EBDF1F84CE94002332B4 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -364,6 +368,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E46A03BA61F2E98EC86D2FC0 /* Pods_JioCinema.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +488,7 @@
 				19491EDD2018522600870794 /* JCTopShelf */,
 				7B78D7BF1F13A91900F319BF /* Products */,
 				991FCC032C29485454E4C5A0 /* Frameworks */,
+				A4983ABB797AA9D9A1D0F06E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -678,6 +684,7 @@
 			isa = PBXGroup;
 			children = (
 				19491EDB2018522600870794 /* TVServices.framework */,
+				38BA4511E8E8D622B71884F2 /* Pods_JioCinema.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -735,6 +742,15 @@
 			path = SampleVideo;
 			sourceTree = "<group>";
 		};
+		A4983ABB797AA9D9A1D0F06E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AE4DB328C39E59CAA137CAEB /* Pods-JioCinema.debug.xcconfig */,
+				625FC02A9DF0DCC4CD36AAAE /* Pods-JioCinema.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B8EADF041F9DC42C0069671B /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,11 +784,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B78D7CD1F13A91A00F319BF /* Build configuration list for PBXNativeTarget "JioCinema" */;
 			buildPhases = (
+				F8AFD7EFA18027C7B33D2480 /* [CP] Check Pods Manifest.lock */,
 				7B78D7BA1F13A91900F319BF /* Sources */,
 				7B78D7BB1F13A91900F319BF /* Frameworks */,
 				7B78D7BC1F13A91900F319BF /* Resources */,
 				198B90F21FE257E700F452FD /* ShellScript */,
 				19491EE72018522700870794 /* Embed App Extensions */,
+				DDF4DC58D29D3842EB2C6CAB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -920,6 +938,44 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" b2cb0240a920ed8ea4e35d61f43735ece69b3fd2 8b19a31b41cf8f0ac31d753c3c2369ae8dc9e3b14697377bd9e587f9e03fcee2​";
+		};
+		DDF4DC58D29D3842EB2C6CAB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JioCinema/Pods-JioCinema-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8AFD7EFA18027C7B33D2480 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JioCinema-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1229,6 +1285,7 @@
 		};
 		7B78D7CE1F13A91A00F319BF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE4DB328C39E59CAA137CAEB /* Pods-JioCinema.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1258,6 +1315,7 @@
 		};
 		7B78D7CF1F13A91A00F319BF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 625FC02A9DF0DCC4CD36AAAE /* Pods-JioCinema.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
