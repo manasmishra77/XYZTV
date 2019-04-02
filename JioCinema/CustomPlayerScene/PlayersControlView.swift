@@ -47,7 +47,7 @@ class PlayersControlView: UIView {
     @IBAction func playButtonTapped(_ sender: Any) {
         delegate?.playTapped(isPaused)
         isPaused = !isPaused
-        playButton.setTitle(isPaused ? "Play" : "Pause", for: .normal)
+        playButton.setImage(isPaused ? UIImage(named: "Play") : UIImage(named: "Pause"), for: .normal)
     }
     
     @IBAction func settingsButtonPressed(_ sender: Any) {

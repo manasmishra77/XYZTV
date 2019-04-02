@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -52,7 +52,7 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="previousButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="jlY-BE-ccT"/>
+                        <action selector="previoudButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="rBj-1e-zzP"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fE-kI-bwF" userLabel="settings" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
@@ -131,10 +131,10 @@
         </view>
     </objects>
     <resources>
-        <image name="Pause" width="44" height="61"/>
-        <image name="Previous Filled" width="50" height="61"/>
-        <image name="next" width="51" height="60"/>
-        <image name="playerSettings" width="57" height="60"/>
-        <image name="subtitles" width="60" height="57"/>
+        <image name="Pause" width="22" height="30.5"/>
+        <image name="Previous Filled" width="25" height="30.5"/>
+        <image name="next" width="25.5" height="30"/>
+        <image name="playerSettings" width="28.5" height="30"/>
+        <image name="subtitles" width="30" height="28.5"/>
     </resources>
 </document>

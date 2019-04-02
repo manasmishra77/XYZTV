@@ -23,7 +23,7 @@ class PlayerSettingMenu: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     
     var currentSelectedItem: String?
-    
+    var priviousSelectedIndexpath: IndexPath = IndexPath(row: 0, section: 0)
     
     
     override func awakeFromNib() {
@@ -54,13 +54,24 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == menuItems.count - 1 {
             cell.horizontalBaseLine.isHidden = true
         }
+        if indexPath == priviousSelectedIndexpath{
+            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentSelectedItem = menuItems[indexPath.row]
+        let cell = tableView.cellForRow(at: indexPath) as! PlayerPopupTableViewCell
+//        cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
+        if priviousSelectedIndexpath != indexPath {
+           cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
+            let cell2 = tableView.cellForRow(at: priviousSelectedIndexpath) as! PlayerPopupTableViewCell
+            cell2.rabioButtonImageView.image = UIImage(named: "radioButton")
+        }
+        priviousSelectedIndexpath = indexPath
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }

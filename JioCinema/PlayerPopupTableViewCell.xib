@@ -69,6 +69,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="horizontalBaseLine" destination="uCu-VU-wKL" id="o67-96-i5J"/>
+                <outlet property="rabioButtonImageView" destination="gh6-gp-kNp" id="Y9Y-5j-pjf"/>
                 <outlet property="subtitle" destination="RnK-9c-IaU" id="Rtl-KH-kKz"/>
                 <outlet property="title" destination="uva-QW-zzD" id="niC-J5-oSX"/>
             </connections>
