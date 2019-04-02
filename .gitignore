@@ -1,1 +1,13 @@
-Podfile.lock
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+Pods/
+build/
+DerivedData/
+xcuserdata/
+timeline.xctimeline
+playground.xcworkspace
+.build/
+Carthage/Build
