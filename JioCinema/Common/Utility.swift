@@ -331,6 +331,23 @@ class Utility {
         cell.itemCollectionView.alpha = alpha
     }
     
+    // pass seconds to this function it will return hour,min,seconds
+    class func getTimeInFormatedStringFromSeconds(seconds : Int) -> String {
+        if seconds > 3600 {
+            return self.getStringForFormattedDate(seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60, seconds)
+        } else {
+            return self.getStringForFormattedDate(nil,(seconds % 3600) / 60, (seconds % 3600) % 60,seconds)
+        }
+    }
+    class func getStringForFormattedDate(_ h: Int? ,_ m: Int ,_ s: Int,_ itemDuration: Int) -> String {
+//        let (h,m,s) = Utility.getTimeInFormatFromSeconds(seconds: itemDuration)
+        if let hour = h {
+            return String(format: "%02d:%02d:%02d", hour,m,s)
+        } else {
+            return String(format: "%02d:%02d", m,s)
+        }
+    }
+    
     //MARK: Getting customized string
     struct StringAttribute {
         var fontName = "JioType-Bold"

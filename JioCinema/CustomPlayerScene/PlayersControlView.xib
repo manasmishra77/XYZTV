@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,126 +15,36 @@
             <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaf-pU-5fT" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="853" y="939" width="96" height="96"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
+                    <rect key="frame" x="0.0" y="880" width="1801" height="155"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="96" id="53J-Gj-MRt"/>
-                        <constraint firstAttribute="height" constant="96" id="L8G-jj-0AZ"/>
+                        <constraint firstAttribute="height" constant="155" id="7UZ-ug-ZSM"/>
                     </constraints>
-                    <state key="normal" image="Pause"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="48"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="playButtonTapped:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="Qnv-Kz-ONx"/>
-                    </connections>
-                </button>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
-                    <rect key="frame" x="0.0" y="569" width="1801" height="350"/>
+                    <rect key="frame" x="0.0" y="510" width="1801" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAb-nv-zOT" userLabel="previous" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="683" y="939" width="96" height="96"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="53"/>
-                    <state key="normal" image="Previous Filled"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="48"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="previoudButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="rBj-1e-zzP"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fE-kI-bwF" userLabel="settings" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="439" y="939" width="96" height="96"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" image="playerSettings"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="48"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="settingsButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="snc-Kx-Pva"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTg-5U-4GZ" userLabel="next" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="1025" y="939" width="96" height="96"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" image="next"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="48"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobounds" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="nextButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="n5z-Uo-NwS"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8UZ-vQ-hYk" userLabel="subtitles" customClass="JCPlayerButton" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="1269" y="939" width="96" height="96"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" image="subtitles"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="48"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipstobound" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="subtitleButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="ih8-ue-c7z"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="qTg-5U-4GZ" firstAttribute="leading" secondItem="xaf-pU-5fT" secondAttribute="trailing" constant="76" id="0RN-U6-RO1"/>
-                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="leading" secondItem="qTg-5U-4GZ" secondAttribute="trailing" constant="148" id="3eJ-Kp-8CU"/>
-                <constraint firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" constant="20" id="6YI-s3-6jC"/>
-                <constraint firstItem="PAb-nv-zOT" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="DeW-KH-Auf"/>
-                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="HZh-FL-eDX"/>
-                <constraint firstItem="xaf-pU-5fT" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IX6-3Q-cUo"/>
-                <constraint firstItem="PAb-nv-zOT" firstAttribute="leading" secondItem="2fE-kI-bwF" secondAttribute="trailing" constant="148" id="Kfk-PV-XDr"/>
-                <constraint firstItem="qTg-5U-4GZ" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="Vhf-UV-Ar1"/>
-                <constraint firstItem="xaf-pU-5fT" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="YZB-BP-ny1"/>
-                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="ZZs-Ks-drU"/>
-                <constraint firstItem="PAb-nv-zOT" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="cYE-Hp-npz"/>
-                <constraint firstItem="qTg-5U-4GZ" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="doa-Ud-VWZ"/>
-                <constraint firstItem="PAb-nv-zOT" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="iK0-uS-191"/>
+                <constraint firstItem="3aa-vQ-cqC" firstAttribute="width" secondItem="lJi-P7-V4r" secondAttribute="width" id="Fpg-gS-wlU"/>
+                <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="f22-0H-thC"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
-                <constraint firstItem="2fE-kI-bwF" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="oJT-Im-bpk"/>
-                <constraint firstItem="2fE-kI-bwF" firstAttribute="bottom" secondItem="xaf-pU-5fT" secondAttribute="bottom" id="pPM-jF-rpx"/>
-                <constraint firstItem="xaf-pU-5fT" firstAttribute="leading" secondItem="PAb-nv-zOT" secondAttribute="trailing" constant="74" id="poI-4o-IEF"/>
-                <constraint firstItem="2fE-kI-bwF" firstAttribute="height" secondItem="xaf-pU-5fT" secondAttribute="height" id="pqE-ga-JaW"/>
+                <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" constant="20" id="rSS-Sl-eBU"/>
                 <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
-                <constraint firstItem="qTg-5U-4GZ" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="v0j-Rg-esN"/>
-                <constraint firstItem="8UZ-vQ-hYk" firstAttribute="width" secondItem="xaf-pU-5fT" secondAttribute="width" id="zCO-DC-j3A"/>
+                <constraint firstItem="3aa-vQ-cqC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vo6-Zc-OWI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="playButton" destination="xaf-pU-5fT" id="P6b-dK-oS1"/>
+                <outlet property="playerButtonsHolderView" destination="3aa-vQ-cqC" id="vM0-C1-lyh"/>
                 <outlet property="sliderHolderView" destination="lJi-P7-V4r" id="ktK-uM-Rha"/>
             </connections>
             <point key="canvasLocation" x="9.5" y="94.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="Pause" width="22" height="30.5"/>
-        <image name="Previous Filled" width="25" height="30.5"/>
-        <image name="next" width="25.5" height="30"/>
-        <image name="playerSettings" width="28.5" height="30"/>
-        <image name="subtitles" width="30" height="28.5"/>
-    </resources>
 </document>

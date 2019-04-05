@@ -7,6 +7,9 @@
 //
 
 import UIKit
+protocol playerButtonDelegate: NSObject {
+    func buttonWith(tag: Int?, isFocused: Bool)
+}
 
 class JCButton: UIButton
 {
@@ -65,17 +68,20 @@ class JCDisneyButton: UIButton
     
 }
 class JCPlayerButton: UIButton {
+    weak var delegate: playerButtonDelegate?
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
         if (context.nextFocusedView == self)
         {
             self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.743552012)
             self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
+            delegate?.buttonWith(tag: self.tag, isFocused: true)
         }
         else
         {
             self.backgroundColor = .clear
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+            delegate?.buttonWith(tag: nil, isFocused: false)
         }
         
     }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-protocol playerMoreLikeDelegate {
+protocol playerMoreLikeDelegate : NSObject {
     func moreLikeTapped(indexpath: IndexPath)
 }
 
@@ -23,7 +23,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     var isPlayList: Bool = false
     var isDisney: Bool = false
     var id: String?
-    var delegate: playerMoreLikeDelegate?
+    weak var delegate: playerMoreLikeDelegate?
     func configMoreLikeView() {
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self

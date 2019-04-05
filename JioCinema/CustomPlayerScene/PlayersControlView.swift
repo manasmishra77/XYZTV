@@ -24,16 +24,20 @@ protocol PlayerControlsDelegate {
 
 class PlayersControlView: UIView {
     @IBOutlet weak var sliderHolderView: UIView!
+    @IBOutlet weak var playerButtonsHolderView: UIView!
     
     @IBOutlet weak var playButton: UIButton!
     var delegate : PlayerControlsDelegate?
     
+    @IBOutlet var playerButtonLabels: [UILabel]!
     var isPaused = false
     
     var sliderView : CustomSlider?
+    var playerButtonsView: PlayerButtonsView?
     
     func configurePlayersControlView() {
         addCustomSlider()
+        addPlayerButtons()
     }
     
     func addCustomSlider() {
@@ -44,6 +48,13 @@ class PlayersControlView: UIView {
         sliderHolderView.addSubview(sliderView!)
     }
     
+    func addPlayerButtons() {
+        playerButtonsView = UINib(nibName: "PlayerButtonsView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayerButtonsView
+        playerButtonsView?.frame = sliderHolderView.bounds
+        playerButtonsView?.configurePlayerButtonsView()
+        playerButtonsHolderView.addSubview(playerButtonsView!)
+        
+    }
     @IBAction func playButtonTapped(_ sender: Any) {
         delegate?.playTapped(isPaused)
         isPaused = !isPaused

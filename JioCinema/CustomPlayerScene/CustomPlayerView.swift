@@ -118,22 +118,22 @@ class CustomPlayerView: UIView {
     }
     
     func resetAndRemovePlayer() {
-            if let player = player {
-                print("1 inside player reset")
-                player.pause()
-                self.removePlayerObserver()
-                self.playerViewModel = nil
-                self.playerLayer?.removeFromSuperlayer()
-                self.playerLayer = nil
-            }
-            player = nil
+        if let player = player {
+            print("1 inside player reset")
+            player.pause()
+            self.removePlayerObserver()
+            self.playerViewModel = nil
+            self.playerLayer?.removeFromSuperlayer()
+            self.playerLayer = nil
+        }
+        player = nil
     }
     
     
     func currentTimevalueChanged(newTime: Double, duration: Double) {
-        controlsView?.sliderView?.endingTime.text = "\(getCurrentTimeInFormat(time: newTime)) / \(getCurrentTimeInFormat(time: duration))"
+        controlsView?.sliderView?.endingTime.text = "\(Utility.getTimeInFormatedStringFromSeconds(seconds: Int(newTime))) / \(Utility.getTimeInFormatedStringFromSeconds(seconds: Int(duration)))"
         let scale : CGFloat = CGFloat(newTime / duration)
-        controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false)
+        controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false, duration: duration)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
     }
     
@@ -143,15 +143,15 @@ class CustomPlayerView: UIView {
     }
     
     func removeControlDetailview() {
-
-//        DispatchQueue.main.async {
-            if bitrateTableView != nil {
-                if let selectedItem = bitrateTableView?.currentSelectedItem {
-                    self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
-                }
+        
+        //        DispatchQueue.main.async {
+        if bitrateTableView != nil {
+            if let selectedItem = bitrateTableView?.currentSelectedItem {
+                self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
+            }
         }
         else {
-                self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
+            self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
         }
         
         subtitleTableView?.removeFromSuperview()
@@ -161,7 +161,6 @@ class CustomPlayerView: UIView {
         subtitleTableView = nil
         multiAudioTableView = nil
         bitrateTableView = nil
-        
         
         self.controlDetailView.isHidden = true
     }
@@ -188,7 +187,7 @@ class CustomPlayerView: UIView {
         guard (audioes?.count ?? 0) > 0 else {
             return
         }
-
+        
         if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
                 _ = player?.currentItem?.select(type: .audio, name: language)
@@ -197,20 +196,20 @@ class CustomPlayerView: UIView {
     }
     
     
-//    private func playerAudioLanguage(_ audioLanguage: String?) {
-//
-//        guard let audioLanguage = audioLanguage else {
-//            return
-//        }
-//        let audioes = player?.currentItem?.tracks(type: .audio)
-//        // Select track with displayName
-//        guard (audioes?.count ?? 0) > 0 else {return}
-//
-//
-//        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
-//            _ = player?.currentItem?.select(type: .audio, name: language)
-//        }
-//    }
+    //    private func playerAudioLanguage(_ audioLanguage: String?) {
+    //
+    //        guard let audioLanguage = audioLanguage else {
+    //            return
+    //        }
+    //        let audioes = player?.currentItem?.tracks(type: .audio)
+    //        // Select track with displayName
+    //        guard (audioes?.count ?? 0) > 0 else {return}
+    //
+    //
+    //        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+    //            _ = player?.currentItem?.select(type: .audio, name: language)
+    //        }
+    //    }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
         guard let language = subtitleLanguage else {
@@ -225,8 +224,8 @@ class CustomPlayerView: UIView {
             _ = player?.currentItem?.select(type: .subtitle, name: language)
         }
     }
-
-
+    
+    
     @IBAction func rememberMyChoicePressed(_ sender: UIButton) {
         rememberMyChoiceTapped = !rememberMyChoiceTapped
         if rememberMyChoiceTapped {
@@ -238,12 +237,12 @@ class CustomPlayerView: UIView {
         }
         sender.isSelected = !sender.isSelected
     }
-
+    
     
 }
 
 extension CustomPlayerView : PlayerControlsDelegate {
-
+    
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
         
         var audioArray = [String]()
@@ -340,7 +339,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
-
+    
     
     func getCurrentTimeInFormat(time: Double) -> String {
         var seconds = 0
@@ -357,7 +356,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func getDuration(duration: Double){
-//        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
+        //        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
     }
     
     func reloadMoreLikeCollectionView(i: Int) {
@@ -426,18 +425,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         playerTimeObserverToken = nil
-//        self.player = nil
+        //        self.player = nil
     }
     
     
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
-//        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
-//            //handle play list
-//        } else {
-//            //dismiss Player
-//        }
-//        //vinit_commented
+        //        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
+        //            //handle play list
+        //        } else {
+        //            //dismiss Player
+        //        }
+        //        //vinit_commented
     }
     
     func getPlayerDuration() -> Double {
@@ -509,13 +508,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 playerViewModel?.isItemToBeAddedInResumeWatchList = true
-//                self.isRecommendationCollectionViewEnabled = true
+                //                self.isRecommendationCollectionViewEnabled = true
                 self.addPlayerPeriodicTimeObserver()
                 break
             case .failed:
                 Log.DLog(message: "Failed" as AnyObject)
                 playerViewModel?.handlePlayerStatusFailed()
-//                self.isRecommendationCollectionViewEnabled = false
+                //                self.isRecommendationCollectionViewEnabled = false
                 //If video failed once and valid fps url is there
                 /*
                  let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
@@ -556,7 +555,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 }
         }
     }
-
+    
     
     
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
@@ -603,7 +602,9 @@ extension CustomPlayerView {
                     player?.pause()
                 }
             case .select:
-                    print("select")
+                print("select")
+            @unknown default:
+                print("unknown")
             }
         }
     }
@@ -618,6 +619,8 @@ extension CustomPlayerView {
                 resetTimer()
             case .pencil:
                 print("pencil")
+            @unknown default:
+                print("unknown")
             }
         }
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -32,6 +32,9 @@
                 </button>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0UN-6X-uMd">
                     <rect key="frame" x="100" y="547" width="1171" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="LOa-cj-p5U"/>
+                    </constraints>
                 </progressView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXF-Lz-sjx">
                     <rect key="frame" x="85" y="537" width="30" height="30"/>
@@ -109,6 +112,7 @@
             <connections>
                 <outlet property="backgroundFocusableButton" destination="Kic-Lq-1By" id="rzB-7w-2LB"/>
                 <outlet property="endingTime" destination="3Sc-yp-zug" id="CsC-HL-aMo"/>
+                <outlet property="heightOfProgressBar" destination="LOa-cj-p5U" id="lI8-dc-ReS"/>
                 <outlet property="progressBar" destination="0UN-6X-uMd" id="mUg-pw-Mid"/>
                 <outlet property="seekTime" destination="g2Q-bR-Jju" id="osB-BS-zJU"/>
                 <outlet property="sliderCursor" destination="mjB-fU-AJo" id="joN-Xl-OwE"/>
