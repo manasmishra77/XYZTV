@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
                     <rect key="frame" x="0.0" y="880" width="1801" height="155"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>

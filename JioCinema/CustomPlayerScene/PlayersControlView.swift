@@ -50,7 +50,7 @@ class PlayersControlView: UIView {
     
     func addPlayerButtons() {
         playerButtonsView = UINib(nibName: "PlayerButtonsView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayerButtonsView
-        playerButtonsView?.frame = sliderHolderView.bounds
+        playerButtonsView?.frame = playerButtonsHolderView.bounds
         playerButtonsView?.configurePlayerButtonsView()
         playerButtonsHolderView.addSubview(playerButtonsView!)
         

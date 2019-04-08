@@ -188,7 +188,7 @@ class CustomPlayerView: UIView {
             return
         }
         
-        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
+        if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
@@ -220,7 +220,7 @@ class CustomPlayerView: UIView {
         guard (subtitles?.count ?? 0) > 0 else {return}
         
         
-        if let langIndex = subtitles?.index(where: {$0.lowercased() == language.lowercased()}), let language = subtitles?[langIndex] {
+        if let langIndex = subtitles?.firstIndex(where: {$0.lowercased() == language.lowercased()}), let language = subtitles?[langIndex] {
             _ = player?.currentItem?.select(type: .subtitle, name: language)
         }
     }

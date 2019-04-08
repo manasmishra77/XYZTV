@@ -10,6 +10,16 @@ import UIKit
 
 class ButtonCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var buttonTitle: UILabel!
-    @IBOutlet weak var playerButton: UIButton!
-    
+    @IBOutlet weak var playerButton: JCPlayerButton!
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if context.nextFocusedView == self {
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.buttonTitle.isHidden = false
+            self.playerButton.backgroundColor = .lightGray
+        } else {
+            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.buttonTitle.isHidden = true
+            self.playerButton.backgroundColor = .clear
+        }
+    }
 }

@@ -12,78 +12,31 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayerButtonsView" customModule="JioCinema" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlayerButtonsView" customModule="JioCinema" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view clipsSubviews="YES" tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FSE-5c-gPn">
-                    <rect key="frame" x="910" y="0.0" width="100" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="100" id="BW4-o6-Mqr"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vLL-3b-Qba">
-                    <rect key="frame" x="488" y="0.0" width="100" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
-                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X5t-Kt-VRL">
-                    <rect key="frame" x="734" y="0.0" width="100" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
-                <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAp-en-dTU">
-                    <rect key="frame" x="1086" y="0.0" width="100" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
-                <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KVV-zx-ill">
-                    <rect key="frame" x="1334" y="0.0" width="100" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cLi-74-aIK">
+                <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cLi-74-aIK">
                     <rect key="frame" x="0.0" y="60" width="1920" height="960"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cOU-SG-DR5">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="24" id="cOU-SG-DR5">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="sectionInset" minX="264" minY="0.0" maxX="264" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="CAp-en-dTU" firstAttribute="height" secondItem="FSE-5c-gPn" secondAttribute="height" id="068-P3-X0c"/>
-                <constraint firstItem="CAp-en-dTU" firstAttribute="leading" secondItem="FSE-5c-gPn" secondAttribute="trailing" constant="76" id="18Z-OG-mgZ"/>
                 <constraint firstAttribute="trailing" secondItem="cLi-74-aIK" secondAttribute="trailing" id="1g8-e5-DqT"/>
-                <constraint firstItem="FSE-5c-gPn" firstAttribute="leading" secondItem="X5t-Kt-VRL" secondAttribute="trailing" constant="76" id="23q-2q-ZA3"/>
-                <constraint firstItem="vLL-3b-Qba" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="5GL-vY-dmF"/>
-                <constraint firstItem="vLL-3b-Qba" firstAttribute="width" secondItem="FSE-5c-gPn" secondAttribute="width" id="I5w-Ex-7bX"/>
-                <constraint firstItem="KVV-zx-ill" firstAttribute="height" secondItem="FSE-5c-gPn" secondAttribute="height" id="MvW-WG-Zuq"/>
-                <constraint firstItem="FSE-5c-gPn" firstAttribute="centerY" secondItem="Pmt-tb-8Ig" secondAttribute="centerY" id="Mxf-av-qkO"/>
-                <constraint firstItem="FSE-5c-gPn" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="OsC-lM-lk2"/>
-                <constraint firstItem="X5t-Kt-VRL" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="PJ6-nF-kOI"/>
-                <constraint firstItem="CAp-en-dTU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="R1D-aB-rZb"/>
-                <constraint firstItem="KVV-zx-ill" firstAttribute="width" secondItem="FSE-5c-gPn" secondAttribute="width" id="Rbp-cA-EaY"/>
-                <constraint firstItem="X5t-Kt-VRL" firstAttribute="leading" secondItem="vLL-3b-Qba" secondAttribute="trailing" constant="146" id="X4i-aZ-j5S"/>
-                <constraint firstItem="X5t-Kt-VRL" firstAttribute="height" secondItem="FSE-5c-gPn" secondAttribute="height" id="ZSj-mB-jtf"/>
-                <constraint firstItem="KVV-zx-ill" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="abe-9I-eN5"/>
-                <constraint firstItem="KVV-zx-ill" firstAttribute="leading" secondItem="CAp-en-dTU" secondAttribute="trailing" constant="148" id="bqF-g4-7aE"/>
                 <constraint firstItem="cLi-74-aIK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="iZD-a6-Kgn"/>
                 <constraint firstItem="cLi-74-aIK" firstAttribute="top" secondItem="Pmt-tb-8Ig" secondAttribute="top" id="qNm-xr-lBM"/>
-                <constraint firstItem="X5t-Kt-VRL" firstAttribute="width" secondItem="FSE-5c-gPn" secondAttribute="width" id="t66-KR-eWP"/>
-                <constraint firstItem="FSE-5c-gPn" firstAttribute="centerX" secondItem="Pmt-tb-8Ig" secondAttribute="centerX" id="tVU-Sw-vI5"/>
                 <constraint firstItem="cLi-74-aIK" firstAttribute="bottom" secondItem="Pmt-tb-8Ig" secondAttribute="bottom" id="vCN-s7-rsS"/>
-                <constraint firstItem="CAp-en-dTU" firstAttribute="width" secondItem="FSE-5c-gPn" secondAttribute="width" id="wlr-FL-1eO"/>
-                <constraint firstItem="vLL-3b-Qba" firstAttribute="height" secondItem="FSE-5c-gPn" secondAttribute="height" id="x4M-YF-ZCX"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
             <connections>
                 <outlet property="collectionView" destination="cLi-74-aIK" id="bVh-ol-6w3"/>
-                <outletCollection property="ButtonHolderViewCollection" destination="vLL-3b-Qba" collectionClass="NSMutableArray" id="BvI-Gf-hfJ"/>
-                <outletCollection property="ButtonHolderViewCollection" destination="KVV-zx-ill" collectionClass="NSMutableArray" id="2Lx-lJ-DhC"/>
-                <outletCollection property="ButtonHolderViewCollection" destination="CAp-en-dTU" collectionClass="NSMutableArray" id="tm0-Ar-eOZ"/>
-                <outletCollection property="ButtonHolderViewCollection" destination="FSE-5c-gPn" collectionClass="NSMutableArray" id="KVG-fM-mJU"/>
-                <outletCollection property="ButtonHolderViewCollection" destination="X5t-Kt-VRL" collectionClass="NSMutableArray" id="loE-66-vcn"/>
             </connections>
             <point key="canvasLocation" x="48" y="108"/>
         </view>

@@ -444,7 +444,7 @@
         guard (audioes?.count ?? 0) > 0 else {return}
         
         
-        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+        if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
             _ = player?.currentItem?.select(type: .audio, name: language)
         }
     }

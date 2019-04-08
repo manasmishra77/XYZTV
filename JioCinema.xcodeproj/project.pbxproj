@@ -144,9 +144,7 @@
 		993E0D5322269AAA0064C194 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993E0D4E22269AAA0064C194 /* PlayerViewController.swift */; };
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
 		9953655C2256470000B4D9BE /* PlayerButtonsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9953655B2256470000B4D9BE /* PlayerButtonsView.xib */; };
-		9953655E2256486700B4D9BE /* PlayerButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9953655D2256486700B4D9BE /* PlayerButton.xib */; };
 		9953656022564E4600B4D9BE /* PlayerButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9953655F22564E4600B4D9BE /* PlayerButtonsView.swift */; };
-		9953656222564EE400B4D9BE /* PlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9953656122564EE400B4D9BE /* PlayerButton.swift */; };
 		99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 99606317222FA10C007A9D48 /* SampleVideo.mp4 */; };
 		99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */; };
 		99651171224C9BC600E81D0F /* PlayerPopupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */; };
@@ -339,9 +337,7 @@
 		993E0D4E22269AAA0064C194 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
 		9953655B2256470000B4D9BE /* PlayerButtonsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerButtonsView.xib; sourceTree = "<group>"; };
-		9953655D2256486700B4D9BE /* PlayerButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerButton.xib; sourceTree = "<group>"; };
 		9953655F22564E4600B4D9BE /* PlayerButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerButtonsView.swift; sourceTree = "<group>"; };
-		9953656122564EE400B4D9BE /* PlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerButton.swift; sourceTree = "<group>"; };
 		99606317222FA10C007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
 		9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPopupTableViewCell.swift; sourceTree = "<group>"; };
 		9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerPopupTableViewCell.xib; sourceTree = "<group>"; };
@@ -716,8 +712,6 @@
 				99E4CB0A222EAE6F0047861A /* CustomSlider.xib */,
 				9953655F22564E4600B4D9BE /* PlayerButtonsView.swift */,
 				9953655B2256470000B4D9BE /* PlayerButtonsView.xib */,
-				9953656122564EE400B4D9BE /* PlayerButton.swift */,
-				9953655D2256486700B4D9BE /* PlayerButton.xib */,
 				99E4CB06222EA4DC0047861A /* JCSliderButton.swift */,
 				538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */,
 				538BF941224943CD00B0AB17 /* PlayerSettingMenu.swift */,
@@ -926,7 +920,6 @@
 				7B78D7C71F13A91900F319BF /* Main.storyboard in Resources */,
 				99B07802222E7C26004F7DA0 /* PlayersControlView.xib in Resources */,
 				539FC8B52126F53D0070D306 /* ParentalControlSetting.png in Resources */,
-				9953655E2256486700B4D9BE /* PlayerButton.xib in Resources */,
 				7BB86E7C1F4C1FAD00610436 /* JCMonthCell.xib in Resources */,
 				199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */,
 				9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */,
@@ -1068,7 +1061,6 @@
 				19ED97F21FD5406F00E43CBE /* CheckVersionResult.swift in Sources */,
 				9917FB2C221FCB5300F5E15B /* DisneyCharacterViewModel.swift in Sources */,
 				7B1CF54B1F1C9A05001C2B1D /* JCOTPVC.swift in Sources */,
-				9953656222564EE400B4D9BE /* PlayerButton.swift in Sources */,
 				99E4CB07222EA4DC0047861A /* JCSliderButton.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,

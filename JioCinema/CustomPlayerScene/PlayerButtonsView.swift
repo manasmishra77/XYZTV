@@ -9,9 +9,8 @@
 import UIKit
 
 class PlayerButtonsView: UIView {
-    @IBOutlet var ButtonHolderViewCollection: [UIView]!
-    var arrayOfPlayerButtonItem : [PlayerButtonItem]?
-    var playerButton: PlayerButton?
+    @IBOutlet var buttonHolderViewCollection: [UIView]!
+    var arrayOfPlayerButtonItem : [PlayerButtonItem] = []
     @IBOutlet weak var collectionView: UICollectionView!
     func configurePlayerButtonsView() {
         collectionView.delegate = self
@@ -19,35 +18,44 @@ class PlayerButtonsView: UIView {
         collectionView.register(UINib(nibName: "ButtonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ButtonCollectionViewCell")
         appendArray()
 
-//        for view in ButtonHolderViewCollection{
-//            playerButton = UINib(nibName: "PlayerButton", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayerButton
-//            playerButton?.frame = view.bounds
-
-//            playerButton?.configButtons(buttonItem: playerbuttonItem)
-//                view.addSubview(playerButton!)
-//        }
+    }
+    
+    func appendArray() {
+        for tag in 0...4{
+            let item = PlayerButtonItem(tag: tag)
+            arrayOfPlayerButtonItem.append(item)
+        }
     }
 }
 extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfPlayerButtonItem?.count ?? 0
+        return arrayOfPlayerButtonItem.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ButtonCollectionViewCell", for: indexPath) as! ButtonCollectionViewCell
-        cell.playerButton.setImage(UIImage(named: arrayOfPlayerButtonItem?[indexPath.row].selectedImage ?? ""), for: .normal)
-        cell.buttonTitle.text = arrayOfPlayerButtonItem?[indexPath.row].titleOfButton
+        cell.playerButton.setImage(UIImage(named: arrayOfPlayerButtonItem[indexPath.row].selectedImage ?? ""), for: .normal)
+        cell.buttonTitle.text = arrayOfPlayerButtonItem[indexPath.row].titleOfButton
         return cell
-    }
-    func appendArray() {
-        for tag in 0...4{
-            arrayOfPlayerButtonItem?.append(PlayerButtonItem(tag: tag))
         }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: self.collectionView.frame.height)
+        if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1{
+            return CGSize(width: 348, height: self.collectionView.frame.height)
+        } else {
+            return CGSize(width: 200, height: self.collectionView.frame.height)
+        }
     }
+    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+        return true
+    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//
+//    }
 }
+
 struct PlayerButtonItem {
     var selectedImage: String!
     var unselectedImage: String?

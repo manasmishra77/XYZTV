@@ -326,13 +326,13 @@ fileprivate extension BaseViewModel {
         case base
         case watchlist
     }
-    fileprivate func getBaseWatchListData() {
+    func getBaseWatchListData() {
         if vcType == .tv || vcType == .movie {
             RJILApiManager.getWatchListData(isDisney : vcType.isDisney ,type: vcType, baseAPIReponseHandler)
         }
     }
     
-    fileprivate func populateBaseTableArray() {
+    func populateBaseTableArray() {
         resetBaseTableIndexArray()
         appendInBaseTableIndex(from: baseDataModel?.data)
         insertInBaseTableIndex(from: baseWatchListModel?.data)
