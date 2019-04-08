@@ -15,6 +15,8 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(i: Int)
     func getDuration(duration: Double)
+    
+    func changePlayingUrlAsPerBitcode()
 }
 
 enum BitRatesType: String {
@@ -124,9 +126,7 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-                self.playbackRightsModel?.url = nil
-                self.playbackRightsModel?.fps = nil
-                self.playbackRightsModel?.aes = nil
+//                self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -269,6 +269,8 @@ class PlayerViewModel: NSObject {
                 playerActiveUrl = bitcode.high
                 break
             }
+//           delegate?.changePlayingUrlAsPerBitcode()
+            self.instantiatePlayerAfterParentalCheck()
         }
     }
     

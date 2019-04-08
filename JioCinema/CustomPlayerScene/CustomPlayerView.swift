@@ -142,9 +142,9 @@ class CustomPlayerView: UIView {
         myPreferredFocusView = nil
     }
     
+    
+    
     func removeControlDetailview() {
-        
-        //        DispatchQueue.main.async {
         if bitrateTableView != nil {
             if let selectedItem = bitrateTableView?.currentSelectedItem {
                 self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
@@ -285,7 +285,16 @@ extension CustomPlayerView : PlayerControlsDelegate {
         self.controlDetailView.layoutIfNeeded()
         bitrateTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         bitrateTableView?.frame = controlDetailHolderView.bounds
-        bitrateTableView?.configurePlayerSettingMenu(menuItems: ["low","mdieum","high"], menuType: .videobitratequality)
+        
+        var bitrateArray = [String]()
+        bitrateArray.append(BitRatesType.auto.rawValue)
+        bitrateArray.append(BitRatesType.low.rawValue)
+        bitrateArray.append(BitRatesType.medium.rawValue)
+        bitrateArray.append(BitRatesType.high.rawValue)
+        
+        
+        
+        bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         controlDetailHolderView.addSubview(bitrateTableView!)
     }
     
@@ -385,13 +394,20 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     func addAvPlayerToController() {
         
         DispatchQueue.main.async {
-            self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
-            self.playerLayer = AVPlayerLayer(player: self.player)
-            self.playerLayer?.frame = self.bounds
-            self.playerLayer?.videoGravity = .resize
-            self.playerHolderView.layer.addSublayer(self.playerLayer!)
-            self.didSeek = false
-            self.addPlayerNotificationObserver()
+            
+            
+            if let playerItem = self.player?.currentItem {
+                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
+            }
+            else {
+                self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
+                self.playerLayer = AVPlayerLayer(player: self.player)
+                self.playerLayer?.frame = self.bounds
+                self.playerLayer?.videoGravity = .resize
+                self.playerHolderView.layer.addSublayer(self.playerLayer!)
+                self.didSeek = false
+                self.addPlayerNotificationObserver()
+            }
             self.player?.play()
         }
     }
@@ -451,6 +467,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         } else {
             didSeek = false
         }
+    }
+    
+    func changePlayingUrlAsPerBitcode() {
+        
+//        AVPlayerItem *playeriem= [AVPlayerItem playerItemWithURL:urlOfSelectedQualityVideo];
+//        [playeriem seekToTime:player.currentTime];
+//        [player replaceCurrentItemWithPlayerItem:playeriem];
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -545,7 +568,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: self?.getPlayerDuration() ?? 0)
                     //                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
                     let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
-                    
+
                     if remainingTime <= 5
                     {
                         //vinit_commented //show next item to play code

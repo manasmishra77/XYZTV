@@ -42,8 +42,30 @@ class PlayerAssetManager: NSObject {
         super.init()
         delegate = listener as? PlayerAssetManagerDelegate
         self.isFps = isFps
-        if (isFps) {
-        asset = AVURLAsset(url: URL(string: activeUrl)!)
+        
+        initAsset(activeUrl: activeUrl)
+//        if (isFps) {
+//        asset = AVURLAsset(url: URL(string: activeUrl)!)
+//            asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
+//            let requestedKeys: [Any] = [PLAYABLE_KEY]
+//            // Tells the asset to load the values of any of the specified keys that are not already loaded.
+//            asset?.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {() -> Void in
+//                DispatchQueue.main.async(execute: {() -> Void in
+//                    /* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
+//                    self.prepare(toPlay: self.asset!, withKeys: PlayerAssetManager.assetKeysRequiredToPlay)
+//                })
+//            })
+//        }
+//        else {
+//            handleAESStreamingUrl(videoUrl: activeUrl)
+//        }
+    }
+    
+    
+    func initAsset(activeUrl: String) {
+        asset = nil
+        if self.isFps {
+            asset = AVURLAsset(url: URL(string: activeUrl)!)
             asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
             let requestedKeys: [Any] = [PLAYABLE_KEY]
             // Tells the asset to load the values of any of the specified keys that are not already loaded.
@@ -57,6 +79,10 @@ class PlayerAssetManager: NSObject {
         else {
             handleAESStreamingUrl(videoUrl: activeUrl)
         }
+    }
+    
+    func updatePlayerURLAssetWithURL(activeUrl: String) {
+       self.initAsset(activeUrl: activeUrl)
     }
     
     func handleAESStreamingUrl(videoUrl: String) {
