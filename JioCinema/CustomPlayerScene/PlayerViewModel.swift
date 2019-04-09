@@ -270,7 +270,7 @@ class PlayerViewModel: NSObject {
                 break
             }
 //           delegate?.changePlayingUrlAsPerBitcode()
-            self.instantiatePlayerAfterParentalCheck()
+//            self.instantiatePlayerAfterParentalCheck()
         }
     }
     

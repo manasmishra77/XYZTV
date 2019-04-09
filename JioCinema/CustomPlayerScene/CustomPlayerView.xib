@@ -53,7 +53,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="640" height="1"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="mI4-05-sUP"/>
+                                                <constraint firstAttribute="height" constant="1" id="mI4-05-sUP"/>
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqs-Oj-7VP" customClass="JCRememberMe" customModule="JioCinema" customModuleProvider="target">
@@ -71,10 +71,10 @@
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7YY-qB-EEI" userLabel="sepraterLine">
-                                            <rect key="frame" x="0.0" y="115" width="640" height="1"/>
+                                            <rect key="frame" x="0.0" y="110" width="640" height="1"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="AOj-zk-68Z"/>
+                                                <constraint firstAttribute="height" constant="1" id="AOj-zk-68Z"/>
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
@@ -111,7 +111,7 @@
                                         <constraint firstItem="uqs-Oj-7VP" firstAttribute="leading" secondItem="x33-XT-FbL" secondAttribute="leading" id="aFe-ZQ-xDy"/>
                                         <constraint firstItem="BUD-e4-qTK" firstAttribute="top" secondItem="x33-XT-FbL" secondAttribute="top" id="faN-iF-zQM"/>
                                         <constraint firstItem="BUD-e4-qTK" firstAttribute="leading" secondItem="x33-XT-FbL" secondAttribute="leading" id="omR-Ua-GcQ"/>
-                                        <constraint firstItem="7YY-qB-EEI" firstAttribute="bottom" secondItem="uqs-Oj-7VP" secondAttribute="bottom" constant="5" id="qlx-ki-11X"/>
+                                        <constraint firstItem="7YY-qB-EEI" firstAttribute="bottom" secondItem="uqs-Oj-7VP" secondAttribute="bottom" id="qlx-ki-11X"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -162,13 +162,17 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bottomSpaceOfMoreLikeInContainer" destination="kge-Ne-v6L" id="dF2-hU-Qmg"/>
+                <outlet property="buttonTopBorder" destination="BUD-e4-qTK" id="4Un-gC-pYX"/>
                 <outlet property="controlDetailHolderView" destination="O2f-iE-9Xj" id="OQO-hQ-5ZP"/>
                 <outlet property="controlDetailHolderWidth" destination="8Hf-Py-G2N" id="rcH-MA-eEd"/>
                 <outlet property="controlDetailView" destination="tBz-cr-dSN" id="h56-D8-EtA"/>
                 <outlet property="controlHolderView" destination="oWO-Ep-Kyn" id="Y8C-VG-OBs"/>
                 <outlet property="heightOfMoreLikeHolderView" destination="4No-A5-Iqc" id="TO5-Lm-3Tm"/>
+                <outlet property="heightOfPopUpView" destination="R8D-VK-9FQ" id="Cob-2x-pLJ"/>
+                <outlet property="heightOfRememberMySettings" destination="ThY-aM-lpt" id="aIQ-fp-uRB"/>
                 <outlet property="moreLikeHolderView" destination="B8x-H2-bk0" id="4nq-Qu-Kdu"/>
                 <outlet property="playerHolderView" destination="gM3-hv-dnP" id="6u4-Ki-GUv"/>
+                <outlet property="rememberMySettingsButton" destination="uqs-Oj-7VP" id="OEJ-CQ-xnk"/>
             </connections>
         </view>
     </objects>

@@ -36,11 +36,17 @@ class CustomPlayerView: UIView {
     
     var controlsView : PlayersControlView?
     fileprivate var didSeek :Bool = false
+
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
+    @IBOutlet weak var buttonTopBorder: UIView!
+
     @IBOutlet weak var bottomSpaceOfMoreLikeInContainer: NSLayoutConstraint!
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
+    @IBOutlet weak var heightOfPopUpView: NSLayoutConstraint!
+    @IBOutlet weak var heightOfRememberMySettings: NSLayoutConstraint!
+    @IBOutlet weak var rememberMySettingsButton: JCRememberMe!
     
     
     @IBOutlet weak var controlDetailView: UIView!
@@ -82,6 +88,7 @@ class CustomPlayerView: UIView {
     func addPlayersControlView() {
         controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
         controlsView?.configurePlayersControlView()
+        controlsView?.playerButtonsView?.buttonDelegate = self
         controlsView?.delegate = self
         controlsView?.frame = controlHolderView.bounds
         guard let controlsView = controlsView else {
@@ -240,8 +247,14 @@ class CustomPlayerView: UIView {
     
     
 }
-
-extension CustomPlayerView : PlayerControlsDelegate {
+extension CustomPlayerView: ButtonPressedDelegate {
+    func playTapped(toPlay: Bool) {
+        if toPlay{
+            player?.play()
+        } else {
+            player?.pause()
+        }
+    }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
         
@@ -263,8 +276,12 @@ extension CustomPlayerView : PlayerControlsDelegate {
         }
         
         controlDetailHolderWidth.constant = 1280.5
+        buttonTopBorder.isHidden = true
+        heightOfPopUpView.constant = 715
+        heightOfRememberMySettings.constant = 0
+        rememberMySettingsButton.isHidden = true
         self.controlDetailView.isHidden = false
-        myPreferredFocusView = self.controlDetailView
+        myPreferredFocusView = self.controlDetailHolderView
         self.controlDetailView.layoutIfNeeded()
         
         multiAudioTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
@@ -280,8 +297,12 @@ extension CustomPlayerView : PlayerControlsDelegate {
     
     func settingsButtonPressed(toDisplay: Bool) {
         self.controlDetailView.isHidden = false
-        myPreferredFocusView = self.controlDetailView
+        myPreferredFocusView = self.controlDetailHolderView
         controlDetailHolderWidth.constant = 640
+        heightOfPopUpView.constant = 820
+        heightOfRememberMySettings.constant = 105
+        rememberMySettingsButton.isHidden = false
+        buttonTopBorder.isHidden = false
         self.controlDetailView.layoutIfNeeded()
         bitrateTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         bitrateTableView?.frame = controlDetailHolderView.bounds
@@ -292,17 +313,18 @@ extension CustomPlayerView : PlayerControlsDelegate {
         bitrateArray.append(BitRatesType.medium.rawValue)
         bitrateArray.append(BitRatesType.high.rawValue)
         
-        
-        
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         controlDetailHolderView.addSubview(bitrateTableView!)
     }
-    
     func nextButtonPressed(toDisplay: Bool) {
+        print("next")
     }
     
     func previousButtonPressed(toDisplay: Bool) {
+        print("previous")
     }
+}
+extension CustomPlayerView : PlayerControlsDelegate {
     
     func cancelTimerForHideControl() {
         timerToHideControls.invalidate()
@@ -315,17 +337,7 @@ extension CustomPlayerView : PlayerControlsDelegate {
     func getTimeDetails(_ currentTime: String, _ duration: String) {
         getPlayerDuration()
     }
-    
-    func playTapped(_ isPaused: Bool) {
-        if !isPaused {
-            player?.pause()
-        } else {
-            player?.play()
-        }
-    }
-    
-    
-    
+
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
             let seekToValue = Double(seekValue) * self.getPlayerDuration()

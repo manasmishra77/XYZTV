@@ -7,13 +7,13 @@
 //
 
 import UIKit
-protocol DisneyCharacterTableReloadDelegate {
+protocol DisneyCharacterTableReloadDelegate: NSObject {
     func tableReloadWhenDataFetched()
 }
 class DisneyCharacterViewModel: NSObject {
     var charHeroData : CharacterItemSuperModel?
     
-    var delegate : DisneyCharacterTableReloadDelegate?
+    weak var delegate : DisneyCharacterTableReloadDelegate?
     var presentVCdelegate : BaseViewModelDelegate?
 
     

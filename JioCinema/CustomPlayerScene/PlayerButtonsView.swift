@@ -7,17 +7,25 @@
 //
 
 import UIKit
+protocol ButtonPressedDelegate: NSObject{
+    func playTapped(toPlay: Bool)
+    func subtitlesAndMultiaudioButtonPressed(todisplay: Bool)
+    func settingsButtonPressed(toDisplay: Bool)
+    func nextButtonPressed(toDisplay: Bool)
+    func previousButtonPressed(toDisplay: Bool)
+}
 
 class PlayerButtonsView: UIView {
     @IBOutlet var buttonHolderViewCollection: [UIView]!
     var arrayOfPlayerButtonItem : [PlayerButtonItem] = []
+    var ispaused: Bool = false
+    weak var buttonDelegate: ButtonPressedDelegate?
     @IBOutlet weak var collectionView: UICollectionView!
     func configurePlayerButtonsView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "ButtonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ButtonCollectionViewCell")
         appendArray()
-
     }
     
     func appendArray() {
@@ -34,12 +42,35 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ButtonCollectionViewCell", for: indexPath) as! ButtonCollectionViewCell
-        cell.playerButton.setImage(UIImage(named: arrayOfPlayerButtonItem[indexPath.row].selectedImage ?? ""), for: .normal)
-        cell.buttonTitle.text = arrayOfPlayerButtonItem[indexPath.row].titleOfButton
+        cell.configCellView(item: arrayOfPlayerButtonItem[indexPath.row])
         return cell
         }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
+        let cell = collectionView.cellForItem(at: indexPath) as! ButtonCollectionViewCell
+        switch indexPath.row {
+        case 0:
+            buttonDelegate?.settingsButtonPressed(toDisplay: true)
+        case 1:
+            buttonDelegate?.previousButtonPressed(toDisplay: true)
+        case 2:
+            ispaused = !ispaused
+            if ispaused{
+                cell.playerButton.setImage(UIImage(named: "Play"), for: .normal)
+                cell.buttonTitle.text = "Play"
+                buttonDelegate?.playTapped(toPlay: false)
+            } else{
+                cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
+                cell.buttonTitle.text = "Pause"
+                buttonDelegate?.playTapped(toPlay: true)
+            }
+        case 3:
+            buttonDelegate?.nextButtonPressed(toDisplay: true)
+        case 4:
+            buttonDelegate?.subtitlesAndMultiaudioButtonPressed(todisplay: true)
+        default:
+            print("default")
+        }
+        
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1{
@@ -73,7 +104,7 @@ struct PlayerButtonItem {
             unselectedImage = "Previous"
             titleOfButton = "Previous"
         case 2:
-            selectedImage = "Play"
+            selectedImage = "Pause"
             unselectedImage = "Pause"
             titleOfButton = "Pause"
         case 3:
@@ -81,8 +112,8 @@ struct PlayerButtonItem {
             unselectedImage = "next"
             titleOfButton = "Next"
         case 4:
-            selectedImage = "subtitles"
-            unselectedImage = "subtitlesFilled"
+            selectedImage = "subtitlesFilled"
+            unselectedImage = "subtitles"
             titleOfButton = "Subtitles"
         default:
             print("default")
