@@ -41,14 +41,14 @@
 //    case marathi
 //    case bengali
 //    case none
-//    
+//
 //    var code: String {
 //        return self.rawValue.subString(start: 0, end: 1)
 //    }
 //    var name: String {
 //        return self.rawValue.capitalized
 //    }
-//    
+//
 // }
  class JCPlayerVC: UIViewController {
 
@@ -988,14 +988,14 @@
                 return
             }
 >>>>>>> f26263aad65500d2e66524c9400fd33523e786da
-            
+         
             if let responseError = error as NSError?
             {
                 //TODO: handle error
                 //Refresh sso token call fails
                 if responseError.code == 143{
                     print("Refresh sso token call fails")
-                    
+         
                 }
                 return
             }
@@ -1005,7 +1005,7 @@
                 var i = 0
                 if let episodes = recommendationItems as? [Episode]{
                     self.isEpisodeDataAvailable = false
-                    
+         
                     self.episodeArray.removeAll()
                     if episodes.count > 0{
                         self.episodeArray.removeAll()
@@ -1131,7 +1131,7 @@
         /*
         let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
         RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
-            
+         
             guard let self = self else {
                 return
             }
@@ -1164,11 +1164,11 @@
                 failureType = "Playlist service failed"
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failureType] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
-                
+         
                 self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
-            
+         
             if let responseData = data
             {
                 if let responseString = String(data: responseData, encoding: .utf8)
@@ -1241,8 +1241,8 @@
 //                        if let metaVc = presentingVC as? JCMetadataVC {
 //                            metaVc.didClickOnWatchNowButton(nil)
 //                        } else {
-//                        
-//                            
+//
+//
 //                        }
 //                    })
                     
@@ -1345,12 +1345,12 @@
                 }
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failuretype] as [String : Any]
                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
-                
+         
                 self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
-            
-            
+         
+         
 //            let eventPropertiesForCleverTap: [String: String]  = [:]
 //            let eventDicyForIAnalytics : [String:Any] = [:]
 //            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics as! [String : Any])
@@ -1360,7 +1360,7 @@
                 {
                     self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
                     DispatchQueue.main.async {
-                        
+         
                         if((self.player) != nil) {
                             self.player?.pause()
                             self.resetPlayer()
@@ -1373,7 +1373,7 @@
                             self.doParentalCheck(with: aesUrl, isFps: false)
                         } else {
                             let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                            
+         
                             let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
                                 DispatchQueue.main.async {
                                     print("dismiss")
@@ -1416,7 +1416,7 @@
             if let responseError = error as NSError?
             {
                 //TODO: handle error
-                
+         
                 if responseError.code == 143{
                     //Refresh sso token call fails
                     print("Refresh sso token call fails")
@@ -1424,7 +1424,7 @@
                 print(responseError)
                 return
             }
-            
+         
             if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
             {
                 NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)

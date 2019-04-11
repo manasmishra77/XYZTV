@@ -43,6 +43,7 @@ class CustomSlider: UIView {
     func configureControls() {
 //        kTimeFormatInMinutes.dateFormat = "mm:ss"
 //        hourFormat.dateFormat = "HH:mm:ss"
+        hideThumbnails(requrestToHide: true)
         self.clipsToBounds = true
         progressBar.progress = 0.0
         progressBar.tintColor = .red

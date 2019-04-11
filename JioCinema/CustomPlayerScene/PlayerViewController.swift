@@ -13,6 +13,7 @@ class PlayerViewController: UIViewController {
     var playerItem: Item?
     var playerSubtitles: String?
     var playerAudios: String?
+    var recommendationArray: Any = false
     
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
@@ -58,6 +59,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.frame = playerHolder.bounds
         playerHolder.addSubview(viewforplayer!)
         viewforplayer?.delegate = self
+        viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.configureView(item: self.playerItem!, subtitles: self.playerSubtitles, audios: self.playerAudios)
     }
 }

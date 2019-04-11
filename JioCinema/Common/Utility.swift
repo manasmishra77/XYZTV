@@ -145,41 +145,47 @@ class Utility {
     }
     
     //MARK:- Player View Controller Preparation method
-    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "",latestId : String?, isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
-        
-        let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
-        
-        playerVC.id = itemId
-        playerVC.bannerUrlString = itemImageString
-        playerVC.itemTitle = itemTitle
-        playerVC.currentDuration = itemDuration
-        playerVC.totalDuration = totalDuration
-        playerVC.itemDescription = itemDesc
-        playerVC.appType = appType
-        playerVC.isPlayList = isPlayList
-        playerVC.playListId = playListId
-        playerVC.latestId = latestId
-        
-        playerVC.fromScreen = fromScreen
-        playerVC.fromCategory = fromCategory
-        playerVC.fromCategoryIndex = fromCategoryIndex
-        
-        playerVC.isEpisodeDataAvailable = isEpisodeAvailable
-        playerVC.isMoreDataAvailable = isMoreDataAvailable
-        
-        playerVC.isDisney = isDisney
-        playerVC.audioLanguage = audioLanguage
-        playerVC.defaultLanguage = fromLanguage
-        
-        if isEpisodeAvailable {
-            playerVC.episodeArray = recommendationArray as? [Episode] ?? []
-        }
-        else if isMoreDataAvailable {
-            playerVC.moreArray = recommendationArray as? [Item] ?? []
-        }
-        playerVC.director = director ?? ""
-        playerVC.starCast = starCast ?? ""
-        playerVC.vendor = vendor ?? ""
+//    func preparePlayerVC(_ itemId: String, itemImageString: String, itemTitle: String, itemDuration: Float, totalDuration: Float, itemDesc: String, appType: VideoType, isPlayList: Bool = false, playListId: String = "",latestId : String?, isMoreDataAvailable: Bool = false, isEpisodeAvailable: Bool = false, recommendationArray: Any = false, fromScreen: String, fromCategory: String, fromCategoryIndex: Int, fromLanguage: String, director: String? = nil, starCast: String? = nil, vendor: String? = nil, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil) -> JCPlayerVC  {
+//        
+//        let playerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: playerVCStoryBoardId) as! JCPlayerVC
+//        
+//        playerVC.id = itemId
+//        playerVC.bannerUrlString = itemImageString
+//        playerVC.itemTitle = itemTitle
+//        playerVC.currentDuration = itemDuration
+//        playerVC.totalDuration = totalDuration
+//        playerVC.itemDescription = itemDesc
+//        playerVC.appType = appType
+//        playerVC.isPlayList = isPlayList
+//        playerVC.playListId = playListId
+//        playerVC.latestId = latestId
+//        
+//        playerVC.fromScreen = fromScreen
+//        playerVC.fromCategory = fromCategory
+//        playerVC.fromCategoryIndex = fromCategoryIndex
+//        
+//        playerVC.isEpisodeDataAvailable = isEpisodeAvailable
+//        playerVC.isMoreDataAvailable = isMoreDataAvailable
+//        
+//        playerVC.isDisney = isDisney
+//        playerVC.audioLanguage = audioLanguage
+//        playerVC.defaultLanguage = fromLanguage
+//        
+//        if isEpisodeAvailable {
+//            playerVC.episodeArray = recommendationArray as? [Episode] ?? []
+//        }
+//        else if isMoreDataAvailable {
+//            playerVC.moreArray = recommendationArray as? [Item] ?? []
+//        }
+//        playerVC.director = director ?? ""
+//        playerVC.starCast = starCast ?? ""
+//        playerVC.vendor = vendor ?? ""
+//        return playerVC
+//    }
+    func prepareAndPresentCustomPlayerVC(item: Item, recommendationArray: Any = false, subtitles: String? = "", audios: String? = "")-> PlayerViewController{
+        let playerVC = PlayerViewController.init(item: item, subtitles: subtitles, audios: audios)
+        playerVC.recommendationArray = recommendationArray
+        //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
         return playerVC
     }
     

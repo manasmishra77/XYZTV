@@ -55,6 +55,8 @@ class CustomPlayerView: UIView {
     weak var multiAudioTableView: PlayerSettingMenu?
     weak var subtitleTableView: PlayerSettingMenu?
     
+    var recommendationArray: Any = false
+    
     @IBOutlet weak var controlDetailHolderWidth: NSLayoutConstraint!
     
     
@@ -72,10 +74,10 @@ class CustomPlayerView: UIView {
     }
     
     func configureView(item: Item, subtitles: String?, audios: String?) {
-        self.playerSubtitles = subtitles
         self.playerAudios = audios
         playerViewModel = PlayerViewModel(item: item)
-        playerViewModel?.callWebServiceForMoreLikeData()
+        playerViewModel?.playbackRightsModel
+        //self.playerSubtitles = playbackRightModel
         playerViewModel?.delegate = self
         self.controlDetailView.isHidden = true
         self.playerItem = item
@@ -103,6 +105,13 @@ class CustomPlayerView: UIView {
         moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
         heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
         self.layoutIfNeeded()
+        if let moreLikeArray = recommendationArray as? [Item]{
+            moreLikeView?.moreArray = moreLikeArray
+        } else if let moreLikeArray = recommendationArray as? [Episode]{
+            moreLikeView?.episodesArray = moreLikeArray
+        } else {
+            playerViewModel?.callWebServiceForMoreLikeData()
+        }
         moreLikeView?.configMoreLikeView()
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)

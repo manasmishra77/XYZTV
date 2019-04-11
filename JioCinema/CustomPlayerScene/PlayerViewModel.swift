@@ -42,7 +42,7 @@ class PlayerViewModel: NSObject {
     var isItemToBeAddedInResumeWatchList = true
     fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
-    fileprivate var playbackRightsModel: PlaybackRightsModel?
+    var playbackRightsModel: PlaybackRightsModel?
     fileprivate var episodeNumber :Int? = nil
     
     var isMoreDataAvailable: Bool = false

@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Sending media_end analytics event when media_ends & app_killed
         JCAnalyticsEvent.sharedInstance.sendAppKilledEvent()
-        if let playerVc = UIApplication.shared.keyWindow?.rootViewController as? JCPlayerVC{
+        if let playerVc = UIApplication.shared.keyWindow?.rootViewController as? PlayerViewController{
             playerVc.viewWillDisappear(true)
         }
     }

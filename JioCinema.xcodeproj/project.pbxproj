@@ -145,7 +145,6 @@
 		9944B334221695250048BC3B /* CharHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9944B333221695250048BC3B /* CharHeroViewController.swift */; };
 		9953655C2256470000B4D9BE /* PlayerButtonsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9953655B2256470000B4D9BE /* PlayerButtonsView.xib */; };
 		9953656022564E4600B4D9BE /* PlayerButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9953655F22564E4600B4D9BE /* PlayerButtonsView.swift */; };
-		99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 99606317222FA10C007A9D48 /* SampleVideo.mp4 */; };
 		99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */; };
 		99651171224C9BC600E81D0F /* PlayerPopupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */; };
 		9966543221D380C00026CC8D /* ViewForCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966543021D380C00026CC8D /* ViewForCarousel.swift */; };
@@ -338,7 +337,6 @@
 		9944B333221695250048BC3B /* CharHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharHeroViewController.swift; sourceTree = "<group>"; };
 		9953655B2256470000B4D9BE /* PlayerButtonsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerButtonsView.xib; sourceTree = "<group>"; };
 		9953655F22564E4600B4D9BE /* PlayerButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerButtonsView.swift; sourceTree = "<group>"; };
-		99606317222FA10C007A9D48 /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
 		9965116E224C9BC600E81D0F /* PlayerPopupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPopupTableViewCell.swift; sourceTree = "<group>"; };
 		9965116F224C9BC600E81D0F /* PlayerPopupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerPopupTableViewCell.xib; sourceTree = "<group>"; };
 		9966543021D380C00026CC8D /* ViewForCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForCarousel.swift; sourceTree = "<group>"; };
@@ -489,7 +487,6 @@
 		7B78D7B51F13A91900F319BF = {
 			isa = PBXGroup;
 			children = (
-				99606316222FA10C007A9D48 /* SampleVideo */,
 				847BC04A2201D18900FB5B2A /* Fonts */,
 				7BD39C931F419CFA0014255C /* BridgningHeader */,
 				7B78D7C01F13A91900F319BF /* JioCinema */,
@@ -746,14 +743,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		99606316222FA10C007A9D48 /* SampleVideo */ = {
-			isa = PBXGroup;
-			children = (
-				99606317222FA10C007A9D48 /* SampleVideo.mp4 */,
-			);
-			path = SampleVideo;
-			sourceTree = "<group>";
-		};
 		A4983ABB797AA9D9A1D0F06E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,7 +885,6 @@
 				847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */,
 				7B61D4F41F7526CC001B081D /* JCArtistImageCell.xib in Resources */,
 				2025F4631F3B51D800C3B609 /* Version.png in Resources */,
-				99606318222FA10D007A9D48 /* SampleVideo.mp4 in Resources */,
 				847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */,
 				53D1E2E821B7B881003BD5C1 /* SideNavigationVC.xib in Resources */,
 				2025F45B1F3B51BF00C3B609 /* Logout.png in Resources */,
