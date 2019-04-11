@@ -112,6 +112,7 @@ class CustomPlayerView: UIView {
         } else {
             playerViewModel?.callWebServiceForMoreLikeData()
         }
+        moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)

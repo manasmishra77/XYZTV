@@ -77,7 +77,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let model = moreArray?[indexPath.row]
             let item = moreArray?[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
-            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+            let layoutType: ItemCellLayoutType = (appType == .Movie) ? .potraitWithLabelAlwaysShow : .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             let isPlayingNow = model?.id == id
             return (cellItems, isPlayingNow, model?.name ?? "")

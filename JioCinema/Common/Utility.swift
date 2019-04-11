@@ -185,6 +185,7 @@ class Utility {
     func prepareAndPresentCustomPlayerVC(item: Item, recommendationArray: Any = false, subtitles: String? = "", audios: String? = "")-> PlayerViewController{
         let playerVC = PlayerViewController.init(item: item, subtitles: subtitles, audios: audios)
         playerVC.recommendationArray = recommendationArray
+        playerVC.viewforplayer?.moreLikeView?.appType = item.appType
         //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
         return playerVC
     }
