@@ -75,16 +75,18 @@ class CustomPlayerView: UIView {
     
     func configureView(item: Item, subtitles: String?, audios: String?) {
         self.playerAudios = audios
-        playerViewModel = PlayerViewModel(item: item)
-        playerViewModel?.playbackRightsModel
-        //self.playerSubtitles = playbackRightModel
-        playerViewModel?.delegate = self
-        self.controlDetailView.isHidden = true
-        self.playerItem = item
         addPlayersControlView()
+        self.initialiseViewModelForCurrentItem(item: item)
         moreLikeView?.moreLikeCollectionView.reloadData()
         addMoreLikeView()
         startTimer()
+    }
+    
+    func initialiseViewModelForCurrentItem(item: Item) {
+        playerViewModel = PlayerViewModel(item: item)
+        playerViewModel?.delegate = self
+        self.controlDetailView.isHidden = true
+        self.playerItem = item
     }
     
     func addPlayersControlView() {
@@ -114,21 +116,22 @@ class CustomPlayerView: UIView {
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
+        moreLikeView?.delegate = self
+        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        print("inside didupdatefocus")
         resetTimer()
         if context.nextFocusedView is ItemCollectionViewCell{
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
-            UIView.animate(withDuration: 1) {
+            UIView.animate(withDuration: 0.7) {
                 self.layoutIfNeeded()
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
             self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
-            UIView.animate(withDuration: 1) {
+            UIView.animate(withDuration: 0.72) {
                 self.layoutIfNeeded()
             }
         }
@@ -184,7 +187,6 @@ class CustomPlayerView: UIView {
     
     
     func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
-        
         player?.pause()
         if let subtitle = subtitleLang {
             self.playerSubTitleLanguage(subtitle)
@@ -587,9 +589,15 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
                 if self?.player != nil {
                     let currentPlayerTime = Double(CMTimeGetSeconds(time))
-                    self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: self?.getPlayerDuration() ?? 0)
+                    guard let duration = self?.getPlayerDuration() else{
+                        return
+                    }
+                    if duration.isNaN {
+                        return
+                    }
+                    self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
                     //                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
-                    let remainingTime = (self?.getPlayerDuration())! - currentPlayerTime
+                    let remainingTime = duration - currentPlayerTime
 
                     if remainingTime <= 5
                     {
@@ -638,6 +646,10 @@ extension CustomPlayerView {
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimer()
             case .menu:
+                if self.controlsView?.isHidden == false{
+                    self.controlsView?.isHidden = true
+                    self.moreLikeView?.isHidden = true
+                }
                 print("menu")
             case .playPause:
                 print("playPause")
@@ -670,4 +682,17 @@ extension CustomPlayerView {
         }
     }
     
+}
+extension CustomPlayerView: playerMoreLikeDelegate{
+    func moreLikeTapped(newItem: Item) {
+        self.player?.pause()
+//        playerItem = newItem
+        playerViewModel = nil
+//        playerViewModel?.delegate = self
+        if newItem.appType == .Movie {
+            
+        }
+        self.initialiseViewModelForCurrentItem(item: newItem)
+    }
+
 }
