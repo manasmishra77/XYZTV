@@ -8,7 +8,7 @@
 
 import UIKit
 protocol playerMoreLikeDelegate : NSObject {
-    func moreLikeTapped(indexpath: IndexPath)
+    func moreLikeTapped(newItem: Item)
 }
 
 class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
@@ -56,7 +56,25 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         return size
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.moreLikeTapped(indexpath: indexPath)
+        var item : Item?
+        if isMoreDataAvailable {
+            guard let newItem = moreArray?[indexPath.row] else{
+                return
+            }
+            item = newItem
+        }
+        else if isEpisodeDataAvailable {
+            guard let newItem = episodesArray?[indexPath.row] else{
+                return
+            }
+            item = newItem.getItem
+        }
+        if let newItem = item {
+            if id == newItem.id {
+                return
+            }
+            delegate?.moreLikeTapped(newItem: newItem)
+        }
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
