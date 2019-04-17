@@ -30,4 +30,7 @@ class ButtonCollectionViewCell: UICollectionViewCell {
             self.playerButton.setImage(UIImage(named: buttonItem?.unselectedImage ?? ""), for: .normal)
         }
     }
+    deinit {
+        print("ButtonCollectionViewCell deinit called")
+    }
 }

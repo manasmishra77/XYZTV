@@ -34,6 +34,9 @@ class PlayerButtonsView: UIView {
             arrayOfPlayerButtonItem.append(item)
         }
     }
+    deinit {
+        print("PLayerButtonsView deinit called")
+    }
 }
 extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -55,7 +58,7 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
         case 2:
             ispaused = !ispaused
             if ispaused{
-                cell.playerButton.setImage(UIImage(named: "Play"), for: .normal)
+                cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
                 cell.buttonTitle.text = "Play"
                 buttonDelegate?.playTapped(toPlay: false)
             } else{
@@ -82,6 +85,7 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
     override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
         return true
     }
+
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //
 //    }
@@ -101,7 +105,7 @@ struct PlayerButtonItem {
             titleOfButton = "Settings"
         case 1:
             selectedImage = "PreviousFilled"
-            unselectedImage = "Previous"
+            unselectedImage = "previous"
             titleOfButton = "Previous"
         case 2:
             selectedImage = "Pause"
@@ -119,4 +123,5 @@ struct PlayerButtonItem {
             print("default")
         }
     }
+
 }

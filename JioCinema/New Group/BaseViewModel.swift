@@ -461,23 +461,22 @@ extension BaseViewModel {
         switch itemToBePlayed.appType {
         case .Clip, .Music, .Trailer:
 //            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "",latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
-            let playerVC = Utility.sharedInstance.prepareAndPresentCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
+            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil, isDisney: vcType.isDisney)
             
             delegate?.presentVC(playerVC)
         case .Episode:
 //            let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "",latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
-            let playerVC = Utility.sharedInstance.prepareAndPresentCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
+            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil, isDisney: vcType.isDisney)
             delegate?.presentVC(playerVC)
         case .Movie:
             if itemToBePlayed.isPlaylist ?? false {
 //                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,playListId: itemToBePlayed.playlistId ?? "",latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
-                let playerVC = Utility.sharedInstance.prepareAndPresentCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(playerVC)
             } else {
                 print("Play Movie")
 //                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,latestId: itemToBePlayed.latestId, fromScreen: vcType.name, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: vcType.isDisney, audioLanguage: itemToBePlayed.audioLanguage)
-                let playerVC = Utility.sharedInstance.prepareAndPresentCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
-                delegate?.presentVC(playerVC)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil, isDisney: vcType.isDisney)
                 delegate?.presentVC(playerVC)
             }
         default:

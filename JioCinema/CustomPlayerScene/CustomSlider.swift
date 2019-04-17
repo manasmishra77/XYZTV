@@ -49,7 +49,9 @@ class CustomSlider: UIView {
         progressBar.tintColor = .red
         backgroundFocusableButton.delegate = self
     }
-
+    deinit {
+        print("Custom slider deinit called")
+    }
     
 }
 
@@ -124,4 +126,5 @@ extension CustomSlider: SliderDelegate {
         sliderCursorForSeeking.isHidden = requrestToHide
         seekTime.isHidden = requrestToHide
     }
+    
 }

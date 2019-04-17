@@ -14,9 +14,9 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(i: Int)
-    func getDuration(duration: Double)
-    
+    func prepareAndAddSubviewsOnPlayer()
     func changePlayingUrlAsPerBitcode()
+    func addResumeWatchView()
 }
 
 enum BitRatesType: String {
@@ -29,24 +29,31 @@ enum BitRatesType: String {
 class PlayerViewModel: NSObject {
     fileprivate var itemToBePlayed: Item
     var playerItem: AVPlayerItem?
-    fileprivate var isFpsUrl = false
     var moreArray: [Item]?
     var episodeArray: [Episode]?
-    var isPlayList: Bool = false
     var totalDuration: Float = 0.0
     var appType: VideoType = VideoType.None
     weak var delegate: PlayerViewModelDelegate?
     var startTime_BufferDuration: Date?
     fileprivate var totalBufferDurationTime = 0.0
     fileprivate var bufferCount = 0
-    var isItemToBeAddedInResumeWatchList = true
-    fileprivate var isRecommendationCollectionViewEnabled = false
-    fileprivate var isVideoUrlFailedOnce = false
+    var playListId: String = ""
+
+
     var playbackRightsModel: PlaybackRightsModel?
     fileprivate var episodeNumber :Int? = nil
-    
+    var currentDuration: Float = 0.0
+
+    fileprivate var isFpsUrl = false
+    var isPlayList: Bool = false
+    fileprivate var isRecommendationCollectionViewEnabled = false
+    fileprivate var isVideoUrlFailedOnce = false
+    var isItemToBeAddedInResumeWatchList = true
+    var isPlayListFirstItemToBePlayed: Bool = false
     var isMoreDataAvailable: Bool = false
     var isEpisodeDataAvailable: Bool = false
+    var isDisney: Bool = false
+    
     var bannerUrlString: String = ""
     var assetManager: PlayerAssetManager?
     var playerActiveUrl: String!
@@ -56,7 +63,7 @@ class PlayerViewModel: NSObject {
         self.itemToBePlayed = item
         super.init()
         self.setVideoType(item: item)
-        callWebServiceForPlaybackRights(id: item.id!)
+        //callWebServiceForPlaybackRights(id: item.id!)
         updateValues(item: item)
     }
     func updateValues(item: Item){
@@ -67,6 +74,21 @@ class PlayerViewModel: NSObject {
     func setVideoType(item: Item) {
         if let appTypeInt = item.app?.type {
             appType = VideoType(rawValue: appTypeInt)!
+        }
+    }
+    func updateResumeWatchList() {
+        if let currentTime = playerItem?.currentTime(), let totalTime = playerItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
+            let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
+            let timeDifference = CMTimeGetSeconds(currentTime)
+            let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
+            let totalDurationFloat = Double(totalDuration.floatValue() ?? 0)
+            
+            if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
+                self.callWebServiceForRemovingResumedWatchlist()
+            } else {
+                let audio = self.playerItem?.selected(type: .audio) ?? ""
+                self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audio)
+            }
         }
     }
     
@@ -136,6 +158,101 @@ class PlayerViewModel: NSObject {
         }
     }
     
+    func callWebServiceForRemovingResumedWatchlist() {
+        guard let id = itemToBePlayed.id else{
+            return
+        }
+        let json = ["id": id]
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
+        let url = removeFromResumeWatchlistUrl
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { [weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                return
+            }
+            if self.isDisney {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
+            }
+            else {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
+            }
+        }
+        /*
+         let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+         RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
+         if let responseError = error as NSError?
+         {
+         //TODO: handle error
+         
+         if responseError.code == 143{
+         //Refresh sso token call fails
+         print("Refresh sso token call fails")
+         }
+         print(responseError)
+         return
+         }
+         
+         if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+         {
+         NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+         }
+         }*/
+    }
+    
+    func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, selectedAudio: String)
+    {
+        let url = addToResumeWatchlistUrl
+        
+        let id = itemId
+        
+        let lang: String = selectedAudio.lowercased()
+        var json: Dictionary<String, Any> = ["id": id, "duration": currentTimeDuration, "totalDuration": totalDuration]
+        
+        if let audioLanguage: AudioLanguage = AudioLanguage(rawValue: lang) {
+            let languageIndexDict: Dictionary<String, Any> = ["name": audioLanguage.name, "code": audioLanguage.code, "index":playbackRightsModel?.languageIndex?.index ?? 0]
+            json["languageIndex"] = languageIndexDict
+        }
+        
+        var params: Dictionary<String, Any> = [:]
+        params["uniqueId"] = JCAppUser.shared.unique
+        params["listId"] = isDisney ? "30" : "10"
+        params["json"] = json
+        params["id"] = id
+        params["duration"] = currentTimeDuration
+        params["totalDuration"] = totalDuration
+        
+        let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
+        
+//        weak var weakSelf = self.presentingViewController
+        var isDisney = self.isDisney
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
+            guard response.isSuccess else {
+                return
+            }
+            
+            if isDisney {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
+            } else {
+                NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
+            }
+        }
+        /*
+         
+         let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+         RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
+         if let responseError = error
+         {
+         return
+         }
+         if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
+         {
+         NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+         return
+         }
+         }*/
+    }
+    
     func decideURLPriorityForPlayer() {
          if let fpsUrl = self.playbackRightsModel?.url {
             playerActiveUrl = fpsUrl
@@ -161,11 +278,11 @@ class PlayerViewModel: NSObject {
     
     //MARK:- Add Player Observer
     
-
-    
-    func updateResumeWatchList() {
-        //vinit_edited
-    }
+//
+//    
+//    func updateResumeWatchList() {
+//        //vinit_edited
+//    }
     
     func sendMediaStartAnalyticsEvent() {
         
@@ -174,6 +291,82 @@ class PlayerViewModel: NSObject {
     func sendBufferingEvent() {
         
     }
+    
+    func preparePlayer() {
+//        isMediaEndAnalyticsEventNotSent = true
+        isRecommendationCollectionViewEnabled = false
+//        isMediaStartEventSent = false
+        
+        // audioLanguage = checkItemAudioLanguage(id)
+//        setRecommendationConstarints(appType)
+        guard let id = itemToBePlayed.id else {
+            return
+        }
+        switch appType {
+        case .Movie:
+            if isPlayList, id == ""{
+                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlayListData(id: playListId)
+                delegate?.prepareAndAddSubviewsOnPlayer()
+            } else {
+                currentDuration = checkInResumeWatchListForDuration(id)
+                if currentDuration > 0 {
+                    delegate?.addResumeWatchView()
+                } else {
+                    delegate?.prepareAndAddSubviewsOnPlayer()
+                    callWebServiceForPlaybackRights(id: id)
+                }
+            }
+        case .Episode, .TVShow:
+            currentDuration = checkInResumeWatchListForDuration(id)
+            if currentDuration > 0 {
+                delegate?.addResumeWatchView()
+//                player?.pause()
+//                self.view.bringSubviewToFront(self.resumeWatchView)
+            } else {
+                delegate?.prepareAndAddSubviewsOnPlayer()
+                callWebServiceForPlaybackRights(id: id)
+            }
+        case .Music, .Clip, .Trailer:
+            if isPlayList, id == "" {
+                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlayListData(id: playListId)
+                delegate?.prepareAndAddSubviewsOnPlayer()
+            } else {
+                delegate?.prepareAndAddSubviewsOnPlayer()
+                callWebServiceForPlaybackRights(id: id)
+            }
+        default:
+            break
+        }
+    }
+    //Check in resume watchlist
+    
+    func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
+        let itemMatched = self.checkInResumeWatchList(itemIdToBeChecked)
+        if let drn = itemMatched?.duration {
+            return Float(drn)
+        }
+        return 0.0
+    }
+    
+    //Check in resume watchlist
+    func checkInResumeWatchList(_ itemIdToBeChecked: String) -> Item? {
+        if isDisney {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        } else {
+            if let resumeWatchListArray = JCDataStore.sharedDataStore.resumeWatchList?.data?[0].items {
+                let itemMatched = resumeWatchListArray.filter{ $0.id == itemIdToBeChecked}.first
+                return itemMatched
+            }
+        }
+        return nil
+    }
+    
+
     
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
@@ -269,7 +462,8 @@ class PlayerViewModel: NSObject {
                 playerActiveUrl = bitcode.high
                 break
             }
-//           delegate?.changePlayingUrlAsPerBitcode()
+
+            //           delegate?.changePlayingUrlAsPerBitcode()
 //            self.instantiatePlayerAfterParentalCheck()
         }
     }

@@ -48,6 +48,9 @@ class PlayersControlView: UIView {
         playerButtonsHolderView.addSubview(playerButtonsView!)
         
     }
+    deinit {
+        print("PlayerControlsView deinit called")
+    }
 }
 
 extension PlayersControlView: CustomSliderProtocol {
@@ -62,4 +65,5 @@ extension PlayersControlView: CustomSliderProtocol {
     func cancelTimerForHideControl() {
         delegate?.cancelTimerForHideControl()
     }
+
 }

@@ -338,7 +338,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
             if appType == .Clip || appType == .Music || appType == .Trailer{
 //                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", audioLanguage : audioLanguage)
 //                self.present(playerVC, animated: true, completion: nil)
-                let playerVC = Utility.sharedInstance.prepareAndPresentCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, subtitles: nil, audios: nil)
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode{

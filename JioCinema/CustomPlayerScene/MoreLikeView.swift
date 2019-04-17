@@ -102,4 +102,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         }
         return (cellItems, false, "")
     }
+    deinit {
+        print("moreLikeView deinit called")
+    }
 }

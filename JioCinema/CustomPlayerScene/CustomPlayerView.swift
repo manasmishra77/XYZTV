@@ -30,18 +30,22 @@ class CustomPlayerView: UIView {
     var currentDuration: Float = 0.0
     var videoStartingTimeDuration = 0
     var videoStartingTime = Date()
+    var isDisney: Bool = false
+    var isPlayList: Bool = false
     
     var playerSubtitles: String?
     var playerAudios: String?
     
     var controlsView : PlayersControlView?
+    var resumeWatchView: ResumeWatchView?
     fileprivate var didSeek :Bool = false
-
+    
+    @IBOutlet weak var resumeWatchOptionsHolderView: UIView!
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
     @IBOutlet weak var buttonTopBorder: UIView!
-
+    
     @IBOutlet weak var bottomSpaceOfMoreLikeInContainer: NSLayoutConstraint!
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
     @IBOutlet weak var heightOfPopUpView: NSLayoutConstraint!
@@ -75,18 +79,16 @@ class CustomPlayerView: UIView {
     
     func configureView(item: Item, subtitles: String?, audios: String?) {
         self.playerAudios = audios
-        addPlayersControlView()
-        self.initialiseViewModelForCurrentItem(item: item)
-        moreLikeView?.moreLikeCollectionView.reloadData()
-        addMoreLikeView()
-        startTimer()
+        self.initialiseViewModelForItem(item: item)
     }
     
-    func initialiseViewModelForCurrentItem(item: Item) {
+    func initialiseViewModelForItem(item: Item) {
         playerViewModel = PlayerViewModel(item: item)
+        playerViewModel?.isDisney = isDisney
         playerViewModel?.delegate = self
-        self.controlDetailView.isHidden = true
         self.playerItem = item
+        isPlayList = item.isPlaylist ?? false
+        playerViewModel?.preparePlayer()
     }
     
     func addPlayersControlView() {
@@ -145,6 +147,10 @@ class CustomPlayerView: UIView {
             self.playerViewModel = nil
             self.playerLayer?.removeFromSuperlayer()
             self.playerLayer = nil
+            self.controlsView?.removeFromSuperview()
+            self.controlsView = nil
+            self.moreLikeView?.removeFromSuperview()
+            self.moreLikeView = nil
         }
         player = nil
     }
@@ -256,7 +262,9 @@ class CustomPlayerView: UIView {
         }
         sender.isSelected = !sender.isSelected
     }
-    
+    deinit {
+        print("CustomPlayerView deinit called")
+    }
     
 }
 extension CustomPlayerView: ButtonPressedDelegate {
@@ -349,13 +357,11 @@ extension CustomPlayerView : PlayerControlsDelegate {
     func getTimeDetails(_ currentTime: String, _ duration: String) {
         getPlayerDuration()
     }
-
+    
     func setPlayerSeekTo(seekValue: CGFloat) {
-        DispatchQueue.main.async {
-            let seekToValue = Double(seekValue) * self.getPlayerDuration()
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
-            self.currentDuration = Float(seekToValue)
-        }
+        let seekToValue = Double(seekValue) * self.getPlayerDuration()
+        self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
+        self.currentDuration = Float(seekToValue)
     }
     
 }
@@ -372,24 +378,20 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
-    
-    
-    func getCurrentTimeInFormat(time: Double) -> String {
-        var seconds = 0
-        var min = 0
-        var hours = 0
-        seconds = Int(time) % 60
-        hours = Int(time) / 3600
-        min = (Int(time) - hours * 3600) / 60
-        var formatedTimeString = "\(hours):\(min):\(seconds)"
-        if hours == 0 {
-            formatedTimeString = "\(min):\(seconds)"
-        }
-        return formatedTimeString
+    func addResumeWatchView() {
+        resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
+        resumeWatchView?.frame = self.bounds
+        resumeWatchView?.delegate = self
+        self.addSubview(resumeWatchView!)
     }
     
-    func getDuration(duration: Double){
-        //        controlsView?.sliderView?.endingTime.text = getCurrentTimeInFormat(time: duration)
+    func prepareAndAddSubviewsOnPlayer() {
+        addPlayersControlView()
+        addMoreLikeView()
+        startTimer()
+        self.controlDetailView.isHidden = true
+        
+        //moreLikeView?.moreLikeCollectionView.reloadData()
     }
     
     func reloadMoreLikeCollectionView(i: Int) {
@@ -419,9 +421,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         
         DispatchQueue.main.async {
             
-            
             if let playerItem = self.player?.currentItem {
-                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
+                //                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
+                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
@@ -430,8 +432,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.playerLayer?.videoGravity = .resize
                 self.playerHolderView.layer.addSublayer(self.playerLayer!)
                 self.didSeek = false
+                if self.playerViewModel?.currentDuration ?? 0 > 0 {
+                }
                 self.addPlayerNotificationObserver()
             }
+            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
+            
+            //            self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
             self.player?.play()
         }
     }
@@ -471,6 +478,33 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
+//            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
+//                if (playerItem?.currentPlayingIndex) + 1 < (self.moreArray.count) {
+//                    let nextItem = playerItem?.moreArray[(self.currentPlayingIndex) + 1]
+////                    if isMediaEndAnalyticsEventNotSent{
+////                        isMediaEndAnalyticsEventNotSent = false
+////                        sendMediaEndAnalyticsEvent()
+////                    }
+//                    initialiseViewModelForItem(item: )
+//                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: nextItem.description ?? "", appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
+//                    preparePlayerVC()
+//                } else {
+//                    delegate?.removePlayerController()
+//                }
+//            }
+//            else if self.appType == .Episode {
+//                if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
+//                    updateResumeWatchList()
+//                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
+//                    preparePlayerVC()
+//                } else {
+//                    delegate?.removePlayerController()
+//                }
+//            }
+        } else {
+            delegate?.removePlayerController()
+        }
         //        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
         //            //handle play list
         //        } else {
@@ -495,9 +529,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func changePlayingUrlAsPerBitcode() {
         
-//        AVPlayerItem *playeriem= [AVPlayerItem playerItemWithURL:urlOfSelectedQualityVideo];
-//        [playeriem seekToTime:player.currentTime];
-//        [player replaceCurrentItemWithPlayerItem:playeriem];
+        //        AVPlayerItem *playeriem= [AVPlayerItem playerItemWithURL:urlOfSelectedQualityVideo];
+        //        [playeriem seekToTime:player.currentTime];
+        //        [player replaceCurrentItemWithPlayerItem:playeriem];
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -598,7 +632,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
                     //                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
                     let remainingTime = duration - currentPlayerTime
-
+                    
                     if remainingTime <= 5
                     {
                         //vinit_commented //show next item to play code
@@ -625,6 +659,9 @@ extension CustomPlayerView {
     }
     
     func resetTimer(){
+        if timerToHideControls == nil{
+            return
+        }
         timerToHideControls.invalidate()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
@@ -685,14 +722,32 @@ extension CustomPlayerView {
 }
 extension CustomPlayerView: playerMoreLikeDelegate{
     func moreLikeTapped(newItem: Item) {
-        self.player?.pause()
-//        playerItem = newItem
-        playerViewModel = nil
-//        playerViewModel?.delegate = self
-        if newItem.appType == .Movie {
-            
-        }
-        self.initialiseViewModelForCurrentItem(item: newItem)
+        resetAndRemovePlayer()
+        self.initialiseViewModelForItem(item: newItem)
+    }
+    
+}
+extension CustomPlayerView: ResumeWatchDelegate{
+    func resumeWatchingPressed() {
+        resumeWatchView?.removeFromSuperview()
+        playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
+        prepareAndAddSubviewsOnPlayer()
+    }
+    
+    func startFromBeginning() {
+        playerViewModel?.currentDuration = 0
+        playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
+        resumeWatchView?.removeFromSuperview()
+        self.prepareAndAddSubviewsOnPlayer()
+        
+    }
+    
+    func removeFromResumeWatchingPressed() {
+        playerViewModel?.callWebServiceForRemovingResumedWatchlist()
+        resumeWatchView = nil
+        resumeWatchView?.removeFromSuperview()
+        delegate?.removePlayerController()
     }
 
+    
 }

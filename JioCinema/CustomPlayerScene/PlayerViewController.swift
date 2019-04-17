@@ -14,15 +14,16 @@ class PlayerViewController: UIViewController {
     var playerSubtitles: String?
     var playerAudios: String?
     var recommendationArray: Any = false
+    var isDisney: Bool = false
     
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
     
-    init(item: Item, subtitles: String? = nil, audios: String? = nil) {
+    init(item: Item, subtitles: String? = nil, audios: String? = nil, isDisney: Bool = false) {
         self.playerItem = item
         self.playerAudios = audios
         self.playerSubtitles = subtitles
-        
+        self.isDisney = isDisney
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -60,7 +61,11 @@ class PlayerViewController: UIViewController {
         playerHolder.addSubview(viewforplayer!)
         viewforplayer?.delegate = self
         viewforplayer?.recommendationArray = self.recommendationArray
+        viewforplayer?.isDisney = self.isDisney
         viewforplayer?.configureView(item: self.playerItem!, subtitles: self.playerSubtitles, audios: self.playerAudios)
+    }
+    deinit {
+        print("playerVC deinit called")
     }
 }
 
@@ -71,4 +76,5 @@ extension PlayerViewController: CustomPlayerViewProtocol {
             
         }
     }
+
 }

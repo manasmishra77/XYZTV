@@ -129,6 +129,8 @@
 		7BFEC4C51F177EAA001DFE6D /* JCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */; };
 		7BFEC4C71F1782DC001DFE6D /* JCPasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */; };
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
+		84090B962265A6BB00E422F0 /* ResumeWatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84090B952265A6BB00E422F0 /* ResumeWatchView.swift */; };
+		842D255D2264D7B500EC7284 /* ResumeWatchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842D255C2264D7B500EC7284 /* ResumeWatchView.xib */; };
 		847BC0512201D19A00FB5B2A /* JioType-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */; };
 		847BC0532201D19A00FB5B2A /* JioType-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */; };
 		847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */; };
@@ -321,6 +323,8 @@
 		7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCTextField.swift; sourceTree = "<group>"; };
 		7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPasswordField.swift; sourceTree = "<group>"; };
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
+		84090B952265A6BB00E422F0 /* ResumeWatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumeWatchView.swift; sourceTree = "<group>"; };
+		842D255C2264D7B500EC7284 /* ResumeWatchView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResumeWatchView.xib; sourceTree = "<group>"; };
 		847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
 		847BC04C2201D19900FB5B2A /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
 		847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
@@ -716,6 +720,8 @@
 				991194AB222FF18E0070EF3E /* MoreLikeView.xib */,
 				9978D2A322577FDC00003E9E /* ButtonCollectionViewCell.swift */,
 				9978D2A422577FDC00003E9E /* ButtonCollectionViewCell.xib */,
+				842D255C2264D7B500EC7284 /* ResumeWatchView.xib */,
+				84090B952265A6BB00E422F0 /* ResumeWatchView.swift */,
 			);
 			path = CustomPlayerScene;
 			sourceTree = "<group>";
@@ -897,6 +903,7 @@
 				2024C4871F3C38A8003A08C3 /* Terms.png in Resources */,
 				2025F45D1F3B51C700C3B609 /* MyAccount.png in Resources */,
 				7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */,
+				842D255D2264D7B500EC7284 /* ResumeWatchView.xib in Resources */,
 				9978D2A622577FDC00003E9E /* ButtonCollectionViewCell.xib in Resources */,
 				99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
@@ -1074,6 +1081,7 @@
 				7BA1C6E91F2F0715002AB966 /* JCLoginManager.swift in Sources */,
 				19BF8A7D214657BF001C58DD /* ItemCollectionViewCell.swift in Sources */,
 				53E806032230E85400F38927 /* PlayerAssetManager.swift in Sources */,
+				84090B962265A6BB00E422F0 /* ResumeWatchView.swift in Sources */,
 				993E0D4F22269AAA0064C194 /* CustomPlayerView.swift in Sources */,
 				991194AE222FF1A90070EF3E /* MoreLikeView.swift in Sources */,
 				1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */,

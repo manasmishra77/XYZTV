@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol SliderDelegate {
+protocol SliderDelegate: NSObject {
     func updateProgressBar(scale: CGFloat, dueToScrubing: Bool, duration: Double?)
     func touchBeganCalledSetSliderValue()
     func pressesBeganCalled()
@@ -18,7 +18,7 @@ protocol SliderDelegate {
 
 class JCSliderButton: UIButton
 {
-    var delegate : SliderDelegate?
+    weak var delegate : SliderDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if touches.count > 1 {

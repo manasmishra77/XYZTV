@@ -40,7 +40,9 @@ class PlayerSettingMenu: UIView {
             self.menuTable.reloadData()
         }
     }    
-    
+    deinit {
+        print("Player Settings menu deinit called")
+    }
 }
 
 extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
@@ -50,7 +52,7 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerPopupTableViewCell") as! PlayerPopupTableViewCell
         cell.title.text = menuItems[indexPath.row]
-        cell.subtitle.text = "subtitle"
+        cell.subtitle.text = ""
         if indexPath.row == menuItems.count - 1 {
             cell.horizontalBaseLine.isHidden = true
         }
@@ -75,7 +77,7 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
+
 }
 
 
