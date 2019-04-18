@@ -181,8 +181,8 @@ class CustomPlayerView: UIView {
         }
         else {
             self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
-                lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
-                lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
+            lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
+            lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
         }
         
         subtitleTableView?.removeFromSuperview()
@@ -297,7 +297,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
         if let subtitles = playerViewModel?.playbackRightsModel?.displaySubtitles {
             subtitleArray = subtitles
         }
-
+        
         controlDetailHolderWidth.constant = 1280.5
         buttonTopBorder.isHidden = true
         heightOfPopUpView.constant = 715
@@ -311,7 +311,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
         
         multiAudioTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         multiAudioTableView?.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        if let lastIndex = subtitleArray.firstIndex(of: lastSelectedAudioSubtitle ?? ""){
+        if let lastIndex = audioArray.firstIndex(of: lastSelectedAudioLanguage ?? ""){
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
@@ -324,7 +324,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
             subtitleTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
         }
         subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multiSubtitle)
-
+        
         controlDetailHolderView.addSubview(subtitleTableView!)
     }
     
@@ -360,14 +360,24 @@ extension CustomPlayerView: ButtonPressedDelegate {
         playnextOrPreviousItem(playNext: false)
     }
     func playnextOrPreviousItem(playNext: Bool){
-//        if let moreLikeArray = recommendationArray as? [Item]{
-//            if playNext {
-//                moreLikeArray[]
-//            } else {
-//                
-//            }
-//        } else if let moreLikeArray = recommendationArray as? [Episode]{
-//        }
+        player?.pause()
+        guard let currentTime = player?.currentItem?.currentTime().seconds else {
+            return
+        }
+        guard let duration = player?.currentItem?.duration.seconds else {
+            return
+        }
+        if playNext {
+            if currentTime + 10 < duration {
+                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime + 10), preferredTimescale: 1))
+            }
+        } else {
+            if currentTime - 10 > 0{
+                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime - 10), preferredTimescale: 1))
+            }
+        }
+        player?.play()
+        
     }
 }
 extension CustomPlayerView : PlayerControlsDelegate {
@@ -385,9 +395,12 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
     func setPlayerSeekTo(seekValue: CGFloat) {
-        let seekToValue = Double(seekValue) * self.getPlayerDuration()
-        self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
-        self.currentDuration = Float(seekToValue)
+        DispatchQueue.main.async {
+            let seekToValue = Double(seekValue) * self.getPlayerDuration()
+            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
+            self.currentDuration = Float(seekToValue)
+        }
+
     }
     
 }
@@ -441,7 +454,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.addSubview(self.enterParentalPinView!)
                 self.bringSubviewToFront(self.enterParentalPinView!)
             }
-
+            
         }
         else {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
@@ -467,9 +480,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 }
                 self.addPlayerNotificationObserver()
             }
-//            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
+            //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             
-                        self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
+            self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
             self.player?.play()
         }
     }
@@ -491,7 +504,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
         //sendMediaEndAnalyticsEvent()
         //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
-        viewModel.updateResumeWatchList()
+        viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         //        } //vinit_commented
         if let timeObserverToken = playerTimeObserverToken {
             self.player?.removeTimeObserver(timeObserverToken)
@@ -510,29 +523,29 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
-//            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-//                if (playerItem?.currentPlayingIndex) + 1 < (self.moreArray.count) {
-//                    let nextItem = playerItem?.moreArray[(self.currentPlayingIndex) + 1]
-////                    if isMediaEndAnalyticsEventNotSent{
-////                        isMediaEndAnalyticsEventNotSent = false
-////                        sendMediaEndAnalyticsEvent()
-////                    }
-//                    initialiseViewModelForItem(item: )
-//                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: nextItem.description ?? "", appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
-//                    preparePlayerVC()
-//                } else {
-//                    delegate?.removePlayerController()
-//                }
-//            }
-//            else if self.appType == .Episode {
-//                if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
-//                    updateResumeWatchList()
-//                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
-//                    preparePlayerVC()
-//                } else {
-//                    delegate?.removePlayerController()
-//                }
-//            }
+            //            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
+            //                if (playerItem?.currentPlayingIndex) + 1 < (self.moreArray.count) {
+            //                    let nextItem = playerItem?.moreArray[(self.currentPlayingIndex) + 1]
+            ////                    if isMediaEndAnalyticsEventNotSent{
+            ////                        isMediaEndAnalyticsEventNotSent = false
+            ////                        sendMediaEndAnalyticsEvent()
+            ////                    }
+            //                    initialiseViewModelForItem(item: )
+            //                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: nextItem.description ?? "", appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
+            //                    preparePlayerVC()
+            //                } else {
+            //                    delegate?.removePlayerController()
+            //                }
+            //            }
+            //            else if self.appType == .Episode {
+            //                if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
+            //                    updateResumeWatchList()
+            //                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
+            //                    preparePlayerVC()
+            //                } else {
+            //                    delegate?.removePlayerController()
+            //                }
+            //            }
         } else {
             delegate?.removePlayerController()
         }
@@ -779,6 +792,6 @@ extension CustomPlayerView: ResumeWatchDelegate{
         resumeWatchView?.removeFromSuperview()
         delegate?.removePlayerController()
     }
-
+    
     
 }

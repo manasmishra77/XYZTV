@@ -76,7 +76,7 @@ class PlayerViewModel: NSObject {
             appType = VideoType(rawValue: appTypeInt)!
         }
     }
-    func updateResumeWatchList() {
+    func updateResumeWatchList(audioLanguage: String) {
         if let currentTime = playerItem?.currentTime(), let totalTime = playerItem?.duration, (totalTime.timescale != 0), (currentTime.timescale != 0) {
             let currentTimeDuration = "\(Int(CMTimeGetSeconds(currentTime)))"
             let timeDifference = CMTimeGetSeconds(currentTime)
@@ -86,8 +86,8 @@ class PlayerViewModel: NSObject {
             if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist()
             } else {
-                let audio = self.playerItem?.selected(type: .audio) ?? ""
-                self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audio)
+//                let audio = self.playerItem?.selected(type: .audio) ?? ""
+                self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audioLanguage)
             }
         }
     }
