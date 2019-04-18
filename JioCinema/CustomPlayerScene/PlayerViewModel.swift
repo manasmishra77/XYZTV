@@ -371,8 +371,6 @@ class PlayerViewModel: NSObject {
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
         //  self.addMetadataToPlayer()
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
-
 //        if let player = player {
 //            player.replaceCurrentItem(with: playerItem)
 //        } else {
@@ -385,7 +383,6 @@ class PlayerViewModel: NSObject {
     }
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
-        guard isAutoPlaySubtitle else {return}
         /*
          let subtitles = player?.currentItem?.tracks(type: .subtitle)
          // Select track with displayName

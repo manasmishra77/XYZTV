@@ -149,7 +149,6 @@ let didSetDisneyTVWatchlist = Notification.Name("didSetDisneyTVWatchList")
 let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList")
 
 let isAutoPlayOnKey = "isAutoPlayOn"
-let isSubtitleOnKey = "isSubtitlePlayOn"
 let isParentalControlShown = "isParentalControlShown"
 
 
@@ -346,14 +345,7 @@ var IsAutoPlayOn: Bool {
         UserDefaults.standard.setValue(newValue, forKeyPath: isAutoPlayOnKey)
     }
 }
-var IsAutoSubtitleOn: Bool {
-    get {
-        return UserDefaults.standard.bool(forKey: isSubtitleOnKey)
-    }
-    set {
-        UserDefaults.standard.setValue(newValue, forKeyPath: isSubtitleOnKey)
-    }
-}
+
 var IsParentalControlOn = true
 
 
