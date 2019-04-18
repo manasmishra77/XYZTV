@@ -405,12 +405,17 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         self.playbackRightModel = playbackRightModel
         let ageGroup:AgeGroup = self.playbackRightModel?.maturityAgeGrp ?? .allAge
         if ParentalPinManager.shared.checkParentalPin(ageGroup) {
-            enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
-            enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
-            enterParentalPinView?.delegate = enterPinViewModel
-            enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
-            enterParentalPinView?.frame = self.frame
-            self.addSubview(enterParentalPinView!)
+            DispatchQueue.main.async {
+                self.enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
+                self.enterParentalPinView?.frame = self.resumeWatchOptionsHolderView.bounds
+                self.enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
+                self.enterParentalPinView?.delegate = self.enterPinViewModel
+                self.enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
+                
+                self.addSubview(self.enterParentalPinView!)
+                self.bringSubviewToFront(self.enterParentalPinView!)
+            }
+
         }
         else {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
