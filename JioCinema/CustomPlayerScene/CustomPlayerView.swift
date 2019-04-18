@@ -667,16 +667,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
                 if self?.player != nil {
                     let currentPlayerTime = Double(CMTimeGetSeconds(time))
-                    guard let duration = self?.getPlayerDuration() else{
-                        return
-                    }
-                    if duration.isNaN {
+                    guard let duration = self?.getPlayerDuration(), duration.isNaN == false else{
                         return
                     }
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
-                    //                    self?.delegate?.getDuration(duration: self?.getPlayerDuration() ?? 0)
                     let remainingTime = duration - currentPlayerTime
-                    
                     if remainingTime <= 5
                     {
                         //vinit_commented //show next item to play code
@@ -685,6 +680,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     self?.playerTimeObserverToken = nil
                 }
         }
+    }
+    
+    
+    func checkForNextVideoInAutoPlay() {
+        let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
     }
     
     
