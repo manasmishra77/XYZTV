@@ -194,24 +194,21 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 self.settingsImageView.image = #imageLiteral(resourceName: "Autoplay.png")
                 
             case 2:
-                self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
-                
-            case 3:
                 self.settingsImageView.image = #imageLiteral(resourceName: "ParentalControlSetting.png")
                 
-            case 4:
+            case 3:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
                 
-            case 5:
+            case 4:
                 self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
                 
-            case 6:
+            case 5:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
                 
-            case 7:
+            case 6:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
-            case 8:
+            case 7:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
             default:

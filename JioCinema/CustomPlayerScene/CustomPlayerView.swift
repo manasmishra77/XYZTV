@@ -433,7 +433,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         if ParentalPinManager.shared.checkParentalPin(ageGroup) {
             DispatchQueue.main.async {
                 self.enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
-                self.enterParentalPinView?.frame = self.resumeWatchOptionsHolderView.bounds
+                self.enterParentalPinView?.frame = self.bounds
                 self.enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
                 self.enterParentalPinView?.delegate = self.enterPinViewModel
                 self.enterParentalPinView?.contentTitle.text = self.enterPinViewModel?.contentName
