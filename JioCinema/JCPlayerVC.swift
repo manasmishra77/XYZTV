@@ -405,7 +405,6 @@
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
         if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
             
         }
