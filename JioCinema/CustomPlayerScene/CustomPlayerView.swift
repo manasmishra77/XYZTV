@@ -32,15 +32,13 @@ class CustomPlayerView: UIView {
     var videoStartingTime = Date()
     var isDisney: Bool = false
     var isPlayList: Bool = false
-    
-    var playerSubtitles: String?
-    var playerAudios: String?
+
     
     var controlsView : PlayersControlView?
+    var lastSelectedItem: String?
     var resumeWatchView: ResumeWatchView?
     fileprivate var didSeek :Bool = false
     
-    @IBOutlet weak var resumeWatchOptionsHolderView: UIView!
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
@@ -58,6 +56,10 @@ class CustomPlayerView: UIView {
     weak var bitrateTableView: PlayerSettingMenu?
     weak var multiAudioTableView: PlayerSettingMenu?
     weak var subtitleTableView: PlayerSettingMenu?
+    
+    var lastSelectedAudioSubtitle: String?
+    var lastSelectedAudioLanguage: String?
+    var lastSelectedVideoQuality: String?
     
     var recommendationArray: Any = false
     
@@ -77,8 +79,7 @@ class CustomPlayerView: UIView {
         return []
     }
     
-    func configureView(item: Item, subtitles: String?, audios: String?) {
-        self.playerAudios = audios
+    func configureView(item: Item) {
         self.initialiseViewModelForItem(item: item)
     }
     
@@ -101,6 +102,9 @@ class CustomPlayerView: UIView {
             return
         }
         self.controlsView?.sliderView?.title.text = playerItem?.name
+        if playerItem?.appType == .TVShow {
+            self.controlsView?.sliderView?.title.text = playerItem?.showname
+        }
         self.controlHolderView.addSubview(controlsView)
         //        self.bringSubview(toFront: controlHolderView)
     }
@@ -168,16 +172,17 @@ class CustomPlayerView: UIView {
         myPreferredFocusView = nil
     }
     
-    
-    
     func removeControlDetailview() {
         if bitrateTableView != nil {
             if let selectedItem = bitrateTableView?.currentSelectedItem {
                 self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
+                lastSelectedVideoQuality = "\(selectedItem)"
             }
         }
         else {
             self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
+                lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
+                lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
         }
         
         subtitleTableView?.removeFromSuperview()
@@ -281,20 +286,18 @@ extension CustomPlayerView: ButtonPressedDelegate {
         var audioArray = [String]()
         var subtitleArray = [String]()
         
-        if let audio = self.playerAudios {
-            audioArray = audio.components(separatedBy: ",")
+        if let audio = playerViewModel?.playbackRightsModel?.displayLanguages{
+            audioArray = audio
+            if audioArray.count == 0{
+                if let defaultLang = playerViewModel?.playbackRightsModel?.defaultLanguage{
+                    audioArray.append(defaultLang)
+                }
+            }
         }
-        else {
-            audioArray.append("English")
+        if let subtitles = playerViewModel?.playbackRightsModel?.displaySubtitles {
+            subtitleArray = subtitles
         }
-        
-        if let subtitles = self.playerSubtitles {
-            subtitleArray = subtitles.components(separatedBy: ",")
-        }
-        else {
-            subtitleArray.append("English")
-        }
-        
+
         controlDetailHolderWidth.constant = 1280.5
         buttonTopBorder.isHidden = true
         heightOfPopUpView.constant = 715
@@ -302,16 +305,26 @@ extension CustomPlayerView: ButtonPressedDelegate {
         rememberMySettingsButton.isHidden = true
         self.controlDetailView.isHidden = false
         myPreferredFocusView = self.controlDetailHolderView
+        
         self.controlDetailView.layoutIfNeeded()
+        
         
         multiAudioTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         multiAudioTableView?.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudio)
+        if let lastIndex = subtitleArray.firstIndex(of: lastSelectedAudioSubtitle ?? ""){
+            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
+        }
+        multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
         controlDetailHolderView.addSubview(multiAudioTableView!)
+        
         
         subtitleTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
         subtitleTableView?.frame = CGRect.init(x: (controlDetailHolderWidth.constant/2) + 2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
-        subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multilanguage)
+        if let lastIndex = subtitleArray.firstIndex(of: lastSelectedAudioSubtitle ?? ""){
+            subtitleTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
+        }
+        subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multiSubtitle)
+
         controlDetailHolderView.addSubview(subtitleTableView!)
     }
     
@@ -332,16 +345,29 @@ extension CustomPlayerView: ButtonPressedDelegate {
         bitrateArray.append(BitRatesType.low.rawValue)
         bitrateArray.append(BitRatesType.medium.rawValue)
         bitrateArray.append(BitRatesType.high.rawValue)
+        if let lastIndex = lastSelectedVideoQuality{
+            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastIndex) ?? 0, section: 0)
+        }
         
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         controlDetailHolderView.addSubview(bitrateTableView!)
     }
     func nextButtonPressed(toDisplay: Bool) {
-        print("next")
+        playnextOrPreviousItem(playNext: true)
     }
     
     func previousButtonPressed(toDisplay: Bool) {
-        print("previous")
+        playnextOrPreviousItem(playNext: false)
+    }
+    func playnextOrPreviousItem(playNext: Bool){
+//        if let moreLikeArray = recommendationArray as? [Item]{
+//            if playNext {
+//                moreLikeArray[]
+//            } else {
+//                
+//            }
+//        } else if let moreLikeArray = recommendationArray as? [Episode]{
+//        }
     }
 }
 extension CustomPlayerView : PlayerControlsDelegate {
@@ -436,9 +462,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 }
                 self.addPlayerNotificationObserver()
             }
-            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
+//            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             
-            //            self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
+                        self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
             self.player?.play()
         }
     }

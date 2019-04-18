@@ -9,8 +9,8 @@
 import UIKit
 
 enum MenuType: String {
-    case multiaudio = "Audio"
-    case multilanguage = "Subtitle"
+    case multiaudioLanguage = "Audio"
+    case multiSubtitle = "Subtitle"
     case videobitratequality = "Video Quality"
 }
 
@@ -23,7 +23,7 @@ class PlayerSettingMenu: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     
     var currentSelectedItem: String?
-    var priviousSelectedIndexpath: IndexPath = IndexPath(row: 0, section: 0)
+    var previousSelectedIndexpath: IndexPath?
     
     
     override func awakeFromNib() {
@@ -56,7 +56,11 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == menuItems.count - 1 {
             cell.horizontalBaseLine.isHidden = true
         }
-        if indexPath == priviousSelectedIndexpath{
+        if previousSelectedIndexpath == nil {
+            previousSelectedIndexpath = IndexPath(row: menuType == .multiSubtitle ? 1 : 0, section: 0)
+        }
+
+        if indexPath == previousSelectedIndexpath{
             cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
         }
         return cell
@@ -66,12 +70,12 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         currentSelectedItem = menuItems[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! PlayerPopupTableViewCell
 //        cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
-        if priviousSelectedIndexpath != indexPath {
+        if previousSelectedIndexpath != indexPath {
            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
-            let cell2 = tableView.cellForRow(at: priviousSelectedIndexpath) as! PlayerPopupTableViewCell
+            let cell2 = tableView.cellForRow(at: previousSelectedIndexpath!) as! PlayerPopupTableViewCell
             cell2.rabioButtonImageView.image = UIImage(named: "radioButton")
         }
-        priviousSelectedIndexpath = indexPath
+        previousSelectedIndexpath = indexPath
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

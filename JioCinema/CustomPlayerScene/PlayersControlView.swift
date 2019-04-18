@@ -46,7 +46,6 @@ class PlayersControlView: UIView {
         playerButtonsView?.frame = playerButtonsHolderView.bounds
         playerButtonsView?.configurePlayerButtonsView()
         playerButtonsHolderView.addSubview(playerButtonsView!)
-        
     }
     deinit {
         print("PlayerControlsView deinit called")

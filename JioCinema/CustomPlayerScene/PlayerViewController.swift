@@ -11,18 +11,14 @@ import Foundation
 
 class PlayerViewController: UIViewController {
     var playerItem: Item?
-    var playerSubtitles: String?
-    var playerAudios: String?
     var recommendationArray: Any = false
     var isDisney: Bool = false
     
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
     
-    init(item: Item, subtitles: String? = nil, audios: String? = nil, isDisney: Bool = false) {
+    init(item: Item, isDisney: Bool = false) {
         self.playerItem = item
-        self.playerAudios = audios
-        self.playerSubtitles = subtitles
         self.isDisney = isDisney
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +58,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.delegate = self
         viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.isDisney = self.isDisney
-        viewforplayer?.configureView(item: self.playerItem!, subtitles: self.playerSubtitles, audios: self.playerAudios)
+        viewforplayer?.configureView(item: self.playerItem!)
     }
     deinit {
         print("playerVC deinit called")

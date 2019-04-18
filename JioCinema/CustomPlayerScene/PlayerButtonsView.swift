@@ -112,7 +112,7 @@ struct PlayerButtonItem {
             unselectedImage = "Pause"
             titleOfButton = "Pause"
         case 3:
-            selectedImage = "next"
+            selectedImage = "nextFilled"
             unselectedImage = "next"
             titleOfButton = "Next"
         case 4:

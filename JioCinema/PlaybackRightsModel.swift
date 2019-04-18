@@ -24,6 +24,7 @@ struct PlaybackRightsModel: Codable {
     var thumb:String?
     var vendor: String?
     var maturityRating: String?
+    var defaultLanguage: String?
     
     var maturityAgeGrp: AgeGroup {
         if let value = self.maturityRating {
@@ -34,7 +35,10 @@ struct PlaybackRightsModel: Codable {
     var languageIndex: LanguageIndex?
     var aes:Bitcode?
     var fps:Bitcode?
-    
+    var displayLanguages: [String]?
+    var displaySubtitles: [String]?
+    var kids: Bool?
+    var download: String?
     
     enum CodingKeys: String, CodingKey {
         case code = "code"
@@ -55,6 +59,11 @@ struct PlaybackRightsModel: Codable {
         case vendor = "vendor"
         case maturityRating = "maturityRating"
         case languageIndex
+        case defaultLanguage = "defaultLanguage"
+        case displayLanguages = "displayLanguages"
+        case displaySubtitles = "displaySubtitles"
+        case kids = "kids"
+        case download = "download"
     }
     
     init(from decoder: Decoder) throws {
@@ -97,6 +106,12 @@ struct PlaybackRightsModel: Codable {
         vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
         maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
         languageIndex = try values.decodeIfPresent(LanguageIndex.self, forKey: .languageIndex)
+        defaultLanguage = try values.decodeIfPresent(String.self, forKey: .defaultLanguage)
+        displayLanguages = try values.decodeIfPresent([String].self, forKey: .displayLanguages)
+        displaySubtitles = try values.decodeIfPresent([String].self, forKey: .displaySubtitles)
+        displaySubtitles?.insert("Off", at: 0)
+        kids = try values.decodeIfPresent(Bool.self, forKey: .kids)
+        download = try values.decodeIfPresent(String.self, forKey: .download)
     }
 }
 

@@ -181,7 +181,6 @@
                 <outlet property="moreLikeHolderView" destination="B8x-H2-bk0" id="4nq-Qu-Kdu"/>
                 <outlet property="playerHolderView" destination="gM3-hv-dnP" id="6u4-Ki-GUv"/>
                 <outlet property="rememberMySettingsButton" destination="uqs-Oj-7VP" id="OEJ-CQ-xnk"/>
-                <outlet property="resumeWatchOptionsHolderView" destination="4yQ-2p-bmT" id="xbC-aR-VjH"/>
             </connections>
         </view>
     </objects>

@@ -182,8 +182,8 @@ class Utility {
         playerVC.vendor = vendor ?? ""
         return playerVC
     }
-    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, subtitles: String? = "", audios: String? = "", isDisney: Bool = false)-> PlayerViewController{
-        let playerVC = PlayerViewController.init(item: item, subtitles: subtitles, audios: audios)
+    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false)-> PlayerViewController{
+        let playerVC = PlayerViewController.init(item: item)
         playerVC.recommendationArray = recommendationArray
         playerVC.isDisney = isDisney
         //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
