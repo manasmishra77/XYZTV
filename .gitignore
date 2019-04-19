@@ -5,6 +5,7 @@
 *.dSYM
 Pods/
 build/
+Podfile.lock
 DerivedData/
 xcuserdata/
 timeline.xctimeline
