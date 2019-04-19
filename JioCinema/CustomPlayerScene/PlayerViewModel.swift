@@ -17,6 +17,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func prepareAndAddSubviewsOnPlayer()
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
+    func updateIndicatorState(startIndicator: Bool)
 }
 
 enum BitRatesType: String {
@@ -38,12 +39,12 @@ class PlayerViewModel: NSObject {
     fileprivate var totalBufferDurationTime = 0.0
     fileprivate var bufferCount = 0
     var playListId: String = ""
-
-
+    
+    
     var playbackRightsModel: PlaybackRightsModel?
     fileprivate var episodeNumber :Int? = nil
     var currentDuration: Float = 0.0
-
+    
     fileprivate var isFpsUrl = false
     var isPlayList: Bool = false
     fileprivate var isRecommendationCollectionViewEnabled = false
@@ -86,7 +87,7 @@ class PlayerViewModel: NSObject {
             if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist()
             } else {
-//                let audio = self.playerItem?.selected(type: .audio) ?? ""
+                //                let audio = self.playerItem?.selected(type: .audio) ?? ""
                 self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audioLanguage)
             }
         }
@@ -131,24 +132,25 @@ class PlayerViewModel: NSObject {
                     self.episodeArray = episodes
                 }
             }
-                if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+            if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
                 DispatchQueue.main.async {
                     self.delegate?.reloadMoreLikeCollectionView(i: i)
                 }
-                }
+            }
         }
     }
     
     func callWebServiceForPlaybackRights(id: String) {
+        delegate?.updateIndicatorState(startIndicator: true)
         RJILApiManager.getPlaybackRightsModel(contentId: id) {[unowned self](response) in
-            Utility.sharedInstance.hideIndicator()
+            self.delegate?.updateIndicatorState(startIndicator: false)
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
                 return
             }
             self.playbackRightsModel = response.model
-//                self.playbackRightsModel?.fps = nil
+            //                self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -224,7 +226,7 @@ class PlayerViewModel: NSObject {
         
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         
-//        weak var weakSelf = self.presentingViewController
+        //        weak var weakSelf = self.presentingViewController
         var isDisney = self.isDisney
         RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
             guard response.isSuccess else {
@@ -254,7 +256,7 @@ class PlayerViewModel: NSObject {
     }
     
     func decideURLPriorityForPlayer() {
-         if let fpsUrl = self.playbackRightsModel?.url {
+        if let fpsUrl = self.playbackRightsModel?.url {
             playerActiveUrl = fpsUrl
         } else if let aesUrl = self.playbackRightsModel?.aesUrl {
             playerActiveUrl = aesUrl
@@ -278,11 +280,11 @@ class PlayerViewModel: NSObject {
     
     //MARK:- Add Player Observer
     
-//
-//    
-//    func updateResumeWatchList() {
-//        //vinit_edited
-//    }
+    //
+    //
+    //    func updateResumeWatchList() {
+    //        //vinit_edited
+    //    }
     
     func sendMediaStartAnalyticsEvent() {
         
@@ -293,12 +295,12 @@ class PlayerViewModel: NSObject {
     }
     
     func preparePlayer() {
-//        isMediaEndAnalyticsEventNotSent = true
+        //        isMediaEndAnalyticsEventNotSent = true
         isRecommendationCollectionViewEnabled = false
-//        isMediaStartEventSent = false
+        //        isMediaStartEventSent = false
         
         // audioLanguage = checkItemAudioLanguage(id)
-//        setRecommendationConstarints(appType)
+        //        setRecommendationConstarints(appType)
         guard let id = itemToBePlayed.id else {
             return
         }
@@ -321,8 +323,8 @@ class PlayerViewModel: NSObject {
             currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
                 delegate?.addResumeWatchView()
-//                player?.pause()
-//                self.view.bringSubviewToFront(self.resumeWatchView)
+                //                player?.pause()
+                //                self.view.bringSubviewToFront(self.resumeWatchView)
             } else {
                 delegate?.prepareAndAddSubviewsOnPlayer()
                 callWebServiceForPlaybackRights(id: id)
@@ -366,18 +368,18 @@ class PlayerViewModel: NSObject {
         return nil
     }
     
-
+    
     
     //MARK:- Play Video
     func playVideoWithPlayerItem() {
         //  self.addMetadataToPlayer()
-//        if let player = player {
-//            player.replaceCurrentItem(with: playerItem)
-//        } else {
-//            resetPlayer()
-//            player = AVPlayer(playerItem: playerItem)
-//            player?.play()
-//        }
+        //        if let player = player {
+        //            player.replaceCurrentItem(with: playerItem)
+        //        } else {
+        //            resetPlayer()
+        //            player = AVPlayer(playerItem: playerItem)
+        //            player?.play()
+        //        }
         delegate?.addAvPlayerToController()
         //        handleForPlayerReference()
     }
@@ -459,23 +461,24 @@ class PlayerViewModel: NSObject {
                 playerActiveUrl = bitcode.high
                 break
             }
-
+            
             //           delegate?.changePlayingUrlAsPerBitcode()
-//            self.instantiatePlayerAfterParentalCheck()
+            //            self.instantiatePlayerAfterParentalCheck()
         }
     }
     
-//    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
-//        var playerLang = self.playerItem?.asset.accessibilityLanguage
-//
-//        if let subtitle = subtitleLang {
-//
-//        }
-//        if let audio = audioLang {
-//
-//        }
-        
-//    }
+    //    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
+    //        var playerLang = self.playerItem?.asset.accessibilityLanguage
+    //
+    //        if let subtitle = subtitleLang {
+    //
+    //        }
+    //        if let audio = audioLang {
+    //
+    //        }
+    
+    //    }
+
     
     
 }

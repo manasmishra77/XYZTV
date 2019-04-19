@@ -137,6 +137,8 @@
 		847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */; };
 		847BC0562201D19A00FB5B2A /* JioType-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */; };
 		847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04C2201D19900FB5B2A /* JioType-Light.ttf */; };
+		84B15BF72269B2F700F12E48 /* SpiralSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B15BF52269B2F700F12E48 /* SpiralSpinner.swift */; };
+		84B15BF82269B2F700F12E48 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B15BF62269B2F700F12E48 /* IndicatorManager.swift */; };
 		991194AC222FF18E0070EF3E /* MoreLikeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 991194AB222FF18E0070EF3E /* MoreLikeView.xib */; };
 		991194AE222FF1A90070EF3E /* MoreLikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 991194AD222FF1A90070EF3E /* MoreLikeView.swift */; };
 		9917FB29221EAF6E00F5E15B /* CharacterItemSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9917FB28221EAF6E00F5E15B /* CharacterItemSuperModel.swift */; };
@@ -331,6 +333,8 @@
 		847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
 		847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
 		847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
+		84B15BF52269B2F700F12E48 /* SpiralSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpiralSpinner.swift; sourceTree = "<group>"; };
+		84B15BF62269B2F700F12E48 /* IndicatorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		991194AB222FF18E0070EF3E /* MoreLikeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoreLikeView.xib; sourceTree = "<group>"; };
 		991194AD222FF1A90070EF3E /* MoreLikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreLikeView.swift; sourceTree = "<group>"; };
 		9917FB28221EAF6E00F5E15B /* CharacterItemSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterItemSuperModel.swift; sourceTree = "<group>"; };
@@ -739,6 +743,8 @@
 		993E0D462226994F0064C194 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				84B15BF62269B2F700F12E48 /* IndicatorManager.swift */,
+				84B15BF52269B2F700F12E48 /* SpiralSpinner.swift */,
 				19B4A62121AFC5F200B13C77 /* MultiAudioManager.swift */,
 				7BA1C6E81F2F0715002AB966 /* JCLoginManager.swift */,
 				B811ED411F56BC4600E55FAD /* Log.swift */,
@@ -1021,6 +1027,7 @@
 				7BB0E2111F1E283B00A1DB0B /* JCBaseDataModel.swift in Sources */,
 				7B78D7D41F13B92900F319BF /* RJILPendingTask.swift in Sources */,
 				7B78D7DA1F140DA100F319BF /* JCConfigData.swift in Sources */,
+				84B15BF82269B2F700F12E48 /* IndicatorManager.swift in Sources */,
 				797880FB1F4ECB810032943E /* SearchDataStore.swift in Sources */,
 				19BF8A78214651A6001C58DD /* BaseViewController.swift in Sources */,
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
@@ -1059,6 +1066,7 @@
 				99E4CB07222EA4DC0047861A /* JCSliderButton.swift in Sources */,
 				7B6533011F2FB84C004D55B8 /* JCMetadataVC.swift in Sources */,
 				7B6737131F5975920019610E /* JCLanguageGenreDetailModel.swift in Sources */,
+				84B15BF72269B2F700F12E48 /* SpiralSpinner.swift in Sources */,
 				7B78D7DC1F14752400F319BF /* JCDataStore.swift in Sources */,
 				1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */,
 				9917FB29221EAF6E00F5E15B /* CharacterItemSuperModel.swift in Sources */,

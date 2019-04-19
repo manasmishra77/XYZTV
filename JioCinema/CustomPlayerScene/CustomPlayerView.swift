@@ -32,7 +32,8 @@ class CustomPlayerView: UIView {
     var videoStartingTime = Date()
     var isDisney: Bool = false
     var isPlayList: Bool = false
-
+    var indicator: SpiralSpinner?
+    
     
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
@@ -400,7 +401,7 @@ extension CustomPlayerView : PlayerControlsDelegate {
             self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
             self.currentDuration = Float(seekToValue)
         }
-
+        
     }
     
 }
@@ -417,6 +418,20 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
+    func updateIndicatorState(startIndicator: Bool) {
+        if startIndicator {
+            DispatchQueue.main.async {
+                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: .red, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 100, superViewUserInteractionEnabled: true, shouldUseCoverLayer: false, coverLayerOpacity: 0.6, coverLayerColor: .clear)
+                //self.addSubview(self.indicator!)
+                self.bringSubviewToFront(self.indicator!)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.indicator?.removeFromSuperview()
+            }
+        }
+    }
+    
     func addResumeWatchView() {
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
@@ -630,6 +645,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             switch newStatus {
             case .readyToPlay:
+                //                indicator?.removeFromSuperview()
                 self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 playerViewModel?.isItemToBeAddedInResumeWatchList = true

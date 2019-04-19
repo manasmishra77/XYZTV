@@ -424,7 +424,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, currentItem: tappedItem)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
                 case .Music, .Episode, .Clip, .Trailer:

@@ -120,7 +120,7 @@ extension DisneyCharacterViewModel {
 
         switch item.appType {
         case .Movie , .TVShow:
-            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: "DisneuCharacterScreen", categoryName: "", categoryIndex: selectedIndex, tabBarIndex: nil, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: true, defaultAudioLanguage: item.audioLanguage)
+            let metadataVC = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: item.appType, fromScreen: "DisneuCharacterScreen", categoryName: "", categoryIndex: selectedIndex, tabBarIndex: nil, shouldUseTabBarIndex: false, isMetaDataAvailable: false, metaData: nil, modelForPresentedVC: nil, isDisney: true, defaultAudioLanguage: item.audioLanguage,currentItem: item)
             self.presentVCdelegate?.presentVC(metadataVC)
         
         case .Clip:

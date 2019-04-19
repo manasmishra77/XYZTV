@@ -58,6 +58,9 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         }
         if previousSelectedIndexpath == nil {
             previousSelectedIndexpath = IndexPath(row: menuType == .multiSubtitle ? 1 : 0, section: 0)
+            if menuType == .multiSubtitle && menuItems.count == 1 {
+                previousSelectedIndexpath = IndexPath(row: 0, section: 0)
+            }
         }
 
         if indexPath == previousSelectedIndexpath{
