@@ -17,7 +17,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func prepareAndAddSubviewsOnPlayer()
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
-    func updateIndicatorState(startIndicator: Bool)
+    func updateIndicatorState(toStart: Bool)
 }
 
 enum BitRatesType: String {
@@ -141,9 +141,7 @@ class PlayerViewModel: NSObject {
     }
     
     func callWebServiceForPlaybackRights(id: String) {
-        delegate?.updateIndicatorState(startIndicator: true)
         RJILApiManager.getPlaybackRightsModel(contentId: id) {[unowned self](response) in
-            self.delegate?.updateIndicatorState(startIndicator: false)
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
@@ -313,6 +311,7 @@ class PlayerViewModel: NSObject {
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
+                    delegate?.updateIndicatorState(toStart: false)
                     delegate?.addResumeWatchView()
                 } else {
                     delegate?.prepareAndAddSubviewsOnPlayer()
@@ -322,6 +321,7 @@ class PlayerViewModel: NSObject {
         case .Episode, .TVShow:
             currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
+                delegate?.updateIndicatorState(toStart: false)
                 delegate?.addResumeWatchView()
                 //                player?.pause()
                 //                self.view.bringSubviewToFront(self.resumeWatchView)

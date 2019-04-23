@@ -81,6 +81,7 @@ class CustomPlayerView: UIView {
     }
     
     func configureView(item: Item) {
+        self.updateIndicatorState(toStart: true)
         self.initialiseViewModelForItem(item: item)
     }
     
@@ -418,18 +419,24 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
-    func updateIndicatorState(startIndicator: Bool) {
-        if startIndicator {
+    func updateIndicatorState(toStart: Bool) {
+        if toStart {
+            if indicator == nil {
+                print("indicaator == nil")
+            } else {
+                return
+            }
             DispatchQueue.main.async {
-                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: .red, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 100, superViewUserInteractionEnabled: true, shouldUseCoverLayer: false, coverLayerOpacity: 0.6, coverLayerColor: .clear)
+                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: .green, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
                 //self.addSubview(self.indicator!)
-                self.bringSubviewToFront(self.indicator!)
             }
         } else {
             DispatchQueue.main.async {
-                self.indicator?.removeFromSuperview()
+                IndicatorManager.shared.stopSpinningIndependent(spinnerView: self.indicator)
+                self.indicator = nil
             }
         }
+        
     }
     
     func addResumeWatchView() {
@@ -626,12 +633,21 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 //vinit_commented swipeDownRecommendationView()
             }
         }
+        else if keyPath == #keyPath(player.currentItem.isPlaybackBufferFull)
+        {
+            print("KeyPathBufferFull")
+            self.updateIndicatorState(toStart: false)
+        }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
+            print("KeyPathBufferEmpty")
+            self.updateIndicatorState(toStart: true)
             playerViewModel?.startTime_BufferDuration = Date()
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
         {
+            print("KeyPathLikelyToKeepUp")
+            self.updateIndicatorState(toStart: false)
             playerViewModel?.updatePlayerBufferCount()
             
         }
@@ -645,6 +661,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             switch newStatus {
             case .readyToPlay:
+                print("KeyPathReady")
+                self.updateIndicatorState(toStart: false)
                 //                indicator?.removeFromSuperview()
                 self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
@@ -653,6 +671,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.addPlayerPeriodicTimeObserver()
                 break
             case .failed:
+                if let indicator = indicator {
+                    updateIndicatorState(toStart: false)
+                }
+                
+                print("KeyPathFailed")
                 Log.DLog(message: "Failed" as AnyObject)
                 playerViewModel?.handlePlayerStatusFailed()
                 //                self.isRecommendationCollectionViewEnabled = false
@@ -664,6 +687,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                  sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
              */ //vinit_commented
             default:
+                print("KeyPathUnknown")
                 print("unknown")
             }
             
@@ -722,6 +746,7 @@ extension CustomPlayerView {
         if timerToHideControls == nil{
             return
         }
+        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
         timerToHideControls.invalidate()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
