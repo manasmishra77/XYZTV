@@ -150,7 +150,7 @@ let didSetDisneyMovieWatchlist = Notification.Name("didSetDisneyMoviesWatchList"
 
 let isAutoPlayOnKey = "isAutoPlayOn"
 let isParentalControlShown = "isParentalControlShown"
-
+let isRememberMySettingsSelectedKey = "isRememberMySettingsSelected"
 
 struct AppNotification {
     static let reloadResumeWatch = Notification.Name("resumeWatchReload")

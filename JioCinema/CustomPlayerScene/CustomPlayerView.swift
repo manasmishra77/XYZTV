@@ -51,7 +51,6 @@ class CustomPlayerView: UIView {
     @IBOutlet weak var heightOfRememberMySettings: NSLayoutConstraint!
     @IBOutlet weak var rememberMySettingsButton: JCRememberMe!
     
-    
     @IBOutlet weak var controlDetailView: UIView!
     @IBOutlet weak var controlDetailHolderView: UIView!
     weak var bitrateTableView: PlayerSettingMenu?
@@ -80,9 +79,7 @@ class CustomPlayerView: UIView {
         return []
     }
     
-    func configureView(item: Item) {
-        self.updateIndicatorState(toStart: true)
-        self.initialiseViewModelForItem(item: item)
+    func configureView(item: Item) {        self.initialiseViewModelForItem(item: item)
     }
     
     func initialiseViewModelForItem(item: Item) {
@@ -179,6 +176,9 @@ class CustomPlayerView: UIView {
             if let selectedItem = bitrateTableView?.currentSelectedItem {
                 self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
                 lastSelectedVideoQuality = "\(selectedItem)"
+            }
+            if rememberMyChoiceTapped {
+                            UserDefaults.standard.set(bitrateTableView?.currentSelectedItem, forKey: isRememberMySettingsSelectedKey)
             }
         }
         else {
@@ -347,9 +347,18 @@ extension CustomPlayerView: ButtonPressedDelegate {
         bitrateArray.append(BitRatesType.low.rawValue)
         bitrateArray.append(BitRatesType.medium.rawValue)
         bitrateArray.append(BitRatesType.high.rawValue)
-        if let lastIndex = lastSelectedVideoQuality{
-            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastIndex) ?? 0, section: 0)
+        if let lastSelectedVideoQuality = UserDefaults.standard.value(forKey: isRememberMySettingsSelectedKey){
+            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastSelectedVideoQuality as! String) ?? 0, section: 0)
+            bitrateTableView?.currentSelectedItem = bitrateArray[bitrateTableView?.previousSelectedIndexpath?.row ?? 0]
+            rememberMySettingsButton.setImage(UIImage(named: "filledCheckBox"), for: .normal)
+            rememberMyChoiceTapped = true
+        } else {
+            if let lastIndex = lastSelectedVideoQuality {
+                bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastIndex) ?? 0, section: 0)
+                bitrateTableView?.currentSelectedItem = bitrateArray[bitrateTableView?.previousSelectedIndexpath?.row ?? 0]
+            }
         }
+
         
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         controlDetailHolderView.addSubview(bitrateTableView!)
@@ -427,7 +436,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 return
             }
             DispatchQueue.main.async {
-                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: .green, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
+                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: ViewColor.selectionBarOnLeftNavigationColor , superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
                 //self.addSubview(self.indicator!)
             }
         } else {
@@ -440,6 +449,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func addResumeWatchView() {
+        self.controlDetailView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
         resumeWatchView?.delegate = self

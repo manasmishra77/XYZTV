@@ -159,6 +159,7 @@ class PlayerViewModel: NSObject {
     }
     
     func callWebServiceForRemovingResumedWatchlist() {
+        var isDisney = self.isDisney
         guard let id = itemToBePlayed.id else{
             return
         }
@@ -166,12 +167,12 @@ class PlayerViewModel: NSObject {
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { [weak self] (response) in
-            guard let self = self else {return}
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+//            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
-            if self.isDisney {
+            if isDisney {
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatchForDisney, object: nil)
             }
             else {
@@ -259,14 +260,35 @@ class PlayerViewModel: NSObject {
         } else if let aesUrl = self.playbackRightsModel?.aesUrl {
             playerActiveUrl = aesUrl
         } else if let fpsBitcodeUrl = self.playbackRightsModel?.fps {
-            playerActiveBitrate = .auto
-            playerActiveUrl = fpsBitcodeUrl.auto
+            getActiveUrl(url: fpsBitcodeUrl)
         } else if let aesBitcodeUrl = self.playbackRightsModel?.aes {
-            playerActiveBitrate = .auto
-            playerActiveUrl = aesBitcodeUrl.auto
+            getActiveUrl(url: aesBitcodeUrl)
         }
     }
-    
+    func getActiveUrl(url: Bitcode){
+        switch getUserPreferedVideoQuality() {
+        case .auto:
+            playerActiveUrl = url.auto
+            playerActiveBitrate = .auto
+        case .medium:
+            playerActiveUrl = url.medium
+            playerActiveBitrate = .medium
+        case .high:
+            playerActiveUrl = url.high
+            playerActiveBitrate = .high
+        case .low:
+            playerActiveUrl = url.low
+            playerActiveBitrate = .low
+        }
+    }
+    func getUserPreferedVideoQuality() -> BitRatesType{
+        
+        if let selectedBitrate = UserDefaults.standard.value(forKey: isRememberMySettingsSelectedKey){
+            return BitRatesType(rawValue: selectedBitrate as! String) ?? .auto
+        } else {
+            return .auto
+        }
+    }
     func callWebServiceForPlayListData(id: String) {
         //vinit_commented
     }
@@ -311,7 +333,7 @@ class PlayerViewModel: NSObject {
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
-                    delegate?.updateIndicatorState(toStart: false)
+//                    delegate?.updateIndicatorState(toStart: false)
                     delegate?.addResumeWatchView()
                 } else {
                     delegate?.prepareAndAddSubviewsOnPlayer()
@@ -321,7 +343,7 @@ class PlayerViewModel: NSObject {
         case .Episode, .TVShow:
             currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
-                delegate?.updateIndicatorState(toStart: false)
+//                delegate?.updateIndicatorState(toStart: false)
                 delegate?.addResumeWatchView()
                 //                player?.pause()
                 //                self.view.bringSubviewToFront(self.resumeWatchView)
