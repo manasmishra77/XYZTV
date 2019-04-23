@@ -32,6 +32,8 @@ class CustomPlayerView: UIView {
     var videoStartingTime = Date()
     var isDisney: Bool = false
     var isPlayList: Bool = false
+    
+    fileprivate var currentPlayingIndex = -1
 
     
     var controlsView : PlayersControlView?
@@ -480,9 +482,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 }
                 self.addPlayerNotificationObserver()
             }
-            //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
-            
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
+            
+            
             self.player?.play()
         }
     }
@@ -522,40 +524,39 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
-            //            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-            //                if (playerItem?.currentPlayingIndex) + 1 < (self.moreArray.count) {
-            //                    let nextItem = playerItem?.moreArray[(self.currentPlayingIndex) + 1]
-            ////                    if isMediaEndAnalyticsEventNotSent{
-            ////                        isMediaEndAnalyticsEventNotSent = false
-            ////                        sendMediaEndAnalyticsEvent()
-            ////                    }
-            //                    initialiseViewModelForItem(item: )
-            //                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: nextItem.description ?? "", appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
-            //                    preparePlayerVC()
-            //                } else {
-            //                    delegate?.removePlayerController()
-            //                }
-            //            }
-            //            else if self.appType == .Episode {
-            //                if let nextItem = self.gettingNextEpisode(episodes: self.episodeArray, index: self.currentPlayingIndex) {
-            //                    updateResumeWatchList()
-            //                    changePlayerVC(nextItem.id ?? "", itemImageString: nextItem.banner ?? "", itemTitle: nextItem.name ?? "", itemDuration: 0, totalDuration: 50, itemDesc: self.itemDescription, appType: appType, isPlayList: isPlayList, playListId: playListId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: PLAYER_SCREEN, fromCategory: RECOMMENDATION, fromCategoryIndex: 0)
-            //                    preparePlayerVC()
-            //                } else {
-            //                    delegate?.removePlayerController()
-            //                }
-            //            }
-        } else {
-            delegate?.removePlayerController()
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey) {
+            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
+                if let moreArray = moreLikeView?.moreArray, isPlayList {
+                    if (self.currentPlayingIndex + 1) < moreArray.count {
+                        let nextItem = moreArray[self.currentPlayingIndex + 1]
+                        resetAndRemovePlayer()
+                        self.initialiseViewModelForItem(item: nextItem)
+                    }
+                }
+                else {
+                    delegate?.removePlayerController()
+                }
+            }
+            else if playerItem?.appType == .Episode {
+                if let moreArray = moreLikeView?.episodesArray {
+                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
+                    self.initialiseViewModelForItem(item: nextItem.getItem)
+                    }
+                }
+                else {
+                    delegate?.removePlayerController()
+                }
         }
-        //        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey), isPlayList {
-        //            //handle play list
-        //        } else {
-        //            //dismiss Player
-        //        }
-        //        //vinit_commented
+            
+        }
+        else {
+                    delegate?.removePlayerController()
+        }
+        
     }
+
+
+
     
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
@@ -674,7 +675,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     let remainingTime = duration - currentPlayerTime
                     if remainingTime <= 5
                     {
-                        //vinit_commented //show next item to play code
+                        self?.checkForNextVideoInAutoPlay(remainingTime: remainingTime)
                     }
                 } else {
                     self?.playerTimeObserverToken = nil
@@ -683,8 +684,29 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     
-    func checkForNextVideoInAutoPlay() {
+    func checkForNextVideoInAutoPlay(remainingTime: Double) {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
+        if autoPlayOn, controlsView?.recommendViewHolder.isHidden ?? false {
+            self.controlHolderView.isHidden = false
+            if self.playerItem?.appType == .Episode {
+
+                if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
+                self.resetTimer()
+                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
+                        self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
+                    }
+                }
+            }
+            else {
+                if let moreArray = moreLikeView?.moreArray, moreArray.count > 0, self.isPlayList {
+                self.resetTimer()
+                    if (currentPlayingIndex + 1) < moreArray.count {
+                        let nextItem = moreArray[(currentPlayingIndex + 1)]
+                        self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
+                    }
+                }
+            }
+        }
     }
     
     

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="JioType-Medium.ttf">
+            <string>JioType-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -15,6 +20,42 @@
             <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYT-fc-BAa">
+                    <rect key="frame" x="1151" y="50" width="600" height="150"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fOq-Z0-SJJ">
+                            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="DG3-ML-fG7"/>
+                                <constraint firstAttribute="width" constant="200" id="TIX-op-ITg"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bsb-jy-MHh">
+                            <rect key="frame" x="230" y="30" width="64" height="30"/>
+                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="25"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a1a-Pr-oJ9">
+                            <rect key="frame" x="230" y="90" width="76" height="36"/>
+                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.4023705051" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" id="FKD-lK-Zey"/>
+                        <constraint firstAttribute="bottom" secondItem="fOq-Z0-SJJ" secondAttribute="bottom" id="GqJ-dh-6bv"/>
+                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="leading" secondItem="cYT-fc-BAa" secondAttribute="leading" id="Ucd-ui-hJI"/>
+                        <constraint firstAttribute="width" constant="600" id="b8m-hk-jNm"/>
+                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="top" secondItem="bsb-jy-MHh" secondAttribute="bottom" constant="30" id="hbD-hh-Cg0"/>
+                        <constraint firstAttribute="height" constant="150" id="mAC-73-bar"/>
+                        <constraint firstItem="bsb-jy-MHh" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" constant="30" id="nfX-1f-nqz"/>
+                        <constraint firstItem="bsb-jy-MHh" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="pNN-OJ-mRN"/>
+                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="uiL-aj-a7A"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
                     <rect key="frame" x="0.0" y="880" width="1801" height="155"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -32,7 +73,9 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="cYT-fc-BAa" secondAttribute="trailing" constant="50" id="BEM-2k-0L3"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="width" secondItem="lJi-P7-V4r" secondAttribute="width" id="Fpg-gS-wlU"/>
+                <constraint firstItem="cYT-fc-BAa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="Gxc-JA-WZL"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="f22-0H-thC"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
                 <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" constant="20" id="rSS-Sl-eBU"/>
@@ -41,7 +84,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="nextContentImageView" destination="fOq-Z0-SJJ" id="9y7-m8-VWv"/>
+                <outlet property="nextContentSubtitle" destination="a1a-Pr-oJ9" id="pVq-Of-2As"/>
+                <outlet property="nextContentTitle" destination="bsb-jy-MHh" id="nxu-ms-9KP"/>
                 <outlet property="playerButtonsHolderView" destination="3aa-vQ-cqC" id="vM0-C1-lyh"/>
+                <outlet property="recommendViewHolder" destination="cYT-fc-BAa" id="UT2-OQ-Zz0"/>
                 <outlet property="sliderHolderView" destination="lJi-P7-V4r" id="ktK-uM-Rha"/>
             </connections>
             <point key="canvasLocation" x="9.5" y="94.5"/>

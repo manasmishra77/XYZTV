@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol PlayerControlsDelegate: NSObject {
     func getTimeDetails(_ currentTime: String,_ duration: String)
@@ -18,6 +19,12 @@ protocol PlayerControlsDelegate: NSObject {
 class PlayersControlView: UIView {
     @IBOutlet weak var sliderHolderView: UIView!
     @IBOutlet weak var playerButtonsHolderView: UIView!
+    @IBOutlet weak var recommendViewHolder: UIView!
+    @IBOutlet weak var nextContentImageView: UIImageView!
+    @IBOutlet weak var nextContentTitle: UILabel!
+    @IBOutlet weak var nextContentSubtitle: UILabel!
+    
+    
     
     @IBOutlet weak var playButton: UIButton!
     weak var delegate : PlayerControlsDelegate?
@@ -49,6 +56,32 @@ class PlayersControlView: UIView {
     }
     deinit {
         print("PlayerControlsView deinit called")
+    }
+    
+    func showNextVideoView(videoName: String, remainingTime: Int, banner: String) {
+        DispatchQueue.main.async {
+            
+            self.recommendViewHolder.isHidden = false
+            self.nextContentTitle.text = videoName
+            self.nextContentSubtitle.text = "Playing in " + "\(5)" + " Seconds"
+            var t1 = 4
+            _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true , block: {(t) in
+                
+                self.nextContentSubtitle.text = "Playing in " + "\(Int(t1))" + " Seconds"
+                if t1 < 1 {
+                    self.recommendViewHolder.isHidden = true
+                    t.invalidate()
+                }
+                t1 = t1 - 1
+            })
+            
+            let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner) ?? ""
+            let url = URL(string: imageUrl)
+            self.nextContentImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+            });
+        }
+        
     }
 }
 

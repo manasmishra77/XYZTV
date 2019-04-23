@@ -148,7 +148,7 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-//                self.playbackRightsModel?.fps = nil
+            self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -476,7 +476,27 @@ class PlayerViewModel: NSObject {
 //        }
         
 //    }
-    
+
+    //MARK:- Autoplay handler
+    func gettingNextEpisode(episodes: [Episode], index: Int) -> Episode? {
+        guard episodes.count > 1 else {return nil}
+        if let firstEpisodeNum = episodes[0].episodeNo, let seconEpisodeNum = episodes[1].episodeNo {
+            if firstEpisodeNum < seconEpisodeNum {
+                //For handling Original Case
+                if index < episodes.count - 1 {
+                    let nextEpisode = episodes[index + 1]
+                    return nextEpisode
+                }
+            } else {
+                if (index - 1) > -1 {
+                    let nextEpisode = episodes[index - 1]
+                    return nextEpisode
+                }
+            }
+        }
+        return nil
+    }
+
     
 }
 
@@ -495,10 +515,6 @@ extension PlayerViewController: AVPlayerViewControllerDelegate {
          }
          */ //vinit_commented
     }
-    
-    
-    
-    
 }
 
 
