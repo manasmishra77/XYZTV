@@ -721,9 +721,9 @@
 				538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */,
 				538BF941224943CD00B0AB17 /* PlayerSettingMenu.swift */,
 				991194AD222FF1A90070EF3E /* MoreLikeView.swift */,
-				991194AB222FF18E0070EF3E /* MoreLikeView.xib */,
 				9978D2A322577FDC00003E9E /* ButtonCollectionViewCell.swift */,
 				9978D2A422577FDC00003E9E /* ButtonCollectionViewCell.xib */,
+				991194AB222FF18E0070EF3E /* MoreLikeView.xib */,
 				842D255C2264D7B500EC7284 /* ResumeWatchView.xib */,
 				84090B952265A6BB00E422F0 /* ResumeWatchView.swift */,
 			);

@@ -46,7 +46,7 @@ class CustomSlider: UIView {
         hideThumbnails(requrestToHide: true)
         self.clipsToBounds = true
         progressBar.progress = 0.0
-        progressBar.tintColor = .red
+        progressBar.tintColor = ViewColor.selectionBarOnLeftNavigationColor
         backgroundFocusableButton.delegate = self
     }
     deinit {
