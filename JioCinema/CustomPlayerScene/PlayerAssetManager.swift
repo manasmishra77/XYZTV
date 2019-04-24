@@ -86,26 +86,27 @@ class PlayerAssetManager: NSObject {
     }
     
     func handleAESStreamingUrl(videoUrl: String) {
-        if JCDataStore.sharedDataStore.cdnEncryptionFlag {
-            let videoUrl = URL(string: videoUrl)
-            if let absoluteUrlString = videoUrl?.absoluteString {
-                let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
-                let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
-                let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
-                guard let assetUrl = URL(string: absoluteUrlString) else {
-                    return
+            if JCDataStore.sharedDataStore.cdnEncryptionFlag {
+                let videoUrl = URL(string: videoUrl)
+                if let absoluteUrlString = videoUrl?.absoluteString {
+                    let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
+                    let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
+                    let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
+                    guard let assetUrl = URL(string: absoluteUrlString) else {
+                        return
+                    }
+                    self.asset = AVURLAsset(url: assetUrl, options: header)
+                    self.asset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
                 }
-                asset = AVURLAsset(url: assetUrl, options: header)
-                asset?.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "testVideo-delegateQueue"))
+            } else {
+                guard let assetUrl = URL(string: videoUrl) else { return }
+                self.asset = AVURLAsset(url: assetUrl)
             }
-        } else {
-            guard let assetUrl = URL(string: videoUrl) else { return }
-            asset = AVURLAsset(url: assetUrl)
-        }
-// //vinit_comment        guard let asset = asset else {
-//            return
-//        }
-        delegate?.setAVAssetInPlayerItem(asset: asset!)
+            guard let asset = asset else {
+                        return
+            }
+            self.delegate?.setAVAssetInPlayerItem(asset: asset)
+        
     }
     
     func prepare(toPlay asset: AVURLAsset, withKeys requestedKeys: [String]) {

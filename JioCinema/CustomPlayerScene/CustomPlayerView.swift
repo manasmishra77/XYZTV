@@ -73,6 +73,8 @@ class CustomPlayerView: UIView {
     var myPreferredFocusView:UIView? = nil
     var rememberMyChoiceTapped: Bool = false
     
+    var audioLanguage : AudioLanguage?
+    
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
             return [preferredView]
@@ -219,28 +221,16 @@ class CustomPlayerView: UIView {
             return
         }
         
+        //        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
+        //            _ = player?.currentItem?.select(type: .audio, name: language)
+        //        }
+        //    }
         if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
         }
     }
-    
-    
-    //    private func playerAudioLanguage(_ audioLanguage: String?) {
-    //
-    //        guard let audioLanguage = audioLanguage else {
-    //            return
-    //        }
-    //        let audioes = player?.currentItem?.tracks(type: .audio)
-    //        // Select track with displayName
-    //        guard (audioes?.count ?? 0) > 0 else {return}
-    //
-    //
-    //        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
-    //            _ = player?.currentItem?.select(type: .audio, name: language)
-    //        }
-    //    }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
         guard let language = subtitleLanguage else {
@@ -475,16 +465,17 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
-    
+    //debugging is not done
     func addAvPlayerToController() {
         
         DispatchQueue.main.async {
-            
+        
             if let playerItem = self.player?.currentItem {
                 //                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
                 self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
+                self.resetAndRemovePlayer()
                 self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
                 self.playerLayer = AVPlayerLayer(player: self.player)
                 self.playerLayer?.frame = self.bounds
@@ -493,10 +484,15 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.didSeek = false
                 if self.playerViewModel?.currentDuration ?? 0 > 0 {
                 }
-                self.addPlayerNotificationObserver()
+            }
+            if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
+                
+            }
+            if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
+                self.playerAudioLanguage(audioLanguageToBePlayed.name)
             }
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
-            
+            self.addPlayerNotificationObserver()
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
             self.player?.play()
         }
@@ -700,7 +696,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     
     func checkForNextVideoInAutoPlay() {
-        let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
+        //let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
     }
     
     

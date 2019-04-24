@@ -13,6 +13,7 @@ class PlayerViewController: UIViewController {
     var playerItem: Item?
     var recommendationArray: Any = false
     var isDisney: Bool = false
+    var audioLanguage: AudioLanguage?
     
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
@@ -59,6 +60,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.isDisney = self.isDisney
         viewforplayer?.configureView(item: self.playerItem!)
+        viewforplayer?.audioLanguage = self.audioLanguage
     }
     deinit {
         print("playerVC deinit called")
