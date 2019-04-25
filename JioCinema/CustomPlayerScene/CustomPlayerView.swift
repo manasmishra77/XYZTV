@@ -32,6 +32,7 @@ class CustomPlayerView: UIView {
     var videoStartingTime = Date()
     var isDisney: Bool = false
     var isPlayList: Bool = false
+    var latestEpisodeId: String?
     var indicator: SpiralSpinner?
     fileprivate var currentPlayingIndex = -1
     
@@ -80,13 +81,13 @@ class CustomPlayerView: UIView {
         return []
     }
     
-    func configureView(item: Item) {
+    func configureView(item: Item, latestEpisodeId: String? = nil) {
         self.updateIndicatorState(toStart: true)
-        self.initialiseViewModelForItem(item: item)
+        self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
     }
     
-    func initialiseViewModelForItem(item: Item) {
-        playerViewModel = PlayerViewModel(item: item)
+    func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
+        playerViewModel = PlayerViewModel(item: item, latestEpisodeId: latestEpisodeId)
         playerViewModel?.isDisney = isDisney
         playerViewModel?.delegate = self
         self.playerItem = item
@@ -550,7 +551,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     if (self.currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[self.currentPlayingIndex + 1]
                         resetAndRemovePlayer()
-                        self.initialiseViewModelForItem(item: nextItem)
+                        self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
                     }
                 }
                 else {
@@ -560,7 +561,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             else if playerItem?.appType == .Episode {
                 if let moreArray = moreLikeView?.episodesArray {
                     if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
-                    self.initialiseViewModelForItem(item: nextItem.getItem)
+                        self.initialiseViewModelForItem(item: nextItem.getItem, latestEpisodeId: nil)
                     }
                 }
                 else {
@@ -828,7 +829,7 @@ extension CustomPlayerView {
 extension CustomPlayerView: playerMoreLikeDelegate{
     func moreLikeTapped(newItem: Item) {
         resetAndRemovePlayer()
-        self.initialiseViewModelForItem(item: newItem)
+        self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
     }
     
 }

@@ -182,11 +182,11 @@ class Utility {
         playerVC.vendor = vendor ?? ""
         return playerVC
     }
-    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false)-> PlayerViewController{
-        let playerVC = PlayerViewController.init(item: item)
+    
+    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false, latestEpisodeId: String? = nil)-> PlayerViewController{
+        let playerVC = PlayerViewController.init(item: item, latestEpisodeId: latestEpisodeId)
         playerVC.recommendationArray = recommendationArray
         playerVC.isDisney = isDisney
-        //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
         return playerVC
     }
     
