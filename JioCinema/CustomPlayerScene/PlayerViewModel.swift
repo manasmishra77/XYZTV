@@ -59,17 +59,18 @@ class PlayerViewModel: NSObject {
     var assetManager: PlayerAssetManager?
     var playerActiveUrl: String!
     var playerActiveBitrate: BitRatesType?
+    var latestEpisodeId: String?
     
-    init(item: Item) {
+    init(item: Item, latestEpisodeId: String? = nil) {
         self.itemToBePlayed = item
+        self.latestEpisodeId = latestEpisodeId
         super.init()
         self.setVideoType(item: item)
-        //callWebServiceForPlaybackRights(id: item.id!)
         updateValues(item: item)
     }
+    
     func updateValues(item: Item){
         appType = item.appType
-        
     }
     
     func setVideoType(item: Item) {
@@ -141,14 +142,19 @@ class PlayerViewModel: NSObject {
     }
     
     func callWebServiceForPlaybackRights(id: String) {
-        RJILApiManager.getPlaybackRightsModel(contentId: id) {[unowned self](response) in
+        var contentId = id
+        if let latestEpisodeId = self.latestEpisodeId {
+            contentId = latestEpisodeId
+        }
+        RJILApiManager.getPlaybackRightsModel(contentId: contentId) {[unowned self](response) in
+            self.latestEpisodeId = nil
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
                 return
             }
             self.playbackRightsModel = response.model
-            self.playbackRightsModel?.fps = nil
+//            self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -402,7 +408,7 @@ class PlayerViewModel: NSObject {
         //            player = AVPlayer(playerItem: playerItem)
         //            player?.play()
         //        }
-        delegate?.addAvPlayerToController()
+//        delegate?.addAvPlayerToController()
         //        handleForPlayerReference()
     }
     
@@ -546,7 +552,7 @@ extension PlayerViewController: AVPlayerViewControllerDelegate {
 extension PlayerViewModel: PlayerAssetManagerDelegate {
     func setAVAssetInPlayerItem(asset: AVURLAsset) {
         playerItem = AVPlayerItem(asset: asset)
-        self.playVideoWithPlayerItem()
+        delegate?.addAvPlayerToController()
     }
 }
 

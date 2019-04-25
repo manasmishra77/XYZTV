@@ -11,6 +11,7 @@ import Foundation
 
 class PlayerViewController: UIViewController {
     var playerItem: Item?
+    var latestEpisodeId: String?
     var recommendationArray: Any = false
     var isDisney: Bool = false
     var audioLanguage: AudioLanguage?
@@ -18,9 +19,10 @@ class PlayerViewController: UIViewController {
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
     
-    init(item: Item, isDisney: Bool = false) {
+    init(item: Item, isDisney: Bool = false, latestEpisodeId: String? = nil) {
         self.playerItem = item
         self.isDisney = isDisney
+        self.latestEpisodeId = latestEpisodeId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,7 +61,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.delegate = self
         viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.isDisney = self.isDisney
-        viewforplayer?.configureView(item: self.playerItem!)
+        viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId)
         viewforplayer?.audioLanguage = self.audioLanguage
     }
     deinit {
