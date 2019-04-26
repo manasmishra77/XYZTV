@@ -313,44 +313,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             self.callWebServiceForMoreLikeData(id: id)
         }
-        /*
-         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-         weak var weakSelf = self
-         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-         DispatchQueue.main.async {
-         guard id != "" else {
-         weakSelf?.handleAlertForMetaDataDataFailure()
-         return
-         }
-         weakSelf?.isUserComingFromPlayerScreen = false
-         weakSelf?.loaderContainerView.isHidden = true
-         weakSelf?.metadataContainerView.isHidden = false
-         weakSelf?.activityIndicator.stopAnimating()
-         }
-         
-         if let responseError = error
-         {
-         //TODO: handle error
-         print(responseError)
-         DispatchQueue.main.async {
-         weakSelf?.showMetadata()
-         //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
-         weakSelf?.handleAlertForMetaDataDataFailure()
-         }
-         return
-         }
-         if let responseData = data {
-         
-         weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
-         DispatchQueue.main.async {
-         weakSelf?.showMetadata()
-         let headerView = weakSelf?.prepareHeaderView()
-         weakSelf?.metadataTableView.tableHeaderView = headerView
-         }
-         weakSelf?.callWebServiceForMoreLikeData(id: id)
-         return
-         }
-         }*/
     }
     
     func callWebServiceForMoreLikeData(id: String) {
