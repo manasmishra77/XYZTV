@@ -142,10 +142,6 @@
                         <constraint firstAttribute="height" constant="1904" id="q0i-yv-EOk"/>
                     </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4yQ-2p-bmT" userLabel="ResumeWatchOptionHolderView">
-                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.1037029109589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -156,16 +152,12 @@
                 <constraint firstAttribute="bottom" secondItem="gM3-hv-dnP" secondAttribute="bottom" id="AGQ-72-cSM"/>
                 <constraint firstItem="B8x-H2-bk0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ae0-uA-gqN"/>
                 <constraint firstItem="tBz-cr-dSN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Jem-il-bB8"/>
-                <constraint firstItem="4yQ-2p-bmT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X8R-kk-vaj"/>
                 <constraint firstItem="gM3-hv-dnP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YWK-rK-lSP"/>
-                <constraint firstItem="4yQ-2p-bmT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cak-yn-LrC"/>
                 <constraint firstAttribute="trailing" secondItem="gM3-hv-dnP" secondAttribute="trailing" id="dkz-y9-vZq"/>
                 <constraint firstAttribute="trailing" secondItem="tBz-cr-dSN" secondAttribute="trailing" id="gya-Vi-qJK"/>
                 <constraint firstAttribute="bottom" secondItem="B8x-H2-bk0" secondAttribute="bottom" constant="-400" id="kge-Ne-v6L"/>
-                <constraint firstItem="4yQ-2p-bmT" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="np3-VD-1hA"/>
                 <constraint firstItem="gM3-hv-dnP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="seb-ym-Zz7"/>
                 <constraint firstItem="B8x-H2-bk0" firstAttribute="top" secondItem="oWO-Ep-Kyn" secondAttribute="bottom" id="t5n-Iw-vAW"/>
-                <constraint firstItem="4yQ-2p-bmT" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="w5E-D2-gi5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

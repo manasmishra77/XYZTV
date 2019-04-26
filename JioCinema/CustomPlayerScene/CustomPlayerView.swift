@@ -84,6 +84,7 @@ class CustomPlayerView: UIView {
     
     func configureView(item: Item, latestEpisodeId: String? = nil) {
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
+        addSubviewOnPlayer()
     }
     
     func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
@@ -104,12 +105,15 @@ class CustomPlayerView: UIView {
         guard let controlsView = controlsView else {
             return
         }
-        self.controlsView?.sliderView?.title.text = playerItem?.name
+        self.controlHolderView.addSubview(controlsView)
+        setValuesOnControlView()
+    }
+    
+    func setValuesOnControlView() {
+     self.controlsView?.sliderView?.title.text = playerItem?.name
         if playerItem?.appType == .TVShow {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
         }
-        self.controlHolderView.addSubview(controlsView)
-        //        self.bringSubview(toFront: controlHolderView)
     }
     
     func addMoreLikeView() {
@@ -125,11 +129,39 @@ class CustomPlayerView: UIView {
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
+
+        self.setPlayerItemCurrentIndexInMoreLikeData()
+        
         moreLikeView?.delegate = self
         self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)
     }
+    
+    
+    func setPlayerItemCurrentIndexInMoreLikeData() {
+        if let moreLikeArray = moreLikeView?.moreArray {
+            if isPlayList {
+                for (index,each) in moreLikeArray.enumerated() {
+                    if each.id == self.playerItem?.id {
+                        self.currentPlayingIndex = index
+                        break
+                    }
+                }
+            }
+            else if let episodeLikeArray = moreLikeView?.episodesArray {
+                for (index,each) in episodeLikeArray.enumerated() {
+                    if each.id == self.playerItem?.id {
+                        self.currentPlayingIndex = index
+                        break
+                    }
+                }
+            }
+        }
+        currentPlayingIndex = 0
+    }
+    
+    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         resetTimer()
         if context.nextFocusedView is ItemCollectionViewCell{
@@ -147,6 +179,15 @@ class CustomPlayerView: UIView {
     }
     
     func resetAndRemovePlayer() {
+        self.resetPlayer()
+        self.controlsView?.removeFromSuperview()
+        self.controlsView = nil
+        self.moreLikeView?.removeFromSuperview()
+        self.moreLikeView = nil
+    }
+    
+    
+    func resetPlayer() {
         if let player = player {
             print("1 inside player reset")
             player.pause()
@@ -154,10 +195,6 @@ class CustomPlayerView: UIView {
             self.playerViewModel = nil
             self.playerLayer?.removeFromSuperlayer()
             self.playerLayer = nil
-            self.controlsView?.removeFromSuperview()
-            self.controlsView = nil
-            self.moreLikeView?.removeFromSuperview()
-            self.moreLikeView = nil
         }
         player = nil
     }
@@ -449,12 +486,14 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func prepareAndAddSubviewsOnPlayer() {
-        addPlayersControlView()
-        addMoreLikeView()
         startTimer()
         self.controlDetailView.isHidden = true
-        
         //moreLikeView?.moreLikeCollectionView.reloadData()
+    }
+    
+    func addSubviewOnPlayer() {
+    addPlayersControlView()
+    addMoreLikeView()
     }
     
     func reloadMoreLikeCollectionView(i: Int) {
@@ -462,6 +501,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
         self.moreLikeView?.moreLikeCollectionView.reloadData()
+        self.setPlayerItemCurrentIndexInMoreLikeData()
     }
     
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel) {
@@ -494,7 +534,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
-                self.resetAndRemovePlayer()
+                self.resetPlayer()
                 self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
                 self.playerLayer = AVPlayerLayer(player: self.player)
                 self.playerLayer?.frame = self.bounds
@@ -560,7 +600,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let moreArray = moreLikeView?.moreArray, isPlayList {
                     if (self.currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[self.currentPlayingIndex + 1]
-                        resetAndRemovePlayer()
+                        resetPlayer()
                         self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
                     }
                 }
@@ -571,6 +611,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             else if playerItem?.appType == .Episode {
                 if let moreArray = moreLikeView?.episodesArray {
                     if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
+                        self.resetPlayer()
                         self.initialiseViewModelForItem(item: nextItem.getItem, latestEpisodeId: nil)
                     }
                 }
@@ -834,13 +875,14 @@ extension CustomPlayerView {
     }
     
 }
+
 extension CustomPlayerView: playerMoreLikeDelegate{
-    func moreLikeTapped(newItem: Item) {
-        resetAndRemovePlayer()
+    func moreLikeTapped(newItem: Item, index: Int) {
+        resetPlayer()
         self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
     }
-    
 }
+
 extension CustomPlayerView: ResumeWatchDelegate{
     func resumeWatchingPressed() {
         resumeWatchView?.removeFromSuperview()

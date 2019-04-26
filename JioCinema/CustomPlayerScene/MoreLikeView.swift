@@ -8,7 +8,7 @@
 
 import UIKit
 protocol playerMoreLikeDelegate : NSObject {
-    func moreLikeTapped(newItem: Item)
+    func moreLikeTapped(newItem: Item, index: Int)
 }
 
 class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
@@ -24,6 +24,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     var isDisney: Bool = false
     var id: String?
     weak var delegate: playerMoreLikeDelegate?
+    
     func configMoreLikeView() {
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self
@@ -73,7 +74,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             if id == newItem.id {
                 return
             }
-            delegate?.moreLikeTapped(newItem: newItem)
+            delegate?.moreLikeTapped(newItem: newItem, index: indexPath.row)
         }
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
@@ -105,4 +106,5 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     deinit {
         print("moreLikeView deinit called")
     }
+    
 }
