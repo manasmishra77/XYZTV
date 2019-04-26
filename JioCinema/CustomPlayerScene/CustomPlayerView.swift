@@ -13,6 +13,7 @@ import Foundation
 
 protocol CustomPlayerViewProtocol: NSObjectProtocol {
     func removePlayerController()
+    func removePlayerAfterAesFailure()
 }
 
 var playerViewControllerKVOContext = 0
@@ -801,6 +802,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
         //vinit_comment handle player error
+    }
+    
+    
+    
+    func dismissPlayerOnAesFailure() {
+        delegate?.removePlayerAfterAesFailure()
     }
 }
 

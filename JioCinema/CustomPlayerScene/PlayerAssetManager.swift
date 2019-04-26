@@ -103,7 +103,7 @@ class PlayerAssetManager: NSObject {
                 self.asset = AVURLAsset(url: assetUrl)
             }
             guard let asset = asset else {
-                        return
+                 return
             }
             self.delegate?.setAVAssetInPlayerItem(asset: asset)
         

@@ -93,6 +93,19 @@ class PlayerViewController: UIViewController {
 
 
 extension PlayerViewController: CustomPlayerViewProtocol {
+    func removePlayerAfterAesFailure() {
+        let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+            DispatchQueue.main.async {
+                print("dismiss")
+            }
+        }
+        alert.addAction(cancelAction)
+        DispatchQueue.main.async {
+            self.present(alert, animated: false, completion: nil)
+        }
+    }
+    
     func removePlayerController() {
         self.dismiss(animated: false) {
         }

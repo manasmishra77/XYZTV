@@ -18,6 +18,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
+    func dismissPlayerOnAesFailure()
 }
 
 enum BitRatesType: String {
@@ -147,7 +148,6 @@ class PlayerViewModel: NSObject {
             contentId = latestEpisodeId
         }
         RJILApiManager.getPlaybackRightsModel(contentId: contentId) {[unowned self](response) in
-            self.latestEpisodeId = nil
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
@@ -441,27 +441,14 @@ class PlayerViewModel: NSObject {
     func handlePlayerStatusFailed() {
         Log.DLog(message: "Failed" as AnyObject)
         var failureType = "FPS"
-        if !isVideoUrlFailedOnce, let _ = self.playbackRightsModel?.url {
-            isVideoUrlFailedOnce = true
+        if isFpsUrl {
             failureType = "FPS"
             isFpsUrl = false
             assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
-            //AES url failed
             failureType = "AES"
-            let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
-            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                DispatchQueue.main.async {
-                    print("dismiss")
-                    //vinit_commented                            self.dismissPlayerVC()
-                }
-            }
-            alert.addAction(cancelAction)
-            DispatchQueue.main.async {
-                //vinit_commented                        self.present(alert, animated: false, completion: nil)
-            }
+            self.delegate?.dismissPlayerOnAesFailure()
         }
-        
     }
     
     func changePlayerBitrateTye(bitrateQuality: BitRatesType) {
