@@ -39,6 +39,15 @@ struct PlaybackRightsModel: Codable {
     var displaySubtitles: [String]?
     var kids: Bool?
     var download: String?
+    var introCreditStart: String?
+    var endCreditStart: String?
+    var introCreditEnd: String?
+    var endCreditEnd: String?
+    var recapCreditStart: String?
+    var precapCreditStart: String?
+    var recapCreditEnd: String?
+    var precapCreditEnd: String?
+    var mpdRevision: Int?
     
     enum CodingKeys: String, CodingKey {
         case code = "code"
@@ -64,6 +73,15 @@ struct PlaybackRightsModel: Codable {
         case displaySubtitles = "displaySubtitles"
         case kids = "kids"
         case download = "download"
+        case introCreditStart = "introCreditStart"
+        case endCreditStart = "endCreditStart"
+        case introCreditEnd = "introCreditEnd"
+        case endCreditEnd = "endCreditEnd"
+        case recapCreditStart = "recapCreditStart"
+        case precapCreditStart = "precapCreditStart"
+        case recapCreditEnd = "recapCreditEnd"
+        case precapCreditEnd = "precapCreditEnd"
+        case mpdRevision = "mpdRevision"
     }
     
     init(from decoder: Decoder) throws {
@@ -112,6 +130,15 @@ struct PlaybackRightsModel: Codable {
         displaySubtitles?.insert("Off", at: 0)
         kids = try values.decodeIfPresent(Bool.self, forKey: .kids)
         download = try values.decodeIfPresent(String.self, forKey: .download)
+        introCreditStart = try values.decodeIfPresent(String.self, forKey: .introCreditStart)
+        endCreditStart = try values.decodeIfPresent(String.self, forKey: .endCreditStart)
+        introCreditEnd = try values.decodeIfPresent(String.self, forKey: .introCreditEnd)
+        endCreditEnd = try values.decodeIfPresent(String.self, forKey: .endCreditEnd)
+        recapCreditStart = try values.decodeIfPresent(String.self, forKey: .recapCreditStart)
+        precapCreditStart = try values.decodeIfPresent(String.self, forKey: .precapCreditStart)
+        recapCreditEnd = try values.decodeIfPresent(String.self, forKey: .recapCreditEnd)
+        precapCreditEnd = try values.decodeIfPresent(String.self, forKey: .precapCreditEnd)
+        mpdRevision = try values.decodeIfPresent(Int.self, forKey: .mpdRevision)
     }
 }
 

@@ -86,7 +86,7 @@ class PlayerViewModel: NSObject {
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             let totalDurationFloat = Double(totalDuration.floatValue() ?? 0)
-            
+
             if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist()
             } else {
@@ -157,16 +157,22 @@ class PlayerViewModel: NSObject {
             self.playbackRightsModel = response.model
 //            self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
-            
+            self.checkForSkipIntroOrRecap()
+
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
                 self.isFpsUrl = true
             }
             self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
         }
+        
     }
-    
+    func checkForSkipIntroOrRecap() {
+        if playbackRightsModel?.introCreditEnd != nil || playbackRightsModel?.recapCreditEnd != nil{
+            print("----------------------\(playbackRightsModel?.contentName)")
+        }
+    }
     func callWebServiceForRemovingResumedWatchlist() {
-        var isDisney = self.isDisney
+        let isDisney = self.isDisney
         guard let id = itemToBePlayed.id else{
             return
         }
@@ -233,7 +239,7 @@ class PlayerViewModel: NSObject {
         let header = isDisney ? RJILApiManager.RequestHeaderType.disneyCommon : RJILApiManager.RequestHeaderType.baseCommon
         
         //        weak var weakSelf = self.presentingViewController
-        var isDisney = self.isDisney
+        let isDisney = self.isDisney
         RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
             guard response.isSuccess else {
                 return
