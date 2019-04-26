@@ -14,7 +14,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(i: Int)
-    func prepareAndAddSubviewsOnPlayer()
+    func setValuesForSubviewsOnPlayer()
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
@@ -47,7 +47,7 @@ class PlayerViewModel: NSObject {
     
     fileprivate var isFpsUrl = false
     var isPlayList: Bool = false
-    fileprivate var isRecommendationCollectionViewEnabled = false
+//    fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     var isItemToBeAddedInResumeWatchList = true
     var isPlayListFirstItemToBePlayed: Bool = false
@@ -322,7 +322,7 @@ class PlayerViewModel: NSObject {
     
     func preparePlayer() {
         //        isMediaEndAnalyticsEventNotSent = true
-        isRecommendationCollectionViewEnabled = false
+//        isRecommendationCollectionViewEnabled = false
         //        isMediaStartEventSent = false
         
         // audioLanguage = checkItemAudioLanguage(id)
@@ -335,15 +335,14 @@ class PlayerViewModel: NSObject {
             if isPlayList, id == ""{
                 self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlayListData(id: playListId)
-                delegate?.prepareAndAddSubviewsOnPlayer()
+                delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
-//                    delegate?.updateIndicatorState(toStart: false)
                     delegate?.addResumeWatchView()
                 } else {
-                    delegate?.prepareAndAddSubviewsOnPlayer()
                     callWebServiceForPlaybackRights(id: id)
+                    delegate?.setValuesForSubviewsOnPlayer()
                 }
             }
         case .Episode, .TVShow:
@@ -354,17 +353,17 @@ class PlayerViewModel: NSObject {
                 //                player?.pause()
                 //                self.view.bringSubviewToFront(self.resumeWatchView)
             } else {
-                delegate?.prepareAndAddSubviewsOnPlayer()
                 callWebServiceForPlaybackRights(id: id)
+                delegate?.setValuesForSubviewsOnPlayer()
             }
         case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
                 self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlayListData(id: playListId)
-                delegate?.prepareAndAddSubviewsOnPlayer()
+                delegate?.setValuesForSubviewsOnPlayer()
             } else {
-                delegate?.prepareAndAddSubviewsOnPlayer()
                 callWebServiceForPlaybackRights(id: id)
+                delegate?.setValuesForSubviewsOnPlayer()
             }
         default:
             break

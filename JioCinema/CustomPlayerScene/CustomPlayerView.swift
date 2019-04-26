@@ -52,8 +52,8 @@ class CustomPlayerView: UIView {
     @IBOutlet weak var heightOfRememberMySettings: NSLayoutConstraint!
     @IBOutlet weak var rememberMySettingsButton: JCRememberMe!
     
-    @IBOutlet weak var controlDetailView: UIView!
-    @IBOutlet weak var controlDetailHolderView: UIView!
+    @IBOutlet weak var popUpHolderView: UIView!
+    @IBOutlet weak var tableViewHolderInPopupView: UIView!
     weak var bitrateTableView: PlayerSettingMenu?
     weak var multiAudioTableView: PlayerSettingMenu?
     weak var subtitleTableView: PlayerSettingMenu?
@@ -64,7 +64,7 @@ class CustomPlayerView: UIView {
     
     var recommendationArray: Any = false
     
-    @IBOutlet weak var controlDetailHolderWidth: NSLayoutConstraint!
+    @IBOutlet weak var popUpTableViewHolderWidth: NSLayoutConstraint!
     
     
     var timer: Timer!
@@ -82,7 +82,8 @@ class CustomPlayerView: UIView {
         return []
     }
     
-    func configureView(item: Item, latestEpisodeId: String? = nil) {
+    func configureView(item: Item, latestEpisodeId: String? = nil, audioLanguage: AudioLanguage? = nil) {
+        self.audioLanguage = audioLanguage
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
         addSubviewOnPlayer()
     }
@@ -236,7 +237,7 @@ class CustomPlayerView: UIView {
         multiAudioTableView = nil
         bitrateTableView = nil
         
-        self.controlDetailView.isHidden = true
+        self.popUpHolderView.isHidden = true
     }
     
     
@@ -329,47 +330,47 @@ extension CustomPlayerView: ButtonPressedDelegate {
             subtitleArray = subtitles
         }
         
-        controlDetailHolderWidth.constant = 1280.5
+        popUpTableViewHolderWidth.constant = 1280.5
         buttonTopBorder.isHidden = true
         heightOfPopUpView.constant = 715
         heightOfRememberMySettings.constant = 0
         rememberMySettingsButton.isHidden = true
-        self.controlDetailView.isHidden = false
-        myPreferredFocusView = self.controlDetailHolderView
+        self.popUpHolderView.isHidden = false
+        myPreferredFocusView = self.tableViewHolderInPopupView
         
-        self.controlDetailView.layoutIfNeeded()
+        self.popUpHolderView.layoutIfNeeded()
         
         
         multiAudioTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        multiAudioTableView?.frame = CGRect.init(x: controlDetailHolderView.frame.origin.x, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        multiAudioTableView?.frame = CGRect.init(x: tableViewHolderInPopupView.frame.origin.x, y: tableViewHolderInPopupView.frame.origin.y, width: popUpTableViewHolderWidth.constant/2, height: tableViewHolderInPopupView.bounds.height)
         if let lastIndex = audioArray.firstIndex(of: lastSelectedAudioLanguage ?? ""){
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
-        controlDetailHolderView.addSubview(multiAudioTableView!)
+        tableViewHolderInPopupView.addSubview(multiAudioTableView!)
         
         
         subtitleTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        subtitleTableView?.frame = CGRect.init(x: (controlDetailHolderWidth.constant/2) + 2, y: controlDetailHolderView.frame.origin.y, width: controlDetailHolderWidth.constant/2, height: controlDetailHolderView.bounds.height)
+        subtitleTableView?.frame = CGRect.init(x: (popUpTableViewHolderWidth.constant/2) + 2, y: tableViewHolderInPopupView.frame.origin.y, width: popUpTableViewHolderWidth.constant/2, height: tableViewHolderInPopupView.bounds.height)
         if let lastIndex = subtitleArray.firstIndex(of: lastSelectedAudioSubtitle ?? ""){
             subtitleTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
         }
         subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multiSubtitle)
         
-        controlDetailHolderView.addSubview(subtitleTableView!)
+        tableViewHolderInPopupView.addSubview(subtitleTableView!)
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
-        self.controlDetailView.isHidden = false
-        myPreferredFocusView = self.controlDetailHolderView
-        controlDetailHolderWidth.constant = 640
+        self.popUpHolderView.isHidden = false
+        myPreferredFocusView = self.tableViewHolderInPopupView
+        popUpTableViewHolderWidth.constant = 640
         heightOfPopUpView.constant = 820
         heightOfRememberMySettings.constant = 105
         rememberMySettingsButton.isHidden = false
         buttonTopBorder.isHidden = false
-        self.controlDetailView.layoutIfNeeded()
+        self.popUpHolderView.layoutIfNeeded()
         bitrateTableView = Utility.getXib("PlayerSettingMenu", type: PlayerSettingMenu.self, owner: self)
-        bitrateTableView?.frame = controlDetailHolderView.bounds
+        bitrateTableView?.frame = tableViewHolderInPopupView.bounds
         
         var bitrateArray = [String]()
         bitrateArray.append(BitRatesType.auto.rawValue)
@@ -390,7 +391,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
 
         
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
-        controlDetailHolderView.addSubview(bitrateTableView!)
+        tableViewHolderInPopupView.addSubview(bitrateTableView!)
     }
     func nextButtonPressed(toDisplay: Bool) {
         playnextOrPreviousItem(playNext: true)
@@ -478,22 +479,21 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func addResumeWatchView() {
-        self.controlDetailView.isHidden = true
+        self.popUpHolderView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
         resumeWatchView?.delegate = self
         self.addSubview(resumeWatchView!)
     }
     
-    func prepareAndAddSubviewsOnPlayer() {
+    func setValuesForSubviewsOnPlayer() {
         startTimer()
-        self.controlDetailView.isHidden = true
-        //moreLikeView?.moreLikeCollectionView.reloadData()
+        setValuesOnControlView()
     }
     
     func addSubviewOnPlayer() {
-    addPlayersControlView()
-    addMoreLikeView()
+        addPlayersControlView()
+        addMoreLikeView()
     }
     
     func reloadMoreLikeCollectionView(i: Int) {
@@ -816,7 +816,6 @@ extension CustomPlayerView {
         if timerToHideControls == nil{
             return
         }
-        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
         timerToHideControls.invalidate()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
@@ -829,6 +828,7 @@ extension CustomPlayerView {
             self.controlsView?.isHidden = true
             self.moreLikeView?.isHidden = true
         }
+        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
@@ -883,25 +883,27 @@ extension CustomPlayerView: playerMoreLikeDelegate{
     }
 }
 
-extension CustomPlayerView: ResumeWatchDelegate{
+extension CustomPlayerView: ResumeWatchDelegate {
     func resumeWatchingPressed() {
         resumeWatchView?.removeFromSuperview()
+        resumeWatchView = nil
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
-        prepareAndAddSubviewsOnPlayer()
+        setValuesForSubviewsOnPlayer()
     }
     
     func startFromBeginning() {
         playerViewModel?.currentDuration = 0
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
         resumeWatchView?.removeFromSuperview()
-        self.prepareAndAddSubviewsOnPlayer()
+        resumeWatchView = nil
+        self.setValuesForSubviewsOnPlayer()
         
     }
     
     func removeFromResumeWatchingPressed() {
         playerViewModel?.callWebServiceForRemovingResumedWatchlist()
-        resumeWatchView = nil
         resumeWatchView?.removeFromSuperview()
+        resumeWatchView = nil
         delegate?.removePlayerController()
     }
     

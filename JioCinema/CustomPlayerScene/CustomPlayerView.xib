@@ -33,7 +33,7 @@
                         <constraint firstAttribute="height" constant="500" id="4No-A5-Iqc"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-cr-dSN">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-cr-dSN">
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1904"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRx-If-RQs">
@@ -135,7 +135,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.3849529109589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.66240669617017167" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="top" secondItem="tBz-cr-dSN" secondAttribute="top" constant="130" id="ZB1-gw-vlk"/>
                         <constraint firstItem="ZRx-If-RQs" firstAttribute="centerX" secondItem="tBz-cr-dSN" secondAttribute="centerX" id="cnx-Ib-W4O"/>
@@ -163,16 +163,16 @@
             <connections>
                 <outlet property="bottomSpaceOfMoreLikeInContainer" destination="kge-Ne-v6L" id="dF2-hU-Qmg"/>
                 <outlet property="buttonTopBorder" destination="BUD-e4-qTK" id="4Un-gC-pYX"/>
-                <outlet property="controlDetailHolderView" destination="O2f-iE-9Xj" id="OQO-hQ-5ZP"/>
-                <outlet property="controlDetailHolderWidth" destination="8Hf-Py-G2N" id="rcH-MA-eEd"/>
-                <outlet property="controlDetailView" destination="tBz-cr-dSN" id="h56-D8-EtA"/>
                 <outlet property="controlHolderView" destination="oWO-Ep-Kyn" id="Y8C-VG-OBs"/>
                 <outlet property="heightOfMoreLikeHolderView" destination="4No-A5-Iqc" id="TO5-Lm-3Tm"/>
                 <outlet property="heightOfPopUpView" destination="R8D-VK-9FQ" id="Cob-2x-pLJ"/>
                 <outlet property="heightOfRememberMySettings" destination="ThY-aM-lpt" id="aIQ-fp-uRB"/>
                 <outlet property="moreLikeHolderView" destination="B8x-H2-bk0" id="4nq-Qu-Kdu"/>
                 <outlet property="playerHolderView" destination="gM3-hv-dnP" id="6u4-Ki-GUv"/>
+                <outlet property="popUpHolderView" destination="tBz-cr-dSN" id="qOc-zT-z9t"/>
+                <outlet property="popUpTableViewHolderWidth" destination="8Hf-Py-G2N" id="rcH-MA-eEd"/>
                 <outlet property="rememberMySettingsButton" destination="uqs-Oj-7VP" id="OEJ-CQ-xnk"/>
+                <outlet property="tableViewHolderInPopupView" destination="O2f-iE-9Xj" id="OQO-hQ-5ZP"/>
             </connections>
         </view>
     </objects>
