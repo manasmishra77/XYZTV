@@ -79,7 +79,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         view.collectionView.delegate = view
         view.collectionView.dataSource = view
         
-        view.collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        view.collectionView.decelerationRate = UIScrollView.DecelerationRate.fast
         
 //        let swipeRight = UISwipeGestureRecognizer(target: view, action: #selector(view.respondToSwipeGesture))
 //        swipeRight.direction = [.right]

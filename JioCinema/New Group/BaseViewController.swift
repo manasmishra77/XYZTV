@@ -89,7 +89,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 coverView.backgroundColor = ViewColor.commonBackground
             }
             sideNavigationVC?.view.addSubview(coverView)
-            sideNavigationVC?.view.bringSubview(toFront: coverView)
+            sideNavigationVC?.view.bringSubviewToFront(coverView)
             DispatchQueue.main.asyncAfter(deadline: .now()+2) {
                 coverView.removeFromSuperview()
             }

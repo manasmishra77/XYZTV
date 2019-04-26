@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 struct LanguageGenreDetailModel: Codable {
     var code:Int?

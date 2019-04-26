@@ -46,8 +46,8 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
         
 //                     jioIdTextField.text     = "poonam2016"
 //                     passwordTextField.text  = "poonam@12"
-//        jioIdTextField.text     = "prabhu.p"
-//        passwordTextField.text  = "ril@1234"
+        jioIdTextField.text     = "prabhu.p"
+        passwordTextField.text  = "ril@1234"
 
         if(jioIdTextField.text?.count == 0 || passwordTextField.text?.count == 0) {
             Utility.sharedInstance.showAlert(title: "Jio ID/Password cannot be empty", message: "")
@@ -209,7 +209,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     {
         let alert = UIAlertController(title: "Alert",
                                       message: alertString,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)

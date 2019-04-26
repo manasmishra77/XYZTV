@@ -30,29 +30,29 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
     var topShelfItems: [TVContentItem] {
         return []
         let topShelfIdentifier = TVContentIdentifier(identifier:
-            "Featured", container: nil)!
+            "Featured", container: nil)
         let topShelfSection = TVContentItem(contentIdentifier:
-            topShelfIdentifier)!
+            topShelfIdentifier)
         topShelfSection.title = "Featured"
    
         var topShelfItemArray = [TVContentItem]()
         
-        if let shelfModelArray = self.webServiceCallForTopShelfItems() {
-            
-            for eachShelfModel in shelfModelArray{
-                if let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.title ?? "", container: nil){
-                    let topShelfItem = TVContentItem(contentIdentifier: tvContentIdentifier)
-                    topShelfItem?.imageURL = URL(string: eachShelfModel.image_url ?? "")
-                    if let displayUrl = self.urlFor(identifier: eachShelfModel.action_data ?? ""){
-                        topShelfItem?.displayURL = displayUrl
-                        topShelfItem?.imageShape = .HDTV
-                    }
-                    if let topShelfItem = topShelfItem{
-                        topShelfItemArray.append(topShelfItem)
-                    }
-                }
-            }
-        }
+//        if let shelfModelArray = self.webServiceCallForTopShelfItems() {
+//            
+//            for eachShelfModel in shelfModelArray{
+//                 let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.title ?? "", container: nil)
+//                    let topShelfItem = TVContentItem(contentIdentifier: tvContentIdentifier)
+//                    topShelfItem.imageURL = URL(string: eachShelfModel.image_url ?? "")
+//                    if let displayUrl = self.urlFor(identifier: eachShelfModel.action_data ?? ""){
+//                        topShelfItem.displayURL = displayUrl
+//                        topShelfItem?.imageShape = .HDTV
+//                    }
+//                    if let topShelfItem = topShelfItem{
+//                        topShelfItemArray.append(topShelfItem)
+//                    }
+//                
+//            }
+//        }
         topShelfSection.topShelfItems = topShelfItemArray
         return [topShelfSection]
     }

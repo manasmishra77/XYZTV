@@ -68,8 +68,8 @@ class JCTabBarController: UITabBarController {
         
         //To change the tab bar title appearance
         for item in self.tabBar.items! {
-            let unselectedItem = [NSAttributedStringKey.foregroundColor: UIColor.darkGray]
-            let selectedItem = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let unselectedItem = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            let selectedItem = [NSAttributedString.Key.foregroundColor: UIColor.white]
             
             item.setTitleTextAttributes(unselectedItem, for: .normal)
             item.setTitleTextAttributes(selectedItem, for: .selected)
