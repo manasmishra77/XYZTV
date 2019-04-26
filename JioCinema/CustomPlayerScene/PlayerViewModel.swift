@@ -18,6 +18,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
+    func dismissPlayer()
 }
 
 enum BitRatesType: String {
@@ -50,9 +51,9 @@ class PlayerViewModel: NSObject {
 //    fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     var isItemToBeAddedInResumeWatchList = true
-    var isPlayListFirstItemToBePlayed: Bool = false
-    var isMoreDataAvailable: Bool = false
-    var isEpisodeDataAvailable: Bool = false
+//    var isPlayListFirstItemToBePlayed: Bool = false
+//    var isMoreDataAvailable: Bool = false
+//    var isEpisodeDataAvailable: Bool = false
     var isDisney: Bool = false
     
     var bannerUrlString: String = ""
@@ -67,6 +68,7 @@ class PlayerViewModel: NSObject {
         super.init()
         self.setVideoType(item: item)
         updateValues(item: item)
+        isPlayList = itemToBePlayed.isPlaylist ?? false
     }
     
     func updateValues(item: Item){
@@ -103,20 +105,20 @@ class PlayerViewModel: NSObject {
             }
             var i = 0
             if let recommendationItems = response.model?.more {
-                self.isMoreDataAvailable = false
+//                self.isMoreDataAvailable = false
                 self.moreArray?.removeAll()
                 if recommendationItems.count > 0 {
-                    self.isMoreDataAvailable = true
+//                    self.isMoreDataAvailable = true
                     self.moreArray = recommendationItems
                 }
             } else if let episodes = response.model?.episodes {
-                self.isEpisodeDataAvailable = false
+//                self.isEpisodeDataAvailable = false
                 
                 self.episodeArray?.removeAll()
                 if episodes.count > 0{
                     self.episodeArray?.removeAll()
                     if episodes.count > 0{
-                        self.isEpisodeDataAvailable = true
+//                        self.isEpisodeDataAvailable = true
                         for each in episodes{
                             if each.id == self.itemToBePlayed.id {
                                 self.episodeNumber = each.episodeNo
@@ -129,11 +131,11 @@ class PlayerViewModel: NSObject {
                         }
                         self.episodeArray = episodes
                     }
-                    self.isEpisodeDataAvailable = true
+//                    self.isEpisodeDataAvailable = true
                     self.episodeArray = episodes
                 }
             }
-            if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+            if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
                 DispatchQueue.main.async {
                     self.delegate?.reloadMoreLikeCollectionView(i: i)
                 }
@@ -297,6 +299,39 @@ class PlayerViewModel: NSObject {
     }
     func callWebServiceForPlayListData(id: String) {
         //vinit_commented
+        let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
+        let params = ["id": id,"contentId":""]
+        if isPlayList && itemToBePlayed.id == ""{
+            //url = playBackForPlayList.appending(playListId)
+            //params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
+        }
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: PlaylistDataModel.self) {[weak self] (response) in
+            guard let self = self else {return}
+            guard response.isSuccess else {
+                var failureType = ""
+                failureType = "Playlist service failed"
+                return
+            }
+            let playList = response.model!
+            if let mores = playList.more {
+                self.moreArray?.removeAll()
+                if mores.count > 0{
+                    for each in mores{
+                        if each.id == self.itemToBePlayed.id{
+                            break
+                        }
+                    }
+                    self.moreArray = mores
+                    if (self.moreArray?.count ?? 0 > 0){
+                        DispatchQueue.main.async {
+                            self.delegate?.reloadMoreLikeCollectionView(i:  0)
+                        }
+                    }
+
+                }
+            }
+            
+        }
     }
     
     func instantiatePlayerAfterParentalCheck() {
@@ -333,14 +368,16 @@ class PlayerViewModel: NSObject {
         switch appType {
         case .Movie:
             if isPlayList, id == ""{
-                self.isPlayListFirstItemToBePlayed = true
-                callWebServiceForPlayListData(id: playListId)
+//                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlaybackRights(id: itemToBePlayed.playlistId ?? "")
+//                callWebServiceForPlayListData(id: playListId)
                 delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
                     delegate?.addResumeWatchView()
                 } else {
+                    
                     callWebServiceForPlaybackRights(id: id)
                     delegate?.setValuesForSubviewsOnPlayer()
                 }
@@ -358,8 +395,9 @@ class PlayerViewModel: NSObject {
             }
         case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
-                self.isPlayListFirstItemToBePlayed = true
-                callWebServiceForPlayListData(id: playListId)
+//                self.isPlayListFirstItemToBePlayed = true
+                callWebServiceForPlaybackRights(id: itemToBePlayed.latestId ?? "")
+//                callWebServiceForPlayListData(id: playListId)
                 delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 callWebServiceForPlaybackRights(id: id)

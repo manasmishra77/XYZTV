@@ -41,6 +41,7 @@ class CustomPlayerView: UIView {
     var resumeWatchView: ResumeWatchView?
     fileprivate var didSeek :Bool = false
     
+    @IBOutlet weak var alertMsg: UILabel!
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
@@ -81,7 +82,7 @@ class CustomPlayerView: UIView {
         }
         return []
     }
-    
+
     func configureView(item: Item, latestEpisodeId: String? = nil, audioLanguage: AudioLanguage? = nil) {
         self.audioLanguage = audioLanguage
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
@@ -126,7 +127,12 @@ class CustomPlayerView: UIView {
         } else if let moreLikeArray = recommendationArray as? [Episode]{
             moreLikeView?.episodesArray = moreLikeArray
         } else {
-            playerViewModel?.callWebServiceForMoreLikeData()
+            if isPlayList == true, playerItem?.id == "" {
+                playerViewModel?.callWebServiceForPlayListData(id: playerItem?.playlistId ?? "")
+            } else {
+                playerViewModel?.callWebServiceForMoreLikeData()
+
+            }
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
@@ -198,6 +204,8 @@ class CustomPlayerView: UIView {
             self.playerLayer = nil
         }
         player = nil
+        alertMsg.text = ""
+        alertMsg.isHidden = true
     }
     
     
@@ -458,6 +466,11 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
+    func dismissPlayer() {
+        self.resetPlayer()
+        self.delegate?.removePlayerController()
+    }
+    
     func updateIndicatorState(toStart: Bool) {
         if toStart {
             if indicator == nil {
@@ -800,6 +813,21 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
 
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
+        if let indicator = indicator {
+            IndicatorManager.shared.stopSpinningIndependent(spinnerView: indicator)
+        }
+        DispatchQueue.main.async {
+            self.alertMsg.isHidden = false
+            self.alertMsg.text = "Some problem occured!!, please login again!!"
+            
+            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { [weak self] (timer) in
+                guard let self = self else {
+                    return
+                }
+                self.delegate?.removePlayerController()
+            })
+        }
+        
         //vinit_comment handle player error
     }
 }
