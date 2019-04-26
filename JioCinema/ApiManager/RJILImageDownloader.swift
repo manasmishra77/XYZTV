@@ -46,7 +46,7 @@ class RJILImageDownloader {
     
     private func removeFromCurrentDownloads(_ urlString:String) {
         self.downloadRWQueue.async(flags:.barrier){
-            if let index = self.currentDownloads.index(of: urlString) {
+            if let index = self.currentDownloads.firstIndex(of: urlString) {
                 self.currentDownloads.remove(at: index)
             }
         }
