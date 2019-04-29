@@ -225,11 +225,11 @@ class CustomPlayerView: UIView {
     func removeControlDetailview() {
         if bitrateTableView != nil {
             if let selectedItem = bitrateTableView?.currentSelectedItem {
+                if rememberMyChoiceTapped {
+                    UserDefaults.standard.set(bitrateTableView?.currentSelectedItem, forKey: isRememberMySettingsSelectedKey)
+                }
                 self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
                 lastSelectedVideoQuality = "\(selectedItem)"
-            }
-            if rememberMyChoiceTapped {
-                            UserDefaults.standard.set(bitrateTableView?.currentSelectedItem, forKey: isRememberMySettingsSelectedKey)
             }
         }
         else {

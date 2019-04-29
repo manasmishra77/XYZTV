@@ -32,13 +32,25 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //
-        //        let menuPressRecognizer = UITapGestureRecognizer()
-        //        menuPressRecognizer.addTarget(self, action: #selector(PlayerViewController.menuButtonAction(recognizer:)))
-        //        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
-        //        self.view.addGestureRecognizer(menuPressRecognizer)
+        let menuPressRecognizer = UITapGestureRecognizer()
+        menuPressRecognizer.addTarget(self, action: #selector(PlayerViewController.menuButtonAction(recognizer:)))
+        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        self.view.addGestureRecognizer(menuPressRecognizer)
         
         self.configureCustomPlayerViewView()
+    }
+    
+    @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
+        
+        if viewforplayer?.popUpHolderView.isHidden == false {
+            viewforplayer!.removeControlDetailview()
+        }
+        else {
+            DispatchQueue.main.async {
+                self.viewforplayer?.resetAndRemovePlayer()
+                self.removePlayerController()
+            }
+        }
     }
     
     func configureCustomPlayerViewView() {
@@ -49,42 +61,44 @@ class PlayerViewController: UIViewController {
         viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.isDisney = self.isDisney
         viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId,audioLanguage: self.audioLanguage)
+        viewforplayer?.audioLanguage = self.audioLanguage
     }
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        super.pressesBegan(presses, with: event)
-        for press in presses {
-            switch press.type{
-            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-                print("downArrow")
-            case .menu:
-                print("menu")
-                menuButtonAction()
-            case .playPause:
-                print("playPause")
-            case .select:
-                print("select")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
+    
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        super.pressesBegan(presses, with: event)
+//        for press in presses {
+//            switch press.type{
+//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
+//                print("downArrow")
+//            case .menu:
+//                print("menu")
+//                menuButtonAction()
+//            case .playPause:
+//                print("playPause")
+//            case .select:
+//                print("select")
+//            @unknown default:
+//                print("unknown")
+//            }
+//        }
+//    }
     
     //modificationNeeded
     //    @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-    func menuButtonAction() {
-        
-        if viewforplayer?.popUpHolderView.isHidden == false {
-            //viewforplayer!.removeControlDetailview()
-            viewforplayer?.popUpHolderView.isHidden = true
-        } else if viewforplayer?.controlsView?.isHidden ?? false{
-            
-        } else {
-            DispatchQueue.main.async {
-                self.viewforplayer?.resetAndRemovePlayer()
-                self.removePlayerController()
-            }
-        }
-    }
+//    func menuButtonAction() {
+//
+//        if viewforplayer?.popUpHolderView.isHidden == false {
+//            //viewforplayer!.removeControlDetailview()
+//            viewforplayer?.popUpHolderView.isHidden = true
+//        } else if viewforplayer?.controlsView?.isHidden ?? false{
+//
+//        } else {
+//            DispatchQueue.main.async {
+//                self.viewforplayer?.resetAndRemovePlayer()
+//                self.removePlayerController()
+//            }
+//        }
+//    }
 
     deinit {
         print("playerVC deinit called")

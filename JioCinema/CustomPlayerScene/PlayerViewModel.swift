@@ -278,7 +278,8 @@ class PlayerViewModel: NSObject {
             getActiveUrl(url: aesBitcodeUrl)
         }
     }
-    func getActiveUrl(url: Bitcode){
+    
+    func getActiveUrl(url: Bitcode) {
         switch getUserPreferedVideoQuality() {
         case .auto:
             playerActiveUrl = url.auto
@@ -294,6 +295,7 @@ class PlayerViewModel: NSObject {
             playerActiveBitrate = .low
         }
     }
+    
     func getUserPreferedVideoQuality() -> BitRatesType{
         
         if let selectedBitrate = UserDefaults.standard.value(forKey: isRememberMySettingsSelectedKey){
@@ -302,6 +304,7 @@ class PlayerViewModel: NSObject {
             return .auto
         }
     }
+    
     func callWebServiceForPlayListData(id: String) {
         //vinit_commented
         let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
@@ -361,21 +364,13 @@ class PlayerViewModel: NSObject {
     }
     
     func preparePlayer() {
-        //        isMediaEndAnalyticsEventNotSent = true
-//        isRecommendationCollectionViewEnabled = false
-        //        isMediaStartEventSent = false
-        
-        // audioLanguage = checkItemAudioLanguage(id)
-        //        setRecommendationConstarints(appType)
         guard let id = itemToBePlayed.id else {
             return
         }
         switch appType {
         case .Movie:
-            if isPlayList, id == ""{
-//                self.isPlayListFirstItemToBePlayed = true
+            if isPlayList, id == "" {
                 callWebServiceForPlaybackRights(id: itemToBePlayed.playlistId ?? "")
-//                callWebServiceForPlayListData(id: playListId)
                 delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
@@ -390,19 +385,14 @@ class PlayerViewModel: NSObject {
         case .Episode, .TVShow:
             currentDuration = checkInResumeWatchListForDuration(id)
             if currentDuration > 0 {
-//                delegate?.updateIndicatorState(toStart: false)
                 delegate?.addResumeWatchView()
-                //                player?.pause()
-                //                self.view.bringSubviewToFront(self.resumeWatchView)
             } else {
                 callWebServiceForPlaybackRights(id: id)
                 delegate?.setValuesForSubviewsOnPlayer()
             }
         case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
-//                self.isPlayListFirstItemToBePlayed = true
                 callWebServiceForPlaybackRights(id: itemToBePlayed.latestId ?? "")
-//                callWebServiceForPlayListData(id: playListId)
                 delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 callWebServiceForPlaybackRights(id: id)
@@ -487,6 +477,10 @@ class PlayerViewModel: NSObject {
         if isFpsUrl {
             failureType = "FPS"
             isFpsUrl = false
+            self.decideURLPriorityForPlayer()
+            if let aesBitcodeUrl = self.playbackRightsModel?.aes {
+                getActiveUrl(url: aesBitcodeUrl)
+            }
             assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
             failureType = "AES"
@@ -518,9 +512,7 @@ class PlayerViewModel: NSObject {
                 playerActiveUrl = bitcode.high
                 break
             }
-            
-            //           delegate?.changePlayingUrlAsPerBitcode()
-            //            self.instantiatePlayerAfterParentalCheck()
+            self.instantiatePlayerAfterParentalCheck()
         }
     }
     
