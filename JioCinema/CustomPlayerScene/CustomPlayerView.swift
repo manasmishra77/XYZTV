@@ -544,8 +544,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         DispatchQueue.main.async {
         
             if let playerItem = self.player?.currentItem {
-                //                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
-                self.player?.replaceCurrentItem(with: playerItem)
+                self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
+//                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.resetPlayer()

@@ -111,7 +111,7 @@ extension PlayerViewController: CustomPlayerViewProtocol {
         let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
             DispatchQueue.main.async {
-                print("dismiss")
+                self.removePlayerController()
             }
         }
         alert.addAction(cancelAction)

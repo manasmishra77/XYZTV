@@ -477,11 +477,12 @@ class PlayerViewModel: NSObject {
         if isFpsUrl {
             failureType = "FPS"
             isFpsUrl = false
-            self.decideURLPriorityForPlayer()
             if let aesBitcodeUrl = self.playbackRightsModel?.aes {
                 getActiveUrl(url: aesBitcodeUrl)
             }
-            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
+
+            instantiatePlayerAfterParentalCheck()
+//            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
             failureType = "AES"
             self.delegate?.dismissPlayerOnAesFailure()
