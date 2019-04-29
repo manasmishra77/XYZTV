@@ -13,7 +13,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func addAvPlayerToController()
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
-    func reloadMoreLikeCollectionView(i: Int)
+    func reloadMoreLikeCollectionView(currentMorelikeIndex: Int)
     func setValuesForSubviewsOnPlayer()
     func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
@@ -105,20 +105,15 @@ class PlayerViewModel: NSObject {
             }
             var i = 0
             if let recommendationItems = response.model?.more {
-//                self.isMoreDataAvailable = false
                 self.moreArray?.removeAll()
                 if recommendationItems.count > 0 {
-//                    self.isMoreDataAvailable = true
                     self.moreArray = recommendationItems
                 }
             } else if let episodes = response.model?.episodes {
-//                self.isEpisodeDataAvailable = false
-                
                 self.episodeArray?.removeAll()
                 if episodes.count > 0{
                     self.episodeArray?.removeAll()
                     if episodes.count > 0{
-//                        self.isEpisodeDataAvailable = true
                         for each in episodes{
                             if each.id == self.itemToBePlayed.id {
                                 self.episodeNumber = each.episodeNo
@@ -131,13 +126,12 @@ class PlayerViewModel: NSObject {
                         }
                         self.episodeArray = episodes
                     }
-//                    self.isEpisodeDataAvailable = true
                     self.episodeArray = episodes
                 }
             }
             if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
                 DispatchQueue.main.async {
-                    self.delegate?.reloadMoreLikeCollectionView(i: i)
+                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: i)
                 }
             }
         }
@@ -323,16 +317,18 @@ class PlayerViewModel: NSObject {
             let playList = response.model!
             if let mores = playList.more {
                 self.moreArray?.removeAll()
+                var currentPlayingIndex = 0
                 if mores.count > 0{
-                    for each in mores{
-                        if each.id == self.itemToBePlayed.id{
+                    for (index,each) in mores.enumerated() {
+                        if each.id == self.itemToBePlayed.latestId {
+                            currentPlayingIndex = index
                             break
                         }
                     }
                     self.moreArray = mores
                     if (self.moreArray?.count ?? 0 > 0){
                         DispatchQueue.main.async {
-                            self.delegate?.reloadMoreLikeCollectionView(i:  0)
+                            self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
                         }
                     }
 

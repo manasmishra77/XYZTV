@@ -35,7 +35,7 @@ class CustomPlayerView: UIView {
     var isPlayList: Bool = false
     var latestEpisodeId: String?
     var indicator: SpiralSpinner?
-    fileprivate var currentPlayingIndex = -1
+    fileprivate var currentPlayingIndex: Int?
     
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
@@ -137,36 +137,10 @@ class CustomPlayerView: UIView {
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
-
-        self.setPlayerItemCurrentIndexInMoreLikeData()
-        
         moreLikeView?.delegate = self
         self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)
-    }
-    
-    
-    func setPlayerItemCurrentIndexInMoreLikeData() {
-        if let moreLikeArray = moreLikeView?.moreArray {
-            if isPlayList {
-                for (index,each) in moreLikeArray.enumerated() {
-                    if each.id == self.playerItem?.id {
-                        self.currentPlayingIndex = index
-                        break
-                    }
-                }
-            }
-            else if let episodeLikeArray = moreLikeView?.episodesArray {
-                for (index,each) in episodeLikeArray.enumerated() {
-                    if each.id == self.playerItem?.id {
-                        self.currentPlayingIndex = index
-                        break
-                    }
-                }
-            }
-        }
-        currentPlayingIndex = 0
     }
     
     
@@ -510,12 +484,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         addMoreLikeView()
     }
     
-    func reloadMoreLikeCollectionView(i: Int) {
+    func reloadMoreLikeCollectionView(currentMorelikeIndex: Int) {
+        currentPlayingIndex = currentMorelikeIndex
         self.moreLikeView?.moreArray = playerViewModel?.moreArray
         self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
         self.moreLikeView?.moreLikeCollectionView.reloadData()
-        self.setPlayerItemCurrentIndexInMoreLikeData()
     }
     
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel) {
@@ -610,11 +584,19 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey) {
+            
+            guard let currentPlayingIndex = currentPlayingIndex else { return }
+            
+            
             if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
                 if let moreArray = moreLikeView?.moreArray, isPlayList {
-                    if (self.currentPlayingIndex + 1) < moreArray.count {
-                        let nextItem = moreArray[self.currentPlayingIndex + 1]
+                    
+                    
+                    
+                    if (currentPlayingIndex + 1) < moreArray.count {
+                        let nextItem = moreArray[currentPlayingIndex + 1]
                         resetPlayer()
+                        self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
                     }
                 }
@@ -624,8 +606,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             else if playerItem?.appType == .Episode {
                 if let moreArray = moreLikeView?.episodesArray {
-                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
+                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: currentPlayingIndex) {
                         self.resetPlayer()
+ self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem.getItem, latestEpisodeId: nil)
                     }
                 }
@@ -777,7 +760,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     }
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
                     let remainingTime = duration - currentPlayerTime
-                    if remainingTime <= 5
+                    if remainingTime <= 50
                     {
                         self?.checkForNextVideoInAutoPlay(remainingTime: remainingTime)
                     }
@@ -791,12 +774,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     func checkForNextVideoInAutoPlay(remainingTime: Double) {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
         if autoPlayOn, controlsView?.recommendViewHolder.isHidden ?? false {
+             guard let currentPlayingIndex = currentPlayingIndex else { return }
             self.controlHolderView.isHidden = false
             if self.playerItem?.appType == .Episode {
 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                 self.resetTimer()
-                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: self.currentPlayingIndex) {
+                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: currentPlayingIndex) {
                         self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
                     }
                 }
@@ -914,6 +898,7 @@ extension CustomPlayerView {
 extension CustomPlayerView: playerMoreLikeDelegate{
     func moreLikeTapped(newItem: Item, index: Int) {
         resetPlayer()
+         self.currentPlayingIndex = index
         self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
     }
 }
