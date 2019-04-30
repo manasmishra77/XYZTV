@@ -138,11 +138,15 @@ class PlayerViewModel: NSObject {
     }
     
     func callWebServiceForPlaybackRights(id: String) {
+        delegate?.updateIndicatorState(toStart: true)
         var contentId = id
         if let latestEpisodeId = self.latestEpisodeId {
             contentId = latestEpisodeId
         }
-        RJILApiManager.getPlaybackRightsModel(contentId: contentId) {[unowned self](response) in
+        RJILApiManager.getPlaybackRightsModel(contentId: contentId) {[weak self](response) in
+            guard let self = self else {
+                return
+            }
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
@@ -571,51 +575,6 @@ extension PlayerViewModel: PlayerAssetManagerDelegate {
     func setAVAssetInPlayerItem(asset: AVURLAsset) {
         playerItem = AVPlayerItem(asset: asset)
         delegate?.addAvPlayerToController()
-    }
-}
-
-extension PlayerViewModel {
-    func addMetadataToPlayer() {
-        let titleMetadataItem = AVMutableMetadataItem()
-        titleMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierTitle
-        titleMetadataItem.extendedLanguageTag = "und"
-        titleMetadataItem.locale = NSLocale.current
-        titleMetadataItem.key = AVMetadataKey.commonKeyTitle as NSCopying & NSObjectProtocol
-        titleMetadataItem.keySpace = AVMetadataKeySpace.common
-        let itemName = itemToBePlayed.name ?? ""
-        titleMetadataItem.value = itemName as NSCopying & NSObjectProtocol
-        
-        
-        let descriptionMetadataItem = AVMutableMetadataItem()
-        descriptionMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierDescription
-        descriptionMetadataItem.extendedLanguageTag = "und"
-        descriptionMetadataItem.locale = NSLocale.current
-        descriptionMetadataItem.key = AVMetadataKey.commonKeyDescription as NSCopying & NSObjectProtocol
-        descriptionMetadataItem.keySpace = AVMetadataKeySpace.common
-        let itemDescription = itemToBePlayed.description ?? ""
-        descriptionMetadataItem.value = itemDescription as NSCopying & NSObjectProtocol
-        
-        let imageMetadataItem = AVMutableMetadataItem()
-        imageMetadataItem.identifier = AVMetadataIdentifier.commonIdentifierArtwork
-        imageMetadataItem.extendedLanguageTag = "und"
-        imageMetadataItem.locale = NSLocale.current
-        imageMetadataItem.key = AVMetadataKey.commonKeyArtwork as NSCopying & NSObjectProtocol
-        imageMetadataItem.keySpace = AVMetadataKeySpace.common
-        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(bannerUrlString)) ?? ""
-        
-        RJILImageDownloader.shared.downloadImage(urlString: imageUrl, shouldCache: false){
-            image in
-            
-            if let img = image {
-                DispatchQueue.main.async {
-                    let pngData = img.pngData()
-                    imageMetadataItem.value = pngData as (NSCopying & NSObjectProtocol)?
-                }
-            }
-        }
-        playerItem?.externalMetadata.append(titleMetadataItem)
-        playerItem?.externalMetadata.append(descriptionMetadataItem)
-        playerItem?.externalMetadata.append(imageMetadataItem)
     }
 }
 

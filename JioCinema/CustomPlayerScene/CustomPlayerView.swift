@@ -96,6 +96,7 @@ class CustomPlayerView: UIView {
         playerViewModel?.delegate = self
         self.playerItem = item
         isPlayList = item.isPlaylist ?? false
+        self.updateIndicatorState(toStart: true)
         playerViewModel?.preparePlayer()
     }
     
@@ -194,6 +195,7 @@ class CustomPlayerView: UIView {
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
         self.removeControlDetailview()
         myPreferredFocusView = nil
+        player?.play()
     }
     
     func removeControlDetailview() {
@@ -202,6 +204,7 @@ class CustomPlayerView: UIView {
                 if rememberMyChoiceTapped {
                     UserDefaults.standard.set(bitrateTableView?.currentSelectedItem, forKey: isRememberMySettingsSelectedKey)
                 }
+                playerViewModel?.currentDuration = Float(player?.currentTime().seconds ?? 0)
                 self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
                 lastSelectedVideoQuality = "\(selectedItem)"
             }
@@ -297,7 +300,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
-        
+        player?.pause()
         var audioArray = [String]()
         var subtitleArray = [String]()
         
@@ -344,6 +347,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
+        player?.pause()
         self.popUpHolderView.isHidden = false
         myPreferredFocusView = self.tableViewHolderInPopupView
         popUpTableViewHolderWidth.constant = 640
@@ -435,6 +439,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
             enterPinViewModel = nil
             enterParentalPinView?.removeFromSuperview()
             enterParentalPinView = nil
+            self.updateIndicatorState(toStart: true)
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
@@ -448,25 +453,27 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func updateIndicatorState(toStart: Bool) {
         if toStart {
-            if indicator == nil {
-                print("indicaator == nil")
-            } else {
-                return
-            }
             DispatchQueue.main.async {
+                if self.indicator != nil {
+                    return
+                }
                 self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: ViewColor.selectionBarOnLeftNavigationColor , superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
                 //self.addSubview(self.indicator!)
             }
         } else {
             DispatchQueue.main.async {
                 IndicatorManager.shared.stopSpinningIndependent(spinnerView: self.indicator)
-                self.indicator = nil
+                if self.indicator != nil{
+                    self.indicator = nil
+                }
             }
+            
         }
         
     }
     
     func addResumeWatchView() {
+        self.updateIndicatorState(toStart: false)
         self.popUpHolderView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
@@ -497,6 +504,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         let ageGroup:AgeGroup = self.playbackRightModel?.maturityAgeGrp ?? .allAge
         if ParentalPinManager.shared.checkParentalPin(ageGroup) {
             DispatchQueue.main.async {
+                self.updateIndicatorState(toStart: false)
                 self.enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
                 self.enterParentalPinView?.frame = self.bounds
                 self.enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
@@ -514,9 +522,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     //debugging is not done
     func addAvPlayerToController() {
-        
         DispatchQueue.main.async {
-        
+            self.updateIndicatorState(toStart: false)
             if let playerItem = self.player?.currentItem {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
 //                self.player?.replaceCurrentItem(with: playerItem)
@@ -583,6 +590,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
+        self.updateIndicatorState(toStart: false)
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey) {
             
             guard let currentPlayingIndex = currentPlayingIndex else { return }
@@ -685,17 +693,20 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         {
             print("KeyPathBufferFull")
             self.updateIndicatorState(toStart: false)
+            print("indicator stoped on isPlaybackBufferFull")
+
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
-            print("KeyPathBufferEmpty")
             self.updateIndicatorState(toStart: true)
+            print("indicator started on isPlaybackBufferempty")
+
             playerViewModel?.startTime_BufferDuration = Date()
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
         {
-            print("KeyPathLikelyToKeepUp")
             self.updateIndicatorState(toStart: false)
+            print("indicator stoped on isPlaybackLikelyToKeepUp")
             playerViewModel?.updatePlayerBufferCount()
             
         }
@@ -709,8 +720,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             switch newStatus {
             case .readyToPlay:
-                print("KeyPathReady")
                 self.updateIndicatorState(toStart: false)
+                print("indicator start on ready to play")
                 //                indicator?.removeFromSuperview()
                 self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
@@ -721,9 +732,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             case .failed:
                 if let indicator = indicator {
                     updateIndicatorState(toStart: false)
+                    print("indicator stop on failed")
+
                 }
                 
-                print("KeyPathFailed")
                 Log.DLog(message: "Failed" as AnyObject)
                 playerViewModel?.handlePlayerStatusFailed()
                 //                self.isRecommendationCollectionViewEnabled = false
@@ -735,7 +747,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                  sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
              */ //vinit_commented
             default:
-                print("KeyPathUnknown")
                 print("unknown")
             }
             
@@ -799,7 +810,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
         if let indicator = indicator {
-            IndicatorManager.shared.stopSpinningIndependent(spinnerView: indicator)
+            updateIndicatorState(toStart: false)
         }
         DispatchQueue.main.async {
             self.alertMsg.isHidden = false
