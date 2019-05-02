@@ -200,13 +200,21 @@ class CustomPlayerView: UIView {
     
     func removeControlDetailview() {
         if bitrateTableView != nil {
+            if rememberMyChoiceTapped {
+                UserDefaults.standard.set(bitrateTableView?.currentSelectedItem ?? lastSelectedVideoQuality, forKey: isRememberMySettingsSelectedKey)
+            } else {
+                UserDefaults.standard.set(nil, forKey: isRememberMySettingsSelectedKey)
+            }
+
             if let selectedItem = bitrateTableView?.currentSelectedItem {
-                if rememberMyChoiceTapped {
-                    UserDefaults.standard.set(bitrateTableView?.currentSelectedItem, forKey: isRememberMySettingsSelectedKey)
+                
+                if lastSelectedVideoQuality != bitrateTableView?.currentSelectedItem {
+                    playerViewModel?.currentDuration = Float(player?.currentTime().seconds ?? 0)
+                    self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
+                    lastSelectedVideoQuality = bitrateTableView?.currentSelectedItem
                 }
-                playerViewModel?.currentDuration = Float(player?.currentTime().seconds ?? 0)
-                self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
-                lastSelectedVideoQuality = "\(selectedItem)"
+                
+//                lastSelectedVideoQuality = "\(selectedItem)"
             }
         }
         else {
@@ -283,7 +291,6 @@ class CustomPlayerView: UIView {
             sender.setImage(UIImage(named: "emptyCheckBox"), for: .normal)
             self.layoutIfNeeded()
         }
-        sender.isSelected = !sender.isSelected
     }
     deinit {
         print("CustomPlayerView deinit called")
@@ -364,16 +371,16 @@ extension CustomPlayerView: ButtonPressedDelegate {
         bitrateArray.append(BitRatesType.low.rawValue)
         bitrateArray.append(BitRatesType.medium.rawValue)
         bitrateArray.append(BitRatesType.high.rawValue)
-        if let lastSelectedVideoQuality = UserDefaults.standard.value(forKey: isRememberMySettingsSelectedKey){
-            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastSelectedVideoQuality as! String) ?? 0, section: 0)
-            bitrateTableView?.currentSelectedItem = bitrateArray[bitrateTableView?.previousSelectedIndexpath?.row ?? 0]
+        if let valueInUserDefaults = UserDefaults.standard.value(forKey: isRememberMySettingsSelectedKey){
+            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: valueInUserDefaults as! String) ?? 0, section: 0)
+            lastSelectedVideoQuality = bitrateArray[bitrateTableView?.previousSelectedIndexpath?.row ?? 0]
             rememberMySettingsButton.setImage(UIImage(named: "filledCheckBox"), for: .normal)
             rememberMyChoiceTapped = true
         } else {
-            if let lastIndex = lastSelectedVideoQuality {
-                bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastIndex) ?? 0, section: 0)
-                bitrateTableView?.currentSelectedItem = bitrateArray[bitrateTableView?.previousSelectedIndexpath?.row ?? 0]
-            }
+                rememberMySettingsButton.setImage(UIImage(named: "emptyCheckBox"), for: .normal)
+                rememberMyChoiceTapped = false
+            bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastSelectedVideoQuality ?? "Auto") ?? 0, section: 0)
+                
         }
 
         
