@@ -616,7 +616,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let moreArray = moreLikeView?.episodesArray {
                     if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: currentPlayingIndex) {
                         self.resetPlayer()
- self.currentPlayingIndex = currentPlayingIndex + 1
+                        self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem.getItem, latestEpisodeId: nil)
                     }
                 }
@@ -771,7 +771,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     }
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
                     let remainingTime = duration - currentPlayerTime
-                    if remainingTime <= 50
+                    if remainingTime <= 5
                     {
                         self?.checkForNextVideoInAutoPlay(remainingTime: remainingTime)
                     }
@@ -809,10 +809,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
 
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
-        if let indicator = indicator {
-            updateIndicatorState(toStart: false)
-        }
+
+
+
         DispatchQueue.main.async {
+            self.updateIndicatorState(toStart: false)
             self.alertMsg.isHidden = false
             self.alertMsg.text = "Some problem occured!!, please login again!!"
             
