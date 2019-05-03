@@ -1025,7 +1025,7 @@
                     //self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"
                     Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
                         self?.dismissPlayerVC()
                     })
@@ -1113,7 +1113,7 @@
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"
                     Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
                         self?.dismissPlayerVC()
                     })
