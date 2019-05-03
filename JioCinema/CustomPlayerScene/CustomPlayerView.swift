@@ -35,7 +35,7 @@ class CustomPlayerView: UIView {
     var isPlayList: Bool = false
     var latestEpisodeId: String?
     var indicator: SpiralSpinner?
-    fileprivate var currentPlayingIndex: Int?
+    fileprivate var currentPlayingIndex: Int!
     
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
@@ -91,6 +91,7 @@ class CustomPlayerView: UIView {
     }
     
     func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
+        playerViewModel = nil
         playerViewModel = PlayerViewModel(item: item, latestEpisodeId: latestEpisodeId)
         playerViewModel?.isDisney = isDisney
         playerViewModel?.delegate = self
@@ -593,42 +594,34 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         self.updateIndicatorState(toStart: false)
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey) {
             
-            guard let currentPlayingIndex = currentPlayingIndex else { return }
-            
+            if let currentPlayingIndex = currentPlayingIndex
+            {
             
             if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
                 if let moreArray = moreLikeView?.moreArray, isPlayList {
-                    
-                    
-                    
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[currentPlayingIndex + 1]
                         resetPlayer()
                         self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
+                        return
                     }
-                }
-                else {
-                    delegate?.removePlayerController()
                 }
             }
             else if playerItem?.appType == .Episode {
                 if let moreArray = moreLikeView?.episodesArray {
-                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: currentPlayingIndex) {
+                    if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
                         self.resetPlayer()
-                        self.currentPlayingIndex = currentPlayingIndex + 1
-                        self.initialiseViewModelForItem(item: nextItem.getItem, latestEpisodeId: nil)
+                        self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
+                        self.initialiseViewModelForItem(item: nextItemTupple.0.getItem, latestEpisodeId: nil)
+                        return
                     }
                 }
-                else {
-                    delegate?.removePlayerController()
-                }
-        }
+            }
             
         }
-        else {
-                    delegate?.removePlayerController()
-        }
+    }
+        delegate?.removePlayerController()
         
     }
 
@@ -791,8 +784,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                 self.resetTimer()
-                    if let nextItem = playerViewModel?.gettingNextEpisode(episodes: moreArray, index: currentPlayingIndex) {
-                        self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
+                    
+                    if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
+                        self.controlsView?.showNextVideoView(videoName: nextItemTupple.0.name ?? "", remainingTime: Int(remainingTime), banner: nextItemTupple.0.banner ?? "")
                     }
                 }
             }
