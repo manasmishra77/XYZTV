@@ -103,10 +103,11 @@ class PlayerViewModel: NSObject {
         let url = metadataUrl.appending(itemToBePlayed.id ?? "")
         RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[weak self] (response) in
             guard let self = self else {return}
+            
             guard response.isSuccess else {
                 return
             }
-            var i = 0
+            var currentPlayingIndex = 0
             if let recommendationItems = response.model?.more {
                 self.moreArray?.removeAll()
                 if recommendationItems.count > 0 {
@@ -114,27 +115,19 @@ class PlayerViewModel: NSObject {
                 }
             } else if let episodes = response.model?.episodes {
                 self.episodeArray?.removeAll()
-                if episodes.count > 0{
-                    self.episodeArray?.removeAll()
                     if episodes.count > 0{
-                        for each in episodes{
+                        for (index, each) in episodes.enumerated() {
                             if each.id == self.itemToBePlayed.id {
-                                self.episodeNumber = each.episodeNo
+                                currentPlayingIndex = index
                                 break
                             }
-                            i = i + 1
-                        }
-                        if i == episodes.count{
-                            i = i - 1
                         }
                         self.episodeArray = episodes
                     }
-                    self.episodeArray = episodes
-                }
             }
             if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
                 DispatchQueue.main.async {
-                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: i)
+                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
                 }
             }
         }
@@ -156,7 +149,7 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-                        self.playbackRightsModel?.fps = nil
+            self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -392,7 +385,7 @@ class PlayerViewModel: NSObject {
         switch appType {
         case .Movie:
             if isPlayList, id == "" {
-                callWebServiceForPlaybackRights(id: itemToBePlayed.playlistId ?? "")
+                callWebServiceForPlaybackRights(id:  itemToBePlayed.latestId ?? "")
                 delegate?.setValuesForSubviewsOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
@@ -553,26 +546,24 @@ class PlayerViewModel: NSObject {
     //    }
     
     //MARK:- Autoplay handler
-    func gettingNextEpisode(episodes: [Episode], index: Int) -> Episode? {
+    func gettingNextEpisodeAndSequence(episodes: [Episode], index: Int) -> (Episode, Bool)? {
         guard episodes.count > 1 else {return nil}
         if let firstEpisodeNum = episodes[0].episodeNo, let seconEpisodeNum = episodes[1].episodeNo {
             if firstEpisodeNum < seconEpisodeNum {
                 //For handling Original Case
                 if index < episodes.count - 1 {
                     let nextEpisode = episodes[index + 1]
-                    return nextEpisode
+                    return (nextEpisode, true)
                 }
             } else {
-                if (index - 1) > -1 {
+                if (index - 1) >= 0 {
                     let nextEpisode = episodes[index - 1]
-                    return nextEpisode
+                    return (nextEpisode, false)
                 }
             }
         }
         return nil
     }
-    
-    
 }
 
 extension PlayerViewController: AVPlayerViewControllerDelegate {
