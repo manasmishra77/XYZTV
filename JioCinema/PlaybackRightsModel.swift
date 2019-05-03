@@ -40,12 +40,12 @@ struct PlaybackRightsModel: Codable {
     var kids: Bool?
     var download: String?
     var introCreditStart: String?
-    var endCreditStart: String?
     var introCreditEnd: String?
+    var endCreditStart: String?
     var endCreditEnd: String?
     var recapCreditStart: String?
-    var precapCreditStart: String?
     var recapCreditEnd: String?
+    var precapCreditStart: String?
     var precapCreditEnd: String?
     var mpdRevision: Int?
     

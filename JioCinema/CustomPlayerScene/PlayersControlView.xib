@@ -70,14 +70,24 @@
                         <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-sB-FiE">
+                    <rect key="frame" x="1490" y="414" width="291" height="86"/>
+                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                    <state key="normal" title="Skip Intro&gt;&gt;"/>
+                    <connections>
+                        <action selector="skipIntroPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="lgJ-NT-xio"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="cYT-fc-BAa" secondAttribute="trailing" constant="50" id="BEM-2k-0L3"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="width" secondItem="lJi-P7-V4r" secondAttribute="width" id="Fpg-gS-wlU"/>
                 <constraint firstItem="cYT-fc-BAa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="Gxc-JA-WZL"/>
+                <constraint firstAttribute="trailing" secondItem="qsc-sB-FiE" secondAttribute="trailing" constant="20" id="Mvg-tp-iWT"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="f22-0H-thC"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
+                <constraint firstItem="lJi-P7-V4r" firstAttribute="top" secondItem="qsc-sB-FiE" secondAttribute="bottom" constant="10" id="mtd-eu-ar3"/>
                 <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" constant="20" id="rSS-Sl-eBU"/>
                 <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vo6-Zc-OWI"/>
@@ -89,6 +99,7 @@
                 <outlet property="nextContentTitle" destination="bsb-jy-MHh" id="nxu-ms-9KP"/>
                 <outlet property="playerButtonsHolderView" destination="3aa-vQ-cqC" id="vM0-C1-lyh"/>
                 <outlet property="recommendViewHolder" destination="cYT-fc-BAa" id="UT2-OQ-Zz0"/>
+                <outlet property="skipIntroButton" destination="qsc-sB-FiE" id="e5h-eb-rr2"/>
                 <outlet property="sliderHolderView" destination="lJi-P7-V4r" id="ktK-uM-Rha"/>
             </connections>
             <point key="canvasLocation" x="9.5" y="94.5"/>

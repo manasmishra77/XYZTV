@@ -14,6 +14,7 @@ protocol PlayerControlsDelegate: NSObject {
     func setPlayerSeekTo(seekValue: CGFloat)
     func cancelTimerForHideControl()
     func resetTimerForHideControl()
+    func skipIntroButtonPressed()
 }
 
 class PlayersControlView: UIView {
@@ -22,16 +23,13 @@ class PlayersControlView: UIView {
     @IBOutlet weak var recommendViewHolder: UIView!
     @IBOutlet weak var nextContentImageView: UIImageView!
     @IBOutlet weak var nextContentTitle: UILabel!
-    @IBOutlet weak var nextContentSubtitle: UILabel!
-    
-    
-    
-    @IBOutlet weak var playButton: UIButton!
-    weak var delegate : PlayerControlsDelegate?
-    
-    @IBOutlet var playerButtonLabels: [UILabel]!
+    @IBOutlet weak var nextContentSubtitle: UILabel!    
+    @IBOutlet weak var skipIntroButton: UIButton!
+
     var isPaused = false
     
+    weak var delegate : PlayerControlsDelegate?
+
     var sliderView : CustomSlider?
     var playerButtonsView: PlayerButtonsView?
     
@@ -53,6 +51,9 @@ class PlayersControlView: UIView {
         playerButtonsView?.frame = playerButtonsHolderView.bounds
         playerButtonsView?.configurePlayerButtonsView()
         playerButtonsHolderView.addSubview(playerButtonsView!)
+    }
+    @IBAction func skipIntroPressed(_ sender: Any) {
+        delegate?.skipIntroButtonPressed()
     }
     deinit {
         print("PlayerControlsView deinit called")

@@ -416,6 +416,14 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
 }
 extension CustomPlayerView : PlayerControlsDelegate {
+    func skipIntroButtonPressed() {
+        guard let seekTime = playerViewModel?.convertStringToSeconds(strTime: playerViewModel?.playbackRightsModel?.introCreditEnd ?? playerViewModel?.playbackRightsModel?.recapCreditEnd ?? "") else {
+            return
+        }
+        DispatchQueue.main.async {
+            self.player?.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1))
+        }
+    }
     
     func cancelTimerForHideControl() {
         timerToHideControls.invalidate()
@@ -453,6 +461,23 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 }
 
 extension CustomPlayerView: PlayerViewModelDelegate {
+    func checkTimeToShowSkipButton(isValidTime: Bool, starttime: Double, endTime: Double) {
+        if isValidTime && !(controlsView?.isHidden ?? false) {
+            controlsView?.skipIntroButton.isHidden = false
+        } else {
+            if isValidTime && (controlsView?.isHidden ?? false) {
+                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+                    controlsView?.skipIntroButton.isHidden = false
+                }else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+                    controlsView?.skipIntroButton.isHidden = true
+                }
+                
+            } else {
+                controlsView?.skipIntroButton.isHidden = true
+            }
+        }
+    }
+
     func dismissPlayer() {
         self.resetPlayer()
         self.delegate?.removePlayerController()
@@ -777,6 +802,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                         return
                     }
                     self?.currentTimevalueChanged(newTime: currentPlayerTime, duration: duration)
+                    self?.playerViewModel?.observeValueToHideUnhideSkipIntro(newTime: currentPlayerTime )
                     let remainingTime = duration - currentPlayerTime
                     if remainingTime <= 50
                     {

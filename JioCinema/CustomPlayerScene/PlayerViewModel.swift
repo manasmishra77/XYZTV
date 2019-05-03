@@ -19,6 +19,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
     func dismissPlayerOnAesFailure()
+    func checkTimeToShowSkipButton(isValidTime: Bool, starttime: Double, endTime: Double)
 }
 
 enum BitRatesType: String {
@@ -41,19 +42,21 @@ class PlayerViewModel: NSObject {
     fileprivate var bufferCount = 0
     var playListId: String = ""
     
+    var isItValideTimeToShowSkipButton: Bool = false
     
     var playbackRightsModel: PlaybackRightsModel?
     fileprivate var episodeNumber :Int? = nil
     var currentDuration: Float = 0.0
+    var currentPlayerTimeInSeconds: Double = 0.0
     
     fileprivate var isFpsUrl = false
     var isPlayList: Bool = false
-//    fileprivate var isRecommendationCollectionViewEnabled = false
+    //    fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     var isItemToBeAddedInResumeWatchList = true
-//    var isPlayListFirstItemToBePlayed: Bool = false
-//    var isMoreDataAvailable: Bool = false
-//    var isEpisodeDataAvailable: Bool = false
+    //    var isPlayListFirstItemToBePlayed: Bool = false
+    //    var isMoreDataAvailable: Bool = false
+    //    var isEpisodeDataAvailable: Bool = false
     var isDisney: Bool = false
     
     var bannerUrlString: String = ""
@@ -86,7 +89,7 @@ class PlayerViewModel: NSObject {
             let timeDifference = CMTimeGetSeconds(currentTime)
             let totalDuration = "\(Int(CMTimeGetSeconds(totalTime)))"
             let totalDurationFloat = Double(totalDuration.floatValue() ?? 0)
-
+            
             if (timeDifference < 300) || (timeDifference > (totalDurationFloat - 60)) {
                 self.callWebServiceForRemovingResumedWatchlist()
             } else {
@@ -153,10 +156,9 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
-//            self.playbackRightsModel?.fps = nil
+                        self.playbackRightsModel?.fps = nil
             self.decideURLPriorityForPlayer()
-            self.checkForSkipIntroOrRecap()
-
+            
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
                 self.isFpsUrl = true
             }
@@ -164,11 +166,31 @@ class PlayerViewModel: NSObject {
         }
         
     }
-    func checkForSkipIntroOrRecap() {
-        if playbackRightsModel?.introCreditEnd != nil || playbackRightsModel?.recapCreditEnd != nil{
-            print("----------------------\(playbackRightsModel?.contentName)")
+    func observeValueToHideUnhideSkipIntro(newTime : Double){
+        
+        guard let endTime = convertStringToSeconds(strTime: playbackRightsModel?.introCreditEnd ?? playbackRightsModel?.recapCreditEnd ?? "") else {
+            return
         }
+        guard let startTime = convertStringToSeconds(strTime: playbackRightsModel?.introCreditStart ?? playbackRightsModel?.recapCreditStart ?? "") else {
+            return
+        }
+        if newTime >= startTime && newTime <= endTime{
+            isItValideTimeToShowSkipButton = true
+        } else {
+            isItValideTimeToShowSkipButton = false
+        }
+        delegate?.checkTimeToShowSkipButton(isValidTime: isItValideTimeToShowSkipButton, starttime: startTime, endTime: endTime)
     }
+    func convertStringToSeconds(strTime: String)-> Double?{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm:ss"
+        guard let date = dateFormatter.date(from: strTime) else {
+            return nil
+        }
+        let seconds : Double = date.timeIntervalSince1970 - (dateFormatter.date(from: "00:00:00")?.timeIntervalSince1970 ?? 0.0)
+        return seconds
+    }
+    
     func callWebServiceForRemovingResumedWatchlist() {
         let isDisney = self.isDisney
         guard let id = itemToBePlayed.id else{
@@ -179,7 +201,7 @@ class PlayerViewModel: NSObject {
         let params = ["uniqueId": JCAppUser.shared.unique, "listId": isDisney ? "30" : "10", "json": json] as [String : Any]
         let url = removeFromResumeWatchlistUrl
         RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
-//            guard let self = self else {return}
+            //            guard let self = self else {return}
             guard response.isSuccess else {
                 return
             }
@@ -335,7 +357,7 @@ class PlayerViewModel: NSObject {
                             self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
                         }
                     }
-
+                    
                 }
             }
             
@@ -440,7 +462,7 @@ class PlayerViewModel: NSObject {
         //            player = AVPlayer(playerItem: playerItem)
         //            player?.play()
         //        }
-//        delegate?.addAvPlayerToController()
+        //        delegate?.addAvPlayerToController()
         //        handleForPlayerReference()
     }
     
@@ -480,9 +502,9 @@ class PlayerViewModel: NSObject {
             if let aesBitcodeUrl = self.playbackRightsModel?.aes {
                 getActiveUrl(url: aesBitcodeUrl)
             }
-
+            
             instantiatePlayerAfterParentalCheck()
-//            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
+            //            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
             failureType = "AES"
             self.delegate?.dismissPlayerOnAesFailure()
@@ -517,19 +539,19 @@ class PlayerViewModel: NSObject {
         }
     }
     
-
-//    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
-//        var playerLang = self.playerItem?.asset.accessibilityLanguage
-//
-//        if let subtitle = subtitleLang {
-//
-//        }
-//        if let audio = audioLang {
-//
-//        }
-        
-//    }
-
+    
+    //    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
+    //        var playerLang = self.playerItem?.asset.accessibilityLanguage
+    //
+    //        if let subtitle = subtitleLang {
+    //
+    //        }
+    //        if let audio = audioLang {
+    //
+    //        }
+    
+    //    }
+    
     //MARK:- Autoplay handler
     func gettingNextEpisode(episodes: [Episode], index: Int) -> Episode? {
         guard episodes.count > 1 else {return nil}
@@ -549,7 +571,7 @@ class PlayerViewModel: NSObject {
         }
         return nil
     }
-
+    
     
 }
 
