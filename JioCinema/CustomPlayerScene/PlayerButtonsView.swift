@@ -34,6 +34,7 @@ class PlayerButtonsView: UIView {
             arrayOfPlayerButtonItem.append(item)
         }
     }
+
     deinit {
         print("PLayerButtonsView deinit called")
     }
@@ -47,7 +48,7 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ButtonCollectionViewCell", for: indexPath) as! ButtonCollectionViewCell
         cell.configCellView(item: arrayOfPlayerButtonItem[indexPath.row])
         return cell
-        }
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! ButtonCollectionViewCell
         switch indexPath.row {
@@ -57,7 +58,7 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
             buttonDelegate?.previousButtonPressed(toDisplay: true)
         case 2:
             ispaused = !ispaused
-            if ispaused{
+            if ispaused {
                 cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
                 cell.buttonTitle.text = "Play"
                 buttonDelegate?.playTapped(toPlay: false)
@@ -76,15 +77,20 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1{
+        if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1 {
             return CGSize(width: 348, height: self.collectionView.frame.height)
         } else {
             return CGSize(width: 200, height: self.collectionView.frame.height)
         }
     }
-    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+    
+    func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
         return true
     }
+    
+//    override func shouldUpdateFocus(in context: UIFocusUpdateContext) -> Bool {
+//        return true
+//    }
 
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //

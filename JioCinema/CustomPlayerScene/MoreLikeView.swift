@@ -45,6 +45,43 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         }
     }
     
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        super.pressesBegan(presses, with: event)
+        for press in presses {
+            switch press.type{
+            case .downArrow, .leftArrow, .upArrow, .rightArrow:
+                //resetTimer()
+                print("Arrow")
+            case .menu:
+                
+                print("menu")
+            case .playPause:
+                print("playPause")
+                
+            case .select:
+                print("select")
+            @unknown default:
+                print("unknown")
+            }
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        for touch in touches{
+            switch touch.type{
+            case .direct:
+                print("Direct")
+            case .indirect:
+                print("indirect")
+            case .pencil:
+                print("pencil")
+            @unknown default:
+                print("unknown")
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
         let cellData = getCellData(indexPath: indexPath)
@@ -55,6 +92,9 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
         return size
+    }
+    func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
+        return true
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var item : Item?
@@ -91,8 +131,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             let isPlayingNow = model?.id == id
             return (cellItems, isPlayingNow, model?.name ?? "")
-        }
-        else if isMoreDataAvailable {
+        } else if isMoreDataAvailable {
             let model = moreArray?[indexPath.row]
             let item = moreArray?[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
