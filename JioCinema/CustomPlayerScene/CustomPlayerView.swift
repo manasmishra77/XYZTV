@@ -72,10 +72,18 @@ class CustomPlayerView: UIView {
     var timer: Timer!
     var timerToHideControls : Timer!
     
-    var myPreferredFocusView:UIView? = nil
+    var myPreferredFocusView: UIView? = nil
+    
+    //When focus is changed manualy, update focus is getting called, so we need to stop on that call, so this variable is used
+    var isFocusViewChangedOnResetTimer: Bool = false
+    
     var rememberMyChoiceTapped: Bool = false
     
     var audioLanguage : AudioLanguage?
+    
+    var clearanceFromBottomForMoreLikeView: CGFloat {
+        return (self.playerViewModel?.appType == .Movie) ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
+    }
     
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
@@ -140,22 +148,27 @@ class CustomPlayerView: UIView {
         moreLikeView?.appType = playerItem?.appType ?? .None
         moreLikeView?.configMoreLikeView()
         moreLikeView?.delegate = self
-        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
+        self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
         moreLikeView?.frame = moreLikeHolderView.bounds
         self.moreLikeHolderView.addSubview(moreLikeView!)
     }
     
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        resetTimer()
-        if context.nextFocusedView is ItemCollectionViewCell{
+        if !isFocusViewChangedOnResetTimer {
+            resetTimer()
+        } else {
+            isFocusViewChangedOnResetTimer = false
+        }
+        
+        if context.nextFocusedView is ItemCollectionViewCell {
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 0.7) {
                 self.layoutIfNeeded()
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
-            self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
+            self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
             UIView.animate(withDuration: 0.72) {
                 self.layoutIfNeeded()
             }
@@ -173,7 +186,6 @@ class CustomPlayerView: UIView {
     
     func resetPlayer() {
         if let player = player {
-            print("1 inside player reset")
             player.pause()
             self.removePlayerObserver()
             self.playerViewModel = nil
@@ -329,8 +341,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
         heightOfPopUpView.constant = 715
         heightOfRememberMySettings.constant = 0
         rememberMySettingsButton.isHidden = true
-        self.popUpHolderView.isHidden = false
-        myPreferredFocusView = self.tableViewHolderInPopupView
+        self.popUpHolderView.isHidden = false        
         
         self.popUpHolderView.layoutIfNeeded()
         
@@ -352,12 +363,14 @@ extension CustomPlayerView: ButtonPressedDelegate {
         subtitleTableView?.configurePlayerSettingMenu(menuItems: subtitleArray, menuType: .multiSubtitle)
         
         tableViewHolderInPopupView.addSubview(subtitleTableView!)
+        myPreferredFocusView = self.tableViewHolderInPopupView
+        self.updateFocusIfNeeded()
+        self.setNeedsFocusUpdate()
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
         player?.pause()
         self.popUpHolderView.isHidden = false
-        myPreferredFocusView = self.tableViewHolderInPopupView
         popUpTableViewHolderWidth.constant = 640
         heightOfPopUpView.constant = 820
         heightOfRememberMySettings.constant = 105
@@ -383,10 +396,11 @@ extension CustomPlayerView: ButtonPressedDelegate {
             bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastSelectedVideoQuality ?? "Auto") ?? 0, section: 0)
                 
         }
-
-        
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         tableViewHolderInPopupView.addSubview(bitrateTableView!)
+        myPreferredFocusView = self.tableViewHolderInPopupView
+        self.updateFocusIfNeeded()
+        self.setNeedsFocusUpdate()
     }
     func nextButtonPressed(toDisplay: Bool) {
         playnextOrPreviousItem(playNext: true)
@@ -512,6 +526,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         resumeWatchView?.frame = self.bounds
         resumeWatchView?.delegate = self
         self.addSubview(resumeWatchView!)
+        self.controlHolderView.isHidden = true
+        self.moreLikeHolderView.isHidden = true
     }
     
     func setValuesForSubviewsOnPlayer() {
@@ -867,27 +883,37 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 
 
 extension CustomPlayerView {
-    func startTimer(){
-        timerToHideControls = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.hideControlsView), userInfo: nil, repeats: true)
+    func startTimer() {
+        if timerToHideControls != nil {
+            timerToHideControls.invalidate()
+            timerToHideControls = nil
+        }
+        timerToHideControls = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
+            self?.hideControlsView()
+            timer.invalidate()
+            self?.timerToHideControls = nil
+        })
     }
     
-    func resetTimer(){
-        if timerToHideControls == nil{
-            return
+    func resetTimer() {
+        if self.timerToHideControls != nil {
+            self.timerToHideControls.invalidate()
         }
-        timerToHideControls.invalidate()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
         self.startTimer()
     }
     
-    @objc func hideControlsView() {
-        UIView.animate(withDuration: 0.1) {
-            self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
-            self.controlsView?.isHidden = true
-            self.moreLikeView?.isHidden = true
-        }
-        self.bottomSpaceOfMoreLikeInContainer.constant = playerViewModel?.appType == .Movie ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
+    func hideControlsView() {
+        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
+        self.controlsView?.isHidden = true
+        self.moreLikeView?.isHidden = true
+        self.myPreferredFocusView = self
+        self.updateFocusIfNeeded()
+        self.setNeedsFocusUpdate()
+        self.isFocusViewChangedOnResetTimer = true
+        
+        self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
@@ -949,6 +975,8 @@ extension CustomPlayerView: ResumeWatchDelegate {
         resumeWatchView = nil
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
         setValuesForSubviewsOnPlayer()
+        self.controlHolderView.isHidden = false
+        self.moreLikeHolderView.isHidden = false
     }
     
     func startFromBeginning() {
@@ -957,6 +985,8 @@ extension CustomPlayerView: ResumeWatchDelegate {
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
         self.setValuesForSubviewsOnPlayer()
+        self.controlHolderView.isHidden = false
+        self.moreLikeHolderView.isHidden = false
         
     }
     

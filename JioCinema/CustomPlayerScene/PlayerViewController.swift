@@ -63,42 +63,43 @@ class PlayerViewController: UIViewController {
         viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId,audioLanguage: self.audioLanguage)
         viewforplayer?.audioLanguage = self.audioLanguage
     }
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        super.pressesBegan(presses, with: event)
+        for press in presses {
+            switch press.type{
+            case .downArrow, .leftArrow, .upArrow, .rightArrow:
+                //resetTimer()
+                print("Arrow")
+            case .menu:
+                
+                print("menu")
+            case .playPause:
+                print("playPause")
+                
+            case .select:
+                print("select")
+            @unknown default:
+                print("unknown")
+            }
+        }
+    }
     
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        super.pressesBegan(presses, with: event)
-//        for press in presses {
-//            switch press.type{
-//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-//                print("downArrow")
-//            case .menu:
-//                print("menu")
-//                menuButtonAction()
-//            case .playPause:
-//                print("playPause")
-//            case .select:
-//                print("select")
-//            @unknown default:
-//                print("unknown")
-//            }
-//        }
-//    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        for touch in touches{
+            switch touch.type{
+            case .direct:
+                print("Direct")
+            case .indirect:
+                print("indirect")
+            case .pencil:
+                print("pencil")
+            @unknown default:
+                print("unknown")
+            }
+        }
+    }
     
-    //modificationNeeded
-    //    @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-//    func menuButtonAction() {
-//
-//        if viewforplayer?.popUpHolderView.isHidden == false {
-//            //viewforplayer!.removeControlDetailview()
-//            viewforplayer?.popUpHolderView.isHidden = true
-//        } else if viewforplayer?.controlsView?.isHidden ?? false{
-//
-//        } else {
-//            DispatchQueue.main.async {
-//                self.viewforplayer?.resetAndRemovePlayer()
-//                self.removePlayerController()
-//            }
-//        }
-//    }
 
     deinit {
         print("playerVC deinit called")
