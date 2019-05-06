@@ -101,6 +101,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
     }
     
+    func shouldShowIsPlaying(boolValue: Bool) {
+            imageViewCoverview.isHidden = boolValue
+            nowPlayingLabel.isHidden = boolValue
+    }
+    
     //Used for background color of namelabel patchview
     func configureNameLabelPatchView(_ cellItems: BaseItemCellModel) {
         guard let cellType = cellItems.cellType else {

@@ -15,7 +15,6 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(currentMorelikeIndex: Int)
     func setValuesForSubviewsOnPlayer()
-    func changePlayingUrlAsPerBitcode()
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
     func dismissPlayerOnAesFailure()
