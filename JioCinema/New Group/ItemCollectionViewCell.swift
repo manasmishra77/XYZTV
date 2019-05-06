@@ -45,8 +45,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         self.resetNameLabel()
     }
-    
-    
 
     func configureView(_ cellItems: BaseItemCellModel, isPlayingNow: Bool = false) {
         if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
@@ -85,6 +83,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if isPlayingNow {
                 imageViewCoverview.isHidden = false
                 nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
             }
             return
         case .disneyCommon:
@@ -95,6 +94,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if isPlayingNow {
                 imageViewCoverview.isHidden = false
                 nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
             }
             return
         }
@@ -138,11 +138,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    
-    func shouldShowIsPlaying(boolValue: Bool) {
-        imageViewCoverview.isHidden = boolValue
-        nowPlayingLabel.isHidden = boolValue
-    }
     //Used for background color of namelabel patchview
     func configureNameLabelPatchView(_ cellItems: BaseItemCellModel) {
         guard let cellType = cellItems.cellType else {
