@@ -552,6 +552,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func reloadMoreLikeCollectionView(currentMorelikeIndex: Int) {
         currentPlayingIndex = currentMorelikeIndex
+        self.moreLikeView?.currentPlayingIndex = currentMorelikeIndex
+        self.moreLikeView?.isPlayList = self.isPlayList
         self.moreLikeView?.moreArray = playerViewModel?.moreArray
         self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
