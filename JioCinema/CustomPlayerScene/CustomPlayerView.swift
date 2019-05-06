@@ -147,7 +147,11 @@ class CustomPlayerView: UIView {
             }
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
-        moreLikeView?.configMoreLikeView()
+        var id = playerItem?.id
+        if id == ""{
+            id = playerItem?.latestId
+        }
+        moreLikeView?.configMoreLikeView(id: id ?? "")
         moreLikeView?.delegate = self
         self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
         moreLikeView?.frame = moreLikeHolderView.bounds
@@ -655,6 +659,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let moreArray = moreLikeView?.moreArray, isPlayList {
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[currentPlayingIndex + 1]
+                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
                         resetPlayer()
                         self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)

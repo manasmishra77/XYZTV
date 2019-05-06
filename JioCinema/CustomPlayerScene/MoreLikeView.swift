@@ -22,10 +22,11 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     var isEpisodeDataAvailable: Bool = false
     var isPlayList: Bool = false
     var isDisney: Bool = false
-    var id: String?
+    var cureentItemId: String?
     weak var delegate: playerMoreLikeDelegate?
     
-    func configMoreLikeView() {
+    func configMoreLikeView(id: String) {
+        cureentItemId = id
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self
         let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
@@ -96,8 +97,11 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
         return true
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 25
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var item : Item?
+            var item : Item?
         if isMoreDataAvailable {
             guard let newItem = moreArray?[indexPath.row] else{
                 return
@@ -111,11 +115,16 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             item = newItem.getItem
         }
         if let newItem = item {
-            if id == newItem.id {
+            if cureentItemId == newItem.id {
                 return
+            } else {
+                cureentItemId = newItem.id
             }
             delegate?.moreLikeTapped(newItem: newItem, index: indexPath.row)
         }
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
@@ -129,7 +138,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            let isPlayingNow = model?.id == id
+            let isPlayingNow = model?.id == cureentItemId
             return (cellItems, isPlayingNow, model?.name ?? "")
         } else if isMoreDataAvailable {
             let model = moreArray?[indexPath.row]
@@ -137,7 +146,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = (appType == .Movie) ? .potraitWithLabelAlwaysShow : .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            let isPlayingNow = model?.id == id
+            let isPlayingNow = model?.id == cureentItemId
             return (cellItems, isPlayingNow, model?.name ?? "")
         }
         return (cellItems, false, "")
