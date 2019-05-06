@@ -575,13 +575,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
-    //debugging is not done
+
     func addAvPlayerToController() {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
-            if let playerItem = self.player?.currentItem {
+            if self.player?.currentItem != nil {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
-//                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.resetPlayer()
@@ -594,6 +593,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if self.playerViewModel?.currentDuration ?? 0 > 0 {
                 }
             }
+            
+            
+            self.setCurrentPlayingOnMoreLike()
+            
             if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
                 
             }
@@ -639,7 +642,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         playerTimeObserverToken = nil
-        //        self.player = nil
     }
     
     
@@ -681,6 +683,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
 
 
+    
+    func setCurrentPlayingOnMoreLike() {
+        if let currentPlayingIndex = currentPlayingIndex {
+            self.moreLikeView?.scrollToIndex(index: currentPlayingIndex)
+        }
+    }
 
     
     func getPlayerDuration() -> Double {
@@ -695,13 +703,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         } else {
             didSeek = false
         }
-    }
-    
-    func changePlayingUrlAsPerBitcode() {
-        
-        //        AVPlayerItem *playeriem= [AVPlayerItem playerItemWithURL:urlOfSelectedQualityVideo];
-        //        [playeriem seekToTime:player.currentTime];
-        //        [player replaceCurrentItemWithPlayerItem:playeriem];
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {

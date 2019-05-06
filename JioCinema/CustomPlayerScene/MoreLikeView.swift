@@ -142,8 +142,20 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         }
         return (cellItems, false, "")
     }
+    
+    func scrollToIndex(index:Int) {
+        if let cell = moreLikeCollectionView.cellForItem(at: IndexPath.init(row: index, section: 0)) as? ItemCollectionViewCell {
+            cell.shouldShowIsPlaying(boolValue: false)
+        }
+    }
+    
+    
     deinit {
         print("moreLikeView deinit called")
     }
+    
+    
+    
+    
     
 }
