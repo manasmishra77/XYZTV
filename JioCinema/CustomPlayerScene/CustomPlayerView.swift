@@ -124,7 +124,7 @@ class CustomPlayerView: UIView {
     }
     
     func setValuesOnControlView() {
-     self.controlsView?.sliderView?.title.text = playerItem?.name
+        self.controlsView?.sliderView?.title.text = playerItem?.name
         if playerItem?.appType == .TVShow {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
         }
@@ -223,7 +223,7 @@ class CustomPlayerView: UIView {
             } else {
                 UserDefaults.standard.set(nil, forKey: isRememberMySettingsSelectedKey)
             }
-
+            
             if let selectedItem = bitrateTableView?.currentSelectedItem {
                 
                 if lastSelectedVideoQuality != bitrateTableView?.currentSelectedItem {
@@ -396,10 +396,10 @@ extension CustomPlayerView: ButtonPressedDelegate {
             rememberMySettingsButton.setImage(UIImage(named: "filledCheckBox"), for: .normal)
             rememberMyChoiceTapped = true
         } else {
-                rememberMySettingsButton.setImage(UIImage(named: "emptyCheckBox"), for: .normal)
-                rememberMyChoiceTapped = false
+            rememberMySettingsButton.setImage(UIImage(named: "emptyCheckBox"), for: .normal)
+            rememberMyChoiceTapped = false
             bitrateTableView?.previousSelectedIndexpath = IndexPath(row: bitrateArray.firstIndex(of: lastSelectedVideoQuality ?? "Auto") ?? 0, section: 0)
-                
+            
         }
         bitrateTableView?.configurePlayerSettingMenu(menuItems: bitrateArray, menuType: .videobitratequality)
         tableViewHolderInPopupView.addSubview(bitrateTableView!)
@@ -502,7 +502,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
         }
     }
-
+    
     func dismissPlayer() {
         self.resetPlayer()
         self.delegate?.removePlayerController()
@@ -585,7 +585,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.updateIndicatorState(toStart: false)
             if let playerItem = self.player?.currentItem {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
-//                self.player?.replaceCurrentItem(with: playerItem)
+                //                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.resetPlayer()
@@ -606,7 +606,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
-
+            
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
             
             
@@ -654,39 +654,41 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             
             if let currentPlayingIndex = currentPlayingIndex
             {
-            
-            if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-                if let moreArray = moreLikeView?.moreArray, isPlayList {
-                    if (currentPlayingIndex + 1) < moreArray.count {
-                        let nextItem = moreArray[currentPlayingIndex + 1]
+                
+                if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
+                    if playerItem?.appType == .Movie {
                         playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-                        resetPlayer()
-                        self.currentPlayingIndex = currentPlayingIndex + 1
-                        self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
-                        return
+                    }
+                    if let moreArray = moreLikeView?.moreArray, isPlayList {
+                        if (currentPlayingIndex + 1) < moreArray.count {
+                            let nextItem = moreArray[currentPlayingIndex + 1]
+                            resetPlayer()
+                            self.currentPlayingIndex = currentPlayingIndex + 1
+                            self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
+                            return
+                        }
                     }
                 }
-            }
-            else if playerItem?.appType == .Episode {
-                if let moreArray = moreLikeView?.episodesArray {
-                    if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
-                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-                        self.resetPlayer()
-                        self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
-                        self.initialiseViewModelForItem(item: nextItemTupple.0.getItem, latestEpisodeId: nil)
-                        return
+                else if playerItem?.appType == .Episode {
+                    if let moreArray = moreLikeView?.episodesArray {
+                        if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
+                            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+                            self.resetPlayer()
+                            self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
+                            self.initialiseViewModelForItem(item: nextItemTupple.0.getItem, latestEpisodeId: nil)
+                            return
+                        }
                     }
                 }
+                
             }
-            
         }
-    }
         delegate?.removePlayerController()
         
     }
-
-
-
+    
+    
+    
     
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
@@ -747,13 +749,13 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             print("KeyPathBufferFull")
             self.updateIndicatorState(toStart: false)
             print("indicator stoped on isPlaybackBufferFull")
-
+            
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
             self.updateIndicatorState(toStart: true)
             print("indicator started on isPlaybackBufferempty")
-
+            
             playerViewModel?.startTime_BufferDuration = Date()
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
@@ -786,7 +788,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let indicator = indicator {
                     updateIndicatorState(toStart: false)
                     print("indicator stop on failed")
-
+                    
                 }
                 
                 Log.DLog(message: "Failed" as AnyObject)
@@ -839,12 +841,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     func checkForNextVideoInAutoPlay(remainingTime: Double) {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
         if autoPlayOn, controlsView?.recommendViewHolder.isHidden ?? false {
-             guard let currentPlayingIndex = currentPlayingIndex else { return }
+            guard let currentPlayingIndex = currentPlayingIndex else { return }
             self.controlHolderView.isHidden = false
             if self.playerItem?.appType == .Episode {
-
+                
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
-                self.resetTimer()
+                    self.resetTimer()
                     
                     if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
                         self.controlsView?.showNextVideoView(videoName: nextItemTupple.0.name ?? "", remainingTime: Int(remainingTime), banner: nextItemTupple.0.banner ?? "")
@@ -853,7 +855,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             else {
                 if let moreArray = moreLikeView?.moreArray, moreArray.count > 0, self.isPlayList {
-                self.resetTimer()
+                    self.resetTimer()
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[(currentPlayingIndex + 1)]
                         self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
@@ -862,11 +864,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
         }
     }
-
+    
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
-
-
-
+        
+        
+        
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
             self.alertMsg.isHidden = false
@@ -983,6 +985,9 @@ extension CustomPlayerView: playerMoreLikeDelegate{
                 playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? playerItem?.language ?? "")
             }
             self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
+            if moreLikeView?.moreArray != nil {
+                playerViewModel?.callWebServiceForMoreLikeData()
+            }
         }
     }
 }
