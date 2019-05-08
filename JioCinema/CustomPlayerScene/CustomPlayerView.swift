@@ -34,6 +34,8 @@ class CustomPlayerView: UIView {
     var videoStartingTime = Date()
     var isDisney: Bool = false
     var isPlayList: Bool = false
+    var recommendationArray: Any = false
+    var audioLanguage : AudioLanguage?
     var latestEpisodeId: String?
     var indicator: SpiralSpinner?
     fileprivate var currentPlayingIndex: Int!
@@ -65,7 +67,7 @@ class CustomPlayerView: UIView {
     var lastSelectedAudioLanguage: String?
     var lastSelectedVideoQuality: String?
     
-    var recommendationArray: Any = false
+    var stateOfPlayerBeforeButtonClickWasPaused: Bool = false
     
     @IBOutlet weak var popUpTableViewHolderWidth: NSLayoutConstraint!
     
@@ -80,7 +82,6 @@ class CustomPlayerView: UIView {
     
     var rememberMyChoiceTapped: Bool = false
     
-    var audioLanguage : AudioLanguage?
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
         return (self.playerViewModel?.appType == .Movie) ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
@@ -125,8 +126,14 @@ class CustomPlayerView: UIView {
     
     func setValuesOnControlView() {
         self.controlsView?.sliderView?.title.text = playerItem?.name
-        if playerItem?.appType == .TVShow {
+        if playerItem?.name == "" || playerItem?.name == nil {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
+        }
+       
+        if isDisney {
+            self.controlsView?.sliderView?.progressBar.tintColor = ViewColor.disneyButtonColor
+        } else {
+             self.controlsView?.sliderView?.progressBar.tintColor = ViewColor.cinemaLeftMenuBackground
         }
     }
     
@@ -152,6 +159,7 @@ class CustomPlayerView: UIView {
             id = playerItem?.latestId
         }
         moreLikeView?.configMoreLikeView(id: id ?? "")
+        moreLikeView?.isDisney = isDisney
         moreLikeView?.delegate = self
         self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
         moreLikeView?.frame = moreLikeHolderView.bounds
@@ -325,6 +333,11 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
+        if player?.rate == 0 {
+            stateOfPlayerBeforeButtonClickWasPaused = false
+        } else {
+            stateOfPlayerBeforeButtonClickWasPaused = true
+        }
         player?.pause()
         var audioArray = [String]()
         var subtitleArray = [String]()
@@ -374,6 +387,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
+        print(player?.rate)
         player?.pause()
         self.popUpHolderView.isHidden = false
         popUpTableViewHolderWidth.constant = 640
@@ -509,12 +523,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func updateIndicatorState(toStart: Bool) {
+        var spinnerColor : UIColor = ViewColor.selectionBarOnLeftNavigationColor
         if toStart {
             DispatchQueue.main.async {
                 if self.indicator != nil {
                     return
                 }
-                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: ViewColor.selectionBarOnLeftNavigationColor , superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
+                if self.isDisney{
+                    spinnerColor = ViewColor.disneyButtonColor
+                } else {
+                    spinnerColor = ViewColor.selectionBarOnLeftNavigationColor
+                }
+                self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: spinnerColor, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
                 //self.addSubview(self.indicator!)
             }
         } else {
@@ -940,7 +960,7 @@ extension CustomPlayerView {
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimer()
             case .menu:
-                if self.controlsView?.isHidden == false{
+                if self.controlsView?.isHidden == false {
                     self.controlsView?.isHidden = true
                     self.moreLikeView?.isHidden = true
                 }
@@ -989,7 +1009,7 @@ extension CustomPlayerView: playerMoreLikeDelegate{
                 playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? playerItem?.language ?? "")
             }
             self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
-            if moreLikeView?.moreArray != nil {
+            if moreLikeView?.moreArray != nil  && isPlayList != true{
                 playerViewModel?.callWebServiceForMoreLikeData()
             }
         }
