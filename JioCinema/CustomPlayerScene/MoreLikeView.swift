@@ -188,6 +188,9 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             previousIndex = IndexPath.init(row: currentPlayingIndex!, section: 0)
         }
         
+        if previousIndex?.row == index {
+            return
+        }
         currentPlayingIndex = index
         DispatchQueue.main.async {
             let cellIndex = IndexPath.init(row: index, section: 0)
