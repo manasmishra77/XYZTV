@@ -304,6 +304,8 @@ class CustomPlayerView: UIView {
         
         if let langIndex = subtitles?.firstIndex(where: {$0.lowercased() == language.lowercased()}), let language = subtitles?[langIndex] {
             _ = player?.currentItem?.select(type: .subtitle, name: language)
+        } else {
+            _ = player?.currentItem?.select(type: .subtitle, name: "")
         }
     }
     
@@ -334,9 +336,9 @@ extension CustomPlayerView: ButtonPressedDelegate {
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
         if player?.rate == 0 {
-            stateOfPlayerBeforeButtonClickWasPaused = false
-        } else {
             stateOfPlayerBeforeButtonClickWasPaused = true
+        } else {
+            stateOfPlayerBeforeButtonClickWasPaused = false
         }
         player?.pause()
         var audioArray = [String]()
@@ -368,6 +370,8 @@ extension CustomPlayerView: ButtonPressedDelegate {
         multiAudioTableView?.frame = CGRect.init(x: tableViewHolderInPopupView.frame.origin.x, y: tableViewHolderInPopupView.frame.origin.y, width: popUpTableViewHolderWidth.constant/2, height: tableViewHolderInPopupView.bounds.height)
         if let lastIndex = audioArray.firstIndex(of: lastSelectedAudioLanguage ?? ""){
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
+        } else if let audiolanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name{
+            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audiolanguage) ?? 0, section: 0)
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
         tableViewHolderInPopupView.addSubview(multiAudioTableView!)
@@ -523,16 +527,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func updateIndicatorState(toStart: Bool) {
-        var spinnerColor : UIColor = ViewColor.selectionBarOnLeftNavigationColor
+        let spinnerColor : UIColor = ThemeManager.shared.selectionColor
         if toStart {
             DispatchQueue.main.async {
                 if self.indicator != nil {
                     return
-                }
-                if self.isDisney{
-                    spinnerColor = ViewColor.disneyButtonColor
-                } else {
-                    spinnerColor = ViewColor.selectionBarOnLeftNavigationColor
                 }
                 self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: spinnerColor, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
                 //self.addSubview(self.indicator!)
@@ -675,19 +674,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         self.updateIndicatorState(toStart: false)
-        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey) {
+        if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),isPlayList {
             
             if let currentPlayingIndex = currentPlayingIndex
             {
                 
                 if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-                    if playerItem?.appType == .Movie {
-                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-                    }
+//                    if playerItem?.appType == .Movie {
+//                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+//                    }
                     if let moreArray = moreLikeView?.moreArray, isPlayList {
                         if (currentPlayingIndex + 1) < moreArray.count {
                             let nextItem = moreArray[currentPlayingIndex + 1]
-                            resetPlayer()
                             self.currentPlayingIndex = currentPlayingIndex + 1
                             self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
                             return
@@ -697,8 +695,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 else if playerItem?.appType == .Episode {
                     if let moreArray = moreLikeView?.episodesArray {
                         if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
-                            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-                            self.resetPlayer()
                             self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
                             self.initialiseViewModelForItem(item: nextItemTupple.0.getItem, latestEpisodeId: nil)
                             return
@@ -708,6 +704,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
+//        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
+//            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+//        }
+        resetPlayer()
         delegate?.removePlayerController()
         
     }

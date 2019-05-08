@@ -14,7 +14,7 @@ class JCButton: UIButton
     {
         if (context.nextFocusedView == self)
         {
-            self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            self.backgroundColor = ThemeManager.shared.selectionColor//#colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
         }
         else

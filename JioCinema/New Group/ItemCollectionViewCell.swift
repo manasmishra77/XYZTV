@@ -252,11 +252,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             imageView.layer.borderWidth = 5
-            if cellItem?.cellType.isDisney ?? false {
-                imageView.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
-            } else {
-                imageView.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-            }
+//            if cellItem?.cellType.isDisney ?? false {
+//                imageView.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
+//            } else {
+//                imageView.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+//            }
+            imageView.layer.borderColor = ThemeManager.shared.selectionColor.cgColor
 
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!

@@ -12,7 +12,7 @@ class AutoplayButton: UIButton {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .highlighted)
+        self.setTitleColor(ThemeManager.shared.selectionColor, for: .highlighted)
         self.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
         self.titleLabel?.textColor = #colorLiteral(red: 0.5843137255, green: 0.5843137255, blue: 0.5843137255, alpha: 1)
     }
@@ -22,7 +22,7 @@ class AutoplayButton: UIButton {
         if (context.nextFocusedView == self)
         {
             self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            self.titleLabel?.textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
+            self.setTitleColor(ThemeManager.shared.selectionColor, for: .focused)
             self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
         }
         else

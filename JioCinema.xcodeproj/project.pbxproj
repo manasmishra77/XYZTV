@@ -160,6 +160,7 @@
 		9974D8F9220C63D900E4BF03 /* JioCinema_Splash_Screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */; };
 		9978D2A522577FDC00003E9E /* ButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9978D2A322577FDC00003E9E /* ButtonCollectionViewCell.swift */; };
 		9978D2A622577FDC00003E9E /* ButtonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9978D2A422577FDC00003E9E /* ButtonCollectionViewCell.xib */; };
+		998BEEAE2282E79300B75C39 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998BEEAD2282E79300B75C39 /* ThemeManager.swift */; };
 		99B07802222E7C26004F7DA0 /* PlayersControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99B07801222E7C26004F7DA0 /* PlayersControlView.xib */; };
 		99B07806222E7CE0004F7DA0 /* PlayersControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B07805222E7CE0004F7DA0 /* PlayersControlView.swift */; };
 		99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */ = {isa = PBXBuildFile; fileRef = 99BB5DD6220838B4000E73A1 /* metadatabg.png */; };
@@ -356,6 +357,7 @@
 		9974D8F8220C63D800E4BF03 /* JioCinema_Splash_Screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = JioCinema_Splash_Screen.jpg; sourceTree = "<group>"; };
 		9978D2A322577FDC00003E9E /* ButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		9978D2A422577FDC00003E9E /* ButtonCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCollectionViewCell.xib; sourceTree = "<group>"; };
+		998BEEAD2282E79300B75C39 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		99B07801222E7C26004F7DA0 /* PlayersControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayersControlView.xib; sourceTree = "<group>"; };
 		99B07805222E7CE0004F7DA0 /* PlayersControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersControlView.swift; sourceTree = "<group>"; };
 		99BB5DD6220838B4000E73A1 /* metadatabg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadatabg.png; sourceTree = "<group>"; };
@@ -751,6 +753,7 @@
 				B822EBDF1F84CE94002332B4 /* Utility.swift */,
 				535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */,
 				53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */,
+				998BEEAD2282E79300B75C39 /* ThemeManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1014,6 +1017,7 @@
 				19BF8A74214651A6001C58DD /* BaseTableViewCell.swift in Sources */,
 				9966543521D381360026CC8D /* CarouselCollectionViewCell.swift in Sources */,
 				7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */,
+				998BEEAE2282E79300B75C39 /* ThemeManager.swift in Sources */,
 				9966543B21D3C0D70026CC8D /* DisneyButtons.swift in Sources */,
 				1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */,
 				7B78D7D31F13B92900F319BF /* RJILApiManager.swift in Sources */,
