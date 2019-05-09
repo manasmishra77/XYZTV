@@ -625,6 +625,7 @@ extension AVPlayerItem {
             return false
         }
         guard let matched = group.options.filter({ $0.displayName == name }).first else{
+            self.select(nil, in: group)
             return false
         }
         self.select(matched, in: group)

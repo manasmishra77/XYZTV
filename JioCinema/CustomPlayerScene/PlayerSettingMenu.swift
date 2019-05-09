@@ -64,7 +64,8 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         }
 
         if indexPath == previousSelectedIndexpath{
-            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
+            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
+            cell.rabioButtonImageView.tintColor = ThemeManager.shared.selectionColor
         }
         return cell
     }
@@ -73,7 +74,8 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         currentSelectedItem = menuItems[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! PlayerPopupTableViewCell
         if previousSelectedIndexpath != indexPath {
-           cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
+           cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
+            cell.rabioButtonImageView.tintColor = ThemeManager.shared.selectionColor
             let cell2 = tableView.cellForRow(at: previousSelectedIndexpath!) as! PlayerPopupTableViewCell
             cell2.rabioButtonImageView.image = UIImage(named: "radioButton")
         }

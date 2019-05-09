@@ -1043,10 +1043,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let url = URL(string: imageUrl)
-        DispatchQueue.main.async {
-            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
-        }
+        self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), context: nil)
+//        DispatchQueue.main.async {
+//            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
+//        }
         //self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()
@@ -1246,7 +1247,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
 //        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "",latestId: nil , isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
 
-        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed.getItem, audioLanguage: defaultAudioLanguage)
+        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed.getItem,isDisney: isDisney, audioLanguage: defaultAudioLanguage)
 
         self.present(playerVC, animated: false, completion: nil)
 //        Utility.sharedInstance.prepareAndPresentCustomPlayerVC(itemId: itemToBePlayed, toBepresentedOnScreen: self, audio: metadata?.multipleAudio, subtitles: metadata?.subtitles)
@@ -1301,7 +1302,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
 //                playerVC.viewforplayer?.moreLikeView?.moreArray = moreArray
 //            }
             if let item = item{
-                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: item,recommendationArray: recommendationArray, audioLanguage: defaultAudioLanguage)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: item,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
                 self.present(playerVC, animated: true, completion: nil)
             }
             
@@ -1316,7 +1317,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return
             }
 
-            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToPlay, recommendationArray: recommendationArray, audioLanguage: defaultAudioLanguage, latestEpisodeId: (metadata?.latestEpisodeId))
+            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToPlay,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage, latestEpisodeId: (metadata?.latestEpisodeId))
 
             self.present(playerVC, animated: false, completion: nil)
 //            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "",latestId: nil, isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)

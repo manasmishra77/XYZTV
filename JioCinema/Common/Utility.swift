@@ -184,9 +184,8 @@ class Utility {
     }
 
     func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil, latestEpisodeId: String? = nil)-> PlayerViewController{
-        let playerVC = PlayerViewController.init(item: item, latestEpisodeId: latestEpisodeId)
+        let playerVC = PlayerViewController.init(item: item,isDisney: isDisney, latestEpisodeId: latestEpisodeId)
         playerVC.recommendationArray = recommendationArray
-        playerVC.isDisney = isDisney
         if let audiolanguage = audioLanguage {
         playerVC.audioLanguage = audiolanguage
         } else {

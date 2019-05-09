@@ -148,11 +148,12 @@ class SideNavigationTableView: UIView {
             selectedIndex = index
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
             if itemsList[index].type == ViewControllersType.disneyHome {
+                    ThemeManager.shared.currentTheme = .jioDisney
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
                 
-            }
-            else {
+            } else {
+                    ThemeManager.shared.currentTheme = .jioCinema
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }

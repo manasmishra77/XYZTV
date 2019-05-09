@@ -63,43 +63,6 @@ class PlayerViewController: UIViewController {
         viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId,audioLanguage: self.audioLanguage)
         viewforplayer?.audioLanguage = self.audioLanguage
     }
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        super.pressesBegan(presses, with: event)
-        for press in presses {
-            switch press.type{
-            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-                //resetTimer()
-                print("Arrow")
-            case .menu:
-                
-                print("menu")
-            case .playPause:
-                print("playPause")
-                
-            case .select:
-                print("select")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        for touch in touches{
-            switch touch.type{
-            case .direct:
-                print("Direct")
-            case .indirect:
-                print("indirect")
-            case .pencil:
-                print("pencil")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
-    
 
     deinit {
         print("playerVC deinit called")
@@ -121,7 +84,7 @@ extension PlayerViewController: CustomPlayerViewProtocol {
             self.dismiss(animated: false, completion: {
                 let metaVc = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
                 metaVc.item = item
-                sideNavigationVC.present(metaVc, animated: false, completion: nil)
+                homeVc.present(metaVc, animated: false, completion: nil)
             })
         }
     }
