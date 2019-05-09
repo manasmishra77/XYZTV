@@ -41,9 +41,8 @@ class PlayerViewController: UIViewController {
     }
     
     @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
-        
         if viewforplayer?.popUpHolderView.isHidden == false {
-            viewforplayer!.removeControlDetailview()
+            viewforplayer!.removeControlDetailview(forOkButtonClick: false)
         }
         else {
             DispatchQueue.main.async {

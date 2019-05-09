@@ -67,8 +67,6 @@ class CustomPlayerView: UIView {
     var lastSelectedAudioLanguage: String?
     var lastSelectedVideoQuality: String?
     
-    var stateOfPlayerBeforeButtonClickWasPaused: Bool = false
-    
     @IBOutlet weak var popUpTableViewHolderWidth: NSLayoutConstraint!
     
     
@@ -219,36 +217,19 @@ class CustomPlayerView: UIView {
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
-        self.removeControlDetailview()
+        self.removeControlDetailview(forOkButtonClick: true)
         myPreferredFocusView = nil
         player?.play()
     }
     
-    func removeControlDetailview() {
-        if bitrateTableView != nil {
-            if rememberMyChoiceTapped {
-                UserDefaults.standard.set(bitrateTableView?.currentSelectedItem ?? lastSelectedVideoQuality, forKey: isRememberMySettingsSelectedKey)
+    func removeControlDetailview(forOkButtonClick: Bool) {
+        if forOkButtonClick {
+            if bitrateTableView != nil {
+                changeValuesOfTableAfterOkButtonClick(forBitrateTable: true)
             } else {
-                UserDefaults.standard.set(nil, forKey: isRememberMySettingsSelectedKey)
-            }
-            
-            if let selectedItem = bitrateTableView?.currentSelectedItem {
-                
-                if lastSelectedVideoQuality != bitrateTableView?.currentSelectedItem {
-                    playerViewModel?.currentDuration = Float(player?.currentTime().seconds ?? 0)
-                    self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
-                    lastSelectedVideoQuality = bitrateTableView?.currentSelectedItem
-                }
-                
-//                lastSelectedVideoQuality = "\(selectedItem)"
+                changeValuesOfTableAfterOkButtonClick(forBitrateTable: false)
             }
         }
-        else {
-            self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
-            lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
-            lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
-        }
-        
         subtitleTableView?.removeFromSuperview()
         multiAudioTableView?.removeFromSuperview()
         bitrateTableView?.removeFromSuperview()
@@ -260,7 +241,26 @@ class CustomPlayerView: UIView {
         self.popUpHolderView.isHidden = true
     }
     
-    
+    func changeValuesOfTableAfterOkButtonClick(forBitrateTable: Bool){
+        if forBitrateTable {
+            if rememberMyChoiceTapped {
+                UserDefaults.standard.set(bitrateTableView?.currentSelectedItem ?? lastSelectedVideoQuality, forKey: isRememberMySettingsSelectedKey)
+            } else {
+                UserDefaults.standard.set(nil, forKey: isRememberMySettingsSelectedKey)
+            }
+            if let selectedItem = bitrateTableView?.currentSelectedItem {
+                if lastSelectedVideoQuality != bitrateTableView?.currentSelectedItem {
+                    playerViewModel?.currentDuration = Float(player?.currentTime().seconds ?? 0)
+                    self.playerViewModel?.changePlayerBitrateTye(bitrateQuality: BitRatesType(rawValue: selectedItem)!)
+                    lastSelectedVideoQuality = bitrateTableView?.currentSelectedItem
+                }
+            }
+        } else {
+            self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
+            lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
+            lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
+        }
+    }
     func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
         player?.pause()
         if let subtitle = subtitleLang {
@@ -335,12 +335,6 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
-        if player?.rate == 0 {
-            stateOfPlayerBeforeButtonClickWasPaused = true
-        } else {
-            stateOfPlayerBeforeButtonClickWasPaused = false
-        }
-        player?.pause()
         var audioArray = [String]()
         var subtitleArray = [String]()
         
@@ -391,7 +385,6 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
-        print(player?.rate)
         player?.pause()
         self.popUpHolderView.isHidden = false
         popUpTableViewHolderWidth.constant = 640
