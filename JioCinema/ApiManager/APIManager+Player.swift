@@ -10,9 +10,10 @@ import Foundation
 
 extension RJILApiManager {
     
-    class func getPlaybackRightsModel(contentId: String, completion: @escaping (Response<PlaybackRightsModel>) -> ()) {
+    class func getPlaybackRightsModel(contentId: String, completion: @escaping (Response<PlaybackRightsModel>) -> ()) -> URLSessionDataTask? {
         let url = playbackRightsURL + contentId
         let params = ["id": contentId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self, completion: completion)
+       let task = RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, isLoginRequired: true, reponseModelType: PlaybackRightsModel.self, completion: completion)
+        return task
     }
 }

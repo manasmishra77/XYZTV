@@ -250,6 +250,8 @@ class RJILApiManager {
         if headerType == .disneyCommon {
             request?.allHTTPHeaderFields = nil
             request?.allHTTPHeaderFields = disneyHeaders
+        } else if headerType == .none {
+            request?.allHTTPHeaderFields = nil
         }
         
         return request
@@ -282,10 +284,10 @@ class RJILApiManager {
     
     private init() {} //This prevents others from using the default '()' initializer for this class.
     
-    func createDataTask(withRequest request:URLRequest,httpMethod method:String, completion:@escaping RequestCompletionBlock) {
+    func createDataTask(withRequest request: URLRequest, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask {
         var originalRequest = request
         originalRequest.httpMethod = method
-        originalRequest.timeoutInterval = 30.0
+        originalRequest.timeoutInterval = 3.0
         
         
         //Create a datatask with new completion handler
@@ -300,9 +302,9 @@ class RJILApiManager {
             
             //This is a new completion handler
             //TODO: error domain
-            guard let httpResponse:HTTPURLResponse = response as? HTTPURLResponse else {
+            guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
                 //TODO: Add Manual exception tracking, No Internet Connection
-                var errorInfo:[String:String] = [String:String]()
+                var errorInfo:[String: String] = [String:String]()
                 errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
                 completion(nil, nil, NSError(domain: "some domain", code: 101, userInfo: errorInfo))
                 return
@@ -313,8 +315,7 @@ class RJILApiManager {
             //TODO: refreshing ssotoken
             self.httpStatusCode = httpResponse.statusCode
             if self.httpStatusCode == 419 {
-                if JCAppUser.shared.mToken != ""{
-                    
+                if JCAppUser.shared.mToken != "" {                    
                     //Put the currentTask in queue
                     let currentTask:RJILPendingTask = RJILPendingTask()
                     currentTask.request = originalRequest
@@ -401,8 +402,7 @@ class RJILApiManager {
         }
         
         dataTask.resume()
-        
-        
+        return dataTask
     }
     
     func parseRefreshTokenData(_ responseData: Data) -> (Int, String) {
