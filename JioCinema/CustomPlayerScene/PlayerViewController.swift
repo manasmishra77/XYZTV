@@ -108,6 +108,24 @@ class PlayerViewController: UIViewController {
 
 
 extension PlayerViewController: CustomPlayerViewProtocol {
+    func presenMetadataOnMoreLikeTapped(item: Item) {
+        //Present Metadata
+        if let metaDataVC = self.presentingViewController as? JCMetadataVC {
+            metaDataVC.isUserComingFromPlayerScreen = true
+            metaDataVC.item = item
+            self.dismiss(animated: true, completion: {
+                metaDataVC.callWebServiceForMetadata(id: item.id ?? "", newAppType: item.appType)
+            })
+        } else if let navVc = self.presentingViewController as? UINavigationController, let sideNavigationVC = navVc.viewControllers.first as? SideNavigationVC, let homeVc = sideNavigationVC.selectedVC as? BaseViewController {
+            homeVc.isMetadataScreenToBePresentedFromResumeWatchCategory = true
+            self.dismiss(animated: false, completion: {
+                let metaVc = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
+                metaVc.item = item
+                sideNavigationVC.present(metaVc, animated: false, completion: nil)
+            })
+        }
+    }
+    
     func removePlayerAfterAesFailure() {
         let alert = UIAlertController(title: "Unable to process your request right now", message: "", preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in

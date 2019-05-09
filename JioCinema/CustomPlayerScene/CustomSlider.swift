@@ -62,9 +62,11 @@ extension CustomSlider: SliderDelegate {
     
     func pressesBeganCalled() {
         if backgroundFocusableButton.isFocused {
-            sliderLeading.constant = sliderLeadingForSeeking.constant
-            sliderDelegate?.seekPlayerTo(pointX: CGFloat(sliderLeading.constant/(self.widthOfProgressBar)))
-            hideThumbnails(requrestToHide: true)
+            DispatchQueue.main.async {
+                self.sliderLeading.constant = self.sliderLeadingForSeeking.constant
+                self.sliderDelegate?.seekPlayerTo(pointX: CGFloat(self.sliderLeading.constant/(self.widthOfProgressBar)))
+                self.hideThumbnails(requrestToHide: true)
+            }
         }
     }
     

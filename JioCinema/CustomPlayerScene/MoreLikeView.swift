@@ -22,10 +22,23 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     var isEpisodeDataAvailable: Bool = false
     var isPlayList: Bool = false
     var isDisney: Bool = false
-    var id: String?
+    var cureentItemId: String?
     weak var delegate: playerMoreLikeDelegate?
+    var currentPlayingIndex: Int?
     
-    func configMoreLikeView() {
+    //MARK:- Scroll Collection View To Row
+    var myPreferredFocusView:UIView? = nil
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let preferredView = myPreferredFocusView {
+            return [preferredView]
+        }
+        return []
+    }
+    
+    
+    func configMoreLikeView(id: String) {
+        cureentItemId = id
         moreLikeCollectionView.delegate = self
         moreLikeCollectionView.dataSource = self
         let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
@@ -96,8 +109,11 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
         return true
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 25
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var item : Item?
+            var item : Item?
         if isMoreDataAvailable {
             guard let newItem = moreArray?[indexPath.row] else{
                 return
@@ -111,11 +127,16 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             item = newItem.getItem
         }
         if let newItem = item {
-            if id == newItem.id {
+            if cureentItemId == newItem.id {
                 return
+            } else {
+                cureentItemId = newItem.id
             }
             delegate?.moreLikeTapped(newItem: newItem, index: indexPath.row)
         }
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
@@ -129,7 +150,15 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            let isPlayingNow = model?.id == id
+
+            var isPlayingNow = model?.id == cureentItemId
+
+            if let currentIndex = self.currentPlayingIndex {
+                if indexPath.row == currentIndex && isPlayList {
+                    isPlayingNow = true
+                }
+            }
+
             return (cellItems, isPlayingNow, model?.name ?? "")
         } else if isMoreDataAvailable {
             let model = moreArray?[indexPath.row]
@@ -137,11 +166,63 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
             let layoutType: ItemCellLayoutType = (appType == .Movie) ? .potraitWithLabelAlwaysShow : .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
-            let isPlayingNow = model?.id == id
+
+            var isPlayingNow = model?.id == cureentItemId
+
+            if let currentIndex = self.currentPlayingIndex {
+                if indexPath.row == currentIndex {
+                    isPlayingNow = true
+                }
+            }
             return (cellItems, isPlayingNow, model?.name ?? "")
         }
+        
+        
+        
         return (cellItems, false, "")
     }
+    
+    func scrollToIndex(index:Int) {
+        var previousIndex: IndexPath?
+        if currentPlayingIndex != nil {
+            previousIndex = IndexPath.init(row: currentPlayingIndex!, section: 0)
+        }
+        
+        if previousIndex?.row == index {
+            return
+        }
+        currentPlayingIndex = index
+        DispatchQueue.main.async {
+            let cellIndex = IndexPath.init(row: index, section: 0)
+            var indexArray = [cellIndex]
+            if previousIndex != nil {
+                indexArray.append(previousIndex!)
+            }
+            self.moreLikeCollectionView.reloadItems(at: indexArray)
+            self.moreLikeCollectionView.scrollToItem(at: cellIndex, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+            let cell = self.moreLikeCollectionView.cellForItem(at: cellIndex)
+            self.myPreferredFocusView = cell
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
+        }
+    }
+    
+//    func scrollCollectionViewToRow(row: Int) {
+//        print("Scroll to Row is = \(row)")
+//        if row >= 0, collectionView_Recommendation.numberOfItems(inSection: 0) > 0 {
+//            DispatchQueue.main.async {
+//                self.collectionView_Recommendation.isScrollEnabled = true
+//                let path = IndexPath(row: row, section: 0)
+//
+//                self.collectionView_Recommendation.scrollToItem(at: path, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: false)
+//                self.collectionView_Recommendation.layoutIfNeeded()
+//                let cell = self.collectionView_Recommendation.cellForItem(at: path)
+//
+//
+//            }
+//        }
+//    }
+    
     deinit {
         print("moreLikeView deinit called")
     }

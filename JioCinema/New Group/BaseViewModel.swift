@@ -388,11 +388,21 @@ fileprivate extension BaseViewModel {
 //}
 
 extension BaseViewModel {
-    func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?) {
+    func itemCellTapped(_ item: Item, selectedIndexPath: IndexPath?, isFromCarousal: Bool? = false) {
         // Selected indexpath is for tableview cell
-        let indexFromArray = selectedIndexPath?.row ?? 0
-        let dataContainer = getDataContainer(indexFromArray)
-        let categoryName = dataContainer?.title ?? "Carousal"
+        
+        
+        var indexFromArray = 0
+        var dataContainer: DataContainer!
+        var categoryName = "Carousal"
+        
+        
+        if isFromCarousal != true {
+            indexFromArray = selectedIndexPath?.row ?? 0
+            dataContainer = getDataContainer(indexFromArray)
+            categoryName = dataContainer?.title ?? "Carousal"
+        }
+        
         self.tappedItem = item
         switch item.appType {
         case .Movie:
@@ -493,7 +503,7 @@ extension BaseViewModel {
 extension BaseViewModel : CarousalImageDelegate {
     func didTapOnCell(_ index: IndexPath, _ collectionView: UICollectionView) {
         if let items = baseDataModel?.data?[0].items {
-            itemCellTapped(items[index.row], selectedIndexPath: index)
+            itemCellTapped(items[index.row], selectedIndexPath: index, isFromCarousal: true)
         }
     }
     

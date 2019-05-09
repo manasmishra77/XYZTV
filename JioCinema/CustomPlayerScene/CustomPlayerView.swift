@@ -14,6 +14,7 @@ import Foundation
 protocol CustomPlayerViewProtocol: NSObjectProtocol {
     func removePlayerController()
     func removePlayerAfterAesFailure()
+    func presenMetadataOnMoreLikeTapped(item: Item)
 }
 
 var playerViewControllerKVOContext = 0
@@ -146,7 +147,11 @@ class CustomPlayerView: UIView {
             }
         }
         moreLikeView?.appType = playerItem?.appType ?? .None
-        moreLikeView?.configMoreLikeView()
+        var id = playerItem?.id
+        if id == ""{
+            id = playerItem?.latestId
+        }
+        moreLikeView?.configMoreLikeView(id: id ?? "")
         moreLikeView?.delegate = self
         self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
         moreLikeView?.frame = moreLikeHolderView.bounds
@@ -441,6 +446,9 @@ extension CustomPlayerView : PlayerControlsDelegate {
     }
     
     func cancelTimerForHideControl() {
+        if timerToHideControls == nil{
+            return
+        }
         timerToHideControls.invalidate()
     }
     
@@ -482,8 +490,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         } else {
             if isValidTime && (controlsView?.isHidden ?? false) {
                 if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+                    controlsView?.isHidden = false
                     controlsView?.skipIntroButton.isHidden = false
                 }else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+                    controlsView?.isHidden = true
                     controlsView?.skipIntroButton.isHidden = true
                 }
                 
@@ -542,6 +552,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func reloadMoreLikeCollectionView(currentMorelikeIndex: Int) {
         currentPlayingIndex = currentMorelikeIndex
+        self.moreLikeView?.currentPlayingIndex = currentMorelikeIndex
+        self.moreLikeView?.isPlayList = self.isPlayList
         self.moreLikeView?.moreArray = playerViewModel?.moreArray
         self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
@@ -569,13 +581,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
-    //debugging is not done
+
     func addAvPlayerToController() {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
-            if let playerItem = self.player?.currentItem {
+            if self.player?.currentItem != nil {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
-//                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.resetPlayer()
@@ -588,6 +599,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if self.playerViewModel?.currentDuration ?? 0 > 0 {
                 }
             }
+            
+            
+            self.setCurrentPlayingOnMoreLike()
+            
             if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
                 
             }
@@ -633,7 +648,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         playerTimeObserverToken = nil
-        //        self.player = nil
     }
     
     
@@ -649,6 +663,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let moreArray = moreLikeView?.moreArray, isPlayList {
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[currentPlayingIndex + 1]
+                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
                         resetPlayer()
                         self.currentPlayingIndex = currentPlayingIndex + 1
                         self.initialiseViewModelForItem(item: nextItem, latestEpisodeId: nil)
@@ -659,6 +674,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             else if playerItem?.appType == .Episode {
                 if let moreArray = moreLikeView?.episodesArray {
                     if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
+                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
                         self.resetPlayer()
                         self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
                         self.initialiseViewModelForItem(item: nextItemTupple.0.getItem, latestEpisodeId: nil)
@@ -674,6 +690,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
 
 
+    
+    func setCurrentPlayingOnMoreLike() {
+        if let currentPlayingIndex = currentPlayingIndex {
+            self.moreLikeView?.scrollToIndex(index: currentPlayingIndex)
+        }
+    }
 
     
     func getPlayerDuration() -> Double {
@@ -688,13 +710,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         } else {
             didSeek = false
         }
-    }
-    
-    func changePlayingUrlAsPerBitcode() {
-        
-        //        AVPlayerItem *playeriem= [AVPlayerItem playerItemWithURL:urlOfSelectedQualityVideo];
-        //        [playeriem seekToTime:player.currentTime];
-        //        [player replaceCurrentItemWithPlayerItem:playeriem];
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -963,8 +978,15 @@ extension CustomPlayerView {
 extension CustomPlayerView: playerMoreLikeDelegate{
     func moreLikeTapped(newItem: Item, index: Int) {
         resetPlayer()
-         self.currentPlayingIndex = index
-        self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
+        self.currentPlayingIndex = index
+        if newItem.appType == .Movie {
+            delegate?.presenMetadataOnMoreLikeTapped(item: newItem)
+        } else {
+            if moreLikeView?.episodesArray != nil {
+                playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? playerItem?.language ?? "")
+            }
+            self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
+        }
     }
 }
 
