@@ -15,9 +15,10 @@ extension RJILApiManager {
     enum RequestHeaderType {
         case disneyCommon
         case baseCommon
+        case none
     }
     
-    class func getReponse<T: Codable>(path: String, shouldCheckNetWork: Bool = true, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) {
+    class func getReponse<T: Codable>(path: String, shouldCheckNetWork: Bool = true, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) -> URLSessionDataTask? {
         
 //        guard !isLoginRequired, JCLoginManager.sharedInstance.isUserLoggedIn() else {
 //            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Not Logged in")
@@ -31,7 +32,7 @@ extension RJILApiManager {
                 let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network", code: CommonResponseCode.noNetwork.rawValue)
 
                 completion(response)
-                return
+                return nil
             }
         }
         
@@ -40,9 +41,9 @@ extension RJILApiManager {
             let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed", code: CommonResponseCode.requestColdnotFormed.rawValue)
 
             completion(response)
-            return
+            return nil
         }
-        RJILApiManager.defaultManager.createDataTask(withRequest: request, httpMethod: postType.rawValue) { (data, response, error) in
+        let task = RJILApiManager.defaultManager.createDataTask(withRequest: request, httpMethod: postType.rawValue) { (data, response, error) in
             if let error = error as NSError? {
 //                let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription)
 //                completion(response)
@@ -84,7 +85,7 @@ extension RJILApiManager {
                 completion(response)
             }
         }
-        
+        return task
     }
     
 }
@@ -107,17 +108,18 @@ extension RJILApiManager {
 
 //MARK:- Version check and update
 extension RJILApiManager {
-    class func callWebServiceToCheckVersion(completion: @escaping (Response<CheckVersionModel>) -> ()) {
-        RJILApiManager.getReponse(path: checkVersionUrl, shouldCheckNetWork: false, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
+    class func callWebServiceToCheckVersion(completion: @escaping (Response<CheckVersionModel>) -> ()) -> URLSessionDataTask? {
+       let task = RJILApiManager.getReponse(path: checkVersionUrl, shouldCheckNetWork: false, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
+        return task
     }
 }
 
 //MARK:- Sign in  API Call
 extension RJILApiManager {
     //via jioid
-    class func signInViaJioId(id: String, password: String, completion: @escaping APISuccessBlock) {
+    class func signInViaJioId(id: String, password: String, completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
         let params: [String:String] = ["os": "Android", "username": id, "password": password, "deviceId": "12345"]
-        RJILApiManager.getReponse(path: loginUrl, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SignInSuperModel.self) { (response) in
+        let task = RJILApiManager.getReponse(path: loginUrl, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SignInSuperModel.self) { (response) in
             if response.isSuccess {
                 if let signInModel = response.model?.result {
                     JCAppUser.shared.lbCookie = signInModel.lbCookie ?? ""
@@ -140,22 +142,23 @@ extension RJILApiManager {
                 completion(false, response.errorMsg)
             }
         }
-        
+        return task
     }
     //VIA OTP
-    class func getOTP(number: String, completion: @escaping APISuccessBlock) {
+    class func getOTP(number: String, completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
         let params = [identifierKey:"+91" + number, otpIdentifierKey: "+91" + number, actionKey: actionValue]
-        RJILApiManager.getReponse(path: getOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: NoModel.self) { (response) in
+        let task = RJILApiManager.getReponse(path: getOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: NoModel.self) { (response) in
             if response.isSuccess {
                 completion(true, nil)
             } else {
                 completion(false, response.errorMsg)
             }
         }
+        return task
     }
-    class func verifyOTP(number: String, otp: String, completion: @escaping APISuccessBlock) {
+    class func verifyOTP(number: String, otp: String, completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
          let params = [identifierKey: number, otpKey:otp, upgradeAuthKey:upgradAuthValue, returnSessionDetailsKey:returnSessionDetailsValue]
-        RJILApiManager.getReponse(path: verifyOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: OTPModel.self) { (response) in
+        let task = RJILApiManager.getReponse(path: verifyOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: OTPModel.self) { (response) in
             if response.isSuccess {
                     JCAppUser.shared.lbCookie = response.model?.lbCookie ?? ""
                     JCAppUser.shared.ssoToken = response.model?.ssoToken ?? ""
@@ -166,13 +169,14 @@ extension RJILApiManager {
                     completion(false, response.errorMsg)
                 }
         }
+        return task
     }
     
     
-    class func loginViaSubId(subId: String, completion: @escaping APISuccessBlock) {
+    class func loginViaSubId(subId: String, completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
         let params = [subscriberIdKey: subId]
         let url = basePath + loginViaSubIdUrl
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: SignInModel.self) { (response) in
+        let task = RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: SignInModel.self) { (response) in
             if response.isSuccess {
                 JCAppUser.shared.lbCookie = response.model?.lbCookie ?? ""
                 JCAppUser.shared.ssoToken = response.model?.ssoToken ?? ""
@@ -188,25 +192,28 @@ extension RJILApiManager {
             }
 
         }
+        return task
     }
 }
 
 //MARK:- Parental Control API Call
 extension RJILApiManager {
     //Get Unique code to reset pin or see pin status
-    class func getUniqueCodeForResetParentalPin(completion: @escaping (_ uniqueCode: String?) -> ()) -> () {
-        RJILApiManager.getReponse(path: SetParentalPinUrl, postType: .POST, reponseModelType: [String: Int].self) { (response) in
+    class func getUniqueCodeForResetParentalPin(completion: @escaping (_ uniqueCode: String?) -> ()) -> URLSessionDataTask? {
+        let task = RJILApiManager.getReponse(path: SetParentalPinUrl, postType: .POST, reponseModelType: [String: Int].self) { (response) in
             guard response.isSuccess else {return}
             guard let uniqueCode = response.model?["uniqueCode"] else {return}
             completion("\(uniqueCode)")
         }
+        return task
     }
     //Getting parental pin model from server
-    class func getParentalPinForContentFromServer(completion: @escaping (_ pinModel: ParentalPinModel) -> ()) -> () {
-        RJILApiManager.getReponse(path: GetParentalPinDetailUrl, postType: .POST, reponseModelType: ParentalPinModel.self) { (response) in
+    class func getParentalPinForContentFromServer(completion: @escaping (_ pinModel: ParentalPinModel) -> ()) -> URLSessionDataTask? {
+        let task = RJILApiManager.getReponse(path: GetParentalPinDetailUrl, postType: .POST, reponseModelType: ParentalPinModel.self) { (response) in
             guard response.isSuccess else {return}
             completion(response.model!)
         }
+        return task
     }
     
 }
