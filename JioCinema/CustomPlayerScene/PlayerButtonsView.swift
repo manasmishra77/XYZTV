@@ -8,7 +8,7 @@
 
 import UIKit
 protocol ButtonPressedDelegate: NSObject{
-    func playTapped(toPlay: Bool)
+    func playTapped()
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool)
     func settingsButtonPressed(toDisplay: Bool)
     func nextButtonPressed(toDisplay: Bool)
@@ -21,10 +21,6 @@ class PlayerButtonsView: UIView {
     var ispaused: Bool = false
     weak var buttonDelegate: ButtonPressedDelegate?
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    var isPlayerPaused: Bool {
-        return (self.superview?.superview as? PlayersControlView)?.isPlayerPaused ?? true
-    }
     
     
     func configurePlayerButtonsView() {
@@ -40,17 +36,15 @@ class PlayerButtonsView: UIView {
             arrayOfPlayerButtonItem.append(item)
         }
     }
-    func changePlayPauseButtonIcon() {
+    func changePlayPauseButtonIcon(shouldPause: Bool) {
         let indexPath = IndexPath(row: 2, section: 0)
         guard let cell = collectionView.cellForItem(at: indexPath) as? ButtonCollectionViewCell else {return}
-        if isPlayerPaused {
+        if !shouldPause {
             cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
             cell.buttonTitle.text = "Pause"
-            buttonDelegate?.playTapped(toPlay: true)
         } else {
             cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
             cell.buttonTitle.text = "Play"
-            buttonDelegate?.playTapped(toPlay: false)
         }
     }
 
@@ -69,22 +63,13 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! ButtonCollectionViewCell
         switch indexPath.row {
         case 0:
             buttonDelegate?.settingsButtonPressed(toDisplay: true)
         case 1:
             buttonDelegate?.previousButtonPressed(toDisplay: true)
         case 2:
-            if isPlayerPaused {
-                cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
-                cell.buttonTitle.text = "Pause"
-                buttonDelegate?.playTapped(toPlay: true)
-            } else {
-                cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
-                cell.buttonTitle.text = "Play"
-                buttonDelegate?.playTapped(toPlay: false)
-            }
+            buttonDelegate?.playTapped()
         case 3:
             buttonDelegate?.nextButtonPressed(toDisplay: true)
         case 4:

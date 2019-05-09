@@ -23,12 +23,10 @@ class ButtonCollectionViewCell: UICollectionViewCell {
             self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.buttonTitle.isHidden = false
             self.playerButton.backgroundColor = .lightGray
-            self.playerButton.setImage(UIImage(named: buttonItem?.selectedImage ?? ""), for: .normal)
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.buttonTitle.isHidden = true
             self.playerButton.backgroundColor = .clear
-            self.playerButton.setImage(UIImage(named: buttonItem?.unselectedImage ?? ""), for: .normal)
         }
     }
     deinit {

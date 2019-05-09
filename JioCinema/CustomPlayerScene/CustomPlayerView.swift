@@ -29,7 +29,6 @@ class CustomPlayerView: UIView {
     var playerLayer: AVPlayerLayer?
     var playerTimeObserverToken: Any?
     weak var delegate: CustomPlayerViewProtocol?
-    var currentDuration: Float = 0.0
     var videoStartingTimeDuration = 0
     var videoStartingTime = Date()
     var isDisney: Bool = false
@@ -222,13 +221,14 @@ class CustomPlayerView: UIView {
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
+        resetTimer()
         self.removeControlDetailview()
         myPreferredFocusView = nil
-        player?.play()
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
+        changePlayerPlayingStatus(shouldPlay: true)
     }
     
     func removeControlDetailview() {
+        resetTimer()
         if bitrateTableView != nil {
             if rememberMyChoiceTapped {
                 UserDefaults.standard.set(bitrateTableView?.currentSelectedItem ?? lastSelectedVideoQuality, forKey: isRememberMySettingsSelectedKey)
@@ -260,21 +260,28 @@ class CustomPlayerView: UIView {
         subtitleTableView = nil
         multiAudioTableView = nil
         bitrateTableView = nil
-        
         self.popUpHolderView.isHidden = true
     }
     
     
     func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
-        player?.pause()
         if let subtitle = subtitleLang {
             self.playerSubTitleLanguage(subtitle)
         }
         if let audio = audioLang {
             self.playerAudioLanguage(audio)
         }
-        player?.play()
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
+        changePlayerPlayingStatus(shouldPlay: true)
+    }
+    
+    func changePlayerPlayingStatus(shouldPlay: Bool) {
+        if shouldPlay {
+            player?.play()
+            controlsView?.playerButtonsView?.changePlayPauseButtonIcon(shouldPause: false)
+        } else {
+            player?.pause()
+            controlsView?.playerButtonsView?.changePlayPauseButtonIcon(shouldPause: true)
+        }
     }
     
     private func playerAudioLanguage(_ audioLanguage: String?) {
@@ -331,23 +338,23 @@ class CustomPlayerView: UIView {
     
 }
 extension CustomPlayerView: ButtonPressedDelegate {
-    func playTapped(toPlay: Bool) {
-        if toPlay{
-            player?.play()
+    func playTapped() {
+        resetTimer()
+        if isPlayerPaused {
+            changePlayerPlayingStatus(shouldPlay: true)
         } else {
-            player?.pause()
+            changePlayerPlayingStatus(shouldPlay: false)
         }
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
+        invalidateTimerForControl()
         if player?.rate == 0 {
             stateOfPlayerBeforeButtonClickWasPaused = true
         } else {
             stateOfPlayerBeforeButtonClickWasPaused = false
         }
-        player?.pause()
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
+        changePlayerPlayingStatus(shouldPlay: false)
         var audioArray = [String]()
         var subtitleArray = [String]()
         
@@ -398,9 +405,8 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
-        print(player?.rate)
-        player?.pause()
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
+        invalidateTimerForControl()
+        changePlayerPlayingStatus(shouldPlay: false)
         self.popUpHolderView.isHidden = false
         popUpTableViewHolderWidth.constant = 640
         heightOfPopUpView.constant = 820
@@ -434,14 +440,15 @@ extension CustomPlayerView: ButtonPressedDelegate {
         self.setNeedsFocusUpdate()
     }
     func nextButtonPressed(toDisplay: Bool) {
+        resetTimer()
         playnextOrPreviousItem(playNext: true)
     }
     
     func previousButtonPressed(toDisplay: Bool) {
+        resetTimer()
         playnextOrPreviousItem(playNext: false)
     }
     func playnextOrPreviousItem(playNext: Bool) {
-        player?.pause()
         guard let currentTime = player?.currentItem?.currentTime().seconds else {
             return
         }
@@ -453,6 +460,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
                 player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime + 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
                     DispatchQueue.main.async {
                         self.updateIndicatorState(toStart: false)
+                        self.changePlayerPlayingStatus(shouldPlay: true)
                     }
                 })
             }
@@ -461,12 +469,11 @@ extension CustomPlayerView: ButtonPressedDelegate {
                 player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime - 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
                     DispatchQueue.main.async {
                         self.updateIndicatorState(toStart: false)
+                        self.changePlayerPlayingStatus(shouldPlay: true)
                     }
                 })
             }
         }
-        player?.play()
-        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
 }
 extension CustomPlayerView: PlayerControlsDelegate {
@@ -502,7 +509,6 @@ extension CustomPlayerView: PlayerControlsDelegate {
         DispatchQueue.main.async {
             let seekToValue = Double(seekValue) * self.getPlayerDuration()
             self.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekToValue), preferredTimescale: 1))
-            self.currentDuration = Float(seekToValue)
         }
         
     }
@@ -530,7 +536,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
                     controlsView?.isHidden = false
                     controlsView?.skipIntroButton.isHidden = false
-                }else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
                     controlsView?.isHidden = true
                     controlsView?.skipIntroButton.isHidden = true
                 }
@@ -653,10 +659,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
-            
-            
             self.player?.play()
-            controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         }
     }
     
@@ -747,14 +750,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         return CMTimeGetSeconds(currentItem.duration)
     }
     
-    //Seek player
-    func seekPlayer() {
-        if Double(currentDuration) >= ((self.player?.currentItem?.currentTime().seconds) ?? 0.0), didSeek{
-            self.player?.seek(to: CMTimeMakeWithSeconds(Float64(currentDuration), preferredTimescale: 1))
-        } else {
-            didSeek = false
-        }
-    }
+   
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
@@ -822,11 +818,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             case .readyToPlay:
                 self.updateIndicatorState(toStart: false)
                 print("indicator start on ready to play")
-                //                indicator?.removeFromSuperview()
-                self.seekPlayer()
                 videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
                 playerViewModel?.isItemToBeAddedInResumeWatchList = true
-                //                self.isRecommendationCollectionViewEnabled = true
                 self.addPlayerPeriodicTimeObserver()
                 break
             case .failed:
@@ -954,12 +947,16 @@ extension CustomPlayerView {
     }
     
     func resetTimer() {
-        if self.timerToHideControls != nil {
-            self.timerToHideControls.invalidate()
-        }
+        invalidateTimerForControl()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
         self.startTimer()
+    }
+    
+    func invalidateTimerForControl() {
+        if self.timerToHideControls != nil {
+            self.timerToHideControls.invalidate()
+        }
     }
     
     func hideControlsView() {
@@ -970,30 +967,32 @@ extension CustomPlayerView {
         self.updateFocusIfNeeded()
         self.setNeedsFocusUpdate()
         self.isFocusViewChangedOnResetTimer = true
-        
         self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        super.pressesBegan(presses, with: event)
         for press in presses {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimer()
             case .menu:
-                if self.controlsView?.isHidden == false {
-                    self.controlsView?.isHidden = true
-                    self.moreLikeView?.isHidden = true
-                }
-                print("menu")
+                super.pressesBegan(presses, with: event)
+                print("Menu")
+//                if popUpHolderView.isHidden == true {
+//                    self.resetAndRemovePlayer()
+//                    self.delegate?.removePlayerController()
+//                } else {
+//                    resetTimer()
+//                    removeControlDetailview()
+//                    print("menu")
+//                }
             case .playPause:
                 print("playPause")
-                if player?.rate == 0 {
-                    player?.play()
+                if isPlayerPaused {
+                    changePlayerPlayingStatus(shouldPlay: true)
                 } else {
-                    player?.pause()
+                    changePlayerPlayingStatus(shouldPlay: false)
                 }
-                controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
             case .select:
                 print("select")
             @unknown default:
