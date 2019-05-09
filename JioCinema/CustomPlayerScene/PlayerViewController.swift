@@ -84,7 +84,7 @@ extension PlayerViewController: CustomPlayerViewProtocol {
             self.dismiss(animated: false, completion: {
                 let metaVc = Utility.sharedInstance.prepareMetadata(item.id ?? "", appType: .Movie, fromScreen: PLAYER_SCREEN, categoryName: RECOMMENDATION, categoryIndex: 0, tabBarIndex: 0, isDisney: self.isDisney)
                 metaVc.item = item
-                sideNavigationVC.present(metaVc, animated: false, completion: nil)
+                homeVc.present(metaVc, animated: false, completion: nil)
             })
         }
     }

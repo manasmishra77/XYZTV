@@ -26,12 +26,9 @@ protocol PlayerAssetManagerDelegate: NSObjectProtocol {
 class PlayerAssetManager: NSObject {
     var asset: AVURLAsset?
     weak var delegate: PlayerAssetManagerDelegate?
-    let PLAYABLE_KEY = "playable"
     var isFps = false
     var playbackDataModel: PlaybackRightsModel?
-    let URL_SCHEME_NAME = "skd"
-    let URL_GET_KEY =  "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getkey"
-    let URL_GET_CERT = "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getcert"
+
     
     static let assetKeysRequiredToPlay = [
         "playable",

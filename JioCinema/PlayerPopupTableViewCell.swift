@@ -27,7 +27,7 @@ class PlayerPopupTableViewCell: UITableViewCell {
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self{
-            self.backgroundColor =  ViewColor.cinemaLeftMenuBackground
+            self.backgroundColor =  ThemeManager.shared.selectionColor
         } else {
             self.backgroundColor =  .clear
         }

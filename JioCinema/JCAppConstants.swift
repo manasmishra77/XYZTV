@@ -92,6 +92,17 @@ let disneyKidsDataUrl = basePath + kAppKeyValue + "/v3/disneyhome/get/68/"
 let disneyResumeWatchListUrl = basePath + kAppKeyValue + "/v3/resumewatch/get"
 let disneyCharacterherosDataUrl = basePath + "common/v3.1/character/get/"
 
+//Player aseet urls
+let URL_SCHEME_NAME = "skd"
+let URL_GET_KEY =  "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getkey"
+let URL_GET_CERT = "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getcert"
+
+let PLAYABLE_KEY = "playable"
+let STATUS_KEY = "status"
+let AVPLAYER_BUFFER_KEEP_UP = "playbackLikelyToKeepUp"
+let AVPLAYER_BUFFER_EMPTY = "playbackBufferEmpty"
+
+
 
 //Completion Blocks
 typealias RequestCompletionBlock = (Data?, URLResponse?, Error?) -> ()
