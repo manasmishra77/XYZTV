@@ -39,6 +39,7 @@ class CustomPlayerView: UIView {
     var latestEpisodeId: String?
     var indicator: SpiralSpinner?
     fileprivate var currentPlayingIndex: Int!
+    var stateOfPlayerBeforeOkButtonClickIsPaused = false
     
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
@@ -222,7 +223,12 @@ class CustomPlayerView: UIView {
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
         self.removeControlDetailview(forOkButtonClick: true)
         myPreferredFocusView = nil
-        player?.play()
+        if stateOfPlayerBeforeOkButtonClickIsPaused {
+            player?.pause()
+        } else {
+            player?.play()
+        }
+        
         controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
     
@@ -341,7 +347,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
-
+        stateOfPlayerBeforeOkButtonClickIsPaused = isPlayerPaused
         player?.pause()
         controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         var audioArray = [String]()
@@ -394,6 +400,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     }
     
     func settingsButtonPressed(toDisplay: Bool) {
+        stateOfPlayerBeforeOkButtonClickIsPaused = isPlayerPaused
         player?.pause()
         controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         self.popUpHolderView.isHidden = false

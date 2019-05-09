@@ -201,12 +201,6 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIAERROR )
     }
     
-    func getSNAVEventForInternalAnalytics(currentScreen:String, nextScreen:String, durationInCurrentScreen:String) -> Dictionary<String, Any>
-    {
-        let eventDictionary = ["platform":"TVOS",
-                               "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
-        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
-    }
     func getAudioChangedEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :Int, contentId :String, bufferDuration :Int, timeSpent :Int, type :String, bufferCount :Int) -> Dictionary<String, Any>{
         let eventDictionary = [ "platform":"TVOS",
                                 "screenname" : screenName,
@@ -218,6 +212,13 @@ class JCAnalyticsEvent: NSObject {
                                 "Type": type,
                                 "bc": bufferCount] as [String : Any]
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_AUDIOCHANGED)
+    }
+    
+    func getSNAVEventForInternalAnalytics(currentScreen:String, nextScreen:String, durationInCurrentScreen:String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS",
+                               "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
     }
     
     func sendEventForInternalAnalytics(paramDict: [String: Any], path: String = JCANALYTICSEVENT_URL) {
