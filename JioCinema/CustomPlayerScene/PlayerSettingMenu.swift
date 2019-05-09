@@ -73,7 +73,6 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentSelectedItem = menuItems[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! PlayerPopupTableViewCell
-//        cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")
         if previousSelectedIndexpath != indexPath {
            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
             cell.rabioButtonImageView.tintColor = ThemeManager.shared.selectionColor
