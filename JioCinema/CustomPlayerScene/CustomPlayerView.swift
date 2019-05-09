@@ -85,6 +85,9 @@ class CustomPlayerView: UIView {
     var clearanceFromBottomForMoreLikeView: CGFloat {
         return (self.playerViewModel?.appType == .Movie) ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
     }
+    var isPlayerPaused: Bool {
+        return player?.rate == 0
+    }
     
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferredView = myPreferredFocusView {
@@ -214,6 +217,7 @@ class CustomPlayerView: UIView {
         self.removeControlDetailview()
         myPreferredFocusView = nil
         player?.play()
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
     
     func removeControlDetailview() {
@@ -262,6 +266,7 @@ class CustomPlayerView: UIView {
             self.playerAudioLanguage(audio)
         }
         player?.play()
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
     
     private func playerAudioLanguage(_ audioLanguage: String?) {
@@ -322,10 +327,12 @@ extension CustomPlayerView: ButtonPressedDelegate {
         } else {
             player?.pause()
         }
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
     
     func subtitlesAndMultiaudioButtonPressed(todisplay: Bool) {
         player?.pause()
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         var audioArray = [String]()
         var subtitleArray = [String]()
         
@@ -375,6 +382,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     
     func settingsButtonPressed(toDisplay: Bool) {
         player?.pause()
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         self.popUpHolderView.isHidden = false
         popUpTableViewHolderWidth.constant = 640
         heightOfPopUpView.constant = 820
@@ -414,7 +422,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
     func previousButtonPressed(toDisplay: Bool) {
         playnextOrPreviousItem(playNext: false)
     }
-    func playnextOrPreviousItem(playNext: Bool){
+    func playnextOrPreviousItem(playNext: Bool) {
         player?.pause()
         guard let currentTime = player?.currentItem?.currentTime().seconds else {
             return
@@ -424,24 +432,36 @@ extension CustomPlayerView: ButtonPressedDelegate {
         }
         if playNext {
             if currentTime + 10 < duration {
-                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime + 10), preferredTimescale: 1))
+                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime + 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
+                    DispatchQueue.main.async {
+                        self.updateIndicatorState(toStart: false)
+                    }
+                })
             }
         } else {
-            if currentTime - 10 > 0{
-                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime - 10), preferredTimescale: 1))
+            if currentTime - 10 > 0 {
+                player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime - 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
+                    DispatchQueue.main.async {
+                        self.updateIndicatorState(toStart: false)
+                    }
+                })
             }
         }
         player?.play()
-        
+        controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
     }
 }
-extension CustomPlayerView : PlayerControlsDelegate {
+extension CustomPlayerView: PlayerControlsDelegate {
     func skipIntroButtonPressed() {
         guard let seekTime = playerViewModel?.convertStringToSeconds(strTime: playerViewModel?.playbackRightsModel?.introCreditEnd ?? playerViewModel?.playbackRightsModel?.recapCreditEnd ?? "") else {
             return
         }
         DispatchQueue.main.async {
-            self.player?.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1))
+            self.player?.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1), completionHandler: { (isSuccess) in
+                DispatchQueue.main.async {
+                    self.updateIndicatorState(toStart: false)
+                }
+            })
         }
     }
     
@@ -616,6 +636,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             
             
             self.player?.play()
+            controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
         }
     }
     
@@ -949,6 +970,7 @@ extension CustomPlayerView {
                 } else {
                     player?.pause()
                 }
+                controlsView?.playerButtonsView?.changePlayPauseButtonIcon()
             case .select:
                 print("select")
             @unknown default:

@@ -25,6 +25,10 @@ class PlayersControlView: UIView {
     @IBOutlet weak var nextContentTitle: UILabel!
     @IBOutlet weak var nextContentSubtitle: UILabel!    
     @IBOutlet weak var skipIntroButton: UIButton!
+    
+    var isPlayerPaused: Bool {
+        return (self.superview?.superview as? CustomPlayerView)?.isPlayerPaused ?? true
+    }
 
     var isPaused = false
     

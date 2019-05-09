@@ -21,6 +21,12 @@ class PlayerButtonsView: UIView {
     var ispaused: Bool = false
     weak var buttonDelegate: ButtonPressedDelegate?
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var isPlayerPaused: Bool {
+        return (self.superview?.superview as? PlayersControlView)?.isPlayerPaused ?? true
+    }
+    
+    
     func configurePlayerButtonsView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -32,6 +38,19 @@ class PlayerButtonsView: UIView {
         for tag in 0...4{
             let item = PlayerButtonItem(tag: tag)
             arrayOfPlayerButtonItem.append(item)
+        }
+    }
+    func changePlayPauseButtonIcon() {
+        let indexPath = IndexPath(row: 2, section: 0)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ButtonCollectionViewCell else {return}
+        if isPlayerPaused {
+            cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
+            cell.buttonTitle.text = "Pause"
+            buttonDelegate?.playTapped(toPlay: true)
+        } else {
+            cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
+            cell.buttonTitle.text = "Play"
+            buttonDelegate?.playTapped(toPlay: false)
         }
     }
 
@@ -57,15 +76,14 @@ extension PlayerButtonsView: UICollectionViewDelegate, UICollectionViewDataSourc
         case 1:
             buttonDelegate?.previousButtonPressed(toDisplay: true)
         case 2:
-            ispaused = !ispaused
-            if ispaused {
-                cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
-                cell.buttonTitle.text = "Play"
-                buttonDelegate?.playTapped(toPlay: false)
-            } else{
+            if isPlayerPaused {
                 cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
                 cell.buttonTitle.text = "Pause"
                 buttonDelegate?.playTapped(toPlay: true)
+            } else {
+                cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
+                cell.buttonTitle.text = "Play"
+                buttonDelegate?.playTapped(toPlay: false)
             }
         case 3:
             buttonDelegate?.nextButtonPressed(toDisplay: true)

@@ -17,6 +17,7 @@ class ButtonCollectionViewCell: UICollectionViewCell {
         playerButton.setImage(UIImage(named: buttonItem?.unselectedImage ?? ""), for: .normal)
         buttonTitle.text = buttonItem?.titleOfButton
     }
+    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self {
             self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
