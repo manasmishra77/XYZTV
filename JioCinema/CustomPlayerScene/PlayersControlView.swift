@@ -10,7 +10,6 @@ import UIKit
 import SDWebImage
 
 protocol PlayerControlsDelegate: NSObject {
-    func getTimeDetails(_ currentTime: String,_ duration: String)
     func setPlayerSeekTo(seekValue: CGFloat)
     func cancelTimerForHideControl()
     func resetTimerForHideControl()
@@ -26,9 +25,6 @@ class PlayersControlView: UIView {
     @IBOutlet weak var nextContentSubtitle: UILabel!    
     @IBOutlet weak var skipIntroButton: UIButton!
     
-    var isPlayerPaused: Bool {
-        return (self.superview?.superview as? CustomPlayerView)?.isPlayerPaused ?? true
-    }
 
     var isPaused = false
     
@@ -67,11 +63,9 @@ class PlayersControlView: UIView {
                 //resetTimer()
                 print("Arrow")
             case .menu:
-                
                 print("menu")
             case .playPause:
                 print("playPause")
-               
             case .select:
                 print("select")
             @unknown default:

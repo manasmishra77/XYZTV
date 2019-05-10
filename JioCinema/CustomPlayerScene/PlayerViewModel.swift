@@ -145,6 +145,14 @@ class PlayerViewModel: NSObject {
             guard response.isSuccess else {
                 //vinit_commented sendplaybackfailureevent
                 self.delegate?.handlePlaybackRightDataError(errorCode: response.code!, errorMsg: response.errorMsg!)
+                let failuretype = "Playbackrights failed"
+                var itemId = self.itemToBePlayed.id
+                if itemId == "" && self.isPlayList {
+                    itemId = self.itemToBePlayed.latestId
+                }
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemToBePlayed.name ?? "", "Content ID": itemId ?? "", "Bitrate": "0", "Episode": self.itemToBePlayed.description ?? "", "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemToBePlayed.name ?? "", contentId: itemId ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemToBePlayed.description ?? ""   , playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             self.playbackRightsModel = response.model
@@ -252,7 +260,7 @@ class PlayerViewModel: NSObject {
         
         //        weak var weakSelf = self.presentingViewController
         let isDisney = self.isDisney
-        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {[weak self] (response) in
+        RJILApiManager.getReponse(path: url, headerType: header, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) {(response) in
             guard response.isSuccess else {
                 return
             }
@@ -330,6 +338,10 @@ class PlayerViewModel: NSObject {
             guard response.isSuccess else {
                 var failureType = ""
                 failureType = "Playlist service failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemToBePlayed.name ?? "", "Content ID": self.itemToBePlayed.id ?? "", "Bitrate": "0", "Episode": self.itemToBePlayed.description ?? "", "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: response.errorMsg ?? ""), errorCode: "-1", videoType: self.appType.name, contentTitle: self.itemToBePlayed.name ?? "", contentId: self.itemToBePlayed.id ?? "", videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemToBePlayed.description ?? "", playerErrorMessage: String(describing: response.errorMsg ?? ""), apiFailureCode: "", message: "", fpsFailure: "")
+                
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
             let playList = response.model!
@@ -368,10 +380,6 @@ class PlayerViewModel: NSObject {
     //    func updateResumeWatchList() {
     //        //vinit_edited
     //    }
-    
-    func sendMediaStartAnalyticsEvent() {
-        
-    }
     
     func sendBufferingEvent() {
         
@@ -631,5 +639,76 @@ extension AVPlayerItem {
         self.select(matched, in: group)
         return true
     }
+}
+
+
+//MARK:- Analytics Events
+extension PlayerViewModel {
+    func sendBufferingEvent(eventProperties: [String:Any]) {
+        let bufferCountForGA = eventProperties["Buffer Count"] as? String
+        let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
+        JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Buffering", label: bufferCountForGA, customParameters: customParams)
+        
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Buffering", properties: eventProperties)
+    }
+    
+    func sendPlaybackFailureEvent(forCleverTap eventPropertiesCT:[String:Any], forInternalAnalytics eventPropertiesIA: [String: Any])
+    {
+        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
+    }
+    
+//    func sendAudioChangedCleverTapEvent(duration : String){
+//        let lang = playerItem?.selected(type: .audio)
+//        let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
+//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties)
+//    }
+//    func sendMediaStartAnalyticsEvent() {
+//        if !isMediaStartEventSent {
+//            let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + (UIDevice.current.identifierForVendor?.uuidString ?? "")
+//            
+//            let mediaStartInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaStartEventForInternalAnalytics(contentId: id, mbid: mbid, mediaStartTime: String(currentDuration), categoryTitle: fromCategory, rowPosition: String(fromCategoryIndex + 1))
+//            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaStartInternalEvent)
+//            
+//            let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate" : bitrate, "Duration" : currentDuration]
+//            JCAnalyticsManager.sharedInstance.event(category: VIDEO_START_EVENT, action: VIDEO_ACTION, label: itemTitle, customParameters: customParams as? Dictionary<String, String>)
+//            isMediaStartEventSent = true
+//        }
+//        
+//    }
+    
+//    
+//    func sendMediaEndAnalyticsEvent() {
+//        vendor = playbackRightsData?.vendor ?? ""
+//        if let currentTime = player?.currentItem?.currentTime(), (currentTime.timescale != 0) {
+//            
+//            let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
+//            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+//            timeSpent = timeSpent > 0 ? timeSpent : 0
+//            
+//            let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: id, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: Int(timeSpent), videoStartPlayingTime: -videoStartingTimeDuration, bufferDuration: Int(totalBufferDurationTime), bufferCount: Int(bufferCount), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory, director: director, starcast: starCast, contentp: vendor, audioChanged: isAudioChanged )
+//            
+//            JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
+//            let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": id, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate": bitrate, "Duration" : timeSpent]
+//            JCAnalyticsManager.sharedInstance.event(category: VIDEO_END_EVENT, action: VIDEO_ACTION, label: itemTitle, customParameters: customParams as? Dictionary<String, String>)
+//            
+//            bufferCount = 0
+//            videoStartingTimeDuration = 0
+//            videoStartingTime = Date()
+//        }
+//        self.sendVideoViewedEventToCleverTap()
+//    }
+//    
+//    
+//    func sendVideoViewedEventToCleverTap() {
+//        let eventProperties:[String:Any] = ["Content ID": id, "Type": appType.rawValue, "Threshold Duration": Int(currentDuration), "Title": itemTitle, "Episode": episodeNumber ?? -1, "Language": itemLanguage, "Source": fromCategory, "screenName": fromScreen, "Bitrate": bitrate, "Playlist": isPlayList, "Row Position":fromCategoryIndex, "Error Message": "", "Genre": "", "Platform": "TVOS", "Director": director, "Starcast": starCast, "Content Partner": vendor, "Audio Changed": isAudioChanged]
+//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Video Viewed", properties: eventProperties)
+//        
+//        let bufferEventProperties = ["Buffer Count": String(Int(bufferCount/2)),"Buffer Duration": Int(totalBufferDurationTime),"Content ID":id,"Type":appType.rawValue,"Title":itemTitle,"Episode":episodeNumber ?? -1,"Bitrate":bitrate, "Platform":"TVOS"] as [String : Any]
+//        sendBufferingEvent(eventProperties: bufferEventProperties)
+//        videoViewingLapsedTime = 0
+//        totalBufferDurationTime = 0
+//        bufferCount = 0
+//    }
 }
 

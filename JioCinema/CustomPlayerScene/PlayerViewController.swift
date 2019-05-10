@@ -40,10 +40,11 @@ class PlayerViewController: UIViewController {
         self.configureCustomPlayerViewView()
     }
     
-    @objc func menuButtonAction(recognizer:UITapGestureRecognizer) {
+
+    @objc func menuButtonAction(recognizer: UITapGestureRecognizer) {
         if viewforplayer?.popUpHolderView.isHidden == false {
-            viewforplayer!.removeControlDetailview(forOkButtonClick: false)
-            if viewforplayer?.stateOfPlayerBeforeOkButtonClickIsPaused ?? false {
+            viewforplayer?.removeControlDetailview(forOkButtonClick: false)
+            if viewforplayer?.stateOfPlayerBeforeButtonClickWasPaused ?? false {
                 viewforplayer?.player?.pause()
             } else {
                 viewforplayer?.player?.play()
