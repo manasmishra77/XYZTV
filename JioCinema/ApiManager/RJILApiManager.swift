@@ -29,19 +29,19 @@ class RJILApiManager {
         URLCache.shared = urlCache
     }
     func patch(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        createDataTask(withRequest:request, httpMethod: "PATCH", completion: completion)
+        //createDataTask(withRequest:request, httpMethod: "PATCH", completion: completion)
     }
     
     func post(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        createDataTask(withRequest:request, httpMethod: "POST", completion: completion)
+        //createDataTask(withRequest:request, httpMethod: "POST", completion: completion)
     }
     
     func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        createDataTask(withRequest:request, httpMethod: "PUT", completion: completion)
+        //createDataTask(withRequest:request, httpMethod: "PUT", completion: completion)
     }
     
     func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
+        //createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
     }
     
     
@@ -183,6 +183,7 @@ class RJILApiManager {
                 do{
                     let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: [])
                     request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                   // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                     request?.httpBody = jsonData
                 }
                 catch{
@@ -208,6 +209,7 @@ class RJILApiManager {
                 }
                 
                 request?.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+               // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                 request?.httpBody = paramString.data(using: String.Encoding.utf8)
                 break
             case .URL:
@@ -226,6 +228,7 @@ class RJILApiManager {
                 
                 let pathWithParams = path + "?" + paramString
                 request = getRequest(forPath: pathWithParams)
+               // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                 break
             }
         }
@@ -283,126 +286,161 @@ class RJILApiManager {
     private var isTokenGettingRefreshed:Bool = false
     
     private init() {} //This prevents others from using the default '()' initializer for this class.
+    var highPrioritySession: URLSession?
+    var lowPrioritySession: URLSession?
     
-    func createDataTask(withRequest request: URLRequest, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask {
+    func resetURLSessionTask(priority: TaskPriority) {
+        if priority == .high {
+            highPrioritySession?.finishTasksAndInvalidate()
+            highPrioritySession = nil
+            let newSession = URLSession(configuration: .default)
+            highPrioritySession = newSession
+        } else if priority == .low {
+            lowPrioritySession?.finishTasksAndInvalidate()
+            lowPrioritySession = nil
+            let newSession = URLSession(configuration: .ephemeral)
+            lowPrioritySession = newSession
+        }
+    }
+    
+    func createDataTaskForLessImportantServiceCalls(withRequest request: URLRequest, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask? {
         var originalRequest = request
         originalRequest.httpMethod = method
-        originalRequest.timeoutInterval = 3.0
+        originalRequest.timeoutInterval = 30.0
+        //self.resetSession(sessionConfig: .ephemeral)
+        //guard let session = session else {return nil}
+        self.resetURLSessionTask(priority: .low)
+        let dataTask = lowPrioritySession?.dataTask(with: originalRequest) {(data, response, error) in
+            self.processTheResponse(originalRequest: originalRequest, data: data, response: response, error: error, completion: completion)
+        }
+        dataTask?.resume()
+        return dataTask
         
+    }
+    
+    func createDataTask(withRequest request: URLRequest, takPriority: TaskPriority, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask? {
+        guard takPriority == .low else {
+            return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
+        }
+        var originalRequest = request
+        originalRequest.httpMethod = method
+        originalRequest.timeoutInterval = 30.0
         
         //Create a datatask with new completion handler
-        let dataTask = URLSession.shared.dataTask(with: originalRequest) {(data, response, error) in
-            
-            
-            if let responseError = error {
-                //TDDO: Manual Exception Handling
-                completion(nil, nil, responseError)
-                return
-            }
-            
-            //This is a new completion handler
-            //TODO: error domain
-            guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
-                //TODO: Add Manual exception tracking, No Internet Connection
-                var errorInfo:[String: String] = [String:String]()
-                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
-                completion(nil, nil, NSError(domain: "some domain", code: 101, userInfo: errorInfo))
-                return
-                //Did not get response
-                //fatalError("Could not get response")
-            }
-            
-            //TODO: refreshing ssotoken
-            self.httpStatusCode = httpResponse.statusCode
-            if self.httpStatusCode == 419 {
-                if JCAppUser.shared.mToken != "" {                    
-                    //Put the currentTask in queue
-                    let currentTask:RJILPendingTask = RJILPendingTask()
-                    currentTask.request = originalRequest
-                    currentTask.completionHandler = completion
-                    RJILApiManager.defaultManager.pendingTasks.append(currentTask)
-                    if !RJILApiManager.defaultManager.isRefreshingToken{
-                        
-                        RJILApiManager.defaultManager.isRefreshingToken = true
-                        //Do the refreshing-task work
-                        let params = ["mtoken": JCAppUser.shared.mToken]
-                        
-                        let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
-                        RJILApiManager.defaultManager.post(request: refreshingTokenRequest!, completion: { (data, response, error) in
-                            guard error == nil else{
-                                var errorInfo:[String:String] = [String:String]()
-//                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
-//                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
-                                errorInfo[NSLocalizedDescriptionKey] = "Refresh SSO Failed!!!"
-                                completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: errorInfo))
-
-                                return
-                            }
-                            if let responseData = data{
-                                //parse response Data
-                                let refreshTupple = RJILApiManager.defaultManager.parseRefreshTokenData(responseData)
-                                if refreshTupple.0 == 200{
-                                    JCAppUser.shared.ssoToken = refreshTupple.1
-                                    for each in RJILApiManager.defaultManager.pendingTasks{
-                                        each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
-                                        //completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
-                                        self.createDataTask(withRequest: each.request!, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
-                                    }
-                                }
-                                else{
-                                    self.isRefreshingToken = false
-                                    //LogOutUser and show login page
-//                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
-                                    completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: nil))
-
+        self.resetURLSessionTask(priority: takPriority)
+        let dataTask = highPrioritySession?.dataTask(with: originalRequest) {(data, response, error) in
+            self.processTheResponse(originalRequest: originalRequest, data: data, response: response, error: error, completion: completion)
+        }
+        dataTask?.resume()
+        return dataTask
+    }
+    
+    func processTheResponse(originalRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping RequestCompletionBlock) {
+        if let responseError = error {
+            //TDDO: Manual Exception Handling
+            completion(nil, nil, responseError)
+            return
+        }
+        
+        //This is a new completion handler
+        //TODO: error domain
+        guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
+            //TODO: Add Manual exception tracking, No Internet Connection
+            var errorInfo:[String: String] = [String:String]()
+            errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+            completion(nil, nil, NSError(domain: "some domain", code: 101, userInfo: errorInfo))
+            return
+            //Did not get response
+            //fatalError("Could not get response")
+        }
+        
+        //TODO: refreshing ssotoken
+        self.httpStatusCode = httpResponse.statusCode
+        if self.httpStatusCode == 419 {
+            if JCAppUser.shared.mToken != "" {
+                //Put the currentTask in queue
+                let currentTask = RJILPendingTask()
+                currentTask.request = originalRequest
+                currentTask.completionHandler = completion
+                RJILApiManager.defaultManager.pendingTasks.append(currentTask)
+                if !RJILApiManager.defaultManager.isRefreshingToken{
+                    
+                    RJILApiManager.defaultManager.isRefreshingToken = true
+                    //Do the refreshing-task work
+                    let params = ["mtoken": JCAppUser.shared.mToken]
+                    
+                    let refreshingTokenRequest = RJILApiManager.defaultManager.prepareRequest(path: refreshTokenUrl, params: params, encoding: .JSON)
+                    RJILApiManager.defaultManager.post(request: refreshingTokenRequest!, completion: { (data, response, error) in
+                        guard error == nil else {
+                            var errorInfo:[String:String] = [String:String]()
+                            //                                errorInfo[NSLocalizedDescriptionKey] = "Failed to get response from server."
+                            //                                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: errorInfo))
+                            errorInfo[NSLocalizedDescriptionKey] = "Refresh SSO Failed!!!"
+                            completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: errorInfo))
+                            
+                            return
+                        }
+                        if let responseData = data{
+                            //parse response Data
+                            let refreshTupple = RJILApiManager.defaultManager.parseRefreshTokenData(responseData)
+                            if refreshTupple.0 == 200{
+                                JCAppUser.shared.ssoToken = refreshTupple.1
+                                for each in RJILApiManager.defaultManager.pendingTasks{
+                                    each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders
+                                    //completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                    self.createDataTask(withRequest: each.request!, takPriority: .high, httpMethod: (each.request?.httpMethod!)!, completion: each.completionHandler!)
                                 }
                             }
-                            self.pendingTasks.removeAll()
-                            self.isRefreshingToken = false
-                        })
-                        
-                    }
-                }
-                else
-                {
-                    //Present Login Page
-                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                            else{
+                                self.isRefreshingToken = false
+                                //LogOutUser and show login page
+                                //                                    completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                                completion(nil, nil, NSError(domain: "some domain", code: 465, userInfo: nil))
+                                
+                            }
+                        }
+                        self.pendingTasks.removeAll()
+                        self.isRefreshingToken = false
+                    })
                     
                 }
             }
-                //TODO: error domain
-            else if self.httpStatusCode == 504{
-                var errorInfo:[String:String] = [String:String]()
-                self.errorMessage = "Server Timeout : Please try again in some time"
-                errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
-                
-                completion(nil, nil, NSError(domain: "some error domain", code: 504, userInfo: errorInfo))
-            }
-            else if self.httpStatusCode == 200 || self.httpStatusCode == 204 {//Success
-                completion(data, response, error)
-            }
-            else {
-                var errorInfo: [String:String] = [String:String]()
-                let errorDescription = "Unexpected Response : HTTP Status Code :\(String(describing: self.httpStatusCode))"
-                if let receivedData = data {
-                    // let dict = RJILApiManager.parse(data: receivedData)
-                    let responseString = String(data: receivedData, encoding:.utf8)
-                    self.errorMessage = errorDescription + " " + responseString!
-                }
-                
-                
-                errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
-                completion(nil, nil, NSError(domain: "some error domain", code: self.httpStatusCode!, userInfo: errorInfo))
-            }
-            if self.httpStatusCode != 200
+            else
             {
-                //TODO: after implementing analytics
-                //RJILAppAnalytics.manager.trackAPIFailure(withErrorMessage: self.errorMessage!, andErrorCode: self.httpStatusCode!, forAPI: self.urlString!)
+                //Present Login Page
+                completion(nil, nil, NSError(domain: "some domain", code: 143, userInfo: nil))
+                
             }
         }
-        
-        dataTask.resume()
-        return dataTask
+            //TODO: error domain
+        else if self.httpStatusCode == 504{
+            var errorInfo:[String:String] = [String:String]()
+            self.errorMessage = "Server Timeout : Please try again in some time"
+            errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
+            
+            completion(nil, nil, NSError(domain: "some error domain", code: 504, userInfo: errorInfo))
+        }
+        else if self.httpStatusCode == 200 || self.httpStatusCode == 204 {//Success
+            completion(data, response, error)
+        }
+        else {
+            var errorInfo: [String:String] = [String:String]()
+            let errorDescription = "Unexpected Response : HTTP Status Code :\(String(describing: self.httpStatusCode))"
+            if let receivedData = data {
+                // let dict = RJILApiManager.parse(data: receivedData)
+                let responseString = String(data: receivedData, encoding:.utf8)
+                self.errorMessage = errorDescription + " " + responseString!
+            }
+            
+            
+            errorInfo[NSLocalizedDescriptionKey] = self.errorMessage
+            completion(nil, nil, NSError(domain: "some error domain", code: self.httpStatusCode!, userInfo: errorInfo))
+        }
+        if self.httpStatusCode != 200
+        {
+            //TODO: after implementing analytics
+            //RJILAppAnalytics.manager.trackAPIFailure(withErrorMessage: self.errorMessage!, andErrorCode: self.httpStatusCode!, forAPI: self.urlString!)
+        }
     }
     
     func parseRefreshTokenData(_ responseData: Data) -> (Int, String) {

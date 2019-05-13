@@ -17,8 +17,12 @@ extension RJILApiManager {
         case baseCommon
         case none
     }
+    enum TaskPriority {
+        case high
+        case low
+    }
     
-    class func getReponse<T: Codable>(path: String, shouldCheckNetWork: Bool = true, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) -> URLSessionDataTask? {
+    class func getReponse<T: Codable>(path: String, shouldCheckNetWork: Bool = true, taskPriority: TaskPriority = .high, headerType: RequestHeaderType = .baseCommon, params: [String: Any]? = nil, postType: RequestType, paramEncoding: JCParameterEncoding = .URL, shouldShowIndicator: Bool = false, isLoginRequired: Bool = false, reponseModelType: T.Type, completion: @escaping (_ response: Response<T>) -> ()) -> URLSessionDataTask? {
         
 //        guard !isLoginRequired, JCLoginManager.sharedInstance.isUserLoggedIn() else {
 //            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Not Logged in")
@@ -30,7 +34,6 @@ extension RJILApiManager {
             guard Utility.sharedInstance.isNetworkAvailable else {
 //                let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network")
                 let response = Response<T>(model: nil, isSuccess: false, errorMsg: "No Network", code: CommonResponseCode.noNetwork.rawValue)
-
                 completion(response)
                 return nil
             }
@@ -39,11 +42,10 @@ extension RJILApiManager {
         guard let request = RJILApiManager.defaultManager.prepareRequest(path: path, headerType: headerType, params: params, encoding: paramEncoding) else {
 //            let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed")
             let response = Response<T>(model: nil, isSuccess: false, errorMsg: "Request Couldn't be formed", code: CommonResponseCode.requestColdnotFormed.rawValue)
-
             completion(response)
             return nil
         }
-        let task = RJILApiManager.defaultManager.createDataTask(withRequest: request, httpMethod: postType.rawValue) { (data, response, error) in
+        let task = RJILApiManager.defaultManager.createDataTask(withRequest: request, takPriority: taskPriority, httpMethod: postType.rawValue) { (data, response, error) in
             if let error = error as NSError? {
 //                let response = Response<T>(model: nil, isSuccess: false, errorMsg: error.localizedDescription)
 //                completion(response)
