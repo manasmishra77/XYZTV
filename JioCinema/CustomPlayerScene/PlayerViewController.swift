@@ -45,9 +45,9 @@ class PlayerViewController: UIViewController {
         if viewforplayer?.popUpHolderView.isHidden == false {
             viewforplayer?.removeControlDetailview(forOkButtonClick: false)
             if viewforplayer?.stateOfPlayerBeforeButtonClickWasPaused ?? false {
-                viewforplayer?.player?.pause()
+                viewforplayer?.changePlayerPlayingStatus(shouldPlay: false)
             } else {
-                viewforplayer?.player?.play()
+                viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
             }
         }
         else {

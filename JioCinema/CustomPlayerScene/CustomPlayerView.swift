@@ -25,12 +25,11 @@ class CustomPlayerView: UIView {
     fileprivate var enterParentalPinView: EnterParentalPinView?
     fileprivate var enterPinViewModel: EnterPinViewModel?
     fileprivate var playerItem: Item?
-    var player: AVPlayer?
+    @objc var player: AVPlayer?
     var playerLayer: AVPlayerLayer?
     var playerTimeObserverToken: Any?
     weak var delegate: CustomPlayerViewProtocol?
-    var videoStartingTimeDuration = 0
-    var videoStartingTime = Date()
+    
     var isDisney: Bool = false
     var isPlayList: Bool = false
     var recommendationArray: Any = false
@@ -190,6 +189,7 @@ class CustomPlayerView: UIView {
     }
     
     func resetAndRemovePlayer() {
+        playerViewModel?.sendMediaEndAnalyticsEvent()
         self.resetPlayer()
         self.controlsView?.removeFromSuperview()
         self.controlsView = nil
@@ -224,11 +224,10 @@ class CustomPlayerView: UIView {
         self.removeControlDetailview(forOkButtonClick: true)
         myPreferredFocusView = nil
         if stateOfPlayerBeforeButtonClickWasPaused {
-            player?.pause()
+            changePlayerPlayingStatus(shouldPlay: false)
         } else {
-            player?.play()
+            changePlayerPlayingStatus(shouldPlay: true)
         }
-        changePlayerPlayingStatus(shouldPlay: true)
     }
     
     func removeControlDetailview(forOkButtonClick: Bool) {
@@ -737,6 +736,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 //        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
 //            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
 //        }
+        if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
+            playerViewModel?.isMediaEndAnalyticsEventSent = true
+            playerViewModel?.sendMediaEndAnalyticsEvent()
+        }
         resetPlayer()
         delegate?.removePlayerController()
         
@@ -824,10 +827,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             case .readyToPlay:
                 self.updateIndicatorState(toStart: false)
                 print("indicator start on ready to play")
-                videoStartingTimeDuration = Int(videoStartingTime.timeIntervalSinceNow)
+                playerViewModel?.videoStartingTimeDuration = Int(playerViewModel?.videoStartingTime.timeIntervalSinceNow ?? 0)
                 playerViewModel?.isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
-                //playerViewModel?.sendMediaStartAnalyticsEvent()
+                playerViewModel?.sendMediaStartAnalyticsEvent()
                 break
             case .failed:
                 if let indicator = indicator {
