@@ -183,7 +183,7 @@ class Utility {
         return playerVC
     }
 
-    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil, latestEpisodeId: String? = nil)-> PlayerViewController{
+    func prepareCustomPlayerVC(item: Item, recommendationArray: Any = false, isDisney: Bool = false, audioLanguage: AudioLanguage? = nil, latestEpisodeId: String? = nil, fromScreen: String = "", fromCategory: String = "", fromCategoryIndex: Int = 0, fromLanguage: String = "")-> PlayerViewController{
         let playerVC = PlayerViewController.init(item: item,isDisney: isDisney, latestEpisodeId: latestEpisodeId)
         playerVC.recommendationArray = recommendationArray
         if let audiolanguage = audioLanguage {
@@ -191,6 +191,10 @@ class Utility {
         } else {
             playerVC.audioLanguage = item.audioLanguage
         }
+        playerVC.fromCategory = fromCategory
+        playerVC.fromScreen = fromScreen
+        playerVC.fromLanguage = fromLanguage
+        playerVC.fromCategoryIndex = fromCategoryIndex
         //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
         return playerVC
     }

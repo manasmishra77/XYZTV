@@ -222,7 +222,7 @@ class JCAnalyticsEvent: NSObject {
     }
     
     func sendEventForInternalAnalytics(paramDict: [String: Any], path: String = JCANALYTICSEVENT_URL) {
-        RJILApiManager.getReponse(path: path, taskPriority: .low, params: paramDict, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
+        RJILApiManager.getReponse(path: path, params: paramDict, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
             guard response.isSuccess else {
                 return
             }

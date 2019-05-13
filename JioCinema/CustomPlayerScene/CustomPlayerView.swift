@@ -44,6 +44,11 @@ class CustomPlayerView: UIView {
     var resumeWatchView: ResumeWatchView?
     fileprivate var didSeek :Bool = false
     
+    var fromScreen: String = ""
+    var fromCategory: String = ""
+    var fromCategoryIndex: Int = 0
+    var fromLanguage: String = ""
+    
     @IBOutlet weak var alertMsg: UILabel!
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
@@ -105,6 +110,10 @@ class CustomPlayerView: UIView {
         playerViewModel = PlayerViewModel(item: item, latestEpisodeId: latestEpisodeId)
         playerViewModel?.isDisney = isDisney
         playerViewModel?.delegate = self
+        playerViewModel?.fromCategoryIndex = fromCategoryIndex
+        playerViewModel?.fromCategory = fromCategory
+        playerViewModel?.fromScreen = fromScreen
+        playerViewModel?.fromLanguage = fromLanguage
         self.playerItem = item
         isPlayList = item.isPlaylist ?? false
         self.updateIndicatorState(toStart: true)
@@ -266,6 +275,10 @@ class CustomPlayerView: UIView {
             }
         } else {
             self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
+
+            if multiAudioTableView?.currentSelectedItem != lastSelectedAudioLanguage{
+                        playerViewModel?.sendAudioChangedAnalytics()
+            }
             lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
             lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
         }
@@ -394,6 +407,7 @@ extension CustomPlayerView: ButtonPressedDelegate {
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
         } else if let audiolanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name{
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audiolanguage) ?? 0, section: 0)
+            lastSelectedAudioLanguage = audioArray[multiAudioTableView?.previousSelectedIndexpath?.row ?? 0]
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
         tableViewHolderInPopupView.addSubview(multiAudioTableView!)
@@ -833,7 +847,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 playerViewModel?.sendMediaStartAnalyticsEvent()
                 break
             case .failed:
-                if let indicator = indicator {
+                if indicator != nil {
                     updateIndicatorState(toStart: false)
                     print("indicator stop on failed")
                     

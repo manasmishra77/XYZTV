@@ -1247,7 +1247,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
 //        let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: itemToBePlayed.id ?? "",latestId: nil , isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: metadata?.episodes ?? false, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
 
-        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed.getItem,isDisney: isDisney, audioLanguage: defaultAudioLanguage)
+        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed.getItem,isDisney: isDisney, audioLanguage: defaultAudioLanguage, fromScreen: METADATA_SCREEN, fromCategory: MORELIKE, fromCategoryIndex: 0, fromLanguage: item?.language ?? "")
 
         self.present(playerVC, animated: false, completion: nil)
 //        Utility.sharedInstance.prepareAndPresentCustomPlayerVC(itemId: itemToBePlayed, toBepresentedOnScreen: self, audio: metadata?.multipleAudio, subtitles: metadata?.subtitles)
@@ -1302,7 +1302,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
 //                playerVC.viewforplayer?.moreLikeView?.moreArray = moreArray
 //            }
             if let item = item{
-                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: item,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: item,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
             }
             
@@ -1317,7 +1317,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 return
             }
 
-            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToPlay,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage, latestEpisodeId: (metadata?.latestEpisodeId))
+            let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToPlay,recommendationArray: recommendationArray, isDisney: isDisney, audioLanguage: defaultAudioLanguage, latestEpisodeId: (metadata?.latestEpisodeId), fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "")
 
             self.present(playerVC, animated: false, completion: nil)
 //            let playerVC = Utility.sharedInstance.preparePlayerVC((metadata?.latestEpisodeId) ?? "", itemImageString: (item?.banner) ?? "", itemTitle: (item?.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (item?.description) ?? "", appType: .Episode, isPlayList: true, playListId: (metadata?.latestEpisodeId) ?? "",latestId: nil, isMoreDataAvailable: false, isEpisodeAvailable: isEpisodeAvailable, recommendationArray: recommendationArray, fromScreen: fromScreen ?? METADATA_SCREEN, fromCategory: categoryName ?? WATCH_NOW_BUTTON, fromCategoryIndex: categoryIndex ?? 0, fromLanguage: metadata?.language ?? "", director: directors, starCast: artists, vendor: metadata?.vendor, isDisney: isDisney, audioLanguage: defaultAudioLanguage)

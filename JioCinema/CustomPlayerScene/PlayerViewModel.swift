@@ -69,6 +69,7 @@ class PlayerViewModel: NSObject {
     var fromScreen = ""
     var fromCategory = ""
     var fromCategoryIndex = 0
+    var fromLanguage = ""
     var itemLanguage = ""
     var director = ""
     var starCast = ""
@@ -706,6 +707,12 @@ extension PlayerViewModel {
     {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
+    }
+    func sendAudioChangedAnalytics(){
+        let timeSpent = 9
+        let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(playerItem?.currentTime().seconds ?? 0.0), contentId: itemId, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: audioChangedInternalEvent)
+        self.sendAudioChangedCleverTapEvent(duration: String(Int(playerItem?.currentTime().seconds ?? 0.0)))
     }
     
     func sendAudioChangedCleverTapEvent(duration : String){

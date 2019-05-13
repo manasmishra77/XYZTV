@@ -15,7 +15,10 @@ class PlayerViewController: UIViewController {
     var recommendationArray: Any = false
     var isDisney: Bool = false
     var audioLanguage: AudioLanguage?
-    
+    var fromScreen: String = ""
+    var fromCategory: String = ""
+    var fromCategoryIndex: Int = 0
+    var fromLanguage: String = ""
     @IBOutlet weak var playerHolder: UIView!
     var viewforplayer: CustomPlayerView?
     
@@ -65,6 +68,10 @@ class PlayerViewController: UIViewController {
         viewforplayer?.delegate = self
         viewforplayer?.recommendationArray = self.recommendationArray
         viewforplayer?.isDisney = self.isDisney
+        viewforplayer?.fromCategoryIndex = fromCategoryIndex
+        viewforplayer?.fromLanguage = fromLanguage
+        viewforplayer?.fromCategory = fromCategory
+        viewforplayer?.fromScreen = fromScreen
         viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId,audioLanguage: self.audioLanguage)
         viewforplayer?.audioLanguage = self.audioLanguage
     }

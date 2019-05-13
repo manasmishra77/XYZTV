@@ -334,7 +334,7 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int, fromScreen: String)
     {
         let audioLanguage = MultiAudioManager.getAudioLanguageForLangGenreVC(defaultAudioLanguage: defaultLanguage, item: itemToBePlayed)
-        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, audioLanguage : audioLanguage)
+        let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, audioLanguage : audioLanguage, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
         self.present(playerVC, animated: true, completion: nil)
 
         //vinit_commented //check for audio language
