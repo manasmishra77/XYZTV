@@ -51,7 +51,7 @@ class JCOTPVC: UIViewController {
     func addSwipeGesture()
     {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGestureHandler))
-        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeDown)
         
     }
@@ -59,9 +59,9 @@ class JCOTPVC: UIViewController {
     @objc func swipeGestureHandler(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.up:
+            case UISwipeGestureRecognizer.Direction.up:
                 break
-            case UISwipeGestureRecognizerDirection.down:
+            case UISwipeGestureRecognizer.Direction.down:
                 if signInButton.isHidden{
                     if getOTPButton.isFocused == false{
                         myPreferredFocuseView = getOTPButton
@@ -109,7 +109,7 @@ class JCOTPVC: UIViewController {
         }
         else
         {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            activityIndicator = UIActivityIndicatorView(style: .white)
             view.addSubview(activityIndicator!)
             activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
             activityIndicator?.startAnimating()
@@ -167,7 +167,7 @@ class JCOTPVC: UIViewController {
     
     @IBAction func didClickOnGetOTPButton(_ sender: Any)
     {
-        //jioNumberTFLabel.text = /"8356903414"//"9757012372"//
+       // jioNumberTFLabel.text = "8356903414"//"9757012372"//
         enteredJioNumber = jioNumberTFLabel.text
         if(enteredJioNumber?.count != 10) {
             self.showAlert(alertTitle: "Invalid Entry", alertMessage: "Please Enter Jio Number")
@@ -182,7 +182,7 @@ class JCOTPVC: UIViewController {
     {
         let alert = UIAlertController(title: alertTitle,
                                       message: alertMessage,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)
@@ -196,7 +196,7 @@ class JCOTPVC: UIViewController {
     
     
     fileprivate func callWebServiceToGetOTP(number: String) {
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityIndicator = UIActivityIndicatorView(style: .white)
         view.addSubview(activityIndicator!)
         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
         activityIndicator?.startAnimating()
@@ -219,7 +219,10 @@ class JCOTPVC: UIViewController {
                     
                     self.isRequestMadeForResend = false
                 }
-                _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+                Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { [weak self](_) in
+                    guard let self = self else {return}
+                    self.enableResendButton()
+                })
                 return
             }
             DispatchQueue.main.async {
@@ -228,75 +231,13 @@ class JCOTPVC: UIViewController {
                 self.resendOTPButton.isEnabled = false
                 self.signInButton.isHidden = false
                 self.jioNumberTFLabel.text = "Enter OTP"
-                _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
+                Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { [weak self](_) in
+                    guard let self = self else {return}
+                    self.enableResendButton()
+                })
             }
             
         }
-        /*
-         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-         view.addSubview(activityIndicator!)
-         activityIndicator?.frame.origin = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2)
-         activityIndicator?.startAnimating()
-         
-         enteredNumber = "+91".appending(number)
-         let params = [identifierKey:enteredNumber,otpIdentifierKey:enteredNumber,actionKey:actionValue]
-         weak var weakSelf = self
-         let otpRequest = RJILApiManager.defaultManager.prepareRequest(path: getOTPUrl, params: params as Any as? Dictionary<String, Any>, encoding: .JSON)
-         RJILApiManager.defaultManager.post(request: otpRequest!) { (data, response, error) in
-         DispatchQueue.main.async {
-         weakSelf?.activityIndicator?.stopAnimating()
-         }
-         
-         if let responseError = error as NSError?
-         {
-         if responseError.code == 204
-         {
-         DispatchQueue.main.async {
-         
-         //weakSelf?.searchController?.searchBar.text = ""
-         //weakSelf?.searchController?.searchBar.placeholder = "Enter OTP"
-         //weakSelf?.searchController?.searchBar.isSecureTextEntry = true
-         weakSelf?.getOTPButton.isHidden = true
-         weakSelf?.resendOTPButton.isHidden = false
-         weakSelf?.resendOTPButton.isEnabled = false
-         weakSelf?.signInButton.isHidden = false
-         weakSelf?.jioNumberTFLabel.text = "Enter OTP"
-         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
-         }
-         }
-         else
-         {
-         let errorString = responseError.userInfo["NSLocalizedDescription"]! as? String ?? ""
-         let data = errorString.data(using: .utf8)
-         _ = try? JSONSerialization.jsonObject(with: data!)
-         
-         
-         DispatchQueue.main.async {
-         if (weakSelf?.isRequestMadeForResend)!
-         {
-         weakSelf?.showAlert(alertTitle: "Unable to send OTP", alertMessage: "Please try again after some time")
-         //weakSelf?.searchController?.searchBar.text = ""
-         }
-         else
-         {
-         weakSelf?.showAlert(alertTitle: "Invalid Jio Number", alertMessage: "Entered Jio Number is invalid, please try again")
-         self.jioNumberTFLabel.text = "Enter Jio Number"
-         //weakSelf?.searchController?.searchBar.text = ""
-         }
-         
-         weakSelf?.isRequestMadeForResend = false
-         }
-         _ = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.enableResendButton), userInfo: nil, repeats: false)
-         }
-         return
-         }
-         if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
-         {
-         print(parsedResponse["code"]!)
-         print(responseData)
-         return
-         }
-         }*/
     }
     
     @objc func enableResendButton() {

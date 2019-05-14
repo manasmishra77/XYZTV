@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReachabilitySwift
+import Reachability
 
 class Utility {
     static let sharedInstance = Utility()
@@ -17,7 +17,7 @@ class Utility {
 
     // MARK:- Network Notifier
     func startNetworkNotifier() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: Notification.Name.reachabilityChanged,object: reachability)
         reachability = Reachability.init()
         do{
             try reachability?.startNotifier()
@@ -27,7 +27,7 @@ class Utility {
     }
     
     @objc func reachabilityChanged(note: Notification) {
-        let r = note.object as! Reachability
+        guard let r = note.object as? Reachability else {return}
         if r.isReachable {
             isNetworkAvailable = true
             if let isRechable = (reachability?.isReachableViaWiFi), isRechable {
@@ -53,14 +53,14 @@ class Utility {
             vc = UIApplication.topViewController()
         }
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             vc?.present(alert, animated: true, completion: nil)
         }
     }
     struct AlertAction {
         var title: String
-        var style: UIAlertActionStyle
+        var style: UIAlertAction.Style
     }
     //MARK: Apply Gradient
     class func applyGradient(_ view: UIView, _ initialColor : CGColor) {
@@ -87,7 +87,7 @@ class Utility {
     }
     
     class func getCustomizedAlertController(with title: String, message: String, actions: [AlertAction]?, _ responseHandlerForAction: (( UIAlertAction) -> Swift.Void)? = nil) -> UIAlertController {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         if let actions = actions {
             for each in actions {
                 let newAction = UIAlertAction(title: each.title, style: each.style, handler: responseHandlerForAction)
@@ -101,7 +101,7 @@ class Utility {
     {
         let topVC = UIApplication.topViewController()
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                exit(0)
             }))
@@ -115,7 +115,7 @@ class Utility {
         {
             let encodedData = aString?.data(using: .utf8)
             let encodedString = encodedData?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-            return encodedString!
+            return encodedString ?? ""
         }
         return ""
     }
@@ -172,10 +172,10 @@ class Utility {
         playerVC.defaultLanguage = fromLanguage
         
         if isEpisodeAvailable {
-            playerVC.episodeArray = recommendationArray as! [Episode]
+            playerVC.episodeArray = recommendationArray as? [Episode] ?? []
         }
         else if isMoreDataAvailable {
-            playerVC.moreArray = recommendationArray as! [Item]
+            playerVC.moreArray = recommendationArray as? [Item] ?? []
         }
         playerVC.director = director ?? ""
         playerVC.starCast = starCast ?? ""
@@ -402,10 +402,10 @@ class Utility {
         var color: UIColor = .black
         
         var fontOfText: UIFont {
-            if let font = UIFont(name: fontName, size: fontSize!) {
+            if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
             }
             
         }
@@ -413,10 +413,10 @@ class Utility {
     
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
-            let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
+            let attrs = [NSAttributedString.Key.font : eachPartText.fontOfText, NSAttributedString.Key.foregroundColor: eachPartText.color]
             let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
             fontChangedtext.addAttributes(attrs, range: range)
         }
@@ -475,18 +475,18 @@ extension String {
         var color: UIColor = .black
         
         var fontOfText: UIFont {
-            if let font = UIFont(name: fontName, size: fontSize!) {
+            if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize!)!
+                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
             }
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize)!)!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
-            let attrs = [NSAttributedStringKey.font : eachPartText.fontOfText, NSAttributedStringKey.foregroundColor: eachPartText.color]
+            let attrs = [NSAttributedString.Key.font : eachPartText.fontOfText, NSAttributedString.Key.foregroundColor: eachPartText.color]
             let range = NSRange(location: eachPartText.initialIndexOftheText, length: lastIndex - eachPartText.initialIndexOftheText)
             fontChangedtext.addAttributes(attrs, range: range)
         }
@@ -523,7 +523,7 @@ extension UIView {
 
     @IBInspectable var borderColor: UIColor? {
         get {
-            return UIColor(cgColor: layer.borderColor!)
+            return UIColor(cgColor: layer.borderColor ?? UIColor.clear.cgColor)
         }
         set {
             layer.borderColor = newValue?.cgColor

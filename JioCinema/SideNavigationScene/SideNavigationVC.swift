@@ -27,7 +27,7 @@ class SideNavigationVC: UIViewController {
         self.addSideNavigation()
         let menuPressRecognizer = UITapGestureRecognizer()
         menuPressRecognizer.addTarget(self, action: #selector(SideNavigationVC.menuButtonAction(recognizer:)))
-        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPressType.menu.rawValue)]
+        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
         self.view.addGestureRecognizer(menuPressRecognizer)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onSerchNavRemoving(_:)), name: AppNotification.serchViewUnloading, object: nil)
@@ -35,7 +35,9 @@ class SideNavigationVC: UIViewController {
     
     @objc func onSerchNavRemoving(_ notification:Notification) {
         self.presentedViewController?.dismiss(animated: true, completion: {
-            self.sideNavigationView?.performNavigationTableSelection(index: (self.sideNavigationView?.selectedIndex)!)
+            if let index = self.sideNavigationView?.selectedIndex {
+                self.sideNavigationView?.performNavigationTableSelection(index: index)
+            }
         })
     }
     
@@ -118,17 +120,17 @@ extension SideNavigationVC: SideNavigationTableProtocol {
             else {
 //                if let uiView = self.HolderView.subviews.first {
                     
-                    selectedVC?.willMove(toParentViewController: nil)
+                    selectedVC?.willMove(toParent: nil)
                     selectedVC?.view.removeFromSuperview()
-                    selectedVC?.removeFromParentViewController()
+                    selectedVC?.removeFromParent()
 //                    content.willMove(toParentViewController: nil)
 //                    content.view.removeFromSuperview()
 //                    content.removeFromParentViewController()
 //                    uiView.removeFromSuperview()
 //                }
-            self.addChildViewController(vc)
+            self.addChild(vc)
             self.HolderView.addSubview(vc.view)
-            vc.didMove(toParentViewController: self)
+            vc.didMove(toParent: self)
                 selectedVC = vc
                 
                 DispatchQueue.main.async {

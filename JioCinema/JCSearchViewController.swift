@@ -18,7 +18,7 @@ class JCSearchViewController: UISearchController {
         let imageView = UIImageView(image: UIImage(named: "MetaDatBackGroundImage"))
         imageView.frame = self.view.frame
         self.view.addSubview(imageView)
-        self.view.sendSubview(toBack: imageView)
+        self.view.sendSubviewToBack(imageView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +33,7 @@ class JCSearchViewController: UISearchController {
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         
         //Sending event to the searchvc when menu button preesed
-        if presses.first?.type == UIPressType.menu {
+        if presses.first?.type == UIPress.PressType.menu {
 
             NotificationCenter.default.post(name: AppNotification.serchViewUnloading, object: nil)
 //            if let searchVc = self.searchResultsController as? JCSearchResultViewController {

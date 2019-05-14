@@ -222,21 +222,21 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
     {
         if item?.app?.type == VideoType.Language.rawValue
         {
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.normal)
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.focused)
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.selected)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.normal)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.focused)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.selected)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.normal)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.focused)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.selected)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.normal)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.focused)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.selected)
         }
         else if item?.app?.type == VideoType.Genre.rawValue
         {
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.normal)
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.focused)
-            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControlState.selected)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.normal)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.focused)
-            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControlState.selected)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.normal)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.focused)
+            videoCategoryButton.setTitle(item?.list?[currentType].name?.appending("  ▼"), for: UIControl.State.selected)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.normal)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.focused)
+            languageGenreButton.setTitle((currentParamString ?? "").appending("  ▼"), for: UIControl.State.selected)
         }
         languageGenreCollectionView.reloadData()
         languageGenreCollectionView.layoutIfNeeded()

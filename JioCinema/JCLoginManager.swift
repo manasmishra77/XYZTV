@@ -15,7 +15,7 @@ class JCLoginManager: UIViewController {
     var isLoginFromSettingsScreen = false
     func isUserLoggedIn() -> Bool {
         if((UserDefaults.standard.value(forKey: isUserLoggedInKey)) != nil) {
-            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as! Bool
+            return UserDefaults.standard.value(forKey: isUserLoggedInKey) as? Bool ?? false
         }
         return false
     }

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 struct MetadataModel: Codable {
     var appkey:String?
     var type:Int?

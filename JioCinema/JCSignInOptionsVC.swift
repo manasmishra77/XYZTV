@@ -212,7 +212,7 @@ class JCSignInOptionsVC: UIViewController,UITextFieldDelegate{
     {
         let alert = UIAlertController(title: "Alert",
                                       message: alertString,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)

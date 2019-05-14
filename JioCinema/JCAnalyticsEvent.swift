@@ -49,10 +49,10 @@ class JCAnalyticsEvent: NSObject {
 //
 //        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001", "uid":JCAppUser.shared.uid,"crmid":JCAppUser.shared.unique, "profileid":JCAppUser.shared.profileId, "idamid":JCAppUser.shared.unique, "rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString, "pf":"O", "nwk":"WIFI","dtpe":"B","osv":UIDevice.current.systemVersion,"mnu":"apple","avn":Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,"key":eventKey,"pro":proDictionary] as [String : Any]
 //        return finalDictionary
-        let sid = Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss") + UIDevice.current.identifierForVendor!.uuidString
+        let sid = Date().toString(dateFormat: "yyyy-MM-dd hh:mm:ss") + (UIDevice.current.identifierForVendor?.uuidString ?? "")
         
         let hash = convertStringToMD5Hash(artistName: sid)
-        let hexEncodedHash = hash.hexEncodedString()
+        let hexEncodedHash = hash?.hexEncodedString()
         
         let rtcEpoch = String(describing: Date())// String(describing:Int(Date().timeIntervalSince1970))
         let avnString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
@@ -60,7 +60,7 @@ class JCAnalyticsEvent: NSObject {
         //            avnString = avnValue
         //        }
         
-        let finalDictionary = ["sid":hexEncodedHash,"akey":"109153001","uid":JCAppUser.shared.uid, "crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did":UIDevice.current.identifierForVendor!.uuidString,"pf":"O","nwk": "WIFI","dtpe":"B","osv": UIDevice.current.systemVersion,"mnu":"apple","avn": avnString,"key":eventKey,"pro": proDictionary] as [String : Any]
+        let finalDictionary = ["sid": hexEncodedHash,"akey": "109153001","uid":JCAppUser.shared.uid, "crmid":JCAppUser.shared.unique,"profileid":JCAppUser.shared.profileId,"idamid":JCAppUser.shared.unique,"rtc":rtcEpoch,"did": UIDevice.current.identifierForVendor?.uuidString ?? "","pf":"O","nwk": "WIFI","dtpe":"B","osv": UIDevice.current.systemVersion,"mnu":"apple","avn": avnString,"key":eventKey,"pro": proDictionary] as [String : Any]
         return finalDictionary
     }
     
@@ -251,9 +251,8 @@ class JCAnalyticsEvent: NSObject {
         }*/
     }
     
-    func convertStringToMD5Hash(artistName:String) -> Data
-    {
-        let messageData = artistName.data(using:.utf8)!
+    func convertStringToMD5Hash(artistName:String) -> Data? {
+        guard let messageData = artistName.data(using:.utf8) else {return nil}
         var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
         
         _ = digestData.withUnsafeMutableBytes {digestBytes in

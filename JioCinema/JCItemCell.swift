@@ -23,7 +23,6 @@ class JCItemCell: UICollectionViewCell {
     func addLabel() {
         autoScrollLabel = AutoScrollLabel.init(frame: self.nameLabel.frame)
         autoScrollLabel?.tag = 1001
-//        autoScrollLabel.setLabelText("Some lengthy text to be scrolled")
         self.addSubview(autoScrollLabel!)
     }
     

@@ -79,8 +79,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
             Utility.sharedInstance.handleScreenNavigation(screenName: HOME_SCREEN, toScreen: toScreen, duration: Int(Date().timeIntervalSince(screenAppearTiming)))
         }
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
 
     }
     
@@ -227,8 +227,8 @@ class JCHomeVC: JCBaseVC, UITableViewDelegate, UITableViewDataSource, UITabBarCo
         
 
         //Pagination call
-        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count)! - 2) {
-            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages)!) {
+        if(indexPath.row == (JCDataStore.sharedDataStore.homeData?.data?.count ?? 0) - 2) {
+            if(loadedPage < (JCDataStore.sharedDataStore.homeData?.totalPages ?? 0)) {
                 callWebServiceForHomeData(page: loadedPage)
             }
         }

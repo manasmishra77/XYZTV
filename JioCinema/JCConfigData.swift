@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 
 struct ConfigData: Codable {
