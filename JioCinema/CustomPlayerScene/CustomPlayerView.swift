@@ -102,7 +102,7 @@ class CustomPlayerView: UIView {
     func configureView(item: Item, latestEpisodeId: String? = nil, audioLanguage: AudioLanguage? = nil) {
         self.audioLanguage = audioLanguage
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
-        addSubviewOnPlayer()
+//        addSubviewOnPlayer()
     }
     
     func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
@@ -121,6 +121,7 @@ class CustomPlayerView: UIView {
     }
     
     func addPlayersControlView() {
+        if controlsView == nil {
         controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
         controlsView?.configurePlayersControlView()
         controlsView?.playerButtonsView?.buttonDelegate = self
@@ -130,7 +131,9 @@ class CustomPlayerView: UIView {
             return
         }
         self.controlHolderView.addSubview(controlsView)
-        setValuesOnControlView()
+        }
+        setValuesForSubviewsOnPlayer()
+//        setValuesOnControlView()
     }
     
     func setValuesOnControlView() {
@@ -138,18 +141,34 @@ class CustomPlayerView: UIView {
         if playerItem?.name == "" || playerItem?.name == nil {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
         }
-       
-        if isDisney {
-            self.controlsView?.sliderView?.progressBar.tintColor = ViewColor.disneyButtonColor
-        } else {
-             self.controlsView?.sliderView?.progressBar.tintColor = ViewColor.cinemaLeftMenuBackground
-        }
+//        if (playerViewModel?.currentDuration ?? 0.0) > 0.0 {
+//        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(Float(self.playerItem?.duration ?? Int(0.0)) / Float(self.playerItem?.totalDuration ?? Int(0.0)))
+//        }
+        self.controlsView?.sliderView?.progressBar.tintColor = ThemeManager.shared.selectionColor
     }
     
     func addMoreLikeView() {
-        moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
-        heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
-        self.layoutIfNeeded()
+        if moreLikeView == nil {
+            moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
+            self.layoutIfNeeded()
+            self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
+            moreLikeView?.frame = moreLikeHolderView.bounds
+            self.moreLikeHolderView.addSubview(moreLikeView!)
+        }
+        setValuesForMoreLikeData()
+    }
+    
+    func setValuesForMoreLikeData(){
+        moreLikeView?.appType = playerItem?.appType ?? .None
+        var id = playerItem?.id
+        if id == ""{
+            id = playerItem?.latestId
+        }
+        moreLikeView?.configMoreLikeView(id: id ?? "")
+        moreLikeView?.isDisney = isDisney
+        moreLikeView?.delegate = self
+
         if let moreLikeArray = recommendationArray as? [Item]{
             moreLikeView?.moreArray = moreLikeArray
         } else if let moreLikeArray = recommendationArray as? [Episode]{
@@ -159,26 +178,14 @@ class CustomPlayerView: UIView {
                 playerViewModel?.callWebServiceForPlayListData(id: playerItem?.playlistId ?? "")
             } else {
                 playerViewModel?.callWebServiceForMoreLikeData()
-
+                
             }
         }
-        moreLikeView?.appType = playerItem?.appType ?? .None
-        var id = playerItem?.id
-        if id == ""{
-            id = playerItem?.latestId
-        }
-        moreLikeView?.configMoreLikeView(id: id ?? "")
-        moreLikeView?.isDisney = isDisney
-        moreLikeView?.delegate = self
-        self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
-        moreLikeView?.frame = moreLikeHolderView.bounds
-        self.moreLikeHolderView.addSubview(moreLikeView!)
     }
-    
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if !isFocusViewChangedOnResetTimer {
-            resetTimer()
+            resetTimertToHideControls()
         } else {
             isFocusViewChangedOnResetTimer = false
         }
@@ -229,7 +236,7 @@ class CustomPlayerView: UIView {
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
-        resetTimer()
+        resetTimertToHideControls()
         self.removeControlDetailview(forOkButtonClick: true)
         myPreferredFocusView = nil
         if stateOfPlayerBeforeButtonClickWasPaused {
@@ -240,7 +247,7 @@ class CustomPlayerView: UIView {
     }
     
     func removeControlDetailview(forOkButtonClick: Bool) {
-        resetTimer()
+        resetTimertToHideControls()
         if forOkButtonClick {
             if bitrateTableView != nil {
                 changeValuesOfTableAfterOkButtonClick(forBitrateTable: true)
@@ -358,7 +365,7 @@ class CustomPlayerView: UIView {
 }
 extension CustomPlayerView: ButtonPressedDelegate {
     func playTapped() {
-        resetTimer()
+        resetTimertToHideControls()
         if isPlayerPaused {
             changePlayerPlayingStatus(shouldPlay: true)
         } else {
@@ -463,12 +470,12 @@ extension CustomPlayerView: ButtonPressedDelegate {
         self.setNeedsFocusUpdate()
     }
     func nextButtonPressed(toDisplay: Bool) {
-        resetTimer()
+        resetTimertToHideControls()
         playnextOrPreviousItem(playNext: true)
     }
     
     func previousButtonPressed(toDisplay: Bool) {
-        resetTimer()
+        resetTimertToHideControls()
         playnextOrPreviousItem(playNext: false)
     }
     func playnextOrPreviousItem(playNext: Bool) {
@@ -521,7 +528,7 @@ extension CustomPlayerView: PlayerControlsDelegate {
     }
     
     func resetTimerForHideControl() {
-        self.resetTimer()
+        self.resetTimertToHideControls()
     }
     
     func setPlayerSeekTo(seekValue: CGFloat) {
@@ -541,6 +548,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
             enterParentalPinView?.removeFromSuperview()
             enterParentalPinView = nil
             self.updateIndicatorState(toStart: true)
+//            addSubviewOnPlayer()
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
@@ -605,23 +613,29 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func setValuesForSubviewsOnPlayer() {
-        startTimer()
+        startTimerToHideControls()
         setValuesOnControlView()
     }
     
     func addSubviewOnPlayer() {
-        addPlayersControlView()
-        addMoreLikeView()
+        DispatchQueue.main.async {
+            self.addPlayersControlView()
+            self.addMoreLikeView()
+        }
     }
     
     func reloadMoreLikeCollectionView(currentMorelikeIndex: Int) {
         currentPlayingIndex = currentMorelikeIndex
         self.moreLikeView?.currentPlayingIndex = currentMorelikeIndex
         self.moreLikeView?.isPlayList = self.isPlayList
-        self.moreLikeView?.moreArray = playerViewModel?.moreArray
-        self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
+        self.recommendationArray = playerViewModel?.recommendationArray ?? false
+        //        self.moreLikeView?.moreArray = playerViewModel?.moreArray
+        //        self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
+        setValuesForMoreLikeData()
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
-        self.moreLikeView?.moreLikeCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.moreLikeView?.moreLikeCollectionView.reloadData()
+        }
     }
     
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel) {
@@ -678,6 +692,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
+            if (self.playerViewModel?.currentDuration ?? 0.0) > 0.0 {
+            self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(Float(self.playerItem?.duration ?? Int(0.0)) / Float(self.playerItem?.totalDuration ?? Int(0.0)))
+            }
             self.player?.play()
         }
     }
@@ -908,7 +925,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             if self.playerItem?.appType == .Episode {
                 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
-                    self.resetTimer()
+                    self.resetTimertToHideControls()
                     
                     if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
                         self.controlsView?.showNextVideoView(videoName: nextItemTupple.0.name ?? "", remainingTime: Int(remainingTime), banner: nextItemTupple.0.banner ?? "")
@@ -917,7 +934,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             else {
                 if let moreArray = moreLikeView?.moreArray, moreArray.count > 0, self.isPlayList {
-                    self.resetTimer()
+                    self.resetTimertToHideControls()
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[(currentPlayingIndex + 1)]
                         self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
@@ -958,7 +975,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 
 
 extension CustomPlayerView {
-    func startTimer() {
+    func startTimerToHideControls() {
         if timerToHideControls != nil {
             timerToHideControls.invalidate()
             timerToHideControls = nil
@@ -970,11 +987,13 @@ extension CustomPlayerView {
         })
     }
     
-    func resetTimer() {
+    func resetTimertToHideControls() {
+        if controlsView != nil || controlsView?.isHidden == false{
         invalidateTimerForControl()
         self.controlsView?.isHidden = false
         self.moreLikeView?.isHidden = false
-        self.startTimer()
+        self.startTimerToHideControls()
+        }
     }
     
     func invalidateTimerForControl() {
@@ -984,6 +1003,9 @@ extension CustomPlayerView {
     }
     
     func hideControlsView() {
+        if controlsView == nil{
+            return
+        }
         self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
         self.controlsView?.isHidden = true
         self.moreLikeView?.isHidden = true
@@ -998,7 +1020,7 @@ extension CustomPlayerView {
         for press in presses {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
-                resetTimer()
+                resetTimertToHideControls()
             case .menu:
                 super.pressesBegan(presses, with: event)
                 print("Menu")
@@ -1032,7 +1054,7 @@ extension CustomPlayerView {
                 print("Direct")
             case .indirect:
                 print("indirect")
-                resetTimer()
+                resetTimertToHideControls()
             case .pencil:
                 print("pencil")
             @unknown default:
@@ -1066,8 +1088,10 @@ extension CustomPlayerView: ResumeWatchDelegate {
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
-        setValuesForSubviewsOnPlayer()
+//        addSubviewOnPlayer()
+//        setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
+//        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = playerViewModel?.currentDuration / playerItem?.
         self.moreLikeHolderView.isHidden = false
     }
     
@@ -1076,7 +1100,8 @@ extension CustomPlayerView: ResumeWatchDelegate {
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
-        self.setValuesForSubviewsOnPlayer()
+//        addSubviewOnPlayer()
+//        self.setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
         self.moreLikeHolderView.isHidden = false
         

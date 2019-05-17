@@ -14,7 +14,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func checkParentalControlFor(playbackRightModel: PlaybackRightsModel)
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String)
     func reloadMoreLikeCollectionView(currentMorelikeIndex: Int)
-    func setValuesForSubviewsOnPlayer()
+    func addSubviewOnPlayer()
     func addResumeWatchView()
     func updateIndicatorState(toStart: Bool)
     func dismissPlayerOnAesFailure()
@@ -31,8 +31,9 @@ enum BitRatesType: String {
 class PlayerViewModel: NSObject {
     fileprivate var itemToBePlayed: Item
     var playerItem: AVPlayerItem?
-    var moreArray: [Item]?
-    var episodeArray: [Episode]?
+    var recommendationArray: Any = false
+//    var moreArray: [Item]?
+//    var episodeArray: [Episode]?
     var totalDuration: Float = 0.0
     var appType: VideoType = VideoType.None
     weak var delegate: PlayerViewModelDelegate?
@@ -152,27 +153,38 @@ class PlayerViewModel: NSObject {
                 return
             }
             var currentPlayingIndex = 0
-            if let recommendationItems = response.model?.more {
-                self.moreArray?.removeAll()
-                if recommendationItems.count > 0 {
-                    self.moreArray = recommendationItems
-                }
-            } else if let episodes = response.model?.episodes {
-                self.episodeArray?.removeAll()
-                    if episodes.count > 0{
-                        for (index, each) in episodes.enumerated() {
-                            if each.id == self.itemToBePlayed.id {
-                                currentPlayingIndex = index
-                                break
-                            }
-                        }
-                        self.episodeArray = episodes
-                    }
+            if response.model?.more != nil || response.model?.episodes != nil{
+                self.recommendationArray = false
+                self.recommendationArray = response.model?.more ?? response.model?.episodes ?? false
             }
-            if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
-                DispatchQueue.main.async {
-                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
-                }
+//            if let recommendationItems = response.model?.more {
+////                self.moreArray?.removeAll()
+//                self.recommendationArray = false
+//                if recommendationItems.count > 0 {
+////                    self.moreArray = recommendationItems
+//                    self.recommendationArray = recommendationItems
+//                }
+//            } else if let episodes = response.model?.episodes {
+////                self.episodeArray?.removeAll()
+//
+//                    if episodes.count > 0{
+//                        for (index, each) in episodes.enumerated() {
+//                            if each.id == self.itemToBePlayed.id {
+//                                currentPlayingIndex = index
+//                                break
+//                            }
+//                        }
+//                        self.recommendationArray = episodes
+////                        self.episodeArray = episodes
+//                    }
+//            }
+//            if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
+//                DispatchQueue.main.async {
+//                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
+//                }
+//            }
+            if ((self.recommendationArray as? [Item]) != nil) || ((self.recommendationArray as? [Episode]) != nil){
+                self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
             }
         }
     }
@@ -391,7 +403,8 @@ class PlayerViewModel: NSObject {
             }
             let playList = response.model!
             if let mores = playList.more {
-                self.moreArray?.removeAll()
+//                self.moreArray?.removeAll()
+                self.recommendationArray = false
                 var currentPlayingIndex = 0
                 if mores.count > 0{
                     for (index,each) in mores.enumerated() {
@@ -400,11 +413,11 @@ class PlayerViewModel: NSObject {
                             break
                         }
                     }
-                    self.moreArray = mores
-                    if (self.moreArray?.count ?? 0 > 0){
-                        DispatchQueue.main.async {
+                    self.recommendationArray = mores
+//                    self.moreArray = mores
+//                    if (self.moreArray?.count ?? 0 > 0){
+                    if ((self.recommendationArray as? [Item]) != nil){
                             self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
-                        }
                     }
                     
                 }
@@ -439,7 +452,7 @@ class PlayerViewModel: NSObject {
         case .Movie:
             if isPlayList, id == "" {
                 callWebServiceForPlaybackRights(id:  itemToBePlayed.latestId ?? "")
-                delegate?.setValuesForSubviewsOnPlayer()
+//                delegate?.addSubviewOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
@@ -447,7 +460,7 @@ class PlayerViewModel: NSObject {
                 } else {
                     
                     callWebServiceForPlaybackRights(id: id)
-                    delegate?.setValuesForSubviewsOnPlayer()
+//                    delegate?.addSubviewOnPlayer()
                 }
             }
         case .Episode, .TVShow:
@@ -456,15 +469,15 @@ class PlayerViewModel: NSObject {
                 delegate?.addResumeWatchView()
             } else {
                 callWebServiceForPlaybackRights(id: id)
-                delegate?.setValuesForSubviewsOnPlayer()
+//                delegate?.addSubviewOnPlayer()
             }
         case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
                 callWebServiceForPlaybackRights(id: itemToBePlayed.latestId ?? "")
-                delegate?.setValuesForSubviewsOnPlayer()
+//                delegate?.addSubviewOnPlayer()
             } else {
                 callWebServiceForPlaybackRights(id: id)
-                delegate?.setValuesForSubviewsOnPlayer()
+//                delegate?.addSubviewOnPlayer()
             }
         default:
             break
@@ -646,6 +659,7 @@ extension PlayerViewModel: PlayerAssetManagerDelegate {
     func setAVAssetInPlayerItem(asset: AVURLAsset) {
         playerItem = AVPlayerItem(asset: asset)
         delegate?.addAvPlayerToController()
+        delegate?.addSubviewOnPlayer()
     }
 }
 

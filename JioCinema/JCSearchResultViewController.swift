@@ -102,6 +102,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             baseTableCellModel.title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
             baseTableCellModel.cellType = .search
             baseTableCellModel.layoutType = getLayoutOfCellForItemType(items.first)
+            if searchResultArray[index].categoryLayout == 100 {
+                baseTableCellModel.layoutType = .landscapeWithLabels
+            }
             baseTableCellModel.items = items
             baseTableCellModel.charItems = nil
             baseTableCellModel.sectionLanguage = .english
@@ -125,7 +128,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
+        if searchResultArray[indexPath.row].categoryLayout == 100 {
+            return rowHeightForLandscape
+        } else if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
             return rowHeightForPotrait
         }
         return rowHeightForLandscape
