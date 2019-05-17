@@ -33,7 +33,7 @@ class RJILApiManager {
     }
     
     func post(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        //createDataTask(withRequest:request, httpMethod: "POST", completion: completion)
+        createDataTask(withRequest:request, takPriority: .high, httpMethod: "POST", completion: completion)
     }
     
     func put(request:URLRequest, completion:@escaping RequestCompletionBlock) {
@@ -41,7 +41,7 @@ class RJILApiManager {
     }
     
     func get(request:URLRequest, completion:@escaping RequestCompletionBlock) {
-        //createDataTask(withRequest:request, httpMethod: "GET", completion: completion)
+        createDataTask(withRequest:request, takPriority: .high, httpMethod: "GET", completion: completion)
     }
     
     
