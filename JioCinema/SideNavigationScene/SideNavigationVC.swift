@@ -84,6 +84,13 @@ class SideNavigationVC: UIViewController {
         return []
     }
     
+    private func getSearchController() -> SearchNavigationController{
+        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
+        return SearchNavigationController(rootViewController: searchContainerController)
+    }
+    
 }
 
 extension SideNavigationVC: SideNavigationTableProtocol {
@@ -140,6 +147,10 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                     self.setNeedsFocusUpdate()
                 }
 
+            }
+        } else {
+            if menuItem.type == .search {
+                self.navigationController?.present(self.getSearchController(), animated: true, completion: nil)
             }
         }
     }

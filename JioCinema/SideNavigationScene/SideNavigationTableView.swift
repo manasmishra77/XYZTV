@@ -67,7 +67,7 @@ struct MenuItem {
         case .search:
             self.unselectedImage = "Search"
             self.selectedImage = "SearchSelected"
-            self.viewControllerObject = self.getSearchController()
+//            self.viewControllerObject = self.getSearchController()
         case .settings:
             self.unselectedImage = "SettingsIcon"
             self.selectedImage = "SettingsIconSelected"
@@ -84,12 +84,12 @@ struct MenuItem {
       
     }
 
-    private func getSearchController() -> SearchNavigationController{
-        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
-        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
-        searchContainerController.view.backgroundColor = UIColor.black
-        return SearchNavigationController(rootViewController: searchContainerController)
-    }
+//    private func getSearchController() -> SearchNavigationController{
+//        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+//        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+//        searchContainerController.view.backgroundColor = UIColor.black
+//        return SearchNavigationController(rootViewController: searchContainerController)
+//    }
     
 }
 
