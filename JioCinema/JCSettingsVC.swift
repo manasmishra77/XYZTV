@@ -97,7 +97,7 @@ class JCSettingsVC: UIViewController {
 extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 9
+        return 8
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -137,34 +137,34 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 cell.settingsDetailLabel.text = "OFF"
             }
             
+//        case 2:
+//            cell.textLabel?.text = Subtitleheading
+//            cell.settingsDetailLabel.isHidden = false
+//
+//            if IsAutoSubtitleOn {
+//                 cell.settingsDetailLabel.text = "ON"
+//            } else {
+//                cell.settingsDetailLabel.text = "OFF"
+//            }
+            
         case 2:
-            cell.textLabel?.text = Subtitleheading
-            cell.settingsDetailLabel.isHidden = false
-            
-            if IsAutoSubtitleOn {
-                 cell.settingsDetailLabel.text = "ON"
-            } else {
-                cell.settingsDetailLabel.text = "OFF"
-            }
-            
-        case 3:
             cell.textLabel?.text = ParentalHeading
             cell.settingsDetailLabel.isHidden = false
             cell.settingsDetailLabel.text = ParentalPinManager.shared.parentalControlStatus
             
-        case 4:
+        case 3:
             cell.textLabel?.text = "FAQs"
             
-        case 5:
+        case 4:
             cell.textLabel?.text = "Feedback"
             
-        case 6:
+        case 5:
             cell.textLabel?.text = "Privacy Policy"
             
-        case 7:
+        case 6:
             cell.textLabel?.text = "Terms & Conditions"
             
-        case 8:
+        case 7:
             cell.cellAccessoryImage.isHidden = true
             cell.textLabel?.text = "Version"
             cell.settingsDetailLabel.isHidden = false
@@ -201,25 +201,33 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             case 1:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Autoplay.png")
                 
+//            case 2:
+//                self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
+                
             case 2:
-                self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "ParentalControlSetting.png")
                 
             case 3:
-                self.settingsImageView.image = #imageLiteral(resourceName: "ParentalControlSetting.png")
+                    self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
                 
             case 4:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
                 
             case 5:
                 self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
                 
             case 6:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
             case 7:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
-                
-            case 8:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
             default:
@@ -264,32 +272,32 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isDetailView = false
             settingsDetailVC.isFeedBackView = false
             
-        case 2:
-            settingsDetailVC.isDetailView = false
-            settingsDetailVC.isFeedBackView = false
+//        case 2:
+//            settingsDetailVC.isDetailView = false
+//            settingsDetailVC.isFeedBackView = false
             
-        case 3:
+        case 2:
             self.sendParentalControlTileSelectEvent()
             self.checkAndPerformParentalControlGetPin()
             return
             
-        case 4:
+        case 3:
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.isDetailView = true
             settingsDetailVC.titleText = "FAQs"
             settingsDetailVC.textViewDetail = FAQText
             
-        case 5:
+        case 4:
             settingsDetailVC.isDetailView  = false
             settingsDetailVC.isFeedBackView = true
             
-        case 6:
+        case 5:
             settingsDetailVC.isDetailView = true
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.titleText = "PRIVACY POLICY"
             settingsDetailVC.textViewDetail = PrivacyPolicyText
             
-        case 7:
+        case 6:
             settingsDetailVC.isDetailView = true
             settingsDetailVC.isFeedBackView = false
             settingsDetailVC.titleText = "TERMS & CONDITIONS"

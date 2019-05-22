@@ -410,7 +410,7 @@
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
+        self.autoPlaySubtitle(true)
         if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
             
         }
@@ -430,7 +430,7 @@
     
     private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
         guard isAutoPlaySubtitle else {
-             //_ = player?.currentItem?.selectedMediaOption(in: <#T##AVMediaSelectionGroup#>)
+             _ = player?.currentItem?.select(type: .subtitle, name: "")
             return
         }
         let subtitles = player?.currentItem?.tracks(type: .subtitle)
@@ -1830,6 +1830,9 @@
             return false
         }
         guard let matched = group.options.filter({ $0.displayName == name }).first else{
+            if type == .subtitle {
+                self.select(nil, in: group)
+            }
             return false
         }
         self.select(matched, in: group)
