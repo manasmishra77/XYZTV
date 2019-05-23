@@ -184,6 +184,17 @@ class PlayerViewModel: NSObject {
 //                }
 //            }
             if ((self.recommendationArray as? [Item]) != nil) || ((self.recommendationArray as? [Episode]) != nil){
+                if let episodes = response.model?.episodes {
+                    if episodes.count > 0{
+                        for (index, each) in episodes.enumerated() {
+                            if each.id == self.itemToBePlayed.id {
+                                currentPlayingIndex = index
+                                break
+                            }
+                        }
+                    }
+                }
+
                 self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
             }
         }
@@ -713,10 +724,13 @@ extension PlayerViewModel {
         let bufferCountForGA = eventProperties["Buffer Count"] as? String
         let customParams: [String:String] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ]
         JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Buffering", label: bufferCountForGA, customParameters: customParams)
-        
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Buffering", properties: eventProperties)
     }
-    
+    func sendSkipIntroEvent(eventProperties: [String:Any]) {
+//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
+        let skipIntroInternalEvent = JCAnalyticsEvent.sharedInstance.getSkipIntroEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(playerItem?.currentTime().seconds ?? 0.0), contentId: itemId, bufferDuration: Int(totalBufferDurationTime), type: self.appType.name, bufferCount: Int(bufferCount))
+        JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: skipIntroInternalEvent)
+    }
     func sendPlaybackFailureEvent(forCleverTap eventPropertiesCT:[String:Any], forInternalAnalytics eventPropertiesIA: [String: Any])
     {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)

@@ -24,8 +24,8 @@ let networkErrorMessage = "Please check your device's network and retry!"
 let prodBase = "https://prod.media.jio.com/apis/"
 let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
 
-//let basePath = prodBase
-let basePath = qaBase
+let basePath = prodBase
+//let basePath = qaBase
 
 //Config
 let common = "common/v3/"
@@ -294,7 +294,10 @@ var rowHeightForPotraitForLanguageGenreScreen: CGFloat {
 var rowHeightForLandscapeForLanguageGenreScreen: CGFloat {
     return rowHeightForLandscape
 }
-
+struct PlayerSliderConstants {
+    static let widthOfProgressBar: CGFloat = 1720
+    static let widthOfSlider: CGFloat = 30
+}
 struct PlayerRecommendationSize {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
     static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78

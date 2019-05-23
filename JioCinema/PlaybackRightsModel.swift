@@ -96,7 +96,12 @@ struct PlaybackRightsModel: Codable {
                 let intDuration = try values.decodeIfPresent(Int.self, forKey: .duration)
                 duration = Float(intDuration ?? 0)
             } catch {
-                
+                do {
+                    let strDuration = try values.decodeIfPresent(String.self, forKey: .duration)
+                    duration = Float(strDuration ?? "0.0")
+                } catch {
+                    print(error)
+                }
             }
         }
         inqueue = try values.decodeIfPresent(Bool.self, forKey: .inqueue)
@@ -108,7 +113,12 @@ struct PlaybackRightsModel: Codable {
                 let intDuration = try values.decodeIfPresent(Int.self, forKey: .totalDuration)
                 totalDuration = "\(intDuration ?? 0)"
             } catch {
-                
+                do {
+                    let floatDuration = try values.decodeIfPresent(Float.self, forKey: .totalDuration)
+                    totalDuration = "\(floatDuration ?? 0)"
+                } catch {
+                    
+                }
             }
         }
         isSubscribed = try values.decodeIfPresent(Bool.self, forKey: .isSubscribed)

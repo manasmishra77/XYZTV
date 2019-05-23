@@ -38,12 +38,15 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     
     
     func configMoreLikeView(id: String) {
-        cureentItemId = id
-        moreLikeCollectionView.delegate = self
-        moreLikeCollectionView.dataSource = self
-        let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
-        moreLikeCollectionView.register(cellNib, forCellWithReuseIdentifier: BaseItemCellNibIdentifier)
-        moreLikeCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.cureentItemId = id
+            self.moreLikeCollectionView.delegate = self
+            self.moreLikeCollectionView.dataSource = self
+            let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
+            self.moreLikeCollectionView.register(cellNib, forCellWithReuseIdentifier: BaseItemCellNibIdentifier)
+            self.moreLikeCollectionView.reloadData()
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -143,7 +146,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         if isEpisodeDataAvailable {
             let model = episodesArray?[indexPath.row]
             
-            if appType == .Episode {
+            if appType == .Episode || appType == .TVShow {
                 isPlayList = true
             }
             let item = model?.getItem

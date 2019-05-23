@@ -141,9 +141,15 @@ class CustomPlayerView: UIView {
         if playerItem?.name == "" || playerItem?.name == nil {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
         }
-//        if (playerViewModel?.currentDuration ?? 0.0) > 0.0 {
-//        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(Float(self.playerItem?.duration ?? Int(0.0)) / Float(self.playerItem?.totalDuration ?? Int(0.0)))
-//        }
+        if let currentDuration = self.playerViewModel?.currentDuration, currentDuration > 0 {
+            guard let totalDuration = self.playbackRightModel?.totalDuration else {
+                return
+            }
+            if let totalFloatDuration = Float(totalDuration){
+                    self.controlsView?.sliderView?.sliderLeading.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
+                    self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
+            }
+        }
         self.controlsView?.sliderView?.progressBar.tintColor = ThemeManager.shared.selectionColor
     }
     
@@ -171,8 +177,24 @@ class CustomPlayerView: UIView {
 
         if let moreLikeArray = recommendationArray as? [Item]{
             moreLikeView?.moreArray = moreLikeArray
+            for (index, each) in moreLikeArray.enumerated() {
+                if each.id == playerItem?.latestId || each.id == playerItem?.id {
+                    currentPlayingIndex = index
+                    moreLikeView?.currentPlayingIndex = currentPlayingIndex
+//                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
+                    break
+                }
+            }
         } else if let moreLikeArray = recommendationArray as? [Episode]{
             moreLikeView?.episodesArray = moreLikeArray
+            for (index, each) in moreLikeArray.enumerated() {
+                if each.id == playerItem?.latestId || each.id == playerItem?.id {
+                    currentPlayingIndex = index
+                    moreLikeView?.currentPlayingIndex = currentPlayingIndex
+//                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
+                    break
+                }
+            }
         } else {
             if isPlayList == true, playerItem?.id == "" {
                 playerViewModel?.callWebServiceForPlayListData(id: playerItem?.playlistId ?? "")
@@ -518,6 +540,8 @@ extension CustomPlayerView: PlayerControlsDelegate {
                 }
             })
         }
+        let eventProperties : [String : Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": playerViewModel?.itemId, "Type": playerViewModel?.appType.rawValue, "Category Position": "\(playerViewModel?.fromCategoryIndex)", "Language": playerViewModel?.itemLanguage, "Bitrate" : playerViewModel?.bitrate, "Duration" : playerViewModel?.currentDuration ?? 0.0 ,"Pro.Clicked": "YES"]
+        playerViewModel?.sendSkipIntroEvent(eventProperties: eventProperties)
     }
     
     func cancelTimerForHideControl() {
@@ -692,9 +716,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
-            if (self.playerViewModel?.currentDuration ?? 0.0) > 0.0 {
-            self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(Float(self.playerItem?.duration ?? Int(0.0)) / Float(self.playerItem?.totalDuration ?? Int(0.0)))
-            }
             self.player?.play()
         }
     }

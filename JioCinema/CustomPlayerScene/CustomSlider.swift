@@ -37,8 +37,7 @@ class CustomSlider: UIView {
     var slidersValueWhentouchBeganCalled: CGFloat = 0.0
     var timeWhentouchBeganCalled: Double = 0.0
     var progressWhentouchBeganCalled: CGFloat = 0.0
-    var widthOfProgressBar: CGFloat = 1720
-    var widthOfSlider: CGFloat = 30
+
     
     func configureControls() {
 //        kTimeFormatInMinutes.dateFormat = "mm:ss"
@@ -64,7 +63,7 @@ extension CustomSlider: SliderDelegate {
         if backgroundFocusableButton.isFocused {
             DispatchQueue.main.async {
                 self.sliderLeading.constant = self.sliderLeadingForSeeking.constant
-                self.sliderDelegate?.seekPlayerTo(pointX: CGFloat(self.sliderLeading.constant/(self.widthOfProgressBar)))
+                self.sliderDelegate?.seekPlayerTo(pointX: CGFloat(self.sliderLeading.constant/(PlayerSliderConstants.widthOfProgressBar)))
                 self.hideThumbnails(requrestToHide: true)
             }
         }
@@ -87,7 +86,7 @@ extension CustomSlider: SliderDelegate {
     }
     
     func updateProgressBar(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?) {
-        let maxLeading : CGFloat = widthOfProgressBar// - widthOfSlider
+        let maxLeading : CGFloat = PlayerSliderConstants.widthOfProgressBar// - widthOfSlider
         if duration != nil{
             self.itemDuration = duration
         }
