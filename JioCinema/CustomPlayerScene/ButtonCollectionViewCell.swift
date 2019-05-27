@@ -22,10 +22,18 @@ class ButtonCollectionViewCell: UICollectionViewCell {
         if context.nextFocusedView == self {
             self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.buttonTitle.isHidden = false
-            self.playerButton.backgroundColor = .lightGray
+            if self.buttonTitle.text == "Play" || self.buttonTitle.text == "Pause"{
+            } else {
+                playerButton.setImage(UIImage(named: buttonItem?.selectedImage ?? ""), for: .normal)
+            }
+            self.playerButton.backgroundColor = ThemeManager.shared.selectionColor
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.buttonTitle.isHidden = true
+            if self.buttonTitle.text == "Play" || self.buttonTitle.text == "Pause"{
+            } else {
+                playerButton.setImage(UIImage(named: buttonItem?.unselectedImage ?? ""), for: .normal)
+            }
             self.playerButton.backgroundColor = .clear
         }
     }

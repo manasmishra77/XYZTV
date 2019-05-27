@@ -71,8 +71,8 @@ class RJILApiManager {
             _commonHeaders["x-multilang"] = "true"
             _commonHeaders["X-API-Key"] = apIKey
             _commonHeaders["app-name"] = "RJIL_JioCinema"
-//            _commonHeaders["x-apisignatures"] = "5772987301"
-            _commonHeaders["x-apisignatures"] = "5772987304"
+            _commonHeaders["x-apisignatures"] = "5772987301"
+//            _commonHeaders["x-apisignatures"] = "5772987304"
 
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
