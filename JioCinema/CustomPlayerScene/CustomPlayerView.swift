@@ -70,11 +70,11 @@ class CustomPlayerView: UIView {
     var lastSelectedAudioSubtitle: String?
     var lastSelectedAudioLanguage: String?
     var lastSelectedVideoQuality: String?
+    var timeSpent = 0
     
     @IBOutlet weak var popUpTableViewHolderWidth: NSLayoutConstraint!
     
     
-    var timer: Timer!
     var timerToHideControls : Timer!
     
     var myPreferredFocusView: UIView? = nil
@@ -227,7 +227,10 @@ class CustomPlayerView: UIView {
     }
     
     func resetAndRemovePlayer() {
-        playerViewModel?.sendMediaEndAnalyticsEvent()
+        if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
+            playerViewModel?.isMediaEndAnalyticsEventSent = true
+            playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
+        }
         self.resetPlayer()
         self.controlsView?.removeFromSuperview()
         self.controlsView = nil
@@ -255,6 +258,7 @@ class CustomPlayerView: UIView {
         let scale : CGFloat = CGFloat(newTime / duration)
         controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false, duration: duration)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
+        timeSpent += 1
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {
@@ -716,7 +720,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
-            self.player?.play()
+            self.changePlayerPlayingStatus(shouldPlay: true)
         }
     }
     
@@ -790,7 +794,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
 //        }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
-            playerViewModel?.sendMediaEndAnalyticsEvent()
+            playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
         }
         resetPlayer()
         delegate?.removePlayerController()
@@ -1003,7 +1007,7 @@ extension CustomPlayerView {
         }
         timerToHideControls = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
             self?.hideControlsView()
-            timer.invalidate()
+            self?.timerToHideControls.invalidate()
             self?.timerToHideControls = nil
         })
     }

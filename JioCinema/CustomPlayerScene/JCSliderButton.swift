@@ -31,7 +31,6 @@ class JCSliderButton: UIButton
         if let touch = touches.first {
             
             if self.isFocused {
-                print("touchesMoved")
                 let startingPoint: CGFloat = 960
                 let maxDisplacement: CGFloat = 1920
                 var displacement : CGFloat = 0.0
@@ -42,7 +41,6 @@ class JCSliderButton: UIButton
         }
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touchesEnded")
         delegate?.sliderTouchEnded()
     }
     
@@ -55,19 +53,7 @@ class JCSliderButton: UIButton
             switch press.type{
             case .select:
                 delegate?.pressesBeganCalled()
-            case .downArrow:
-                print("downArrow")
-            case .leftArrow:
-                print("leftArrow")
-            case .menu:
-                print("menu")
-            case .playPause:
-                print("playPause")
-            case .upArrow:
-                print("upArrow")
-            case .rightArrow:
-                print("rightArrow")
-            @unknown default:
+            default:
                 print("default")
             }
         }

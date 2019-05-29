@@ -41,6 +41,7 @@ class PlayerViewModel: NSObject {
     fileprivate var totalBufferDurationTime = 0.0
     fileprivate var bufferCount = 0
     var playListId: String = ""
+    var videoViewedTimer: Timer?
     
     var isItValideTimeToShowSkipButton: Bool = false
     
@@ -761,12 +762,12 @@ extension PlayerViewModel {
         }
     }
     
-    func sendMediaEndAnalyticsEvent() {
+    func sendMediaEndAnalyticsEvent(timeSpent: Int) {
 //        vendor = self.playbackRightsModel?.vendor
         if let currentTime = playerItem?.currentTime(), (currentTime.timescale != 0) {
             let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
-            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
-            timeSpent = timeSpent > 0 ? timeSpent : 0
+//            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
+//            timeSpent = timeSpent > 0 ? timeSpent : 0
             
             let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: itemId, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: Int(timeSpent), videoStartPlayingTime: -videoStartingTimeDuration, bufferDuration: Int(totalBufferDurationTime), bufferCount: Int(bufferCount), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory, director: director, starcast: starCast, contentp: vendor, audioChanged: isAudioChanged )
             
@@ -791,6 +792,33 @@ extension PlayerViewModel {
         videoViewingLapsedTime = 0
         totalBufferDurationTime = 0
         bufferCount = 0
+    }
+}
+extension PlayerViewModel {
+    func startTimerToCalculateTimeSpent() {
+        if  videoViewedTimer != nil {
+            videoViewedTimer?.invalidate()
+            videoViewedTimer = nil
+        }
+        videoViewedTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: {[weak self] (timer) in
+            self?.videoViewedTimer?.invalidate()
+            self?.videoViewedTimer = nil
+        })
+    }
+    
+//    func resetTimertToHideControls() {
+////        if controlsView != nil || controlsView?.isHidden == false{
+//            invalidateTimerForControl()
+////            self.controlsView?.isHidden = false
+////            self.moreLikeView?.isHidden = false
+//            self.startTimerToHideControls()
+//        }
+//    }
+//
+    func invalidateTimerForControl() {
+        if self.videoViewedTimer != nil {
+            self.videoViewedTimer?.invalidate()
+        }
     }
 }
 
