@@ -1005,11 +1005,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let url = URL(string: imageUrl)
-        DispatchQueue.main.async {
-            
-            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+//        DispatchQueue.main.async {
+//
+            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.highPriority, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
-        }
+//        }
         //self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
         self.setNeedsFocusUpdate()

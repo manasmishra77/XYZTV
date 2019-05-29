@@ -863,7 +863,7 @@
             
             let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner) ?? ""
             let url = URL(string: imageUrl)
-            self.nextVideoThumbnail.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+            self.nextVideoThumbnail.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.highPriority, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
         }

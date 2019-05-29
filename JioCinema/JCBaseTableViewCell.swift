@@ -117,7 +117,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             }
             
             let url = URL(string: imageBaseURL + imageUrl)
-            resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+            resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.highPriority, completed: {
                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             });
         }
@@ -149,7 +149,7 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func setImageOnThumbnail(urlString: String, on cell: JCItemCell) {
         let url = URL(string: imageBaseURL + urlString)
-        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
+        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.highPriority, completed: {
             (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
         });
     }
