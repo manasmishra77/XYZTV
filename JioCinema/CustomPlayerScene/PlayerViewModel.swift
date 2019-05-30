@@ -203,6 +203,7 @@ class PlayerViewModel: NSObject {
     
     func callWebServiceForPlaybackRights(id: String) {
         delegate?.updateIndicatorState(toStart: true)
+        print("indicator stared on play back right call")
         var contentId = id
         if let latestEpisodeId = self.latestEpisodeId {
             contentId = latestEpisodeId

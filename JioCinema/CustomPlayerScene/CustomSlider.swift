@@ -29,8 +29,9 @@ class CustomSlider: UIView {
     weak var sliderDelegate: CustomSliderProtocol?
     
     var itemDuration: Double?
-    var durationString: String = ""
     var isPaused = false
+    
+//    var seekBarCalculationTask: DispatchWorkItem?
     
 //    let kTimeFormatInMinutes = DateFormatter()
 //    let hourFormat = DateFormatter()
@@ -86,6 +87,17 @@ extension CustomSlider: SliderDelegate {
     }
     
     func updateProgressBar(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?) {
+//        seekBarCalculationTask?.cancel()
+//        seekBarCalculationTask = DispatchWorkItem {
+//            self.changeSliderAfterCalculation(scale: scale, dueToScrubing: dueToScrubing, duration: duration)
+//        }
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.00001, execute: seekBarCalculationTask!)
+//    }
+//
+//
+//    func changeSliderAfterCalculation(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?){
+//
+//        print("inside change slider")
         let maxLeading : CGFloat = PlayerSliderConstants.widthOfProgressBar// - widthOfSlider
         if duration != nil{
             self.itemDuration = duration
@@ -108,7 +120,7 @@ extension CustomSlider: SliderDelegate {
             else if newSliderValue > maxLeading {
                 sliderLeadingForSeeking.constant = CGFloat(maxLeading)
                 seekTime.text = Utility.getTimeInFormatedStringFromSeconds(seconds: Int(itemDuration ?? 0))
-//                print(Utility.getTimeInFormatFromSeconds(seconds: Int(itemDuration)))
+                //                print(Utility.getTimeInFormatFromSeconds(seconds: Int(itemDuration)))
             }
         } else {
             progressBar.progress = Float(scale)
@@ -116,6 +128,9 @@ extension CustomSlider: SliderDelegate {
         }
         progressBar.setProgress(progressBar.progress, animated: true)
     }
+    
+    
+    
     func touchBeganCalledSetSliderValue() {
         slidersValueWhentouchBeganCalled = sliderLeadingForSeeking.constant
         progressWhentouchBeganCalled = CGFloat(progressBar.progress)

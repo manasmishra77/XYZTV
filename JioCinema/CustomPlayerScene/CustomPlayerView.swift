@@ -117,6 +117,7 @@ class CustomPlayerView: UIView {
         self.playerItem = item
         isPlayList = item.isPlaylist ?? false
         self.updateIndicatorState(toStart: true)
+        print("indicator started on initialise view model")
         playerViewModel?.preparePlayer()
     }
     
@@ -124,6 +125,7 @@ class CustomPlayerView: UIView {
         if controlsView == nil {
         controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
         controlsView?.configurePlayersControlView()
+            controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         controlsView?.playerButtonsView?.buttonDelegate = self
         controlsView?.delegate = self
         controlsView?.frame = controlHolderView.bounds
@@ -515,8 +517,9 @@ extension CustomPlayerView: ButtonPressedDelegate {
             if currentTime + 10 < duration {
                 player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime + 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
                     DispatchQueue.main.async {
-                        self.updateIndicatorState(toStart: false)
+                        print("hide indicator on play next")
                         self.changePlayerPlayingStatus(shouldPlay: true)
+                        self.updateIndicatorState(toStart: false)
                     }
                 })
             }
@@ -524,8 +527,9 @@ extension CustomPlayerView: ButtonPressedDelegate {
             if currentTime - 10 > 0 {
                 player?.seek(to: CMTimeMakeWithSeconds(Float64(currentTime - 10), preferredTimescale: 1), completionHandler: { (isSuccess) in
                     DispatchQueue.main.async {
-                        self.updateIndicatorState(toStart: false)
+                        print("hide indicator on play previous")
                         self.changePlayerPlayingStatus(shouldPlay: true)
+                        self.updateIndicatorState(toStart: false)
                     }
                 })
             }
@@ -541,6 +545,7 @@ extension CustomPlayerView: PlayerControlsDelegate {
             self.player?.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1), completionHandler: { (isSuccess) in
                 DispatchQueue.main.async {
                     self.updateIndicatorState(toStart: false)
+                    print("hide Indicator on skip Intro")
                 }
             })
         }
@@ -576,6 +581,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
             enterParentalPinView?.removeFromSuperview()
             enterParentalPinView = nil
             self.updateIndicatorState(toStart: true)
+            print("INdicator started pin verification")
 //            addSubviewOnPlayer()
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
@@ -631,6 +637,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addResumeWatchView() {
         self.updateIndicatorState(toStart: false)
+        print("hide indicator on add to resume watch")
         self.popUpHolderView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
@@ -672,6 +679,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         if ParentalPinManager.shared.checkParentalPin(ageGroup) {
             DispatchQueue.main.async {
                 self.updateIndicatorState(toStart: false)
+                print("Hide indicator on check parental for playbackright")
                 self.enterParentalPinView = Utility.getXib(EnterParentalPinViewIdentifier, type: EnterParentalPinView.self, owner: self)
                 self.enterParentalPinView?.frame = self.bounds
                 self.enterPinViewModel = EnterPinViewModel(contentName: playbackRightModel.contentName ?? "", delegate: self)
@@ -691,6 +699,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     func addAvPlayerToController() {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
+            print("hide on add player to controller")
             if self.player?.currentItem != nil {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
                 //                self.player?.replaceCurrentItem(with: playerItem)
@@ -729,6 +738,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         addObserver(self, forKeyPath: #keyPath(player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.currentItem.status), options: [.new, .initial], context: &playerViewControllerKVOContext)
+        addObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferFull), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &playerViewControllerKVOContext)
     }
@@ -750,6 +760,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.rate), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.status), context: &playerViewControllerKVOContext)
+        removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferFull), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
         playerTimeObserverToken = nil
@@ -759,6 +770,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         self.updateIndicatorState(toStart: false)
+        print("HideOn playerdidFInish")
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),isPlayList {
             
             if let currentPlayingIndex = currentPlayingIndex
@@ -844,7 +856,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
         else if keyPath == #keyPath(player.rate) {
             let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
-            
             if newRate == 0
             {
                 //vinit_commented swipeDownRecommendationView()
@@ -855,13 +866,14 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             print("KeyPathBufferFull")
             self.updateIndicatorState(toStart: false)
             print("indicator stoped on isPlaybackBufferFull")
-            
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
             self.updateIndicatorState(toStart: true)
-            print("indicator started on isPlaybackBufferempty")
-            
+//            if player?.rate == 1 {
+//                self.updateIndicatorState(toStart: false)
+//            }
+            print("indicator started on isPlaybackBufferempty\(player?.rate)")
             playerViewModel?.startTime_BufferDuration = Date()
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
@@ -869,14 +881,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.updateIndicatorState(toStart: false)
             print("indicator stoped on isPlaybackLikelyToKeepUp")
             playerViewModel?.updatePlayerBufferCount()
-            
         }
         else if keyPath == #keyPath(player.currentItem.status) {
             let newStatus: AVPlayerItem.Status
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
                 newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) ?? .unknown
-            }
-            else {
+            } else {
                 newStatus = .unknown
             }
             switch newStatus {
@@ -892,7 +902,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if indicator != nil {
                     updateIndicatorState(toStart: false)
                     print("indicator stop on failed")
-                    
                 }
                 
                 Log.DLog(message: "Failed" as AnyObject)
@@ -970,11 +979,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
-        
-        
-        
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
+            print("hide indicator on playbackright Data error")
             self.alertMsg.isHidden = false
             self.alertMsg.text = "Some problem occured!!, please login again!!"
             
