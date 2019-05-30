@@ -125,13 +125,17 @@ class CustomPlayerView: UIView {
         if controlsView == nil {
         controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
         controlsView?.configurePlayersControlView()
-            controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        let colorLayer = CAGradientLayer()
+        colorLayer.frame = controlHolderView.bounds
+        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.cgColor]
+//        controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         controlsView?.playerButtonsView?.buttonDelegate = self
         controlsView?.delegate = self
         controlsView?.frame = controlHolderView.bounds
         guard let controlsView = controlsView else {
             return
         }
+        controlsView.layer.addSublayer(colorLayer)
         self.controlHolderView.addSubview(controlsView)
         }
         setValuesForSubviewsOnPlayer()
@@ -995,16 +999,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         
         //vinit_comment handle player error
     }
-    
-    
-    
+
     func dismissPlayerOnAesFailure() {
         delegate?.removePlayerAfterAesFailure()
     }
 }
-
-
-
 
 extension CustomPlayerView {
     func startTimerToHideControls() {
