@@ -118,7 +118,6 @@
 		7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8D1F419CD40014255C /* JCMetadataModel.swift */; };
 		7BD39C901F419CE30014255C /* MetadataHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */; };
 		7BD39C921F419CE90014255C /* kMetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */; };
-		7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD39C951F419E110014255C /* JCMetadataButton.swift */; };
 		7BD39C991F419F470014255C /* AddtoWatchlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C971F419F470014255C /* AddtoWatchlist.png */; };
 		7BD39C9A1F419F470014255C /* WatchNow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BD39C981F419F470014255C /* WatchNow.png */; };
 		7BE0EA551F30993B00151D23 /* JCPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */; };
@@ -315,7 +314,6 @@
 		7BD39C8F1F419CE30014255C /* MetadataHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataHeaderView.swift; sourceTree = "<group>"; };
 		7BD39C911F419CE90014255C /* kMetadataHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = kMetadataHeaderView.xib; sourceTree = "<group>"; };
 		7BD39C941F419D150014255C /* JioCinema-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JioCinema-Bridging-Header.h"; sourceTree = "<group>"; };
-		7BD39C951F419E110014255C /* JCMetadataButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCMetadataButton.swift; sourceTree = "<group>"; };
 		7BD39C971F419F470014255C /* AddtoWatchlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddtoWatchlist.png; sourceTree = "<group>"; };
 		7BD39C981F419F470014255C /* WatchNow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WatchNow.png; sourceTree = "<group>"; };
 		7BE0EA541F30993B00151D23 /* JCPlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCPlayerVC.swift; sourceTree = "<group>"; };
@@ -674,7 +672,6 @@
 				B65FF5881F6A53C0004EBE6A /* JCKeyboardButton.swift */,
 				7BFEC4C61F1782DC001DFE6D /* JCPasswordField.swift */,
 				7BFEC4C41F177EAA001DFE6D /* JCTextField.swift */,
-				7BD39C951F419E110014255C /* JCMetadataButton.swift */,
 				53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */,
 				9966543021D380C00026CC8D /* ViewForCarousel.swift */,
 				9966543721D382FE0026CC8D /* ViewForCarousel.xib */,
@@ -1050,7 +1047,6 @@
 				B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */,
 				7B78D7C21F13A91900F319BF /* AppDelegate.swift in Sources */,
 				7BFEC4BA1F15C01A001DFE6D /* JCLoginVC.swift in Sources */,
-				7BD39C961F419E110014255C /* JCMetadataButton.swift in Sources */,
 				7BB0E2011F1DECE600A1DB0B /* JCBaseVC.swift in Sources */,
 				7B7D0E7D1F5BF630004BF3F1 /* JCLanguageGenreSelectionVC.swift in Sources */,
 				539618ED2121A05200B576BF /* SetParentalViewModel.swift in Sources */,

@@ -82,7 +82,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="AOj-zk-68Z"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI" customClass="JCButton" customModule="JioCinema" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdL-co-JZI" customClass="CustomButton" customModule="JioCinema" customModuleProvider="target">
                                             <rect key="frame" x="120" y="150" width="400" height="86"/>
                                             <color key="backgroundColor" red="0.4361188412" green="0.43612974879999999" blue="0.4361238778" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>

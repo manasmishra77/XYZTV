@@ -207,9 +207,10 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         
         cell.isOpaque = true
         cell.backgroundColor = .clear
-        if isDisney {
-            cell.artistNameInitialButton.backgroundColor = ViewColor.disneyButtonColor
-        }
+//        if isDisney {
+//            cell.artistNameInitialButton.backgroundColor = ViewColor.disneyButtonColor
+//        }
+        cell.artistNameInitialButton.backgroundColor = ThemeManager.shared.selectionColor
         return cell
         
     }
