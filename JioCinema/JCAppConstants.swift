@@ -43,6 +43,9 @@ let zlaUserDataUrl = "http://api.ril.com/v2/users/me"
 let getOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/send"
 let verifyOTPUrl = "https://api.jio.com/jsclient/v3/dip/user/otp/verify"
 
+//Player Thumbnail Url
+let thumbnailBaseUrl = "http://jioimages.cdn.jio.com/content/entry/"
+
 //https://qa.media.jio.com/mdp_qa/apis/06758e99be484fca56fb/v3/home/getget/1/0
 
 //HomeDataUrls

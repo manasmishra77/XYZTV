@@ -42,6 +42,7 @@ class PlayerViewModel: NSObject {
     fileprivate var bufferCount = 0
     var playListId: String = ""
     var videoViewedTimer: Timer?
+    var thumbImageArray : [String] = []
     
     var isItValideTimeToShowSkipButton: Bool = false
     
@@ -232,11 +233,32 @@ class PlayerViewModel: NSObject {
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
                 self.isFpsUrl = true
             }
+            if self.playbackRightsModel?.thumb != nil && self.playbackRightsModel?.thumb != "" {
+            
+            }
             self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
         }
         
     }
-    func observeValueToHideUnhideSkipIntro(newTime : Double){
+    
+    func callWebServiceForThumbnails(thumbUrl: String) {
+        let url = thumbnailBaseUrl + thumbUrl
+        RJILApiManager.getReponse(path: url, postType: .GET, reponseModelType: CharacterItemSuperModel.self) {[weak self](response) in
+            guard let self = self else {
+                return
+            }
+            guard response.isSuccess else {
+                return
+            }
+            let tempData = response.model
+//            self.charHeroData = tempData
+            DispatchQueue.main.async {
+//                self.delegate?.tableReloadWhenDataFetched()
+            }
+        }
+    }
+    
+    func observeValueToHideUnhideSkipIntro(newTime : Double) {
         
         guard let endTime = convertStringToSeconds(strTime: playbackRightsModel?.introCreditEnd ?? playbackRightsModel?.recapCreditEnd ?? "") else {
             return

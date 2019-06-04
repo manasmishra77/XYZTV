@@ -265,6 +265,9 @@ class CustomPlayerView: UIView {
         controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false, duration: duration)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
         timeSpent += 1
+        if player?.rate == 0 && indicator != nil {
+            updateIndicatorState(toStart: false)
+        }
     }
     
     @IBAction func okButtonPressedForSavingMenuSetting(_ sender: Any) {

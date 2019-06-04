@@ -26,6 +26,7 @@ class CustomSlider: UIView {
     @IBOutlet weak var seekTime: UILabel!
     @IBOutlet weak var heightOfProgressBar: NSLayoutConstraint!
     
+    @IBOutlet weak var imageCentertoCursor: NSLayoutConstraint!
     weak var sliderDelegate: CustomSliderProtocol?
     
     var itemDuration: Double?
@@ -111,14 +112,27 @@ extension CustomSlider: SliderDelegate {
                 let scaleToCalculateseconds : Double = Double(sliderLeadingForSeeking.constant / maxLeading)
                 let seconds = scaleToCalculateseconds * (itemDuration ?? 0)
                 seekTime.text = Utility.getTimeInFormatedStringFromSeconds(seconds: Int(seconds))
-                
+                if sliderLeadingForSeeking.constant > 141 {
+                    imageCentertoCursor.constant = 0
+                    if sliderLeadingForSeeking.constant > (maxLeading - 141){
+                        print(maxLeading - sliderLeadingForSeeking.constant)
+                        imageCentertoCursor.constant = -141 + (maxLeading - sliderLeadingForSeeking.constant)
+                        print("Slider \(sliderLeadingForSeeking.constant)")
+                    }
+                } else if sliderLeadingForSeeking.constant > (maxLeading - 141){
+                    imageCentertoCursor.constant = maxLeading - 141
+                }else {
+                    imageCentertoCursor.constant = 141 - sliderLeadingForSeeking.constant
+                }
             }
             else if newSliderValue < 0 {
                 sliderLeadingForSeeking.constant = 0
                 seekTime.text = "00:00"
+                imageCentertoCursor.constant = 141
             }
             else if newSliderValue > maxLeading {
                 sliderLeadingForSeeking.constant = CGFloat(maxLeading)
+                imageCentertoCursor.constant = -141
                 seekTime.text = Utility.getTimeInFormatedStringFromSeconds(seconds: Int(itemDuration ?? 0))
                 //                print(Utility.getTimeInFormatFromSeconds(seconds: Int(itemDuration)))
             }
