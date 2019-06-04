@@ -38,7 +38,7 @@ class CustomPlayerView: UIView {
     var indicator: SpiralSpinner?
     fileprivate var currentPlayingIndex: Int!
     var stateOfPlayerBeforeButtonClickWasPaused = false
-    
+    var stateOfPlayerBeforeGoingInBackgroundWasPaused = false
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
     var resumeWatchView: ResumeWatchView?

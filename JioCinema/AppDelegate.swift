@@ -37,11 +37,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        if let playerVc = UIApplication.topViewController() as? PlayerViewController{
+            if playerVc.viewforplayer?.player?.rate == 1 {
+                playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused = true
+            }
+        }
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        if let playerVc = UIApplication.topViewController() as? PlayerViewController{
+            if !(playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused ?? true) {
+                playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
+            }
+        }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
@@ -60,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Sending media_end analytics event when media_ends & app_killed
         JCAnalyticsEvent.sharedInstance.sendAppKilledEvent()
-        if let playerVc = UIApplication.shared.keyWindow?.rootViewController as? PlayerViewController{
+        if let playerVc = UIApplication.topViewController() as? PlayerViewController{
             playerVc.viewWillDisappear(true)
         }
     }
