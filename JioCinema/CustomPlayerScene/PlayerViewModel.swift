@@ -19,6 +19,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func updateIndicatorState(toStart: Bool)
     func dismissPlayerOnAesFailure()
     func checkTimeToShowSkipButton(isValidTime: Bool, starttime: Double, endTime: Double)
+    func setThumbnailsValue()
 }
 
 enum BitRatesType: String {
@@ -42,7 +43,7 @@ class PlayerViewModel: NSObject {
     fileprivate var bufferCount = 0
     var playListId: String = ""
     var videoViewedTimer: Timer?
-    var thumbImageArray : [String] = []
+    var thumbImageArray : [ThumbnailsModel]?
     
     var isItValideTimeToShowSkipButton: Bool = false
     
@@ -234,7 +235,7 @@ class PlayerViewModel: NSObject {
                 self.isFpsUrl = true
             }
             if self.playbackRightsModel?.thumb != nil && self.playbackRightsModel?.thumb != "" {
-            
+                self.callWebServiceForThumbnails(thumbUrl: self.playbackRightsModel?.thumb ?? "")
             }
             self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
         }
@@ -243,17 +244,17 @@ class PlayerViewModel: NSObject {
     
     func callWebServiceForThumbnails(thumbUrl: String) {
         let url = thumbnailBaseUrl + thumbUrl
-        RJILApiManager.getReponse(path: url, postType: .GET, reponseModelType: CharacterItemSuperModel.self) {[weak self](response) in
-            guard let self = self else {
+        RJILApiManager.getReponse(path: url, headerType: .none, postType: .GET, reponseModelType: [ThumbnailsModel].self) {[weak self](response) in
+            guard self != nil else {
                 return
             }
             guard response.isSuccess else {
                 return
             }
-            let tempData = response.model
-//            self.charHeroData = tempData
+            let tempdata = response.model
+            self?.thumbImageArray = tempdata
             DispatchQueue.main.async {
-//                self.delegate?.tableReloadWhenDataFetched()
+                self?.delegate?.setThumbnailsValue()
             }
         }
     }

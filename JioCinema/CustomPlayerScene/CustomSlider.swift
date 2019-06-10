@@ -7,6 +7,7 @@
 //
 import UIKit
 import Foundation
+import SDWebImage
 
 protocol CustomSliderProtocol: NSObjectProtocol {
     func seekPlayerTo(pointX: CGFloat)
@@ -17,6 +18,7 @@ protocol CustomSliderProtocol: NSObjectProtocol {
 class CustomSlider: UIView {
     @IBOutlet weak var sliderLeading: NSLayoutConstraint!
     @IBOutlet weak var sliderLeadingForSeeking: NSLayoutConstraint!
+    @IBOutlet weak var heightOfThumbnails: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var backgroundFocusableButton: JCSliderButton!
     @IBOutlet weak var endingTime: UILabel!
@@ -26,12 +28,14 @@ class CustomSlider: UIView {
     @IBOutlet weak var seekTime: UILabel!
     @IBOutlet weak var heightOfProgressBar: NSLayoutConstraint!
     
+    @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var imageCentertoCursor: NSLayoutConstraint!
     weak var sliderDelegate: CustomSliderProtocol?
     
     var itemDuration: Double?
     var isPaused = false
     
+    var thumbnailsArray : [ThumbnailsModel]?
 //    var seekBarCalculationTask: DispatchWorkItem?
     
 //    let kTimeFormatInMinutes = DateFormatter()
@@ -111,6 +115,17 @@ extension CustomSlider: SliderDelegate {
                 sliderLeadingForSeeking.constant = (slidersValueWhentouchBeganCalled + CGFloat(scale * maxLeading))
                 let scaleToCalculateseconds : Double = Double(sliderLeadingForSeeking.constant / maxLeading)
                 let seconds = scaleToCalculateseconds * (itemDuration ?? 0)
+                if let arrayOfThumbnails = thumbnailsArray {
+                    for index in 0...arrayOfThumbnails.count - 1{
+                        if Int(seconds) >= arrayOfThumbnails[index].sortTime ?? 0  && index != arrayOfThumbnails.count - 1 &&  Int(seconds) < arrayOfThumbnails[index + 1].sortTime ?? 0{
+                            let imageUrl = URL(string: arrayOfThumbnails[index].name ?? "")
+                            thumbnailImageView?.sd_setImage(with: imageUrl, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: .highPriority, completed: {
+                                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+                            });
+                        }
+                    }
+                }
+                
                 seekTime.text = Utility.getTimeInFormatedStringFromSeconds(seconds: Int(seconds))
                 if sliderLeadingForSeeking.constant > 141 {
                     imageCentertoCursor.constant = 0
@@ -155,6 +170,7 @@ extension CustomSlider: SliderDelegate {
         endingTime.isHidden = !requrestToHide
         sliderCursorForSeeking.isHidden = requrestToHide
         seekTime.isHidden = requrestToHide
+        thumbnailImageView.isHidden = requrestToHide
     }
     
 }

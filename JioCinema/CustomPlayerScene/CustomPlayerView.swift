@@ -127,7 +127,7 @@ class CustomPlayerView: UIView {
         controlsView?.configurePlayersControlView()
         let colorLayer = CAGradientLayer()
         colorLayer.frame = controlHolderView.bounds
-        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.cgColor]
+//        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.cgColor]
 //        controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         controlsView?.playerButtonsView?.buttonDelegate = self
         controlsView?.delegate = self
@@ -135,7 +135,8 @@ class CustomPlayerView: UIView {
         guard let controlsView = controlsView else {
             return
         }
-        controlsView.layer.addSublayer(colorLayer)
+//        controlsView.layer.addSublayer(colorLayer)
+//        self.controlsView?.layer.insertSublayer(colorLayer, at:0)
         self.controlHolderView.addSubview(controlsView)
         }
         setValuesForSubviewsOnPlayer()
@@ -158,15 +159,23 @@ class CustomPlayerView: UIView {
         }
         self.controlsView?.sliderView?.progressBar.tintColor = ThemeManager.shared.selectionColor
     }
-    
+    func setThumbnailsValue() {
+        guard let thumbnails = playerViewModel?.thumbImageArray else {
+            return
+        }
+        self.controlsView?.sliderView?.thumbnailsArray = thumbnails
+    }
     func addMoreLikeView() {
         if moreLikeView == nil {
             moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
+            guard let moreLikeView = moreLikeView else{
+                return
+            }
             heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
-            moreLikeView?.frame = moreLikeHolderView.bounds
-            self.moreLikeHolderView.addSubview(moreLikeView!)
+            moreLikeView.frame = moreLikeHolderView.bounds
+            self.moreLikeHolderView.addSubview(moreLikeView)
         }
         setValuesForMoreLikeData()
     }
@@ -219,12 +228,14 @@ class CustomPlayerView: UIView {
         }
         
         if context.nextFocusedView is ItemCollectionViewCell {
+            controlsView?.isHidden = true
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 0.7) {
                 self.layoutIfNeeded()
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
+            controlsView?.isHidden = false
             self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
             UIView.animate(withDuration: 0.72) {
                 self.layoutIfNeeded()
