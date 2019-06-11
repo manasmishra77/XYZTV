@@ -129,6 +129,7 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="heightConstraintForProgressBar" destination="OvZ-Jn-zMO" id="sQL-Ks-atO"/>
+                <outlet property="imageProgressContainerBottomSpace" destination="POj-b4-bWL" id="vVg-T0-JQV"/>
                 <outlet property="imageView" destination="nFy-3D-dND" id="C5f-hB-O9K"/>
                 <outlet property="imageViewCoverview" destination="38K-UH-vNN" id="boL-Mg-OZg"/>
                 <outlet property="nameLabel" destination="rYV-oP-nC5" id="45P-8A-7jQ"/>

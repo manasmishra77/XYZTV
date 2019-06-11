@@ -31,13 +31,13 @@
                     </state>
                 </button>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0UN-6X-uMd">
-                    <rect key="frame" x="100" y="547" width="1171" height="10"/>
+                    <rect key="frame" x="100" y="582" width="1171" height="10"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="LOa-cj-p5U"/>
                     </constraints>
                 </progressView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXF-Lz-sjx">
-                    <rect key="frame" x="85" y="537" width="30" height="30"/>
+                    <rect key="frame" x="85" y="572" width="30" height="30"/>
                     <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="NLu-lg-MQe"/>
@@ -51,26 +51,26 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g2Q-bR-Jju">
-                    <rect key="frame" x="241" y="371" width="0.0" height="0.0"/>
+                    <rect key="frame" x="241" y="404" width="0.0" height="0.0"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRd-uX-ir3">
-                    <rect key="frame" x="100" y="507" width="820" height="0.0"/>
+                    <rect key="frame" x="100" y="542" width="820" height="0.0"/>
                     <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="64"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sc-yp-zug">
-                    <rect key="frame" x="1271" y="507" width="0.0" height="0.0"/>
+                    <rect key="frame" x="1271" y="542" width="0.0" height="0.0"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mjB-fU-AJo">
-                    <rect key="frame" x="85" y="537" width="30" height="30"/>
+                    <rect key="frame" x="85" y="572" width="30" height="30"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="B11-IL-bS5"/>
@@ -83,11 +83,11 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ood-QR-1cU">
-                    <rect key="frame" x="100" y="376" width="282" height="151"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.17254901959999999" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ItemPlaceHolder" translatesAutoresizingMaskIntoConstraints="NO" id="ood-QR-1cU">
+                    <rect key="frame" x="100" y="409" width="282" height="153"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="151" id="CHB-TA-D8N"/>
+                        <constraint firstAttribute="height" constant="153" id="CHB-TA-D8N"/>
                         <constraint firstAttribute="width" constant="282" id="HE9-cx-0RJ"/>
                     </constraints>
                 </imageView>
@@ -97,7 +97,7 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="JXF-Lz-sjx" firstAttribute="centerX" secondItem="0UN-6X-uMd" secondAttribute="leading" id="0J2-bf-568"/>
-                <constraint firstAttribute="bottom" secondItem="0UN-6X-uMd" secondAttribute="bottom" constant="50" id="0je-Lu-tHX"/>
+                <constraint firstAttribute="bottom" secondItem="0UN-6X-uMd" secondAttribute="bottom" constant="15" id="0je-Lu-tHX"/>
                 <constraint firstItem="g2Q-bR-Jju" firstAttribute="centerX" secondItem="ood-QR-1cU" secondAttribute="centerX" id="8lV-fV-xv3"/>
                 <constraint firstItem="0UN-6X-uMd" firstAttribute="top" secondItem="HRd-uX-ir3" secondAttribute="bottom" constant="40" id="A3y-lN-ic9"/>
                 <constraint firstItem="JXF-Lz-sjx" firstAttribute="centerY" secondItem="0UN-6X-uMd" secondAttribute="centerY" id="CtC-tm-mSl"/>
@@ -123,6 +123,7 @@
                 <outlet property="backgroundFocusableButton" destination="Kic-Lq-1By" id="rzB-7w-2LB"/>
                 <outlet property="endingTime" destination="3Sc-yp-zug" id="CsC-HL-aMo"/>
                 <outlet property="heightOfProgressBar" destination="LOa-cj-p5U" id="Yb3-4j-idR"/>
+                <outlet property="heightOfThumbnails" destination="CHB-TA-D8N" id="1Cf-Fd-efa"/>
                 <outlet property="imageCentertoCursor" destination="aF0-Fg-7qi" id="BJv-nw-I3g"/>
                 <outlet property="progressBar" destination="0UN-6X-uMd" id="mUg-pw-Mid"/>
                 <outlet property="seekTime" destination="g2Q-bR-Jju" id="osB-BS-zJU"/>
@@ -130,9 +131,13 @@
                 <outlet property="sliderCursorForSeeking" destination="JXF-Lz-sjx" id="b2P-Nd-oyf"/>
                 <outlet property="sliderLeading" destination="huE-Lx-BzK" id="83m-Oh-nJY"/>
                 <outlet property="sliderLeadingForSeeking" destination="0J2-bf-568" id="RDa-12-UO8"/>
+                <outlet property="thumbnailImageView" destination="ood-QR-1cU" id="7q2-iH-Yib"/>
                 <outlet property="title" destination="HRd-uX-ir3" id="yiq-ns-Hne"/>
             </connections>
             <point key="canvasLocation" x="-68.5" y="-316.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="ItemPlaceHolder" width="224" height="126"/>
+    </resources>
 </document>

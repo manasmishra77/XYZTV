@@ -14,6 +14,12 @@ protocol PlayerControlsDelegate: NSObject {
     func cancelTimerForHideControl()
     func resetTimerForHideControl()
     func skipIntroButtonPressed()
+    
+    func playTapped()
+    func subtitlesAndMultiaudioButtonPressed(todisplay: Bool)
+    func settingsButtonPressed(toDisplay: Bool)
+    func nextButtonPressed(toDisplay: Bool)
+    func previousButtonPressed(toDisplay: Bool)
 }
 
 class PlayersControlView: UIView {
@@ -25,17 +31,21 @@ class PlayersControlView: UIView {
     @IBOutlet weak var nextContentSubtitle: UILabel!    
     @IBOutlet weak var skipIntroButton: UIButton!
     
-
+    @IBOutlet weak var controlButtonCollectionView: UICollectionView!
+    
+    var arrayOfPlayerButtonItem : [PlayerButtonItem] = []
+    var ispaused: Bool = false
+    
     var isPaused = false
     
     weak var delegate : PlayerControlsDelegate?
 
     var sliderView : CustomSlider?
-    var playerButtonsView: PlayerButtonsView?
+//    var playerButtonsView: PlayerButtonsView?
     
     func configurePlayersControlView() {
         addCustomSlider()
-        addPlayerButtons()
+        configurePlayerButtonsView()
     }
     
     func addCustomSlider() {
@@ -46,12 +56,35 @@ class PlayersControlView: UIView {
         sliderHolderView.addSubview(sliderView!)
     }
     
-    func addPlayerButtons() {
-        playerButtonsView = UINib(nibName: "PlayerButtonsView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayerButtonsView
-        playerButtonsView?.frame = playerButtonsHolderView.bounds
-        playerButtonsView?.configurePlayerButtonsView()
-        playerButtonsHolderView.addSubview(playerButtonsView!)
+
+    
+    func configurePlayerButtonsView() {
+    controlButtonCollectionView.delegate = self
+    controlButtonCollectionView.dataSource = self
+    controlButtonCollectionView.register(UINib(nibName: "ButtonCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ButtonCollectionViewCell")
+    appendArray()
     }
+    
+    func appendArray() {
+        for tag in 0...4{
+            let item = PlayerButtonItem(tag: tag)
+            arrayOfPlayerButtonItem.append(item)
+        }
+    }
+    func changePlayPauseButtonIcon(shouldPause: Bool) {
+        let indexPath = IndexPath(row: 2, section: 0)
+        guard let cell = controlButtonCollectionView.cellForItem(at: indexPath) as? ButtonCollectionViewCell else {return}
+        if !shouldPause {
+            cell.playerButton.setAttributedTitle(NSAttributedString(string: "p"), for: .normal)
+            //            cell.playerButton.setImage(UIImage(named: "Pause"), for: .normal)
+            cell.buttonTitle.text = "Pause"
+        } else {
+            cell.playerButton.setAttributedTitle(NSAttributedString(string: "P"), for: .normal)
+            //            cell.playerButton.setImage(UIImage(named: "play"), for: .normal)
+            cell.buttonTitle.text = "Play"
+        }
+    }
+    
     @IBAction func skipIntroPressed(_ sender: Any) {
         delegate?.skipIntroButtonPressed()
     }
@@ -121,6 +154,7 @@ class PlayersControlView: UIView {
         }
         
     }
+
 }
 
 extension PlayersControlView: CustomSliderProtocol {
@@ -136,4 +170,90 @@ extension PlayersControlView: CustomSliderProtocol {
         delegate?.cancelTimerForHideControl()
     }
 
+}
+
+
+extension PlayersControlView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayOfPlayerButtonItem.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ButtonCollectionViewCell", for: indexPath) as! ButtonCollectionViewCell
+        cell.configCellView(item: arrayOfPlayerButtonItem[indexPath.row])
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let inset =  UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return inset
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            delegate?.settingsButtonPressed(toDisplay: true)
+        case 1:
+            delegate?.previousButtonPressed(toDisplay: true)
+        case 2:
+            delegate?.playTapped()
+        case 3:
+            delegate?.nextButtonPressed(toDisplay: true)
+        case 4:
+         delegate?.subtitlesAndMultiaudioButtonPressed(todisplay: true)
+        default:
+            print("default")
+        }
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1 {
+            return CGSize(width: 224, height: self.controlButtonCollectionView.frame.height)
+        } else {
+            return CGSize(width: 100, height: self.controlButtonCollectionView.frame.height)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
+        return true
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+}
+
+struct PlayerButtonItem {
+    var selectedImage: String!
+    var unselectedImage: String?
+    var titleOfButton: String!
+    var tag: Int
+    init(tag: Int) {
+        self.tag = tag
+        switch tag {
+        case 0:
+            selectedImage = "s"
+            unselectedImage = "S"
+            titleOfButton = "Settings"
+        case 1:
+            selectedImage = "B"
+            unselectedImage = "b"
+            titleOfButton = "Backward"
+        case 2:
+            selectedImage = "p"
+            unselectedImage = "p"
+            titleOfButton = "Pause"
+        case 3:
+            selectedImage = "F"
+            unselectedImage = "f"
+            titleOfButton = "Forward"
+        case 4:
+            selectedImage = "m"
+            unselectedImage = "M"
+            titleOfButton = "Subtitles"
+        default:
+            print("default")
+        }
+    }
+    
 }

@@ -89,13 +89,13 @@ class JCPlayerButton: UIButton {
     {
         if (context.nextFocusedView == self)
         {
-            self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.743552012)
-            self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
+            self.backgroundColor = ThemeManager.shared.selectionColor
+//            self.transform = CGAffineTransform.init(scaleX: 1.2, y: 1.2)
         }
         else
         {
             self.backgroundColor = .clear
-            self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+//            self.transform = CGAffineTransform.init(scaleX: 1.2, y: 1.2)
         }
         
     }

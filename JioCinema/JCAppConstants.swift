@@ -185,7 +185,7 @@ struct ViewColor {
     static let searchBackGround: UIColor = .black
     static let clearBackGround: UIColor = .clear
     static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
-    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
+    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)//#colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
     static let selectionBarOnLeftNavigationColorForDisney: UIColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
 
 }
@@ -313,12 +313,12 @@ struct PlayerRecommendationSize {
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = itemHeightForLandscape//landscapeRowHeight - 40
+        let height = itemHeightForLandscape - 90//landscapeRowHeight - 40
         let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
     static var potraitCellSize: CGSize {
-        let height = itemHeightForPortrait//potraitRowHeight - 40
+        let height = itemHeightForPortrait - 90//potraitRowHeight - 40
         let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
         return CGSize(width: width, height: height)
     }

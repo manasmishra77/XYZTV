@@ -33,6 +33,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
 
+    @IBOutlet weak var imageProgressContainerBottomSpace: NSLayoutConstraint!
     @IBOutlet weak var imageViewCoverview: UIView!
     
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
@@ -164,7 +165,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         }
         switch layoutType {
-        case .potrait, .potraitWithLabelAlwaysShow:
+        case .potrait, .potraitWithLabelAlwaysShow, .potraitWithoutLabels:
             if let imageURL = URL(string: cellItems.item?.imageUrlPortraitContent ?? "") {
                 setImageOnCell(url: imageURL)
             }
@@ -180,6 +181,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureCellLabelVisibility(_ layoutType: ItemCellLayoutType, isFocused: Bool = false) {
+        imageProgressContainerBottomSpace.constant = 90
         switch layoutType {
         case .potrait:
             subtitle.text = ""
@@ -199,9 +201,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
         case .landscapeForResume:
             break
-        case .landscapeForLangGenre:
+        case .landscapeForLangGenre, .disneyCharacter, .potraitWithoutLabels:
             nameLabel.text = ""
             subtitle.text = ""
+            imageProgressContainerBottomSpace.constant = 0
+            layoutIfNeeded()
+            break
         case .landscapeWithLabels:
             if isFocused {
                 nameLabel.text = cellItem?.item?.name ?? ""
@@ -210,11 +215,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 nameLabel.text = ""
                 subtitle.text = ""
             }
+            break
         case .landscapeWithLabelsAlwaysShow:
             break
-        case .disneyCharacter:
-            nameLabel.text = ""
-            subtitle.text = ""
         }
         
     }
@@ -315,13 +318,14 @@ enum ItemCellType {
 }
 
 enum ItemCellLayoutType {
-    case potrait
     case potraitWithLabelAlwaysShow
+    case landscapeWithLabelsAlwaysShow
+    case potrait
+    case potraitWithoutLabels
     case landscapeWithTitleOnly
     case landscapeForResume
     case landscapeForLangGenre
     case landscapeWithLabels
-    case landscapeWithLabelsAlwaysShow
     case disneyCharacter
     
     init(layout : Int) {

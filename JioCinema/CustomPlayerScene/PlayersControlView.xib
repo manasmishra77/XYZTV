@@ -57,21 +57,43 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
-                    <rect key="frame" x="0.0" y="880" width="1801" height="155"/>
+                    <rect key="frame" x="0.0" y="885" width="1801" height="150"/>
+                    <subviews>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="h4B-oA-8qG">
+                            <rect key="frame" x="527" y="0.0" width="748" height="150"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="748" id="CDG-KL-7j7"/>
+                            </constraints>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="TMQ-We-y8B">
+                                <size key="itemSize" width="50" height="50"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                            <connections>
+                                <outlet property="dataSource" destination="iN0-l3-epB" id="UXu-iK-EAx"/>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="xdC-ax-pox"/>
+                            </connections>
+                        </collectionView>
+                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="155" id="7UZ-ug-ZSM"/>
+                        <constraint firstAttribute="height" constant="150" id="7UZ-ug-ZSM"/>
+                        <constraint firstItem="h4B-oA-8qG" firstAttribute="centerX" secondItem="3aa-vQ-cqC" secondAttribute="centerX" id="HGn-tm-E4N"/>
+                        <constraint firstItem="h4B-oA-8qG" firstAttribute="height" secondItem="3aa-vQ-cqC" secondAttribute="height" id="XjR-bT-8xT"/>
+                        <constraint firstItem="h4B-oA-8qG" firstAttribute="centerY" secondItem="3aa-vQ-cqC" secondAttribute="centerY" id="uGV-ea-SeA"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
-                    <rect key="frame" x="0.0" y="510" width="1801" height="350"/>
+                    <rect key="frame" x="0.0" y="515" width="1801" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-sB-FiE">
-                    <rect key="frame" x="1490" y="414" width="291" height="86"/>
+                    <rect key="frame" x="1490" y="419" width="291" height="86"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Skip Intro&gt;&gt;"/>
                     <connections>
@@ -94,6 +116,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="controlButtonCollectionView" destination="h4B-oA-8qG" id="Zlo-l7-28A"/>
                 <outlet property="nextContentImageView" destination="fOq-Z0-SJJ" id="9y7-m8-VWv"/>
                 <outlet property="nextContentSubtitle" destination="a1a-Pr-oJ9" id="pVq-Of-2As"/>
                 <outlet property="nextContentTitle" destination="bsb-jy-MHh" id="nxu-ms-9KP"/>

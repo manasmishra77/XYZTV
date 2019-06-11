@@ -58,6 +58,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>icomoon.ttf</string>
 		<string>JioType-Light.ttf</string>
 		<string>JioType-Medium.ttf</string>
 		<string>JioType-Bold.ttf</string>

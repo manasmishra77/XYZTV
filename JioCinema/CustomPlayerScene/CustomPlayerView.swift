@@ -86,7 +86,7 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-        return (self.playerViewModel?.appType == .Movie) ? -(rowHeightForPotrait - 100) : -(rowHeightForLandscape - 100)
+        return (self.playerViewModel?.appType == .Movie) ? -(itemHeightForPortrait - 70) : -(itemHeightForLandscape - 70)
     }
     var isPlayerPaused: Bool {
         return player?.rate == 0
@@ -129,7 +129,7 @@ class CustomPlayerView: UIView {
         colorLayer.frame = controlHolderView.bounds
 //        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.cgColor]
 //        controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        controlsView?.playerButtonsView?.buttonDelegate = self
+//        controlsView?.playerButtonsView?.buttonDelegate = self
         controlsView?.delegate = self
         controlsView?.frame = controlHolderView.bounds
         guard let controlsView = controlsView else {
@@ -171,11 +171,12 @@ class CustomPlayerView: UIView {
             guard let moreLikeView = moreLikeView else{
                 return
             }
-            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? rowHeightForPotrait : rowHeightForLandscape
-            self.layoutIfNeeded()
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait : itemHeightForLandscape
+            
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             moreLikeView.frame = moreLikeHolderView.bounds
             self.moreLikeHolderView.addSubview(moreLikeView)
+            self.layoutIfNeeded()
         }
         setValuesForMoreLikeData()
     }
@@ -218,6 +219,7 @@ class CustomPlayerView: UIView {
                 
             }
         }
+//        moreLikeView?.moreLikeCollectionView.reloadData()
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -228,16 +230,14 @@ class CustomPlayerView: UIView {
         }
         
         if context.nextFocusedView is ItemCollectionViewCell {
-            controlsView?.isHidden = true
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 0.7) {
                 self.layoutIfNeeded()
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
-            controlsView?.isHidden = false
             self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
-            UIView.animate(withDuration: 0.72) {
+            UIView.animate(withDuration: 0.7) {
                 self.layoutIfNeeded()
             }
         }
@@ -349,10 +349,10 @@ class CustomPlayerView: UIView {
     func changePlayerPlayingStatus(shouldPlay: Bool) {
         if shouldPlay {
             player?.play()
-            controlsView?.playerButtonsView?.changePlayPauseButtonIcon(shouldPause: false)
+            controlsView?.changePlayPauseButtonIcon(shouldPause: false)
         } else {
             player?.pause()
-            controlsView?.playerButtonsView?.changePlayPauseButtonIcon(shouldPause: true)
+            controlsView?.changePlayPauseButtonIcon(shouldPause: true)
         }
     }
     
@@ -409,7 +409,7 @@ class CustomPlayerView: UIView {
     }
     
 }
-extension CustomPlayerView: ButtonPressedDelegate {
+extension CustomPlayerView: PlayerControlsDelegate {
     func playTapped() {
         resetTimertToHideControls()
         if isPlayerPaused {
@@ -553,8 +553,10 @@ extension CustomPlayerView: ButtonPressedDelegate {
             }
         }
     }
-}
-extension CustomPlayerView: PlayerControlsDelegate {
+    
+    
+    
+    
     func skipIntroButtonPressed() {
         guard let seekTime = playerViewModel?.convertStringToSeconds(strTime: playerViewModel?.playbackRightsModel?.introCreditEnd ?? playerViewModel?.playbackRightsModel?.recapCreditEnd ?? "") else {
             return
@@ -591,6 +593,7 @@ extension CustomPlayerView: PlayerControlsDelegate {
     }
     
 }
+
 
 extension CustomPlayerView: EnterPinViewModelDelegate {
     func pinVerification(_ isSucceed: Bool) {
