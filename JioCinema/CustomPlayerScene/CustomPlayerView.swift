@@ -54,6 +54,7 @@ class CustomPlayerView: UIView {
     @IBOutlet weak var controlHolderView: UIView!
     @IBOutlet weak var moreLikeHolderView: UIView!
     @IBOutlet weak var buttonTopBorder: UIView!
+    @IBOutlet weak var gradientView: UIView!
     
     @IBOutlet weak var bottomSpaceOfMoreLikeInContainer: NSLayoutConstraint!
     @IBOutlet weak var heightOfMoreLikeHolderView: NSLayoutConstraint!
@@ -225,6 +226,12 @@ class CustomPlayerView: UIView {
 //        moreLikeView?.moreLikeCollectionView.reloadData()
     }
     
+    func addGradientView() {
+        let colorLayer = CAGradientLayer()
+        colorLayer.frame = gradientView.bounds
+        colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        self.gradientView.layer.insertSublayer(colorLayer, at:0)
+    }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if !isFocusViewChangedOnResetTimer {
             resetTimertToHideControls()
@@ -684,6 +691,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         DispatchQueue.main.async {
             self.addPlayersControlView()
             self.addMoreLikeView()
+            self.addGradientView()
         }
     }
     
@@ -1046,7 +1054,8 @@ extension CustomPlayerView {
         if controlsView != nil || controlsView?.isHidden == false{
         invalidateTimerForControl()
         self.controlsView?.isHidden = false
-        self.moreLikeView?.isHidden = false
+        self.moreLikeHolderView?.isHidden = false
+        self.gradientView.isHidden = false
         self.startTimerToHideControls()
         }
     }
@@ -1063,7 +1072,8 @@ extension CustomPlayerView {
         }
         self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
         self.controlsView?.isHidden = true
-        self.moreLikeView?.isHidden = true
+        self.moreLikeHolderView?.isHidden = true
+        self.gradientView.isHidden = true
         self.myPreferredFocusView = self
         self.updateFocusIfNeeded()
         self.setNeedsFocusUpdate()

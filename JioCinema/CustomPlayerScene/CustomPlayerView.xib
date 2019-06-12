@@ -24,6 +24,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKA-hW-RpI">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWO-Ep-Kyn">
                     <rect key="frame" x="0.0" y="100" width="1920" height="880"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -33,7 +37,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8x-H2-bk0">
                     <rect key="frame" x="0.0" y="980" width="1920" height="500"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.5037457192" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="500" id="4No-A5-Iqc"/>
                     </constraints>
@@ -154,7 +158,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.1037029109589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="B8x-H2-bk0" secondAttribute="trailing" id="29L-kn-rau"/>
                 <constraint firstAttribute="trailing" secondItem="oWO-Ep-Kyn" secondAttribute="trailing" id="6Df-IH-g83"/>
@@ -164,15 +168,19 @@
                 <constraint firstAttribute="bottom" secondItem="gM3-hv-dnP" secondAttribute="bottom" id="AGQ-72-cSM"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="xxc-YV-Xjl" secondAttribute="bottom" constant="100" id="AJs-VW-3tT"/>
                 <constraint firstItem="B8x-H2-bk0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ae0-uA-gqN"/>
+                <constraint firstItem="rKA-hW-RpI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BkL-UQ-btN"/>
                 <constraint firstItem="tBz-cr-dSN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Jem-il-bB8"/>
                 <constraint firstItem="xxc-YV-Xjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="Kzt-5v-slY"/>
                 <constraint firstItem="xxc-YV-Xjl" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Lvk-Ag-w98"/>
+                <constraint firstAttribute="bottom" secondItem="rKA-hW-RpI" secondAttribute="bottom" id="UVJ-S4-Dv1"/>
                 <constraint firstItem="gM3-hv-dnP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YWK-rK-lSP"/>
+                <constraint firstItem="rKA-hW-RpI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bNx-Ya-UDy"/>
                 <constraint firstItem="xxc-YV-Xjl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ct0-o4-sf5"/>
                 <constraint firstAttribute="trailing" secondItem="gM3-hv-dnP" secondAttribute="trailing" id="dkz-y9-vZq"/>
                 <constraint firstAttribute="trailing" secondItem="tBz-cr-dSN" secondAttribute="trailing" id="gya-Vi-qJK"/>
                 <constraint firstItem="xxc-YV-Xjl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="100" id="jle-k4-Yvj"/>
                 <constraint firstAttribute="bottom" secondItem="B8x-H2-bk0" secondAttribute="bottom" constant="-400" id="kge-Ne-v6L"/>
+                <constraint firstAttribute="trailing" secondItem="rKA-hW-RpI" secondAttribute="trailing" id="nKa-UO-vVZ"/>
                 <constraint firstItem="gM3-hv-dnP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="seb-ym-Zz7"/>
                 <constraint firstItem="B8x-H2-bk0" firstAttribute="top" secondItem="oWO-Ep-Kyn" secondAttribute="bottom" id="t5n-Iw-vAW"/>
             </constraints>
@@ -182,6 +190,7 @@
                 <outlet property="bottomSpaceOfMoreLikeInContainer" destination="kge-Ne-v6L" id="dF2-hU-Qmg"/>
                 <outlet property="buttonTopBorder" destination="BUD-e4-qTK" id="4Un-gC-pYX"/>
                 <outlet property="controlHolderView" destination="oWO-Ep-Kyn" id="Y8C-VG-OBs"/>
+                <outlet property="gradientView" destination="rKA-hW-RpI" id="I7Q-Qj-TQq"/>
                 <outlet property="heightOfMoreLikeHolderView" destination="4No-A5-Iqc" id="TO5-Lm-3Tm"/>
                 <outlet property="heightOfPopUpView" destination="R8D-VK-9FQ" id="Cob-2x-pLJ"/>
                 <outlet property="heightOfRememberMySettings" destination="ThY-aM-lpt" id="aIQ-fp-uRB"/>

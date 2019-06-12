@@ -56,8 +56,8 @@ class PlayersControlView: UIView {
         let colorLayer = CAGradientLayer()
         colorLayer.frame = sliderHolderView.bounds
         colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.5).cgColor]
-        sliderHolderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        sliderHolderView.layer.insertSublayer(colorLayer, at:0)
+//        sliderHolderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+//        sliderHolderView.layer.insertSublayer(colorLayer, at:0)
         
         sliderHolderView.addSubview(sliderView!)
     }

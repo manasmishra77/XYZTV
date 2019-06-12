@@ -77,7 +77,7 @@
                             </connections>
                         </collectionView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.5037457192" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="7UZ-ug-ZSM"/>
                         <constraint firstItem="h4B-oA-8qG" firstAttribute="centerX" secondItem="3aa-vQ-cqC" secondAttribute="centerX" id="HGn-tm-E4N"/>
