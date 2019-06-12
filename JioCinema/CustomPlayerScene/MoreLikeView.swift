@@ -46,7 +46,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             self.moreLikeCollectionView.register(cellNib, forCellWithReuseIdentifier: BaseItemCellNibIdentifier)
             self.moreLikeCollectionView.reloadData()
         }
-            
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -61,49 +61,48 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         }
     }
     
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        super.pressesBegan(presses, with: event)
-        for press in presses {
-            switch press.type{
-            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-                //resetTimer()
-                print("Arrow")
-            case .menu:
-                
-                print("menu")
-            case .playPause:
-                print("playPause")
-                
-            case .select:
-                print("select")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        for touch in touches{
-            switch touch.type{
-            case .direct:
-                print("Direct")
-            case .indirect:
-                print("indirect")
-            case .pencil:
-                print("pencil")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
-    
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        super.pressesBegan(presses, with: event)
+//        for press in presses {
+//            switch press.type{
+//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
+//                //resetTimer()
+//                print("Arrow")
+//            case .menu:
+//
+//                print("menu")
+//            case .playPause:
+//                print("playPause")
+//
+//            case .select:
+//                print("select")
+//            @unknown default:
+//                print("unknown")
+//            }
+//        }
+//    }
+//
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesBegan(touches, with: event)
+//        for touch in touches{
+//            switch touch.type{
+//            case .direct:
+//                print("Direct")
+//            case .indirect:
+//                print("indirect")
+//            case .pencil:
+//                print("pencil")
+//            @unknown default:
+//                print("unknown")
+//            }
+//        }
+//    }
+//
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
         let cellData = getCellData(indexPath: indexPath)
 //        cell.nameLabel.text = cellData.2
         cell.configureView(cellData.0, isPlayingNow: cellData.1)
-        cell.backgroundColor = .white
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -113,9 +112,9 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
         return true
     }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 25
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 25
+    } 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             var item : Item?
         if isMoreDataAvailable {
@@ -140,7 +139,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeForLangGenre, charactorItems: nil)

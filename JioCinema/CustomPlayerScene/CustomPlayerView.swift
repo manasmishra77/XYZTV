@@ -86,7 +86,7 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-        return (self.playerViewModel?.appType == .Movie) ? -(itemHeightForPortrait - 70) : -(itemHeightForLandscape - 70)
+        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
     }
     var isPlayerPaused: Bool {
         return player?.rate == 0
@@ -104,6 +104,7 @@ class CustomPlayerView: UIView {
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
 //        addSubviewOnPlayer()
     }
+
     
     func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
         playerViewModel = nil
@@ -171,9 +172,11 @@ class CustomPlayerView: UIView {
             guard let moreLikeView = moreLikeView else{
                 return
             }
-            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait : itemHeightForLandscape
-            
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait - 90: itemHeightForLandscape - 90
+            self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
+            self.layoutIfNeeded()
             moreLikeView.frame = moreLikeHolderView.bounds
             self.moreLikeHolderView.addSubview(moreLikeView)
             self.layoutIfNeeded()
@@ -232,13 +235,17 @@ class CustomPlayerView: UIView {
         if context.nextFocusedView is ItemCollectionViewCell {
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 0.7) {
+                self.controlsView?.alpha = 0.0001
                 self.layoutIfNeeded()
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
+            print("+++++++++++++++++Up form meta data")
             self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
             UIView.animate(withDuration: 0.7) {
+                self.controlsView?.alpha = 1
                 self.layoutIfNeeded()
+                self.controlsView?.layoutIfNeeded()
             }
         }
     }
@@ -810,7 +817,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                         }
                     }
                 }
-                else if playerItem?.appType == .Episode {
+                else if playerItem?.appType == .Episode ,playerItem?.appType == .TVShow{
                     if let moreArray = moreLikeView?.episodesArray {
                         if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
                             self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
@@ -977,7 +984,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         if autoPlayOn, controlsView?.recommendViewHolder.isHidden ?? false {
             guard let currentPlayingIndex = currentPlayingIndex else { return }
             self.controlHolderView.isHidden = false
-            if self.playerItem?.appType == .Episode {
+            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .Episode{
                 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                     self.resetTimertToHideControls()

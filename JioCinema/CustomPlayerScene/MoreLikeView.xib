@@ -15,27 +15,27 @@
             <rect key="frame" x="0.0" y="0.0" width="1181" height="379"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="EMP-of-5mf">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-F9-tjD">
                     <rect key="frame" x="0.0" y="0.0" width="1181" height="379"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="15" minimumInteritemSpacing="0.0" id="3DH-FC-rRi">
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="7DF-9t-1F6">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="EMP-of-5mf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PzV-UC-7GC"/>
-                <constraint firstAttribute="bottom" secondItem="EMP-of-5mf" secondAttribute="bottom" id="vPn-RA-9PX"/>
-                <constraint firstItem="EMP-of-5mf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xuB-wP-gdX"/>
-                <constraint firstAttribute="trailing" secondItem="EMP-of-5mf" secondAttribute="trailing" id="yG5-Au-WvG"/>
+                <constraint firstItem="JSx-F9-tjD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gvz-1z-ghg"/>
+                <constraint firstAttribute="trailing" secondItem="JSx-F9-tjD" secondAttribute="trailing" id="iZR-n0-szH"/>
+                <constraint firstItem="JSx-F9-tjD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nVb-Bm-qnc"/>
+                <constraint firstAttribute="bottom" secondItem="JSx-F9-tjD" secondAttribute="bottom" id="qVN-At-03V"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="moreLikeCollectionView" destination="EMP-of-5mf" id="WtC-Cn-Osn"/>
+                <outlet property="moreLikeCollectionView" destination="JSx-F9-tjD" id="d1p-Nx-l5L"/>
             </connections>
             <point key="canvasLocation" x="-324.5" y="-241.5"/>
         </view>

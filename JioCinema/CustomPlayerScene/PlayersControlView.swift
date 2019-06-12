@@ -53,6 +53,12 @@ class PlayersControlView: UIView {
         sliderView?.frame = sliderHolderView.bounds
         sliderView?.configureControls()
         sliderView?.sliderDelegate = self
+        let colorLayer = CAGradientLayer()
+        colorLayer.frame = sliderHolderView.bounds
+        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.5).cgColor]
+        sliderHolderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        sliderHolderView.layer.insertSublayer(colorLayer, at:0)
+        
         sliderHolderView.addSubview(sliderView!)
     }
     
@@ -88,40 +94,40 @@ class PlayersControlView: UIView {
     @IBAction func skipIntroPressed(_ sender: Any) {
         delegate?.skipIntroButtonPressed()
     }
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        super.pressesBegan(presses, with: event)
-        for press in presses {
-            switch press.type{
-            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-                //resetTimer()
-                print("Arrow")
-            case .menu:
-                print("menu")
-            case .playPause:
-                print("playPause")
-            case .select:
-                print("select")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        for touch in touches{
-            switch touch.type{
-            case .direct:
-                print("Direct")
-            case .indirect:
-                print("indirect")
-            case .pencil:
-                print("pencil")
-            @unknown default:
-                print("unknown")
-            }
-        }
-    }
+//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+//        super.pressesBegan(presses, with: event)
+//        for press in presses {
+//            switch press.type{
+//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
+//                //resetTimer()
+//                print("Arrow")
+//            case .menu:
+//                print("menu")
+//            case .playPause:
+//                print("playPause")
+//            case .select:
+//                print("select")
+//            @unknown default:
+//                print("unknown")
+//            }
+//        }
+//    }
+//    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesBegan(touches, with: event)
+//        for touch in touches{
+//            switch touch.type{
+//            case .direct:
+//                print("Direct")
+//            case .indirect:
+//                print("indirect")
+//            case .pencil:
+//                print("pencil")
+//            @unknown default:
+//                print("unknown")
+//            }
+//        }
+//    }
     
     
     

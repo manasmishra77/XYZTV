@@ -57,7 +57,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
-                    <rect key="frame" x="0.0" y="885" width="1801" height="150"/>
+                    <rect key="frame" x="0.0" y="905" width="1801" height="150"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="h4B-oA-8qG">
                             <rect key="frame" x="527" y="0.0" width="748" height="150"/>
@@ -77,7 +77,7 @@
                             </connections>
                         </collectionView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.5037457192" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="7UZ-ug-ZSM"/>
                         <constraint firstItem="h4B-oA-8qG" firstAttribute="centerX" secondItem="3aa-vQ-cqC" secondAttribute="centerX" id="HGn-tm-E4N"/>
@@ -86,14 +86,14 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
-                    <rect key="frame" x="0.0" y="515" width="1801" height="350"/>
+                    <rect key="frame" x="0.0" y="555" width="1801" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-sB-FiE">
-                    <rect key="frame" x="1490" y="419" width="291" height="86"/>
+                    <rect key="frame" x="1490" y="937" width="291" height="86"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Skip Intro&gt;&gt;"/>
                     <connections>
@@ -107,11 +107,11 @@
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="width" secondItem="lJi-P7-V4r" secondAttribute="width" id="Fpg-gS-wlU"/>
                 <constraint firstItem="cYT-fc-BAa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="Gxc-JA-WZL"/>
                 <constraint firstAttribute="trailing" secondItem="qsc-sB-FiE" secondAttribute="trailing" constant="20" id="Mvg-tp-iWT"/>
-                <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" constant="20" id="f22-0H-thC"/>
+                <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" id="f22-0H-thC"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
-                <constraint firstItem="lJi-P7-V4r" firstAttribute="top" secondItem="qsc-sB-FiE" secondAttribute="bottom" constant="10" id="mtd-eu-ar3"/>
-                <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" constant="20" id="rSS-Sl-eBU"/>
+                <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" id="rSS-Sl-eBU"/>
                 <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
+                <constraint firstItem="qsc-sB-FiE" firstAttribute="centerY" secondItem="3aa-vQ-cqC" secondAttribute="centerY" id="unO-Cg-4LP"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vo6-Zc-OWI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
