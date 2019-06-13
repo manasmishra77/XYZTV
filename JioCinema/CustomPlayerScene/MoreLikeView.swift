@@ -103,6 +103,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         let cellData = getCellData(indexPath: indexPath)
 //        cell.nameLabel.text = cellData.2
         cell.configureView(cellData.0, isPlayingNow: cellData.1)
+        cell.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

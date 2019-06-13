@@ -1056,6 +1056,12 @@ extension CustomPlayerView {
         self.controlsView?.isHidden = false
         self.moreLikeHolderView?.isHidden = false
         self.gradientView.isHidden = false
+            // currentPlayer is our instance of the AVPlayer
+            if let currItem = player?.currentItem {
+                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 600])
+                // 93% from the top of the video
+                currItem.textStyleRules = [rule!]
+            }
         self.startTimerToHideControls()
         }
     }
@@ -1079,6 +1085,15 @@ extension CustomPlayerView {
         self.setNeedsFocusUpdate()
         self.isFocusViewChangedOnResetTimer = true
         self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
+        
+        // currentPlayer is our instance of the AVPlayer
+        if let currItem = player?.currentItem {
+            let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 10])
+            // 93% from the top of the video
+            currItem.textStyleRules = [rule!]
+        }
+        
+        
     }
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {

@@ -36,22 +36,16 @@ class CustomSlider: UIView {
     var isPaused = false
     
     var thumbnailsArray : [ThumbnailsModel]?
-//    var seekBarCalculationTask: DispatchWorkItem?
-    
-//    let kTimeFormatInMinutes = DateFormatter()
-//    let hourFormat = DateFormatter()
+
     var slidersValueWhentouchBeganCalled: CGFloat = 0.0
     var timeWhentouchBeganCalled: Double = 0.0
     var progressWhentouchBeganCalled: CGFloat = 0.0
 
     
     func configureControls() {
-//        kTimeFormatInMinutes.dateFormat = "mm:ss"
-//        hourFormat.dateFormat = "HH:mm:ss"
         hideThumbnails(requrestToHide: true)
         self.clipsToBounds = true
         progressBar.progress = 0.0
-//        progressBar.tintColor = ViewColor.selectionBarOnLeftNavigationColor
         backgroundFocusableButton.delegate = self
     }
     deinit {
@@ -119,11 +113,13 @@ extension CustomSlider: SliderDelegate {
                     for index in 0...arrayOfThumbnails.count - 1{
                         if Int(seconds) >= arrayOfThumbnails[index].sortTime ?? 0  && index != arrayOfThumbnails.count - 1 &&  Int(seconds) < arrayOfThumbnails[index + 1].sortTime ?? 0{
                             let imageUrl = URL(string: arrayOfThumbnails[index].name ?? "")
-                            thumbnailImageView?.sd_setImage(with: imageUrl, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: .highPriority, completed: {
+                            thumbnailImageView?.sd_setImage(with: imageUrl, placeholderImage: nil, options: .highPriority, completed: {
                                 (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
                             });
                         }
                     }
+                } else {
+                    heightOfThumbnails.constant = 0
                 }
                 
                 seekTime.text = Utility.getTimeInFormatedStringFromSeconds(seconds: Int(seconds))

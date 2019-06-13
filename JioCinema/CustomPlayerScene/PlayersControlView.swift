@@ -212,9 +212,9 @@ extension PlayersControlView: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 || indexPath.row == arrayOfPlayerButtonItem.count - 1 {
-            return CGSize(width: 224, height: self.controlButtonCollectionView.frame.height)
+            return CGSize(width: 296, height: self.controlButtonCollectionView.frame.height)
         } else {
-            return CGSize(width: 100, height: self.controlButtonCollectionView.frame.height)
+            return CGSize(width: 132, height: self.controlButtonCollectionView.frame.height)
         }
     }
     
