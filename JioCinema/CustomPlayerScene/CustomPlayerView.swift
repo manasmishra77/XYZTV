@@ -282,7 +282,7 @@ class CustomPlayerView: UIView {
         controlsView?.sliderView?.updateProgressBar(scale: scale, dueToScrubing: false, duration: duration)
         controlsView?.sliderView?.progressBar.progress = Float(newTime / duration)
         timeSpent += 1
-        if player?.rate == 0 && indicator != nil {
+        if player?.rate == 1 && indicator != nil {
             updateIndicatorState(toStart: false)
         }
     }
@@ -737,7 +737,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.player = AVPlayer(playerItem: self.playerViewModel?.playerItem)
                 self.playerLayer = AVPlayerLayer(player: self.player)
                 self.playerLayer?.frame = self.bounds
-                self.playerLayer?.videoGravity = .resize
+                self.playerLayer?.videoGravity = .resizeAspect
                 self.playerHolderView.layer.addSublayer(self.playerLayer!)
                 self.didSeek = false
                 if self.playerViewModel?.currentDuration ?? 0 > 0 {
@@ -1044,7 +1044,7 @@ extension CustomPlayerView {
             self.gradientView.isHidden = false
             // currentPlayer is our instance of the AVPlayer
             if let currItem = player?.currentItem {
-                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 600])
+                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 3])
                 // 93% from the top of the video
                 currItem.textStyleRules = [rule!]
             }
@@ -1074,7 +1074,7 @@ extension CustomPlayerView {
         
         // currentPlayer is our instance of the AVPlayer
         if let currItem = player?.currentItem {
-            let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 10])
+            let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 95])
             // 93% from the top of the video
             currItem.textStyleRules = [rule!]
         }
