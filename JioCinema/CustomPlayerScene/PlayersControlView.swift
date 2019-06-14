@@ -44,6 +44,7 @@ class PlayersControlView: UIView {
 //    var playerButtonsView: PlayerButtonsView?
     
     func configurePlayersControlView() {
+        
         addCustomSlider()
         configurePlayerButtonsView()
     }

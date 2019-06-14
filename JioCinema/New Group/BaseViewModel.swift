@@ -400,7 +400,7 @@ extension BaseViewModel {
         var categoryName = "Carousal"
         
         
-        if isFromCarousal != true {
+        if isFromCarousal != true && selectedIndexPath?.row != 0{
             indexFromArray = selectedIndexPath?.row ?? 0
             dataContainer = getDataContainer(indexFromArray)
             categoryName = dataContainer?.title ?? "Carousal"

@@ -99,13 +99,13 @@ class CustomPlayerView: UIView {
         }
         return []
     }
-
+    
     func configureView(item: Item, latestEpisodeId: String? = nil, audioLanguage: AudioLanguage? = nil) {
         self.audioLanguage = audioLanguage
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
-//        addSubviewOnPlayer()
+        //        addSubviewOnPlayer()
     }
-
+    
     
     func initialiseViewModelForItem(item: Item, latestEpisodeId: String? = nil) {
         playerViewModel = nil
@@ -125,24 +125,17 @@ class CustomPlayerView: UIView {
     
     func addPlayersControlView() {
         if controlsView == nil {
-        controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
-        controlsView?.configurePlayersControlView()
-        let colorLayer = CAGradientLayer()
-        colorLayer.frame = controlHolderView.bounds
-//        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.cgColor]
-//        controlsView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-//        controlsView?.playerButtonsView?.buttonDelegate = self
-        controlsView?.delegate = self
-        controlsView?.frame = controlHolderView.bounds
-        guard let controlsView = controlsView else {
-            return
-        }
-//        controlsView.layer.addSublayer(colorLayer)
-//        self.controlsView?.layer.insertSublayer(colorLayer, at:0)
-        self.controlHolderView.addSubview(controlsView)
+            controlsView = UINib(nibName: "PlayersControlView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? PlayersControlView
+            guard let controlsView = controlsView else {
+                return
+            }
+            controlsView.configurePlayersControlView()
+            controlsView.delegate = self
+            controlsView.frame = controlHolderView.bounds
+            self.controlHolderView.addSubview(controlsView)
         }
         setValuesForSubviewsOnPlayer()
-//        setValuesOnControlView()
+        //        setValuesOnControlView()
     }
     
     func setValuesOnControlView() {
@@ -155,8 +148,8 @@ class CustomPlayerView: UIView {
                 return
             }
             if let totalFloatDuration = Float(totalDuration){
-                    self.controlsView?.sliderView?.sliderLeading.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
-                    self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
+                self.controlsView?.sliderView?.sliderLeading.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
+                self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = CGFloat(currentDuration / totalFloatDuration) * PlayerSliderConstants.widthOfProgressBar
             }
         }
         self.controlsView?.sliderView?.progressBar.tintColor = ThemeManager.shared.selectionColor
@@ -174,7 +167,6 @@ class CustomPlayerView: UIView {
                 return
             }
             heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
-//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait - 90: itemHeightForLandscape - 90
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             self.layoutIfNeeded()
@@ -194,14 +186,14 @@ class CustomPlayerView: UIView {
         moreLikeView?.configMoreLikeView(id: id ?? "")
         moreLikeView?.isDisney = isDisney
         moreLikeView?.delegate = self
-
+        
         if let moreLikeArray = recommendationArray as? [Item]{
             moreLikeView?.moreArray = moreLikeArray
             for (index, each) in moreLikeArray.enumerated() {
                 if each.id == playerItem?.latestId || each.id == playerItem?.id {
                     currentPlayingIndex = index
                     moreLikeView?.currentPlayingIndex = currentPlayingIndex
-//                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
+                    //                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
                     break
                 }
             }
@@ -211,7 +203,7 @@ class CustomPlayerView: UIView {
                 if each.id == playerItem?.latestId || each.id == playerItem?.id {
                     currentPlayingIndex = index
                     moreLikeView?.currentPlayingIndex = currentPlayingIndex
-//                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
+                    //                    reloadMoreLikeCollectionView(currentMorelikeIndex: index)
                     break
                 }
             }
@@ -223,7 +215,7 @@ class CustomPlayerView: UIView {
                 
             }
         }
-//        moreLikeView?.moreLikeCollectionView.reloadData()
+        //        moreLikeView?.moreLikeCollectionView.reloadData()
     }
     
     func addGradientView() {
@@ -342,9 +334,9 @@ class CustomPlayerView: UIView {
             }
         } else {
             self.changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: subtitleTableView?.currentSelectedItem, audioLang: multiAudioTableView?.currentSelectedItem)
-
+            
             if multiAudioTableView?.currentSelectedItem != lastSelectedAudioLanguage{
-                        playerViewModel?.sendAudioChangedAnalytics()
+                playerViewModel?.sendAudioChangedAnalytics()
             }
             lastSelectedAudioLanguage = multiAudioTableView?.currentSelectedItem
             lastSelectedAudioSubtitle = subtitleTableView?.currentSelectedItem
@@ -617,7 +609,7 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
             enterParentalPinView = nil
             self.updateIndicatorState(toStart: true)
             print("INdicator started pin verification")
-//            addSubviewOnPlayer()
+            //            addSubviewOnPlayer()
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
@@ -731,7 +723,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             playerViewModel?.instantiatePlayerAfterParentalCheck()
         }
     }
-
+    
     func addAvPlayerToController() {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
@@ -813,9 +805,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             {
                 
                 if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-//                    if playerItem?.appType == .Movie {
-//                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-//                    }
+                    //                    if playerItem?.appType == .Movie {
+                    //                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+                    //                    }
                     if let moreArray = moreLikeView?.moreArray, isPlayList {
                         if (currentPlayingIndex + 1) < moreArray.count {
                             let nextItem = moreArray[currentPlayingIndex + 1]
@@ -837,9 +829,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
-//        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
-//            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-//        }
+        //        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
+        //            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+        //        }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
             playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
@@ -848,22 +840,22 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         delegate?.removePlayerController()
         
     }
-
-
+    
+    
     
     func setCurrentPlayingOnMoreLike() {
         if let currentPlayingIndex = currentPlayingIndex {
             self.moreLikeView?.scrollToIndex(index: currentPlayingIndex)
         }
     }
-
+    
     
     func getPlayerDuration() -> Double {
         guard let currentItem = self.player?.currentItem else { return 0.0 }
         return CMTimeGetSeconds(currentItem.duration)
     }
     
-   
+    
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
@@ -906,9 +898,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
             self.updateIndicatorState(toStart: true)
-//            if player?.rate == 1 {
-//                self.updateIndicatorState(toStart: false)
-//            }
+            //            if player?.rate == 1 {
+            //                self.updateIndicatorState(toStart: false)
+            //            }
             print("indicator started on isPlaybackBufferempty\(player?.rate)")
             playerViewModel?.startTime_BufferDuration = Date()
         }
@@ -943,13 +935,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 Log.DLog(message: "Failed" as AnyObject)
                 playerViewModel?.handlePlayerStatusFailed()
                 //                self.isRecommendationCollectionViewEnabled = false
-                //If video failed once and valid fps url is there
-                /*
-                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: playerItem?.error?.localizedDescription), "Type": appType.name, "Title": itemTitle, "Content ID": id, "Bitrate": bitrate, "Episode": itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
-                 let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: failureType, errorCode: "-1", videoType: appType.name, contentTitle: itemTitle, contentId: id, videoQuality: "Auto", bitrate: bitrate, episodeSubtitle: itemDescription, playerErrorMessage: String(describing: playerItem?.error?.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
-                 
-                 sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
-             */ //vinit_commented
+            //If video failed once and valid fps url is there
             default:
                 print("unknown")
             }
@@ -1031,7 +1017,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         
         //vinit_comment handle player error
     }
-
+    
     func dismissPlayerOnAesFailure() {
         delegate?.removePlayerAfterAesFailure()
     }
@@ -1052,17 +1038,17 @@ extension CustomPlayerView {
     
     func resetTimertToHideControls() {
         if controlsView != nil || controlsView?.isHidden == false{
-        invalidateTimerForControl()
-        self.controlsView?.isHidden = false
-        self.moreLikeHolderView?.isHidden = false
-        self.gradientView.isHidden = false
+            invalidateTimerForControl()
+            self.controlsView?.isHidden = false
+            self.moreLikeHolderView?.isHidden = false
+            self.gradientView.isHidden = false
             // currentPlayer is our instance of the AVPlayer
             if let currItem = player?.currentItem {
                 let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 3])
                 // 93% from the top of the video
                 currItem.textStyleRules = [rule!]
             }
-        self.startTimerToHideControls()
+            self.startTimerToHideControls()
         }
     }
     
@@ -1104,14 +1090,14 @@ extension CustomPlayerView {
             case .menu:
                 super.pressesBegan(presses, with: event)
                 print("Menu")
-//                if popUpHolderView.isHidden == true {
-//                    self.resetAndRemovePlayer()
-//                    self.delegate?.removePlayerController()
-//                } else {
-//                    resetTimer()
-//                    removeControlDetailview()
-//                    print("menu")
-//                }
+                //                if popUpHolderView.isHidden == true {
+                //                    self.resetAndRemovePlayer()
+                //                    self.delegate?.removePlayerController()
+                //                } else {
+                //                    resetTimer()
+                //                    removeControlDetailview()
+                //                    print("menu")
+            //                }
             case .playPause:
                 print("playPause")
                 if isPlayerPaused {
@@ -1168,10 +1154,10 @@ extension CustomPlayerView: ResumeWatchDelegate {
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
-//        addSubviewOnPlayer()
-//        setValuesForSubviewsOnPlayer()
+        //        addSubviewOnPlayer()
+        //        setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
-//        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = playerViewModel?.currentDuration / playerItem?.
+        //        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = playerViewModel?.currentDuration / playerItem?.
         self.moreLikeHolderView.isHidden = false
     }
     
@@ -1180,8 +1166,8 @@ extension CustomPlayerView: ResumeWatchDelegate {
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
-//        addSubviewOnPlayer()
-//        self.setValuesForSubviewsOnPlayer()
+        //        addSubviewOnPlayer()
+        //        self.setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
         self.moreLikeHolderView.isHidden = false
         

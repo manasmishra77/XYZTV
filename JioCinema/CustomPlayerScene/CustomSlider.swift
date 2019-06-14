@@ -80,7 +80,7 @@ extension CustomSlider: SliderDelegate {
             self.sliderLeadingForSeeking.constant = self.sliderLeading.constant
             self.sliderCursor.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.sliderCursor.backgroundColor = .darkGray
+            self.sliderCursor.backgroundColor = .white
             self.heightOfProgressBar.constant = 5
         }
     }
@@ -96,7 +96,7 @@ extension CustomSlider: SliderDelegate {
 //
 //    func changeSliderAfterCalculation(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?){
 //
-//        print("inside change slider")
+//        print("inside change slider")`
         let maxLeading : CGFloat = PlayerSliderConstants.widthOfProgressBar// - widthOfSlider
         if duration != nil{
             self.itemDuration = duration

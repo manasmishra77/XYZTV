@@ -157,11 +157,11 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
 
             var isPlayingNow = model?.id == cureentItemId
 
-            if let currentIndex = self.currentPlayingIndex {
-                if indexPath.row == currentIndex && isPlayList {
-                    isPlayingNow = true
-                }
-            }
+//            if let currentIndex = self.currentPlayingIndex {
+//                if indexPath.row == currentIndex && isPlayList {
+//                    isPlayingNow = true
+//                }
+//            }
 
             return (cellItems, isPlayingNow, model?.name ?? "")
         } else if isMoreDataAvailable {
@@ -173,11 +173,11 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
 
             var isPlayingNow = model?.id == cureentItemId
 
-            if let currentIndex = self.currentPlayingIndex {
-                if indexPath.row == currentIndex {
-                    isPlayingNow = true
-                }
-            }
+//            if let currentIndex = self.currentPlayingIndex {
+//                if indexPath.row == currentIndex {
+//                    isPlayingNow = true
+//                }
+//            }
             return (cellItems, isPlayingNow, model?.name ?? "")
         }
         
@@ -191,7 +191,6 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         if currentPlayingIndex != nil {
             previousIndex = IndexPath.init(row: currentPlayingIndex!, section: 0)
         }
-        
         if previousIndex?.row == index {
             return
         }
