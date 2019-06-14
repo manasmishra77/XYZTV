@@ -1085,7 +1085,7 @@
                     //self.activityIndicatorOfLoaderView.stopAnimating()
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failureType = "Playlist service failed"
@@ -1251,7 +1251,7 @@
                 DispatchQueue.main.async {
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
-                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    self.textOnLoaderCoverView.text = "Some problem occured!!"
                     Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failuretype = "Playbackrights failed"

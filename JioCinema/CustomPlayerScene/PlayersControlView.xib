@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="JioType-Light.ttf">
+            <string>JioType-Light</string>
+        </array>
         <array key="JioType-Medium.ttf">
             <string>JioType-Medium</string>
         </array>
@@ -31,14 +34,14 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bsb-jy-MHh">
-                            <rect key="frame" x="230" y="30" width="64" height="30"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="25"/>
+                            <rect key="frame" x="230" y="25" width="71" height="36"/>
+                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a1a-Pr-oJ9">
-                            <rect key="frame" x="230" y="90" width="76" height="36"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
+                            <rect key="frame" x="230" y="91" width="92" height="43"/>
+                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -51,7 +54,7 @@
                         <constraint firstAttribute="width" constant="600" id="b8m-hk-jNm"/>
                         <constraint firstItem="a1a-Pr-oJ9" firstAttribute="top" secondItem="bsb-jy-MHh" secondAttribute="bottom" constant="30" id="hbD-hh-Cg0"/>
                         <constraint firstAttribute="height" constant="150" id="mAC-73-bar"/>
-                        <constraint firstItem="bsb-jy-MHh" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" constant="30" id="nfX-1f-nqz"/>
+                        <constraint firstItem="bsb-jy-MHh" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" constant="25" id="nfX-1f-nqz"/>
                         <constraint firstItem="bsb-jy-MHh" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="pNN-OJ-mRN"/>
                         <constraint firstItem="a1a-Pr-oJ9" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="uiL-aj-a7A"/>
                     </constraints>

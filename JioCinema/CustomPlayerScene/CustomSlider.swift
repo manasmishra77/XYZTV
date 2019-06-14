@@ -86,17 +86,6 @@ extension CustomSlider: SliderDelegate {
     }
     
     func updateProgressBar(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?) {
-//        seekBarCalculationTask?.cancel()
-//        seekBarCalculationTask = DispatchWorkItem {
-//            self.changeSliderAfterCalculation(scale: scale, dueToScrubing: dueToScrubing, duration: duration)
-//        }
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.00001, execute: seekBarCalculationTask!)
-//    }
-//
-//
-//    func changeSliderAfterCalculation(scale: CGFloat, dueToScrubing: Bool = false, duration: Double?){
-//
-//        print("inside change slider")`
         let maxLeading : CGFloat = PlayerSliderConstants.widthOfProgressBar// - widthOfSlider
         if duration != nil{
             self.itemDuration = duration

@@ -1005,7 +1005,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             self.updateIndicatorState(toStart: false)
             print("hide indicator on playbackright Data error")
             self.alertMsg.isHidden = false
-            self.alertMsg.text = "Some problem occured!!, please login again!!"
+            self.alertMsg.text = "Some problem occured!!"
             
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { [weak self] (timer) in
                 guard let self = self else {

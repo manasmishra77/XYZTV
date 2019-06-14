@@ -229,10 +229,6 @@ class PlayerViewModel: NSObject {
             }
             self.playbackRightsModel = response.model
             
-            if let model = self.playbackRightsModel{
-                //needs to b handle properly
-                return
-            }
             self.playbackRightsModel?.fps = nil
             
             

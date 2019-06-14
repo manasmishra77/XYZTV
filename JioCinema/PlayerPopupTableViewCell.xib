@@ -48,10 +48,10 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uCu-VU-wKL">
-                        <rect key="frame" x="30" y="99" width="120" height="1"/>
+                        <rect key="frame" x="30" y="100" width="120" height="0.0"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="a7N-z7-A0Q"/>
+                            <constraint firstAttribute="height" id="a7N-z7-A0Q"/>
                         </constraints>
                     </view>
                 </subviews>
