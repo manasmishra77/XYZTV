@@ -228,7 +228,14 @@ class PlayerViewModel: NSObject {
                 return
             }
             self.playbackRightsModel = response.model
+            
+            if let model = self.playbackRightsModel{
+                //needs to b handle properly
+                return
+            }
             self.playbackRightsModel?.fps = nil
+            
+            
             self.decideURLPriorityForPlayer()
             
             if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
@@ -389,6 +396,20 @@ class PlayerViewModel: NSObject {
             getActiveUrl(url: fpsBitcodeUrl)
         } else if let aesBitcodeUrl = self.playbackRightsModel?.aes {
             getActiveUrl(url: aesBitcodeUrl)
+        } else {
+            self.delegate?.dismissPlayerOnAesFailure()
+//            let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertController.Style.alert)
+//
+//            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+//                DispatchQueue.main.async {
+//                    print("dismiss")
+//                    self.dismissPlayerVC()
+//                }
+//            }
+//            alert.addAction(cancelAction)
+//            DispatchQueue.main.async {
+//                self.present(alert, animated: false, completion: nil)
+//            }
         }
     }
     
