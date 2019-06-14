@@ -142,7 +142,7 @@ class PlayerViewModel: NSObject {
                 self.callWebServiceForRemovingResumedWatchlist()
             } else {
                 //                let audio = self.playerItem?.selected(type: .audio) ?? ""
-                self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audioLanguage)
+                self.callWebServiceForAddToResumeWatchlist(itemToBePlayed.latestId ?? itemToBePlayed.id ?? "", currentTimeDuration: currentTimeDuration, totalDuration: totalDuration, selectedAudio: audioLanguage)
             }
         }
     }
