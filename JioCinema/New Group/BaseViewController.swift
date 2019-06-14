@@ -94,14 +94,14 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 coverView.removeFromSuperview()
             }
         }
-        
     }
+    
     override func viewDidAppear(_ animated: Bool) {
-        self.tabBarController?.delegate = self
-        if baseViewModel.isToReloadTableViewAfterLoginStatusChange {
-            self.baseViewModel.reloadTableView()
-        }
+            if self.baseViewModel.isToReloadTableViewAfterLoginStatusChange {
+                self.baseViewModel.reloadTableView()
+            }
     }
+    
     private func configureViews() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
