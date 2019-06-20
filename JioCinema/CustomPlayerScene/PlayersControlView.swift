@@ -239,8 +239,8 @@ struct PlayerButtonItem {
         self.tag = tag
         switch tag {
         case 0:
-            selectedImage = "s"
-            unselectedImage = "S"
+            selectedImage = "S"
+            unselectedImage = "s"
             titleOfButton = "Settings"
         case 1:
             selectedImage = "B"
@@ -255,8 +255,8 @@ struct PlayerButtonItem {
             unselectedImage = "f"
             titleOfButton = "Forward"
         case 4:
-            selectedImage = "m"
-            unselectedImage = "M"
+            selectedImage = "M"
+            unselectedImage = "m"
             titleOfButton = "Subtitles"
         default:
             print("default")
