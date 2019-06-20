@@ -227,22 +227,25 @@ class PlayerViewModel: NSObject {
                 self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
                 return
             }
-            self.playbackRightsModel = response.model
             
-            self.playbackRightsModel?.fps = nil
-            
-            
-            self.decideURLPriorityForPlayer()
-            
-            if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
-                self.isFpsUrl = true
+            DispatchQueue.main.async {
+                self.playbackRightsModel = response.model
+                self.playbackRightsModel?.fps = nil
+                self.decideURLPriorityForPlayer()
+                
+                guard let _ = self.playerActiveUrl else {
+                    return
+                }
+                
+                if self.playbackRightsModel?.url != nil || self.playbackRightsModel?.fps != nil {
+                    self.isFpsUrl = true
+                }
+               if self.playbackRightsModel?.thumb != nil && self.playbackRightsModel?.thumb != "" {
+                                self.callWebServiceForThumbnails(thumbUrl: self.playbackRightsModel?.thumb ?? "")
+                }
+                self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
             }
-            if self.playbackRightsModel?.thumb != nil && self.playbackRightsModel?.thumb != "" {
-                self.callWebServiceForThumbnails(thumbUrl: self.playbackRightsModel?.thumb ?? "")
-            }
-            self.delegate?.checkParentalControlFor(playbackRightModel: self.playbackRightsModel!)
         }
-        
     }
     
     func callWebServiceForThumbnails(thumbUrl: String) {
@@ -424,6 +427,7 @@ class PlayerViewModel: NSObject {
             playerActiveUrl = url.low
             playerActiveBitrate = .low
         }
+        print("playerActiveUrl is  ========= \(playerActiveUrl)")
     }
     
     func getUserPreferedVideoQuality() -> BitRatesType{

@@ -118,6 +118,9 @@ class CustomPlayerView: UIView {
         playerViewModel?.fromLanguage = fromLanguage
         self.playerItem = item
         isPlayList = item.isPlaylist ?? false
+        if item.appType == .TVShow || item.appType == .Episode {
+            isPlayList = true
+        }
         self.updateIndicatorState(toStart: true)
         print("indicator started on initialise view model")
         playerViewModel?.preparePlayer()
@@ -817,7 +820,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                         }
                     }
                 }
-                else if playerItem?.appType == .Episode ,playerItem?.appType == .TVShow{
+                else if playerItem?.appType == .Episode || playerItem?.appType == .TVShow{
                     if let moreArray = moreLikeView?.episodesArray {
                         if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
                             self.currentPlayingIndex += nextItemTupple.1 ? 1: -1
@@ -1133,8 +1136,8 @@ extension CustomPlayerView {
 
 extension CustomPlayerView: playerMoreLikeDelegate{
     func moreLikeTapped(newItem: Item, index: Int) {
-        resetPlayer()
         self.currentPlayingIndex = index
+        resetPlayer()
         if newItem.appType == .Movie {
             delegate?.presenMetadataOnMoreLikeTapped(item: newItem)
         } else {
