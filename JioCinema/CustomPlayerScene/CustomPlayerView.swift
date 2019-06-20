@@ -142,6 +142,9 @@ class CustomPlayerView: UIView {
         self.controlsView?.sliderView?.title.text = playerItem?.name
         if playerItem?.name == "" || playerItem?.name == nil {
             self.controlsView?.sliderView?.title.text = playerItem?.showname
+            if playerItem?.showname == nil || playerItem?.showname == "" {
+                self.controlsView?.sliderView?.title.text = playbackRightModel?.contentName
+            }
         }
         if let currentDuration = self.playerViewModel?.currentDuration, currentDuration > 0 {
             guard let totalDuration = self.playbackRightModel?.totalDuration else {
