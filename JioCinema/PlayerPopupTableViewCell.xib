@@ -31,7 +31,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uva-QW-zzD" userLabel="title">
                                 <rect key="frame" x="0.0" y="0.0" width="97" height="50"/>
-                                <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="38"/>
+                                <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="36"/>
                                 <color key="textColor" red="0.58431372550000005" green="0.58431372550000005" blue="0.58431372550000005" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>

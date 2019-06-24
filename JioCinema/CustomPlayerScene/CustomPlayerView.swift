@@ -38,7 +38,7 @@ class CustomPlayerView: UIView {
     var indicator: SpiralSpinner?
     fileprivate var currentPlayingIndex: Int!
     var stateOfPlayerBeforeButtonClickWasPaused = false
-    var stateOfPlayerBeforeGoingInBackgroundWasPaused = false
+    var stateOfPlayerBeforeGoingInBackgroundWasPaused = true
     var controlsView : PlayersControlView?
     var lastSelectedItem: String?
     var resumeWatchView: ResumeWatchView?
@@ -225,10 +225,14 @@ class CustomPlayerView: UIView {
     }
     
     func addGradientView() {
+        if gradientView.layer.isHidden == true {
+            gradientView.layer.isHidden = false
+        } else {
         let colorLayer = CAGradientLayer()
         colorLayer.frame = gradientView.bounds
         colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         self.gradientView.layer.insertSublayer(colorLayer, at:0)
+        }
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if !isFocusViewChangedOnResetTimer {
@@ -274,6 +278,7 @@ class CustomPlayerView: UIView {
             self.removePlayerObserver()
             self.playerViewModel = nil
             self.playerLayer?.removeFromSuperlayer()
+            self.gradientView.layer.isHidden = true
             self.playerLayer = nil
         }
         player = nil
@@ -1006,6 +1011,38 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
     }
     
+    func hideUnhideControl(visibleControls : VisbleControls) {
+        switch visibleControls {
+        case .ControlsOnly:
+            controlsView?.sliderView?.isHidden = false
+            controlsView?.playerButtonsHolderView.isHidden = false
+            moreLikeView?.isHidden = false
+        case .ControlsWithNextVideo:
+            controlsView?.sliderView?.isHidden = false
+            controlsView?.playerButtonsHolderView.isHidden = false
+            moreLikeView?.isHidden = false
+            controlsView?.recommendViewHolder.isHidden = false
+        case .ControlsWithSkipIntro:
+            controlsView?.sliderView?.isHidden = false
+            controlsView?.playerButtonsHolderView.isHidden = false
+            moreLikeView?.isHidden = false
+            controlsView?.skipIntroButton.isHidden = false
+        case .NextVideoOnly:
+            controlsView?.recommendViewHolder.isHidden = false
+        case .SkipIntroOnly:
+            controlsView?.skipIntroButton.isHidden = false
+        case .None:
+            controlsView?.sliderView?.isHidden = true
+            controlsView?.playerButtonsHolderView.isHidden = true
+            moreLikeView?.isHidden = true
+            controlsView?.recommendViewHolder.isHidden = true
+            controlsView?.skipIntroButton.isHidden = true
+        case .hideSkipIntro:
+            controlsView?.skipIntroButton.isHidden = true
+        case .hideNextVideo:
+            controlsView?.recommendViewHolder.isHidden = true
+        }
+    }
     func handlePlaybackRightDataError(errorCode: Int, errorMsg: String) {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
@@ -1149,7 +1186,7 @@ extension CustomPlayerView: playerMoreLikeDelegate{
             }
             self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
             if moreLikeView?.moreArray != nil  && isPlayList != true{
-                playerViewModel?.callWebServiceForMoreLikeData()
+//                playerViewModel?.callWebServiceForMoreLikeData()
             }
         }
     }
@@ -1187,4 +1224,14 @@ extension CustomPlayerView: ResumeWatchDelegate {
     }
     
     
+}
+enum VisbleControls {
+    case SkipIntroOnly
+    case NextVideoOnly
+    case ControlsOnly
+    case ControlsWithSkipIntro
+    case ControlsWithNextVideo
+    case None
+    case hideSkipIntro
+    case hideNextVideo
 }

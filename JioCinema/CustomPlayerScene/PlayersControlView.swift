@@ -140,6 +140,7 @@ class PlayersControlView: UIView {
         DispatchQueue.main.async {
             
             self.recommendViewHolder.isHidden = false
+            self.recommendViewHolder.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.nextContentTitle.text = videoName
             self.nextContentSubtitle.text = "Playing in " + "\(5)" + " Seconds"
             var t1 = 4

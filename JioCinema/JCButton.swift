@@ -106,11 +106,32 @@ class JCRememberMe: UIButton {
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
+            self.titleLabel?.font = UIFont(name: "JioType-Medium", size: 30)
+            self.titleLabel?.textColor = .white
+            self.backgroundColor = ThemeManager.shared.selectionColor
         }
         else
         {
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+            self.titleLabel?.textColor = .lightGray
+            self.titleLabel?.font = UIFont(name: "JioType-Medium", size: 30)
+            self.backgroundColor = .clear
         }
         
+    }
+}
+class SkipIntroButton: UIButton {
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
+    {
+        if (context.nextFocusedView == self)
+        {
+            self.backgroundColor = ThemeManager.shared.selectionColor
+            self.borderWidth = 0
+        }
+        else
+        {
+            self.backgroundColor = .clear
+            self.borderWidth = 1
+        }
     }
 }

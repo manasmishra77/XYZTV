@@ -39,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let playerVc = UIApplication.topViewController() as? PlayerViewController{
             if playerVc.viewforplayer?.player?.rate == 1 {
+                playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused = false
+            } else {
                 playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused = true
             }
         }
@@ -50,6 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let playerVc = UIApplication.topViewController() as? PlayerViewController{
             if !(playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused ?? true) {
                 playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
+            } else {
+                playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: false)
             }
         }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.

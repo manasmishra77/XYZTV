@@ -136,7 +136,7 @@ class SideNavigationTableView: UIView {
     
     func performNavigationTableSelection(index: Int) {
         if itemsList[index].type == ViewControllersType.search {
-            
+            ThemeManager.shared.currentTheme = .jioCinema
         }
         else {
             if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) as? SideNavigationTableCell {

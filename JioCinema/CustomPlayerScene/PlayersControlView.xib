@@ -23,42 +23,6 @@
             <rect key="frame" x="0.0" y="0.0" width="1801" height="1055"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYT-fc-BAa">
-                    <rect key="frame" x="1151" y="50" width="600" height="150"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fOq-Z0-SJJ">
-                            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
-                            <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="DG3-ML-fG7"/>
-                                <constraint firstAttribute="width" constant="200" id="TIX-op-ITg"/>
-                            </constraints>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bsb-jy-MHh">
-                            <rect key="frame" x="230" y="25" width="71" height="36"/>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a1a-Pr-oJ9">
-                            <rect key="frame" x="230" y="91" width="92" height="43"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.4023705051" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" id="FKD-lK-Zey"/>
-                        <constraint firstAttribute="bottom" secondItem="fOq-Z0-SJJ" secondAttribute="bottom" id="GqJ-dh-6bv"/>
-                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="leading" secondItem="cYT-fc-BAa" secondAttribute="leading" id="Ucd-ui-hJI"/>
-                        <constraint firstAttribute="width" constant="600" id="b8m-hk-jNm"/>
-                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="top" secondItem="bsb-jy-MHh" secondAttribute="bottom" constant="30" id="hbD-hh-Cg0"/>
-                        <constraint firstAttribute="height" constant="150" id="mAC-73-bar"/>
-                        <constraint firstItem="bsb-jy-MHh" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" constant="25" id="nfX-1f-nqz"/>
-                        <constraint firstItem="bsb-jy-MHh" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="pNN-OJ-mRN"/>
-                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="uiL-aj-a7A"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aa-vQ-cqC" userLabel="PlayerButtonHolderView">
                     <rect key="frame" x="0.0" y="905" width="1801" height="150"/>
                     <subviews>
@@ -88,6 +52,42 @@
                         <constraint firstItem="h4B-oA-8qG" firstAttribute="centerY" secondItem="3aa-vQ-cqC" secondAttribute="centerY" id="uGV-ea-SeA"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYT-fc-BAa">
+                    <rect key="frame" x="1251" y="905" width="550" height="150"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fOq-Z0-SJJ">
+                            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="DG3-ML-fG7"/>
+                                <constraint firstAttribute="width" constant="200" id="TIX-op-ITg"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bsb-jy-MHh">
+                            <rect key="frame" x="230" y="25" width="71" height="36"/>
+                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a1a-Pr-oJ9">
+                            <rect key="frame" x="230" y="91" width="92" height="43"/>
+                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="36"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.4023705051" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" id="FKD-lK-Zey"/>
+                        <constraint firstAttribute="bottom" secondItem="fOq-Z0-SJJ" secondAttribute="bottom" id="GqJ-dh-6bv"/>
+                        <constraint firstItem="fOq-Z0-SJJ" firstAttribute="leading" secondItem="cYT-fc-BAa" secondAttribute="leading" id="Ucd-ui-hJI"/>
+                        <constraint firstAttribute="width" constant="550" id="b8m-hk-jNm"/>
+                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="top" secondItem="bsb-jy-MHh" secondAttribute="bottom" constant="30" id="hbD-hh-Cg0"/>
+                        <constraint firstAttribute="height" constant="150" id="mAC-73-bar"/>
+                        <constraint firstItem="bsb-jy-MHh" firstAttribute="top" secondItem="cYT-fc-BAa" secondAttribute="top" constant="25" id="nfX-1f-nqz"/>
+                        <constraint firstItem="bsb-jy-MHh" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="pNN-OJ-mRN"/>
+                        <constraint firstItem="a1a-Pr-oJ9" firstAttribute="leading" secondItem="fOq-Z0-SJJ" secondAttribute="trailing" constant="30" id="uiL-aj-a7A"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lJi-P7-V4r">
                     <rect key="frame" x="0.0" y="555" width="1801" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -95,10 +95,26 @@
                         <constraint firstAttribute="height" constant="350" id="Cp9-jB-lTF"/>
                     </constraints>
                 </view>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-sB-FiE">
-                    <rect key="frame" x="1490" y="937" width="291" height="86"/>
-                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                    <state key="normal" title="Skip Intro&gt;&gt;"/>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsc-sB-FiE" customClass="SkipIntroButton" customModule="JioCinema" customModuleProvider="target">
+                    <rect key="frame" x="103" y="917" width="196" height="68"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="196" id="DhC-K1-JZW"/>
+                        <constraint firstAttribute="height" constant="68" id="pUp-CW-8h9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
+                    <state key="normal" title="Skip Intro"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="34"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="skipIntroPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="lgJ-NT-xio"/>
                     </connections>
@@ -106,15 +122,15 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="cYT-fc-BAa" secondAttribute="trailing" constant="50" id="BEM-2k-0L3"/>
+                <constraint firstAttribute="trailing" secondItem="cYT-fc-BAa" secondAttribute="trailing" id="BEM-2k-0L3"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="width" secondItem="lJi-P7-V4r" secondAttribute="width" id="Fpg-gS-wlU"/>
-                <constraint firstItem="cYT-fc-BAa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="Gxc-JA-WZL"/>
-                <constraint firstAttribute="trailing" secondItem="qsc-sB-FiE" secondAttribute="trailing" constant="20" id="Mvg-tp-iWT"/>
+                <constraint firstItem="cYT-fc-BAa" firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" id="Gxc-JA-WZL"/>
+                <constraint firstItem="qsc-sB-FiE" firstAttribute="top" secondItem="3aa-vQ-cqC" secondAttribute="top" constant="12" id="aXk-qL-vQO"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="top" secondItem="lJi-P7-V4r" secondAttribute="bottom" id="f22-0H-thC"/>
                 <constraint firstAttribute="trailing" secondItem="lJi-P7-V4r" secondAttribute="trailing" id="mM2-Dc-l5M"/>
+                <constraint firstItem="qsc-sB-FiE" firstAttribute="leading" secondItem="3aa-vQ-cqC" secondAttribute="leading" constant="103" id="qty-fr-4rh"/>
                 <constraint firstAttribute="bottom" secondItem="3aa-vQ-cqC" secondAttribute="bottom" id="rSS-Sl-eBU"/>
                 <constraint firstItem="lJi-P7-V4r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="syy-CA-v4B"/>
-                <constraint firstItem="qsc-sB-FiE" firstAttribute="centerY" secondItem="3aa-vQ-cqC" secondAttribute="centerY" id="unO-Cg-4LP"/>
                 <constraint firstItem="3aa-vQ-cqC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vo6-Zc-OWI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

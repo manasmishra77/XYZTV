@@ -58,7 +58,7 @@
                                 </userDefinedRuntimeAttributes>
                             </progressView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="nFy-3D-dND" firstAttribute="leading" secondItem="s7W-TF-XAc" secondAttribute="leading" id="0UX-Te-cGq"/>
                             <constraint firstItem="xdZ-19-fLq" firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="0hM-cy-G7Z"/>
