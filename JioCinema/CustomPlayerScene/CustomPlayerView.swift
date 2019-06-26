@@ -49,6 +49,8 @@ class CustomPlayerView: UIView {
     var fromCategoryIndex: Int = 0
     var fromLanguage: String = ""
     
+    var firstTime: Bool?
+    
     @IBOutlet weak var alertMsg: UILabel!
     @IBOutlet weak var playerHolderView: UIView!
     @IBOutlet weak var controlHolderView: UIView!
@@ -72,6 +74,9 @@ class CustomPlayerView: UIView {
     var lastSelectedAudioLanguage: String?
     var lastSelectedVideoQuality: String?
     var timeSpent = 0
+    
+    var controlVisibleState: VisbleControls = .allHide
+    var shouldShowSkipIntroButton: Bool = false
     
     @IBOutlet weak var popUpTableViewHolderWidth: NSLayoutConstraint!
     
@@ -185,9 +190,9 @@ class CustomPlayerView: UIView {
     
     func setValuesForMoreLikeData(){
         moreLikeView?.appType = playerItem?.appType ?? .None
-        var id = playerItem?.id
-        if id == ""{
-            id = playerItem?.latestId
+        var id = playerItem?.latestId
+        if id == "" || id == nil{
+            id = playerItem?.id
         }
         moreLikeView?.configMoreLikeView(id: id ?? "")
         moreLikeView?.isDisney = isDisney
@@ -277,6 +282,7 @@ class CustomPlayerView: UIView {
             player.pause()
             self.removePlayerObserver()
             self.playerViewModel = nil
+            self.playerViewModel?.thumbImageArray = nil
             self.playerLayer?.removeFromSuperlayer()
             self.gradientView.layer.isHidden = true
             self.playerLayer = nil
@@ -295,6 +301,21 @@ class CustomPlayerView: UIView {
         timeSpent += 1
         if player?.rate == 1 && indicator != nil {
             updateIndicatorState(toStart: false)
+        }
+        if gradientView.layer.isHidden == true {
+            // currentPlayer is our instance of the AVPlayer
+            if let currItem = player?.currentItem {
+                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 95])
+                // 93% from the top of the video
+                currItem.textStyleRules = [rule!]
+            }
+        } else {
+            //currentPlayer is our instance of the AVPlayer
+            if let currItem = player?.currentItem {
+                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 3])
+                // 3% from the top of the video
+                currItem.textStyleRules = [rule!]
+            }
         }
     }
     
@@ -575,6 +596,7 @@ extension CustomPlayerView: PlayerControlsDelegate {
     
     
     func skipIntroButtonPressed() {
+        hideUnhideControl(visibleControls: .hideSkipIntro)
         guard let seekTime = playerViewModel?.convertStringToSeconds(strTime: playerViewModel?.playbackRightsModel?.introCreditEnd ?? playerViewModel?.playbackRightsModel?.recapCreditEnd ?? "") else {
             return
         }
@@ -597,9 +619,9 @@ extension CustomPlayerView: PlayerControlsDelegate {
         timerToHideControls.invalidate()
     }
     
-    func resetTimerForHideControl() {
-        self.resetTimertToHideControls()
-    }
+//    func resetTimerForHideControl() {
+//        self.resetTimertToHideControls()
+//    }
     
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
@@ -628,22 +650,44 @@ extension CustomPlayerView: EnterPinViewModelDelegate {
 
 extension CustomPlayerView: PlayerViewModelDelegate {
     func checkTimeToShowSkipButton(isValidTime: Bool, starttime: Double, endTime: Double) {
-        if isValidTime && !(controlsView?.isHidden ?? false) {
-            controlsView?.skipIntroButton.isHidden = false
-        } else {
-            if isValidTime && (controlsView?.isHidden ?? false) {
-                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-                    controlsView?.isHidden = false
-                    controlsView?.skipIntroButton.isHidden = false
-                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-                    controlsView?.isHidden = true
-                    controlsView?.skipIntroButton.isHidden = true
-                }
-                
-            } else {
-                controlsView?.skipIntroButton.isHidden = true
+        self.shouldShowSkipIntroButton = isValidTime
+        if isValidTime {
+            if firstTime == nil {
+                self.firstTime = true
             }
+            if self.firstTime ?? false {
+                hideUnhideControl(visibleControls: .skipIntroOnlyVisible)
+                firstTime = false
+                self.myPreferredFocusView = controlsView?.skipIntroButton
+                self.updateFocusIfNeeded()
+                self.setNeedsFocusUpdate()
+            }
+        } else {
+            hideUnhideControl(visibleControls: .hideSkipIntro)
+            firstTime = nil
         }
+        
+//        if isValidTime && !(controlsView?.isHidden ?? false) {
+//            hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
+//            resetTimertToHideControls()
+////            controlsView?.skipIntroButton.isHidden = false
+//        } else {
+//            if isValidTime && (controlsView?.isHidden ?? false) {
+//                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+//                        hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
+//                        resetTimertToHideControls()
+////                    controlsView?.isHidden = false
+////                    controlsView?.skipIntroButton.isHidden = false
+//                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+//                        hideUnhideControl(visibleControls: .All, toHide: true)
+////                    controlsView?.isHidden = true
+////                    controlsView?.skipIntroButton.isHidden = true
+//                }
+//
+//            } else {
+//                controlsView?.skipIntroButton.isHidden = true
+//            }
+//        }
     }
     
     func dismissPlayer() {
@@ -976,6 +1020,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     if remainingTime <= 5
                     {
                         self?.checkForNextVideoInAutoPlay(remainingTime: remainingTime)
+                    } else {
+                        self?.hideUnhideControl(visibleControls: .hideNextVideo)
                     }
                 } else {
                     self?.playerTimeObserverToken = nil
@@ -986,15 +1032,16 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func checkForNextVideoInAutoPlay(remainingTime: Double) {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
-        if autoPlayOn, controlsView?.recommendViewHolder.isHidden ?? false {
+        if autoPlayOn{
             guard let currentPlayingIndex = currentPlayingIndex else { return }
-            self.controlHolderView.isHidden = false
-            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .Episode{
+//            self.controlHolderView.isHidden = false
+            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .Episode {
                 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                     self.resetTimertToHideControls()
                     
                     if let nextItemTupple = playerViewModel?.gettingNextEpisodeAndSequence(episodes: moreArray, index: currentPlayingIndex) {
+                        self.hideUnhideControl(visibleControls: .nextVideoOnlyVisible)
                         self.controlsView?.showNextVideoView(videoName: nextItemTupple.0.name ?? "", remainingTime: Int(remainingTime), banner: nextItemTupple.0.banner ?? "")
                     }
                 }
@@ -1004,39 +1051,51 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     self.resetTimertToHideControls()
                     if (currentPlayingIndex + 1) < moreArray.count {
                         let nextItem = moreArray[(currentPlayingIndex + 1)]
+                        self.hideUnhideControl(visibleControls: .nextVideoOnlyVisible)
                         self.controlsView?.showNextVideoView(videoName: nextItem.name ?? "", remainingTime: Int(remainingTime), banner: nextItem.banner ?? "")
                     }
                 }
             }
+        } else {
+            hideUnhideControl(visibleControls: .allVisible)
         }
     }
     
     func hideUnhideControl(visibleControls : VisbleControls) {
+        if controlsView == nil{
+            return
+        }
         switch visibleControls {
-        case .ControlsOnly:
+        case .allVisible:
+            controlsView?.skipIntroButton.isHidden = !self.shouldShowSkipIntroButton
+            gradientView.isHidden = false
             controlsView?.sliderView?.isHidden = false
             controlsView?.playerButtonsHolderView.isHidden = false
             moreLikeView?.isHidden = false
-        case .ControlsWithNextVideo:
-            controlsView?.sliderView?.isHidden = false
-            controlsView?.playerButtonsHolderView.isHidden = false
-            moreLikeView?.isHidden = false
+            self.controlVisibleState = .allVisible
+            resetTimertToHideControls()
+        case .nextVideoOnlyVisible:
             controlsView?.recommendViewHolder.isHidden = false
-        case .ControlsWithSkipIntro:
-            controlsView?.sliderView?.isHidden = false
-            controlsView?.playerButtonsHolderView.isHidden = false
-            moreLikeView?.isHidden = false
-            controlsView?.skipIntroButton.isHidden = false
-        case .NextVideoOnly:
-            controlsView?.recommendViewHolder.isHidden = false
-        case .SkipIntroOnly:
-            controlsView?.skipIntroButton.isHidden = false
-        case .None:
+        case .skipIntroOnlyVisible:
+            self.controlsView?.skipIntroButton.isHidden = false
+            self.resetTimertToHideControls()
+        case .allHide:
+            controlsView?.skipIntroButton.isHidden = true
+            gradientView.isHidden = true
             controlsView?.sliderView?.isHidden = true
             controlsView?.playerButtonsHolderView.isHidden = true
             moreLikeView?.isHidden = true
-            controlsView?.recommendViewHolder.isHidden = true
-            controlsView?.skipIntroButton.isHidden = true
+            self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
+            self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
+            self.updateFocusIfNeeded()
+            self.setNeedsFocusUpdate()
+            
+        case .allVisibleExceptSkipIntro:
+            controlsView?.sliderView?.isHidden = false
+            controlsView?.playerButtonsHolderView.isHidden = false
+            moreLikeView?.isHidden = false
+            controlsView?.recommendViewHolder.isHidden = false
+            resetTimertToHideControls()
         case .hideSkipIntro:
             controlsView?.skipIntroButton.isHidden = true
         case .hideNextVideo:
@@ -1073,7 +1132,8 @@ extension CustomPlayerView {
             timerToHideControls = nil
         }
         timerToHideControls = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
-            self?.hideControlsView()
+//            self?.hideControlsView()
+            self?.hideUnhideControl(visibleControls: .allHide)
             self?.timerToHideControls.invalidate()
             self?.timerToHideControls = nil
         })
@@ -1082,15 +1142,6 @@ extension CustomPlayerView {
     func resetTimertToHideControls() {
         if controlsView != nil || controlsView?.isHidden == false{
             invalidateTimerForControl()
-            self.controlsView?.isHidden = false
-            self.moreLikeHolderView?.isHidden = false
-            self.gradientView.isHidden = false
-            // currentPlayer is our instance of the AVPlayer
-            if let currItem = player?.currentItem {
-                let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 3])
-                // 93% from the top of the video
-                currItem.textStyleRules = [rule!]
-            }
             self.startTimerToHideControls()
         }
     }
@@ -1098,28 +1149,6 @@ extension CustomPlayerView {
     func invalidateTimerForControl() {
         if self.timerToHideControls != nil {
             self.timerToHideControls.invalidate()
-        }
-    }
-    
-    func hideControlsView() {
-        if controlsView == nil{
-            return
-        }
-        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = self.controlsView?.sliderView?.sliderLeading.constant ?? 0
-        self.controlsView?.isHidden = true
-        self.moreLikeHolderView?.isHidden = true
-        self.gradientView.isHidden = true
-        self.myPreferredFocusView = self
-        self.updateFocusIfNeeded()
-        self.setNeedsFocusUpdate()
-        self.isFocusViewChangedOnResetTimer = true
-        self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
-        
-        // currentPlayer is our instance of the AVPlayer
-        if let currItem = player?.currentItem {
-            let rule = AVTextStyleRule(textMarkupAttributes: [kCMTextMarkupAttribute_OrthogonalLinePositionPercentageRelativeToWritingDirection as String: 95])
-            // 93% from the top of the video
-            currItem.textStyleRules = [rule!]
         }
         
         
@@ -1163,6 +1192,7 @@ extension CustomPlayerView {
                 print("Direct")
             case .indirect:
                 print("indirect")
+                hideUnhideControl(visibleControls: .allVisible)
                 resetTimertToHideControls()
             case .pencil:
                 print("pencil")
@@ -1226,12 +1256,12 @@ extension CustomPlayerView: ResumeWatchDelegate {
     
 }
 enum VisbleControls {
-    case SkipIntroOnly
-    case NextVideoOnly
-    case ControlsOnly
-    case ControlsWithSkipIntro
-    case ControlsWithNextVideo
-    case None
+    case skipIntroOnlyVisible
+    case nextVideoOnlyVisible
+    case allHide
+    case allVisible
+//    case allVisibleExceptNext // Skip intro to be shown
+    case allVisibleExceptSkipIntro
     case hideSkipIntro
     case hideNextVideo
 }

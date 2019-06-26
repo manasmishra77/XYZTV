@@ -12,7 +12,7 @@ import SDWebImage
 protocol PlayerControlsDelegate: NSObject {
     func setPlayerSeekTo(seekValue: CGFloat)
     func cancelTimerForHideControl()
-    func resetTimerForHideControl()
+    func resetTimertToHideControls()
     func skipIntroButtonPressed()
     
     func playTapped()
@@ -138,22 +138,22 @@ class PlayersControlView: UIView {
     
     func showNextVideoView(videoName: String, remainingTime: Int, banner: String) {
         DispatchQueue.main.async {
-            
-            self.recommendViewHolder.isHidden = false
-            self.recommendViewHolder.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+//            self.recommendViewHolder.isHidden = false
+//            self.recommendViewHolder.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.nextContentTitle.text = videoName
-            self.nextContentSubtitle.text = "Playing in " + "\(5)" + " Seconds"
-            var t1 = 4
-            _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true , block: {(t) in
-                
-                self.nextContentSubtitle.text = "Playing in " + "\(Int(t1))" + " Seconds"
-                if t1 < 1 {
-                    self.recommendViewHolder.isHidden = true
-                    t.invalidate()
-                }
-                t1 = t1 - 1
-            })
-            
+            self.nextContentSubtitle.text = "Playing in " + "\(Int(remainingTime))" + " Seconds"
+//            var t1 = 4
+//            _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true , block: {(t) in
+//
+//                self.nextContentSubtitle.text = "Playing in " + "\(Int(t1))" + " Seconds"
+//                if t1 < 1 {
+//                    self.isHidden = false
+//                    self.recommendViewHolder.isHidden = true
+//                    t.invalidate()
+//                }
+//                t1 = t1 - 1
+//            })
+//
             let imageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image?.appending(banner) ?? ""
             let url = URL(string: imageUrl)
             self.nextContentImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
@@ -167,7 +167,7 @@ class PlayersControlView: UIView {
 
 extension PlayersControlView: CustomSliderProtocol {
     func resetTimerForShowControl() {
-        delegate?.resetTimerForHideControl()
+        delegate?.resetTimertToHideControls()
     }
     
     func seekPlayerTo(pointX: CGFloat) {
@@ -258,7 +258,7 @@ struct PlayerButtonItem {
         case 4:
             selectedImage = "M"
             unselectedImage = "m"
-            titleOfButton = "Subtitles"
+            titleOfButton = "Audio & Subtitles"
         default:
             print("default")
         }
