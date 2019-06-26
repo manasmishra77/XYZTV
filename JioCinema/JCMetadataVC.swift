@@ -313,44 +313,6 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             self.callWebServiceForMoreLikeData(id: id)
         }
-        /*
-         let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
-         weak var weakSelf = self
-         RJILApiManager.defaultManager.get(request: metadataRequest) { (data, response, error) in
-         DispatchQueue.main.async {
-         guard id != "" else {
-         weakSelf?.handleAlertForMetaDataDataFailure()
-         return
-         }
-         weakSelf?.isUserComingFromPlayerScreen = false
-         weakSelf?.loaderContainerView.isHidden = true
-         weakSelf?.metadataContainerView.isHidden = false
-         weakSelf?.activityIndicator.stopAnimating()
-         }
-         
-         if let responseError = error
-         {
-         //TODO: handle error
-         print(responseError)
-         DispatchQueue.main.async {
-         weakSelf?.showMetadata()
-         //Utility.sharedInstance.showDismissableAlert(title: "Try Again!!", message: "")
-         weakSelf?.handleAlertForMetaDataDataFailure()
-         }
-         return
-         }
-         if let responseData = data {
-         
-         weakSelf?.evaluateMetaData(dictionaryResponseData: responseData)
-         DispatchQueue.main.async {
-         weakSelf?.showMetadata()
-         let headerView = weakSelf?.prepareHeaderView()
-         weakSelf?.metadataTableView.tableHeaderView = headerView
-         }
-         weakSelf?.callWebServiceForMoreLikeData(id: id)
-         return
-         }
-         }*/
     }
     
     func callWebServiceForMoreLikeData(id: String) {
@@ -1045,10 +1007,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let url = URL(string: imageUrl)
-        self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), context: nil)
+
 //        DispatchQueue.main.async {
-//            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
-//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
+//
+            self.headerCell.bannerImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "ItemPlaceHolder"), options: SDWebImageOptions.highPriority, completed: {
+                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in})
 //        }
         //self.applyGradient(self.headerCell.bannerImageView)
         myPreferredFocusView = headerCell.playButton
@@ -1412,10 +1375,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
-        var colorToChange = ThemeManager.shared.selectionColor//UIColor(red: 0.9059922099, green: 0.1742313504, blue: 0.6031312346, alpha: 1)
-//        if isDisney {
-//            colorToChange = ViewColor.disneyButtonColor
-//        }
+        var colorToChange = ThemeManager.shared.selectionColor
         let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Light", size: 32.0)!])
         fontChangedText.addAttribute(NSAttributedString.Key.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {

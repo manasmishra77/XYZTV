@@ -170,7 +170,7 @@ class JCSplashVC: UIViewController {
         let updateAction = UIAlertAction(title: "Update", style: .default) { (action) in
             let urlString = "com.apple.TVAppStore://itunes.apple.com/in/app/jiocinema/id1067316596?mt=8"
             guard let url = URL(string: urlString) else {return}
-            UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey(rawValue: ""): ""], completionHandler: { (bool) in
+            UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary(["": ""]), completionHandler: { (bool) in
                 exit(0)
             })
         }
@@ -190,4 +190,9 @@ class JCSplashVC: UIViewController {
         }
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

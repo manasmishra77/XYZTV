@@ -122,7 +122,6 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
         case 0:
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 cell.textLabel?.text = "Logout"
-
                 cell.settingsDetailLabel.isHidden = false
                 cell.settingsDetailLabel.text = ""
             } else {                
@@ -138,6 +137,15 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
                 cell.settingsDetailLabel.text = "OFF"
             }
             
+//        case 2:
+//            cell.textLabel?.text = Subtitleheading
+//            cell.settingsDetailLabel.isHidden = false
+//
+//            if IsAutoSubtitleOn {
+//                 cell.settingsDetailLabel.text = "ON"
+//            } else {
+//                cell.settingsDetailLabel.text = "OFF"
+//            }
             
         case 2:
             cell.textLabel?.text = ParentalHeading
@@ -193,20 +201,31 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             case 1:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Autoplay.png")
                 
+//            case 2:
+//                self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
+                
             case 2:
                 self.settingsImageView.image = #imageLiteral(resourceName: "ParentalControlSetting.png")
                 
             case 3:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
+                    self.settingsImageView.image = #imageLiteral(resourceName: "FAQ.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
                 
             case 4:
-                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "Feedback.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
                 
             case 5:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "PrivacyPolicy.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
                 
             case 6:
-                self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
+                self.settingsImageView.image = #imageLiteral(resourceName: "Terms.png")
+
+//                self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
                 
             case 7:
                 self.settingsImageView.image = #imageLiteral(resourceName: "Version.png")
@@ -252,6 +271,10 @@ extension JCSettingsVC : UITableViewDelegate, UITableViewDataSource
             settingsDetailVC.isForAutoPlay = true
             settingsDetailVC.isDetailView = false
             settingsDetailVC.isFeedBackView = false
+            
+//        case 2:
+//            settingsDetailVC.isDetailView = false
+//            settingsDetailVC.isFeedBackView = false
             
         case 2:
             self.sendParentalControlTileSelectEvent()

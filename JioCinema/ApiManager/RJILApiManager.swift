@@ -173,7 +173,7 @@ class RJILApiManager {
     }
     
     func prepareRequest(path: String, headerType: RequestHeaderType = .baseCommon, params: Dictionary<String, Any>? = nil, encoding:JCParameterEncoding, headerParam :Dictionary<String, String>? = nil) -> URLRequest? {
-
+        
         var request:URLRequest?
         
         if let params = params {
