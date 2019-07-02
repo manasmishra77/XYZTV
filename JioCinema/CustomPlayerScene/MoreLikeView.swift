@@ -155,7 +155,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let layoutType: ItemCellLayoutType = .landscapeForLangGenre
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
 
-            var isPlayingNow = model?.id == cureentItemId
+            let isPlayingNow = model?.id == cureentItemId
 
 //            if let currentIndex = self.currentPlayingIndex {
 //                if indexPath.row == currentIndex && isPlayList {
@@ -171,7 +171,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let layoutType: ItemCellLayoutType = (appType == .Movie) ? .potraitWithoutLabels : .landscapeForLangGenre
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
 
-            var isPlayingNow = model?.id == cureentItemId
+            let isPlayingNow = model?.id == cureentItemId
 
 //            if let currentIndex = self.currentPlayingIndex {
 //                if indexPath.row == currentIndex {

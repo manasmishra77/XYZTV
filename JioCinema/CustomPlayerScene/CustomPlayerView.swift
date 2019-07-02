@@ -837,6 +837,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         //        } //vinit_commented
         if let timeObserverToken = playerTimeObserverToken {
+            print("************************Observer removed successfully*******************")
             self.player?.removeTimeObserver(timeObserverToken)
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
@@ -1034,8 +1035,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
         if autoPlayOn{
             guard let currentPlayingIndex = currentPlayingIndex else { return }
-//            self.controlHolderView.isHidden = false
-            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .Episode {
+            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .TVShow {
                 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                     self.resetTimertToHideControls()

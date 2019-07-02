@@ -83,8 +83,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .player:
             if isPlayingNow {
                 imageViewCoverview.isHidden = false
+                nowPlayingLabel.text = "Now Playing"
                 nowPlayingLabel.isHidden = false
                 self.bringSubviewToFront(imageViewCoverview)
+            } else if cellItems.item?.appType == .Music {
+                nowPlayingLabel.text = cellItems.item?.name
             }
             return
         case .disneyCommon:
@@ -219,7 +222,18 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithLabelsAlwaysShow:
             break
         }
-        
+        if cellItem?.cellType == .player {
+            if cellItem?.item?.appType == .Music && isFocused {
+                imageViewCoverview.isHidden = false
+                nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
+            } else if nowPlayingLabel.text != "Now Playing"{
+                imageViewCoverview.isHidden = true
+                nowPlayingLabel.isHidden = true
+                self.bringSubviewToFront(imageViewCoverview)
+            }
+        }
+
     }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModel) {
          heightConstraintForProgressBar.constant = 10
