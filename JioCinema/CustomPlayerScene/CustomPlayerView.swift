@@ -254,7 +254,6 @@ class CustomPlayerView: UIView {
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
-            print("+++++++++++++++++Up form meta data")
             self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
             UIView.animate(withDuration: 0.7) {
                 self.controlsView?.alpha = 1
@@ -408,11 +407,13 @@ class CustomPlayerView: UIView {
         //            _ = player?.currentItem?.select(type: .audio, name: language)
         //        }
         //    }
+        lastSelectedAudioLanguage = audioLanguage
         if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
         }
+       
     }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
@@ -496,8 +497,8 @@ extension CustomPlayerView: PlayerControlsDelegate {
         multiAudioTableView?.frame = CGRect.init(x: tableViewHolderInPopupView.frame.origin.x, y: tableViewHolderInPopupView.frame.origin.y, width: popUpTableViewHolderWidth.constant/2, height: tableViewHolderInPopupView.bounds.height)
         if let lastIndex = audioArray.firstIndex(of: lastSelectedAudioLanguage ?? ""){
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
-        } else if let audiolanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name{
-            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audiolanguage) ?? 0, section: 0)
+        } else if let audioLanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name {
+            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audioLanguage) ?? 0, section: 0)
             lastSelectedAudioLanguage = audioArray[multiAudioTableView?.previousSelectedIndexpath?.row ?? 0]
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
@@ -807,6 +808,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             }
             if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
                 self.playerAudioLanguage(audioLanguageToBePlayed.name)
+
+//                if let audioLang = self.lastSelectedAudioLanguage {
+//                    print(audioLang)
+//                    if audioLang != audioLanguageToBePlayed.name {
+//                        self.playerAudioLanguage(audioLang)
+//                    }
+//                }
+//                if let audioLang = self.lastSelectedAudioLanguage?.lowercased() && audioLanguage != audioLanguageToBePlayed.name{
+//                    self.playerAudioLanguage(self.audioLanguage)
+//                } else {
+//                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
+//                }
             }
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
