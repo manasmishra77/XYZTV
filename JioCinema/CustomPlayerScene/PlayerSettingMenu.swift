@@ -80,11 +80,13 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
             cell.rabioButtonImageView.tintColor = .white
             cell.isSelectedCell = true
-            let cell2 = tableView.cellForRow(at: previousSelectedIndexpath ?? IndexPath(row: 0, section: 0)) as! PlayerPopupTableViewCell
-            cell2.rabioButtonImageView.image = UIImage(named: "radioButton")
-            cell2.title.font = UIFont(name: "JioType-Light", size: 36)
-            cell2.title.textColor = #colorLiteral(red: 0.6500751972, green: 0.650090754, blue: 0.6500824094, alpha: 1)
-            cell2.isSelectedCell = false
+            if let previosIndex = previousSelectedIndexpath {
+                let cell2 = tableView.cellForRow(at: previosIndex) as? PlayerPopupTableViewCell
+                cell2?.rabioButtonImageView.image = UIImage(named: "radioButton")
+                cell2?.title.font = UIFont(name: "JioType-Light", size: 36)
+                cell2?.title.textColor = #colorLiteral(red: 0.6500751972, green: 0.650090754, blue: 0.6500824094, alpha: 1)
+                cell2?.isSelectedCell = false
+            }
         }
         previousSelectedIndexpath = indexPath
     }
