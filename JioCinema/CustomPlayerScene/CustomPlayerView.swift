@@ -20,7 +20,7 @@ protocol CustomPlayerViewProtocol: NSObjectProtocol {
 var playerViewControllerKVOContext = 0
 class CustomPlayerView: UIView {
     var moreLikeView: MoreLikeView?
-    fileprivate var playerViewModel: PlayerViewModel?
+    var playerViewModel: PlayerViewModel?
     var playbackRightModel : PlaybackRightsModel?
     fileprivate var enterParentalPinView: EnterParentalPinView?
     fileprivate var enterPinViewModel: EnterPinViewModel?
@@ -846,9 +846,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             return
         }
         //sendMediaEndAnalyticsEvent()
-        //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
+        if (viewModel.appType == .Movie || viewModel.appType == .Episode), viewModel.isItemToBeAddedInResumeWatchList {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
-        //        } //vinit_commented
+        }
         if let timeObserverToken = playerTimeObserverToken {
             print("************************Observer removed successfully*******************")
             self.player?.removeTimeObserver(timeObserverToken)
@@ -1263,7 +1263,11 @@ extension CustomPlayerView: ResumeWatchDelegate {
         playerViewModel?.callWebServiceForRemovingResumedWatchlist()
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
-        delegate?.removePlayerController()
+        self.updateIndicatorState(toStart: true)
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            self.updateIndicatorState(toStart: false)
+            self.delegate?.removePlayerController()
+        }
     }
     
     
