@@ -43,7 +43,7 @@ class PlayerViewController: UIViewController {
         self.configureCustomPlayerViewView()
     }
     
-
+    
     @objc func menuButtonAction(recognizer: UITapGestureRecognizer) {
         if viewforplayer?.popUpHolderView.isHidden == false {
             viewforplayer?.removeControlDetailview(forOkButtonClick: false)
@@ -54,11 +54,18 @@ class PlayerViewController: UIViewController {
             }
         }
         else {
-            DispatchQueue.main.async {
-                self.viewforplayer?.resetAndRemovePlayer()
-                self.removePlayerController()
+            self.viewforplayer?.resetAndRemovePlayer()
+            if let _ = self.presentingViewController as? JCMetadataVC {
+                    self.removePlayerController()
             }
-        }
+            else {
+                self.viewforplayer?.updateIndicatorState(toStart: true)
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                    self.viewforplayer?.updateIndicatorState(toStart: false)
+                    self.removePlayerController()
+                }
+            }
+            }
     }
     
     func configureCustomPlayerViewView() {
@@ -75,7 +82,7 @@ class PlayerViewController: UIViewController {
         viewforplayer?.configureView(item: self.playerItem!, latestEpisodeId: self.latestEpisodeId,audioLanguage: self.audioLanguage)
         viewforplayer?.audioLanguage = self.audioLanguage
     }
-
+    
     deinit {
         print("playerVC deinit called")
     }
