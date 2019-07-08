@@ -806,20 +806,23 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
                 
             }
-            if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
-                self.playerAudioLanguage(audioLanguageToBePlayed.name)
-
-//                if let audioLang = self.lastSelectedAudioLanguage {
-//                    print(audioLang)
-//                    if audioLang != audioLanguageToBePlayed.name {
-//                        self.playerAudioLanguage(audioLang)
-//                    }
-//                }
-//                if let audioLang = self.lastSelectedAudioLanguage?.lowercased() && audioLanguage != audioLanguageToBePlayed.name{
-//                    self.playerAudioLanguage(self.audioLanguage)
-//                } else {
-//                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
-//                }
+            if let selectedLanguage = self.lastSelectedAudioLanguage {
+                self.playerAudioLanguage(selectedLanguage)
+            } else {
+                if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
+                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
+                    //                if let audioLang = self.lastSelectedAudioLanguage {
+                    //                    print(audioLang)
+                    //                    if audioLang != audioLanguageToBePlayed.name {
+                    //                        self.playerAudioLanguage(audioLang)
+                    //                    }
+                    //                }
+                    //                if let audioLang = self.lastSelectedAudioLanguage?.lowercased() && audioLanguage != audioLanguageToBePlayed.name{
+                    //                    self.playerAudioLanguage(self.audioLanguage)
+                    //                } else {
+                    //                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
+                    //                }
+                }
             }
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
