@@ -20,6 +20,7 @@ protocol PlayerViewModelDelegate: NSObjectProtocol {
     func dismissPlayerOnAesFailure()
     func checkTimeToShowSkipButton(isValidTime: Bool, starttime: Double, endTime: Double)
     func setThumbnailsValue()
+    func dismissPlayer()
 }
 
 enum BitRatesType: String {

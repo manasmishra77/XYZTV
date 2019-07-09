@@ -20,7 +20,7 @@ protocol CustomPlayerViewProtocol: NSObjectProtocol {
 var playerViewControllerKVOContext = 0
 class CustomPlayerView: UIView {
     var moreLikeView: MoreLikeView?
-    fileprivate var playerViewModel: PlayerViewModel?
+    var playerViewModel: PlayerViewModel?
     var playbackRightModel : PlaybackRightsModel?
     fileprivate var enterParentalPinView: EnterParentalPinView?
     fileprivate var enterPinViewModel: EnterPinViewModel?
@@ -254,7 +254,6 @@ class CustomPlayerView: UIView {
                 self.controlsView?.layoutIfNeeded()
             }
         } else {
-            print("+++++++++++++++++Up form meta data")
             self.bottomSpaceOfMoreLikeInContainer.constant = clearanceFromBottomForMoreLikeView
             UIView.animate(withDuration: 0.7) {
                 self.controlsView?.alpha = 1
@@ -408,11 +407,13 @@ class CustomPlayerView: UIView {
         //            _ = player?.currentItem?.select(type: .audio, name: language)
         //        }
         //    }
+        lastSelectedAudioLanguage = audioLanguage
         if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
         }
+       
     }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
@@ -496,8 +497,8 @@ extension CustomPlayerView: PlayerControlsDelegate {
         multiAudioTableView?.frame = CGRect.init(x: tableViewHolderInPopupView.frame.origin.x, y: tableViewHolderInPopupView.frame.origin.y, width: popUpTableViewHolderWidth.constant/2, height: tableViewHolderInPopupView.bounds.height)
         if let lastIndex = audioArray.firstIndex(of: lastSelectedAudioLanguage ?? ""){
             multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: lastIndex, section: 0)
-        } else if let audiolanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name{
-            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audiolanguage) ?? 0, section: 0)
+        } else if let audioLanguage = playerViewModel?.playbackRightsModel?.languageIndex?.name {
+            multiAudioTableView?.previousSelectedIndexpath = IndexPath(row: audioArray.firstIndex(of: audioLanguage) ?? 0, section: 0)
             lastSelectedAudioLanguage = audioArray[multiAudioTableView?.previousSelectedIndexpath?.row ?? 0]
         }
         multiAudioTableView?.configurePlayerSettingMenu(menuItems: audioArray, menuType: .multiaudioLanguage)
@@ -805,8 +806,23 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
                 
             }
-            if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
-                self.playerAudioLanguage(audioLanguageToBePlayed.name)
+            if let selectedLanguage = self.lastSelectedAudioLanguage {
+                self.playerAudioLanguage(selectedLanguage)
+            } else {
+                if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
+                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
+                    //                if let audioLang = self.lastSelectedAudioLanguage {
+                    //                    print(audioLang)
+                    //                    if audioLang != audioLanguageToBePlayed.name {
+                    //                        self.playerAudioLanguage(audioLang)
+                    //                    }
+                    //                }
+                    //                if let audioLang = self.lastSelectedAudioLanguage?.lowercased() && audioLanguage != audioLanguageToBePlayed.name{
+                    //                    self.playerAudioLanguage(self.audioLanguage)
+                    //                } else {
+                    //                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
+                    //                }
+                }
             }
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
@@ -817,6 +833,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func addPlayerNotificationObserver () {
+        
+        if let timeObserverToken = self.playerTimeObserverToken {
+            self.removePlayerObserver()
+        }
         NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         addObserver(self, forKeyPath: #keyPath(player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
@@ -833,11 +853,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             return
         }
         //sendMediaEndAnalyticsEvent()
-        //        if (appType == .Movie || appType == .Episode), isItemToBeAddedInResumeWatchList {
+        if (viewModel.appType == .Movie || viewModel.appType == .Episode || viewModel.appType == .TVShow), viewModel.isItemToBeAddedInResumeWatchList {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
-        //        } //vinit_commented
+        }
         if let timeObserverToken = playerTimeObserverToken {
-            self.player?.removeTimeObserver(timeObserverToken)
+             self.player?.removeTimeObserver(timeObserverToken)
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)
@@ -884,9 +904,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
-        //        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
-        //            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-        //        }
+//                if playerItem?.appType == .Episode || playerItem?.appType == .Movie || playerItem?.appType == .TVShow{
+//                    playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+//                }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
             playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
@@ -1034,8 +1054,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         let autoPlayOn = UserDefaults.standard.bool(forKey: isAutoPlayOnKey)
         if autoPlayOn{
             guard let currentPlayingIndex = currentPlayingIndex else { return }
-//            self.controlHolderView.isHidden = false
-            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .Episode {
+            if self.playerItem?.appType == .Episode || self.playerItem?.appType == .TVShow {
                 
                 if let moreArray = moreLikeView?.episodesArray, moreArray.count > 0 {
                     self.resetTimertToHideControls()
@@ -1250,7 +1269,11 @@ extension CustomPlayerView: ResumeWatchDelegate {
         playerViewModel?.callWebServiceForRemovingResumedWatchlist()
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
-        delegate?.removePlayerController()
+        self.updateIndicatorState(toStart: true)
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            self.updateIndicatorState(toStart: false)
+            self.delegate?.removePlayerController()
+        }
     }
     
     
