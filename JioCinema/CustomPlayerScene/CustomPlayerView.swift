@@ -853,7 +853,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             return
         }
         //sendMediaEndAnalyticsEvent()
-        if (viewModel.appType == .Movie || viewModel.appType == .Episode), viewModel.isItemToBeAddedInResumeWatchList {
+        if (viewModel.appType == .Movie || viewModel.appType == .Episode || viewModel.appType == .TVShow), viewModel.isItemToBeAddedInResumeWatchList {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         }
         if let timeObserverToken = playerTimeObserverToken {
@@ -904,9 +904,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
-        //        if playerItem?.appType == .Episode || playerItem?.appType == .Movies || playerItem?.appType == .TVShow{
-        //            playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-        //        }
+//                if playerItem?.appType == .Episode || playerItem?.appType == .Movie || playerItem?.appType == .TVShow{
+//                    playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+//                }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
             playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
