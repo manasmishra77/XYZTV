@@ -261,6 +261,10 @@ var sideNavigationVC: SideNavigationVC? {
     return navVc
 }
 
+var playerVC: PlayerViewController? {
+    return sideNavigationVC?.presentedViewController as? PlayerViewController
+}
+
 
 struct SideNavigationConstants {
     static let expandedWidth: CGFloat = 400

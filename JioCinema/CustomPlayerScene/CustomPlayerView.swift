@@ -833,6 +833,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func addPlayerNotificationObserver () {
+        
+        if let timeObserverToken = self.playerTimeObserverToken {
+            self.removePlayerObserver()
+        }
         NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         addObserver(self, forKeyPath: #keyPath(player.currentItem.duration), options: [.new, .initial], context: &playerViewControllerKVOContext)
         addObserver(self, forKeyPath: #keyPath(player.rate), options: [.new, .initial], context: &playerViewControllerKVOContext)
@@ -853,8 +857,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         }
         if let timeObserverToken = playerTimeObserverToken {
-            print("************************Observer removed successfully*******************")
-            self.player?.removeTimeObserver(timeObserverToken)
+             self.player?.removeTimeObserver(timeObserverToken)
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)

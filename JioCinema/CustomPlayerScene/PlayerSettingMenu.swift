@@ -64,11 +64,17 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         }
 
         if indexPath == previousSelectedIndexpath{
-            cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
+            cell.rabioButtonImageView.image = UIImage(named: "radioButtonFilled")?.withRenderingMode(.alwaysTemplate)
             cell.title.font = UIFont(name: "JioType-Medium", size: 36)
             cell.title.textColor = .white
             cell.rabioButtonImageView.tintColor = ThemeManager.shared.selectionColor
             cell.isSelectedCell = true
+        } else {
+            cell.rabioButtonImageView.image = UIImage(named: "radioButton")?.withRenderingMode(.alwaysTemplate)
+            cell.title.font = UIFont(name: "JioType-Light", size: 36)
+            cell.title.textColor = .white
+            cell.rabioButtonImageView.tintColor = .white
+            cell.isSelectedCell = false
         }
         return cell
     }
@@ -77,7 +83,7 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
         currentSelectedItem = menuItems[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! PlayerPopupTableViewCell
         if previousSelectedIndexpath != indexPath {
-           cell.rabioButtonImageView.image = UIImage(named: "radioButttonFilled")?.withRenderingMode(.alwaysTemplate)
+           cell.rabioButtonImageView.image = UIImage(named: "radioButtonFilled")?.withRenderingMode(.alwaysTemplate)
             cell.rabioButtonImageView.tintColor = .white
             cell.isSelectedCell = true
             if let previosIndex = previousSelectedIndexpath {
