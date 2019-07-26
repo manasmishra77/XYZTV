@@ -71,8 +71,8 @@ class RJILApiManager {
             _commonHeaders["x-multilang"] = "true"
             _commonHeaders["X-API-Key"] = apIKey
             _commonHeaders["app-name"] = "RJIL_JioCinema"
-            _commonHeaders["x-apisignatures"] = "5772987301"
-//            _commonHeaders["x-apisignatures"] = "5772987304"
+//            _commonHeaders["x-apisignatures"] = "5772987301"
+            _commonHeaders["x-apisignatures"] = "5772987304"
 
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
@@ -291,6 +291,9 @@ class RJILApiManager {
     var lowPrioritySession: URLSession?
     
     func resetURLSessionTask(priority: TaskPriority) {
+        //patch Changes
+//        highPrioritySession = URLSession.shared
+//        return
         if priority == .high {
             highPrioritySession?.finishTasksAndInvalidate()
             highPrioritySession = nil
@@ -320,6 +323,7 @@ class RJILApiManager {
     }
     
     func createDataTask(withRequest request: URLRequest, takPriority: TaskPriority, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask? {
+        //Patch Changes -comment 2 lines
         guard takPriority == .low else {
             return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
         }
