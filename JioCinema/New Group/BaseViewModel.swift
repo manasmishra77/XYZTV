@@ -18,7 +18,7 @@ protocol BaseViewModelDelegate {
 
 class BaseViewModel: NSObject  {
     var isDisneyWatchlistAvailable = false
-    var carousal : ViewForCarousel?
+//    var carousal : ViewForCarousel?
     var baseDataModel: BaseDataModel? {
         switch vcType {
         case .home:
@@ -62,16 +62,16 @@ class BaseViewModel: NSObject  {
         }
     }
     
-    var carouselView : UIView? {
-        if carousal == nil {
-            if let items = baseDataModel?.data?[0].items{
-                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: heightOfCarouselSection - 120)
-                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
-            }
-        }
-        return carousal
-    }
-    
+//    var carouselView : UIView? {
+//        if carousal == nil {
+//            if let items = baseDataModel?.data?[0].items{
+//                let frameOfView =  CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - leadingConstraintBaseTable(), height: heightOfCarouselSection - 120)
+//                carousal = ViewForCarousel.instantiate(count: items.count, isCircular: false, sepration: 30, visiblePercentageOfPeekingCell: 0.1, hasFooter: false, frameOfView: frameOfView, backGroundColor: .clear, autoScroll: false, setImage: self)
+//            }
+//        }
+//        return carousal
+//    }
+//    
     init(_ vcType: BaseVCType) {
         self.vcType = vcType
         super.init()
@@ -213,7 +213,8 @@ class BaseViewModel: NSObject  {
             let height: CGFloat = rowHeightForLandscape - 90//imageProgressBar
             return height
         }else {
-            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
+//            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
+            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
             return height
         }
     }
@@ -224,12 +225,12 @@ class BaseViewModel: NSObject  {
     func getLayoutOfCellForItemType(_ item : Item?,_ charItem : DisneyCharacterItems?) -> ItemCellLayoutType {
         if let appType = item?.appType {
             switch appType {
-            case .Episode, .Clip, .Music, .Search:
+            case .Episode, .Clip, .Music, .Search, .Movie:
                 return .landscapeWithLabelsAlwaysShow
             case .Language, .Genre:
                 return .landscapeForLangGenre
-            case .Movie:
-                return .potrait
+//            case .Movie:
+//                return .potrait
             default:
                 return .landscapeWithTitleOnly
             }
@@ -254,9 +255,9 @@ class BaseViewModel: NSObject  {
             if let dataContainer = baseWatchListModel?.data?[itemIndexTuple.1] {
                 var layout: ItemCellLayoutType = dataContainer.layoutType
                 layout = .landscapeWithLabelsAlwaysShow
-                if (vcType == .disneyMovies) || (vcType == .movie) {
-                    layout = .potraitWithLabelAlwaysShow
-                }
+//                if (vcType == .disneyMovies) || (vcType == .movie) {
+//                    layout = .potraitWithLabelAlwaysShow
+//                }
                 return layout
             }
         }

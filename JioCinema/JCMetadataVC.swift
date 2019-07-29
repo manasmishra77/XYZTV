@@ -146,7 +146,8 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if itemAppType == .Movie {
             if let moreArray =  metadata?.more, moreArray.count > 0 {
                 if indexPath.row == 0 {
-                    return rowHeightForPotrait
+//                    return rowHeightForPotrait
+                    return rowHeightForLandscape
                 } else {
                     return 350
                 }

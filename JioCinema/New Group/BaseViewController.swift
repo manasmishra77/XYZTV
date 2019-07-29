@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
-    var carousalView : ViewForCarousel?
+//    var carousalView : ViewForCarousel?
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
     var isMetadataScreenToBePresentedFromResumeWatchCategory: Bool = false
@@ -23,10 +23,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var customHeaderHolderView: UIView!
     @IBOutlet weak var baseTableView: UITableView!
-    
+    @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
     
+    var customHeaderView: HeaderView?
     
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
@@ -111,11 +114,33 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
         }
+        if customHeaderView == nil {
+            customHeaderView = UINib(nibName: "HeaderView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? HeaderView
+            customHeaderView?.frame = customHeaderHolderView.bounds
+            addGradientView()
+            customHeaderHolderView.addSubview(customHeaderView!)
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func addGradientView() {
+        let colorLayer = CAGradientLayer()
+        colorLayer.frame = backgroundImageView.bounds
+        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.black.withAlphaComponent(0.1).cgColor, UIColor.black.withAlphaComponent(0.2).cgColor , UIColor.black.withAlphaComponent(0.3).cgColor]
+        colorLayer.endPoint = CGPoint(x: 0.0, y: 0.0)
+        colorLayer.startPoint = CGPoint(x: 1.0, y: 0.0)
+        let colorLayer2 = CAGradientLayer()
+        colorLayer2.frame = backgroundImageView.bounds
+        colorLayer2.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.8).cgColor, UIColor.black.cgColor]
+        colorLayer2.endPoint = CGPoint(x: 0.0, y: 1.0)
+        colorLayer2.startPoint = CGPoint(x: 0.0, y: 0.0)
+        self.backgroundImageView.layer.insertSublayer(colorLayer, at:0)
+        self.backgroundImageView.layer.insertSublayer(colorLayer2, at:1)
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -145,12 +170,17 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
+        if let urlString = baseViewModel.baseDataModel?.data?[0].items?[0].imageUrlOfTvStillImage{
+            let url = URL(string: urlString)
+            backgroundImageView.sd_setImage(with: url)
+        }
         cell.configureView(cellData, delegate: self)
         return cell
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
-            return baseViewModel.carouselView
+            return nil
+//            return baseViewModel.carouselView
         } else {
             return baseViewModel.buttonView()
         }
@@ -159,6 +189,42 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         return baseViewModel.heightOfTableHeader(section: section)
     }
     
+    //new UI changes
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if context.nextFocusedItem is HeaderButtons {
+            updateUiAndFocus(toFullScreen: true, context: context)
+        } else {
+            updateUiAndFocus(toFullScreen: false, context: context)
+        }
+    }
+    
+    
+    func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
+        if toFullScreen {
+            UIView.animate(withDuration: 0.3) {
+                self.topConstraintOfTableView.constant = 700
+                self.view.layoutIfNeeded()
+            }
+            self.backgroundImageView.isHidden = false
+            self.customHeaderView?.playButton.alpha = 1.0
+            self.customHeaderView?.moreInfoButton.alpha = 1.0
+            self.customHeaderView?.titleLabel.alpha = 1.0
+            customHeaderView?.imageViewForHeader.isHidden = true
+
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.topConstraintOfTableView.constant = 500
+                self.view.layoutIfNeeded()
+            }
+            self.customHeaderView?.titleLabel.alpha = 0.001
+            self.backgroundImageView.isHidden = true
+            self.customHeaderView?.playButton.alpha = 0.001
+            self.customHeaderView?.moreInfoButton.alpha = 0.001
+            customHeaderView?.imageViewForHeader.isHidden = false
+
+        }
+    }
+
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true
     
@@ -184,7 +250,16 @@ extension BaseViewController: BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item) {
         let selectedIndexPath: IndexPath? = (baseCell != nil) ? self.baseTableView.indexPath(for: baseCell!) : nil
         baseViewModel.itemCellTapped(item, selectedIndexPath: selectedIndexPath)
+        
     }
+    
+    func updateHeaderImage(_ url: String) {
+//        if let urlString =  {
+            let url = URL(string: url)
+            customHeaderView?.imageViewForHeader.sd_setImage(with: url)
+//        }
+    }
+    
 }
 
 extension BaseViewController: BaseViewModelDelegate {

@@ -19,7 +19,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Rz2-K0-ksD" customClass="ItemCollectionViewCell" customModule="JioCinema" customModuleProvider="target">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Rz2-K0-ksD" customClass="ItemCollectionViewCell" customModule="JioCinema" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="392" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -29,7 +29,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7W-TF-XAc" userLabel="ImageProgressContainerView">
                         <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageWhenAncestorFocused="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
                                 <rect key="frame" x="0.0" y="0.0" width="392" height="170"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
@@ -43,6 +43,11 @@
                                 <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="35"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Tg-1Y-7Qg">
                                 <rect key="frame" x="0.0" y="160" width="392" height="10"/>
@@ -58,7 +63,7 @@
                                 </userDefinedRuntimeAttributes>
                             </progressView>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="nFy-3D-dND" firstAttribute="leading" secondItem="s7W-TF-XAc" secondAttribute="leading" id="0UX-Te-cGq"/>
                             <constraint firstItem="xdZ-19-fLq" firstAttribute="trailing" secondItem="nFy-3D-dND" secondAttribute="trailing" id="0hM-cy-G7Z"/>
@@ -76,11 +81,6 @@
                             <constraint firstItem="xdZ-19-fLq" firstAttribute="centerY" secondItem="s7W-TF-XAc" secondAttribute="centerY" id="wr7-l7-BZ0"/>
                             <constraint firstItem="38K-UH-vNN" firstAttribute="bottom" secondItem="nFy-3D-dND" secondAttribute="bottom" id="zWj-5V-yDP"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <integer key="value" value="12"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
                     </view>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
                         <rect key="frame" x="15" y="182" width="357" height="0.0"/>
@@ -122,11 +122,6 @@
                 <constraint firstItem="QhF-XA-SdJ" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="ySx-Md-Gaa"/>
             </constraints>
             <size key="customSize" width="439" height="267"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="0.0"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="heightConstraintForProgressBar" destination="OvZ-Jn-zMO" id="sQL-Ks-atO"/>
                 <outlet property="imageProgressContainerBottomSpace" destination="POj-b4-bWL" id="vVg-T0-JQV"/>

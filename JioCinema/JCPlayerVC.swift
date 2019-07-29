@@ -1546,11 +1546,11 @@
     }
     
     func setRecommendationConstarints(_ appType: VideoType) {
-        if appType == .Movie {
-            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
-        } else {
+//        if appType == .Movie {
+//            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
+//        } else {
             self.heightRecommendationView.constant = PlayerRecommendationSize.landscapeRowHeight
-        }
+//        }
         self.bottomConstarintRecommendationView.constant = PlayerRecommendationSize.bottomConstarint(appType)
     }
     
@@ -1637,7 +1637,7 @@
  extension JCPlayerVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
  {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
+        let size = /*(appType == .Movie) ? PlayerRecommendationSize.potraitCellSize :*/PlayerRecommendationSize.landscapeCellSize
         return size
     }
     
@@ -1761,7 +1761,8 @@
             cell.nameLabel.text = model.name
             let item = moreArray[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
-            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+//            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+            let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             let isPlayingNow = model.id == id
             cell.configureView(cellItems, isPlayingNow: isPlayingNow)

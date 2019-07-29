@@ -11,6 +11,11 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
+    func updateHeaderImage(_ url: String)
+}
+extension BaseTableViewCellDelegate {
+    func updateHeaderImage(_ url: String) {
+    }
 }
 //To be used in place of TableCellItemsTuple Tuple
 struct BaseTableCellModel {
@@ -109,6 +114,12 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
             //disney character click to be handled
         }
     }
+    func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if let item = cellItems.items {
+            let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
+            delegate?.updateHeaderImage(newItem.imageUrlOfTvStillImage)
+        }
+    }
 }
 
 
@@ -119,7 +130,8 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height
-        let width = ((cellItems.layoutType == .potrait) || (cellItems.layoutType == .potraitWithLabelAlwaysShow) || (cellItems.layoutType == .disneyCharacter)) ? itemWidthForPortrait : itemWidthForLadscape
+//        let width = ((cellItems.layoutType == .potrait) || (cellItems.layoutType == .potraitWithLabelAlwaysShow) || (cellItems.layoutType == .disneyCharacter)) ? itemWidthForPortrait : itemWidthForLadscape
+        let width = (cellItems.layoutType == .disneyCharacter) ? itemWidthForPortrait : itemWidthForLadscape
         return CGSize(width: width, height: height)
     }
     
@@ -127,10 +139,3 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
 }
-
-
-
-
-
-
-

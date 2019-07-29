@@ -155,7 +155,7 @@ let BaseViewControllerNibIdentifier = "BaseViewController"
 
 
 //Constant Values
-let heightOfCarouselSection : CGFloat = 670
+let heightOfCarouselSection : CGFloat = 0//670
 let savedUserKey = "User"
 let isUserLoggedInKey = "isUserLoggedIn"
 let WatchlistUpdatedNotificationName = Notification.Name("WatchlistUpdated")
@@ -328,11 +328,11 @@ struct PlayerRecommendationSize {
     }
     
     static func bottomConstarint(_ appType: VideoType) -> CGFloat {
-        if appType == .Movie {
-            return -(rowHeightForPotrait - 60)
-        } else {
+//        if appType == .Movie {
+//            return -(rowHeightForPotrait - 60)
+//        } else {
             return -(rowHeightForLandscape - 60)
-        }
+//        }
         
     }
 }

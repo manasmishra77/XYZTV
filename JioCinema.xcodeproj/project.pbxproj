@@ -130,6 +130,8 @@
 		7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */; };
 		84090B962265A6BB00E422F0 /* ResumeWatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84090B952265A6BB00E422F0 /* ResumeWatchView.swift */; };
 		842D255D2264D7B500EC7284 /* ResumeWatchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842D255C2264D7B500EC7284 /* ResumeWatchView.xib */; };
+		8437671122E0AEEA00AE9932 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437671022E0AEEA00AE9932 /* HeaderView.swift */; };
+		843BC15A22E1DFF600A9C1B7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843BC15922E1DFF600A9C1B7 /* HeaderView.xib */; };
 		847BC0512201D19A00FB5B2A /* JioType-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */; };
 		847BC0532201D19A00FB5B2A /* JioType-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */; };
 		847BC0542201D19A00FB5B2A /* JioType-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */; };
@@ -326,6 +328,8 @@
 		7BFEC4CA1F178C40001DFE6D /* JCSignInOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSignInOptionsVC.swift; sourceTree = "<group>"; };
 		84090B952265A6BB00E422F0 /* ResumeWatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumeWatchView.swift; sourceTree = "<group>"; };
 		842D255C2264D7B500EC7284 /* ResumeWatchView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResumeWatchView.xib; sourceTree = "<group>"; };
+		8437671022E0AEEA00AE9932 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		843BC15922E1DFF600A9C1B7 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		847BC04B2201D19900FB5B2A /* JioType-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-MediumItalic.ttf"; sourceTree = "<group>"; };
 		847BC04C2201D19900FB5B2A /* JioType-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Light.ttf"; sourceTree = "<group>"; };
 		847BC04D2201D19900FB5B2A /* JioType-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Medium.ttf"; sourceTree = "<group>"; };
@@ -674,6 +678,8 @@
 				53AD5F2220BD1E7B005D6820 /* AutoplayButton.swift */,
 				9966543021D380C00026CC8D /* ViewForCarousel.swift */,
 				9966543721D382FE0026CC8D /* ViewForCarousel.xib */,
+				8437671022E0AEEA00AE9932 /* HeaderView.swift */,
+				843BC15922E1DFF600A9C1B7 /* HeaderView.xib */,
 			);
 			name = CustomComponents;
 			sourceTree = "<group>";
@@ -910,6 +916,7 @@
 				842D255D2264D7B500EC7284 /* ResumeWatchView.xib in Resources */,
 				9978D2A622577FDC00003E9E /* ButtonCollectionViewCell.xib in Resources */,
 				99BB5DD7220838C3000E73A1 /* metadatabg.png in Resources */,
+				843BC15A22E1DFF600A9C1B7 /* HeaderView.xib in Resources */,
 				539618EB21219BD900B576BF /* SetParentalPinView.xib in Resources */,
 				7BB0E2021F1DECE600A1DB0B /* JCBaseVC.xib in Resources */,
 				7B3A43F91F4424F900EE3824 /* imdb_logo.png in Resources */,
@@ -1079,6 +1086,7 @@
 				7BFEC4A61F154223001DFE6D /* JCAppUser.swift in Sources */,
 				7BFEC4CB1F178C40001DFE6D /* JCSignInOptionsVC.swift in Sources */,
 				539AB2592122C4CB0003FF84 /* ParentalPinModel.swift in Sources */,
+				8437671122E0AEEA00AE9932 /* HeaderView.swift in Sources */,
 				19ED97F31FD5406F00E43CBE /* CheckVersionData.swift in Sources */,
 				539AB25B2122E2760003FF84 /* ParentalPinManager.swift in Sources */,
 				53AD5F2320BD1E7B005D6820 /* AutoplayButton.swift in Sources */,

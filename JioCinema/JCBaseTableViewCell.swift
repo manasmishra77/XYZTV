@@ -162,7 +162,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.nameLabel.text = moreArray[indexPath.row].name
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
-        let layoutType: ItemCellLayoutType = .potrait
+//        let layoutType: ItemCellLayoutType = .potrait
+        let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
@@ -252,9 +253,9 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         case .item, .more:
             if let items = itemsArray as? [Item] {
                 let itemAppType = items[0].appType
-                if itemAppType == .Movie {
-                    width = itemWidthForPortrait//height * widthToHeightPropertionForPotratOLD
-                }
+//                if itemAppType == .Movie {
+//                    width = itemWidthForPortrait//height * widthToHeightPropertionForPotratOLD
+//                }
             }
         case .episode:
             break

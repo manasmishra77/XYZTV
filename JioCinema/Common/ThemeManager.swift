@@ -35,5 +35,12 @@ class ThemeManager {
             return ViewColor.selectionBarOnLeftNavigationColorForDisney
         }
     }
-    
+    var tabBarColor: UIColor{
+        switch currentTheme {
+        case .jioCinema:
+            return ViewColor.cinemaLeftMenuBackground
+        case .jioDisney:
+            return ViewColor.disneyLeftMenuBackground
+        }
+    }
 }

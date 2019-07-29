@@ -107,7 +107,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
+        let size = /*(appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : */PlayerRecommendationSize.landscapeCellSize
         return size
     }
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
@@ -168,7 +168,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             let model = moreArray?[indexPath.row]
             let item = moreArray?[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
-            let layoutType: ItemCellLayoutType = (appType == .Movie) ? .potraitWithoutLabels : .landscapeForLangGenre
+            let layoutType: ItemCellLayoutType = /*(appType == .Movie) ? .potraitWithoutLabels : */.landscapeForLangGenre
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
 
             let isPlayingNow = model?.id == cureentItemId

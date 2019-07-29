@@ -168,7 +168,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         }
         switch layoutType {
-        case .potrait, .potraitWithLabelAlwaysShow, .potraitWithoutLabels:
+        case .potrait:/*, .potraitWithLabelAlwaysShow, .potraitWithoutLabels:*/
             if let imageURL = URL(string: cellItems.item?.imageUrlPortraitContent ?? "") {
                 setImageOnCell(url: imageURL)
             }
@@ -193,8 +193,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
             } else {
                 nameLabel.text = ""
             }
-        case .potraitWithLabelAlwaysShow:
-            subtitle.text = ""
+//        case .potraitWithLabelAlwaysShow:
+//            subtitle.text = ""
         case .landscapeWithTitleOnly:
             subtitle.text = ""
             if isFocused {
@@ -204,7 +204,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
         case .landscapeForResume:
             break
-        case .landscapeForLangGenre, .disneyCharacter, .potraitWithoutLabels:
+        case .landscapeForLangGenre, .disneyCharacter: //, .potraitWithoutLabels:
             nameLabel.text = ""
             subtitle.text = ""
             imageProgressContainerBottomSpace.constant = 0
@@ -261,20 +261,21 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         resetNameLabel()
         if (context.nextFocusedView == self) {
-            
-            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
-                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            } else {
-                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
-            }
+            self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+
+//            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
+//                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+//            } else {
+//                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
+//            }
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-            imageView.layer.borderWidth = 5
+//            imageView.layer.borderWidth = 5
 //            if cellItem?.cellType.isDisney ?? false {
 //                imageView.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
 //            } else {
 //                imageView.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
 //            }
-            imageView.layer.borderColor = ThemeManager.shared.selectionColor.cgColor
+//            imageView.layer.borderColor = ThemeManager.shared.selectionColor.cgColor
 
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
@@ -284,15 +285,15 @@ class ItemCollectionViewCell: UICollectionViewCell {
         } else {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
-            imageView.layer.borderWidth = 0
-            self.layer.borderWidth = 0
+//            imageView.layer.borderWidth = 0
+//            self.layer.borderWidth = 0
         }
     }
     
     func resetNameLabel() {
         self.nameLabel.clipsToBounds = true
         self.nameLabel.layer.masksToBounds = true
-        self.clipsToBounds = true
+//        self.clipsToBounds = true
         nameLabelLeadingConstraint.constant = 15
         timer?.invalidate()
         timer = nil
@@ -332,10 +333,10 @@ enum ItemCellType {
 }
 
 enum ItemCellLayoutType {
-    case potraitWithLabelAlwaysShow
+//    case potraitWithLabelAlwaysShow
     case landscapeWithLabelsAlwaysShow
     case potrait
-    case potraitWithoutLabels
+//    case potraitWithoutLabels
     case landscapeWithTitleOnly
     case landscapeForResume
     case landscapeForLangGenre
@@ -347,7 +348,7 @@ enum ItemCellLayoutType {
         //case 1,9: self = .Carousel
         case 2,4,7,5: self = .landscapeWithTitleOnly
         //case 12: self = .Square
-        case 3:  self = .potrait
+//        case 3:  self = .potrait
         default: self = .landscapeWithTitleOnly
         }
     }

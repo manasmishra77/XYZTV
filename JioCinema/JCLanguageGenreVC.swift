@@ -387,17 +387,17 @@ class JCLanguageGenreVC: UIViewController,JCLanguageGenreSelectionDelegate {
 
 extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var itemCellSize: CGSize {
-        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
+//        if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
 //            let height = rowHeightForPotraitForLanguageGenreScreen
 //            let widht = height*widthToHeightPropertionForPotratOLD
-            return LanguageGenreScene.potraitCellSize
-        } else {
+//            return LanguageGenreScene.potraitCellSize
+//        } else {
 //            let height = rowHeightForLandscapeForLanguageGenreScreen
 //            let widht = height*widthToHeightPropertionForLandScapeOLD
 //            return CGSize(width: widht, height: height)
             return LanguageGenreScene.landscapeCellSize
 
-        }
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -437,11 +437,11 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         let item = languageGenreDetailModel?.data?.items?[indexPath.row] ?? Item()
         let cellType: ItemCellType = .base
         var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
-        if item.appType == .Movie {
-            layoutType = .potrait
-        } else if item.appType == .TVShow {
+//        if item.appType == .Movie {
+//            layoutType = .potrait
+//        } else if item.appType == .TVShow {
             layoutType = .landscapeWithTitleOnly
-        }
+//        }
         //(item: item, cellType: cellType, layoutType: layoutType)
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
