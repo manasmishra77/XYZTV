@@ -49,11 +49,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        if let playerVc = UIApplication.topViewController() as? PlayerViewController {
-            if !(playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused ?? true) {
-                playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
-            } else {
-                playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if let playerVc = UIApplication.topViewController() as? PlayerViewController {
+                if !(playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused ?? true) {
+                    playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
+                } else {
+                    playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: false)
+                }
             }
         }
     }
@@ -68,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Sending media_end analytics event when media_ends & app_killed
         JCAnalyticsEvent.sharedInstance.sendAppKilledEvent()
-        if let playerVc = UIApplication.topViewController() as? PlayerViewController{
+        if let playerVc = UIApplication.topViewController() as? PlayerViewController {
             playerVc.viewWillDisappear(true)
         }
     }
