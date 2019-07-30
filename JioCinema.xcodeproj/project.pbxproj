@@ -15,6 +15,7 @@
 		194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */; };
 		194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */; };
 		194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */; };
+		194ED80922F05DE400434455 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194ED80822F05DE400434455 /* AppManager.swift */; };
 		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
 		1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC58213FC45F00A98404 /* LoginModels.swift */; };
 		1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC5A213FC54700A98404 /* APIManager+Base.swift */; };
@@ -209,6 +210,7 @@
 		194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchRecommendationTableViewCell.swift; sourceTree = "<group>"; };
 		194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCSearchRecommendationTableViewCell.xib; sourceTree = "<group>"; };
 		194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationController.swift; sourceTree = "<group>"; };
+		194ED80822F05DE400434455 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
 		1966AC58213FC45F00A98404 /* LoginModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModels.swift; sourceTree = "<group>"; };
 		1966AC5A213FC54700A98404 /* APIManager+Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Base.swift"; sourceTree = "<group>"; };
@@ -752,6 +754,7 @@
 				535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */,
 				53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */,
 				998BEEAD2282E79300B75C39 /* ThemeManager.swift */,
+				194ED80822F05DE400434455 /* AppManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1046,6 +1049,7 @@
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
 				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				539618F22121A41F00B576BF /* EnterParentalPinView.swift in Sources */,
+				194ED80922F05DE400434455 /* AppManager.swift in Sources */,
 				53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */,

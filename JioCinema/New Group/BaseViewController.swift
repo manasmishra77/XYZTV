@@ -10,6 +10,7 @@ import UIKit
 
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
     var baseViewModel: T
+    weak var indicator: SpiralSpinner?
     var carousalView : ViewForCarousel?
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
@@ -103,6 +104,20 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     private func configureViews() {
+        //This is used when user comes to app using deeplinking
+        if AppManager.shared.isComingFromDeepLinking {
+            self.updateIndicatorState(toStart: true)
+            baseViewModel.itemCellTapped(Item(), selectedIndexPath: nil, isFromCarousal: true)
+            AppManager.shared.setForDeepLinkingItem(isFromDL: false, vcOpenType: nil, item: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.configureTableView()
+            }
+        } else {
+            self.configureTableView()
+        }
+    }
+    
+    private func configureTableView() {
         baseTableView.delegate = self
         baseTableView.dataSource = self
         let cellNib = UINib(nibName: BaseTableCellNibIdentifier, bundle: nil)
@@ -110,6 +125,23 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         baseTableLeadingConstraint.constant = baseViewModel.leadingConstraintBaseTable()
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
+        }
+    }
+    
+    private func updateIndicatorState(toStart: Bool) {
+        let spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        if toStart {
+            DispatchQueue.main.async {
+                if self.indicator != nil {
+                    return
+                }
+                let indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: spinnerColor, superView: self.view, superViewSize: self.view.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
+                self.indicator = indicator
+            }
+        } else {
+            DispatchQueue.main.async {
+                IndicatorManager.shared.stopSpinningIndependent(spinnerView: self.indicator)
+            }
         }
     }
     

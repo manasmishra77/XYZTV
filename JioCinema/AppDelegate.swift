@@ -84,10 +84,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //TODO: Top-shelf item tapped
         if urlString.contains("jCApp:?identifier="){
-            if let urlSubString = urlString.dropFirst(18).removingPercentEncoding{
+            if let urlSubString = urlString.dropFirst(18).removingPercentEncoding {
                 //topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
             }
         }
+        
+        AppManager.shared.setForDeepLinkingItem(isFromDL: true, vcOpenType: .player, item: nil)
         return false
     }
     

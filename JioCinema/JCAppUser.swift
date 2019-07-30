@@ -9,8 +9,13 @@
 import Foundation
 import UIKit
 
-class JCAppUser:NSObject,NSCoding
-{
+//Used when user is coming to app using deep-linking
+enum VCOpenType {
+    case metadata
+    case player
+}
+
+class JCAppUser: NSObject,NSCoding {
     
     static var shared = JCAppUser()
     

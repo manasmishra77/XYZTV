@@ -15,8 +15,6 @@ class JCSplashVC: UIViewController {
     
     @IBOutlet weak var splashImage: UIImageView!
     
-    let dispatchGroup = DispatchGroup()
-    var isHomeDataAvailable:Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
         Utility.sharedInstance.startNetworkNotifier()
@@ -97,7 +95,6 @@ class JCSplashVC: UIViewController {
     
     func navigateToHomeVC() {
         DispatchQueue.main.async {
-            
             let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
             let navController = UINavigationController(rootViewController: sideNavVC)
             navController.navigationBar.isHidden = true
