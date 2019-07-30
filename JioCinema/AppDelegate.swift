@@ -18,7 +18,7 @@ import AVFoundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
+    //var topShelfContentModel: ContentModel? //Used when topshelf image is clicked
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //TODO: Top-shelf item tapped
         if urlString.contains("jCApp:?identifier="){
             if let urlSubString = urlString.dropFirst(18).removingPercentEncoding{
-                topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
+                //topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
             }
         }
         return false
