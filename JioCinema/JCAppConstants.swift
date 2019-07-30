@@ -195,8 +195,7 @@ struct ViewColor {
 let googleAnalyticsTId = "UA-106863966-14"   //propertyId    Dev:"UA-106863966-2", Prod:"UA-106863966-1"
 let googleAnalyticsEndPoint = "https://www.google-analytics.com/collect?"
 
-//App Delegate
-let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
 
 
 //OTP verification constants
@@ -254,16 +253,6 @@ let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
 let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
-var sideNavigationVC: SideNavigationVC? {
-    let window = appDelegate?.window
-    let rootNavVC = window?.rootViewController as? UINavigationController
-    let navVc = rootNavVC?.viewControllers.first as? SideNavigationVC
-    return navVc
-}
-
-var playerVC: PlayerViewController? {
-    return sideNavigationVC?.presentedViewController as? PlayerViewController
-}
 
 
 struct SideNavigationConstants {

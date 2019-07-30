@@ -99,7 +99,6 @@ class JCSplashVC: UIViewController {
             let navController = UINavigationController(rootViewController: sideNavVC)
             navController.navigationBar.isHidden = true
             self.view.window?.rootViewController = navController
-
         }
     }
     

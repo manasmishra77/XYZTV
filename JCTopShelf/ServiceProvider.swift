@@ -41,6 +41,7 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
     private func urlFor(item: VODTopShelfModel) -> URL? {
         var components = URLComponents()
         components.scheme = "jCApp"
+         //Don't change the sequence
         let itemIdQueryItem = URLQueryItem(name: "contentId", value: item.id)
         let latestIdQueryItem = URLQueryItem(name: "latestId", value: item.latestId)
         let isPlaylistQueryItem = URLQueryItem(name: "isPlaylist", value: "\(item.isPlaylist ?? false)")
