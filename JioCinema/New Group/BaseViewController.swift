@@ -30,6 +30,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
     
     var customHeaderView: HeaderView?
+    var timerToSetImage: Timer?
     
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
@@ -200,28 +201,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     
     func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
-        if toFullScreen {
-            UIView.animate(withDuration: 0.3) {
-                self.topConstraintOfTableView.constant = 700
-                self.view.layoutIfNeeded()
-            }
-            self.backgroundImageView.isHidden = false
-            self.customHeaderView?.playButton.alpha = 1.0
-            self.customHeaderView?.moreInfoButton.alpha = 1.0
-            self.customHeaderView?.titleLabel.alpha = 1.0
-            customHeaderView?.imageViewForHeader.isHidden = true
-
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.topConstraintOfTableView.constant = 500
-                self.view.layoutIfNeeded()
-            }
-            self.customHeaderView?.titleLabel.alpha = 0.001
-            self.backgroundImageView.isHidden = true
-            self.customHeaderView?.playButton.alpha = 0.001
-            self.customHeaderView?.moreInfoButton.alpha = 0.001
-            customHeaderView?.imageViewForHeader.isHidden = false
-
+        self.backgroundImageView.isHidden = !toFullScreen
+        customHeaderView?.imageViewForHeader.isHidden = toFullScreen
+        let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
+        self.customHeaderView?.playButton.alpha = alphaChange
+        self.customHeaderView?.moreInfoButton.alpha = alphaChange
+        self.customHeaderView?.titleLabel.alpha = alphaChange
+        let topConstraint : CGFloat = toFullScreen ? 700 : 500
+        UIView.animate(withDuration: 0.3) {
+            self.topConstraintOfTableView.constant = topConstraint
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -254,10 +243,20 @@ extension BaseViewController: BaseTableViewCellDelegate {
     }
     
     func updateHeaderImage(_ url: String) {
-//        if let urlString =  {
+        self.timerToSetImage?.invalidate()
+        self.timerToSetImage = nil
+        self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
+            guard let self = self else {return}
             let url = URL(string: url)
-            customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-//        }
+            
+            UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
+                              duration:0.5,
+                              options: .transitionCrossDissolve,
+                              animations: { self.customHeaderView?.imageViewForHeader.sd_setImage(with: url) },
+                              completion: nil)
+        }
+//        let url = URL(string: url)
+//        customHeaderView?.imageViewForHeader.sd_setImage(with: url)
     }
     
 }
