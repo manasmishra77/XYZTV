@@ -10,13 +10,12 @@
 		192A0152217DBE8000E5D08A /* DisneyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192A0151217DBE8000E5D08A /* DisneyHomeViewModel.swift */; };
 		192A0154217DBEAE00E5D08A /* CommonHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192A0153217DBEAE00E5D08A /* CommonHomeViewModel.swift */; };
 		19491EDC2018522600870794 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19491EDB2018522600870794 /* TVServices.framework */; };
-		19491EDF2018522600870794 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EDE2018522600870794 /* ServiceProvider.swift */; };
 		19491EE32018522600870794 /* JCTopShelf.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 19491EDA2018522600870794 /* JCTopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		19491EE92018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		19491EEA2018528100870794 /* TopShelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EE82018528100870794 /* TopShelfModel.swift */; };
 		194E1EB020B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */; };
 		194E1EB120B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */; };
 		194E1EB320B8324B00C73EBA /* SearchNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */; };
+		194ED80922F05DE400434455 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194ED80822F05DE400434455 /* AppManager.swift */; };
 		196291CC203A9BEB0064927E /* ShowMoreTextbutton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */; };
 		1966AC59213FC45F00A98404 /* LoginModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC58213FC45F00A98404 /* LoginModels.swift */; };
 		1966AC5B213FC54700A98404 /* APIManager+Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966AC5A213FC54700A98404 /* APIManager+Base.swift */; };
@@ -26,6 +25,9 @@
 		1976EDAD1FD7D84D00EA948D /* PlaybackRightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */; };
 		197727B620B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */; };
 		197727B920B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */; };
+		19776C9D22EF06AB00797D13 /* TopShelfConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19776C9C22EF06AB00797D13 /* TopShelfConnectionManager.swift */; };
+		19776CA322EF181100797D13 /* JCAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEC4A51F154223001DFE6D /* JCAppUser.swift */; };
+		19776CA622EF1C4700797D13 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19491EDE2018522600870794 /* ServiceProvider.swift */; };
 		199DE87721649ACF0052CA54 /* DisneyKids.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87421649ACE0052CA54 /* DisneyKids.png */; };
 		199DE87821649ACF0052CA54 /* DisneyMovies.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87521649ACF0052CA54 /* DisneyMovies.png */; };
 		199DE87921649ACF0052CA54 /* DisneyTVShow.png in Resources */ = {isa = PBXBuildFile; fileRef = 199DE87621649ACF0052CA54 /* DisneyTVShow.png */; };
@@ -210,6 +212,7 @@
 		194E1EAE20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCSearchRecommendationTableViewCell.swift; sourceTree = "<group>"; };
 		194E1EAF20B7F35800C73EBA /* JCSearchRecommendationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JCSearchRecommendationTableViewCell.xib; sourceTree = "<group>"; };
 		194E1EB220B8324B00C73EBA /* SearchNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationController.swift; sourceTree = "<group>"; };
+		194ED80822F05DE400434455 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		196291CB203A9BEB0064927E /* ShowMoreTextbutton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTextbutton.swift; sourceTree = "<group>"; };
 		1966AC58213FC45F00A98404 /* LoginModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModels.swift; sourceTree = "<group>"; };
 		1966AC5A213FC54700A98404 /* APIManager+Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Base.swift"; sourceTree = "<group>"; };
@@ -219,6 +222,7 @@
 		1976EDAC1FD7D84D00EA948D /* PlaybackRightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRightsModel.swift; sourceTree = "<group>"; };
 		197727B520B6A1DD00D291A9 /* JCTrendingSearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchResultViewModel.swift; sourceTree = "<group>"; };
 		197727B820B6A8C300D291A9 /* JCTrendingSearchTextSuperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCTrendingSearchTextSuperModel.swift; sourceTree = "<group>"; };
+		19776C9C22EF06AB00797D13 /* TopShelfConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopShelfConnectionManager.swift; sourceTree = "<group>"; };
 		199DE87421649ACE0052CA54 /* DisneyKids.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyKids.png; sourceTree = "<group>"; };
 		199DE87521649ACF0052CA54 /* DisneyMovies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyMovies.png; sourceTree = "<group>"; };
 		199DE87621649ACF0052CA54 /* DisneyTVShow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DisneyTVShow.png; sourceTree = "<group>"; };
@@ -398,6 +402,7 @@
 				19491EDE2018522600870794 /* ServiceProvider.swift */,
 				19491EE82018528100870794 /* TopShelfModel.swift */,
 				19491EE02018522600870794 /* Info.plist */,
+				19776C9C22EF06AB00797D13 /* TopShelfConnectionManager.swift */,
 			);
 			path = JCTopShelf;
 			sourceTree = "<group>";
@@ -755,6 +760,7 @@
 				535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */,
 				53DDCB1F21BF90F9004F0A6A /* AutoScrollLabel.swift */,
 				998BEEAD2282E79300B75C39 /* ThemeManager.swift */,
+				194ED80822F05DE400434455 /* AppManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1005,7 +1011,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				19491EEA2018528100870794 /* TopShelfModel.swift in Sources */,
-				19491EDF2018522600870794 /* ServiceProvider.swift in Sources */,
+				19776CA322EF181100797D13 /* JCAppUser.swift in Sources */,
+				19776CA622EF1C4700797D13 /* ServiceProvider.swift in Sources */,
+				19776C9D22EF06AB00797D13 /* TopShelfConnectionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1048,6 +1056,7 @@
 				7B61D4F31F7526CC001B081D /* JCArtistImageCell.swift in Sources */,
 				19ED97F11FD5406F00E43CBE /* CheckVersionModel.swift in Sources */,
 				539618F22121A41F00B576BF /* EnterParentalPinView.swift in Sources */,
+				194ED80922F05DE400434455 /* AppManager.swift in Sources */,
 				53D1E2F821B7F1B4003BD5C1 /* SideNavigationTableView.swift in Sources */,
 				7BAE8D241F58487C00399F4D /* JCLanguageGenreVC.swift in Sources */,
 				B8EADF081F9DC90E0069671B /* JCAnalyticsEvent.swift in Sources */,
@@ -1107,7 +1116,6 @@
 				539618F92122B80700B576BF /* SetParentalPinView.swift in Sources */,
 				192A0152217DBE8000E5D08A /* DisneyHomeViewModel.swift in Sources */,
 				2025F4501F3AF58300C3B609 /* JCSettingsTableViewCell.swift in Sources */,
-				19491EE92018528100870794 /* TopShelfModel.swift in Sources */,
 				797880F91F4ECB390032943E /* JCSearchResultViewController.swift in Sources */,
 				7BB0E2061F1DEE9800A1DB0B /* JCBaseTableViewCell.swift in Sources */,
 				1966AC61213FDBD800A98404 /* APIManager+LanguageGenre.swift in Sources */,

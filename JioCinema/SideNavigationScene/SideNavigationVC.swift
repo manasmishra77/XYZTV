@@ -125,17 +125,17 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-//                if let uiView = self.HolderView.subviews.first {
+                //                if let uiView = self.HolderView.subviews.first {
                 selectedVC?.willMove(toParent: nil)
-                    selectedVC?.view.removeFromSuperview()
+                selectedVC?.view.removeFromSuperview()
                 selectedVC?.removeFromParent()
-//                    content.willMove(toParentViewController: nil)
-//                    content.view.removeFromSuperview()
-//                    content.removeFromParentViewController()
-//                    uiView.removeFromSuperview()
-//                }
+                //                    content.willMove(toParentViewController: nil)
+                //                    content.view.removeFromSuperview()
+                //                    content.removeFromParentViewController()
+                //                    uiView.removeFromSuperview()
+                //                }
                 self.addChild(vc)
-            self.HolderView.addSubview(vc.view)
+                self.HolderView.addSubview(vc.view)
                 vc.didMove(toParent: self)
                 selectedVC = vc
                 
@@ -145,7 +145,7 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                     self.updateFocusIfNeeded()
                     self.setNeedsFocusUpdate()
                 }
-
+                
             }
         } else {
             if menuItem.type == .search {

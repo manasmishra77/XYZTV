@@ -14,6 +14,9 @@ class Utility {
     var reachability: Reachability?
     var isNetworkAvailable = false
     var activityIndicator = UIActivityIndicatorView()
+    var appDelegate: AppDelegate? {
+        return AppManager.shared.appDelegate
+    }
 
     // MARK:- Network Notifier
     func startNetworkNotifier() {

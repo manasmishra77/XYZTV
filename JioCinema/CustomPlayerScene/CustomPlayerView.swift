@@ -695,7 +695,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     }
     
     func updateIndicatorState(toStart: Bool) {
-        let spinnerColor : UIColor = ThemeManager.shared.selectionColor
+        let spinnerColor: UIColor = ThemeManager.shared.selectionColor
         if toStart {
             DispatchQueue.main.async {
                 if self.indicator != nil {
