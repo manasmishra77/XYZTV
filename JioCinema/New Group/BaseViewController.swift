@@ -9,8 +9,9 @@
 import UIKit
 
 class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate {
+    
     var baseViewModel: T
-//    var carousalView : ViewForCarousel?
+    weak var indicator: SpiralSpinner?
     var dataItemsForTableview = [DataContainer]()
     var resumeWatchListDataAvailable = false
     var isMetadataScreenToBePresentedFromResumeWatchCategory: Bool = false
@@ -76,6 +77,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     deinit {
         print("BaseVC Deinit -)")
     }
+    
+    var sideNavigationVC: SideNavigationVC? {
+        return AppManager.shared.sideNavigationVC
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,12 +106,37 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     override func viewDidAppear(_ animated: Bool) {
-            if self.baseViewModel.isToReloadTableViewAfterLoginStatusChange {
-                self.baseViewModel.reloadTableView()
-            }
+        if self.baseViewModel.isToReloadTableViewAfterLoginStatusChange {
+            self.baseViewModel.reloadTableView()
+        }
     }
     
     private func configureViews() {
+        //This is used when user comes to app using deeplinking
+        if AppManager.shared.isComingFromDeepLinking, baseViewModel.vcType == .home {
+            self.updateIndicatorState(toStart: true, present: AppManager.shared.sideNavigationVC?.view)
+            self.processForDeepLinking()
+        } else {
+            self.configureTableView()
+        }
+    }
+    
+    private func processForDeepLinking() {
+        if let deepLinkedItem = AppManager.shared.deepLinkingItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
+                self.baseViewModel.itemCellTapped(deepLinkedItem, selectedIndexPath: nil, isFromCarousal: true)
+                AppManager.shared.setForDeepLinkingItem(isFromDL: false, item: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.configureTableView()
+                }
+            }
+        } else {
+            self.configureTableView()
+        }
+    }
+    
+    private func configureTableView() {
+        self.updateIndicatorState(toStart: false)
         baseTableView.delegate = self
         baseTableView.dataSource = self
         let cellNib = UINib(nibName: BaseTableCellNibIdentifier, bundle: nil)
@@ -122,6 +152,26 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderHolderView.addSubview(customHeaderView!)
         }
         
+    }
+    
+    private func updateIndicatorState(toStart: Bool, present onView: UIView? = nil) {
+        let spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        let bgColor = ThemeManager.shared.backgroundColor
+        if toStart {
+            DispatchQueue.main.async {
+                if self.indicator != nil {
+                    return
+                }
+                let indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: spinnerColor, superView: onView ?? self.view, superViewSize: (onView ?? self.view).frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: bgColor)
+                self.indicator = indicator
+                onView?.bringSubviewToFront(indicator)
+            }
+        } else {
+            DispatchQueue.main.async {
+                IndicatorManager.shared.stopSpinningIndependent(spinnerView: self.indicator)
+                self.indicator = nil
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -145,8 +195,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        
-        
         Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
     }
     

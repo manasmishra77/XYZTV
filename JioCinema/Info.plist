@@ -19,6 +19,8 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLIconFile</key>
+			<string></string>
 			<key>CFBundleURLName</key>
 			<string>jCAppURL</string>
 			<key>CFBundleURLSchemes</key>
@@ -78,6 +80,8 @@
 	</array>
 	<key>UIRequiresPersistentWiFi</key>
 	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
 </dict>

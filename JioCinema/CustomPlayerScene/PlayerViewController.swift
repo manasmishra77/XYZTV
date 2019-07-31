@@ -122,8 +122,8 @@ extension PlayerViewController: CustomPlayerViewProtocol {
     }
     
     func removePlayerController() {
-        self.dismiss(animated: false) {
-        }
+        self.viewforplayer?.resetAndRemovePlayer()
+        self.dismiss(animated: false) {}
     }
     
 }
