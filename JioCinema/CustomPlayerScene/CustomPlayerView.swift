@@ -235,7 +235,7 @@ class CustomPlayerView: UIView {
         } else {
         let colorLayer = CAGradientLayer()
         colorLayer.frame = gradientView.bounds
-        colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
         self.gradientView.layer.insertSublayer(colorLayer, at:0)
         }
     }

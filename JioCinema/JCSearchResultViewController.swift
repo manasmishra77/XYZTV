@@ -39,6 +39,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     var trendingSearchResultViewModel: JCTrendingSearchResultViewModel?
     
+    var isSearchTextIsGettingCalled: Bool = false
+    weak var timerForSearch: Timer?
+    var searchText: String = ""
+    
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -250,28 +254,20 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         if key == "" {
             self.searchViewController?.searchBar.text = ""
         }
-        
-        let url = preditiveSearchURL
-        let params: [String: String]? = ["q": key]
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[weak self](response) in
-            guard let self = self else {return}
-            guard response.isSuccess else {
-                DispatchQueue.main.async {
-                    self.searchResultArray.removeAll()
-                    self.baseTableView.reloadData()
-                }
-                return
-            }
-            self.searchModel = response.model
-            if let array = (self.searchModel?.searchData?.categoryItems), array.count > 0 {
-                DispatchQueue.main.async {
-                    self.searchResultArray = array
-                    self.baseTableView.reloadData()
-
-                }
-            }
-            
+        guard !isSearchTextIsGettingCalled else {
+            return
         }
+        
+        self.searchText = self.searchViewController?.searchBar.text ?? ""
+        self.timerForSearch?.invalidate()
+        self.timerForSearch = nil
+        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: false) {[weak self] (timer) in
+            guard let self = self else {return}
+            self.callSearchServiceAPI(with: self.searchText)
+        }
+        
+        
+       
         /*
          RJILApiManager.getSearchData(key: key, <#T##completion: APISuccessBlock##APISuccessBlock##(Bool, String?) -> ()#>)
          let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -298,6 +294,36 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
          }
          }
          }*/
+    }
+    
+    func callSearchServiceAPI(with text: String) {
+        let url = preditiveSearchURL
+        let params: [String: String]? = ["q": text]
+        self.isSearchTextIsGettingCalled = true
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[weak self](response) in
+            guard let self = self else {return}
+            self.isSearchTextIsGettingCalled = false
+            guard response.isSuccess else {
+                DispatchQueue.main.async {
+                    self.searchResultArray.removeAll()
+                    self.baseTableView.reloadData()
+                }
+                return
+            }
+            if self.searchText == "aaa" {
+                self.searchModel = nil
+            } else {
+            self.searchModel = response.model
+            }
+            if let array = (self.searchModel?.searchData?.categoryItems), array.count > 0 {
+                DispatchQueue.main.async {
+                    self.searchResultArray = array
+                    self.baseTableView.reloadData()
+                    
+                }
+            }
+            
+        }
     }
     
     //MARK:- Analytics Event Methods
