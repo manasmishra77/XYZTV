@@ -31,6 +31,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     var customHeaderView: HeaderView?
     var timerToSetImage: Timer?
+    var gradientColor : UIColor = ViewColor.commonBackground
     
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
@@ -115,13 +116,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if viewLoadingStatus == .none || viewLoadingStatus == .viewNotLoadedDataFetchedWithError || viewLoadingStatus == .viewNotLoadedDataFetched  {
             viewLoadingStatus = .viewLoaded
         }
+        gradientColor = baseViewModel.vcType.isDisney ? ViewColor.disneyBackground : ViewColor.commonBackground
         if customHeaderView == nil {
             customHeaderView = UINib(nibName: "HeaderView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? HeaderView
             customHeaderView?.frame = customHeaderHolderView.bounds
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -130,18 +131,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func addGradientView() {
-        let colorLayer = CAGradientLayer()
-        colorLayer.frame = backgroundImageView.bounds
-        colorLayer.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.black.withAlphaComponent(0.1).cgColor, UIColor.black.withAlphaComponent(0.2).cgColor , UIColor.black.withAlphaComponent(0.3).cgColor]
-        colorLayer.endPoint = CGPoint(x: 0.0, y: 0.0)
-        colorLayer.startPoint = CGPoint(x: 1.0, y: 0.0)
-        let colorLayer2 = CAGradientLayer()
-        colorLayer2.frame = backgroundImageView.bounds
-        colorLayer2.colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.8).cgColor, UIColor.black.cgColor]
-        colorLayer2.endPoint = CGPoint(x: 0.0, y: 1.0)
-        colorLayer2.startPoint = CGPoint(x: 0.0, y: 0.0)
-        self.backgroundImageView.layer.insertSublayer(colorLayer, at:0)
-        self.backgroundImageView.layer.insertSublayer(colorLayer2, at:1)
+        var startPoint = CGPoint(x: 1.0, y: 0.0)
+        var endPoint = CGPoint(x: 0.0, y: 0.0)
+        var colorsArray = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor,gradientColor.withAlphaComponent(0.3).cgColor, gradientColor.withAlphaComponent(0.6).cgColor , gradientColor.cgColor]
+        Utility.applyGradient(backgroundImageView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray)
+        
+        
+        startPoint = CGPoint(x: 0.0, y: 0.0)
+        endPoint = CGPoint(x: 0.0, y: 1.0)
+        colorsArray = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, gradientColor.withAlphaComponent(0.5).cgColor, gradientColor.cgColor]
+        Utility.applyGradient(backgroundImageView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray, atIndex: 1)
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -192,22 +191,22 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if context.nextFocusedItem is HeaderButtons {
-            updateUiAndFocus(toFullScreen: true, context: context)
-        } else {
+        if context.nextFocusedItem is ItemCollectionViewCell {
             updateUiAndFocus(toFullScreen: false, context: context)
+        } else {
+            updateUiAndFocus(toFullScreen: true, context: context)
         }
     }
     
     
     func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
-        self.backgroundImageView.isHidden = !toFullScreen
+         self.backgroundImageView.isHidden = !toFullScreen
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
         let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
+        let topConstraint : CGFloat = toFullScreen ? 700 : 500
         self.customHeaderView?.playButton.alpha = alphaChange
         self.customHeaderView?.moreInfoButton.alpha = alphaChange
         self.customHeaderView?.titleLabel.alpha = alphaChange
-        let topConstraint : CGFloat = toFullScreen ? 700 : 500
         UIView.animate(withDuration: 0.3) {
             self.topConstraintOfTableView.constant = topConstraint
             self.view.layoutIfNeeded()
@@ -242,7 +241,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func updateHeaderImage(_ url: String) {
+    func updateHeaderImage(url: String, title: String) {
         self.timerToSetImage?.invalidate()
         self.timerToSetImage = nil
         self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
@@ -252,11 +251,12 @@ extension BaseViewController: BaseTableViewCellDelegate {
             UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
                               duration:0.5,
                               options: .transitionCrossDissolve,
-                              animations: { self.customHeaderView?.imageViewForHeader.sd_setImage(with: url) },
+                              animations: {
+                                self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
+                                self.customHeaderView?.titleLabel.text = title
+    },
                               completion: nil)
         }
-//        let url = URL(string: url)
-//        customHeaderView?.imageViewForHeader.sd_setImage(with: url)
     }
     
 }

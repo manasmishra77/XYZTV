@@ -9,11 +9,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="JioType-Bold.ttf">
-            <string>JioType-Bold</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -30,13 +25,13 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stree" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
-                    <rect key="frame" x="100" y="100" width="205" height="94"/>
-                    <fontDescription key="fontDescription" name="JioType-Bold" family="JioType" pointSize="80"/>
+                    <rect key="frame" x="73" y="278" width="189" height="94"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="80"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDh-jJ-t5x" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="100" y="494" width="152" height="86"/>
+                    <rect key="frame" x="73" y="398" width="152" height="86"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Play"/>
                     <userDefinedRuntimeAttributes>
@@ -46,7 +41,12 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8K-gf-ISa" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="402" y="494" width="243" height="86"/>
+                    <rect key="frame" x="375" y="398" width="177" height="63"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="177" id="FU6-qb-qdc"/>
+                        <constraint firstAttribute="height" constant="63" id="tCw-tn-Xye"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="38"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="More Info"/>
                     <userDefinedRuntimeAttributes>
@@ -64,14 +64,14 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="300" id="RG0-V4-tbL"/>
+                <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="26" id="RG0-V4-tbL"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
                 <constraint firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="dFW-9J-5DQ"/>
                 <constraint firstItem="WDK-Fb-m3U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eyM-9Y-inx"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="150" id="h2h-0X-RyU"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="qsD-yc-TSz"/>
-                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="s0P-H3-ibe"/>
-                <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="100" id="wiz-uC-oVL"/>
+                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="278" id="s0P-H3-ibe"/>
+                <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="wiz-uC-oVL"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Pmt-tb-8Ig"/>
             <connections>

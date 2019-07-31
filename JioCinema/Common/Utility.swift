@@ -63,26 +63,15 @@ class Utility {
         var style: UIAlertAction.Style
     }
     //MARK: Apply Gradient
-    class func applyGradient(_ view: UIView, _ initialColor : CGColor) {
-        let initalColor  = initialColor
-        let finalColor = UIColor.clear.cgColor
-        
-        let colors2 = [initalColor, finalColor, finalColor, finalColor]
-        
-        let layer2 = CAGradientLayer()
-        layer2.colors = colors2
-        layer2.frame = view.bounds
-        layer2.startPoint = CGPoint(x: 0, y: 1)
-        layer2.endPoint = CGPoint(x: 0, y: 0)
-        view.layer.insertSublayer(layer2, at: 0)
-        
+    class func applyGradient(_ view: UIView, startPoint: CGPoint = CGPoint(x: 0.5, y: 0.0), endPoint: CGPoint = CGPoint(x: 0.5, y: 1.0), colorArray: [CGColor], atIndex: Int = 0) {
         let layer = CAGradientLayer()
-        layer.colors = colors2
-        let newRect = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.bounds.width, height: view.bounds.height * 0.95)
-        layer.frame = newRect
-        layer.startPoint = CGPoint(x: 0, y: 0)
-        layer.endPoint = CGPoint(x: 1, y: 0) //: CGPoint(x: 1, y: 0)
-        view.layer.insertSublayer(layer, at: 1)
+        layer.colors = colorArray
+//        let newRect = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.bounds.width, height: view.bounds.height * 0.95)
+//        layer.frame = newRect
+        layer.frame = view.bounds
+        layer.startPoint = startPoint
+        layer.endPoint = endPoint //: CGPoint(x: 1, y: 0)
+        view.layer.insertSublayer(layer, at: UInt32(atIndex))
         
     }
     

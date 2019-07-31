@@ -42,11 +42,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iOo-eg-EFV">
-                    <rect key="frame" x="85" y="0.0" width="1835" height="700"/>
+                    <rect key="frame" x="105" y="0.0" width="1815" height="700"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="350" sectionHeaderHeight="66" sectionFooterHeight="66" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9De-59-Cbg">
-                    <rect key="frame" x="85" y="700" width="1835" height="380"/>
+                    <rect key="frame" x="105" y="700" width="1815" height="380"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
@@ -54,7 +54,7 @@
             <constraints>
                 <constraint firstItem="9De-59-Cbg" firstAttribute="top" secondItem="iOo-eg-EFV" secondAttribute="bottom" id="1eM-fb-06X"/>
                 <constraint firstAttribute="trailing" secondItem="ufO-mS-GFA" secondAttribute="trailing" id="HfJ-FB-M16"/>
-                <constraint firstItem="9De-59-Cbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="85" id="I4A-6S-zTh"/>
+                <constraint firstItem="9De-59-Cbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="105" id="I4A-6S-zTh"/>
                 <constraint firstAttribute="bottom" secondItem="ufO-mS-GFA" secondAttribute="bottom" id="L4R-JM-2q6"/>
                 <constraint firstAttribute="trailing" secondItem="9De-59-Cbg" secondAttribute="trailing" id="LOx-Ye-ubn"/>
                 <constraint firstItem="ufO-mS-GFA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Mld-aa-2Ga"/>

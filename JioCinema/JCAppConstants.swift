@@ -173,19 +173,18 @@ struct AppNotification {
 }
 struct ViewColor {
     static let disneyBackground: UIColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-    static let commonBackground: UIColor = #colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
+    static let commonBackground: UIColor = #colorLiteral(red: 0.1019607843, green: 0.1019607843, blue: 0.1137254902, alpha: 1)//#colorLiteral(red: 0.1068576351, green: 0.1179018542, blue: 0.1013216153, alpha: 1)
     
-    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 1)
-    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.6285945773, green: 0.09878890961, blue: 0.2734127343, alpha: 1)
-//    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.01960784314, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-//    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)
+    static let disneyLeftMenuBackground: UIColor = #colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 0.7)//#colorLiteral(red: 0.008938653395, green: 0.1776166856, blue: 0.3151244521, alpha: 1)
+    static let cinemaLeftMenuBackground: UIColor = #colorLiteral(red: 0.09019607843, green: 0.09019607843, blue: 0.09411764706, alpha: 0.7)//#colorLiteral(red: 0.6285945773, green: 0.09878890961, blue: 0.2734127343, alpha: 1)
+
     
 //    Cinema Left Menu Background Color  : #8D0536
     
     static let searchBackGround: UIColor = .black
     static let clearBackGround: UIColor = .clear
     static let disneyButtonColor: UIColor = UIColor(red: 15.0/255.0, green: 112.0/255.0, blue: 215.0/255.0, alpha: 1.0)
-    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)//#colorLiteral(red: 0.9313725233, green: 0.2541199923, blue: 0.5018486381, alpha: 1)
+    static let selectionBarOnLeftNavigationColor: UIColor = #colorLiteral(red: 0.5529411765, green: 0.01960784314, blue: 0.2117647059, alpha: 1)//#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
     static let selectionBarOnLeftNavigationColorForDisney: UIColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
 
 }
@@ -243,9 +242,9 @@ let SHOW_LESS = "Show Less"
 //MARK:- Tablecell Row height
 
 let itemHeightForPortrait: CGFloat = 450
-let itemHeightForLandscape: CGFloat = 360
+let itemHeightForLandscape: CGFloat = 280.36//360
 let itemWidthForPortrait: CGFloat = 270
-let itemWidthForLadscape: CGFloat = 480
+let itemWidthForLadscape: CGFloat = 373.82//480
 
 let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90 + 14//561
 let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90 + 14//397

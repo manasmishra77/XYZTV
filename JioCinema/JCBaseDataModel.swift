@@ -292,7 +292,7 @@ struct Item: Codable {
     }
     var imageUrlOfTvStillImage: String {
         guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
-        if let imageStr = tvStill {
+        if let imageStr = tvStill, imageStr != ""{
             return baseImageUrl + imageStr
         } else if let imageStr = banner {
             return baseImageUrl + imageStr

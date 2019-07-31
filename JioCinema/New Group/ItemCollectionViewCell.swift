@@ -240,7 +240,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
         let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
         progressBar.isHidden = false
-        progressBar.progressTintColor = progressColor
+        progressBar.progressTintColor = ThemeManager.shared.selectionColor //progressColor
         progressBar.trackTintColor = progressDefaultColor
         var progress: Float = 0.0
         if let duration = cellItems.item?.duration, let totalDuration = cellItems.item?.totalDuration {
@@ -261,7 +261,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         resetNameLabel()
         if (context.nextFocusedView == self) {
-            self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
 
 //            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
 //                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)

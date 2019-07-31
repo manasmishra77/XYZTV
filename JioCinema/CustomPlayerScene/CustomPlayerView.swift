@@ -233,10 +233,8 @@ class CustomPlayerView: UIView {
         if gradientView.layer.isHidden == true {
             gradientView.layer.isHidden = false
         } else {
-        let colorLayer = CAGradientLayer()
-        colorLayer.frame = gradientView.bounds
-        colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
-        self.gradientView.layer.insertSublayer(colorLayer, at:0)
+            let colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
+            Utility.applyGradient(gradientView, colorArray: colors)
         }
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

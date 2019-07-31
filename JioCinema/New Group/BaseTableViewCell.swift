@@ -11,10 +11,10 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func updateHeaderImage(_ url: String)
+    func updateHeaderImage(url: String, title: String)
 }
 extension BaseTableViewCellDelegate {
-    func updateHeaderImage(_ url: String) {
+    func updateHeaderImage(url: String, title: String) {
     }
 }
 //To be used in place of TableCellItemsTuple Tuple
@@ -117,7 +117,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            delegate?.updateHeaderImage(newItem.imageUrlOfTvStillImage)
+            delegate?.updateHeaderImage(url: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "")
         }
     }
 }
@@ -125,7 +125,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
 
 extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 25
+        return 48
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
