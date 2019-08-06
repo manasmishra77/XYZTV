@@ -36,6 +36,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleImageSpacing: NSLayoutConstraint!
     @IBOutlet weak var imageProgressContainerBottomSpace: NSLayoutConstraint!
     @IBOutlet weak var imageViewCoverview: UIView!
+    @IBOutlet weak var heightOfImageContainer: NSLayoutConstraint!
     
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     
@@ -50,9 +51,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
 
     func configureView(_ cellItems: BaseItemCellModel, isPlayingNow: Bool = false) {
-        if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
-            imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-        }
+//        if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
+//            imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
+//        }
 //        self.focusedSpacingConstraint?.isActive = false
 //        self.focusedSpacingConstraint = NSLayoutC onstraint(item: nameLabel, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 20)
         cellItem = cellItems
@@ -201,6 +202,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 setImageOnCell(url: imageURL)
             }
         case .disneyCharacter:
+            
             if let logoURL = URL(string: cellItems.charactorItems?.LogoUrlForDisneyChar ?? ""){
                 setImageOnCell(url: logoURL)
             }
@@ -210,6 +212,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     private func configureCellLabelVisibility(_ layoutType: ItemCellLayoutType, isFocused: Bool = false) {
 
         self.layoutIfNeeded()
+        heightOfImageContainer.constant = 209
 //        imageProgressContainerBottomSpace.constant = 90
         switch layoutType {
         case .potrait:
@@ -251,6 +254,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
 //            imageView.adjustsImageWhenAncestorFocused = false
 //            imageView.clipsToBounds = true
 //            imageView.headerdImage(radius: 10)
+            heightOfImageContainer.constant = itemHeightForPortrait
             nameLabel.text = ""
             subtitle.text = ""
             //            imageProgressContainerBottomSpace.constant = 0
@@ -300,6 +304,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
         if (context.nextFocusedView == self) {
  
             titleImageSpacing.constant = NSLayoutConstraint(item: nameLabel!, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 30).constant
+            if cellItem?.layoutType == .disneyCharacter {
+                self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+
+            }
 //            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
 //            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
 //                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
@@ -324,6 +332,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
             //self.focusedSpacingConstraint?.isActive = true
 
         } else {
+            if cellItem?.layoutType == .disneyCharacter {
+                self.transform = CGAffineTransform(scaleX: 1, y: 1)
+                
+            }
             titleImageSpacing.constant = 12
 //            self.transform = CGAffineTransform(scaleX: 1, y: 1)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)

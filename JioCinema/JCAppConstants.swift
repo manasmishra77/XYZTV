@@ -249,11 +249,11 @@ let itemTitleHeight: CGFloat = 56 //(12+36+8)
 let itemSubtitleHeight: CGFloat = 35 //(29+6)
 
 //item height including title , subtitle & top-bottom constraints between them
-let itemHeightForPortrait: CGFloat = 450
+let itemHeightForPortrait: CGFloat = 312//450
 let itemHeightForLandscape: CGFloat = imageViewHeight //280.36//360
 let itemHeightForLandscapeForTitleOnly = itemHeightForLandscape + itemTitleHeight
 let itemHeightForLandscapeForTitleAndSubtitle = itemHeightForLandscapeForTitleOnly + itemSubtitleHeight
-let itemWidthForPortrait: CGFloat = 270
+let itemWidthForPortrait: CGFloat = 234//270
 let itemWidthForLadscape: CGFloat = 373//480
 
 let rowHeightForPotrait: CGFloat = itemHeightForPortrait + CategoryTitleHeight + bottomConstraintOfCollectionView//+ 14//561
