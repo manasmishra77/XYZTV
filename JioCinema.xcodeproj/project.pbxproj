@@ -956,7 +956,7 @@
 				7B78D7BC1F13A91900F319BF /* Resources */,
 				198B90F21FE257E700F452FD /* ShellScript */,
 				19491EE72018522700870794 /* Embed App Extensions */,
-				DDF4DC58D29D3842EB2C6CAB /* [CP] Embed Pods Frameworks */,
+				3321327247C665B08424955D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1153,7 +1153,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" b2cb0240a920ed8ea4e35d61f43735ece69b3fd2 8b19a31b41cf8f0ac31d753c3c2369ae8dc9e3b14697377bd9e587f9e03fcee2​";
 		};
-		DDF4DC58D29D3842EB2C6CAB /* [CP] Embed Pods Frameworks */ = {
+		3321327247C665B08424955D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
