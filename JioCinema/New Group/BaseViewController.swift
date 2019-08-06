@@ -195,7 +195,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+        if baseViewModel.vcType == .search {
+                    Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+        }
+
 //        guard let cell = tableView.cellForRow(at: context.nextFocusedIndexPath) as? BaseTableViewCell else {
 //            return UITableViewCell()
 //        }
@@ -245,27 +248,28 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if context.nextFocusedItem is SideNavigationTableCell {
-            self.baseTableView.alpha = 0.1
-            self.customHeaderView?.alpha = 0.1
-            self.backgroundImageView.isHidden = false
-            if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-                let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-            }
-        } else {
+//        if context.nextFocusedItem is SideNavigationTableCell {
+//            self.baseTableView.alpha = 0.1
+//            self.customHeaderView?.alpha = 0.1
+//            self.backgroundImageView.isHidden = false
+//            self.customHeaderView?.imageViewForHeader.isHidden = true
+//            if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+//                let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+//                setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+//            }
+//        } else {
             self.baseTableView.alpha = 1
             self.customHeaderView?.alpha = 1
-            if context.nextFocusedItem is ItemCollectionViewCell {
-                updateUiAndFocus(toFullScreen: false, context: context)
-            } else {
+            if context.nextFocusedItem is HeaderButtons {
                 updateUiAndFocus(toFullScreen: true, context: context)
                 if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
                     let title = headerItem.name == "" ? headerItem.showname : headerItem.name
                     setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
                 }
+            } else {
+                updateUiAndFocus(toFullScreen: false, context: context)
             }
-         }
+//         }
     }
     
     
