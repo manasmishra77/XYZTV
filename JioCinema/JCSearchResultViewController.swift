@@ -120,10 +120,12 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     func getLayoutOfCellForItemType(_ item : Item?) -> ItemCellLayoutType {
         if let appType = item?.appType {
             switch appType {
-            case .Episode, .Clip, .Music, .Search, .Movie:
+            case .Episode, .Clip, .Music, .Search:
                 return .landscapeWithLabelsAlwaysShow
 //            case .Movie:
 //                return .potrait
+            case .Movie:
+                return .landscapeWithTitleOnly
             default:
                 return .landscapeWithTitleOnly
             }
@@ -137,7 +139,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
 //        } else if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
 //            return rowHeightForPotrait
 //        }
-        return rowHeightForLandscape
+        if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
+            return rowHeightForLandscapeTitleOnly
+        }
+        return rowHeightForLandscapeWithLabels
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {

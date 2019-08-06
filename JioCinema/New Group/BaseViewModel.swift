@@ -206,7 +206,7 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableRow(_ index: IndexPath) -> CGFloat {
-        let layout = itemCellLayoutType(index: index.row)
+//        let layout = itemCellLayoutType(index: index.row)
 //        if index.section == 0 {
 //            return 0
 //        } else if layout == .landscapeForLangGenre {
@@ -217,15 +217,15 @@ class BaseViewModel: NSObject  {
 //            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
 //            return height
 //        }
-        if layout == .landscapeForLangGenre {
-            return rowHeightForLandscape
-        } else if layout == .landscapeWithTitleOnly{
-            return rowHeightForLandscapeTitleOnly
-        } else if layout == .disneyCharacter{
-            return rowHeightForPotrait
-        } else {
+//        if layout == .landscapeForLangGenre {
+//            return rowHeightForLandscape
+//        } else if layout == .landscapeWithTitleOnly {
+//            return rowHeightForLandscapeTitleOnly
+//        } else if layout == .disneyCharacter {
+//            return rowHeightForPotrait
+//        } else {
             return rowHeightForLandscapeWithLabels
-        }
+//        }
     }
     
     func populateTableIndexArray() {

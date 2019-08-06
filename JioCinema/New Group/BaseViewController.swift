@@ -196,6 +196,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+//        guard let cell = tableView.cellForRow(at: context.nextFocusedIndexPath) as? BaseTableViewCell else {
+//            return UITableViewCell()
+//        }
+//        baseTableView.contentOffset.y = cell?.frame.maxY)
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -269,7 +273,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         self.backgroundImageView.isHidden = !toFullScreen
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
         let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
-        let topConstraint : CGFloat = toFullScreen ? 700 : 500
+        let topConstraint : CGFloat = toFullScreen ? (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1) : (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.3)
         let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
         customHeaderView?.playButton.alpha = alphaChange
         customHeaderView?.moreInfoButton.alpha = alphaChange
@@ -323,21 +327,21 @@ extension BaseViewController: BaseTableViewCellDelegate {
             self.customHeaderView?.titleLabel.text = title
             self.customHeaderView?.descriptionLabel.text = description
         } else {
-            self.timerToSetImage?.invalidate()
-            self.timerToSetImage = nil
-            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
-                guard let self = self else {return}
-                
-                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
-                                  duration:0.5,
-                                  options: .transitionCrossDissolve,
-                                  animations: {
+//            self.timerToSetImage?.invalidate()
+//            self.timerToSetImage = nil
+//            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
+//                guard let self = self else {return}
+            
+//                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
+//                                  duration:0.5,
+//                                  options: .transitionCrossDissolve,
+//                                  animations: {
                                     self.customHeaderView?.titleLabel.text = title
                                     self.customHeaderView?.descriptionLabel.text = description
  self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-                },
-                                  completion: nil)
-            }
+//                },
+//                                  completion: nil)
+//            }
         }
 
     }

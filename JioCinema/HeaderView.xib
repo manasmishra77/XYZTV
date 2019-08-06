@@ -24,21 +24,21 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WDK-Fb-m3U">
-                    <rect key="frame" x="720" y="0.0" width="1200" height="650"/>
+                    <rect key="frame" x="416" y="0.0" width="1504" height="846"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="650" id="TKc-QC-9uH"/>
-                        <constraint firstAttribute="width" constant="1200" id="gUe-x6-nC4"/>
+                        <constraint firstAttribute="height" constant="846" id="TKc-QC-9uH"/>
+                        <constraint firstAttribute="width" constant="1504" id="gUe-x6-nC4"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
-                    <rect key="frame" x="73" y="260" width="677" height="0.0"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patel ki punjabi shaadi" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
+                    <rect key="frame" x="73" y="204" width="743" height="86"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="72"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDh-jJ-t5x" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="73" y="286" width="182" height="63"/>
+                    <rect key="frame" x="73" y="316" width="182" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="25"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
@@ -55,7 +55,7 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8K-gf-ISa" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="287" y="286" width="182" height="63"/>
+                    <rect key="frame" x="287" y="316" width="182" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="tCw-tn-Xye"/>
@@ -75,7 +75,7 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WPv-6P-ZXH">
-                    <rect key="frame" x="73" y="389" width="647" height="0.0"/>
+                    <rect key="frame" x="73" y="419" width="343" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="28"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -91,10 +91,10 @@
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
                 <constraint firstItem="WDK-Fb-m3U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eyM-9Y-inx"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="32" id="h2h-0X-RyU"/>
-                <constraint firstItem="Y9K-O4-uTI" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="30" id="mKj-QI-ovZ"/>
+                <constraint firstItem="Y9K-O4-uTI" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="mKj-QI-ovZ"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="qsD-yc-TSz"/>
-                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="260" id="s0P-H3-ibe"/>
+                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="204" id="s0P-H3-ibe"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="height" secondItem="P8K-gf-ISa" secondAttribute="height" id="v2j-8z-VRc"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="wiz-uC-oVL"/>
             </constraints>
@@ -106,6 +106,7 @@
                 <outlet property="titleLabel" destination="Y9K-O4-uTI" id="HWd-xa-SMl"/>
                 <outlet property="topConstraintOfDescription" destination="Pd1-Cb-CRq" id="DH8-C5-Ggs"/>
             </connections>
+            <point key="canvasLocation" x="2272" y="281"/>
         </view>
     </objects>
 </document>
