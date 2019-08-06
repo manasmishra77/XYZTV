@@ -67,6 +67,8 @@
 		<string>JioType-Black.ttf</string>
 		<string>JioType-LightItalic.ttf</string>
 		<string>JioType-MediumItalic.ttf</string>
+		<string>SF-Pro-Display-Regular.otf</string>
+		<string>SF-Pro-Display-Medium.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

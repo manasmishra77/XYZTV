@@ -11,10 +11,10 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func updateHeaderImage(url: String, title: String)
+    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool)
 }
 extension BaseTableViewCellDelegate {
-    func updateHeaderImage(url: String, title: String) {
+    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
     }
 }
 //To be used in place of TableCellItemsTuple Tuple
@@ -117,7 +117,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            delegate?.updateHeaderImage(url: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "")
+            delegate?.setHeaderValues(urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
         }
     }
 }
@@ -125,11 +125,20 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
 
 extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 48
+        return 50
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height
+        var height = collectionView.frame.height
+        if cellItems.layoutType == .disneyCharacter {
+            height = itemHeightForPortrait
+        } else if cellItems.layoutType == .landscapeForLangGenre {
+            height = itemHeightForLandscape
+        } else if cellItems.layoutType == .landscapeWithTitleOnly{
+            height = itemHeightForLandscapeForTitleOnly
+        } else {
+            height = itemHeightForLandscapeForTitleAndSubtitle
+        }
 //        let width = ((cellItems.layoutType == .potrait) || (cellItems.layoutType == .potraitWithLabelAlwaysShow) || (cellItems.layoutType == .disneyCharacter)) ? itemWidthForPortrait : itemWidthForLadscape
         let width = (cellItems.layoutType == .disneyCharacter) ? itemWidthForPortrait : itemWidthForLadscape
         return CGSize(width: width, height: height)

@@ -149,10 +149,12 @@ class SideNavigationTableView: UIView {
             if itemsList[index].type == ViewControllersType.disneyHome {
                     ThemeManager.shared.currentTheme = .jioDisney
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
+                    cell.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
             } else {
                     ThemeManager.shared.currentTheme = .jioCinema
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
+                    cell.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
                 cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].selectedImage)
@@ -192,7 +194,7 @@ extension SideNavigationTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 76
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {

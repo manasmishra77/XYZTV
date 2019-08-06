@@ -10,10 +10,12 @@ import UIKit
 
 class HeaderView: UIView {
 
+    @IBOutlet weak var topConstraintOfDescription: NSLayoutConstraint!
     @IBOutlet weak var imageViewForHeader: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var playButton: HeaderButtons!
     @IBOutlet weak var moreInfoButton: HeaderButtons!
+    @IBOutlet weak var descriptionLabel: UILabel!
     var gradientColor : UIColor = ThemeManager.shared.backgroundColor
     /*
     // Only override draw() if you perform custom drawing.
@@ -22,16 +24,16 @@ class HeaderView: UIView {
         // Drawing code
     }
     */
-    override func awakeFromNib() {
-        var colors = [UIColor.clear.cgColor, gradientColor.withAlphaComponent(0.5).cgColor, gradientColor.cgColor]
+
+    func addGradientToHeader(color: UIColor) {
+        var colors = [UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
         var startPoint = CGPoint(x: 1.0, y: 0.0)
         var endPoint = CGPoint(x: 0.0, y: 0.0)
         Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors)
         
-        colors = [UIColor.clear.cgColor, gradientColor.withAlphaComponent(0.5).cgColor, gradientColor.cgColor]
+        colors = [UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
         endPoint = CGPoint(x: 0.0, y: 1.0)
         startPoint = CGPoint(x: 0.0, y: 0.0)
         Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors, atIndex: 1)
     }
-
 }

@@ -239,14 +239,27 @@ let SHOW_LESS = "Show Less"
 
 
 //MARK:- Tablecell Row height
+//height of category title in table view including top & bottom constraint
+let CategoryTitleHeight: CGFloat = 100
+let bottomConstraintOfCollectionView: CGFloat = 10
 
+//Heights in
+let imageViewHeight: CGFloat = 209
+let itemTitleHeight: CGFloat = 56 //(12+36+8)
+let itemSubtitleHeight: CGFloat = 35 //(29+6)
+
+//item height including title , subtitle & top-bottom constraints between them
 let itemHeightForPortrait: CGFloat = 450
-let itemHeightForLandscape: CGFloat = 280.36//360
+let itemHeightForLandscape: CGFloat = imageViewHeight //280.36//360
+let itemHeightForLandscapeForTitleOnly = itemHeightForLandscape + itemTitleHeight
+let itemHeightForLandscapeForTitleAndSubtitle = itemHeightForLandscapeForTitleOnly + itemSubtitleHeight
 let itemWidthForPortrait: CGFloat = 270
-let itemWidthForLadscape: CGFloat = 373.82//480
+let itemWidthForLadscape: CGFloat = 373//480
 
-let rowHeightForPotrait: CGFloat = itemHeightForPortrait + 90 + 14//561
-let rowHeightForLandscape: CGFloat = itemHeightForLandscape + 90 + 14//397
+let rowHeightForPotrait: CGFloat = itemHeightForPortrait + CategoryTitleHeight + bottomConstraintOfCollectionView//+ 14//561
+let rowHeightForLandscape: CGFloat = itemHeightForLandscape + CategoryTitleHeight + bottomConstraintOfCollectionView//+ 14//397
+let rowHeightForLandscapeTitleOnly: CGFloat = itemHeightForLandscapeForTitleOnly + CategoryTitleHeight + bottomConstraintOfCollectionView//+ 14//397
+let rowHeightForLandscapeWithLabels: CGFloat = itemHeightForLandscapeForTitleAndSubtitle + CategoryTitleHeight + bottomConstraintOfCollectionView//+ 14//397
 let widthToHeightPropertionForPotrat: CGFloat = 277/475
 let widthToHeightPropertionForLandScape: CGFloat = 365/311
 let widthToHeightPropertionForPotratOLD: CGFloat = 0.65
@@ -255,8 +268,8 @@ let widthToHeightPropertionForLandScapeOLD: CGFloat = 1.27
 
 
 struct SideNavigationConstants {
-    static let expandedWidth: CGFloat = 400
-    static let collapsedWidth: CGFloat = 132
+    static let expandedWidth: CGFloat = 340//400
+    static let collapsedWidth: CGFloat = 105//132
 }
 
 struct LanguageGenreScene {

@@ -207,15 +207,24 @@ class BaseViewModel: NSObject  {
     
     func heightOfTableRow(_ index: IndexPath) -> CGFloat {
         let layout = itemCellLayoutType(index: index.row)
-        if index.section == 0 {
-            return 0
-        } else if layout == .landscapeForLangGenre {
-            let height: CGFloat = rowHeightForLandscape - 90//imageProgressBar
-            return height
-        }else {
-//            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
-            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
-            return height
+//        if index.section == 0 {
+//            return 0
+//        } else if layout == .landscapeForLangGenre {
+//            let height: CGFloat = rowHeightForLandscape - 90//imageProgressBar
+//            return height
+//        }else {
+////            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
+//            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
+//            return height
+//        }
+        if layout == .landscapeForLangGenre {
+            return rowHeightForLandscape
+        } else if layout == .landscapeWithTitleOnly{
+            return rowHeightForLandscapeTitleOnly
+        } else if layout == .disneyCharacter{
+            return rowHeightForPotrait
+        } else {
+            return rowHeightForLandscapeWithLabels
         }
     }
     
@@ -225,12 +234,14 @@ class BaseViewModel: NSObject  {
     func getLayoutOfCellForItemType(_ item : Item?,_ charItem : DisneyCharacterItems?) -> ItemCellLayoutType {
         if let appType = item?.appType {
             switch appType {
-            case .Episode, .Clip, .Music, .Search, .Movie:
+            case .Episode, .Clip, .Music, .Search:
                 return .landscapeWithLabelsAlwaysShow
             case .Language, .Genre:
                 return .landscapeForLangGenre
 //            case .Movie:
 //                return .potrait
+            case .Movie:
+                return .landscapeWithTitleOnly
             default:
                 return .landscapeWithTitleOnly
             }

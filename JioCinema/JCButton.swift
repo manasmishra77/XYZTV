@@ -136,24 +136,19 @@ class SkipIntroButton: UIButton {
     }
 }
 class HeaderButtons: UIButton {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let radius = min(bounds.width, bounds.height) / 2
-        layer.cornerRadius = radius
-        
-    }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        
         if (context.nextFocusedView == self)
         {
-            self.backgroundColor = ThemeManager.shared.tabBarColor
-            self.borderWidth = 0
+            self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.backgroundColor = ThemeManager.shared.selectionColor
+            self.setTitleColor(.white, for: .normal)
         }
         else
         {
-            self.backgroundColor = .clear
-            self.borderWidth = 2
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.setTitleColor(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), for: .normal)
+            self.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.831372549, blue: 0.8078431373, alpha: 1)
         }
     }
 }

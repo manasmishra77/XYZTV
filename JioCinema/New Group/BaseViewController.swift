@@ -37,7 +37,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
         //Handle Reponse of APi Call
-        print(self.baseViewModel.vcType)
         if self.viewLoadingStatus == .none {
             self.viewLoadingStatus = isSuccess ? .viewNotLoadedDataFetched : .viewNotLoadedDataFetchedWithError
         } else if self.viewLoadingStatus == .completed || self.viewLoadingStatus == .viewLoaded {
@@ -70,7 +69,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         self.baseViewModel.delegate = self
         self.baseViewModel.fetchData(completion: tableReloadClosure)
     }
-
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -82,7 +81,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     var sideNavigationVC: SideNavigationVC? {
         return AppManager.shared.sideNavigationVC
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -94,7 +93,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             isMetadataScreenToBePresentedFromResumeWatchCategory = false
             let coverView = UIView(frame: sideNavigationVC?.view.bounds ?? CGRect.zero)
             if self.baseViewModel.vcType.isDisney {
-               coverView.backgroundColor = ViewColor.disneyBackground
+                coverView.backgroundColor = ViewColor.disneyBackground
             } else {
                 coverView.backgroundColor = ViewColor.commonBackground
             }
@@ -150,6 +149,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if customHeaderView == nil {
             customHeaderView = UINib(nibName: "HeaderView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? HeaderView
             customHeaderView?.frame = customHeaderHolderView.bounds
+            print(baseViewModel.vcType.isDisney)
+            customHeaderView?.addGradientToHeader(color: gradientColor)
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
         }
@@ -207,7 +208,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if section == 0 {
             return 0
         } else {
-        return baseViewModel.countOfTableView
+            return baseViewModel.countOfTableView
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -218,9 +219,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
-        if let urlString = baseViewModel.baseDataModel?.data?[0].items?[0].imageUrlOfTvStillImage{
-            let url = URL(string: urlString)
-            backgroundImageView.sd_setImage(with: url)
+        
+        if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+            setHeaderValues(urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
         }
         cell.configureView(cellData, delegate: self)
         return cell
@@ -228,7 +230,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
-//            return baseViewModel.carouselView
+            //            return baseViewModel.carouselView
         } else {
             return baseViewModel.buttonView()
         }
@@ -239,38 +241,57 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        if context.nextFocusedItem is ItemCollectionViewCell {
-            updateUiAndFocus(toFullScreen: false, context: context)
+        if context.nextFocusedItem is SideNavigationTableCell {
+            self.baseTableView.alpha = 0.1
+            self.customHeaderView?.alpha = 0.1
+            self.backgroundImageView.isHidden = false
+            if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+                let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+                setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+            }
         } else {
-            updateUiAndFocus(toFullScreen: true, context: context)
-        }
+            self.baseTableView.alpha = 1
+            self.customHeaderView?.alpha = 1
+            if context.nextFocusedItem is ItemCollectionViewCell {
+                updateUiAndFocus(toFullScreen: false, context: context)
+            } else {
+                updateUiAndFocus(toFullScreen: true, context: context)
+                if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+                    let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+                    setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+                }
+            }
+         }
     }
     
     
     func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
-         self.backgroundImageView.isHidden = !toFullScreen
+        self.backgroundImageView.isHidden = !toFullScreen
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
         let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
         let topConstraint : CGFloat = toFullScreen ? 700 : 500
-        self.customHeaderView?.playButton.alpha = alphaChange
-        self.customHeaderView?.moreInfoButton.alpha = alphaChange
-        self.customHeaderView?.titleLabel.alpha = alphaChange
+        let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
+        customHeaderView?.playButton.alpha = alphaChange
+        customHeaderView?.moreInfoButton.alpha = alphaChange
+        
+        //        self.customHeaderView?.titleLabel.alpha = alphaChange
         UIView.animate(withDuration: 0.3) {
             self.topConstraintOfTableView.constant = topConstraint
+            self.customHeaderView?.topConstraintOfDescription.constant = topConstraintOfDesciption
             self.view.layoutIfNeeded()
         }
     }
-
+    
     //ChangingTheAlpha
     var focusShiftedFromTabBarToVC = true
     
-//    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-//        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
-//    }
-//    
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
-//    }
+    //    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+    //        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
+    //    }
+    //
+    //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    //        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
+    //    }
 }
 extension BaseViewController {
     func showAlert() {
@@ -289,22 +310,36 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func updateHeaderImage(url: String, title: String) {
-        self.timerToSetImage?.invalidate()
-        self.timerToSetImage = nil
-        self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
-            guard let self = self else {return}
-            let url = URL(string: url)
-            
-            UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
-                              duration:0.5,
-                              options: .transitionCrossDissolve,
-                              animations: {
-                                self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-                                self.customHeaderView?.titleLabel.text = title
-    },
-                              completion: nil)
+    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
+        var url : URL?
+        if let urlString = urlString {
+            url = URL(string: urlString)
         }
+
+        if toFullScreen {
+            if url != nil {
+                self.backgroundImageView.sd_setImage(with: url)
+            }
+            self.customHeaderView?.titleLabel.text = title
+            self.customHeaderView?.descriptionLabel.text = description
+        } else {
+            self.timerToSetImage?.invalidate()
+            self.timerToSetImage = nil
+            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
+                guard let self = self else {return}
+                
+                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
+                                  duration:0.5,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    self.customHeaderView?.titleLabel.text = title
+                                    self.customHeaderView?.descriptionLabel.text = description
+ self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
+                },
+                                  completion: nil)
+            }
+        }
+
     }
     
 }
@@ -317,15 +352,15 @@ extension BaseViewController: BaseViewModelDelegate {
     }
     
     func presentVC(_ vc: UIViewController) {
-            self.present(vc, animated: true, completion: nil)
-//        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
-//            // For DisneyKids, Disney Movies, Disney TVShow
-//            self.present(vc, animated: true, completion: nil)
-//            return
-//        }
-//        tabBarVC.presentDisneySubVC(vc)
+        self.present(vc, animated: true, completion: nil)
+        //        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
+        //            // For DisneyKids, Disney Movies, Disney TVShow
+        //            self.present(vc, animated: true, completion: nil)
+        //            return
+        //        }
+        //        tabBarVC.presentDisneySubVC(vc)
     }
-
+    
 }
 
 enum ViewLoadingStatus {
