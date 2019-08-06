@@ -176,6 +176,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     //used for rounding corners of imageView when ancestor focu is true
     func setCornerRadiusToImageView(_ layout: ItemCellLayoutType) {
+        
+        self.layer.cornerRadius = 8.0
+        self.layer.masksToBounds = true
 //        if layout == .disneyCharacter {
 //            imageView.adjustsImageWhenAncestorFocused = false
 //            imageView.clipsToBounds = true
@@ -303,19 +306,20 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
         if (context.nextFocusedView == self) {
  
-            titleImageSpacing.constant = NSLayoutConstraint(item: nameLabel!, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 30).constant
+//            titleImageSpacing.constant = NSLayoutConstraint(item: nameLabel!, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 30).constant
             if cellItem?.layoutType == .disneyCharacter {
                 self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-
             }
-//            self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            else {
+                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            }
 //            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
 //                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
 //            } else {
 //                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
 //            }
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-            setCornerRadiusToImageView(.landscapeWithLabels)
+//            setCornerRadiusToImageView(.landscapeWithLabels)
 //            imageView.layer.borderWidth = 5
 //            if cellItem?.cellType.isDisney ?? false {
 //                imageView.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
@@ -332,11 +336,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
             //self.focusedSpacingConstraint?.isActive = true
 
         } else {
-            if cellItem?.layoutType == .disneyCharacter {
                 self.transform = CGAffineTransform(scaleX: 1, y: 1)
-                
-            }
-            titleImageSpacing.constant = 12
+//            titleImageSpacing.constant = 12
 //            self.transform = CGAffineTransform(scaleX: 1, y: 1)
             configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
 //            imageView.layer.borderWidth = 0
