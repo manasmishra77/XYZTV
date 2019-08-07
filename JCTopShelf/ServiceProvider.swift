@@ -10,7 +10,11 @@
 import Foundation
 import TVServices
 
+
+
 class ServiceProvider: NSObject, TVTopShelfProvider {
+    
+    let headingText = "JioCinema recommends"
     
     override init() {
         super.init()
@@ -19,15 +23,20 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
     // MARK: - TVTopShelfProvider protocol
     var topShelfStyle: TVTopShelfContentStyle {
         // Return desired Top Shelf style.
-        return .inset
+        return .sectioned
     }
     var topShelfItems: [TVContentItem] {
         var topShelfItemArray = [TVContentItem]()
+        
+        let headingIdentifier = TVContentIdentifier(identifier: headingText, container: nil)
+        let headingSection = TVContentItem(contentIdentifier: headingIdentifier)
+        headingSection.title = headingText
+        
         if let shelfModelArray = self.webServiceCallForTopShelfItems() {
             for eachShelfModel in shelfModelArray {
                  let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.name ?? "", container: nil)
                     let topShelfItem = TVContentItem(contentIdentifier: tvContentIdentifier)
-                    topShelfItem.imageURL = URL(string: eachShelfModel.imageUrlForCarousel)
+                    topShelfItem.imageURL = URL(string: eachShelfModel.imageUrlLandscapContent)
                     if let displayUrl = self.urlFor(item: eachShelfModel){
                         topShelfItem.displayURL = displayUrl
                     }
@@ -35,7 +44,8 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
                     topShelfItemArray.append(topShelfItem)
             }
         }
-        return topShelfItemArray
+        headingSection.topShelfItems = topShelfItemArray
+        return [headingSection]
     }
     
     private func urlFor(item: VODTopShelfModel) -> URL? {
