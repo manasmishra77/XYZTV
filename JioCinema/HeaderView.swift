@@ -26,14 +26,14 @@ class HeaderView: UIView {
     */
 
     func addGradientToHeader(color: UIColor) {
-//        var colors = [UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
-//        var startPoint = CGPoint(x: 1.0, y: 0.0)
-//        var endPoint = CGPoint(x: 0.0, y: 0.0)
-//        Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors)
-//        
-//        colors = [UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
-//        endPoint = CGPoint(x: 0.0, y: 1.0)
-//        startPoint = CGPoint(x: 0.0, y: 0.0)
-//        Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors, atIndex: 1)
+        var colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        var startPoint = CGPoint(x: 1.0, y: 0.0)
+        var endPoint = CGPoint(x: 0.0, y: 0.0)
+        Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors)
+        
+        colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        endPoint = CGPoint(x: 0.0, y: 1.0)
+        startPoint = CGPoint(x: 0.0, y: 0.0)
+        Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors, atIndex: 1)
     }
 }
