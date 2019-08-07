@@ -115,10 +115,13 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
             //disney character click to be handled
         }
     }
+    
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
+            if context.nextFocusedItem is ItemCollectionViewCell {
+                delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
+            }
         }
     }
 }

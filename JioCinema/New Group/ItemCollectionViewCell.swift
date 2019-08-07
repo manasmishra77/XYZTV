@@ -312,7 +312,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             }
             else {
-                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             }
 //            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
 //                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
