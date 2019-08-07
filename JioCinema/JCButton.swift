@@ -135,6 +135,7 @@ class SkipIntroButton: UIButton {
         }
     }
 }
+
 class HeaderButtons: UIButton {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {

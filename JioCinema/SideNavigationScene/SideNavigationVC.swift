@@ -54,8 +54,7 @@ class SideNavigationVC: UIViewController {
                 if (context.focusHeading == .right) {
                     
                     
-                    DispatchQueue.main.async {
-                        
+                    DispatchQueue.main.async {                        
                         self.sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
                         self.myPreferdFocusedView = nil
                         self.myPreferdFocusedView = (self.selectedVC as? BaseViewController)?.lastFocusableItem
