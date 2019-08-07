@@ -31,6 +31,11 @@ class SideNavigationVC: UIViewController {
         self.view.addGestureRecognizer(menuPressRecognizer)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onSerchNavRemoving(_:)), name: AppNotification.serchViewUnloading, object: nil)
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(onFocusFailed(_:)), name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc func onSerchNavRemoving(_ notification:Notification) {
@@ -39,6 +44,28 @@ class SideNavigationVC: UIViewController {
                 self.sideNavigationView?.performNavigationTableSelection(index: index)
             }
         })
+    }
+    
+    @objc func onFocusFailed(_ notification:Notification) {
+        if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
+            print(context)
+            
+            if context.previouslyFocusedItem is SideNavigationTableCell {
+                if (context.focusHeading == .right) {
+                    
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
+                        self.myPreferdFocusedView = nil
+                        self.myPreferdFocusedView = (self.selectedVC as? BaseViewController)?.lastFocusableItem
+                        self.updateFocusIfNeeded()
+                        self.setNeedsFocusUpdate()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+        }
     }
     
     func addSideNavigation() {

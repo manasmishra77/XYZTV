@@ -54,7 +54,7 @@ class DisneyHomeViewModel: BaseViewModel {
             print("character")
             return .potrait
         }
-        return .landscapeWithTitleOnly
+        return .landscapeWithLabels
     }
     override func getDataContainer(_ index: Int) -> DataContainer? {
         let itemIndexTuple = homeTableIndexArray[index]

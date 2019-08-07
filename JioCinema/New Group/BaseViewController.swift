@@ -30,6 +30,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
     
+    
+    
+    var lastFocusableItem: UIView?
+    
     var customHeaderView: HeaderView?
     var timerToSetImage: Timer?
     var gradientColor : UIColor = ViewColor.commonBackground
@@ -153,6 +157,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.addGradientToHeader(color: gradientColor)
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
+            
+            lastFocusableItem = customHeaderView?.playButton
         }
     }
     
@@ -198,7 +204,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if baseViewModel.vcType == .search {
                     Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
-
+        if context.nextFocusedIndexPath?.row == 0 {
+            customHeaderView?.playButton.isHidden = false
+            customHeaderView?.moreInfoButton.isHidden = false
+            customHeaderView?.playButton.alpha = 0.001
+            customHeaderView?.moreInfoButton.alpha = 0.001
+        } else {
+            customHeaderView?.playButton.isHidden = true
+            customHeaderView?.moreInfoButton.isHidden = true
+        }
 //        guard let cell = tableView.cellForRow(at: context.nextFocusedIndexPath) as? BaseTableViewCell else {
 //            return UITableViewCell()
 //        }
@@ -229,7 +243,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-            setHeaderValues(urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
         }
         cell.configureView(cellData, delegate: self)
         return cell
@@ -264,7 +278,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 updateUiAndFocus(toFullScreen: true, context: context)
                 if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
                     let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                    setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+                    setHeaderValues(item: lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
                 }
             } else {
                 updateUiAndFocus(toFullScreen: false, context: context)
@@ -300,6 +314,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
     //        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
     //    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+         lastFocusableItem = nil
+    }
+    
+    
+    
 }
 extension BaseViewController {
     func showAlert() {
@@ -318,7 +341,9 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?, urlString: String?, title: String, description: String, toFullScreen: Bool) {
+        
+        lastFocusableItem = item
         var url : URL?
         if let urlString = urlString {
             url = URL(string: urlString)
