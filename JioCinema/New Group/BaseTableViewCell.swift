@@ -11,10 +11,11 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool)
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool)
 }
 extension BaseTableViewCellDelegate {
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool) {
+        
     }
 }
 //To be used in place of TableCellItemsTuple Tuple
@@ -117,7 +118,7 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            delegate?.setHeaderValues(urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
+            delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
         }
     }
 }
