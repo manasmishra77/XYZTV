@@ -147,7 +147,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if let moreArray =  metadata?.more, moreArray.count > 0 {
                 if indexPath.row == 0 {
 //                    return rowHeightForPotrait
-                    return rowHeightForLandscape
+                    return rowHeightForLandscapeTitleOnly
                 } else {
                     return 350
                 }
@@ -156,7 +156,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         } else if itemAppType == .TVShow {
             if let episodeArray =  metadata?.episodes, episodeArray.count > 0 {
                 if indexPath.row == 0 {
-                    return rowHeightForLandscape
+                    return rowHeightForLandscapeTitleOnly
                 } else {
                     return 350
                 }

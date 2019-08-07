@@ -395,7 +395,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
 //            let height = rowHeightForLandscapeForLanguageGenreScreen
 //            let widht = height*widthToHeightPropertionForLandScapeOLD
 //            return CGSize(width: widht, height: height)
-            return LanguageGenreScene.landscapeCellSize
+        return LanguageGenreScene.landscapeCellSizeForLanguageGenereResults
 
 //        }
     }
@@ -412,7 +412,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 60
+        return 40
     }
     
     
@@ -420,9 +420,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var padding : CGFloat = 0
         if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
-            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(50))/2
+            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(40))/2
         } else {
-            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(50))/2
+            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(40))/2
         }
 
         return UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
@@ -438,9 +438,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         let cellType: ItemCellType = .base
         var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
         if item.appType == .Movie || item.appType == .TVShow{
-            layoutType = .landscapeWithLabelsAlwaysShow
-        } else {
             layoutType = .landscapeWithTitleOnly
+        } else {
+            layoutType = .landscapeWithLabelsAlwaysShow
         }
         //(item: item, cellType: cellType, layoutType: layoutType)
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)

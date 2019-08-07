@@ -289,6 +289,12 @@ struct LanguageGenreScene {
         let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
+    
+    static var landscapeCellSizeForLanguageGenereResults: CGSize {
+        let height = itemHeightForLandscapeForTitleAndSubtitle//landscapeRowHeight - 40
+        let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
+        return CGSize(width: width, height: height)
+    }
     static var potraitCellSize: CGSize {
         let height = itemHeightForPortrait//potraitRowHeight - 40
         let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
