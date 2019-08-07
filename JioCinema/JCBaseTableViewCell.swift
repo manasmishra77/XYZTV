@@ -242,7 +242,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if(itemArrayType == .artistImages) {
             return 15
         }
-        return 25
+        return 35
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
