@@ -92,7 +92,8 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+//        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForLandscapeForTitleAndSubtitle + 70) : ((-itemHeightForLandscapeForTitleAndSubtitle - 60) + 70)
     }
     var isPlayerPaused: Bool {
         return player?.rate == 0
@@ -174,10 +175,13 @@ class CustomPlayerView: UIView {
     func addMoreLikeView() {
         if moreLikeView == nil {
             moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
-            guard let moreLikeView = moreLikeView else{
+            guard let moreLikeView = moreLikeView else {
                 return
             }
-            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie ) ? itemHeightForLandscapeForTitleAndSubtitle : itemHeightForLandscapeForTitleAndSubtitle + 60
+    
+
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             self.layoutIfNeeded()

@@ -198,7 +198,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if baseViewModel.vcType == .search {
                     Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
-
+        if context.nextFocusedIndexPath?.row == 0 {
+            customHeaderView?.playButton.isHidden = false
+            customHeaderView?.moreInfoButton.isHidden = false
+            customHeaderView?.playButton.alpha = 0.001
+            customHeaderView?.moreInfoButton.alpha = 0.001
+        } else {
+            customHeaderView?.playButton.isHidden = true
+            customHeaderView?.moreInfoButton.isHidden = true
+        }
 //        guard let cell = tableView.cellForRow(at: context.nextFocusedIndexPath) as? BaseTableViewCell else {
 //            return UITableViewCell()
 //        }

@@ -27,7 +27,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="yTD-Ic-iAy">
-                    <rect key="frame" x="73" y="100" width="1720" height="240"/>
+                    <rect key="frame" x="73" y="81" width="1720" height="259"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="30" id="1wq-Hv-Not">
                         <size key="itemSize" width="376" height="250"/>
@@ -42,7 +42,7 @@
                 <constraint firstAttribute="trailing" secondItem="yTD-Ic-iAy" secondAttribute="trailing" constant="10" id="8ek-Vs-vzm"/>
                 <constraint firstItem="yTD-Ic-iAy" firstAttribute="leading" secondItem="FfN-da-kYZ" secondAttribute="leading" id="GfU-qg-cnl"/>
                 <constraint firstItem="FfN-da-kYZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="Ll1-9t-dM1"/>
-                <constraint firstItem="yTD-Ic-iAy" firstAttribute="top" secondItem="FfN-da-kYZ" secondAttribute="bottom" constant="34" id="bfJ-VI-nhe"/>
+                <constraint firstItem="yTD-Ic-iAy" firstAttribute="top" secondItem="FfN-da-kYZ" secondAttribute="bottom" constant="15" id="bfJ-VI-nhe"/>
                 <constraint firstAttribute="bottom" secondItem="yTD-Ic-iAy" secondAttribute="bottom" constant="10" id="cUN-pc-bPX"/>
                 <constraint firstItem="FfN-da-kYZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="e6Q-jZ-bdu"/>
             </constraints>

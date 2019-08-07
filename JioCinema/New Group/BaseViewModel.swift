@@ -206,26 +206,38 @@ class BaseViewModel: NSObject  {
     }
     
     func heightOfTableRow(_ index: IndexPath) -> CGFloat {
-//        let layout = itemCellLayoutType(index: index.row)
-//        if index.section == 0 {
-//            return 0
-//        } else if layout == .landscapeForLangGenre {
-//            let height: CGFloat = rowHeightForLandscape - 90//imageProgressBar
-//            return height
-//        }else {
-////            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
-//            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
-//            return height
-//        }
-//        if layout == .landscapeForLangGenre {
-//            return rowHeightForLandscape
-//        } else if layout == .landscapeWithTitleOnly {
-//            return rowHeightForLandscapeTitleOnly
-//        } else if layout == .disneyCharacter {
-//            return rowHeightForPotrait
-//        } else {
+                let layout = itemCellLayoutType(index: index.row)
+        //        if index.section == 0 {
+        //            return 0
+        //        } else if layout == .landscapeForLangGenre {
+        //            let height: CGFloat = rowHeightForLandscape - 90//imageProgressBar
+        //            return height
+        //        }else {
+        ////            let height: CGFloat = ((layout == .potrait) || (layout == .potraitWithLabelAlwaysShow) || (layout == .disneyCharacter)) ? rowHeightForPotrait : rowHeightForLandscape
+        //            let height: CGFloat = (layout == .disneyCharacter) ? rowHeightForPotrait : rowHeightForLandscape
+        //            return height
+        //        }
+        //        if layout == .landscapeForLangGenre {
+        //            return rowHeightForLandscape
+        //        } else if layout == .landscapeWithTitleOnly {
+        //            return rowHeightForLandscapeTitleOnly
+        //        } else if layout == .disneyCharacter {
+        //            return rowHeightForPotrait
+        //        } else {
+//        return rowHeightForLandscapeWithLabels
+        //        }
+        switch layout {
+        case .disneyCharacter:
+            return rowHeightForPotrait
+        case .landscapeForLangGenre:
+            return rowHeightForLandscape
+        case .landscapeWithLabels, .landscapeWithLabelsAlwaysShow, .landscapeForResume:
             return rowHeightForLandscapeWithLabels
-//        }
+        case .landscapeWithTitleOnly:
+            return rowHeightForLandscapeTitleOnly
+        default:
+            return rowHeightForLandscapeTitleOnly
+        }
     }
     
     func populateTableIndexArray() {

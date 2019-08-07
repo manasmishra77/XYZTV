@@ -27,7 +27,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7W-TF-XAc" userLabel="ImageProgressContainerView">
-                        <rect key="frame" x="0.0" y="0.0" width="392" height="209"/>
+                        <rect key="frame" x="0.0" y="15" width="392" height="209"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFy-3D-dND">
                                 <rect key="frame" x="0.0" y="0.0" width="392" height="209"/>
@@ -84,21 +84,21 @@
                         </constraints>
                     </view>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYV-oP-nC5">
-                        <rect key="frame" x="15" y="221" width="357" height="0.0"/>
+                        <rect key="frame" x="15" y="236" width="357" height="0.0"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="30"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dyp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhF-XA-SdJ">
-                        <rect key="frame" x="15" y="229" width="362" height="29"/>
+                        <rect key="frame" x="15" y="244" width="362" height="29"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="24"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="got-SL-a7b">
-                        <rect key="frame" x="0.0" y="221" width="15" height="0.0"/>
+                        <rect key="frame" x="0.0" y="236" width="15" height="0.0"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="C2O-Ng-ead"/>
@@ -116,7 +116,7 @@
                 <constraint firstItem="rYV-oP-nC5" firstAttribute="top" secondItem="s7W-TF-XAc" secondAttribute="bottom" constant="12" id="TIP-HB-83D"/>
                 <constraint firstItem="QhF-XA-SdJ" firstAttribute="top" secondItem="rYV-oP-nC5" secondAttribute="bottom" constant="8" id="Up5-gu-qXD"/>
                 <constraint firstAttribute="trailing" secondItem="QhF-XA-SdJ" secondAttribute="trailing" constant="15" id="cnu-zz-bhJ"/>
-                <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="g3q-TQ-rIf"/>
+                <constraint firstItem="s7W-TF-XAc" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="15" id="g3q-TQ-rIf"/>
                 <constraint firstItem="got-SL-a7b" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="iGw-Rc-SW1"/>
                 <constraint firstItem="s7W-TF-XAc" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="nYa-e9-YQn"/>
                 <constraint firstItem="QhF-XA-SdJ" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="15" id="ySx-Md-Gaa"/>
@@ -125,6 +125,7 @@
             <connections>
                 <outlet property="heightConstraintForProgressBar" destination="OvZ-Jn-zMO" id="sQL-Ks-atO"/>
                 <outlet property="heightOfImageContainer" destination="Y89-vm-Ckf" id="EH8-fQ-ZAn"/>
+                <outlet property="imageProgressContainer" destination="s7W-TF-XAc" id="YHM-iJ-pk5"/>
                 <outlet property="imageView" destination="nFy-3D-dND" id="C5f-hB-O9K"/>
                 <outlet property="imageViewCoverview" destination="38K-UH-vNN" id="boL-Mg-OZg"/>
                 <outlet property="nameLabel" destination="rYV-oP-nC5" id="45P-8A-7jQ"/>

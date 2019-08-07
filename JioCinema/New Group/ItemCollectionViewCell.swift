@@ -32,7 +32,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
-
+    @IBOutlet weak var imageProgressContainer: UIView!
+    
     @IBOutlet weak var titleImageSpacing: NSLayoutConstraint!
     @IBOutlet weak var imageProgressContainerBottomSpace: NSLayoutConstraint!
     @IBOutlet weak var imageViewCoverview: UIView!
@@ -59,7 +60,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
         cellItem = cellItems
 
         configureNameLabelPatchView(cellItems)
-        print(imageView.focusedFrameGuide.layoutFrame)
         nameLabel.text = cellItems.item?.name ?? ""
         subtitle.text = cellItems.item?.subtitle
         progressBar.isHidden = true
@@ -176,7 +176,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     //used for rounding corners of imageView when ancestor focu is true
     func setCornerRadiusToImageView(_ layout: ItemCellLayoutType) {
-        
+        self.imageViewCoverview.layer.cornerRadius = 8.0
+        self.imageProgressContainer.layer.cornerRadius = 8.0
         self.layer.cornerRadius = 8.0
         self.layer.masksToBounds = true
 //        if layout == .disneyCharacter {

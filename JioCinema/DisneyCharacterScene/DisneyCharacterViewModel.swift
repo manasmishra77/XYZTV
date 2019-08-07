@@ -22,7 +22,7 @@ class DisneyCharacterViewModel: NSObject {
     fileprivate var categoryNameAfterLogin: String? = nil
     func getLayout(tabid: String) -> ItemCellLayoutType {
         if tabid == "0"{
-            return .landscapeWithLabelsAlwaysShow
+            return .landscapeWithTitleOnly
         } else if tabid == "6"{
             return .landscapeWithLabels
         } else {
@@ -33,11 +33,11 @@ class DisneyCharacterViewModel: NSObject {
         return charHeroData?.data?.count ?? 0
     }
     func heightOfRowAt(indexpath: IndexPath) -> CGFloat {
-//        if charHeroData?.data?[indexpath.row].tabId == "0" {
-//            return rowHeightForPotrait
-//        } else {
-            return rowHeightForLandscape
-//        }
+        if charHeroData?.data?[indexpath.row].tabId == "6"{
+            return rowHeightForLandscapeWithLabels
+        } else {
+            return rowHeightForLandscapeTitleOnly
+        }
     }
     func getCellData(indexpath : IndexPath) -> BaseTableCellModel {
         var cellData = BaseTableCellModel(title: "" , items: nil, cellType: .disneyCommon, layoutType: .landscapeWithTitleOnly, sectionLanguage: .english, charItems: nil)
