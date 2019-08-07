@@ -131,7 +131,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 //            headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
 //            headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
             metadataTableView.backgroundColor = ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
-            headerCell.backgroudImage.image = UIImage.init(named: "DisneyMetadataBg")
+//            headerCell.backgroudImage.image = UIImage.init(named: "DisneyMetadataBg")
             self.view.backgroundColor =  ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
@@ -1006,6 +1006,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
+//        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
         let url = URL(string: imageUrl)
 
