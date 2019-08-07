@@ -260,11 +260,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-            if context.previouslyFocusedItem is HeaderButtons && context.nextFocusedItem is ItemCollectionViewCell {
+            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell) && context.nextFocusedItem is ItemCollectionViewCell {
                 updateUiAndFocus(toFullScreen: false, context: context)
-            }
-            else {
-                
             }
     }
     
