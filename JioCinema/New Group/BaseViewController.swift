@@ -47,11 +47,19 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.viewLoadingStatus = .completed
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
                 }
             } else {
                 self.showAlert()
             }
+        }
+    }
+    
+    func loadMainViewBgDetails() {
+        if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
         }
     }
     
@@ -106,6 +114,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             DispatchQueue.main.asyncAfter(deadline: .now()+2) {
                 coverView.removeFromSuperview()
             }
+        }
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(onFocusFailed(_:)), name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
         }
     }
     
@@ -232,22 +245,20 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return baseViewModel.countOfTableView
         }
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return baseViewModel.heightOfTableRow(indexPath)
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BaseTableCellNibIdentifier, for: indexPath) as? BaseTableViewCell else {
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
-        
-        if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-        }
         cell.configureView(cellData, delegate: self)
         return cell
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
@@ -262,41 +273,22 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-//        if context.nextFocusedItem is SideNavigationTableCell {
-//            self.baseTableView.alpha = 0.1
-//            self.customHeaderView?.alpha = 0.1
-//            self.backgroundImageView.isHidden = false
-//            self.customHeaderView?.imageViewForHeader.isHidden = true
-//            if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-//                let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-//                setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-//            }
-//        } else {
-            self.baseTableView.alpha = 1
-            self.customHeaderView?.alpha = 1
-            if context.nextFocusedItem is HeaderButtons {
-                updateUiAndFocus(toFullScreen: true, context: context)
-                if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-                    let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                    setHeaderValues(item: lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-                }
-            } else {
+            if context.previouslyFocusedItem is HeaderButtons && context.nextFocusedItem is ItemCollectionViewCell {
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
-//         }
+            else {
+                
+            }
     }
     
     
     func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
         self.backgroundImageView.isHidden = !toFullScreen
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
-        let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
+        self.customHeaderView?.playButton.isHidden = !toFullScreen
+        self.customHeaderView?.moreInfoButton.isHidden = !toFullScreen
         let topConstraint : CGFloat = toFullScreen ? (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1) : (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.3)
         let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
-        customHeaderView?.playButton.alpha = alphaChange
-        customHeaderView?.moreInfoButton.alpha = alphaChange
-        
-        //        self.customHeaderView?.titleLabel.alpha = alphaChange
         UIView.animate(withDuration: 0.3) {
             self.topConstraintOfTableView.constant = topConstraint
             self.customHeaderView?.topConstraintOfDescription.constant = topConstraintOfDesciption
@@ -304,21 +296,42 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
-    //ChangingTheAlpha
-    var focusShiftedFromTabBarToVC = true
-    
-    //    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-    //        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
-    //    }
-    //
-    //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-    //        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
-    //    }
-    
+    @objc func onFocusFailed(_ notification:Notification) {
+        if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
+            if context.previouslyFocusedItem is ItemCollectionViewCell {
+                if (context.focusHeading == .up) {
+                    DispatchQueue.main.async {
+                        
+                        if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
+                            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+                            self.setHeaderValues(item: self.lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+                        }
+                        self.customHeaderView?.imageViewForHeader.isHidden = true
+                        self.backgroundImageView.isHidden = false
+                        self.customHeaderView?.playButton.isHidden = false
+                        self.customHeaderView?.moreInfoButton.isHidden = false
+                        UIView.animate(withDuration: 0.3) {
+                            self.topConstraintOfTableView.constant = (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1)
+                            self.customHeaderView?.topConstraintOfDescription.constant = 130
+                            self.view.layoutIfNeeded()
+                        }
+                        self.updateFocusIfNeeded()
+                        self.setNeedsFocusUpdate()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
          lastFocusableItem = nil
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     
@@ -367,7 +380,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
 //                                  animations: {
                                     self.customHeaderView?.titleLabel.text = title
                                     self.customHeaderView?.descriptionLabel.text = description
- self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
+                                    self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
 //                },
 //                                  completion: nil)
 //            }
