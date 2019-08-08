@@ -59,7 +59,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
         cellItem = cellItems
 
         configureNameLabelPatchView(cellItems)
-        print(imageView.focusedFrameGuide.layoutFrame)
         nameLabel.text = cellItems.item?.name ?? ""
         subtitle.text = cellItems.item?.subtitle
         progressBar.isHidden = true

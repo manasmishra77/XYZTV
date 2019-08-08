@@ -46,6 +46,7 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
         }
         headingSection.topShelfItems = topShelfItemArray
         return [headingSection]
+        
     }
     
     private func urlFor(item: VODTopShelfModel) -> URL? {
