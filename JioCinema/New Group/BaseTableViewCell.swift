@@ -126,6 +126,11 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
             if context.nextFocusedItem is ItemCollectionViewCell {
                 delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
             }
+        } else if let charItem = cellItems.charItems {
+            let newItem = charItem[context.nextFocusedIndexPath?.row ?? 0]
+            if context.nextFocusedItem is ItemCollectionViewCell {
+                delegate?.setHeaderValues(item: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", description: "", toFullScreen: false)
+            }
         }
     }
 }
