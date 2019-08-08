@@ -201,6 +201,9 @@ extension SideNavigationTableView: UITableViewDataSource {
         if context.focusHeading == .left ||  context.focusHeading == .right{
             delegate?.sideNavigationSwipeEnd(side: context.focusHeading)
         }
+//        else if context.nextFocusedItem is SideNavigationTableCell {
+//            delegate?.sideNavigationSwipeEnd(side: .left) //focus lost jugaad
+//        }
     }
     
     func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {

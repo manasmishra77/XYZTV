@@ -17,7 +17,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="BaseTableViewCell" customModule="JioCinema" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1803" height="350"/>
+            <rect key="frame" x="0.0" y="0.0" width="1660" height="642"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Of Movie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfN-da-kYZ">
@@ -26,8 +26,8 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="yTD-Ic-iAy">
-                    <rect key="frame" x="73" y="81" width="1720" height="259"/>
+                <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="yTD-Ic-iAy">
+                    <rect key="frame" x="73" y="81" width="1577" height="551"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="30" id="1wq-Hv-Not">
                         <size key="itemSize" width="376" height="250"/>
@@ -51,7 +51,7 @@
                 <outlet property="categoryTitleLabel" destination="FfN-da-kYZ" id="EDW-mM-9b1"/>
                 <outlet property="itemCollectionView" destination="yTD-Ic-iAy" id="kAy-7m-tV4"/>
             </connections>
-            <point key="canvasLocation" x="76.5" y="-136"/>
+            <point key="canvasLocation" x="5" y="10"/>
         </view>
     </objects>
 </document>

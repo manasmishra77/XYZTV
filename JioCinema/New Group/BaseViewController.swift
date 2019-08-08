@@ -30,6 +30,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
+    
+    
     
     
     var lastFocusableItem: UIView?
@@ -215,9 +218,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        print("context == \(context)")
         if baseViewModel.vcType == .search {
                     Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
+        if let indexpath = context.nextFocusedIndexPath {
+            DispatchQueue.main.async {
+                self.baseTableView.scrollToRow(at: indexpath, at: .top, animated: true)
+            }
+        }
+//        self.baseTableView.scrollToRow(at: context.nextFocusedItem, at: <#T##UITableView.ScrollPosition#>, animated: <#T##Bool#>)
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -226,6 +236,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
+    
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.baseTableView.frame.width, height: 100))
+//        return view
+//    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 0
@@ -234,6 +251,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return baseViewModel.heightOfTableRow(indexPath)
     }
@@ -255,8 +273,23 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return baseViewModel.buttonView()
         }
     }
+    
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    
+    }
+    
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return baseViewModel.heightOfTableHeader(section: section)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            DispatchQueue.main.async {
+                if let cell = cell as? BaseTableViewCell {
+                    cell.itemCollectionView?.contentOffset = CGPoint.init(x: 0, y: 0)
+                }
+            }
     }
     
     //new UI changes
@@ -273,11 +306,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
         self.customHeaderView?.playButton.isHidden = !toFullScreen
         self.customHeaderView?.moreInfoButton.isHidden = !toFullScreen
-        let topConstraint : CGFloat = toFullScreen ? (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1) : (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.3)
+        let heightConstraint : CGFloat = toFullScreen ? rowHeightForLandscapeWithLabels * 1.1 : self.view.frame.height - rowHeightForLandscapeWithLabels * 1.25
         
         let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
         UIView.animate(withDuration: 0.3) {
-            self.topConstraintOfTableView.constant = topConstraint
+            self.baseTableViewHeight.constant = heightConstraint
             self.customHeaderView?.topConstraintOfDescription.constant = topConstraintOfDesciption
             self.view.layoutIfNeeded()
         }
@@ -291,14 +324,14 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(item: self.lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+                            self.setHeaderValues(item: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
                         self.customHeaderView?.playButton.isHidden = false
                         self.customHeaderView?.moreInfoButton.isHidden = false
                         UIView.animate(withDuration: 0.3) {
-                            self.topConstraintOfTableView.constant = (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1)
+                            self.baseTableViewHeight.constant = rowHeightForLandscapeWithLabels * 1.1
                             self.customHeaderView?.topConstraintOfDescription.constant = 130
                             self.view.layoutIfNeeded()
                         }
@@ -356,21 +389,21 @@ extension BaseViewController: BaseTableViewCellDelegate {
             self.customHeaderView?.titleLabel.text = title
             self.customHeaderView?.descriptionLabel.text = description
         } else {
-//            self.timerToSetImage?.invalidate()
-//            self.timerToSetImage = nil
-//            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
-//                guard let self = self else {return}
+            self.timerToSetImage?.invalidate()
+            self.timerToSetImage = nil
+            self.customHeaderView?.titleLabel.text = title
+            self.customHeaderView?.descriptionLabel.text = description
+            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {[weak self] (timer) in
+                guard let self = self else {return}
             
-//                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
-//                                  duration:0.5,
-//                                  options: .transitionCrossDissolve,
-//                                  animations: {
-                                    self.customHeaderView?.titleLabel.text = title
-                                    self.customHeaderView?.descriptionLabel.text = description
+                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
+                                  duration:0.4,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
                                     self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-//                },
-//                                  completion: nil)
-//            }
+                },
+                                  completion: nil)
+            }
         }
 
     }

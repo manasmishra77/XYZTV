@@ -243,8 +243,14 @@ class ItemCollectionViewCell: UICollectionViewCell {
         resetNameLabel()
 
         if (context.nextFocusedView == self) {
- 
+
+            
+            if (cellItem?.layoutType == .disneyCharacter) {
+                self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }
+            else {
                 self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            }
                 configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
