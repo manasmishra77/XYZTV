@@ -52,6 +52,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 DispatchQueue.main.async {
                     self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
+                    self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
                 self.showAlert()
@@ -61,7 +62,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     func loadMainViewBgDetails() {
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-            let layout = baseViewModel.itemCellLayoutType(index: 0) 
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
             setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
         }
@@ -228,34 +228,17 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         print("context == \(context)")
         if baseViewModel.vcType == .search {
-                    Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+            Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
-        
-        
-//        if let indexpath = context.nextFocusedIndexPath {
-//            print("inside context.nextFocusedIndexPath")
-//            var scrollPosition = UITableView.ScrollPosition.top
-//            if indexpath.row == (self.baseViewModel.countOfTableView - 1) {
-//                scrollPosition = UITableView.ScrollPosition.bottom
-//            }
-//            DispatchQueue.main.async {
-//                self.baseTableView.scrollToRow(at: indexpath, at: scrollPosition, animated: true)
-//            }
-//        }
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
-    
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.baseTableView.frame.width, height: 100))
-//        return view
-//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -290,11 +273,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    
-    }
-    
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return baseViewModel.heightOfTableHeader(section: section)
     }
@@ -310,7 +288,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
             if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell) && context.nextFocusedItem is ItemCollectionViewCell {
-                
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
     }
