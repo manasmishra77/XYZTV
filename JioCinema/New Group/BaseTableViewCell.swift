@@ -11,10 +11,10 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool)
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode)
 }
 extension BaseTableViewCellDelegate {
-    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
         
     }
 }
@@ -121,12 +121,12 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
             if context.nextFocusedItem is ItemCollectionViewCell {
-                delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
+                delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false, mode: .scaleAspectFill)
             }
         } else if let charItem = cellItems.charItems {
             let newItem = charItem[context.nextFocusedIndexPath?.row ?? 0]
             if context.nextFocusedItem is ItemCollectionViewCell {
-                delegate?.setHeaderValues(item: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", description: "", toFullScreen: false)
+                delegate?.setHeaderValues(item: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", description: "", toFullScreen: false, mode: .scaleAspectFit)
             }
         }
     }
