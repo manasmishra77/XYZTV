@@ -240,7 +240,7 @@ let SHOW_LESS = "Show Less"
 
 //MARK:- Tablecell Row height
 //height of category title in table view including top & bottom constraint
-let CategoryTitleHeight: CGFloat = 85
+let CategoryTitleHeight: CGFloat = 85 + 20
 let bottomConstraintOfCollectionView: CGFloat = 10
 
 //Heights in

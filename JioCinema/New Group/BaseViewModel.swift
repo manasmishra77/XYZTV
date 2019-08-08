@@ -230,7 +230,7 @@ class BaseViewModel: NSObject  {
         case .disneyCharacter:
             return rowHeightForPotrait
         case .landscapeForLangGenre:
-            return rowHeightForLandscape
+            return rowHeightForLandscapeTitleOnly
         case .landscapeWithLabels, .landscapeWithLabelsAlwaysShow, .landscapeForResume:
             return rowHeightForLandscapeWithLabels
         case .landscapeWithTitleOnly:
