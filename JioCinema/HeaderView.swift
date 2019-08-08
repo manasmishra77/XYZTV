@@ -33,7 +33,7 @@ class HeaderView: UIView {
    */
      @IBAction func playButtonTapped(_ sender: Any) {
         if let delegate = headerViewDelegate {
-            delegate.playButtonTapped()()
+            delegate.playButtonTapped()
         }
      }
  
