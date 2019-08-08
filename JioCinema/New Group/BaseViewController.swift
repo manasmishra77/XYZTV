@@ -58,8 +58,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     func loadMainViewBgDetails() {
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+            let layout = baseViewModel.itemCellLayoutType(index: 0) 
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
         }
     }
     
@@ -292,7 +293,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(item: self.lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
+                            self.setHeaderValues(item: self.lastFocusableItem, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
@@ -342,14 +343,16 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(item: UIView?, urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?, urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
         
         lastFocusableItem = item
         var url : URL?
         if let urlString = urlString {
             url = URL(string: urlString)
         }
-
+        
+        self.customHeaderView?.imageViewForHeader.contentMode = mode
+        
         if toFullScreen {
             if url != nil {
                 self.backgroundImageView.sd_setImage(with: url)
