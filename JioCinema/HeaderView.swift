@@ -21,6 +21,7 @@ class HeaderView: UIView {
     @IBOutlet weak var playButton: HeaderButtons!
     @IBOutlet weak var moreInfoButton: HeaderButtons!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var heightOfMoreIfoButton: NSLayoutConstraint!
     var gradientColor : UIColor = ThemeManager.shared.backgroundColor
     
     weak var headerViewDelegate: HeaderViewDelegate?

@@ -118,6 +118,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if isDisney {
             configueeDisneyView()
         } else {
+            metadataTableView.backgroundColor = ViewColor.commonBackground
             headerCell.configureViews()
         }
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
@@ -1006,9 +1007,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
-//        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
-        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
-        let url = URL(string: imageUrl)
+        var imageUrlString = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
+        if let imageUrl = item?.imageUrlOfTvStillImage {
+           imageUrlString = imageUrl
+        }
+        let url = URL(string: imageUrlString)
 
 //        DispatchQueue.main.async {
 //

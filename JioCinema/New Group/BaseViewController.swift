@@ -168,6 +168,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.frame = customHeaderHolderView.bounds
             print(baseViewModel.vcType.isDisney)
             customHeaderView?.headerViewDelegate = self
+            if baseViewModel.vcType == .music || baseViewModel.vcType == .clip {
+                customHeaderView?.heightOfMoreIfoButton.constant = 0
+            } else {
+                customHeaderView?.heightOfMoreIfoButton.constant = 63
+            }
+            self.customHeaderView?.layoutIfNeeded()
             customHeaderView?.addGradientToHeader(color: gradientColor)
             customHeaderView?.imageViewForHeader.isHidden = true
             addGradientView()
@@ -247,6 +253,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         cell.configureView(cellData, delegate: self)
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -380,7 +387,9 @@ extension BaseViewController: BaseTableViewCellDelegate {
 
 extension BaseViewController: HeaderViewDelegate {
     func playButtonTapped() {
-        
+        if let item = baseViewModel.baseDataModel?.data?[0].items?[0] {
+            self.baseViewModel.itemCellTapped(item, selectedIndexPath: IndexPath(item: 0, section: 0), shouldDirectPlay: true)
+        }
     }
     
     func moreInfoButtonTapped() {
