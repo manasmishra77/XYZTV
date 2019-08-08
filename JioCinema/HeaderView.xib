@@ -32,7 +32,7 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="36" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
-                    <rect key="frame" x="73" y="204" width="743" height="0.0"/>
+                    <rect key="frame" x="73" y="204" width="967" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="72"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -40,6 +40,9 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDh-jJ-t5x" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
                     <rect key="frame" x="73" y="230" width="182" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="63" id="b6G-q8-Rop"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="25"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Play">
@@ -100,12 +103,12 @@
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="qsD-yc-TSz"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="204" id="s0P-H3-ibe"/>
-                <constraint firstItem="QDh-jJ-t5x" firstAttribute="height" secondItem="P8K-gf-ISa" secondAttribute="height" id="v2j-8z-VRc"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="wiz-uC-oVL"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="wu5-j4-obu"/>
             </constraints>
             <connections>
                 <outlet property="descriptionLabel" destination="WPv-6P-ZXH" id="Nal-ne-92k"/>
+                <outlet property="heightOfMoreIfoButton" destination="tCw-tn-Xye" id="SME-Lw-Lzd"/>
                 <outlet property="imageViewForHeader" destination="WDK-Fb-m3U" id="XDk-TA-eaX"/>
                 <outlet property="moreInfoButton" destination="P8K-gf-ISa" id="Mhl-uL-HEw"/>
                 <outlet property="playButton" destination="QDh-jJ-t5x" id="JvI-VP-0Hq"/>

@@ -204,7 +204,7 @@ class Utility {
         metadataVC.tabBarIndex = tabBarIndex
         metadataVC.shouldUseTabBarIndex = shouldUseTabBarIndex
         metadataVC.isMetaDataAvailable = isMetaDataAvailable
-        
+
         metadataVC.item = currentItem
         if let metaData = metaData as? MetadataModel {
             metadataVC.metadata = metaData

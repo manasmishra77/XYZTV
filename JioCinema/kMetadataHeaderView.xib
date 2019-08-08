@@ -24,10 +24,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
-                    <rect key="frame" x="416" y="0.0" width="1504" height="846"/>
+                    <rect key="frame" x="640" y="0.0" width="1280" height="720"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="1504" id="RDK-aM-gcq"/>
-                        <constraint firstAttribute="height" constant="846" id="cza-FJ-sAA"/>
+                        <constraint firstAttribute="width" constant="1280" id="RDK-aM-gcq"/>
+                        <constraint firstAttribute="height" constant="720" id="cza-FJ-sAA"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3rK-TM-LCh">
