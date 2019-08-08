@@ -7,7 +7,7 @@ Pods/
 build/
 Podfile.lock
 DerivedData/
-JioCinema.xcodeproj/xcuserdata/
+*/xcuserdata/
 timeline.xctimeline
 playground.xcworkspace
 .build/
