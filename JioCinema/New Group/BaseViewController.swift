@@ -310,7 +310,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     @objc func onFocusFailed(_ notification:Notification) {
         if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
-            if context.previouslyFocusedItem is ItemCollectionViewCell {
+            if context.previouslyFocusedItem is ItemCollectionViewCell || context.previouslyFocusedItem is JCDisneyButton {
                 if (context.focusHeading == .up) {
                     DispatchQueue.main.async {
                         
