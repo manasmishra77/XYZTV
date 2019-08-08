@@ -167,6 +167,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView = UINib(nibName: "HeaderView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? HeaderView
             customHeaderView?.frame = customHeaderHolderView.bounds
             print(baseViewModel.vcType.isDisney)
+            customHeaderView?.headerViewDelegate = self
             customHeaderView?.addGradientToHeader(color: gradientColor)
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
@@ -372,6 +373,18 @@ extension BaseViewController: BaseTableViewCellDelegate {
 
     }
     
+}
+
+extension BaseViewController: HeaderViewDelegate {
+    func playButtonTapped() {
+        
+    }
+    
+    func moreInfoButtonTapped() {
+        if let item = baseViewModel.baseDataModel?.data?[0].items?[0] {
+             self.baseViewModel.itemCellTapped(item, selectedIndexPath: IndexPath(item: 0, section: 0))
+        }
+    }
 }
 
 extension BaseViewController: BaseViewModelDelegate {
