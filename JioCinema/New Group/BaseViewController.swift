@@ -223,12 +223,18 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if baseViewModel.vcType == .search {
                     Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
-        if let indexpath = context.nextFocusedIndexPath {
-            DispatchQueue.main.async {
-                self.baseTableView.scrollToRow(at: indexpath, at: .top, animated: true)
-            }
-        }
-//        self.baseTableView.scrollToRow(at: context.nextFocusedItem, at: <#T##UITableView.ScrollPosition#>, animated: <#T##Bool#>)
+        
+        
+//        if let indexpath = context.nextFocusedIndexPath {
+//            print("inside context.nextFocusedIndexPath")
+//            var scrollPosition = UITableView.ScrollPosition.top
+//            if indexpath.row == (self.baseViewModel.countOfTableView - 1) {
+//                scrollPosition = UITableView.ScrollPosition.bottom
+//            }
+//            DispatchQueue.main.async {
+//                self.baseTableView.scrollToRow(at: indexpath, at: scrollPosition, animated: true)
+//            }
+//        }
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
