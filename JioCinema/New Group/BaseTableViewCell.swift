@@ -74,7 +74,11 @@ class BaseTableViewCell: UITableViewCell {
         self.delegate = delegate
         self.defaultAudioLanguage = cellItems.sectionLanguage
         self.categoryTitleLabel.text = cellItems.title
-        self.itemCollectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.itemCollectionView.contentOffset = CGPoint.init(x: 0, y: 0)
+            self.itemCollectionView.reloadData()
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
