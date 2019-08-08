@@ -168,6 +168,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.frame = customHeaderHolderView.bounds
             print(baseViewModel.vcType.isDisney)
             customHeaderView?.addGradientToHeader(color: gradientColor)
+            customHeaderView?.imageViewForHeader.isHidden = true
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
             
@@ -261,6 +262,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
             if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell) && context.nextFocusedItem is ItemCollectionViewCell {
+                
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
     }
@@ -272,6 +274,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         self.customHeaderView?.playButton.isHidden = !toFullScreen
         self.customHeaderView?.moreInfoButton.isHidden = !toFullScreen
         let topConstraint : CGFloat = toFullScreen ? (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1) : (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.3)
+        
         let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
         UIView.animate(withDuration: 0.3) {
             self.topConstraintOfTableView.constant = topConstraint
