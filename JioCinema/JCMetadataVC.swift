@@ -1323,6 +1323,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
+            self.dismiss(animated: false, completion: nil)
+
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {

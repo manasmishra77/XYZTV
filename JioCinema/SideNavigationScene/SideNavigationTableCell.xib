@@ -27,7 +27,7 @@
                         <rect key="frame" x="184" y="0.0" width="12" height="231"/>
                         <color key="backgroundColor" red="0.90196078431372551" green="0.12941176470588234" blue="0.41568627450980389" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="12" id="t7M-FK-pxp"/>
+                            <constraint firstAttribute="width" id="t7M-FK-pxp"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="Home" translatesAutoresizingMaskIntoConstraints="NO" id="Zzb-DA-4rZ">

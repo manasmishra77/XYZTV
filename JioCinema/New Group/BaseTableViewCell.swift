@@ -143,7 +143,7 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if cellItems.layoutType == .disneyCharacter {
             height = itemHeightForPortrait
         } else if cellItems.layoutType == .landscapeForLangGenre {
-            height = itemHeightForLandscape
+            height = itemHeightForLandscapeForTitleOnly
         } else if cellItems.layoutType == .landscapeWithTitleOnly{
             height = itemHeightForLandscapeForTitleOnly
         } else {

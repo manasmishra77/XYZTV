@@ -172,6 +172,9 @@ class SideNavigationTableView: UIView {
 extension SideNavigationTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+        tableView.selectRow(at: IndexPath.init(row: selectedIndex, section: 0), animated: false, scrollPosition: .none)
+        }
         self.performNavigationTableSelection(index: indexPath.row)
     }
     
@@ -192,6 +195,7 @@ extension SideNavigationTableView: UITableViewDataSource {
         cell.titleLabel.text = self.itemsList[indexPath.row].type.name
         cell.iconImageView.image = UIImage.init(named: self.itemsList[indexPath.row].unselectedImage)
         // self.itemsList[indexPath.row].image
+
         return cell
     }
     

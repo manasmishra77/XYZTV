@@ -34,10 +34,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWi-8P-gGA">
-                    <rect key="frame" x="116" y="0.0" width="2" height="1080"/>
+                    <rect key="frame" x="116" y="0.0" width="1" height="1080"/>
                     <color key="backgroundColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="2" id="nNO-KX-XRQ"/>
+                        <constraint firstAttribute="width" constant="1" id="nNO-KX-XRQ"/>
                     </constraints>
                 </view>
             </subviews>
