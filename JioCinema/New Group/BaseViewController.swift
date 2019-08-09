@@ -287,11 +287,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell) && context.nextFocusedItem is ItemCollectionViewCell {
+            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell || context.previouslyFocusedItem is JCDisneyButton) && context.nextFocusedItem is ItemCollectionViewCell {
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
 
-        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCollectionViewCell  || context.previouslyFocusedView is HeaderButtons){
+        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCollectionViewCell  || context.previouslyFocusedView is HeaderButtons || context.previouslyFocusedView is JCDisneyButton){
             baseTableView.alpha = 0.2
             customHeaderView?.playButton.alpha = 0.2
             customHeaderView?.moreInfoButton.alpha = 0.2

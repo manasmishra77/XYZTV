@@ -237,7 +237,7 @@ class PlayerViewModel: NSObject {
             
             DispatchQueue.main.async {
                 self.playbackRightsModel = response.model
-                self.playbackRightsModel?.fps = nil
+//                self.playbackRightsModel?.fps = nil
                 self.decideURLPriorityForPlayer()
                 
                 guard let _ = self.playerActiveUrl else {
