@@ -290,6 +290,20 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell) && context.nextFocusedItem is ItemCollectionViewCell {
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
+
+        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCollectionViewCell  || context.previouslyFocusedView is HeaderButtons){
+            baseTableView.alpha = 0.2
+            customHeaderView?.playButton.alpha = 0.2
+            customHeaderView?.moreInfoButton.alpha = 0.2
+            customHeaderView?.titleLabel.alpha = 0.2
+            customHeaderView?.descriptionLabel.alpha = 0.2
+        } else {
+            baseTableView.alpha = 1
+            customHeaderView?.playButton.alpha = 1
+            customHeaderView?.moreInfoButton.alpha = 1
+            customHeaderView?.titleLabel.alpha = 1
+            customHeaderView?.descriptionLabel.alpha = 1
+        }
     }
     
     
