@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -33,15 +33,25 @@
                         <constraint firstAttribute="width" constant="116" id="jTe-Kf-RrW"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWi-8P-gGA">
+                    <rect key="frame" x="116" y="0.0" width="1" height="1080"/>
+                    <color key="backgroundColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="nNO-KX-XRQ"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="cxB-XN-F1d" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7SO-3O-Zmm"/>
                 <constraint firstItem="tia-ON-rxD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ge8-xv-zNg"/>
                 <constraint firstAttribute="bottom" secondItem="tia-ON-rxD" secondAttribute="bottom" id="YA2-Di-bvA"/>
+                <constraint firstItem="vWi-8P-gGA" firstAttribute="top" secondItem="tia-ON-rxD" secondAttribute="top" id="e8U-mX-Gcd"/>
                 <constraint firstAttribute="trailing" secondItem="cxB-XN-F1d" secondAttribute="trailing" id="fVE-xT-ipJ"/>
+                <constraint firstItem="vWi-8P-gGA" firstAttribute="height" secondItem="tia-ON-rxD" secondAttribute="height" id="mKg-MN-lON"/>
                 <constraint firstItem="tia-ON-rxD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="t3e-Aj-8jO"/>
                 <constraint firstAttribute="bottom" secondItem="cxB-XN-F1d" secondAttribute="bottom" id="uEh-1v-mVO"/>
+                <constraint firstItem="vWi-8P-gGA" firstAttribute="leading" secondItem="tia-ON-rxD" secondAttribute="trailing" id="vls-cW-21p"/>
                 <constraint firstItem="cxB-XN-F1d" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y9N-bx-bch"/>
             </constraints>
         </view>

@@ -6,12 +6,12 @@
 //
 
 import UIKit
-protocol DisneyButtonsTapedDelegate{
+protocol DisneyButtonsTapedDelegate: NSObject{
     func presentVCOnButtonTap(tag : Int)
 }
 
 class DisneyButtons: UIView {
-    var delegate : DisneyButtonsTapedDelegate?
+    weak var delegate : DisneyButtonsTapedDelegate?
     override func awakeFromNib() {
 
     }

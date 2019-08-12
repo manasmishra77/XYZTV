@@ -15,7 +15,6 @@ import SDWebImage
 
 enum ItemArrayType {
     case item
-    case resumeWatch
     case more
     case episode
     case artistImages
@@ -50,7 +49,6 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         //self.alpha = 0.5
         self.tableCellCollectionView.register(UINib(nibName: "ItemCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ItemCollectionViewCell")
         self.tableCellCollectionView.register(UINib(nibName: "JCArtistImageCell", bundle: nil), forCellWithReuseIdentifier: artistImageCellIdentifier)
-        self.tableCellCollectionView.register(UINib(nibName: "JCResumeWatchCell", bundle: nil), forCellWithReuseIdentifier: resumeWatchCellIdentifier)
         // Initialization code
         
         //tvOS11 adjustment
@@ -97,32 +95,31 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
             return episodesCellLoading(collectionView, cellForItemAt: indexPath)
         case .artistImages:
             return artistImageCellLoading(collectionView, cellForItemAt: indexPath)
-        case .resumeWatch:
-            return resumeCellLoading(collectionView, cellForItemAt: indexPath)
         }
     }
     
-    func resumeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
-        guard let items = itemsArray as? [Item] else {return resumeWatchCell}
-        resumeWatchCell.nameLabel.text = items[indexPath.row].name ?? ""
-        
-        if let imageUrl = items[indexPath.row].banner {
-            let progress: Float?
-            if let duration = items[indexPath.row].duration, let totalDuration = items[indexPath.row].totalDuration {
-                progress = Float(duration) / Float(totalDuration)
-                resumeWatchCell.progressBar.setProgress(progress ?? 0, animated: false)
-            } else {
-                resumeWatchCell.progressBar.setProgress(0, animated: false)
-            }
-            
-            let url = URL(string: imageBaseURL + imageUrl)
-            resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
-                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-            });
-        }
-        return resumeWatchCell
-    }
+
+//    func resumeCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let resumeWatchCell = collectionView.dequeueReusableCell(withReuseIdentifier: resumeWatchCellIdentifier, for: indexPath) as! JCResumeWatchCell
+//        guard let items = itemsArray as? [Item] else {return resumeWatchCell}
+//        resumeWatchCell.nameLabel.text = items[indexPath.row].name ?? ""
+//
+//        if let imageUrl = items[indexPath.row].banner {
+//            let progress: Float?
+//            if let duration = items[indexPath.row].duration, let totalDuration = items[indexPath.row].totalDuration {
+//                progress = Float(duration) / Float(totalDuration)
+//                resumeWatchCell.progressBar.setProgress(progress ?? 0, animated: false)
+//            } else {
+//                resumeWatchCell.progressBar.setProgress(0, animated: false)
+//            }
+//
+//            let url = URL(string: imageBaseURL + imageUrl)
+//            resumeWatchCell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.cacheMemoryOnly, completed: {
+//                (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
+//            });
+//        }
+//        return resumeWatchCell
+//    }
     
     func itemCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
@@ -136,24 +133,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
 
         cell.nameLabel.text = (items[indexPath.row].app?.type == VideoType.Language.rawValue || items[indexPath.row].app?.type == VideoType.Genre.rawValue) ? "" : thumbnailTitle
         
-//        if items[indexPath.row].appType == .Movie {
-//            if let imageUrl = items[indexPath.row].image {
-//                self.setImageOnThumbnail(urlString: imageUrl, on: cell)
-//            }
-//        }else if let imageUrl = items[indexPath.row].banner {
-//            self.setImageOnThumbnail(urlString: imageUrl, on: cell)
-//        }
-        
         return cell
     }
-    
-    func setImageOnThumbnail(urlString: String, on cell: JCItemCell) {
-        let url = URL(string: imageBaseURL + urlString)
-        cell.itemImageView.sd_setImage(with: url, placeholderImage:#imageLiteral(resourceName: "ItemPlaceHolder"), options: SDWebImageOptions.fromCacheOnly, completed: {
-            (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-        });
-    }
-    
+
     func episodesCellLoading(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
         guard let episodes = itemsArray as? [Episode] else {return cell}
@@ -180,7 +162,9 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.nameLabel.text = moreArray[indexPath.row].name
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
-        let layoutType: ItemCellLayoutType = .potrait
+//        let layoutType: ItemCellLayoutType = .potrait
+        
+        let layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
@@ -226,18 +210,15 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         cell.isOpaque = true
         cell.backgroundColor = .clear
         if isDisney {
-            cell.artistNameInitialButton.backgroundColor = ViewColor.disneyButtonColor
+            cell.artistNameInitialButton.backgroundColor = ViewColor.disneyLeftMenuBackground //ViewColor.disneyButtonColor
         }
+//        cell.artistNameInitialButton.backgroundColor = ThemeManager.shared.selectionColor
         return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch itemArrayType {
-        case .resumeWatch:
-            guard let items = itemsArray as? [Item] else {return}
-            let item = items[indexPath.row]
-            cellDelgate?.didTapOnItemCell?(self, item, self.tag)
         case .item:
             guard let items = itemsArray as? [Item] else {return}
             var item = items[indexPath.row]
@@ -262,7 +243,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if(itemArrayType == .artistImages) {
             return 15
         }
-        return 25
+        return 35
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -270,14 +251,12 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         var width = itemWidthForLadscape//height * widthToHeightPropertionForLandScapeOLD
         
         switch itemArrayType {
-        case .resumeWatch:
-            break
         case .item, .more:
             if let items = itemsArray as? [Item] {
                 let itemAppType = items[0].appType
-                if itemAppType == .Movie {
-                    width = itemWidthForPortrait//height * widthToHeightPropertionForPotratOLD
-                }
+//                if itemAppType == .Movie {
+//                    width = itemWidthForPortrait//height * widthToHeightPropertionForPotratOLD
+//                }
             }
         case .episode:
             break

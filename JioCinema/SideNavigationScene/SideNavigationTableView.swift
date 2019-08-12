@@ -67,7 +67,7 @@ struct MenuItem {
         case .search:
             self.unselectedImage = "Search"
             self.selectedImage = "SearchSelected"
-            self.viewControllerObject = self.getSearchController()
+//            self.viewControllerObject = self.getSearchController()
         case .settings:
             self.unselectedImage = "SettingsIcon"
             self.selectedImage = "SettingsIconSelected"
@@ -84,12 +84,12 @@ struct MenuItem {
       
     }
 
-    private func getSearchController() -> SearchNavigationController{
-        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
-        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
-        searchContainerController.view.backgroundColor = UIColor.black
-        return SearchNavigationController(rootViewController: searchContainerController)
-    }
+//    private func getSearchController() -> SearchNavigationController{
+//        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+//        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+//        searchContainerController.view.backgroundColor = UIColor.black
+//        return SearchNavigationController(rootViewController: searchContainerController)
+//    }
     
 }
 
@@ -136,24 +136,27 @@ class SideNavigationTableView: UIView {
     
     func performNavigationTableSelection(index: Int) {
         if itemsList[index].type == ViewControllersType.search {
-            
+            ThemeManager.shared.currentTheme = .jioCinema
         }
         else {
             if let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: selectedIndex, section: 0)) as? SideNavigationTableCell {
                 cell.selectionIndicatorView.backgroundColor = .clear
+                cell.contentView.backgroundColor = .clear
                 cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].unselectedImage)
                 cell.titleLabel.font = UIFont.init(name: "JioType-Light", size: cell.titleLabel.font.pointSize)
             }
-            
             selectedIndex = index
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
+            cell.contentView.backgroundColor = .clear
             if itemsList[index].type == ViewControllersType.disneyHome {
+                    ThemeManager.shared.currentTheme = .jioDisney
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
+                    cell.contentView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
                     self.navigationTable.backgroundColor = ViewColor.disneyLeftMenuBackground
-                
-            }
-            else {
+            } else {
+                    ThemeManager.shared.currentTheme = .jioCinema
                     cell.selectionIndicatorView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
+                    cell.contentView.backgroundColor = ViewColor.selectionBarOnLeftNavigationColor
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
                 cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].selectedImage)
@@ -169,6 +172,9 @@ class SideNavigationTableView: UIView {
 extension SideNavigationTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+        tableView.selectRow(at: IndexPath.init(row: selectedIndex, section: 0), animated: false, scrollPosition: .none)
+        }
         self.performNavigationTableSelection(index: indexPath.row)
     }
     
@@ -189,17 +195,21 @@ extension SideNavigationTableView: UITableViewDataSource {
         cell.titleLabel.text = self.itemsList[indexPath.row].type.name
         cell.iconImageView.image = UIImage.init(named: self.itemsList[indexPath.row].unselectedImage)
         // self.itemsList[indexPath.row].image
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 76
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.focusHeading == .left ||  context.focusHeading == .right{
             delegate?.sideNavigationSwipeEnd(side: context.focusHeading)
         }
+//        else if context.nextFocusedItem is SideNavigationTableCell {
+//            delegate?.sideNavigationSwipeEnd(side: .left) //focus lost jugaad
+//        }
     }
     
     func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {

@@ -106,12 +106,12 @@
             }
         }
     }
- }
- 
- //MARK:- Version check and update
- extension RJILApiManager {
+}
+
+//MARK:- Version check and update
+extension RJILApiManager {
     class func callWebServiceToCheckVersion(completion: @escaping (Response<CheckVersionModel>) -> ()) -> URLSessionDataTask? {
-        let task = RJILApiManager.getReponse(path: checkVersionUrl, shouldCheckNetWork: false, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
+       let task = RJILApiManager.getReponse(path: checkVersionUrl, shouldCheckNetWork: false, postType: .GET, reponseModelType: CheckVersionModel.self, completion: completion)
         return task
     }
  }
@@ -159,7 +159,7 @@
         return task
     }
     class func verifyOTP(number: String, otp: String, completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
-        let params = [identifierKey: number, otpKey:otp, upgradeAuthKey:upgradAuthValue, returnSessionDetailsKey:returnSessionDetailsValue]
+         let params = [identifierKey: number, otpKey:otp, upgradeAuthKey:upgradAuthValue, returnSessionDetailsKey:returnSessionDetailsValue]
         let task = RJILApiManager.getReponse(path: verifyOTPUrl, params: params, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: true, reponseModelType: OTPModel.self) { (response) in
             if response.isSuccess {
                 JCAppUser.shared.lbCookie = response.model?.lbCookie ?? ""

@@ -15,10 +15,12 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.7</string>
+	<string>2.1.9</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLIconFile</key>
+			<string></string>
 			<key>CFBundleURLName</key>
 			<string>jCAppURL</string>
 			<key>CFBundleURLSchemes</key>
@@ -28,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>80</string>
+	<string>87</string>
 	<key>CleverTapAccountID</key>
 	<string>WW5-K94-874Z</string>
 	<key>CleverTapToken</key>
@@ -49,6 +51,8 @@
 	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -58,12 +62,15 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>icomoon.ttf</string>
 		<string>JioType-Light.ttf</string>
 		<string>JioType-Medium.ttf</string>
 		<string>JioType-Bold.ttf</string>
 		<string>JioType-Black.ttf</string>
 		<string>JioType-LightItalic.ttf</string>
 		<string>JioType-MediumItalic.ttf</string>
+		<string>SF-Pro-Display-Regular.otf</string>
+		<string>SF-Pro-Display-Medium.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -75,6 +82,8 @@
 	<array>
 		<string>arm64</string>
 	</array>
+	<key>UIRequiresPersistentWiFi</key>
+	<true/>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
 </dict>

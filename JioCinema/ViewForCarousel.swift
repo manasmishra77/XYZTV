@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CarousalImageDelegate {
+protocol CarousalImageDelegate: NSObject {
     func setImageFor(_ imageView: UIImageView, for index: Int)
     func didTapOnCell(_ index: IndexPath,_ collectionView: UICollectionView)
 }
@@ -43,7 +43,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     var indexpathVar = IndexPath(row: 0, section: 0)
-    var carousalImageDelegate: CarousalImageDelegate?
+    weak var carousalImageDelegate: CarousalImageDelegate?
     var myPreferedFocusView : UIView?
     override var preferredFocusEnvironments: [UIFocusEnvironment]{
         if let preferredView = myPreferedFocusView {
@@ -175,7 +175,7 @@ class ViewForCarousel: UIView ,UICollectionViewDelegate, UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCollectionViewCell", for: indexPath) as! CarouselCollectionViewCell
         cell.rightSepration.constant = sepration / 2
         cell.leftSepration.constant = sepration / 2
-        cell.imageView.cornerRadius = 10
+        cell.imageView.layer.cornerRadius = 10
         
         cell.contentView.layer.cornerRadius = 20
         cell.contentView.layer.masksToBounds = true

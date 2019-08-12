@@ -1,9 +1,17 @@
-# ignore all pods
-Pods/
-UserInterfaceState.xcuserstate
-.DS_Store
-*.xcsettings
-*.xcbkptlist
-*.xcuserstate
+## Obj-C/Swift specific
+*.hmap
 *.ipa
-JioCinema.xcodeproj/xcuserdata/jio.xcuserdatad/xcschemes/xcschememanagement.plist
+*.dSYM.zip
+*.dSYM
+Pods/
+build/
+Podfile.lock
+DerivedData/
+*/xcuserdata/
+*/*/xcuserdata/
+*/xcshareddata/
+*/*/xcshareddata/
+timeline.xctimeline
+playground.xcworkspace
+.build/
+Carthage/Build

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-//import ObjectMapper
 
 struct BaseDataModel: Codable {
     var code: Int?
@@ -279,6 +278,8 @@ struct Item: Codable {
     var totalDuration: Int?
     var episodeId: String?
     var list:[List]?
+    var still: String?
+    var tvStill: String?
     
     var imageUrlPortraitContent: String {
         guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
@@ -289,6 +290,16 @@ struct Item: Codable {
         }
         return ""
     }
+    var imageUrlOfTvStillImage: String {
+        guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
+        if let imageStr = tvStill, imageStr != ""{
+            return baseImageUrl + imageStr
+        } else if let imageStr = banner {
+            return baseImageUrl + imageStr
+        }
+        return ""
+    }
+        
     
     var imageUrlLandscapContent: String {
         guard let baseImageUrl = JCDataStore.sharedDataStore.configData?.configDataUrls?.image else {return ""}
@@ -355,6 +366,8 @@ struct Item: Codable {
         case totalDuration = "totalDuration"
         case episodeId = "episodeId"
         case list = "list"
+        case still = "still"
+        case tvStill = "tvStill"
         
         // For Metadata Items
         case rating = "rating"
@@ -445,6 +458,10 @@ struct Item: Codable {
             
             episodeId = try values.decodeIfPresent(String.self, forKey: .episodeId)
             list = try values.decodeIfPresent([List].self, forKey: .list)
+            
+            //For Full Screen Image in New UI
+            still = try values.decodeIfPresent(String.self, forKey: .still)
+            tvStill = try values.decodeIfPresent(String.self, forKey: .tvStill)
             
             // For Metadata Items
             do {

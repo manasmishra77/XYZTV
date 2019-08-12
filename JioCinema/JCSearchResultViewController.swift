@@ -39,12 +39,15 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     var trendingSearchResultViewModel: JCTrendingSearchResultViewModel?
     
+    var isSearchTextIsGettingCalled: Bool = false
+    weak var timerForSearch: Timer?
+    var searchText: String = ""
+    
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        self.baseTableView.register(UINib(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
         let cellNib = UINib(nibName: "BaseTableViewCell", bundle: nil)
         baseTableView.register(cellNib, forCellReuseIdentifier: "BaseTableViewCell")
         self.baseTableView.register(UINib(nibName: "JCBaseTableViewHeaderCell", bundle: nil), forCellReuseIdentifier: baseHeaderTableViewCellIdentifier)
@@ -95,17 +98,6 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         let cellData = getCellItems(indexPath.row)
         cell.configureView(cellData, delegate: self)
         return cell
-//        let cell = tableView.dequeueReusableCell(withIdentifier: baseTableViewCellReuseIdentifier, for: indexPath) as! JCBaseTableViewCell
-//        cell.itemFromViewController = .Search
-//        cell.tag = indexPath.row
-//        cell.itemsArray = searchResultArray[indexPath.row].resultItems
-//        let categoryTitle = (searchResultArray[indexPath.row].categoryName ?? "") + "(\(cell.itemsArray?.count ?? 0))"
-//        cell.categoryTitleLabel.text = categoryTitle
-//
-//        cell.cellDelgate = self
-//
-//        cell.tableCellCollectionView.reloadData()
-//        return cell
     }
     
     func getCellItems(_ index: Int) -> BaseTableCellModel {
@@ -114,6 +106,9 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             baseTableCellModel.title = (searchResultArray[index].categoryName ?? "") + "(\(items.count))"
             baseTableCellModel.cellType = .search
             baseTableCellModel.layoutType = getLayoutOfCellForItemType(items.first)
+            if searchResultArray[index].categoryLayout == 100 {
+                baseTableCellModel.layoutType = .landscapeWithLabels
+            }
             baseTableCellModel.items = items
             baseTableCellModel.charItems = nil
             baseTableCellModel.sectionLanguage = .english
@@ -127,8 +122,10 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
             switch appType {
             case .Episode, .Clip, .Music, .Search:
                 return .landscapeWithLabelsAlwaysShow
+//            case .Movie:
+//                return .potrait
             case .Movie:
-                return .potrait
+                return .landscapeWithTitleOnly
             default:
                 return .landscapeWithTitleOnly
             }
@@ -137,10 +134,15 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if searchResultArray[indexPath.row].categoryLayout == 100 {
+//            return rowHeightForLandscape
+//        } else if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
+//            return rowHeightForPotrait
+//        }
         if let appType = searchResultArray[indexPath.row].resultItems?.first?.appType, appType == .Movie {
-            return rowHeightForPotrait
+            return rowHeightForLandscapeTitleOnly
         }
-        return rowHeightForLandscape
+        return rowHeightForLandscapeWithLabels
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -163,7 +165,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, defaultAudioLanguage: item.audioLanguage, currentItem: tappedItem)
+                    
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -219,11 +222,13 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     func prepareToPlay(_ itemToBePlayed: Item, categoryName: String, categoryIndex: Int) {
         if let appTypeInt = itemToBePlayed.app?.type, let appType = VideoType(rawValue: appTypeInt){
             if appType == .Clip || appType == .Music || appType == .Trailer {
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
+//                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
             }
             else if appType == .Episode {
-                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
+//                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false, playListId: (itemToBePlayed.playlistId) ?? "", latestId: itemToBePlayed.latestId, isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "", audioLanguage: itemToBePlayed.audioLanguage)
+                let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, fromScreen: SEARCH_SCREEN, fromCategory: "", fromCategoryIndex: 0, fromLanguage: itemToBePlayed.language ?? "")
                 self.present(playerVC, animated: true, completion: nil)
             }
         }
@@ -254,28 +259,20 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         if key == "" {
             self.searchViewController?.searchBar.text = ""
         }
-        
-        let url = preditiveSearchURL
-        let params: [String: String]? = ["q": key]
-        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[weak self](response) in
-            guard let self = self else {return}
-            guard response.isSuccess else {
-                DispatchQueue.main.async {
-                    self.searchResultArray.removeAll()
-                    self.baseTableView.reloadData()
-                }
-                return
-            }
-            self.searchModel = response.model
-            if let array = (self.searchModel?.searchData?.categoryItems), array.count > 0 {
-                DispatchQueue.main.async {
-                    self.searchResultArray = array
-                    self.baseTableView.reloadData()
-
-                }
-            }
-            
+        guard !isSearchTextIsGettingCalled else {
+            return
         }
+        
+        self.searchText = self.searchViewController?.searchBar.text ?? ""
+        self.timerForSearch?.invalidate()
+        self.timerForSearch = nil
+        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: false) {[weak self] (timer) in
+            guard let self = self else {return}
+            self.callSearchServiceAPI(with: self.searchText)
+        }
+        
+        
+       
         /*
          RJILApiManager.getSearchData(key: key, <#T##completion: APISuccessBlock##APISuccessBlock##(Bool, String?) -> ()#>)
          let searchRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
@@ -302,6 +299,36 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
          }
          }
          }*/
+    }
+    
+    func callSearchServiceAPI(with text: String) {
+        let url = preditiveSearchURL
+        let params: [String: String]? = ["q": text]
+        self.isSearchTextIsGettingCalled = true
+        RJILApiManager.getReponse(path: url, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: SearchDataModel.self) {[weak self](response) in
+            guard let self = self else {return}
+            self.isSearchTextIsGettingCalled = false
+            guard response.isSuccess else {
+                DispatchQueue.main.async {
+                    self.searchResultArray.removeAll()
+                    self.baseTableView.reloadData()
+                }
+                return
+            }
+            if self.searchText == "aaa" {
+                self.searchModel = nil
+            } else {
+            self.searchModel = response.model
+            }
+            if let array = (self.searchModel?.searchData?.categoryItems), array.count > 0 {
+                DispatchQueue.main.async {
+                    self.searchResultArray = array
+                    self.baseTableView.reloadData()
+                    
+                }
+            }
+            
+        }
     }
     
     //MARK:- Analytics Event Methods
@@ -424,7 +451,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                 switch itemType {
                 case .Movie:
                     print("At Movie")
-                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                    let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .Movie, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, currentItem: tappedItem)
                     self.present(metadataVC, animated: true, completion: nil)
                 case .TVShow:
                     print("At TvShow")
@@ -433,7 +460,7 @@ extension JCSearchResultViewController: BaseTableViewCellDelegate {
                         tappedItem.app?.type = VideoType.Episode.rawValue
                         checkLoginAndPlay(tappedItem, categoryName: categoryName, categoryIndex: indexFromArray)
                     } else {
-                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5)
+                        let metadataVC = Utility.sharedInstance.prepareMetadata(tappedItem.id ?? "", appType: .TVShow, fromScreen: SEARCH_SCREEN, categoryName: categoryName, categoryIndex: indexFromArray, tabBarIndex: 5, currentItem: tappedItem)
                         self.present(metadataVC, animated: true, completion: nil)
                     }
                 case .Music, .Episode, .Clip, .Trailer:

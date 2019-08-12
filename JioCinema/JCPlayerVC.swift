@@ -7,22 +7,21 @@
  //
  
  import UIKit
- //import ObjectMapper
  import AVKit
  import AVFoundation
  import SDWebImage
  
  
- let URL_SCHEME_NAME = "skd"
- let URL_GET_KEY =  "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getkey"
- let URL_GET_CERT = "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getcert"
+// let URL_SCHEME_NAME = "skd"
+// let URL_GET_KEY =  "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getkey"
+// let URL_GET_CERT = "http://prod.media.jio.com/apis/06758e99be484fca56fb/v3/fps/getcert"
+//
+// let PLAYABLE_KEY = "playable"
+// let STATUS_KEY = "status"
+// let AVPLAYER_BUFFER_KEEP_UP = "playbackLikelyToKeepUp"
+// let AVPLAYER_BUFFER_EMPTY = "playbackBufferEmpty"
  
- let PLAYABLE_KEY = "playable"
- let STATUS_KEY = "status"
- let AVPLAYER_BUFFER_KEEP_UP = "playbackLikelyToKeepUp"
- let AVPLAYER_BUFFER_EMPTY = "playbackBufferEmpty"
- 
- private var playerViewControllerKVOContext = 0
+// private var playerViewControllerKVOContext = 0
  
  private func globalNotificationQueue() -> DispatchQueue {
     var globalQueue: DispatchQueue? = nil
@@ -42,14 +41,14 @@
 //    case marathi
 //    case bengali
 //    case none
-//    
+//
 //    var code: String {
 //        return self.rawValue.subString(start: 0, end: 1)
 //    }
 //    var name: String {
 //        return self.rawValue.capitalized
 //    }
-//    
+//
 // }
  class JCPlayerVC: UIViewController {
 
@@ -170,7 +169,6 @@
         loaderCoverView.isHidden = true
         preparePlayerVC()
         addSwipeGesture()
-        self.collectionView_Recommendation.register(UINib.init(nibName: "JCItemCell", bundle: nil), forCellWithReuseIdentifier: itemCellIdentifier)
         let cellNib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
         collectionView_Recommendation.register(cellNib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
     }
@@ -178,9 +176,6 @@
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        
     }
     deinit {
         print("In Player deinit")
@@ -410,7 +405,6 @@
             resetPlayer()
             player = AVPlayer(playerItem: playerItem)
         }
-        self.autoPlaySubtitle(IsAutoSubtitleOn)
         if audioLanguage != nil, audioLanguage?.name.lowercased() == "none" {
             
         }
@@ -422,7 +416,7 @@
         player?.play()
         handleForPlayerReference()
         self.view.bringSubviewToFront(self.nextVideoView)
-        self.view.bringSubviewToFront(self.view_Recommendation)      
+        self.view.bringSubviewToFront(self.view_Recommendation)
         
         self.nextVideoView.isHidden = true
     }
@@ -689,7 +683,7 @@
     }
     
     func sendAudioChangedCleverTapEvent(duration : String){
-        var lang = playerItem?.selected(type: .audio)
+        let lang = playerItem?.selected(type: .audio)
         let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":id,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":title,"Offline":"","Type":"\(appType.name)"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties)
     }
@@ -816,33 +810,7 @@
             }
         }
     }
-    
-    //MARK:- Open MetaDataVC
-    func openMetaDataVC(model:More) {
-        Log.DLog(message: "openMetaDataVC" as AnyObject)
-        if let topController = UIApplication.topViewController() {
-            Log.DLog(message: "$$$$ Enter openMetaDataVC" as AnyObject)
-            var tempItem = Item()
-            tempItem.id = model.id
-            tempItem.name = model.name
-            tempItem.banner = model.banner
-            var app = App()
-            app.type = VideoType.Movie.rawValue
-            tempItem.app = app
-            
-            let metadataVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: metadataVCStoryBoardId) as! JCMetadataVC
-            metadataVC.item = tempItem
-            metadataVC.modalPresentationStyle = .overFullScreen
-            metadataVC.modalTransitionStyle = .coverVertical
-            topController.present(metadataVC, animated: true, completion: nil)
-        }
-    }
-    //MARK:- Hide/Unhide Now Playing
-    func hideUnhideNowPlayingView(cell: JCItemCell, state: Bool) {
-        DispatchQueue.main.async {
-            cell.nowPlayingImageView.isHidden = state
-        }
-    }
+
     //MARK:- Show Next Video View
     
     func showNextVideoView(videoName: String, remainingTime: Int, banner: String) {
@@ -851,8 +819,7 @@
             self.nextVideoNameLabel.text = videoName
             self.nextVideoPlayingTimeLabel.text = "Playing in " + "\(5)" + " Seconds"
             var t1 = 4
-            _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true , block: {[weak self](t) in
-                guard let self = self else {return}
+            _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true , block: {(t) in
                 
                 self.nextVideoPlayingTimeLabel.text = "Playing in " + "\(Int(t1))" + " Seconds"
                 if t1 < 1{
@@ -1008,12 +975,104 @@
                 }
             }
         }
+        /*
+        let metadataRequest = RJILApiManager.defaultManager.prepareRequest(path: url, encoding: .URL)
+<<<<<<< HEAD
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.get(request: metadataRequest!) { (data, response, error) in
+=======
+        RJILApiManager.defaultManager.get(request: metadataRequest) { [weak self] (data, response, error) in
+
+            guard let self = self else {
+                return
+            }
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
+         
+            if let responseError = error as NSError?
+            {
+                //TODO: handle error
+                //Refresh sso token call fails
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+         
+                }
+                return
+            }
+            if let responseData = data
+            {
+                let recommendationItems = self.evaluateMoreLikeData(dictionaryResponseData: responseData)
+                var i = 0
+                if let episodes = recommendationItems as? [Episode]{
+                    self.isEpisodeDataAvailable = false
+         
+                    self.episodeArray.removeAll()
+                    if episodes.count > 0{
+                        self.episodeArray.removeAll()
+                        if episodes.count > 0{
+                            self.isEpisodeDataAvailable = true
+                            for each in episodes{
+                                if each.id == self.id{
+                                    self.episodeNumber = each.episodeNo
+                                    break
+                                }
+                                i = i + 1
+                            }
+                            if i == episodes.count{
+                                i = i - 1
+                            }
+                            self.episodeArray = episodes
+                        }
+                        self.isEpisodeDataAvailable = true
+                        self.episodeArray = episodes
+                    }
+                }
+<<<<<<< HEAD
+                else if let mores = recommendationItems as? [Item]{
+                    weakSelf?.isMoreDataAvailable = false
+                    weakSelf?.moreArray.removeAll()
+=======
+                else if let mores = recommendationItems as? [More]{
+                    self.isMoreDataAvailable = false
+                    self.moreArray.removeAll()
+>>>>>>> f26263aad65500d2e66524c9400fd33523e786da
+                    if mores.count > 0{
+                        self.isMoreDataAvailable = true
+                        self.moreArray = mores
+                    }
+                }
+                if (self.isMoreDataAvailable) || (self.isEpisodeDataAvailable){
+                    DispatchQueue.main.async {
+                        self.collectionView_Recommendation.reloadData()
+                        self.scrollCollectionViewToRow(row: i)
+                    }
+                }
+                return
+            }
+        }*/
     }
+    
+    /*
+    func evaluateMoreLikeData(dictionaryResponseData responseData:Data) -> [Any]
+    {
+        //Success
+        if let responseString = String(data: responseData, encoding: .utf8)
+        {
+            if let tempMetadata = MetadataModel(JSONString: responseString){
+                if let mores = tempMetadata.more{
+                    return mores
+                }
+                if let episodes = tempMetadata.episodes {
+                    return episodes
+                }
+            }
+        }
+        return [More]()
+    }*/
     
     func callWebServiceForPlayListData(id:String) {
         //playerId = id
-        var url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
-        var params = ["id": id,"contentId":""]
+        let url = String(format:"%@%@/%@", playbackDataURL, JCAppUser.shared.userGroup, id)
+        let params = ["id": id,"contentId":""]
                 if isPlayList && self.id == ""{
                     //url = playBackForPlayList.appending(playListId)
                     //params = ["id": playListId, "showId": "", "uniqueId": JCAppUser.shared.unique, "deviceType": "stb"]
@@ -1027,9 +1086,7 @@
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
                     self.textOnLoaderCoverView.text = "Some problem occured!!"
-                    Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
-                        self?.dismissPlayerVC()
-                    })
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failureType = "Playlist service failed"
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failureType] as [String : Any]
@@ -1070,6 +1127,86 @@
             }
             
         }
+        /*
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+         
+            guard let self = self else {
+                return
+            }
+            if let responseError = error as NSError?
+            {
+                //TODO: handle error
+                //Refresh sso token call fails
+                var failureType = ""
+                if responseError.code == 143{
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.resetPlayer()
+                        self.dismiss(animated: false, completion: {
+                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+                            vc?.present(loginVc, animated: false, completion: nil)
+                        })
+                        return
+                    }
+                    failureType = "Referesh SSO fails"
+                }
+                print(responseError)
+                DispatchQueue.main.async {
+                    //self.activityIndicatorOfLoaderView.stopAnimating()
+                    self.activityIndicatorOfLoaderView.isHidden = true
+                    self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                }
+                failureType = "Playlist service failed"
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failureType] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+         
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+         
+            if let responseData = data
+            {
+                if let responseString = String(data: responseData, encoding: .utf8)
+                {
+                    if let playList = PlaylistDataModel(JSONString: responseString){
+                        if let mores = playList.more{
+                            self.moreArray.removeAll()
+                            if mores.count > 0{
+                                self.isMoreDataAvailable = true
+                                var i = 0
+                                for each in mores{
+                                    if each.id == self.id{
+                                        break
+                                    }
+                                    i = i + 1
+                                }
+                                if i == mores.count{
+                                    i = i - 1
+                                }
+                                self.moreArray = mores
+                                if (self.isPlayListFirstItemToBePlayed){
+                                    self.isPlayListFirstItemToBePlayed = false
+                                    let playlistFirstItem = mores[0]
+                                    self.changePlayerVC(playlistFirstItem.id ?? "", itemImageString: playlistFirstItem.banner ?? "", itemTitle: playlistFirstItem.name ?? "", itemDuration: 0, totalDuration: 0, itemDesc: playlistFirstItem.description ?? "", appType: .Music, isPlayList: true, playListId: self.playListId , isMoreDataAvailable: false, isEpisodeAvailable: false, fromScreen: self.fromScreen , fromCategory: self.fromCategory, fromCategoryIndex: self.fromCategoryIndex)
+                                    self.preparePlayerVC()
+                                }
+                                else{
+                                    DispatchQueue.main.async {
+                                        self.collectionView_Recommendation.reloadData()
+                                        self.scrollCollectionViewToRow(row: i)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return
+            }
+        }*/
     }
     
     
@@ -1103,8 +1240,8 @@
 //                        if let metaVc = presentingVC as? JCMetadataVC {
 //                            metaVc.didClickOnWatchNowButton(nil)
 //                        } else {
-//                        
-//                            
+//
+//
 //                        }
 //                    })
                     
@@ -1115,9 +1252,7 @@
                     self.activityIndicatorOfLoaderView.isHidden = true
                     self.loaderCoverView.isHidden = false
                     self.textOnLoaderCoverView.text = "Some problem occured!!"
-                    Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
-                        self?.dismissPlayerVC()
-                    })
+                    Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
                 }
                 failuretype = "Playbackrights failed"
                 let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: response.errorMsg ?? ""), "Type": self.appType.name, "Title": self.itemTitle, "Content ID": self.id, "Bitrate": "0", "Episode": self.itemDescription, "Platform": "TVOS", "Failure": failuretype] as [String : Any]
@@ -1131,7 +1266,7 @@
                     self.player?.pause()
                     self.resetPlayer()
                 }
-//                self.playbackRightsData?.url = nil
+                self.playbackRightsData?.url = nil
 //                self.playbackRightsData?.aesUrl = nil
                 //self.playbackRightsData?.aesUrl = "http://jiovod.cdn.jio.com/vod/_definst_/smil:vod/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1534769550815.smil/playlist_SD_PHONE_HDP_L.m3u8?uid=pradnyausatkar-0&action=auto&nwk=undefined"
                 if let fpsUrl = self.playbackRightsData?.url {
@@ -1155,6 +1290,105 @@
             }
             
         }
+        /*
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY)
+        weak var weakSelf = self
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { (data, response, error) in
+        //let headerParamDict : Dictionary = ["x-language": audioLanguage?.name ?? ""]
+        let playbackRightsRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .BODY, headerParam: nil)
+        RJILApiManager.defaultManager.post(request: playbackRightsRequest) { [weak self] (data, response, error) in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.activityIndicatorOfLoaderView.stopAnimating()
+            }
+            if let responseError = error as NSError?
+            {
+                //TODO: handle error
+                var failuretype = ""
+                switch responseError.code {
+                case 143:
+                    //Refresh sso token call fails
+                    print("Refresh sso token call fails")
+                    let vc = self.presentingViewController
+                    DispatchQueue.main.async {
+                        JCLoginManager.sharedInstance.logoutUser()
+                        self.resetPlayer()
+                        self.dismiss(animated: false, completion: {
+                            let loginVc = Utility.sharedInstance.prepareLoginVC(presentingVC: vc)
+                            vc?.present(loginVc, animated: false, completion: nil)
+                        })
+                        return
+                    }
+                    failuretype = "Refresh SSO failed"
+                case 451:
+                    //Content not available
+                    print(responseError)
+                    DispatchQueue.main.async {
+                        //self.activityIndicatorOfLoaderView.stopAnimating()
+                        self.activityIndicatorOfLoaderView.isHidden = true
+                        self.textOnLoaderCoverView.text = ContentNotAvailable_msg
+                        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                    }
+                    failuretype = ContentNotAvailable_msg
+                default:
+                    print(responseError)
+                    DispatchQueue.main.async {
+                        //self.activityIndicatorOfLoaderView.stopAnimating()
+                        self.activityIndicatorOfLoaderView.isHidden = true
+                        self.textOnLoaderCoverView.text = "Some problem occured!!, please login again!!"
+                        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(JCPlayerVC.dismissPlayerVC), userInfo: nil, repeats: false)
+                    }
+                    failuretype = "Playbackrights failed"
+                }
+                let eventPropertiesForCleverTap = ["Error Code": "-1", "Error Message": String(describing: responseError.localizedDescription), "Type": self.appType.name , "Title": self.itemTitle , "Content ID": self.id , "Bitrate": "0", "Episode": self.itemDescription , "Platform": "TVOS", "Failure": failuretype] as [String : Any]
+                let eventDicyForIAnalytics = JCAnalyticsEvent.sharedInstance.getMediaErrorEventForInternalAnalytics(descriptionMessage: String(describing: responseError.localizedDescription), errorCode: "-1", videoType: self.appType.name , contentTitle: self.itemTitle , contentId: self.id , videoQuality: "Auto", bitrate: "0", episodeSubtitle: self.itemDescription , playerErrorMessage: String(describing: responseError.localizedDescription), apiFailureCode: "", message: "", fpsFailure: "")
+         
+                self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics)
+                return
+            }
+         
+         
+//            let eventPropertiesForCleverTap: [String: String]  = [:]
+//            let eventDicyForIAnalytics : [String:Any] = [:]
+//            self.sendPlaybackFailureEvent(forCleverTap: eventPropertiesForCleverTap, forInternalAnalytics: eventDicyForIAnalytics as! [String : Any])
+            if let responseData = data
+            {
+                if let responseString = String(data: responseData, encoding: .utf8)
+                {
+                    self.playbackRightsData = PlaybackRightsModel(JSONString: responseString)
+                    DispatchQueue.main.async {
+         
+                        if((self.player) != nil) {
+                            self.player?.pause()
+                            self.resetPlayer()
+                        }
+//                        self.playbackRightsData?.url = nil
+//                        self.playbackRightsData?.aesUrl = "http://rcpems02.cdnsrv.ril.com/vod.hdi.cdn.ril.com/vod1/_definst_/smil:vod1/58/34/53ce62104c7111e8a913515d9b91c49a_audio_1530619201851.smil/playn.m3u8"
+                        if let fpsUrl = self.playbackRightsData?.url {
+                            self.doParentalCheck(with: fpsUrl, isFps: true)
+                        } else if let aesUrl = self.playbackRightsData?.aesUrl {
+                            self.doParentalCheck(with: aesUrl, isFps: false)
+                        } else {
+                            let alert = UIAlertController(title: "Content not available!!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+         
+                            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                                DispatchQueue.main.async {
+                                    print("dismiss")
+                                    self.dismissPlayerVC()
+                                }
+                            }
+                            alert.addAction(cancelAction)
+                            DispatchQueue.main.async {
+                                self.present(alert, animated: false, completion: nil)
+                            }
+                        }
+                    }
+                }
+                return
+            }
+        }*/
     }
     
     
@@ -1175,6 +1409,26 @@
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
+        /*
+        let removeRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+        RJILApiManager.defaultManager.post(request: removeRequest) { (data, response, error) in
+            if let responseError = error as NSError?
+            {
+                //TODO: handle error
+         
+                if responseError.code == 143{
+                    //Refresh sso token call fails
+                    print("Refresh sso token call fails")
+                }
+                print(responseError)
+                return
+            }
+         
+            if let responseData = data, let parsedResponse:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+            }
+        }*/
     }
     
     func callWebServiceForAddToResumeWatchlist(_ itemId: String, currentTimeDuration: String, totalDuration: String, selectedAudio: String)
@@ -1214,6 +1468,20 @@
                 NotificationCenter.default.post(name: AppNotification.reloadResumeWatch, object: nil, userInfo: nil)
             }
         }
+        /*
+
+        let addToResumeWatchlistRequest = RJILApiManager.defaultManager.prepareRequest(path: url, params: params, encoding: .JSON)
+        RJILApiManager.defaultManager.post(request: addToResumeWatchlistRequest) { (data, response, error) in
+            if let responseError = error
+            {
+                return
+            }
+            if let responseData = data, let _:[String:Any] = RJILApiManager.parse(data: responseData)
+            {
+                NotificationCenter.default.post(name: resumeWatchReloadNotification, object: nil, userInfo: nil)
+                return
+            }
+        }*/
     }
     //MARK:- Resume watch view methods
     @IBAction func didClickOnResumeWatchingButton(_ sender: Any) {
@@ -1278,11 +1546,11 @@
     }
     
     func setRecommendationConstarints(_ appType: VideoType) {
-        if appType == .Movie {
-            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
-        } else {
+//        if appType == .Movie {
+//            self.heightRecommendationView.constant = PlayerRecommendationSize.potraitRowHeight
+//        } else {
             self.heightRecommendationView.constant = PlayerRecommendationSize.landscapeRowHeight
-        }
+//        }
         self.bottomConstarintRecommendationView.constant = PlayerRecommendationSize.bottomConstarint(appType)
     }
     
@@ -1369,7 +1637,7 @@
  extension JCPlayerVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
  {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = (appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : PlayerRecommendationSize.landscapeCellSize
+        let size = /*(appType == .Movie) ? PlayerRecommendationSize.potraitCellSize :*/PlayerRecommendationSize.landscapeCellSize
         return size
     }
     
@@ -1487,14 +1755,14 @@
             let isPlayingNow = model.id == id
             cell.configureView(cellItems, isPlayingNow: isPlayingNow)
 
-            
         }
         else if isMoreDataAvailable {
             let model = moreArray[indexPath.row]
             cell.nameLabel.text = model.name
             let item = moreArray[indexPath.row]
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
-            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+//            let layoutType: ItemCellLayoutType = .potraitWithLabelAlwaysShow
+            let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
             let isPlayingNow = model.id == id
             cell.configureView(cellItems, isPlayingNow: isPlayingNow)
@@ -1664,6 +1932,10 @@
                         } else {
                                 loadingRequest.finishLoading()
                         }
+                        
+                        //handled = true;    // Request has been handled regardless of whether server returned an error.
+                        // completionHandler(responseData)
+                        //  return handled
                     })
                 }
                 catch {
@@ -1797,46 +2069,46 @@
  
  
  //AVPlayerItem extension for subtitle and audio setting
- extension AVPlayerItem {
-    enum TrackType {
-        case subtitle
-        case audio
-        /**                 Return valid AVMediaSelectionGroup is item is available.                 */
-        
-        fileprivate func characteristic(item:AVPlayerItem) -> AVMediaSelectionGroup? {
-            let str = self == .subtitle ? AVMediaCharacteristic.legible : AVMediaCharacteristic.audible
-            if item.asset.availableMediaCharacteristicsWithMediaSelectionOptions.contains(str) {
-                return item.asset.mediaSelectionGroup(forMediaCharacteristic: str)
-                
-            }
-            return nil
-        }
-        
-    }
-    func tracks(type:TrackType) -> [String] {
-        if let characteristic = type.characteristic(item: self) {
-            return characteristic.options.map { $0.displayName}
-        }
-        return [String]()
-    }
-    func selected(type:TrackType) -> String? {
-        guard let group = type.characteristic(item: self) else {
-            return nil
-        }
-        let selected = self.selectedMediaOption(in: group)
-        return selected?.displayName
-    }
-    func select(type:TrackType, name:String) -> Bool {
-        guard let group = type.characteristic(item: self) else {
-            return false
-        }
-        guard let matched = group.options.filter({ $0.displayName == name }).first else{
-            return false
-        }
-        self.select(matched, in: group)
-        return true
-    }
- }
+// extension AVPlayerItem {
+//    enum TrackType {
+//        case subtitle
+//        case audio
+//        /**                 Return valid AVMediaSelectionGroup is item is available.                 */
+//
+//        fileprivate func characteristic(item:AVPlayerItem) -> AVMediaSelectionGroup? {
+//            let str = self == .subtitle ? AVMediaCharacteristic.legible : AVMediaCharacteristic.audible
+//            if item.asset.availableMediaCharacteristicsWithMediaSelectionOptions.contains(str) {
+//                return item.asset.mediaSelectionGroup(forMediaCharacteristic: str)
+//
+//            }
+//            return nil
+//        }
+//
+//    }
+//    func tracks(type:TrackType) -> [String] {
+//        if let characteristic = type.characteristic(item: self) {
+//            return characteristic.options.map { $0.displayName}
+//        }
+//        return [String]()
+//    }
+//    func selected(type:TrackType) -> String? {
+//        guard let group = type.characteristic(item: self) else {
+//            return nil
+//        }
+//        let selected = self.selectedMediaOption(in: group)
+//        return selected?.displayName
+//    }
+//    func select(type:TrackType, name:String) -> Bool {
+//        guard let group = type.characteristic(item: self) else {
+//            return false
+//        }
+//        guard let matched = group.options.filter({ $0.displayName == name }).first else{
+//            return false
+//        }
+//        self.select(matched, in: group)
+//        return true
+//    }
+// }
  
  extension JCPlayerVC: EnterPinViewModelDelegate {
     func doParentalCheck(with url: String, isFps: Bool) {

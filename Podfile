@@ -8,7 +8,6 @@ target 'JioCinema' do
     use_frameworks!
     
     # Pods for JioCinema
-    #pod 'ObjectMapper', '~> 2.2.8'
     pod 'SDWebImage'
     pod 'ReachabilitySwift'
     pod 'CleverTap-iOS-SDK', :subspecs => ['tvOS']

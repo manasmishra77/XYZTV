@@ -161,7 +161,6 @@ class CommonHomeViewModel: BaseViewModel {
                 basetableCellModel.items = dataContainer.items
                 basetableCellModel.title = dataContainer.title
                 basetableCellModel.sectionLanguage = .english
-                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [] , cellType: .resumeWatch, layoutType: layout, sectionLanguage: .english, charItems: nil)
                 return basetableCellModel
             }
         case .recommendation:
@@ -171,12 +170,10 @@ class CommonHomeViewModel: BaseViewModel {
                 basetableCellModel.items = dataContainer.items
                 basetableCellModel.title = dataContainer.title
                 basetableCellModel.sectionLanguage = dataContainer.categoryLanguage
-                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [] , cellType: .base, layoutType: layout, sectionLanguage: dataContainer.categoryLanguage, charItems: nil)
                 return basetableCellModel
             }
         case .language:
             if let dataContainer = JCDataStore.sharedDataStore.languageData?.data?[itemIndexTuple.1] {
-                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
                 basetableCellModel.cellType = .base
                 basetableCellModel.charItems = dataContainer.characterItems
                 basetableCellModel.items = dataContainer.items
@@ -186,7 +183,6 @@ class CommonHomeViewModel: BaseViewModel {
             }
         case .genre:
             if let dataContainer = JCDataStore.sharedDataStore.genreData?.data?[itemIndexTuple.1] {
-                let cellModel = BaseTableCellModel(title: dataContainer.title ?? "", items: dataContainer.items ?? [], cellType: .base, layoutType: layout, sectionLanguage: .english, charItems: nil)
                 basetableCellModel.cellType = .base
                 basetableCellModel.charItems = dataContainer.characterItems
                 basetableCellModel.items = dataContainer.items

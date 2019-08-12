@@ -71,8 +71,9 @@ class RJILApiManager {
             _commonHeaders["x-multilang"] = "true"
             _commonHeaders["X-API-Key"] = apIKey
             _commonHeaders["app-name"] = "RJIL_JioCinema"
-            //_commonHeaders["x-apisignatures"] = "5772987301"
-            
+//            _commonHeaders["x-apisignatures"] = "5772987301"
+            _commonHeaders["x-apisignatures"] = "5772987304"
+
             if JCLoginManager.sharedInstance.isUserLoggedIn() {
                 _commonHeaders["uniqueid"] = JCAppUser.shared.unique
                 _commonHeaders["ua"] = "(\(UIDevice.current.model) ; OS \(UIDevice.current.systemVersion) )"
@@ -183,7 +184,7 @@ class RJILApiManager {
                 do{
                     let jsonData:Data = try JSONSerialization.data(withJSONObject: params, options: [])
                     request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
+                   // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                     request?.httpBody = jsonData
                 }
                 catch{
@@ -209,7 +210,7 @@ class RJILApiManager {
                 }
                 
                 request?.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-                request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
+               // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                 request?.httpBody = paramString.data(using: String.Encoding.utf8)
                 break
             case .URL:
@@ -228,7 +229,7 @@ class RJILApiManager {
                 
                 let pathWithParams = path + "?" + paramString
                 request = getRequest(forPath: pathWithParams)
-                request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
+               // request?.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
                 break
             }
         }
@@ -290,6 +291,9 @@ class RJILApiManager {
     var lowPrioritySession: URLSession?
     
     func resetURLSessionTask(priority: TaskPriority) {
+        //patch changes
+        highPrioritySession = URLSession.shared
+        return
         if priority == .high {
             highPrioritySession?.finishTasksAndInvalidate()
             highPrioritySession = nil
@@ -319,9 +323,10 @@ class RJILApiManager {
     }
     
     func createDataTask(withRequest request: URLRequest, takPriority: TaskPriority, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask? {
-        //        guard takPriority == .low else {
-        //            return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
-        //        }
+        //Patch Changes -comment 2 lines
+//        guard takPriority == .low else {
+//            return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
+//        }
         var originalRequest = request
         originalRequest.httpMethod = method
         originalRequest.timeoutInterval = 30.0
@@ -380,10 +385,10 @@ class RJILApiManager {
                             
                             return
                         }
-                        if let responseData = data {
+                        if let responseData = data{
                             //parse response Data
                             let refreshTupple = RJILApiManager.defaultManager.parseRefreshTokenData(responseData)
-                            if refreshTupple.0 == 200 {
+                            if refreshTupple.0 == 200{
                                 JCAppUser.shared.ssoToken = refreshTupple.1
                                 for each in RJILApiManager.defaultManager.pendingTasks{
                                     each.request?.allHTTPHeaderFields = RJILApiManager.defaultManager.commonHeaders

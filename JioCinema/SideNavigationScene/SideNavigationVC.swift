@@ -31,6 +31,11 @@ class SideNavigationVC: UIViewController {
         self.view.addGestureRecognizer(menuPressRecognizer)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onSerchNavRemoving(_:)), name: AppNotification.serchViewUnloading, object: nil)
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(onFocusFailed(_:)), name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc func onSerchNavRemoving(_ notification:Notification) {
@@ -39,6 +44,34 @@ class SideNavigationVC: UIViewController {
                 self.sideNavigationView?.performNavigationTableSelection(index: index)
             }
         })
+    }
+    
+    @objc func onFocusFailed(_ notification:Notification) {
+        if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
+            print(context)
+            
+            if context.previouslyFocusedItem is SideNavigationTableCell && selectedVC != nil {
+                if (context.focusHeading == .right) {
+                    
+                    
+                    DispatchQueue.main.async {                        
+                        self.sideNavigationWidthConstraint.constant = SideNavigationConstants.collapsedWidth
+                        self.myPreferdFocusedView = nil
+                        
+                        if let nextFocusItem = (self.selectedVC as? BaseViewController)?.lastFocusableItem {
+                            self.myPreferdFocusedView = nextFocusItem
+                        }
+                        else {
+                            self.myPreferdFocusedView = self.selectedVC?.view
+                        }
+
+                        self.updateFocusIfNeeded()
+                        self.setNeedsFocusUpdate()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+        }
     }
     
     func addSideNavigation() {
@@ -66,22 +99,20 @@ class SideNavigationVC: UIViewController {
             app.perform(#selector(NSXPCConnection.suspend))
         }
     }
-    
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        if(presses.first?.type == UIPressType.menu) {
-//            if (self.sideNavigationWidthConstraint.constant == self.sideViewCollapsedWidth) {
-//                self.sideNavigationSwipeEnd(side: .left)
-//                return
-//            }
-//        }
-//            super.pressesBegan(presses, with: event)
-//    }
+
 
     override var preferredFocusEnvironments: [UIFocusEnvironment] {
         if let preferedView = myPreferdFocusedView {
             return [preferedView]
         }
         return []
+    }
+    
+    private func getSearchController() -> SearchNavigationController{
+        let searchViewController = Utility.sharedInstance.prepareSearchViewController(searchText: "")
+        let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
+        searchContainerController.view.backgroundColor = UIColor.black
+        return SearchNavigationController(rootViewController: searchContainerController)
     }
     
 }
@@ -118,19 +149,18 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-//                if let uiView = self.HolderView.subviews.first {
-                    
-                    selectedVC?.willMove(toParent: nil)
-                    selectedVC?.view.removeFromSuperview()
-                    selectedVC?.removeFromParent()
-//                    content.willMove(toParentViewController: nil)
-//                    content.view.removeFromSuperview()
-//                    content.removeFromParentViewController()
-//                    uiView.removeFromSuperview()
-//                }
-            self.addChild(vc)
-            self.HolderView.addSubview(vc.view)
-            vc.didMove(toParent: self)
+                //                if let uiView = self.HolderView.subviews.first {
+                selectedVC?.willMove(toParent: nil)
+                selectedVC?.view.removeFromSuperview()
+                selectedVC?.removeFromParent()
+                //                    content.willMove(toParentViewController: nil)
+                //                    content.view.removeFromSuperview()
+                //                    content.removeFromParentViewController()
+                //                    uiView.removeFromSuperview()
+                //                }
+                self.addChild(vc)
+                self.HolderView.addSubview(vc.view)
+                vc.didMove(toParent: self)
                 selectedVC = vc
                 
                 DispatchQueue.main.async {
@@ -139,7 +169,11 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                     self.updateFocusIfNeeded()
                     self.setNeedsFocusUpdate()
                 }
-
+                
+            }
+        } else {
+            if menuItem.type == .search {
+                self.navigationController?.present(self.getSearchController(), animated: true, completion: nil)
             }
         }
     }

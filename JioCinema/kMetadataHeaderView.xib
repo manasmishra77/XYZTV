@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -23,14 +23,14 @@
             <rect key="frame" x="0.0" y="0.0" width="1920" height="1068"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
-                    <rect key="frame" x="673" y="0.0" width="1247" height="738"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7P-Yq-xJD" userLabel="BannerImage">
+                    <rect key="frame" x="640" y="0.0" width="1280" height="720"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="1247" id="RDK-aM-gcq"/>
-                        <constraint firstAttribute="height" constant="738" id="cza-FJ-sAA"/>
+                        <constraint firstAttribute="width" constant="1280" id="RDK-aM-gcq"/>
+                        <constraint firstAttribute="height" constant="720" id="cza-FJ-sAA"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metadatabg" translatesAutoresizingMaskIntoConstraints="NO" id="3rK-TM-LCh">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3rK-TM-LCh">
                     <rect key="frame" x="20" y="0.0" width="1900" height="738"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" image="YES" playsSound="YES"/>
@@ -324,7 +324,6 @@
             <connections>
                 <outlet property="addToWatchListButton" destination="56R-tw-AWf" id="Znf-U4-kcw"/>
                 <outlet property="audioStaticLabel" destination="WRU-np-U9S" id="lwj-I1-E9M"/>
-                <outlet property="backgroudImage" destination="3rK-TM-LCh" id="WHA-QW-MRF"/>
                 <outlet property="bannerImageView" destination="L7P-Yq-xJD" id="e5a-DM-uRN"/>
                 <outlet property="descriptionContainerViewHeight" destination="DnL-rJ-G7F" id="oX5-fV-VUb"/>
                 <outlet property="descriptionContainerview" destination="rYF-NG-moE" id="btF-yu-wc3"/>
@@ -357,6 +356,5 @@
     <resources>
         <image name="AddtoWatchlist" width="48" height="48"/>
         <image name="WatchNow" width="48" height="48"/>
-        <image name="metadatabg" width="1920" height="738"/>
     </resources>
 </document>

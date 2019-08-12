@@ -9,10 +9,10 @@
 import Foundation
 
 extension RJILApiManager {
-    class func getSearchData(key: String, _ completion: @escaping APISuccessBlock) {
+    class func getSearchData(key: String, _ completion: @escaping APISuccessBlock) -> URLSessionDataTask? {
         let path = preditiveSearchURL
         let params = ["q": key]
-        RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: BaseDataModel.self) {(response) in
+       let task = RJILApiManager.getReponse(path: path, params: params, postType: .POST, paramEncoding: .BODY, shouldShowIndicator: true, reponseModelType: BaseDataModel.self) {(response) in
             if response.isSuccess {
                 JCDataStore.sharedDataStore.searchData = response.model
                 completion(true, nil)
@@ -20,10 +20,12 @@ extension RJILApiManager {
                 completion(false, response.errorMsg)
             }
         }
+        return task
     }
-    class func getTrendingResult(completion: @escaping (_ response: Response<JCTrendingSearchTextSuperModel>) -> ()) {
+    class func getTrendingResult(completion: @escaping (_ response: Response<JCTrendingSearchTextSuperModel>) -> ()) -> URLSessionDataTask? {
         let path = TrendingSearchTextURL
-        RJILApiManager.getReponse(path: path, postType: .GET, reponseModelType: JCTrendingSearchTextSuperModel.self, completion: completion)
+        let task = RJILApiManager.getReponse(path: path, postType: .GET, reponseModelType: JCTrendingSearchTextSuperModel.self, completion: completion)
+        return task
     }
 }
 

@@ -21,6 +21,8 @@ let JCANALYTICSEVENT_URL            = "https://collect.media.jio.com/postdata/ev
 let JCANALYTICSEVENT_URL_BEGIN      = "https://collect.media.jio.com/postdata/B"
 let JCANALYTICSEVENT_URL_END      = "https://collect.media.jio.com/postdata/E"
 let JCANALYTICSEVENT_AUDIOCHANGED   = "audiochanged"
+let JCANALYTICSEVENT_SKIPINTRO   = "Skip_intro"
+
 
 
 let JCANALYTICSEVENT_PARENTALPOPUP  = "Parental_PIN_Popup"
@@ -201,12 +203,6 @@ class JCAnalyticsEvent: NSObject {
         return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_MEDIAERROR )
     }
     
-    func getSNAVEventForInternalAnalytics(currentScreen:String, nextScreen:String, durationInCurrentScreen:String) -> Dictionary<String, Any>
-    {
-        let eventDictionary = ["platform":"TVOS",
-                               "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
-        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
-    }
     func getAudioChangedEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :Int, contentId :String, bufferDuration :Int, timeSpent :Int, type :String, bufferCount :Int) -> Dictionary<String, Any>{
         let eventDictionary = [ "platform":"TVOS",
                                 "screenname" : screenName,
@@ -219,10 +215,27 @@ class JCAnalyticsEvent: NSObject {
                                 "bc": bufferCount] as [String : Any]
         return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_AUDIOCHANGED)
     }
+    func getSkipIntroEventForInternalAnalytics(screenName :String, source :String,playerCurrentPositionWhenMediaEnds  :Int, contentId :String, bufferDuration :Int, type :String, bufferCount :Int) -> Dictionary<String, Any>{
+        let eventDictionary = [ "platform":"TVOS",
+                                "screenname" : screenName,
+                                "source": source,
+                                "epos": playerCurrentPositionWhenMediaEnds,
+                                "cid": contentId,
+                                "bd": bufferDuration,
+                                "Type": type,
+                                "bc": bufferCount] as [String : Any]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary, eventKey: JCANALYTICSEVENT_SKIPINTRO)
+    }
+    func getSNAVEventForInternalAnalytics(currentScreen:String, nextScreen:String, durationInCurrentScreen:String) -> Dictionary<String, Any>
+    {
+        let eventDictionary = ["platform":"TVOS",
+                               "ref":currentScreen,"refSection":nextScreen,"st":durationInCurrentScreen]
+        return self.getFinalEventDictionary(proDictionary: eventDictionary,eventKey:JCANALYTICSEVENT_SNAV )
+    }
     
     func sendEventForInternalAnalytics(paramDict: [String: Any], path: String = JCANALYTICSEVENT_URL) {
         RJILApiManager.getReponse(path: path, params: paramDict, postType: .POST, paramEncoding: .JSON, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: NoModel.self) { (response) in
-            guard response.isSuccess else {
+             guard response.isSuccess else {
                 return
             }
         }

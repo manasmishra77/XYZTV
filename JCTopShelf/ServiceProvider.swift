@@ -6,17 +6,15 @@
 //  Copyright © 2018 Reliance Jio Infocomm. Ltd. All rights reserved.
 //
 
-//BasePath
-let prodBase = "https://prod.media.jio.com/apis/"
-let qaBase = "https://qa.media.jio.com/mdp_qa/apis/"
-
-let basePath = prodBase
-let topShelfItemURL = basePath.appending("common/v3/accelerator/get")
 
 import Foundation
 import TVServices
 
+
+
 class ServiceProvider: NSObject, TVTopShelfProvider {
+    
+    let headingText = "JioCinema recommends"
     
     override init() {
         super.init()
@@ -28,81 +26,52 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
         return .sectioned
     }
     var topShelfItems: [TVContentItem] {
-        return []
-        let topShelfIdentifier = TVContentIdentifier(identifier:
-            "Featured", container: nil)
-        let topShelfSection = TVContentItem(contentIdentifier:
-            topShelfIdentifier)
-        topShelfSection.title = "Featured"
-   
         var topShelfItemArray = [TVContentItem]()
         
-//        if let shelfModelArray = self.webServiceCallForTopShelfItems() {
-//            
-//            for eachShelfModel in shelfModelArray{
-//                 let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.title ?? "", container: nil)
-//                    let topShelfItem = TVContentItem(contentIdentifier: tvContentIdentifier)
-//                    topShelfItem.imageURL = URL(string: eachShelfModel.image_url ?? "")
-//                    if let displayUrl = self.urlFor(identifier: eachShelfModel.action_data ?? ""){
-//                        topShelfItem.displayURL = displayUrl
-//                        topShelfItem?.imageShape = .HDTV
-//                    }
-//                    if let topShelfItem = topShelfItem{
-//                        topShelfItemArray.append(topShelfItem)
-//                    }
-//                
-//            }
-//        }
-        topShelfSection.topShelfItems = topShelfItemArray
-        return [topShelfSection]
+        let headingIdentifier = TVContentIdentifier(identifier: headingText, container: nil)
+        let headingSection = TVContentItem(contentIdentifier: headingIdentifier)
+        headingSection.title = headingText
+        
+        if let shelfModelArray = self.webServiceCallForTopShelfItems() {
+            for eachShelfModel in shelfModelArray {
+                 let tvContentIdentifier = TVContentIdentifier(identifier: eachShelfModel.name ?? "", container: nil)
+                    let topShelfItem = TVContentItem(contentIdentifier: tvContentIdentifier)
+                    topShelfItem.imageURL = URL(string: eachShelfModel.imageUrlLandscapContent)
+                    if let displayUrl = self.urlFor(item: eachShelfModel){
+                        topShelfItem.displayURL = displayUrl
+                    }
+                    topShelfItem.imageShape = .HDTV
+                    topShelfItemArray.append(topShelfItem)
+            }
+        }
+        headingSection.topShelfItems = topShelfItemArray
+        return [headingSection]
     }
     
-    private func urlFor(identifier: String) -> URL? {
+    private func urlFor(item: VODTopShelfModel) -> URL? {
         var components = URLComponents()
         components.scheme = "jCApp"
-        components.queryItems = [URLQueryItem(name: "identifier", value: identifier)]
-        
+         //Don't change the sequence
+        let itemIdQueryItem = URLQueryItem(name: "contentId", value: item.id)
+        let latestIdQueryItem = URLQueryItem(name: "latestId", value: item.latestId)
+        let isPlaylistQueryItem = URLQueryItem(name: "isPlaylist", value: "\(item.isPlaylist ?? false)")
+        let playlistIdQueryItem = URLQueryItem(name: "playlistId", value: item.playlistId)
+        let videoTypeQueryItem = URLQueryItem(name: "videoType", value: "\(item.app?.type ?? 0)")
+        components.queryItems = [itemIdQueryItem, latestIdQueryItem, isPlaylistQueryItem, playlistIdQueryItem, videoTypeQueryItem]
         return components.url
     }
     
-    private func webServiceCallForTopShelfItems() -> [VODTopShelfModel]?{
+    private func webServiceCallForTopShelfItems() -> [VODTopShelfModel]? {
         let dispatchGroup = DispatchGroup()
         var shelfModelArray: [VODTopShelfModel]? = nil
-        if let url = URL(string: topShelfItemURL){
-            
-            weak var weakSelf = self
-            
-            dispatchGroup.enter()
-            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                if error != nil{
-                    
-                }
-                if let response = response as? HTTPURLResponse{
-                    if response.statusCode == 200, let data = data{
-                        shelfModelArray = (weakSelf?.parseResponse(data))
-                    }
-                }
-                dispatchGroup.leave()
-                return
+        dispatchGroup.enter()
+        TopShelfConnectionManager.getTopShelfs { (isSuccess, items) in
+            if isSuccess, let topShelfItems = items {
+                shelfModelArray = topShelfItems
             }
-            task.resume()
+            dispatchGroup.leave()
         }
         dispatchGroup.wait()
-        return shelfModelArray
-    }
-    
-    private func parseResponse(_ data: Data) -> [VODTopShelfModel] {
-        var shelfModelArray = [VODTopShelfModel]()
-        do{
-            let jsonDict = try JSONDecoder().decode(ResponseDict.self, from: data)
-            if let tiles = jsonDict.sections.first?.tiles{
-                shelfModelArray = tiles
-            }
-            
-        }catch{
-            print(error)
-            
-        }
         return shelfModelArray
     }
 }

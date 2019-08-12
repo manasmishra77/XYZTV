@@ -68,8 +68,6 @@ class JCSettingsDetailVC: UIViewController {
     @IBAction func didClickOnTurnOnButton(_ sender: Any) {
         if isForAutoPlay {
             IsAutoPlayOn = true
-        } else {
-            IsAutoSubtitleOn = true
         }
         self.dismiss(animated: false, completion: nil)
 
@@ -78,8 +76,6 @@ class JCSettingsDetailVC: UIViewController {
     @IBAction func didClickOnTurnOffButton(_ sender: Any) {
         if isForAutoPlay {
             IsAutoPlayOn = false
-        } else {
-            IsAutoSubtitleOn = false
         }
         self.dismiss(animated: false, completion: nil)
     }

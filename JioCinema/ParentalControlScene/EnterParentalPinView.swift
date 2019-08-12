@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol EnterParentalPinViewDelegate {
+protocol EnterParentalPinViewDelegate: NSObjectProtocol {
     func didClickOnSubmitButton(_ pin: String) -> Bool
 }
 
@@ -17,7 +17,7 @@ class EnterParentalPinView: UIView {
     var myPreferdFocusedView : UIView?
     
     var password: String = ""
-    var delegate: EnterParentalPinViewDelegate?
+    weak var delegate: EnterParentalPinViewDelegate?
     @IBOutlet weak var contentTitle: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!

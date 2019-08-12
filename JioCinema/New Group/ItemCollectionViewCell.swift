@@ -9,9 +9,6 @@
 import UIKit
 import SDWebImage
 
-typealias BaseItemCellModels = (item: Item, cellType: ItemCellType, layoutType: ItemCellLayoutType)
-
-
 //To be used in place of BaseItemCellModels Tuple
 struct BaseItemCellModel {
     let item: Item?
@@ -35,8 +32,12 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
-
+    @IBOutlet weak var imageProgressContainer: UIView!
+    
+    @IBOutlet weak var titleImageSpacing: NSLayoutConstraint!
+    @IBOutlet weak var imageProgressContainerBottomSpace: NSLayoutConstraint!
     @IBOutlet weak var imageViewCoverview: UIView!
+    @IBOutlet weak var heightOfImageContainer: NSLayoutConstraint!
     
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     
@@ -45,21 +46,16 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     var cellItem : BaseItemCellModel?
     
+//    var focusedSpacingConstraint: NSLayoutConstraint?
     override func prepareForReuse() {
         self.resetNameLabel()
     }
-    
-    
 
-    func configureView(_ cellItems: BaseItemCellModels, isPlayingNow: Bool = false) {
-        if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
-            imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-        }
+    func configureView(_ cellItems: BaseItemCellModel, isPlayingNow: Bool = false) {
         cellItem = cellItems
         configureNameLabelPatchView(cellItems)
-
-        nameLabel.text = cellItems.item.name ?? ""
-        subtitle.text = cellItems.item.subtitle
+        nameLabel.text = cellItems.item?.name ?? ""
+        subtitle.text = cellItems.item?.subtitle
         progressBar.isHidden = true
         nameLabel.isHidden = false
         subtitle.isHidden = false
@@ -67,8 +63,15 @@ class ItemCollectionViewCell: UICollectionViewCell {
         nowPlayingLabel.isHidden = true
         imageViewCoverview.isHidden = true
         //Load Image
+        
         self.setImageForLayoutType(cellItems)
-        configureCellLabelVisibility(cellItems.layoutType)
+        
+        
+        if let layoutType = cellItems.layoutType {
+            setCornerRadiusToImageView(layoutType)
+            configureCellLabelVisibility(layoutType)
+        }
+        
 
         guard let cellType = cellItems.cellType else {
             return
@@ -87,7 +90,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .player:
             if isPlayingNow {
                 imageViewCoverview.isHidden = false
+                nowPlayingLabel.text = "Now Playing"
                 nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
+            } else if cellItems.item?.appType == .Music {
+                nowPlayingLabel.text = cellItems.item?.name
             }
             return
         case .disneyCommon:
@@ -98,10 +105,10 @@ class ItemCollectionViewCell: UICollectionViewCell {
             if isPlayingNow {
                 imageViewCoverview.isHidden = false
                 nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
             }
             return
         }
-
     }
     
     //Used for background color of namelabel patchview
@@ -123,6 +130,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //used for rounding corners of imageView when ancestor focu is true
+    func setCornerRadiusToImageView(_ layout: ItemCellLayoutType) {
+        self.imageProgressContainer.layer.cornerRadius = 12.0
+        self.imageProgressContainer.layer.masksToBounds = true
+    }
     
     private func setImageForLayoutType(_ cellItems: BaseItemCellModel) {
         //Load Image
@@ -130,7 +142,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             return
         }
         switch layoutType {
-        case .potrait, .potraitWithLabelAlwaysShow:
+        case .potrait:/*, .potraitWithLabelAlwaysShow, .potraitWithoutLabels:*/
             if let imageURL = URL(string: cellItems.item?.imageUrlPortraitContent ?? "") {
                 setImageOnCell(url: imageURL)
             }
@@ -139,6 +151,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 setImageOnCell(url: imageURL)
             }
         case .disneyCharacter:
+            
             if let logoURL = URL(string: cellItems.charactorItems?.LogoUrlForDisneyChar ?? ""){
                 setImageOnCell(url: logoURL)
             }
@@ -146,6 +159,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureCellLabelVisibility(_ layoutType: ItemCellLayoutType, isFocused: Bool = false) {
+
+        self.layoutIfNeeded()
+        heightOfImageContainer.constant = 209
         switch layoutType {
         case .potrait:
             subtitle.text = ""
@@ -154,8 +170,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
             } else {
                 nameLabel.text = ""
             }
-        case .potraitWithLabelAlwaysShow:
-            subtitle.text = ""
         case .landscapeWithTitleOnly:
             subtitle.text = ""
             if isFocused {
@@ -168,6 +182,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeForLangGenre:
             nameLabel.text = ""
             subtitle.text = ""
+            layoutIfNeeded()
+            break
         case .landscapeWithLabels:
             if isFocused {
                 nameLabel.text = cellItem?.item?.name ?? ""
@@ -176,20 +192,35 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 nameLabel.text = ""
                 subtitle.text = ""
             }
+            break   
         case .landscapeWithLabelsAlwaysShow:
             break
         case .disneyCharacter:
+            heightOfImageContainer.constant = itemHeightForPortrait
             nameLabel.text = ""
             subtitle.text = ""
+            layoutIfNeeded()
+            break
         }
-        
+        if cellItem?.cellType == .player {
+            if cellItem?.item?.appType == .Music && isFocused {
+                imageViewCoverview.isHidden = false
+                nowPlayingLabel.isHidden = false
+                self.bringSubviewToFront(imageViewCoverview)
+            } else if nowPlayingLabel.text != "Now Playing"{
+                imageViewCoverview.isHidden = true
+                nowPlayingLabel.isHidden = true
+                self.bringSubviewToFront(imageViewCoverview)
+            }
+        }
+
     }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModel) {
          heightConstraintForProgressBar.constant = 10
-        let progressColor: UIColor = (cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
+        let progressColor: UIColor = ThemeManager.shared.selectionColor//(cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
         let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
         progressBar.isHidden = false
-        progressBar.progressTintColor = progressColor
+        progressBar.progressTintColor = ThemeManager.shared.selectionColor //progressColor
         progressBar.trackTintColor = progressDefaultColor
         var progress: Float = 0.0
         if let duration = cellItems.item?.duration, let totalDuration = cellItems.item?.totalDuration {
@@ -204,36 +235,31 @@ class ItemCollectionViewCell: UICollectionViewCell {
 //        imageView.backgroundColor = .green
        imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
+//        self.imageView.roundedImage(radius: 10)
         }
     }
     
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         resetNameLabel()
-        if (context.nextFocusedView == self) {
-            
-            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
-                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            } else {
-                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
-            }
-            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-            imageView.borderWidth = 5
-            if cellItem?.cellType.isDisney ?? false {
-                imageView.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
-            } else {
-                imageView.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-            }
 
+        if (context.nextFocusedView == self) {
+
+            
+            if (cellItem?.layoutType == .disneyCharacter) {
+                self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }
+            else {
+                self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            }
+                configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
                 startTimer()
             }
         } else {
-            self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
-            imageView.borderWidth = 0
-            self.borderWidth = 0
+                self.transform = CGAffineTransform(scaleX: 1, y: 1)
+                configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
         }
     }
     
@@ -280,13 +306,14 @@ enum ItemCellType {
 }
 
 enum ItemCellLayoutType {
+//    case potraitWithLabelAlwaysShow
+    case landscapeWithLabelsAlwaysShow
     case potrait
-    case potraitWithLabelAlwaysShow
+//    case potraitWithoutLabels
     case landscapeWithTitleOnly
     case landscapeForResume
     case landscapeForLangGenre
     case landscapeWithLabels
-    case landscapeWithLabelsAlwaysShow
     case disneyCharacter
     
     init(layout : Int) {
@@ -294,7 +321,7 @@ enum ItemCellLayoutType {
         //case 1,9: self = .Carousel
         case 2,4,7,5: self = .landscapeWithTitleOnly
         //case 12: self = .Square
-        case 3:  self = .potrait
+//        case 3:  self = .potrait
         default: self = .landscapeWithTitleOnly
         }
     }
