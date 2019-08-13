@@ -291,6 +291,7 @@ class RJILApiManager {
     var lowPrioritySession: URLSession?
     
     func resetURLSessionTask(priority: TaskPriority) {
+        //patch changes
         highPrioritySession = URLSession.shared
         return
         if priority == .high {

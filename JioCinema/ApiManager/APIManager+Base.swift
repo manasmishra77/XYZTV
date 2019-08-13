@@ -136,10 +136,10 @@ extension RJILApiManager {
                 if let dataContainer = response.model?.data?.first, (dataContainer.items?.count ?? 0) > 0 {
                     if vcType == .home {
                         JCDataStore.sharedDataStore.resumeWatchList = response.model
-                        JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = "Resume Watching"
+                        JCDataStore.sharedDataStore.resumeWatchList?.data?[0].title = response.model?.title ?? ""
                     } else {
                         JCDataStore.sharedDataStore.disneyResumeWatchList = response.model
-                        JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = "Resume Watching"
+                        JCDataStore.sharedDataStore.disneyResumeWatchList?.data?[0].title = response.model?.title ?? ""
                     }
                     completion?(true, nil)
                 } else {

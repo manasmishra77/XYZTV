@@ -395,7 +395,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
 //            let height = rowHeightForLandscapeForLanguageGenreScreen
 //            let widht = height*widthToHeightPropertionForLandScapeOLD
 //            return CGSize(width: widht, height: height)
-            return LanguageGenreScene.landscapeCellSize
+        return LanguageGenreScene.landscapeCellSizeForLanguageGenereResults
 
 //        }
     }
@@ -412,7 +412,7 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 25
+        return 40
     }
     
     
@@ -420,9 +420,9 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var padding : CGFloat = 0
         if let appType = languageGenreDetailModel?.data?.items?.first?.appType, appType == .Movie {
-            padding = (collectionView.frame.width - 5*(itemCellSize.width) - 4*(25))/2
+            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(40))/2
         } else {
-            padding = (collectionView.frame.width - 3*(itemCellSize.width) - 2*(25))/2
+            padding = (collectionView.frame.width - 4*(itemCellSize.width) - 4*(40))/2
         }
 
         return UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
@@ -437,11 +437,11 @@ extension JCLanguageGenreVC:UICollectionViewDelegate,UICollectionViewDataSource,
         let item = languageGenreDetailModel?.data?.items?[indexPath.row] ?? Item()
         let cellType: ItemCellType = .base
         var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
-//        if item.appType == .Movie {
-//            layoutType = .potrait
-//        } else if item.appType == .TVShow {
+        if item.appType == .Movie || item.appType == .TVShow{
             layoutType = .landscapeWithTitleOnly
-//        }
+        } else {
+            layoutType = .landscapeWithLabelsAlwaysShow
+        }
         //(item: item, cellType: cellType, layoutType: layoutType)
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)

@@ -118,6 +118,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if isDisney {
             configueeDisneyView()
         } else {
+            metadataTableView.backgroundColor = ViewColor.commonBackground
             headerCell.configureViews()
         }
         self.metadataTableView.register(UINib.init(nibName: "JCBaseTableViewCell", bundle: nil), forCellReuseIdentifier: baseTableViewCellReuseIdentifier)
@@ -131,7 +132,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 //            headerCell.addToWatchListButton.focusedBGColor = ViewColor.disneyButtonColor
 //            headerCell.playButton.focusedBGColor = ViewColor.disneyButtonColor
             metadataTableView.backgroundColor = ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
-            headerCell.backgroudImage.image = UIImage.init(named: "DisneyMetadataBg")
+//            headerCell.backgroudImage.image = UIImage.init(named: "DisneyMetadataBg")
             self.view.backgroundColor =  ViewColor.disneyBackground//UIColor(red: 6.0/255.0, green: 33.0/255.0, blue: 63.0/255.0, alpha: 1.0)
     }
     private func configureHeaderCell() {
@@ -147,7 +148,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if let moreArray =  metadata?.more, moreArray.count > 0 {
                 if indexPath.row == 0 {
 //                    return rowHeightForPotrait
-                    return rowHeightForLandscape
+                    return rowHeightForLandscapeTitleOnly
                 } else {
                     return 350
                 }
@@ -156,7 +157,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         } else if itemAppType == .TVShow {
             if let episodeArray =  metadata?.episodes, episodeArray.count > 0 {
                 if indexPath.row == 0 {
-                    return rowHeightForLandscape
+                    return rowHeightForLandscapeTitleOnly
                 } else {
                     return 350
                 }
@@ -1006,8 +1007,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
         actualHeightOfTheDescContainerView = headerCell.descriptionContainerViewHeight.constant
         
-        let imageUrl = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
-        let url = URL(string: imageUrl)
+        var imageUrlString = (JCDataStore.sharedDataStore.configData?.configDataUrls?.image ?? "") + (metadata?.banner ?? "")
+        if let imageUrl = item?.imageUrlOfTvStillImage {
+           imageUrlString = imageUrl
+        }
+        let url = URL(string: imageUrlString)
 
 //        DispatchQueue.main.async {
 //
@@ -1319,6 +1323,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
+            self.dismiss(animated: false, completion: nil)
+
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {

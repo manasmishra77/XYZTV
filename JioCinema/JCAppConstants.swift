@@ -240,11 +240,12 @@ let SHOW_LESS = "Show Less"
 
 //MARK:- Tablecell Row height
 //height of category title in table view including top & bottom constraint
-let CategoryTitleHeight: CGFloat = 100
+let CategoryTitleHeight: CGFloat = 85 + 20
 let bottomConstraintOfCollectionView: CGFloat = 10
 
 //Heights in
-let imageViewHeight: CGFloat = 209
+let imageTopConstraints: CGFloat = 15
+let imageViewHeight: CGFloat = 209 + imageTopConstraints
 let itemTitleHeight: CGFloat = 56 //(12+36+8)
 let itemSubtitleHeight: CGFloat = 35 //(29+6)
 
@@ -288,6 +289,12 @@ struct LanguageGenreScene {
         let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }
+    
+    static var landscapeCellSizeForLanguageGenereResults: CGSize {
+        let height = itemHeightForLandscapeForTitleAndSubtitle//landscapeRowHeight - 40
+        let width =  itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
+        return CGSize(width: width, height: height)
+    }
     static var potraitCellSize: CGSize {
         let height = itemHeightForPortrait//potraitRowHeight - 40
         let width = itemWidthForPortrait//(height / heightToWidthRatioOfItemCellForPotrait)
@@ -310,7 +317,7 @@ struct PlayerRecommendationSize {
     static let heightToWidthRatioOfItemCellForPotrait: CGFloat = 1.54
     static let heightToWidthRatioOfItemCellForLandscape: CGFloat = 0.78
     static var landscapeRowHeight: CGFloat {
-        let height: CGFloat =  rowHeightForLandscape// 306 + 30//rowHeightForLandscape
+        let height: CGFloat =  itemHeightForLandscapeForTitleAndSubtitle// 306 + 30//rowHeightForLandscape
         return height
     }
     static var potraitRowHeight: CGFloat {
@@ -318,7 +325,7 @@ struct PlayerRecommendationSize {
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = itemHeightForLandscape - 90//landscapeRowHeight - 40
+        let height = itemHeightForLandscapeForTitleAndSubtitle//landscapeRowHeight - 40
         let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }

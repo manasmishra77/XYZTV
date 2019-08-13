@@ -149,7 +149,13 @@ class PlayerViewModel: NSObject {
     }
     
     func callWebServiceForMoreLikeData() {
-        let url = metadataUrl.appending(itemToBePlayed.id ?? "")
+        var itemId = itemToBePlayed.id ?? ""
+        if let id = itemToBePlayed.latestId {
+            if id != "" {
+                itemId = id
+            }
+        }
+        let url = metadataUrl.appending(itemId)
         RJILApiManager.getReponse(path: url, params: nil, postType: .GET, paramEncoding: .URL, shouldShowIndicator: false, isLoginRequired: false, reponseModelType: MetadataModel.self) {[weak self] (response) in
             guard let self = self else {return}
             
@@ -231,7 +237,7 @@ class PlayerViewModel: NSObject {
             
             DispatchQueue.main.async {
                 self.playbackRightsModel = response.model
-                self.playbackRightsModel?.fps = nil
+//                self.playbackRightsModel?.fps = nil
                 self.decideURLPriorityForPlayer()
                 
                 guard let _ = self.playerActiveUrl else {

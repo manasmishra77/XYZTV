@@ -30,6 +30,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
+    
+    
+    
+    
+    var lastFocusableItem: UIView?
+    
     var customHeaderView: HeaderView?
     var timerToSetImage: Timer?
     var gradientColor : UIColor = ViewColor.commonBackground
@@ -43,11 +50,20 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.viewLoadingStatus = .completed
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
+                    self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
                 self.showAlert()
             }
+        }
+    }
+    
+    func loadMainViewBgDetails() {
+        if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
+            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
         }
     }
     
@@ -103,6 +119,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 coverView.removeFromSuperview()
             }
         }
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(onFocusFailed(_:)), name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -150,9 +171,19 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView = UINib(nibName: "HeaderView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? HeaderView
             customHeaderView?.frame = customHeaderHolderView.bounds
             print(baseViewModel.vcType.isDisney)
+            customHeaderView?.headerViewDelegate = self
+            if baseViewModel.vcType == .music || baseViewModel.vcType == .clip {
+                customHeaderView?.heightOfMoreIfoButton.constant = 0
+            } else {
+                customHeaderView?.heightOfMoreIfoButton.constant = 63
+            }
+            self.customHeaderView?.layoutIfNeeded()
             customHeaderView?.addGradientToHeader(color: gradientColor)
+            customHeaderView?.imageViewForHeader.isHidden = true
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
+            
+            lastFocusableItem = customHeaderView?.playButton
         }
     }
     
@@ -195,22 +226,20 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        print("context == \(context)")
         if baseViewModel.vcType == .search {
-                    Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
+            Utility.baseTableViewInBaseViewController(tableView, didUpdateFocusIn: context, with: coordinator)
         }
-
-//        guard let cell = tableView.cellForRow(at: context.nextFocusedIndexPath) as? BaseTableViewCell else {
-//            return UITableViewCell()
-//        }
-//        baseTableView.contentOffset.y = cell?.frame.maxY)
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 0
@@ -218,22 +247,22 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return baseViewModel.countOfTableView
         }
     }
+    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return baseViewModel.heightOfTableRow(indexPath)
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BaseTableCellNibIdentifier, for: indexPath) as? BaseTableViewCell else {
             return UITableViewCell()
         }
         let cellData = baseViewModel.getTableCellItems(for: indexPath.row, completion: tableReloadClosure)
-        
-        if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-            setHeaderValues(urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-        }
         cell.configureView(cellData, delegate: self)
         return cell
     }
+    
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
@@ -242,64 +271,97 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             return baseViewModel.buttonView()
         }
     }
+    
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return baseViewModel.heightOfTableHeader(section: section)
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            DispatchQueue.main.async {
+                if let cell = cell as? BaseTableViewCell {
+                    cell.itemCollectionView?.contentOffset = CGPoint.init(x: 0, y: 0)
+                }
+            }
+    }
+    
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-//        if context.nextFocusedItem is SideNavigationTableCell {
-//            self.baseTableView.alpha = 0.1
-//            self.customHeaderView?.alpha = 0.1
-//            self.backgroundImageView.isHidden = false
-//            self.customHeaderView?.imageViewForHeader.isHidden = true
-//            if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-//                let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-//                setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-//            }
-//        } else {
-            self.baseTableView.alpha = 1
-            self.customHeaderView?.alpha = 1
-            if context.nextFocusedItem is HeaderButtons {
-                updateUiAndFocus(toFullScreen: true, context: context)
-                if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
-                    let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                    setHeaderValues(urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true)
-                }
-            } else {
+            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell || context.previouslyFocusedItem is JCDisneyButton) && context.nextFocusedItem is ItemCollectionViewCell {
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
-//         }
+
+        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCollectionViewCell  || context.previouslyFocusedView is HeaderButtons || context.previouslyFocusedView is JCDisneyButton){
+            baseTableView.alpha = 0.2
+            customHeaderView?.playButton.alpha = 0.2
+            customHeaderView?.moreInfoButton.alpha = 0.2
+            customHeaderView?.titleLabel.alpha = 0.2
+            customHeaderView?.descriptionLabel.alpha = 0.2
+        } else {
+            baseTableView.alpha = 1
+            customHeaderView?.playButton.alpha = 1
+            customHeaderView?.moreInfoButton.alpha = 1
+            customHeaderView?.titleLabel.alpha = 1
+            customHeaderView?.descriptionLabel.alpha = 1
+        }
     }
     
     
     func updateUiAndFocus(toFullScreen: Bool, context: UIFocusUpdateContext) {
         self.backgroundImageView.isHidden = !toFullScreen
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
-        let alphaChange : CGFloat = toFullScreen ? 1.0 : 0.001
-        let topConstraint : CGFloat = toFullScreen ? (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.1) : (self.view.frame.height - rowHeightForLandscapeWithLabels * 1.3)
-        let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
-        customHeaderView?.playButton.alpha = alphaChange
-        customHeaderView?.moreInfoButton.alpha = alphaChange
+        self.customHeaderView?.playButton.isHidden = !toFullScreen
+        self.customHeaderView?.moreInfoButton.isHidden = !toFullScreen
+        let heightConstraint : CGFloat = toFullScreen ? rowHeightForLandscapeWithLabels * 1.1 : self.view.frame.height - rowHeightForLandscapeWithLabels * 1.25
         
-        //        self.customHeaderView?.titleLabel.alpha = alphaChange
+        let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
         UIView.animate(withDuration: 0.3) {
-            self.topConstraintOfTableView.constant = topConstraint
+            self.baseTableViewHeight.constant = heightConstraint
             self.customHeaderView?.topConstraintOfDescription.constant = topConstraintOfDesciption
             self.view.layoutIfNeeded()
         }
     }
     
-    //ChangingTheAlpha
-    var focusShiftedFromTabBarToVC = true
+    @objc func onFocusFailed(_ notification:Notification) {
+        if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
+            if context.previouslyFocusedItem is ItemCollectionViewCell || context.previouslyFocusedItem is JCDisneyButton {
+                if (context.focusHeading == .up) {
+                    DispatchQueue.main.async {
+                        
+                        if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
+                            let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+                            self.setHeaderValues(item: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+                        }
+                        self.customHeaderView?.imageViewForHeader.isHidden = true
+                        self.backgroundImageView.isHidden = false
+                        self.customHeaderView?.playButton.isHidden = false
+                        self.customHeaderView?.moreInfoButton.isHidden = false
+                        UIView.animate(withDuration: 0.3) {
+                            self.baseTableViewHeight.constant = rowHeightForLandscapeWithLabels * 1.1
+                            self.customHeaderView?.topConstraintOfDescription.constant = 130
+                            self.view.layoutIfNeeded()
+                        }
+                        self.updateFocusIfNeeded()
+                        self.setNeedsFocusUpdate()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
     
-    //    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-    //        Utility.changingAlphaTabAbrToVC(carousalView: baseViewModel.carousal, tableView: baseTableView, toChange: &focusShiftedFromTabBarToVC)
-    //    }
-    //
-    //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-    //        Utility.changeAlphaWhenTabBarSelected(baseTableView, carousalView: baseViewModel.carousal, toChange: &focusShiftedFromTabBarToVC)
-    //    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+         lastFocusableItem = nil
+        if #available(tvOS 11.0, *) {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    
+    
 }
 extension BaseViewController {
     func showAlert() {
@@ -318,12 +380,16 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?, urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
+        
+        lastFocusableItem = item
         var url : URL?
         if let urlString = urlString {
             url = URL(string: urlString)
         }
-
+        
+        self.customHeaderView?.imageViewForHeader.contentMode = mode
+        
         if toFullScreen {
             if url != nil {
                 self.backgroundImageView.sd_setImage(with: url)
@@ -331,25 +397,39 @@ extension BaseViewController: BaseTableViewCellDelegate {
             self.customHeaderView?.titleLabel.text = title
             self.customHeaderView?.descriptionLabel.text = description
         } else {
-//            self.timerToSetImage?.invalidate()
-//            self.timerToSetImage = nil
-//            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {[weak self] (timer) in
-//                guard let self = self else {return}
+            self.timerToSetImage?.invalidate()
+            self.timerToSetImage = nil
+            self.customHeaderView?.titleLabel.text = title
+            self.customHeaderView?.descriptionLabel.text = description
+            self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {[weak self] (timer) in
+                guard let self = self else {return}
             
-//                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
-//                                  duration:0.5,
-//                                  options: .transitionCrossDissolve,
-//                                  animations: {
-                                    self.customHeaderView?.titleLabel.text = title
-                                    self.customHeaderView?.descriptionLabel.text = description
- self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-//                },
-//                                  completion: nil)
-//            }
+                UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
+                                  duration:0.4,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
+                },
+                                  completion: nil)
+            }
         }
 
     }
     
+}
+
+extension BaseViewController: HeaderViewDelegate {
+    func playButtonTapped() {
+        if let item = baseViewModel.baseDataModel?.data?[0].items?[0] {
+            self.baseViewModel.itemCellTapped(item, selectedIndexPath: IndexPath(item: 0, section: 0), shouldDirectPlay: true)
+        }
+    }
+    
+    func moreInfoButtonTapped() {
+        if let item = baseViewModel.baseDataModel?.data?[0].items?[0] {
+             self.baseViewModel.itemCellTapped(item, selectedIndexPath: IndexPath(item: 0, section: 0))
+        }
+    }
 }
 
 extension BaseViewController: BaseViewModelDelegate {
@@ -360,7 +440,7 @@ extension BaseViewController: BaseViewModelDelegate {
     }
     
     func presentVC(_ vc: UIViewController) {
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
         //        guard let tabBarVC = self.tabBarController as? JCTabBarController else {
         //            // For DisneyKids, Disney Movies, Disney TVShow
         //            self.present(vc, animated: true, completion: nil)

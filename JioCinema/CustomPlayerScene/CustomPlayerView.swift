@@ -92,7 +92,8 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+//        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForLandscapeForTitleAndSubtitle + 70) : ((-itemHeightForLandscapeForTitleAndSubtitle - 60) + 70)
     }
     var isPlayerPaused: Bool {
         return player?.rate == 0
@@ -174,10 +175,13 @@ class CustomPlayerView: UIView {
     func addMoreLikeView() {
         if moreLikeView == nil {
             moreLikeView = UINib(nibName: "MoreLikeView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? MoreLikeView
-            guard let moreLikeView = moreLikeView else{
+            guard let moreLikeView = moreLikeView else {
                 return
             }
-            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie ) ? itemHeightForLandscapeForTitleAndSubtitle : itemHeightForLandscapeForTitleAndSubtitle + 60
+    
+
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             self.layoutIfNeeded()
@@ -827,6 +831,15 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     //                }
                 }
             }
+            
+            if let subtitleArray = self.playbackRightModel?.displaySubtitles, subtitleArray.count > 1 {
+                self.playerSubTitleLanguage(subtitleArray[1])
+            }
+            
+            
+            
+            
+            
             //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
             
@@ -1181,17 +1194,18 @@ extension CustomPlayerView {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimertToHideControls()
-            case .menu:
-                super.pressesBegan(presses, with: event)
-                print("Menu")
-                //                if popUpHolderView.isHidden == true {
-                //                    self.resetAndRemovePlayer()
-                //                    self.delegate?.removePlayerController()
-                //                } else {
-                //                    resetTimer()
-                //                    removeControlDetailview()
-                //                    print("menu")
-            //                }
+//            case .menu:
+//                super.pressesBegan(presses, with: event)
+//                print("Menu")
+//                break
+//                //                if popUpHolderView.isHidden == true {
+//                //                    self.resetAndRemovePlayer()
+//                //                    self.delegate?.removePlayerController()
+//                //                } else {
+//                //                    resetTimer()
+//                //                    removeControlDetailview()
+//                //                    print("menu")
+//            //                }
             case .playPause:
                 print("playPause")
                 if isPlayerPaused {

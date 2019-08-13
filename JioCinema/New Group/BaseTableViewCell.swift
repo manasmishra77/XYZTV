@@ -11,10 +11,11 @@ import UIKit
 protocol BaseTableViewCellDelegate {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool)
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode)
 }
 extension BaseTableViewCellDelegate {
-    func setHeaderValues(urlString: String?, title: String, description: String, toFullScreen: Bool) {
+    func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
+        
     }
 }
 //To be used in place of TableCellItemsTuple Tuple
@@ -83,9 +84,10 @@ class BaseTableViewCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
-
+//        DispatchQueue.main.async {
+//            self.itemCollectionView.contentOffset = CGPoint.init(x: 0, y: 0)
+//        }
     }
-    
 }
 
 extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -114,10 +116,18 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
             //disney character click to be handled
         }
     }
+    
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            delegate?.setHeaderValues(urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false)
+            if context.nextFocusedItem is ItemCollectionViewCell {
+                delegate?.setHeaderValues(item: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", description: newItem.description ?? "", toFullScreen: false, mode: .scaleAspectFill)
+            }
+        } else if let charItem = cellItems.charItems {
+            let newItem = charItem[context.nextFocusedIndexPath?.row ?? 0]
+            if context.nextFocusedItem is ItemCollectionViewCell {
+                delegate?.setHeaderValues(item: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", description: "", toFullScreen: false, mode: .scaleAspectFit)
+            }
         }
     }
 }
@@ -133,7 +143,7 @@ extension BaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if cellItems.layoutType == .disneyCharacter {
             height = itemHeightForPortrait
         } else if cellItems.layoutType == .landscapeForLangGenre {
-            height = itemHeightForLandscape
+            height = itemHeightForLandscapeForTitleOnly
         } else if cellItems.layoutType == .landscapeWithTitleOnly{
             height = itemHeightForLandscapeForTitleOnly
         } else {

@@ -163,7 +163,8 @@ class JCBaseTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         let item = moreArray[indexPath.row]
         let cellType: ItemCellType = isDisney ? .disneyCommon: .base
 //        let layoutType: ItemCellLayoutType = .potrait
-        let layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
+        
+        let layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
         cell.configureView(cellItems)
 //        let imageUrl = moreArray[indexPath.row].banner ?? ""
@@ -242,7 +243,7 @@ extension JCBaseTableViewCell: UICollectionViewDelegateFlowLayout {
         if(itemArrayType == .artistImages) {
             return 15
         }
-        return 25
+        return 35
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -32,7 +32,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var patchForTitleLabelLeading: UIView!
     @IBOutlet weak var heightConstraintForProgressBar: NSLayoutConstraint!
-
+    @IBOutlet weak var imageProgressContainer: UIView!
+    
     @IBOutlet weak var titleImageSpacing: NSLayoutConstraint!
     @IBOutlet weak var imageProgressContainerBottomSpace: NSLayoutConstraint!
     @IBOutlet weak var imageViewCoverview: UIView!
@@ -51,13 +52,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
 
     func configureView(_ cellItems: BaseItemCellModel, isPlayingNow: Bool = false) {
-//        if (cellItems.charactorItems?.items?.count ?? 0) > 0 {
-//            imageView.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.1294117647, blue: 0.2470588235, alpha: 1)
-//        }
-//        self.focusedSpacingConstraint?.isActive = false
-//        self.focusedSpacingConstraint = NSLayoutC onstraint(item: nameLabel, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 20)
         cellItem = cellItems
-
         configureNameLabelPatchView(cellItems)
         nameLabel.text = cellItems.item?.name ?? ""
         subtitle.text = cellItems.item?.subtitle
@@ -114,45 +109,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
             return
         }
-
     }
-    
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        super.pressesBegan(presses, with: event)
-//        for press in presses {
-//            switch press.type{
-//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-//                //resetTimer()
-//                print("Arrow")
-//            case .menu:
-//                
-//                print("menu")
-//            case .playPause:
-//                print("playPause")
-//                
-//            case .select:
-//                print("select")
-//            @unknown default:
-//                print("unknown")
-//            }
-//        }
-//    }
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//        for touch in touches{
-//            switch touch.type{
-//            case .direct:
-//                print("Direct")
-//            case .indirect:
-//                print("indirect")
-//            case .pencil:
-//                print("pencil")
-//            @unknown default:
-//                print("unknown")
-//            }
-//        }
-//    }
     
     //Used for background color of namelabel patchview
     func configureNameLabelPatchView(_ cellItems: BaseItemCellModel) {
@@ -175,18 +132,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
     
     //used for rounding corners of imageView when ancestor focu is true
     func setCornerRadiusToImageView(_ layout: ItemCellLayoutType) {
-        
-        self.layer.cornerRadius = 8.0
-        self.layer.masksToBounds = true
-//        if layout == .disneyCharacter {
-//            imageView.adjustsImageWhenAncestorFocused = false
-//            imageView.clipsToBounds = true
-//            imageView.roundedImage(radius: 0)
-//        } else {
-//            imageView.adjustsImageWhenAncestorFocused = true
-//            imageView.clipsToBounds = false
-//            imageView.roundedImage(radius: 30)
-//        }
+        self.imageProgressContainer.layer.cornerRadius = 12.0
+        self.imageProgressContainer.layer.masksToBounds = true
     }
     
     private func setImageForLayoutType(_ cellItems: BaseItemCellModel) {
@@ -215,7 +162,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
         self.layoutIfNeeded()
         heightOfImageContainer.constant = 209
-//        imageProgressContainerBottomSpace.constant = 90
         switch layoutType {
         case .potrait:
             subtitle.text = ""
@@ -224,8 +170,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
             } else {
                 nameLabel.text = ""
             }
-//        case .potraitWithLabelAlwaysShow:
-//            subtitle.text = ""
         case .landscapeWithTitleOnly:
             subtitle.text = ""
             if isFocused {
@@ -235,10 +179,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
         case .landscapeForResume:
             break
-        case .landscapeForLangGenre: //, .potraitWithoutLabels:
+        case .landscapeForLangGenre:
             nameLabel.text = ""
             subtitle.text = ""
-//            imageProgressContainerBottomSpace.constant = 0
             layoutIfNeeded()
             break
         case .landscapeWithLabels:
@@ -253,13 +196,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithLabelsAlwaysShow:
             break
         case .disneyCharacter:
-//            imageView.adjustsImageWhenAncestorFocused = false
-//            imageView.clipsToBounds = true
-//            imageView.headerdImage(radius: 10)
             heightOfImageContainer.constant = itemHeightForPortrait
             nameLabel.text = ""
             subtitle.text = ""
-            //            imageProgressContainerBottomSpace.constant = 0
             layoutIfNeeded()
             break
         }
@@ -296,7 +235,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
 //        imageView.backgroundColor = .green
        imageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
             //print(error)
-        self.imageView.roundedImage(radius: 10)
+//        self.imageView.roundedImage(radius: 10)
         }
     }
     
@@ -304,51 +243,30 @@ class ItemCollectionViewCell: UICollectionViewCell {
         resetNameLabel()
 
         if (context.nextFocusedView == self) {
- 
-//            titleImageSpacing.constant = NSLayoutConstraint(item: nameLabel!, attribute: .topMargin, relatedBy: .equal, toItem: imageView.focusedFrameGuide, attribute: .bottomMargin, multiplier: 1, constant: 30).constant
-            if cellItem?.layoutType == .disneyCharacter {
-                self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+
+            
+            if (cellItem?.layoutType == .disneyCharacter) {
+                self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             }
             else {
-                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                self.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             }
-//            if cellItem?.layoutType == ItemCellLayoutType.potrait || cellItem?.layoutType == ItemCellLayoutType.potraitWithLabelAlwaysShow{
-//                self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-//            } else {
-//                self.transform = CGAffineTransform(scaleX: 1.08, y: 1.08)
-//            }
-            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
-//            setCornerRadiusToImageView(.landscapeWithLabels)
-//            imageView.layer.borderWidth = 5
-//            if cellItem?.cellType.isDisney ?? false {
-//                imageView.layer.borderColor = #colorLiteral(red: 0.2585663795, green: 0.7333371639, blue: 0.7917140722, alpha: 1)
-//            } else {
-//                imageView.layer.borderColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-//            }
-//            imageView.layer.borderColor = ThemeManager.shared.selectionColor.cgColor
-
+                configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: true)
             if (nameLabel.intrinsicContentSize.width > (nameLabel.frame.width)) {
                 nameLabel.text =  "  " + nameLabel.text!
                 nameLabelMaxWidth = Int(nameLabel.intrinsicContentSize.width)
                 startTimer()
             }
-            //self.focusedSpacingConstraint?.isActive = true
-
         } else {
                 self.transform = CGAffineTransform(scaleX: 1, y: 1)
-//            titleImageSpacing.constant = 12
-//            self.transform = CGAffineTransform(scaleX: 1, y: 1)
-            configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
-//            imageView.layer.borderWidth = 0
-//            self.layer.borderWidth = 0
-                //self.focusedSpacingConstraint?.isActive = false
+                configureCellLabelVisibility(cellItem?.layoutType ?? .landscapeWithLabels, isFocused: false)
         }
     }
     
     func resetNameLabel() {
         self.nameLabel.clipsToBounds = true
         self.nameLabel.layer.masksToBounds = true
-//        self.clipsToBounds = true
+        self.clipsToBounds = true
         nameLabelLeadingConstraint.constant = 15
         timer?.invalidate()
         timer = nil
