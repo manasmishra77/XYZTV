@@ -147,7 +147,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
                 self.baseViewModel.itemCellTapped(deepLinkedItem, selectedIndexPath: nil, isFromCarousal: true)
                 AppManager.shared.setForDeepLinkingItem(isFromDL: false, item: nil)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     self.configureTableView()
                 }
             }
