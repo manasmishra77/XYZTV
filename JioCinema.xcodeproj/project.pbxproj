@@ -1372,8 +1372,8 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "Apple Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1551,7 +1551,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jio.media.jioondemand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App";
+				PROVISIONING_PROFILE_SPECIFIER = "Jio On Demand tvOS App Prod";
 				SWIFT_OBJC_BRIDGING_HEADER = "JioCinema/JioCinema-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 5.0;
