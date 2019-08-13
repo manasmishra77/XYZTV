@@ -38,12 +38,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDh-jJ-t5x" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="73" y="230" width="182" height="63"/>
+                    <rect key="frame" x="73" y="230" width="190" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="b6G-q8-Rop"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="25"/>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="27"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="Play">
                         <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -61,12 +61,12 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8K-gf-ISa" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="287" y="230" width="182" height="63"/>
+                    <rect key="frame" x="305" y="230" width="190" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="tCw-tn-Xye"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="25"/>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="27"/>
                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                     <state key="normal" title="More Info">
                         <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -98,7 +98,7 @@
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="26" id="RG0-V4-tbL"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
                 <constraint firstItem="WDK-Fb-m3U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eyM-9Y-inx"/>
-                <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="32" id="h2h-0X-RyU"/>
+                <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="42" id="h2h-0X-RyU"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="mKj-QI-ovZ"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="qsD-yc-TSz"/>

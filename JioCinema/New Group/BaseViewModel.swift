@@ -11,7 +11,7 @@ import UIKit
 struct TabelCellItems {
     
 }
-protocol BaseViewModelDelegate {
+protocol BaseViewModelDelegate: AnyObject {
     func presentVC(_ vc: UIViewController)
     func presentMetadataOfIcarousel(_ itemId : Any)
 }
@@ -80,7 +80,7 @@ class BaseViewModel: NSObject  {
         NotificationCenter.default.removeObserver(self)
     }
     
-    var delegate: BaseViewModelDelegate?
+    weak var delegate: BaseViewModelDelegate?
     let vcType: BaseVCType
     var pageNumber = 0 // Reference for Downloading base page
     var errorMsg: String?

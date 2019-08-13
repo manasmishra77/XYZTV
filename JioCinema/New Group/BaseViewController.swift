@@ -24,11 +24,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
+    @IBOutlet weak var retryView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var customHeaderHolderView: UIView!
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
+
     
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
     
@@ -48,14 +50,17 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.viewLoadingStatus = isSuccess ? .viewNotLoadedDataFetched : .viewNotLoadedDataFetchedWithError
         } else if self.viewLoadingStatus == .completed || self.viewLoadingStatus == .viewLoaded {
             self.viewLoadingStatus = .completed
+            self.updateIndicatorState(toStart: false)
+            
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.retryView.isHidden = true
                     self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
                     self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
-                self.showAlert()
+                self.retryView.isHidden = false
             }
         }
     }
@@ -83,6 +88,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.view.backgroundColor = ViewColor.disneyBackground
         }
         self.baseViewModel.delegate = self
+        updateIndicatorState(toStart: true)
         self.baseViewModel.fetchData(completion: tableReloadClosure)
     }
     
@@ -94,7 +100,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         print("BaseVC Deinit -)")
     }
     
-    var sideNavigationVC: SideNavigationVC? {
+    weak var sideNavigationVC: SideNavigationVC? {
         return AppManager.shared.sideNavigationVC
     }
     
@@ -102,6 +108,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureViews()
+    }
+    
+    @IBAction func retryButtonPressed(_ sender: Any) {
+        updateIndicatorState(toStart: true)
+        baseViewModel.fetchData(completion: tableReloadClosure)
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -188,7 +200,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     private func updateIndicatorState(toStart: Bool, present onView: UIView? = nil) {
-        let spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        var spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        if baseViewModel.vcType == .disneyHome || baseViewModel.vcType == .disneyKids || baseViewModel.vcType == .disneyMovies || baseViewModel.vcType == .disneyTVShow {
+            spinnerColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
+        }
         let bgColor = ThemeManager.shared.backgroundColor
         if toStart {
             DispatchQueue.main.async {
@@ -365,7 +380,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 }
 extension BaseViewController {
     func showAlert() {
-        
+        let action = Utility.AlertAction(title: "Retry", style: .default)
+        let action2 = Utility.AlertAction(title: "Cancel", style: .destructive)
+        let alertVC = Utility.getCustomizedAlertController(with: "Network Error!", message: "", actions: [action, action2]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.updateIndicatorState(toStart: true)
+                self.baseViewModel.fetchData(completion: self.tableReloadClosure)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
     }
 }
 extension BaseViewController: BaseTableViewCellDelegate {

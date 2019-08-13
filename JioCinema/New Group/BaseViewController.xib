@@ -16,6 +16,7 @@
                 <outlet property="baseTableView" destination="9De-59-Cbg" id="kdo-Pg-aQm"/>
                 <outlet property="baseTableViewHeight" destination="pCY-DL-PCB" id="b8p-f4-WHO"/>
                 <outlet property="customHeaderHolderView" destination="iOo-eg-EFV" id="uSF-7v-gMg"/>
+                <outlet property="retryView" destination="W55-RN-ojN" id="ieR-kc-Nm5"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Eym-vH-oyN"/>
             </connections>
         </placeholder>
@@ -52,6 +53,32 @@
                     </constraints>
                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W55-RN-ojN">
+                    <rect key="frame" x="105" y="0.0" width="1815" height="1080"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please try againg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E0G-rf-nu9">
+                            <rect key="frame" x="761" y="401" width="294" height="46"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myZ-Mo-ck3">
+                            <rect key="frame" x="822" y="497" width="172" height="86"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                            <state key="normal" title="Retry"/>
+                            <connections>
+                                <action selector="retryButtonPressed:" destination="-1" eventType="primaryActionTriggered" id="lJu-kd-gj4"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="E0G-rf-nu9" firstAttribute="bottom" secondItem="myZ-Mo-ck3" secondAttribute="top" constant="-50" id="azT-Eh-JpO"/>
+                        <constraint firstItem="myZ-Mo-ck3" firstAttribute="centerX" secondItem="W55-RN-ojN" secondAttribute="centerX" id="e7u-U9-0uC"/>
+                        <constraint firstItem="myZ-Mo-ck3" firstAttribute="centerY" secondItem="W55-RN-ojN" secondAttribute="centerY" id="uPR-qa-mQe"/>
+                        <constraint firstItem="E0G-rf-nu9" firstAttribute="centerX" secondItem="W55-RN-ojN" secondAttribute="centerX" id="umx-1r-839"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -59,11 +86,15 @@
                 <constraint firstAttribute="trailing" secondItem="iOo-eg-EFV" secondAttribute="trailing" id="FyM-CP-XS5"/>
                 <constraint firstAttribute="trailing" secondItem="ufO-mS-GFA" secondAttribute="trailing" id="HfJ-FB-M16"/>
                 <constraint firstItem="9De-59-Cbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="105" id="I4A-6S-zTh"/>
+                <constraint firstAttribute="trailing" secondItem="W55-RN-ojN" secondAttribute="trailing" id="JNI-fJ-w1d"/>
                 <constraint firstAttribute="bottom" secondItem="ufO-mS-GFA" secondAttribute="bottom" id="L4R-JM-2q6"/>
                 <constraint firstAttribute="trailing" secondItem="9De-59-Cbg" secondAttribute="trailing" id="LOx-Ye-ubn"/>
                 <constraint firstItem="ufO-mS-GFA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Mld-aa-2Ga"/>
                 <constraint firstItem="ufO-mS-GFA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tl1-R3-gQA"/>
                 <constraint firstItem="iOo-eg-EFV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XFI-pv-uwV"/>
+                <constraint firstItem="W55-RN-ojN" firstAttribute="leading" secondItem="9De-59-Cbg" secondAttribute="leading" id="auS-pI-ey6"/>
+                <constraint firstAttribute="bottom" secondItem="W55-RN-ojN" secondAttribute="bottom" id="jh5-lT-lJ0"/>
+                <constraint firstItem="W55-RN-ojN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="kQS-EF-Pxj"/>
                 <constraint firstAttribute="bottom" secondItem="9De-59-Cbg" secondAttribute="bottom" id="x5f-Jm-ewT"/>
                 <constraint firstItem="iOo-eg-EFV" firstAttribute="leading" secondItem="9De-59-Cbg" secondAttribute="leading" id="xvI-Ab-t7F"/>
             </constraints>
