@@ -7,7 +7,9 @@ Pods/
 build/
 Podfile.lock
 DerivedData/
-xcuserdata/
+*/xcuserdata/
+*/xcshareddata/
+
 timeline.xctimeline
 playground.xcworkspace
 .build/
