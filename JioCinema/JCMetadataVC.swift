@@ -1063,7 +1063,6 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     headerCell.seasonCollectionView.isHidden = false
                     headerCell.monthsCollectionView.isHidden = true
                     headerCell.seasonsLabel.isHidden = true
-//                    headerCell.sseparationBetweenSeasonLabelAndSeasonCollView.constant = 0
                     headerCell.heightOfSeasonStaticLabel.constant = 0
                 } else {
                     headerCell.seasonsLabel.isHidden = false
@@ -1316,15 +1315,9 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                     }
                 }
             }
-//            else if let superNav = self.presentingViewController?.presentingViewController as? UINavigationController, let tabc = superNav.viewControllers[0] as? SideNavigationVC {
-////                tabc.selectedIndex = tabBarIndex ?? 0
-//            }
             else {
                 self.dismiss(animated: true, completion: nil)
             }
-        } else {
-            self.dismiss(animated: false, completion: nil)
-
         }
     }
     func presentLanguageGenreController(item: Item) -> JCLanguageGenreVC {

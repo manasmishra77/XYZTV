@@ -46,6 +46,7 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
         }
         headingSection.topShelfItems = topShelfItemArray
         return [headingSection]
+        
     }
     
     private func urlFor(item: VODTopShelfModel) -> URL? {
@@ -57,7 +58,8 @@ class ServiceProvider: NSObject, TVTopShelfProvider {
         let isPlaylistQueryItem = URLQueryItem(name: "isPlaylist", value: "\(item.isPlaylist ?? false)")
         let playlistIdQueryItem = URLQueryItem(name: "playlistId", value: item.playlistId)
         let videoTypeQueryItem = URLQueryItem(name: "videoType", value: "\(item.app?.type ?? 0)")
-        components.queryItems = [itemIdQueryItem, latestIdQueryItem, isPlaylistQueryItem, playlistIdQueryItem, videoTypeQueryItem]
+        let tvStillImageQueryItem = URLQueryItem(name: "tvStillImageUrl", value: item.tvStill ?? "")
+        components.queryItems = [itemIdQueryItem, latestIdQueryItem, isPlaylistQueryItem, playlistIdQueryItem, videoTypeQueryItem, tvStillImageQueryItem]
         return components.url
     }
     
