@@ -46,6 +46,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
         //Handle Reponse of APi Call
+        print("=========================\(self.baseViewModel.vcType)")
         if self.viewLoadingStatus == .none {
             self.viewLoadingStatus = isSuccess ? .viewNotLoadedDataFetched : .viewNotLoadedDataFetchedWithError
         } else if self.viewLoadingStatus == .completed || self.viewLoadingStatus == .viewLoaded {
@@ -60,7 +61,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                     self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
-                self.retryView.isHidden = false
+                DispatchQueue.main.async {
+                    if self.baseViewModel.countOfTableView == 0 {
+                        self.retryView.isHidden = false
+                        self.lastFocusableItem = self.retryView
+                    }
+                    
+                }
             }
         }
     }
@@ -68,7 +75,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func loadMainViewBgDetails() {
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+            if customHeaderView?.titleLabel.text == "" {
             setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+            }
         }
     }
     
