@@ -68,6 +68,7 @@ class AppManager: NSObject {
     func navigateToHomeVC() {
         let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
         let navController = UINavigationController(rootViewController: sideNavVC)
+        JCDataStore.sharedDataStore.resetDataStore()
         navController.navigationBar.isHidden = true
         appDelegate?.window?.rootViewController = navController
     }

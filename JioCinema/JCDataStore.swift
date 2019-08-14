@@ -61,7 +61,33 @@ class JCDataStore {
         
     }
     
+    func resetDataStore() {
+        resetHomeData()
+        moviesData = nil
+        musicData = nil
+        tvData = nil
+        clipsData = nil
+        searchData = nil
+        disneyData = nil
+        disneyMoviesData = nil
+        disneyTVShowData = nil
+        disneyKidsData = nil
+        disneyResumeWatchList = nil
+        disneyMovieWatchList = nil
+        disneyTVWatchList = nil
+        tvWatchList = nil
+        moviesWatchList = nil
+        
+        languageGenreDetailModel = nil
+    }
     
+    func resetHomeData() {
+        homeData = nil
+        languageData = nil
+        genreData = nil
+        userRecommendationList = nil
+        resumeWatchList = nil
+    }
     
     class func setConfigData(with config: ConfigData) {
         JCDataStore.sharedDataStore.configData = config
