@@ -18,8 +18,6 @@ class SideNavigationVC: UIViewController {
     var sideNavigationView: SideNavigationTableView?
 
     var selectedVC: UIViewController?
-
-    static let shared = SideNavigationVC()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,6 +111,10 @@ class SideNavigationVC: UIViewController {
         let searchContainerController = UISearchContainerViewController.init(searchController: searchViewController)
         searchContainerController.view.backgroundColor = UIColor.black
         return SearchNavigationController(rootViewController: searchContainerController)
+    }
+    
+    deinit {
+        print("inside deinit")
     }
     
 }

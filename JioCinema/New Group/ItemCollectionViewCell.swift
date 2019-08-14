@@ -151,7 +151,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
                 setImageOnCell(url: imageURL)
             }
         case .disneyCharacter:
-            
+            self.imageView.backgroundColor = .clear
             if let logoURL = URL(string: cellItems.charactorItems?.LogoUrlForDisneyChar ?? ""){
                 setImageOnCell(url: logoURL)
             }

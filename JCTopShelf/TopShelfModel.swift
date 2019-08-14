@@ -31,6 +31,8 @@ struct VODTopShelfModel: Codable {
     var playlistId: String?
     var totalDuration: Int?
     var episodeId: String?
+    var still: String?
+    var tvStill: String?
     
     var imageUrlPortraitContent: String {
         if let imageStr = image {
@@ -58,7 +60,6 @@ struct VODTopShelfModel: Codable {
         }
         return ""
     }
-
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -81,6 +82,8 @@ struct VODTopShelfModel: Codable {
         case playlistId = "playlistId"
         case totalDuration = "totalDuration"
         case episodeId = "episodeId"
+        case still = "still"
+        case tvStill = "tvStill"
     }
     init() {
         
@@ -163,6 +166,9 @@ struct VODTopShelfModel: Codable {
             }
             
             episodeId = try values.decodeIfPresent(String.self, forKey: .episodeId)
+            //For Full Screen Image in New UI
+            still = try values.decodeIfPresent(String.self, forKey: .still)
+            tvStill = try values.decodeIfPresent(String.self, forKey: .tvStill)
         } catch {
             print(error)
         }

@@ -24,11 +24,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
+    @IBOutlet weak var retryView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var customHeaderHolderView: UIView!
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var topConstraintOfTableView: NSLayoutConstraint!
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
+
     
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
     
@@ -44,18 +46,28 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
         //Handle Reponse of APi Call
+        print("=========================\(self.baseViewModel.vcType)")
         if self.viewLoadingStatus == .none {
             self.viewLoadingStatus = isSuccess ? .viewNotLoadedDataFetched : .viewNotLoadedDataFetchedWithError
         } else if self.viewLoadingStatus == .completed || self.viewLoadingStatus == .viewLoaded {
             self.viewLoadingStatus = .completed
+            self.updateIndicatorState(toStart: false)
+            
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.retryView.isHidden = true
                     self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
                     self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
-                self.showAlert()
+                DispatchQueue.main.async {
+                    if self.baseViewModel.countOfTableView == 0 {
+                        self.retryView.isHidden = false
+                        self.lastFocusableItem = self.retryView
+                    }
+                    
+                }
             }
         }
     }
@@ -63,7 +75,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     func loadMainViewBgDetails() {
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
+            if customHeaderView?.titleLabel.text == "" {
             setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+            }
         }
     }
     
@@ -83,6 +97,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.view.backgroundColor = ViewColor.disneyBackground
         }
         self.baseViewModel.delegate = self
+        updateIndicatorState(toStart: true)
         self.baseViewModel.fetchData(completion: tableReloadClosure)
     }
     
@@ -94,7 +109,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         print("BaseVC Deinit -)")
     }
     
-    var sideNavigationVC: SideNavigationVC? {
+    weak var sideNavigationVC: SideNavigationVC? {
         return AppManager.shared.sideNavigationVC
     }
     
@@ -102,6 +117,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureViews()
+    }
+    
+    @IBAction func retryButtonPressed(_ sender: Any) {
+        updateIndicatorState(toStart: true)
+        baseViewModel.fetchData(completion: tableReloadClosure)
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -147,7 +168,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
                 self.baseViewModel.itemCellTapped(deepLinkedItem, selectedIndexPath: nil, isFromCarousal: true)
                 AppManager.shared.setForDeepLinkingItem(isFromDL: false, item: nil)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     self.configureTableView()
                 }
             }
@@ -188,7 +209,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     private func updateIndicatorState(toStart: Bool, present onView: UIView? = nil) {
-        let spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        var spinnerColor: UIColor = ThemeManager.shared.selectionColor
+        if baseViewModel.vcType == .disneyHome || baseViewModel.vcType == .disneyKids || baseViewModel.vcType == .disneyMovies || baseViewModel.vcType == .disneyTVShow {
+            spinnerColor = ViewColor.selectionBarOnLeftNavigationColorForDisney
+        }
         let bgColor = ThemeManager.shared.backgroundColor
         if toStart {
             DispatchQueue.main.async {
@@ -365,7 +389,15 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 }
 extension BaseViewController {
     func showAlert() {
-        
+        let action = Utility.AlertAction(title: "Retry", style: .default)
+        let action2 = Utility.AlertAction(title: "Cancel", style: .destructive)
+        let alertVC = Utility.getCustomizedAlertController(with: "Network Error!", message: "", actions: [action, action2]) { (alertAction) in
+            if alertAction.title == action.title {
+                self.updateIndicatorState(toStart: true)
+                self.baseViewModel.fetchData(completion: self.tableReloadClosure)
+            }
+        }
+        present(alertVC, animated: false, completion: nil)
     }
 }
 extension BaseViewController: BaseTableViewCellDelegate {

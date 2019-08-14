@@ -141,7 +141,7 @@ class HeaderButtons: UIButton {
     {
         if (context.nextFocusedView == self)
         {
-            self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.backgroundColor = ThemeManager.shared.selectionColor
             self.setTitleColor(.white, for: .normal)
         }

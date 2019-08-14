@@ -79,11 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let urlString = url.absoluteString
         
         //TODO: Top-shelf item tapped
-        if urlString.contains("jCApp:?identifier="){
-            if let urlSubString = urlString.dropFirst(18).removingPercentEncoding {
-                //topShelfContentModel = VODTopShelfModel.getModel(urlSubString)
-            }
-        }
         if urlString.contains("jCApp:?contentId=") {
             AppManager.shared.processURLWhenComingFromDeeplinking(urlString: urlString)
         }

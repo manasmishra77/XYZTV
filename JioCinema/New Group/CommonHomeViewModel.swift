@@ -195,6 +195,7 @@ class CommonHomeViewModel: BaseViewModel {
     }
     
     fileprivate func fetchAllHomeData() {
+        JCDataStore.sharedDataStore.resetHomeData()
         fetchBaseData()
         RJILApiManager.getResumeWatchData(baseAPIReponseHandler)
         RJILApiManager.getRecommendationData(baseAPIReponseHandler)

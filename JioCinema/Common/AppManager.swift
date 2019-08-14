@@ -54,6 +54,7 @@ class AppManager: NSObject {
             var appType = App()
             appType.type = Int(queryItems?[4].value ?? "0")
             tappeditem.app = appType
+            tappeditem.tvStill = queryItems?[5].value
             self.setForDeepLinkingItem(isFromDL: true, item: tappeditem)
             if sideNavigationVC != nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -61,11 +62,13 @@ class AppManager: NSObject {
                 }
                 navigateToHomeVC()
             }
+            
         }
     }
     func navigateToHomeVC() {
         let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
         let navController = UINavigationController(rootViewController: sideNavVC)
+        JCDataStore.sharedDataStore.resetDataStore()
         navController.navigationBar.isHidden = true
         appDelegate?.window?.rootViewController = navController
     }
