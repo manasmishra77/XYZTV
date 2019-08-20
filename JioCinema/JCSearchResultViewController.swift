@@ -343,6 +343,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         isForArtistSearch = true
         searchViewController?.searchBar.text = searchText
         searchResultForkey(with: searchText)
+        baseTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
 //        self.metaDataItemId = metaDataItemId
 //        self.metaDataAppType = metaDataAppType
 //        self.metaDataFromScreen = metaDataFromScreen

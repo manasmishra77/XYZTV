@@ -358,7 +358,7 @@ class Utility {
     
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "JioType-Bold"
+        var fontName = "SFProDisplay-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -368,7 +368,7 @@ class Utility {
             if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
+                return UIFont(name: "SFProDisplay-Bold", size: fontSize ?? 18)!
             }
             
         }
@@ -376,7 +376,7 @@ class Utility {
     
     
     class func getFontifiedText(_ text: String, partOfTheStringNeedTOConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
+        let fontChangedtext = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "SFProDisplay-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? text.count
             let attrs = [NSAttributedString.Key.font : eachPartText.fontOfText, NSAttributedString.Key.foregroundColor: eachPartText.color]
@@ -431,7 +431,7 @@ extension String {
     
     //MARK: Getting customized string
     struct StringAttribute {
-        var fontName = "JioType-Bold"
+        var fontName = "SFProDisplay-Bold"
         var fontSize: CGFloat?
         var initialIndexOftheText = 0
         var lastIndexOftheText: Int?
@@ -441,12 +441,12 @@ extension String {
             if let font = UIFont(name: fontName, size: fontSize ?? 18) {
                 return font
             } else {
-                return UIFont(name: "JioType-Bold", size: fontSize ?? 18)!
+                return UIFont(name: "SFProDisplay-Bold", size: fontSize ?? 18)!
             }
         }
     }
     func getFontifiedText(partOfTheStringNeedToConvert partTexts: [StringAttribute]) -> NSAttributedString {
-        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Bold", size: (partTexts.first?.fontSize ?? 18))!])
+        let fontChangedtext = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: UIFont(name: "SFProDisplay-Bold", size: (partTexts.first?.fontSize ?? 18))!])
         for eachPartText in partTexts {
             let lastIndex = eachPartText.lastIndexOftheText ?? self.count
             let attrs = [NSAttributedString.Key.font : eachPartText.fontOfText, NSAttributedString.Key.foregroundColor: eachPartText.color]

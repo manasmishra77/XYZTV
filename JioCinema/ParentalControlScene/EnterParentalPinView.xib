@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" orientation="landscape">
         <adaptation id="light"/>
     </device>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="JioType-Medium.ttf">
-            <string>JioType-Medium</string>
+        <array key="SF-Pro-Display-Medium.otf">
+            <string>SFProDisplay-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -22,17 +22,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rEB-Ur-zum">
-                    <rect key="frame" x="438" y="252" width="1045" height="71"/>
+                    <rect key="frame" x="485" y="251" width="950" height="72"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" text="Enter PIN to watch restricted content: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5B-Wf-dTM">
-                            <rect key="frame" x="0.0" y="8" width="862" height="57"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="48"/>
+                            <rect key="frame" x="0.0" y="8" width="777" height="58"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="48"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mayaa" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-Zb-RQD">
-                            <rect key="frame" x="862" y="0.0" width="183" height="71"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="60"/>
+                            <rect key="frame" x="777" y="0.0" width="173" height="72"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="60"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -52,7 +52,7 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZxV-Dp-Kbu">
                             <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                             <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
@@ -66,7 +66,7 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Wl-Jm-GaX">
                             <rect key="frame" x="102" y="0.0" width="72" height="72"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
@@ -80,7 +80,7 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRD-ph-eCv">
                             <rect key="frame" x="204" y="0.0" width="72" height="72"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
@@ -94,7 +94,7 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekR-JL-BVS">
                             <rect key="frame" x="306" y="0.0" width="72" height="72"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
@@ -128,7 +128,7 @@
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6m-Dw-mSG" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="1">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -145,7 +145,7 @@
                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOP-VI-Ed4" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="73" y="0.0" width="72" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="2">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -162,7 +162,7 @@
                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xgZ-tH-c2n" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="145" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="3">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -179,7 +179,7 @@
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEX-Ma-ahI" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="218" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="4">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -196,7 +196,7 @@
                                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R0D-W6-Rzg" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="291" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="5">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -213,7 +213,7 @@
                                 <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iQ-S2-WBv" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="364" y="0.0" width="72" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="6">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -230,7 +230,7 @@
                                 <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JTL-yi-fOw" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="436" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="7">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -247,7 +247,7 @@
                                 <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5r-Ep-OsY" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="509" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="8">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -264,7 +264,7 @@
                                 <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBw-YN-dLB" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="582" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="9">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -281,7 +281,7 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-kd-gCH" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="655" y="0.0" width="72" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="20" maxX="5" maxY="20"/>
                                     <state key="normal" title="0">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -298,7 +298,7 @@
                                 <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f6Q-r8-wbk" customClass="JCKeyboardButton" customModule="JioCinema" customModuleProvider="target">
                                     <rect key="frame" x="727" y="0.0" width="73" height="90"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="50"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="50"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                     <state key="normal" image="back_ic">
                                         <color key="titleColor" red="0.85911596489999997" green="0.85911596489999997" blue="0.85911596489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -329,7 +329,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfS-kA-jQt">
                             <rect key="frame" x="0.0" y="0.0" width="215" height="75"/>
                             <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="35"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="35"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" title="Cancel"/>
                             <userDefinedRuntimeAttributes>
@@ -344,7 +344,7 @@
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9L4-nK-pOu">
                             <rect key="frame" x="285" y="0.0" width="215" height="75"/>
                             <color key="backgroundColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="35"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="35"/>
                             <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                             <state key="normal" title="Play"/>
                             <userDefinedRuntimeAttributes>
@@ -364,17 +364,17 @@
                     <viewLayoutGuide key="safeArea" id="3sh-UY-cBv"/>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wk0-w8-7Oe">
-                    <rect key="frame" x="524" y="864" width="872" height="36"/>
+                    <rect key="frame" x="562" y="864" width="796" height="36"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forget PIN or change Parental settings visit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZC-UA-1QT">
-                            <rect key="frame" x="0.0" y="0.0" width="615" height="36"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="558" height="36"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="30"/>
                             <color key="textColor" red="0.51973772659999995" green="0.51973772659999995" blue="0.51973772659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jiocinema.com/pin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDa-nL-NBk">
-                            <rect key="frame" x="615" y="0.0" width="257" height="36"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
+                            <rect key="frame" x="558" y="0.0" width="238" height="36"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="30"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>

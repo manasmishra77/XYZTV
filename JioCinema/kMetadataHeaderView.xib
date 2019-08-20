@@ -9,11 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="JioType-Light.ttf">
-            <string>JioType-Light</string>
+        <array key="SF-Pro-Display-Light.otf">
+            <string>SFProDisplay-Light</string>
         </array>
-        <array key="JioType-Medium.ttf">
-            <string>JioType-Medium</string>
+        <array key="SF-Pro-Display-Medium.otf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+        <array key="SF-Pro-Display-Regular.otf">
+            <string>SFProDisplay-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -45,19 +48,19 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-yh-ge7">
                             <rect key="frame" x="0.0" y="38" width="960" height="0.0"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="64"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="64"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-9k-LOD">
                             <rect key="frame" x="0.0" y="66" width="0.0" height="0.0"/>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="38"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="38"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gWq-bF-uCP">
                             <rect key="frame" x="0.0" y="66" width="0.0" height="0.0"/>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="38"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="38"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -66,7 +69,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VC-pE-Oqm">
                                     <rect key="frame" x="0.0" y="0.0" width="960" height="90"/>
-                                    <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="32"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="32"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -82,8 +85,8 @@
                                     </connections>
                                 </button>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEp-5g-7vi">
-                                    <rect key="frame" x="801" y="54" width="159" height="36"/>
-                                    <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="30"/>
+                                    <rect key="frame" x="817" y="54" width="143" height="36"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="30"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -109,16 +112,16 @@
                                 <constraint firstAttribute="width" constant="180" id="kEU-c9-qIR"/>
                                 <constraint firstAttribute="height" constant="38" id="sg4-aR-WkK"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIl-4y-LGb">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="none" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIl-4y-LGb">
                             <rect key="frame" x="185" y="226" width="800" height="0.0"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="800" id="36q-2y-iRI"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" red="0.85098039219999999" green="0.85098039219999999" blue="0.85098039219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -128,7 +131,7 @@
                                 <constraint firstAttribute="width" constant="180" id="dMC-JX-6eQ"/>
                                 <constraint firstAttribute="height" constant="38" id="xRf-yu-qgd"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -137,7 +140,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="800" id="95I-7i-nSi"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" red="0.85098039215686272" green="0.85098039215686272" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -148,7 +151,7 @@
                                 <constraint firstAttribute="width" constant="180" id="QzC-za-7mT"/>
                                 <constraint firstAttribute="height" constant="38" id="mVY-2g-1Tu"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -157,7 +160,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="800" id="nyw-nX-V8T"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" red="0.85098039215686272" green="0.85098039215686272" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -180,28 +183,28 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch Now" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-Um-m5H">
-                            <rect key="frame" x="0.0" y="450" width="161" height="57"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="24"/>
+                            <rect key="frame" x="0.0" y="450" width="161" height="58"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="24"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add To Watchlist" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDi-mf-e5u">
-                            <rect key="frame" x="193" y="450" width="161" height="57"/>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="24"/>
+                            <rect key="frame" x="193" y="450" width="161" height="58"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="24"/>
                             <color key="textColor" red="0.99074074069999996" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seasons:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSY-Bj-9Od">
-                            <rect key="frame" x="0.0" y="555" width="137" height="39"/>
+                            <rect key="frame" x="0.0" y="556" width="128" height="39"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="dpG-gM-dH3"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="JioType-Medium" family="JioType" pointSize="32"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="32"/>
                             <color key="textColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ek5-ew-j1E">
-                            <rect key="frame" x="0.0" y="708" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="709" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="Pq8-1W-nE1">
                                 <size key="itemSize" width="92" height="36"/>
@@ -211,7 +214,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5UE-Yr-tQb">
-                            <rect key="frame" x="0.0" y="622" width="1900" height="62"/>
+                            <rect key="frame" x="0.0" y="623" width="1900" height="62"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="62" id="J2n-hf-aJ5"/>
@@ -239,7 +242,7 @@
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jhh-fe-RFK">
                             <rect key="frame" x="10" y="66" width="0.0" height="0.0"/>
-                            <fontDescription key="fontDescription" name="JioType-Light" family="JioType" pointSize="34"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="34"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>

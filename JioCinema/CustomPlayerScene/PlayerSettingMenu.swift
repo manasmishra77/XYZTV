@@ -65,13 +65,13 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
 
         if indexPath == previousSelectedIndexpath{
             cell.rabioButtonImageView.image = UIImage(named: "radioButtonFilled")?.withRenderingMode(.alwaysTemplate)
-            cell.title.font = UIFont(name: "JioType-Medium", size: 36)
+            cell.title.font = UIFont(name: "SFProDisplay-Medium", size: 36)
             cell.title.textColor = .white
             cell.rabioButtonImageView.tintColor = ThemeManager.shared.selectionColor
             cell.isSelectedCell = true
         } else {
             cell.rabioButtonImageView.image = UIImage(named: "radioButton")?.withRenderingMode(.alwaysTemplate)
-            cell.title.font = UIFont(name: "JioType-Light", size: 36)
+            cell.title.font = UIFont(name: "SFProDisplay-Light", size: 36)
             cell.title.textColor = .white
             cell.rabioButtonImageView.tintColor = .white
             cell.isSelectedCell = false
@@ -89,7 +89,7 @@ extension PlayerSettingMenu: UITableViewDelegate, UITableViewDataSource {
             if let previosIndex = previousSelectedIndexpath {
                 let cell2 = tableView.cellForRow(at: previosIndex) as? PlayerPopupTableViewCell
                 cell2?.rabioButtonImageView.image = UIImage(named: "radioButton")
-                cell2?.title.font = UIFont(name: "JioType-Light", size: 36)
+                cell2?.title.font = UIFont(name: "SFProDisplay-Light", size: 36)
                 cell2?.title.textColor = #colorLiteral(red: 0.6500751972, green: 0.650090754, blue: 0.6500824094, alpha: 1)
                 cell2?.isSelectedCell = false
             }

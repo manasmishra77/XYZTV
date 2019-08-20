@@ -196,7 +196,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         case .landscapeWithLabelsAlwaysShow:
             break
         case .disneyCharacter:
-            heightOfImageContainer.constant = itemHeightForPortrait
+            heightOfImageContainer.constant = itemHeightForPortrait - imageTopConstraints
             nameLabel.text = ""
             subtitle.text = ""
             layoutIfNeeded()

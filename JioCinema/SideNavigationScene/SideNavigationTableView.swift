@@ -143,7 +143,7 @@ class SideNavigationTableView: UIView {
                 cell.selectionIndicatorView.backgroundColor = .clear
                 cell.contentView.backgroundColor = .clear
                 cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].unselectedImage)
-                cell.titleLabel.font = UIFont.init(name: "JioType-Light", size: cell.titleLabel.font.pointSize)
+                cell.titleLabel.font = UIFont.init(name: "SFProDisplay-Light", size: cell.titleLabel.font.pointSize)
             }
             selectedIndex = index
             let cell = self.navigationTable.cellForRow(at: IndexPath.init(item: index, section: 0)) as! SideNavigationTableCell
@@ -160,7 +160,7 @@ class SideNavigationTableView: UIView {
                     self.navigationTable.backgroundColor = ViewColor.cinemaLeftMenuBackground
             }
                 cell.iconImageView.image = UIImage.init(named: self.itemsList[selectedIndex].selectedImage)
-                cell.titleLabel.font = UIFont.init(name: "JioType-Bold", size: cell.titleLabel.font.pointSize)
+                cell.titleLabel.font = UIFont.init(name: "SFProDisplay-Bold", size: cell.titleLabel.font.pointSize)
         }
         delegate?.didSelectRowInNavigationTable(menuItem: self.itemsList[index])
     }

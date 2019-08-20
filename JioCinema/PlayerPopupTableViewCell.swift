@@ -33,16 +33,16 @@ class PlayerPopupTableViewCell: UITableViewCell {
                 self.rabioButtonImageView.tintColor =  .white
             }
             self.title.textColor = .white
-            self.title.font = UIFont(name: "JioType-Medium", size: 36)
+            self.title.font = UIFont(name: "SFProDisplay-Medium", size: 36)
             self.backgroundColor =  ThemeManager.shared.selectionColor
         } else {
             self.title.textColor = #colorLiteral(red: 0.6500751972, green: 0.650090754, blue: 0.6500824094, alpha: 0.9957405822)
-            self.title.font = UIFont(name: "JioType-Light", size: 36)
+            self.title.font = UIFont(name: "SFProDisplay-Light", size: 36)
             self.backgroundColor =  .clear
             if isSelectedCell {
                 self.title.textColor = .white
                 self.rabioButtonImageView.tintColor =  ThemeManager.shared.selectionColor
-                self.title.font = UIFont(name: "JioType-Medium", size: 36)
+                self.title.font = UIFont(name: "SFProDisplay-Medium", size: 36)
             }
         }
     }

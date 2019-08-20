@@ -106,7 +106,7 @@ class JCRememberMe: UIButton {
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
-            self.titleLabel?.font = UIFont(name: "JioType-Medium", size: 30)
+            self.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 30)
             self.titleLabel?.textColor = .white
             self.backgroundColor = ThemeManager.shared.selectionColor
         }
@@ -114,7 +114,7 @@ class JCRememberMe: UIButton {
         {
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
             self.titleLabel?.textColor = .lightGray
-            self.titleLabel?.font = UIFont(name: "JioType-Medium", size: 30)
+            self.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 30)
             self.backgroundColor = .clear
         }
         

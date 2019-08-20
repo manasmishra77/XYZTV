@@ -780,7 +780,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
                 descText = (metadata?.description ?? "") + " " + SHOW_LESS
             }
             let widthofView = headerCell.descriptionContainerview.frame.size.width
-            let font = UIFont(name: "JioType-Light", size: 32)!
+
+            let font = UIFont(name: "SFProDisplay-Light", size: 32)!
             let newHeight = (getSizeofDescriptionContainerView(descText, widthOfView: widthofView, font: font))
             headerCell.frame.size.height += newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.descriptionContainerViewHeight.constant = newHeight
@@ -800,7 +801,7 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
             let textTopple = getShorterText(descText)
             let widthofView = headerCell.descriptionContainerview.frame.size.width
-            let font = UIFont(name: "JioType-Light", size: 32)!
+            let font = UIFont(name: "SFProDisplay-Light", size: 32)!
             let newHeight = getSizeofDescriptionContainerView(headerCell.descriptionLabel.text ?? "", widthOfView: widthofView, font: font)
             headerCell.frame.size.height -= newHeight - (itemAppType == .Movie ? 80 : 80)
             headerCell.showMoreDescriptionLabel.text = SHOW_MORE
@@ -1376,11 +1377,11 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
     
     func getAttributedString (_ text: String, colorChange: Bool, range:Int) -> NSMutableAttributedString {
         var colorToChange = ThemeManager.shared.selectionColor
-        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "JioType-Light", size: 32.0)!])
+        let fontChangedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "SFProDisplay-Light", size: 32.0)!])
         fontChangedText.addAttribute(NSAttributedString.Key.foregroundColor, value:  UIColor(red: 1, green: 1, blue: 1, alpha: 1), range: NSRange(location: 0, length: text.count))
         if colorChange {
             fontChangedText.addAttribute(NSAttributedString.Key.foregroundColor, value:  colorToChange, range: NSRange(location: text.count - range, length: range))
-            fontChangedText.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "JioType-Medium", size: 30.0)!, range: NSRange(location: text.count - range, length: range))
+            fontChangedText.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "SFProDisplay-Medium", size: 30.0)!, range: NSRange(location: text.count - range, length: range))
         }
         
         return fontChangedText
