@@ -1347,6 +1347,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Vivin Chandran (AP542B2LRS)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "Apple Development: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
@@ -1375,6 +1376,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = JCTopShelf/Info.plist;
@@ -1512,6 +1514,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Vivin Chandran (AP542B2LRS)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "Apple Development: Vivin Chandran (AP542B2LRS)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1541,6 +1544,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution: Reliance Jio Digital Services Private Limited (8PVH2NGH42)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
