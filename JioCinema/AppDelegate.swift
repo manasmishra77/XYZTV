@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        if let playerVc = UIApplication.topViewController() as? PlayerViewController{
+        if let playerVc = AppManager.shared.playerVC {
             if playerVc.viewforplayer?.player?.rate == 1 {
                 playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused = false
             } else {
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if let playerVc = UIApplication.topViewController() as? PlayerViewController {
+            if let playerVc = AppManager.shared.playerVC {
                 if !(playerVc.viewforplayer?.stateOfPlayerBeforeGoingInBackgroundWasPaused ?? true) {
                     playerVc.viewforplayer?.changePlayerPlayingStatus(shouldPlay: true)
                 } else {
@@ -81,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //TODO: Top-shelf item tapped
         if urlString.contains("jCApp:?contentId=") {
             AppManager.shared.processURLWhenComingFromDeeplinking(urlString: urlString)
+            return true
         }
         return false
     }

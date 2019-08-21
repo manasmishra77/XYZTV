@@ -123,6 +123,7 @@ extension PlayerViewController: CustomPlayerViewProtocol {
     
     func removePlayerController() {
         self.viewforplayer?.resetAndRemovePlayer()
+        AppManager.shared.playerVC = nil
         self.dismiss(animated: false) {}
     }
     

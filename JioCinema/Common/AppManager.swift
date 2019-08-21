@@ -26,9 +26,7 @@ class AppManager: NSObject {
         return navVc
     }
     
-    var playerVC: PlayerViewController? {
-        return sideNavigationVC?.presentedViewController as? PlayerViewController
-    }
+    weak var playerVC: PlayerViewController?
     
     //Used when Deep-Linking is done
     var isComingFromDeepLinking: Bool = false
@@ -72,21 +70,20 @@ class AppManager: NSObject {
     }
     
     func navigateToHomeVC() {
-        if (UIApplication.shared.keyWindow?.rootViewController?.presentedViewController) != nil {
+        if sideNavigationVC?.presentedViewController != nil {
             UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: {
-                let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
-                let navController = UINavigationController(rootViewController: sideNavVC)
-                JCDataStore.sharedDataStore.resetDataStore()
-                navController.navigationBar.isHidden = true
-                self.appDelegate?.window?.rootViewController = navController
+                self.makeSideNavigationRootVC()
             })
+        } else {
+          makeSideNavigationRootVC()
         }
-        else {
-            let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
-            let navController = UINavigationController(rootViewController: sideNavVC)
-            JCDataStore.sharedDataStore.resetDataStore()
-            navController.navigationBar.isHidden = true
-            self.appDelegate?.window?.rootViewController = navController
-        }
+    }
+    
+    func makeSideNavigationRootVC() {
+        let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
+        let navController = UINavigationController(rootViewController: sideNavVC)
+        JCDataStore.sharedDataStore.resetDataStore()
+        navController.navigationBar.isHidden = true
+        self.appDelegate?.window?.rootViewController = navController
     }
 }
