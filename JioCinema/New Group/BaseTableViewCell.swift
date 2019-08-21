@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol BaseTableViewCellDelegate {
+protocol BaseTableViewCellDelegate: NSObject {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
     func setHeaderValues(item: UIView?,urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode)
@@ -41,7 +41,7 @@ class BaseTableViewCell: UITableViewCell {
     
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var itemCollectionView: UICollectionView!
-    var delegate: BaseTableViewCellDelegate?
+    weak var delegate: BaseTableViewCellDelegate?
     var cellItems: BaseTableCellModel = BaseTableCellModel(title: "", items: nil, cellType: .base, layoutType: .landscapeWithTitleOnly , sectionLanguage: .english , charItems: nil)
 
     

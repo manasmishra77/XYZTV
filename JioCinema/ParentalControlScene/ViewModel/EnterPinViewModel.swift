@@ -8,13 +8,13 @@
 
 import Foundation
 
-protocol EnterPinViewModelDelegate {
+protocol EnterPinViewModelDelegate: NSObject {
     func pinVerification(_ isSucceed: Bool)
 }
 
 class EnterPinViewModel: NSObject {
     var contentName: String
-    var delegate: EnterPinViewModelDelegate
+    weak var delegate: EnterPinViewModelDelegate?
     
     init(contentName : String, delegate: EnterPinViewModelDelegate) {
         self.contentName = contentName
@@ -64,7 +64,7 @@ extension EnterPinViewModel: EnterParentalPinViewDelegate {
         if checkPin(pin) {
             ParentalPinManager.shared.isPinOnceVerifiedWithinTheSession = true
             self.sendParentalPINEntryStatusEvent(resultStatus: "Success", errorString: nil)
-            delegate.pinVerification(true)
+            delegate?.pinVerification(true)
             return true
         }
         else {

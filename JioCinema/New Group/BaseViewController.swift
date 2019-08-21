@@ -96,6 +96,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if vcType == .disneyHome || vcType == .disneyMovies || vcType == .disneyTVShow || vcType == .disneyKids {
             self.view.backgroundColor = ViewColor.disneyBackground
         }
+        self.retryView.backgroundColor = self.view.backgroundColor
         self.baseViewModel.delegate = self
         updateIndicatorState(toStart: true)
         self.baseViewModel.fetchData(completion: tableReloadClosure)
@@ -126,6 +127,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.baseTableView.indexDisplayMode = .alwaysHidden
+        }
         if isMetadataScreenToBePresentedFromResumeWatchCategory {
             isMetadataScreenToBePresentedFromResumeWatchCategory = false
             let coverView = UIView(frame: sideNavigationVC?.view.bounds ?? CGRect.zero)

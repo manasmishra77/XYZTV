@@ -258,6 +258,8 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         
         if key == "" {
             self.searchViewController?.searchBar.text = ""
+        } else {
+            self.searchViewController?.searchBar.text = key
         }
         guard !isSearchTextIsGettingCalled else {
             return
@@ -266,7 +268,7 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         self.searchText = self.searchViewController?.searchBar.text ?? ""
         self.timerForSearch?.invalidate()
         self.timerForSearch = nil
-        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: false) {[weak self] (timer) in
+        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) {[weak self] (timer) in
             guard let self = self else {return}
             self.callSearchServiceAPI(with: self.searchText)
         }

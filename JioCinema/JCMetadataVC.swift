@@ -15,7 +15,7 @@ class JCMetadataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var item: Item?
     var metadata: MetadataModel?
     fileprivate var selectedYearIndex = 0
-    fileprivate let headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
+    fileprivate var headerCell = Bundle.main.loadNibNamed("kMetadataHeaderView", owner: self, options: nil)?.last as! MetadataHeaderView
     
     //New metadata model
     var itemId = ""
