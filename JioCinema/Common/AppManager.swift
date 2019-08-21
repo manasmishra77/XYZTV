@@ -57,20 +57,36 @@ class AppManager: NSObject {
             tappeditem.tvStill = queryItems?[5].value
             self.setForDeepLinkingItem(isFromDL: true, item: tappeditem)
             if sideNavigationVC != nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if self.playerVC != nil {
                     self.playerVC?.removePlayerController()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.navigateToHomeVC()
+                    }
                 }
-                navigateToHomeVC()
+                else {
+                    self.navigateToHomeVC()
+                }
             }
             
         }
     }
+    
     func navigateToHomeVC() {
-        let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
-        let navController = UINavigationController(rootViewController: sideNavVC)
-        JCDataStore.sharedDataStore.resetDataStore()
-        navController.navigationBar.isHidden = true
-        appDelegate?.window?.rootViewController = navController
+        if (UIApplication.shared.keyWindow?.rootViewController?.presentedViewController) != nil {
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: {
+                let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
+                let navController = UINavigationController(rootViewController: sideNavVC)
+                JCDataStore.sharedDataStore.resetDataStore()
+                navController.navigationBar.isHidden = true
+                self.appDelegate?.window?.rootViewController = navController
+            })
+        }
+        else {
+            let sideNavVC = SideNavigationVC(nibName: "SideNavigationVC", bundle: nil)
+            let navController = UINavigationController(rootViewController: sideNavVC)
+            JCDataStore.sharedDataStore.resetDataStore()
+            navController.navigationBar.isHidden = true
+            self.appDelegate?.window?.rootViewController = navController
+        }
     }
-
 }
