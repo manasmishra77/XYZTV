@@ -325,7 +325,7 @@ struct PlayerRecommendationSize {
         return height
     }
     static var landscapeCellSize: CGSize {
-        let height = itemHeightForLandscapeForTitleAndSubtitle//landscapeRowHeight - 40
+        let height = itemHeightForLandscapeForTitleOnly//landscapeRowHeight - 40
         let width = itemWidthForLadscape//(height / heightToWidthRatioOfItemCellForLandscape)
         return CGSize(width: width, height: height)
     }

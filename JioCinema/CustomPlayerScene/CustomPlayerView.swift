@@ -93,7 +93,7 @@ class CustomPlayerView: UIView {
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
 //        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
-        return (self.playerViewModel?.appType == .Music) ? ((-itemHeightForLandscapeForTitleAndSubtitle - 100) + 70) : ((-itemHeightForLandscapeForTitleAndSubtitle) + 70)
+        return (self.playerViewModel?.appType == .Music) ? ((-itemHeightForLandscapeForTitleAndSubtitle - 60) + 70) : ((-itemHeightForLandscapeForTitleOnly - 60) + 70)
         
     }
     var isPlayerPaused: Bool {
@@ -180,7 +180,7 @@ class CustomPlayerView: UIView {
                 return
             }
 //            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
-            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Music) ? itemHeightForLandscapeForTitleAndSubtitle + 100 : itemHeightForLandscapeForTitleAndSubtitle
+            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Music) ? itemHeightForLandscapeForTitleAndSubtitle + 60: itemHeightForLandscapeForTitleOnly + 60
     
 
             self.layoutIfNeeded()
