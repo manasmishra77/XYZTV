@@ -106,7 +106,9 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = /*(appType == .Movie) ? PlayerRecommendationSize.potraitCellSize : */PlayerRecommendationSize.landscapeCellSize
+        let size = (appType == .Music) ? CGSize(width: itemWidthForLadscape, height: itemHeightForLandscapeForTitleAndSubtitle) : PlayerRecommendationSize.landscapeCellSize
+        
+        
         return size
     }
     func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
@@ -142,7 +144,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         return 50
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0)
     }
     func getCellData(indexPath: IndexPath) -> (BaseItemCellModel, Bool, String) {
         let cellItems: BaseItemCellModel = BaseItemCellModel(item: nil, cellType: .player, layoutType: .landscapeWithTitleOnly, charactorItems: nil)
@@ -154,10 +156,10 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             }
             let item = model?.getItem
             let cellType: ItemCellType = isDisney ? .disneyPlayer: .player
-            var layoutType: ItemCellLayoutType = .landscapeWithLabelsAlwaysShow
-//            if appType == .Clip || appType == .Episode || appType == .Music || appType == .ResumeWatching || appType == .Trailer {
-//                layoutType = .landscapeWithLabelsAlwaysShow
-//            }
+            var layoutType: ItemCellLayoutType = .landscapeWithTitleOnly
+            if appType == .Clip || appType == .Episode || appType == .Music || appType == .ResumeWatching || appType == .Trailer {
+                layoutType = .landscapeWithLabelsAlwaysShow
+            }
             let cellItems: BaseItemCellModel = BaseItemCellModel(item: item, cellType: cellType, layoutType: layoutType, charactorItems: nil)
 
             let isPlayingNow = model?.id == cureentItemId
