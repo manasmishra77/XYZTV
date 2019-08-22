@@ -35,9 +35,16 @@ class CommonHomeViewModel: BaseViewModel {
         super.init(vcType)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallHomeResumeWatchUpdate(_:)), name: AppNotification.reloadResumeWatch, object: nil)
     }
-    override func fetchData(completion: @escaping (Bool) -> ()) {
-        viewResponseBlock = completion
-        fetchAllHomeData()
+    override func fetchData(isFromDeepLinking: Bool = false, completion: @escaping (Bool) -> ()) {
+        if isFromDeepLinking {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.viewResponseBlock = completion
+                self.fetchAllHomeData()
+            }
+        } else {
+            viewResponseBlock = completion
+            fetchAllHomeData()
+        }
     }
     override func getTableCellItems(for index: Int, completion: @escaping (Bool) -> ()) -> BaseTableCellModel {
         return getHomeCellItems(for: index)

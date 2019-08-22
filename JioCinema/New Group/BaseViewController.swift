@@ -33,10 +33,6 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
     
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
-    
-    
-    
-    
     var lastFocusableItem: UIView?
     
     var customHeaderView: HeaderView?
@@ -81,7 +77,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         }
     }
     
-    init(_ vcType: BaseVCType) {
+    init(_ vcType: BaseVCType, isFromDeepLinking: Bool = false) {
         switch vcType {
         case .home:
             self.baseViewModel = CommonHomeViewModel(vcType) as! T
@@ -99,7 +95,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         self.retryView.backgroundColor = self.view.backgroundColor
         self.baseViewModel.delegate = self
         updateIndicatorState(toStart: true)
-        self.baseViewModel.fetchData(completion: tableReloadClosure)
+        self.baseViewModel.fetchData(isFromDeepLinking: isFromDeepLinking, completion: tableReloadClosure)
     }
     
     
@@ -169,7 +165,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     private func processForDeepLinking() {
         if let deepLinkedItem = AppManager.shared.deepLinkingItem {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.baseViewModel.itemCellTapped(deepLinkedItem, selectedIndexPath: nil, isFromCarousal: true)
                 AppManager.shared.setForDeepLinkingItem(isFromDL: false, item: nil)
                 DispatchQueue.main.asyncAfter(deadline: .now()) {

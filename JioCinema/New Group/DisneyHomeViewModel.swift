@@ -22,7 +22,7 @@ class DisneyHomeViewModel: BaseViewModel {
         super.init(vcType)
         NotificationCenter.default.addObserver(self, selector: #selector(onCallDisneyResumeWatchUpdate(_:)), name: AppNotification.reloadResumeWatchForDisney, object: nil)
     }
-    override func fetchData(completion: @escaping (Bool) -> ()) {
+    override func fetchData(isFromDeepLinking: Bool = false, completion: @escaping (Bool) -> ()) {
         viewResponseBlock = completion
         fetchAllDisneyHomeData()
     }

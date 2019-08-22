@@ -33,7 +33,7 @@ class Utility {
         guard let r = note.object as? Reachability else {return}
         if r.connection != .none {
             isNetworkAvailable = true
-            if let isRechable = (reachability?.isReachableViaWiFi), isRechable {
+            if reachability?.connection == .wifi {
                 print("Reachable via WiFi")
                 
             } else {

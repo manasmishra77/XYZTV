@@ -51,7 +51,7 @@ struct MenuItem {
         case .home:
             self.unselectedImage = "Home"
             self.selectedImage = "HomeSelected"
-            self.viewControllerObject = BaseViewController(.home)
+            self.viewControllerObject = BaseViewController(.home, isFromDeepLinking: AppManager.shared.isComingFromDeepLinking)
         case .clips:
             self.unselectedImage = "Clips"
             self.selectedImage = "ClipsSelected"

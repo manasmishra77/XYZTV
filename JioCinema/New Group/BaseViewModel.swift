@@ -157,10 +157,17 @@ class BaseViewModel: NSObject  {
     fileprivate var baseWatchListIndex = 0
     fileprivate var isWatchListUpdated = false
     
-    @objc func fetchData(completion: @escaping (_ isSuccess: Bool) -> ()) {
+    @objc func fetchData(isFromDeepLinking: Bool = false, completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
-        fetchBaseData()
-        getBaseWatchListData()
+        if isFromDeepLinking {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                self.fetchBaseData()
+                self.getBaseWatchListData()
+            }
+        } else {
+            fetchBaseData()
+            getBaseWatchListData()
+        }
     }
     
     
