@@ -98,7 +98,6 @@ class DisneyCharacterViewModel: NSObject {
                 let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, isDisney: true, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 presentVCdelegate?.presentVC(playerVC)
             } else {
-                print("Play Movie")
 //                let playerVC = Utility.sharedInstance.preparePlayerVC(itemToBePlayed.id ?? "", itemImageString: (itemToBePlayed.banner) ?? "", itemTitle: (itemToBePlayed.name) ?? "", itemDuration: 0.0, totalDuration: 50.0, itemDesc: (itemToBePlayed.description) ?? "", appType: itemToBePlayed.appType, isPlayList: (itemToBePlayed.isPlaylist) ?? false,latestId: itemToBePlayed.latestId, fromScreen: "DisneyCharacterScreen", fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "", isDisney: true, audioLanguage: itemToBePlayed.audioLanguage)
                 let playerVC = Utility.sharedInstance.prepareCustomPlayerVC(item: itemToBePlayed, isDisney: true, fromScreen: fromScreen, fromCategory: categoryName, fromCategoryIndex: categoryIndex, fromLanguage: itemToBePlayed.language ?? "")
                 presentVCdelegate?.presentVC(playerVC)

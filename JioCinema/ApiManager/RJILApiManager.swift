@@ -111,6 +111,7 @@ class RJILApiManager {
             _checkVersionHeaders["appversion"] = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
             _checkVersionHeaders["os"] = "ios"
             _checkVersionHeaders["devicetype"] = "stb"
+            _checkVersionHeaders["app-name"] = "RJIL_JioCinema"
             //_checkVersionHeaders["storetype"] = "0"
             
             
@@ -126,6 +127,7 @@ class RJILApiManager {
             _subIdHeaders["Content-Type"] = "application/json"
             _subIdHeaders["lbCookie"] = JCAppUser.shared.lbCookie
             _subIdHeaders["ssoToken"] = JCAppUser.shared.ssoToken
+            _subIdHeaders["app-name"] = "RJIL_JioCinema"
             return _subIdHeaders
         }
     }
@@ -139,6 +141,7 @@ class RJILApiManager {
             headers["x-disney"] = "true"
             headers["x-charcat"] = "true"
             headers["x-apisignatures"] = "5772987293"
+            headers["app-name"] = "RJIL_JioCinema"
             return headers
         }
     }

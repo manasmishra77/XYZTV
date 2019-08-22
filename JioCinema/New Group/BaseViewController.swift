@@ -46,7 +46,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     lazy var tableReloadClosure: (Bool) -> () = {[weak self] (isSuccess) in
         guard let self = self else {return}
         //Handle Reponse of APi Call
-        print("=========================\(self.baseViewModel.vcType)")
+
         if self.viewLoadingStatus == .none {
             self.viewLoadingStatus = isSuccess ? .viewNotLoadedDataFetched : .viewNotLoadedDataFetchedWithError
         } else if self.viewLoadingStatus == .completed || self.viewLoadingStatus == .viewLoaded {
@@ -433,6 +433,13 @@ extension BaseViewController: BaseTableViewCellDelegate {
             self.customHeaderView?.titleLabel.text = title
             self.customHeaderView?.descriptionLabel.text = description
         } else {
+            if customHeaderView?.imageViewForHeader.isHidden ?? false {
+                customHeaderView?.imageViewForHeader.isHidden = false
+                self.backgroundImageView.isHidden = true
+                self.customHeaderView?.moreInfoButton.isHidden = true
+                self.customHeaderView?.playButton.isHidden = true
+
+            }
             self.timerToSetImage?.invalidate()
             self.timerToSetImage = nil
             self.customHeaderView?.titleLabel.text = title

@@ -434,7 +434,7 @@ class PlayerViewModel: NSObject {
             playerActiveUrl = url.low
             playerActiveBitrate = .low
         }
-        print("playerActiveUrl is  ========= \(playerActiveUrl)")
+
     }
     
     func getUserPreferedVideoQuality() -> BitRatesType{
