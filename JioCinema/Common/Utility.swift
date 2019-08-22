@@ -188,6 +188,7 @@ class Utility {
         playerVC.fromLanguage = fromLanguage
         playerVC.fromCategoryIndex = fromCategoryIndex
         //toBepresentedOnScreen.present(playerVC, animated: true, completion: nil)
+        AppManager.shared.playerVC = playerVC
         return playerVC
     }
     
