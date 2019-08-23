@@ -149,7 +149,7 @@ class HeaderButtons: UIButton {
         {
             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.setTitleColor(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), for: .normal)
-            self.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.831372549, blue: 0.8078431373, alpha: 1)
+            self.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.4412457192)
         }
     }
 }
