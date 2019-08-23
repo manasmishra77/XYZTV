@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="SF-Pro-Display-Light.otf">
+            <string>SFProDisplay-Light</string>
+        </array>
         <array key="SF-Pro-Display-Medium.otf">
             <string>SFProDisplay-Medium</string>
         </array>
@@ -32,13 +35,36 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="36" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
-                    <rect key="frame" x="73" y="204" width="967" height="0.0"/>
+                    <rect key="frame" x="73" y="148" width="967" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="72"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Z-fe-Pzd" userLabel="Subtitle">
+                    <rect key="frame" x="73" y="158" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="38"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCW-Pa-SDi" userLabel="maturity rating">
+                    <rect key="frame" x="83" y="158" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Light" family="SF Pro Display" pointSize="34"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDh-jJ-t5x" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="73" y="230" width="190" height="63"/>
+                    <rect key="frame" x="73" y="174" width="190" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="b6G-q8-Rop"/>
@@ -61,7 +87,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8K-gf-ISa" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
-                    <rect key="frame" x="305" y="230" width="190" height="63"/>
+                    <rect key="frame" x="305" y="174" width="190" height="63"/>
                     <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="tCw-tn-Xye"/>
@@ -84,7 +110,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WPv-6P-ZXH">
-                    <rect key="frame" x="73" y="333" width="967" height="0.0"/>
+                    <rect key="frame" x="73" y="277" width="967" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="28"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -93,16 +119,20 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="7gk-gj-dB8"/>
+                <constraint firstItem="J2Z-fe-Pzd" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="DMA-TG-OTB"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="leading" id="NMR-PX-fRa"/>
-                <constraint firstItem="WPv-6P-ZXH" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="129" id="Pd1-Cb-CRq"/>
-                <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="26" id="RG0-V4-tbL"/>
+                <constraint firstItem="pCW-Pa-SDi" firstAttribute="centerY" secondItem="J2Z-fe-Pzd" secondAttribute="centerY" id="NY2-TM-j85"/>
+                <constraint firstItem="WPv-6P-ZXH" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="119" id="Pd1-Cb-CRq"/>
+                <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="16" id="RG0-V4-tbL"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
                 <constraint firstItem="WDK-Fb-m3U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eyM-9Y-inx"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="42" id="h2h-0X-RyU"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="mKj-QI-ovZ"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
-                <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="qsD-yc-TSz"/>
-                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="204" id="s0P-H3-ibe"/>
+                <constraint firstItem="pCW-Pa-SDi" firstAttribute="leading" secondItem="J2Z-fe-Pzd" secondAttribute="trailing" constant="10" id="phv-Fq-I91"/>
+                <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="J2Z-fe-Pzd" secondAttribute="leading" id="qsD-yc-TSz"/>
+                <constraint firstItem="J2Z-fe-Pzd" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="10" id="r2C-DT-EiG"/>
+                <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="148" id="s0P-H3-ibe"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="wiz-uC-oVL"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="wu5-j4-obu"/>
             </constraints>
@@ -110,8 +140,10 @@
                 <outlet property="descriptionLabel" destination="WPv-6P-ZXH" id="Nal-ne-92k"/>
                 <outlet property="heightOfMoreIfoButton" destination="tCw-tn-Xye" id="SME-Lw-Lzd"/>
                 <outlet property="imageViewForHeader" destination="WDK-Fb-m3U" id="XDk-TA-eaX"/>
+                <outlet property="maturityRating" destination="pCW-Pa-SDi" id="9W6-bZ-Z5s"/>
                 <outlet property="moreInfoButton" destination="P8K-gf-ISa" id="Mhl-uL-HEw"/>
                 <outlet property="playButton" destination="QDh-jJ-t5x" id="JvI-VP-0Hq"/>
+                <outlet property="subtitleLabel" destination="J2Z-fe-Pzd" id="8su-Hh-Msh"/>
                 <outlet property="titleLabel" destination="Y9K-O4-uTI" id="HWd-xa-SMl"/>
                 <outlet property="topConstraintOfDescription" destination="Pd1-Cb-CRq" id="DH8-C5-Ggs"/>
             </connections>

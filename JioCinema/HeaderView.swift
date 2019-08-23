@@ -15,6 +15,8 @@ protocol HeaderViewDelegate: AnyObject {
 
 class HeaderView: UIView {
 
+    @IBOutlet weak var maturityRating: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var topConstraintOfDescription: NSLayoutConstraint!
     @IBOutlet weak var imageViewForHeader: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
