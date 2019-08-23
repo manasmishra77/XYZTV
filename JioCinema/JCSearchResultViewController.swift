@@ -236,11 +236,16 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
     
     //MARK:- UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count > 0 {
-            searchResultForkey(with: searchText)
-        } else {
-            self.searchResultArray.removeAll()
-            self.baseTableView.reloadData()
+        self.timerForSearch?.invalidate()
+        self.timerForSearch = nil
+        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) {[weak self] (timer) in
+            guard let self = self else {return}
+            if searchText.count > 0 {
+                self.searchResultForkey(with: searchText)
+            } else {
+                self.searchResultArray.removeAll()
+                self.baseTableView.reloadData()
+            }
         }
     }
     
@@ -264,16 +269,11 @@ class JCSearchResultViewController: JCBaseVC, UITableViewDelegate, UITableViewDa
         guard !isSearchTextIsGettingCalled else {
             return
         }
-        
         self.searchText = self.searchViewController?.searchBar.text ?? ""
+        self.callSearchServiceAPI(with: self.searchText)
+
         self.timerForSearch?.invalidate()
         self.timerForSearch = nil
-        self.timerForSearch = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) {[weak self] (timer) in
-            guard let self = self else {return}
-            self.callSearchServiceAPI(with: self.searchText)
-        }
-        
-        
        
         /*
          RJILApiManager.getSearchData(key: key, <#T##completion: APISuccessBlock##APISuccessBlock##(Bool, String?) -> ()#>)

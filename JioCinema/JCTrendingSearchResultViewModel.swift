@@ -74,8 +74,8 @@ extension JCTrendingSearchResultViewModel: UITableViewDelegate, UITableViewDataS
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let searchItem = searchTextsModelArray?[indexPath.row].key
+//        view.searchViewController?.searchBar.text = searchItem ?? ""
         view.searchResultForkey(with: searchItem ?? "")
-        view.searchViewController?.searchBar.text = searchItem ?? ""
     }
 }
 
