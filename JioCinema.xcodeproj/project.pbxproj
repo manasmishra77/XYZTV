@@ -1546,6 +1546,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 8PVH2NGH42;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = JioCinema/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (

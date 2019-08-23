@@ -72,7 +72,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
             if customHeaderView?.titleLabel.text == "" {
-            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
             }
         }
     }
@@ -207,7 +207,24 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             lastFocusableItem = customHeaderView?.playButton
         }
     }
-    
+    func appendMaturityRating(maturityRating: String?) {
+        customHeaderView?.maturityRating.layer.borderWidth = 2
+        customHeaderView?.maturityRating.borderColor = .white
+        customHeaderView?.maturityRating.layer.cornerRadius = 5
+        customHeaderView?.maturityRating.textColor = .white
+        if var maturityRating = maturityRating {
+            if  maturityRating.capitalized == "All"  {
+                maturityRating = " 3+ "
+            }
+            else if maturityRating == "" {
+                maturityRating = " NR "
+            }
+            customHeaderView?.maturityRating.text = " \(maturityRating) "
+        } else {
+            customHeaderView?.maturityRating.text = " NR "
+        }
+        
+    }
     private func updateIndicatorState(toStart: Bool, present onView: UIView? = nil) {
         var spinnerColor: UIColor = ThemeManager.shared.selectionColor
         if baseViewModel.vcType == .disneyHome || baseViewModel.vcType == .disneyKids || baseViewModel.vcType == .disneyMovies || baseViewModel.vcType == .disneyTVShow {
@@ -354,7 +371,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(item: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+                            self.setHeaderValues(item: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
@@ -412,7 +429,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(item: UIView?, urlString: String?, title: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
+    func setHeaderValues(item: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
         
         lastFocusableItem = item
         var url : URL?
@@ -421,13 +438,22 @@ extension BaseViewController: BaseTableViewCellDelegate {
         }
         
         self.customHeaderView?.imageViewForHeader.contentMode = mode
+        self.customHeaderView?.titleLabel.text = title
+        if let subtitle = subtitle , subtitle != ""{
+            self.customHeaderView?.subtitleLabel.text = "\(subtitle) | "
+            appendMaturityRating(maturityRating: maturityRating)
+        } else {
+            self.customHeaderView?.subtitleLabel.text = ""
+            self.customHeaderView?.maturityRating.text  = ""
+        }
+        
+        self.customHeaderView?.descriptionLabel.text = description
         
         if toFullScreen {
             if url != nil {
                 self.backgroundImageView.sd_setImage(with: url)
             }
-            self.customHeaderView?.titleLabel.text = title
-            self.customHeaderView?.descriptionLabel.text = description
+            
         } else {
             if customHeaderView?.imageViewForHeader.isHidden ?? false {
                 customHeaderView?.imageViewForHeader.isHidden = false
@@ -438,8 +464,6 @@ extension BaseViewController: BaseTableViewCellDelegate {
             }
             self.timerToSetImage?.invalidate()
             self.timerToSetImage = nil
-            self.customHeaderView?.titleLabel.text = title
-            self.customHeaderView?.descriptionLabel.text = description
             self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {[weak self] (timer) in
                 guard let self = self else {return}
             

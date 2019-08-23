@@ -261,11 +261,13 @@ struct Item: Codable {
     var name: String?
     var showname: String?
     var subtitle: String?
+    var castSubtitle: String?
     var image: String?
     var tvImage: String?
     var description: String?
     var banner: String?
     var format: Int?
+    var maturityRating: String?
     var language: String?
     var genre: String?
     var vendor: String?
@@ -349,6 +351,7 @@ struct Item: Codable {
         case name = "name"
         case showname = "showname"
         case subtitle = "subtitle"
+        case castSubtitle = "castSubtitle"
         case image = "image"
         case tvImage = "tvImage"
         case description = "description"
@@ -356,6 +359,7 @@ struct Item: Codable {
         case format = "format"
         case language = "language"
         case genre = "genre"
+        case maturityRating = "maturityRating"
         case vendor = "vendor"
         case app = "app"
         case latestId = "latestId"
@@ -393,6 +397,7 @@ struct Item: Codable {
             name = try values.decodeIfPresent(String.self, forKey: .name)
             showname = try values.decodeIfPresent(String.self, forKey: .showname)
             subtitle = try values.decodeIfPresent(String.self, forKey: .subtitle)
+            castSubtitle = try values.decodeIfPresent(String.self, forKey: .castSubtitle)
             image = try values.decodeIfPresent(String.self, forKey: .image)
             tvImage = try values.decodeIfPresent(String.self, forKey: .tvImage)
             description = try values.decodeIfPresent(String.self, forKey: .description)
@@ -409,6 +414,7 @@ struct Item: Codable {
             } catch {
             }
             genre = try values.decodeIfPresent(String.self, forKey: .genre)
+            maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
             vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
             app = try values.decodeIfPresent(App.self, forKey: .app)
             do {
