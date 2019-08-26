@@ -51,9 +51,9 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             
             if isSuccess {
                 DispatchQueue.main.async {
-                    self.retryView.isHidden = true
                     self.loadMainViewBgDetails()
                     self.baseTableView.reloadData()
+                    self.retryView.isHidden = true
                     self.baseTableView.contentSize.height = self.baseTableView.contentSize.height + 100
                 }
             } else {
