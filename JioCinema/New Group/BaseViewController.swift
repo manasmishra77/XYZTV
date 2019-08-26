@@ -338,12 +338,16 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.moreInfoButton.alpha = 0.2
             customHeaderView?.titleLabel.alpha = 0.2
             customHeaderView?.descriptionLabel.alpha = 0.2
+            customHeaderView?.subtitleLabel.alpha = 0.2
+            customHeaderView?.maturityRating.alpha = 0.2
         } else {
             baseTableView.alpha = 1
             customHeaderView?.playButton.alpha = 1
-            customHeaderView?.moreInfoButton.alpha = 1
             customHeaderView?.titleLabel.alpha = 1
+            customHeaderView?.subtitleLabel.alpha = 1
+            customHeaderView?.moreInfoButton.alpha = 1
             customHeaderView?.descriptionLabel.alpha = 1
+            customHeaderView?.maturityRating.alpha = 1  
         }
     }
     

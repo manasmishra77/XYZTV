@@ -69,7 +69,7 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myZ-Mo-ck3" customClass="HeaderButtons" customModule="JioCinema" customModuleProvider="target">
                             <rect key="frame" x="832" y="502" width="152" height="76"/>
-                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.4412457191780822" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.82745098039999998" green="0.83137254900000002" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="contentEdgeInsets" minX="30" minY="15" maxX="30" maxY="15"/>
                             <state key="normal" title="Retry"/>
                             <userDefinedRuntimeAttributes>
