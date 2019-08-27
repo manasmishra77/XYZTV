@@ -268,6 +268,7 @@ struct Item: Codable {
     var banner: String?
     var format: Int?
     var maturityRating: String?
+    var trailer: Trailer?
     var language: String?
     var genre: String?
     var vendor: String?
@@ -360,6 +361,7 @@ struct Item: Codable {
         case language = "language"
         case genre = "genre"
         case maturityRating = "maturityRating"
+        case trailer = "trailer"
         case vendor = "vendor"
         case app = "app"
         case latestId = "latestId"
@@ -415,6 +417,7 @@ struct Item: Codable {
             }
             genre = try values.decodeIfPresent(String.self, forKey: .genre)
             maturityRating = try values.decodeIfPresent(String.self, forKey: .maturityRating)
+            trailer = try values.decodeIfPresent(Trailer.self, forKey: .trailer)
             vendor = try values.decodeIfPresent(String.self, forKey: .vendor)
             app = try values.decodeIfPresent(App.self, forKey: .app)
             do {
@@ -527,6 +530,80 @@ struct LanguageIndex: Codable {
     }
 }
 
+struct Trailer: Codable {
+    var trailerId: String?
+    var trailerName: String?
+    var trailerImage: String?
+    var urls: Urls?
+    
+    enum CodingKeys: String, CodingKey {
+        case trailerId = "trailerId"
+        case trailerName = "trailerName"
+        case trailerImage = "trailerImage"
+        case urls = "urls"
+    }
+    
+    init() {
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            trailerId = try values.decodeIfPresent(String.self, forKey: .trailerId)
+            trailerName = try values.decodeIfPresent(String.self, forKey: .trailerName)
+            trailerImage = try values.decodeIfPresent(String.self, forKey: .trailerImage)
+            urls = try values.decodeIfPresent(Urls.self, forKey: .urls)
+        } catch {
+            print(error)
+        }
+        
+    }
+}
+
+struct Urls: Codable {
+    var  TV: PlayableUrlModel?
+    var  PHONE: PlayableUrlModel?
+    var  TAB: PlayableUrlModel?
+    
+    enum CodingKeys: String, CodingKey {
+        case TV = "TV"
+        case PHONE = "PHONE"
+        case TAB = "TAB"
+    }
+    init() {
+    }
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            TV = try? values.decodeIfPresent(PlayableUrlModel.self, forKey: .TV)
+            PHONE = try? values.decodeIfPresent(PlayableUrlModel.self, forKey: .PHONE)
+            TAB = try values.decodeIfPresent(PlayableUrlModel.self, forKey: .TAB)
+        } catch {
+            print(error)
+        }
+    }
+    
+}
+struct  PlayableUrlModel: Codable {
+    var auto: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case auto = "auto"
+    }
+    
+    init() {
+    }
+    
+     init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            auto = try values.decodeIfPresent(String.self, forKey: .auto)
+        } catch {
+            print(error)
+        }
+    }
+
+}
 struct List: Codable {
     var id: Int?
     var name: String?
