@@ -57,6 +57,7 @@
 		2025F4631F3B51D800C3B609 /* Version.png in Resources */ = {isa = PBXBuildFile; fileRef = 2025F4621F3B51D800C3B609 /* Version.png */; };
 		205C0E5F1F3DCEE1004965A9 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 205C0E5E1F3DCEE1004965A9 /* Settings.png */; };
 		530C0E1A21B8F8E40029C4D8 /* SideNavigationTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */; };
+		53599E292315541A00A50689 /* TrailerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53599E282315541A00A50689 /* TrailerManager.swift */; };
 		535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */; };
 		5360F84920C11EE600F9FC25 /* JCSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */; };
 		538BF9402249438C00B0AB17 /* PlayerSettingMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */; };
@@ -298,6 +299,7 @@
 		205C0E5E1F3DCEE1004965A9 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		38BA4511E8E8D622B71884F2 /* Pods_JioCinema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JioCinema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		530C0E1821B8F8E40029C4D8 /* SideNavigationTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationTableCell.swift; sourceTree = "<group>"; };
+		53599E282315541A00A50689 /* TrailerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerManager.swift; sourceTree = "<group>"; };
 		535E5A5421259A9200C375BD /* Utility+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		5360F84820C11EE600F9FC25 /* JCSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCSearchViewController.swift; sourceTree = "<group>"; };
 		538BF93F2249438C00B0AB17 /* PlayerSettingMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerSettingMenu.xib; sourceTree = "<group>"; };
@@ -542,6 +544,14 @@
 				19ED97EF1FD5406F00E43CBE /* CheckVersionResult.swift */,
 			);
 			name = VersionModel;
+			sourceTree = "<group>";
+		};
+		53599E25231414ED00A50689 /* TrailerPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				53599E282315541A00A50689 /* TrailerManager.swift */,
+			);
+			path = TrailerPlayer;
 			sourceTree = "<group>";
 		};
 		539618DF21219AE600B576BF /* ParentalControlScene */ = {
@@ -858,6 +868,7 @@
 		993E0D44222698EA0064C194 /* CustomPlayerScene */ = {
 			isa = PBXGroup;
 			children = (
+				53599E25231414ED00A50689 /* TrailerPlayer */,
 				53E806022230E85300F38927 /* PlayerViewModel.swift */,
 				53E806012230E85300F38927 /* PlayerAssetManager.swift */,
 				993E0D4E22269AAA0064C194 /* PlayerViewController.swift */,
@@ -1238,6 +1249,7 @@
 				1966AC5F213FC5B300A98404 /* APIManager+Search.swift in Sources */,
 				99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */,
 				535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */,
+				53599E292315541A00A50689 /* TrailerManager.swift in Sources */,
 				7BD39C8E1F419CD40014255C /* JCMetadataModel.swift in Sources */,
 				99E4CB09222EAD940047861A /* CustomSlider.swift in Sources */,
 				B822EBE01F84CE95002332B4 /* Utility.swift in Sources */,

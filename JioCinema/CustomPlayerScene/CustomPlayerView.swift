@@ -110,7 +110,6 @@ class CustomPlayerView: UIView {
     func configureView(item: Item, latestEpisodeId: String? = nil, audioLanguage: AudioLanguage? = nil) {
         self.audioLanguage = audioLanguage
         self.initialiseViewModelForItem(item: item, latestEpisodeId: latestEpisodeId)
-        //        addSubviewOnPlayer()
     }
     
     
@@ -145,7 +144,6 @@ class CustomPlayerView: UIView {
             self.controlHolderView.addSubview(controlsView)
         }
         setValuesForSubviewsOnPlayer()
-        //        setValuesOnControlView()
     }
     
     func setValuesOnControlView() {
@@ -179,7 +177,6 @@ class CustomPlayerView: UIView {
             guard let moreLikeView = moreLikeView else {
                 return
             }
-//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
             heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Music) ? itemHeightForLandscapeForTitleAndSubtitle + 60: itemHeightForLandscapeForTitleOnly + 60
     
 
@@ -231,7 +228,6 @@ class CustomPlayerView: UIView {
                 
             }
         }
-        //        moreLikeView?.moreLikeCollectionView.reloadData()
     }
     
     func addGradientView() {
@@ -242,9 +238,6 @@ class CustomPlayerView: UIView {
             colorLayer.frame = gradientView.bounds
             colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
             self.gradientView.layer.insertSublayer(colorLayer, at:0)
-
-//            let colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
-//            Utility.applyGradient(gradientView, colorArray: colors)
         }
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -410,11 +403,7 @@ class CustomPlayerView: UIView {
         guard (audioes?.count ?? 0) > 0 else {
             return
         }
-        
-        //        if let langIndex = audioes?.index(where: {$0.lowercased() == audioLanguage.lowercased()}), let language = audioes?[langIndex] {
-        //            _ = player?.currentItem?.select(type: .audio, name: language)
-        //        }
-        //    }
+
         lastSelectedAudioLanguage = audioLanguage
         if let langIndex = audioes?.firstIndex(where: {$0.lowercased() == audioLanguage.lowercased().trimmingCharacters(in: .whitespaces)}) {
             if let language = audioes?[langIndex] {
@@ -627,11 +616,7 @@ extension CustomPlayerView: PlayerControlsDelegate {
         }
         timerToHideControls.invalidate()
     }
-    
-//    func resetTimerForHideControl() {
-//        self.resetTimertToHideControls()
-//    }
-    
+
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
             let seekToValue = Double(seekValue) * self.getPlayerDuration()
@@ -675,28 +660,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             hideUnhideControl(visibleControls: .hideSkipIntro)
             firstTime = nil
         }
-        
-//        if isValidTime && !(controlsView?.isHidden ?? false) {
-//            hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
-//            resetTimertToHideControls()
-////            controlsView?.skipIntroButton.isHidden = false
-//        } else {
-//            if isValidTime && (controlsView?.isHidden ?? false) {
-//                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-//                        hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
-//                        resetTimertToHideControls()
-////                    controlsView?.isHidden = false
-////                    controlsView?.skipIntroButton.isHidden = false
-//                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-//                        hideUnhideControl(visibleControls: .All, toHide: true)
-////                    controlsView?.isHidden = true
-////                    controlsView?.skipIntroButton.isHidden = true
-//                }
-//
-//            } else {
-//                controlsView?.skipIntroButton.isHidden = true
-//            }
-//        }
     }
     
     func dismissPlayer() {
@@ -712,7 +675,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                     return
                 }
                 self.indicator = IndicatorManager.shared.addAndStartAnimatingANewIndicator(spinnerColor: spinnerColor, superView: self, superViewSize: self.frame.size, spinnerSize: CGSize(width: 100, height: 100), spinnerWidth: 10, superViewUserInteractionEnabled: false, shouldUseCoverLayer: true, coverLayerOpacity: 1, coverLayerColor: .clear)
-                //self.addSubview(self.indicator!)
             }
         } else {
             DispatchQueue.main.async {
@@ -756,8 +718,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         self.moreLikeView?.currentPlayingIndex = currentMorelikeIndex
         self.moreLikeView?.isPlayList = self.isPlayList
         self.recommendationArray = playerViewModel?.recommendationArray ?? false
-        //        self.moreLikeView?.moreArray = playerViewModel?.moreArray
-        //        self.moreLikeView?.episodesArray = playerViewModel?.episodeArray
         setValuesForMoreLikeData()
         self.moreLikeView?.appType = playerViewModel?.appType ?? .None
         DispatchQueue.main.async {
@@ -791,10 +751,8 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     func addAvPlayerToController() {
         DispatchQueue.main.async {
             self.updateIndicatorState(toStart: false)
-            print("hide on add player to controller")
             if self.player?.currentItem != nil {
                 self.player?.replaceCurrentItem(with: self.playerViewModel?.playerItem)
-                //                self.player?.replaceCurrentItem(with: playerItem)
             }
             else {
                 self.resetPlayer()
@@ -819,17 +777,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             } else {
                 if let audioLanguageToBePlayed = MultiAudioManager.getFinalAudioLanguage(itemIdToBeChecked: self.playerItem?.id ?? "", appType: self.playerItem?.appType ?? .TVShow, defaultLanguage: self.audioLanguage) {
                     self.playerAudioLanguage(audioLanguageToBePlayed.name)
-                    //                if let audioLang = self.lastSelectedAudioLanguage {
-                    //                    print(audioLang)
-                    //                    if audioLang != audioLanguageToBePlayed.name {
-                    //                        self.playerAudioLanguage(audioLang)
-                    //                    }
-                    //                }
-                    //                if let audioLang = self.lastSelectedAudioLanguage?.lowercased() && audioLanguage != audioLanguageToBePlayed.name{
-                    //                    self.playerAudioLanguage(self.audioLanguage)
-                    //                } else {
-                    //                    self.playerAudioLanguage(audioLanguageToBePlayed.name)
-                    //                }
                 }
             }
             
@@ -837,11 +784,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.playerSubTitleLanguage(subtitleArray[1])
             }
             
-            
-            
-            
-            
-            //            self.setPlayerSeekTo(seekValue: CGFloat(self.playerViewModel?.currentDuration ?? 0))
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
@@ -869,7 +811,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         guard let viewModel = playerViewModel else {
             return
         }
-        //sendMediaEndAnalyticsEvent()
         if (viewModel.appType == .Movie || viewModel.appType == .Episode || viewModel.appType == .TVShow), viewModel.isItemToBeAddedInResumeWatchList {
         viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         }
@@ -890,16 +831,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     //MARK:- AVPlayer Finish Playing Item
     @objc func playerDidFinishPlaying(note: NSNotification) {
         self.updateIndicatorState(toStart: false)
-        print("HideOn playerdidFInish")
         if UserDefaults.standard.bool(forKey: isAutoPlayOnKey),isPlayList {
             
             if let currentPlayingIndex = currentPlayingIndex
             {
                 
                 if playerItem?.appType == .Music || playerItem?.appType == .Clip || playerItem?.appType == .Trailer || playerItem?.appType == .Movie {
-                    //                    if playerItem?.appType == .Movie {
-                    //                        playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-                    //                    }
                     if let moreArray = moreLikeView?.moreArray, isPlayList {
                         if (currentPlayingIndex + 1) < moreArray.count {
                             let nextItem = moreArray[currentPlayingIndex + 1]
@@ -921,9 +858,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
-//                if playerItem?.appType == .Episode || playerItem?.appType == .Movie || playerItem?.appType == .TVShow{
-//                    playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-//                }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
             playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
@@ -960,11 +894,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
         
         if keyPath == #keyPath(player.currentItem.duration) {
-            // Update timeSlider and enable/disable controls when duration > 0.0
-            /*
-             Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
-             `player.currentItem` is nil.
-             */
             let newDuration: CMTime
             if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
                 newDuration = newDurationAsValue.timeValue
@@ -975,31 +904,20 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             Log.DLog(message: newDuration as AnyObject)
         }
         else if keyPath == #keyPath(player.rate) {
-            let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
-            if newRate == 0
-            {
-                //vinit_commented swipeDownRecommendationView()
-            }
+//            let newRate = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.doubleValue ?? 0
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferFull)
         {
-            print("KeyPathBufferFull")
             self.updateIndicatorState(toStart: false)
-            print("indicator stoped on isPlaybackBufferFull")
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackBufferEmpty)
         {
             self.updateIndicatorState(toStart: true)
-            //            if player?.rate == 1 {
-            //                self.updateIndicatorState(toStart: false)
-            //            }
-            print("indicator started on isPlaybackBufferempty\(player?.rate)")
             playerViewModel?.startTime_BufferDuration = Date()
         }
         else if keyPath == #keyPath(player.currentItem.isPlaybackLikelyToKeepUp)
         {
             self.updateIndicatorState(toStart: false)
-            print("indicator stoped on isPlaybackLikelyToKeepUp")
             playerViewModel?.updatePlayerBufferCount()
         }
         else if keyPath == #keyPath(player.currentItem.status) {
@@ -1012,7 +930,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             switch newStatus {
             case .readyToPlay:
                 self.updateIndicatorState(toStart: false)
-                print("indicator start on ready to play")
                 playerViewModel?.videoStartingTimeDuration = Int(playerViewModel?.videoStartingTime.timeIntervalSinceNow ?? 0)
                 playerViewModel?.isItemToBeAddedInResumeWatchList = true
                 self.addPlayerPeriodicTimeObserver()
@@ -1021,15 +938,12 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             case .failed:
                 if indicator != nil {
                     updateIndicatorState(toStart: false)
-                    print("indicator stop on failed")
                 }
-                
                 Log.DLog(message: "Failed" as AnyObject)
                 playerViewModel?.handlePlayerStatusFailed()
-                //                self.isRecommendationCollectionViewEnabled = false
-            //If video failed once and valid fps url is there
+                
             default:
-                print("unknown")
+                break
             }
             
         }
@@ -1152,8 +1066,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 self.delegate?.removePlayerController()
             })
         }
-        
-        //vinit_comment handle player error
     }
     
     func dismissPlayerOnAesFailure() {
@@ -1168,7 +1080,6 @@ extension CustomPlayerView {
             timerToHideControls = nil
         }
         timerToHideControls = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
-//            self?.hideControlsView()
             self?.hideUnhideControl(visibleControls: .allHide)
             self?.timerToHideControls.invalidate()
             self?.timerToHideControls = nil
@@ -1195,18 +1106,7 @@ extension CustomPlayerView {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimertToHideControls()
-//            case .menu:
-//                super.pressesBegan(presses, with: event)
-//                print("Menu")
-//                break
-//                //                if popUpHolderView.isHidden == true {
-//                //                    self.resetAndRemovePlayer()
-//                //                    self.delegate?.removePlayerController()
-//                //                } else {
-//                //                    resetTimer()
-//                //                    removeControlDetailview()
-//                //                    print("menu")
-//            //                }
+                break
             case .playPause:
                 print("playPause")
                 if isPlayerPaused {
@@ -1214,10 +1114,9 @@ extension CustomPlayerView {
                 } else {
                     changePlayerPlayingStatus(shouldPlay: false)
                 }
-            case .select:
-                print("select")
-            @unknown default:
-                print("unknown")
+                break
+             default:
+                break
             }
         }
     }
@@ -1264,10 +1163,7 @@ extension CustomPlayerView: ResumeWatchDelegate {
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
-        //        addSubviewOnPlayer()
-        //        setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
-        //        self.controlsView?.sliderView?.sliderLeadingForSeeking.constant = playerViewModel?.currentDuration / playerItem?.
         self.moreLikeHolderView.isHidden = false
     }
     
@@ -1276,8 +1172,6 @@ extension CustomPlayerView: ResumeWatchDelegate {
         playerViewModel?.callWebServiceForPlaybackRights(id: playerItem?.id ?? "")
         resumeWatchView?.removeFromSuperview()
         resumeWatchView = nil
-        //        addSubviewOnPlayer()
-        //        self.setValuesForSubviewsOnPlayer()
         self.controlHolderView.isHidden = false
         self.moreLikeHolderView.isHidden = false
         
@@ -1301,7 +1195,6 @@ enum VisbleControls {
     case nextVideoOnlyVisible
     case allHide
     case allVisible
-//    case allVisibleExceptNext // Skip intro to be shown
     case allVisibleExceptSkipIntro
     case hideSkipIntro
     case hideNextVideo

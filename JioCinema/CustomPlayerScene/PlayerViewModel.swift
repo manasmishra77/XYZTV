@@ -34,8 +34,6 @@ class PlayerViewModel: NSObject {
     fileprivate var itemToBePlayed: Item
     var playerItem: AVPlayerItem?
     var recommendationArray: Any = false
-//    var moreArray: [Item]?
-//    var episodeArray: [Episode]?
     var totalDuration: Float = 0.0
     var appType: VideoType = VideoType.None
     weak var delegate: PlayerViewModelDelegate?
@@ -56,12 +54,8 @@ class PlayerViewModel: NSObject {
     fileprivate var videoViewingLapsedTime = 0.0
     fileprivate var isFpsUrl = false
     var isPlayList: Bool = false
-    //    fileprivate var isRecommendationCollectionViewEnabled = false
     fileprivate var isVideoUrlFailedOnce = false
     var isItemToBeAddedInResumeWatchList = true
-    //    var isPlayListFirstItemToBePlayed: Bool = false
-    //    var isMoreDataAvailable: Bool = false
-    //    var isEpisodeDataAvailable: Bool = false
     var isDisney: Bool = false
     
     var bannerUrlString: String = ""
@@ -69,6 +63,8 @@ class PlayerViewModel: NSObject {
     var playerActiveUrl: String!
     var playerActiveBitrate: BitRatesType?
     var latestEpisodeId: String?
+    
+    var isTrailer = false
     
     //for analytics
     var fromScreen = ""
@@ -114,7 +110,8 @@ class PlayerViewModel: NSObject {
         }
     }
     
-    init(item: Item, latestEpisodeId: String? = nil) {
+    init(item: Item, latestEpisodeId: String? = nil, isTrailer: Bool? = false) {
+        self.isTrailer = isTrailer!
         self.itemToBePlayed = item
         self.latestEpisodeId = latestEpisodeId
         super.init()
@@ -167,32 +164,6 @@ class PlayerViewModel: NSObject {
                 self.recommendationArray = false
                 self.recommendationArray = response.model?.more ?? response.model?.episodes ?? false
             }
-//            if let recommendationItems = response.model?.more {
-////                self.moreArray?.removeAll()
-//                self.recommendationArray = false
-//                if recommendationItems.count > 0 {
-////                    self.moreArray = recommendationItems
-//                    self.recommendationArray = recommendationItems
-//                }
-//            } else if let episodes = response.model?.episodes {
-////                self.episodeArray?.removeAll()
-//
-//                    if episodes.count > 0{
-//                        for (index, each) in episodes.enumerated() {
-//                            if each.id == self.itemToBePlayed.id {
-//                                currentPlayingIndex = index
-//                                break
-//                            }
-//                        }
-//                        self.recommendationArray = episodes
-////                        self.episodeArray = episodes
-//                    }
-//            }
-//            if (self.moreArray?.count ?? 0 > 0) || (self.episodeArray?.count ?? 0 > 0){
-//                DispatchQueue.main.async {
-//                    self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
-//                }
-//            }
             if ((self.recommendationArray as? [Item]) != nil) || ((self.recommendationArray as? [Episode]) != nil){
                 if let episodes = response.model?.episodes {
                     if episodes.count > 0{
@@ -478,8 +449,6 @@ class PlayerViewModel: NSObject {
                         }
                     }
                     self.recommendationArray = mores
-//                    self.moreArray = mores
-//                    if (self.moreArray?.count ?? 0 > 0){
                     if ((self.recommendationArray as? [Item]) != nil){
                             self.delegate?.reloadMoreLikeCollectionView(currentMorelikeIndex: currentPlayingIndex)
                     }
@@ -492,16 +461,8 @@ class PlayerViewModel: NSObject {
     
     func instantiatePlayerAfterParentalCheck() {
         assetManager = nil
-        assetManager = PlayerAssetManager(playBackModel: playbackRightsModel!, isFps: self.isFpsUrl, listener: self, activeUrl: self.playerActiveUrl)
+        assetManager = PlayerAssetManager(isFps: self.isFpsUrl, listener: self, activeUrl: self.playerActiveUrl)
     }
-    
-    //MARK:- Add Player Observer
-    
-    //
-    //
-    //    func updateResumeWatchList() {
-    //        //vinit_edited
-    //    }
     
     func sendBufferingEvent() {
         
@@ -516,15 +477,12 @@ class PlayerViewModel: NSObject {
         case .Movie:
             if isPlayList, id == "" {
                 callWebServiceForPlaybackRights(id:  itemToBePlayed.latestId ?? "")
-//                delegate?.addSubviewOnPlayer()
             } else {
                 currentDuration = checkInResumeWatchListForDuration(id)
                 if currentDuration > 0 {
                     delegate?.addResumeWatchView()
                 } else {
-                    
                     callWebServiceForPlaybackRights(id: id)
-//                    delegate?.addSubviewOnPlayer()
                 }
             }
         case .Episode, .TVShow:
@@ -533,20 +491,26 @@ class PlayerViewModel: NSObject {
                 delegate?.addResumeWatchView()
             } else {
                 callWebServiceForPlaybackRights(id: id)
-//                delegate?.addSubviewOnPlayer()
             }
         case .Music, .Clip, .Trailer:
             if isPlayList, id == "" {
                 callWebServiceForPlaybackRights(id: itemToBePlayed.latestId ?? "")
-//                delegate?.addSubviewOnPlayer()
             } else {
                 callWebServiceForPlaybackRights(id: id)
-//                delegate?.addSubviewOnPlayer()
             }
         default:
             break
         }
     }
+    
+    func preparePlayerForTrailer(url: String) {
+        playerActiveUrl = url
+        self.isFpsUrl = false
+        assetManager = nil
+        assetManager = PlayerAssetManager(isFps: self.isFpsUrl, listener: self, activeUrl: self.playerActiveUrl)
+    }
+    
+    
     //Check in resume watchlist
     
     func checkInResumeWatchListForDuration(_ itemIdToBeChecked: String) -> Float {
@@ -576,33 +540,6 @@ class PlayerViewModel: NSObject {
     
     
     //MARK:- Play Video
-    func playVideoWithPlayerItem() {
-        //  self.addMetadataToPlayer()
-        //        if let player = player {
-        //            player.replaceCurrentItem(with: playerItem)
-        //        } else {
-        //            resetPlayer()
-        //            player = AVPlayer(playerItem: playerItem)
-        //            player?.play()
-        //        }
-        //        delegate?.addAvPlayerToController()
-        //        handleForPlayerReference()
-    }
-    
-    private func autoPlaySubtitle(_ isAutoPlaySubtitle: Bool) {
-        /*
-         let subtitles = player?.currentItem?.tracks(type: .subtitle)
-         // Select track with displayName
-         guard (subtitles?.count ?? 0) > 0 else {return}
-         _ = player?.currentItem?.select(type: .subtitle, name: (subtitles?.first)!)
-         *///vinit_commented
-    }
-    
-    func handleForPlayerReference() {
-        
-    }
-    
-    
     func updatePlayerBufferCount() {
         guard let startDuration = startTime_BufferDuration else {
             return
@@ -625,9 +562,7 @@ class PlayerViewModel: NSObject {
             if let aesBitcodeUrl = self.playbackRightsModel?.aes {
                 getActiveUrl(url: aesBitcodeUrl)
             }
-            
             instantiatePlayerAfterParentalCheck()
-            //            assetManager?.handleAESStreamingUrl(videoUrl: self.playbackRightsModel?.aesUrl ?? "")
         } else {
             failureType = "AES"
             self.delegate?.dismissPlayerOnAesFailure()
@@ -667,19 +602,6 @@ class PlayerViewModel: NSObject {
         }
     }
     
-    
-    //    func changePlayerSubtitleLanguageAndAudioLanguage(subtitleLang: String?, audioLang: String?) {
-    //        var playerLang = self.playerItem?.asset.accessibilityLanguage
-    //
-    //        if let subtitle = subtitleLang {
-    //
-    //        }
-    //        if let audio = audioLang {
-    //
-    //        }
-    
-    //    }
-    
     //MARK:- Autoplay handler
     func gettingNextEpisodeAndSequence(episodes: [Episode], index: Int) -> (Episode, Bool)? {
         guard episodes.count > 1 else {return nil}
@@ -705,16 +627,9 @@ extension PlayerViewController: AVPlayerViewControllerDelegate {
     //MARK:- Player Controller Delegate methods
     func playerViewController(_ playerViewController: AVPlayerViewController, willResumePlaybackAfterUserNavigatedFrom oldTime: CMTime, to targetTime: CMTime) {
         let lapseTime = CMTimeGetSeconds(targetTime) - CMTimeGetSeconds(oldTime)
-        //vinit_commented       videoViewingLapsedTime = videoViewingLapsedTime + lapseTime
     }
     
     func playerViewController(_ playerViewController: AVPlayerViewController, willTransitionToVisibilityOfTransportBar visible: Bool, with coordinator: AVPlayerViewControllerAnimationCoordinator) {
-        /*
-         if visible, !isRecommendationViewVisible {
-         recommendationViewchangeTo(1.0, visibility: false, animationDuration: 0)
-         recommendationViewchangeTo(0.0, visibility: false, animationDuration: 4.0)
-         }
-         */ //vinit_commented
     }
 }
 
@@ -779,16 +694,18 @@ extension PlayerViewModel {
         JCAnalyticsManager.sharedInstance.event(category: "Player Options", action: "Buffering", label: bufferCountForGA, customParameters: customParams)
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Buffering", properties: eventProperties)
     }
+    
     func sendSkipIntroEvent(eventProperties: [String:Any]) {
-//        JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
         let skipIntroInternalEvent = JCAnalyticsEvent.sharedInstance.getSkipIntroEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(playerItem?.currentTime().seconds ?? 0.0), contentId: itemId, bufferDuration: Int(totalBufferDurationTime), type: self.appType.name, bufferCount: Int(bufferCount))
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: skipIntroInternalEvent)
     }
+    
     func sendPlaybackFailureEvent(forCleverTap eventPropertiesCT:[String:Any], forInternalAnalytics eventPropertiesIA: [String: Any])
     {
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "User Media Error", properties: eventPropertiesCT)
         JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: eventPropertiesIA)
     }
+    
     func sendAudioChangedAnalytics(){
         let timeSpent = 9
         let audioChangedInternalEvent = MultiAudioManager.getAudioChangedEventForInternalAnalytics(screenName: fromScreen, source: fromCategory, playerCurrentPositionWhenMediaEnds: Int(playerItem?.currentTime().seconds ?? 0.0), contentId: itemId, bufferDuration: Int(totalBufferDurationTime), timeSpent: Int(timeSpent), type: self.appType.name, bufferCount: Int(bufferCount))
@@ -801,6 +718,7 @@ extension PlayerViewModel {
         let eventProperties = ["Platform": "TVOS","Language": lang,"Error Code":"","Error Message":"","Threshold Duration":duration,"Content Id":itemId,"Episode":"","Genre":"","screen name":fromScreen,"source":fromCategory,"Title":itemTitle ,"Offline":"","Type":"\(appType.name)"]
         JCAnalyticsManager.sharedInstance.sendEventToCleverTap(eventName: "Audio Heard", properties: eventProperties as [String : Any])
     }
+    
     func sendMediaStartAnalyticsEvent() {
         if !isMediaStartEventSent {
             let mbid = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") + (UIDevice.current.identifierForVendor?.uuidString ?? "")
@@ -815,21 +733,14 @@ extension PlayerViewModel {
     }
     
     func sendMediaEndAnalyticsEvent(timeSpent: Int) {
-//        vendor = self.playbackRightsModel?.vendor
         if let currentTime = playerItem?.currentTime(), (currentTime.timescale != 0) {
             let currentTimeDuration = Int(CMTimeGetSeconds(currentTime))
-//            var timeSpent = CMTimeGetSeconds(currentTime) - Double(currentDuration) - videoViewingLapsedTime
-//            timeSpent = timeSpent > 0 ? timeSpent : 0
-            
             let mediaEndInternalEvent = JCAnalyticsEvent.sharedInstance.getMediaEndEventForInternalAnalytics(contentId: itemId, playerCurrentPositionWhenMediaEnds: currentTimeDuration, ts: Int(timeSpent), videoStartPlayingTime: -videoStartingTimeDuration, bufferDuration: Int(totalBufferDurationTime), bufferCount: Int(bufferCount), screenName: fromScreen, bitrate: bitrate, playList: String(isPlayList), rowPosition: String(fromCategoryIndex + 1), categoryTitle: fromCategory, director: director, starcast: starCast, contentp: vendor, audioChanged: isAudioChanged )
-            
             JCAnalyticsEvent.sharedInstance.sendEventForInternalAnalytics(paramDict: mediaEndInternalEvent)
             let customParams: [String:Any] = ["Client Id": UserDefaults.standard.string(forKey: "cid") ?? "" ,"Video Id": itemId, "Type": appType.rawValue, "Category Position": String(fromCategoryIndex), "Language": itemLanguage, "Bitrate": bitrate, "Duration" : timeSpent]
             JCAnalyticsManager.sharedInstance.event(category: VIDEO_END_EVENT, action: VIDEO_ACTION, label: itemToBePlayed.name , customParameters: customParams as? Dictionary<String, String>)
             
             bufferCount = 0
-//            videoStartingTimeDuration = 0
-//            videoStartingTime = Date()
         }
         self.sendVideoViewedEventToCleverTap()
     }
@@ -857,16 +768,7 @@ extension PlayerViewModel {
             self?.videoViewedTimer = nil
         })
     }
-    
-//    func resetTimertToHideControls() {
-////        if controlsView != nil || controlsView?.isHidden == false{
-//            invalidateTimerForControl()
-////            self.controlsView?.isHidden = false
-////            self.moreLikeView?.isHidden = false
-//            self.startTimerToHideControls()
-//        }
-//    }
-//
+
     func invalidateTimerForControl() {
         if self.videoViewedTimer != nil {
             self.videoViewedTimer?.invalidate()

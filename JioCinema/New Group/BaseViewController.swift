@@ -35,6 +35,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
     var lastFocusableItem: UIView?
     
+    
+    @IBOutlet weak var bigTrailerView: UIView!
+    
+    
+    
     var customHeaderView: HeaderView?
     var timerToSetImage: Timer?
     var gradientColor : UIColor = ViewColor.commonBackground
@@ -72,7 +77,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
             if customHeaderView?.titleLabel.text == "" {
-            setHeaderValues(item: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+                setHeaderValues(focusedItem: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
             }
         }
     }
@@ -325,7 +330,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                 }
             }
     }
-    
+
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
             if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell || context.previouslyFocusedItem is JCDisneyButton) && context.nextFocusedItem is ItemCollectionViewCell {
@@ -375,7 +380,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(item: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill)
+                            self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
@@ -398,6 +403,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
          lastFocusableItem = nil
+        
+        TrailerManager.shared.resetPlayer()
         if #available(tvOS 11.0, *) {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: UIFocusSystem.movementDidFailNotification.rawValue), object: nil)
         } else {
@@ -433,9 +440,11 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(item: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode) {
+    func setHeaderValues(focusedItem: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
         
-        lastFocusableItem = item
+        TrailerManager.shared.resetPlayer()
+        
+        lastFocusableItem = focusedItem
         var url : URL?
         if let urlString = urlString {
             url = URL(string: urlString)
@@ -456,6 +465,9 @@ extension BaseViewController: BaseTableViewCellDelegate {
         if toFullScreen {
             if url != nil {
                 self.backgroundImageView.sd_setImage(with: url)
+                if self.baseViewModel.vcType == (AppManager.shared.sideNavigationVC?.selectedVC as? BaseViewController)?.baseViewModel.vcType {
+                    TrailerManager.shared.initialiseViewModelForTrailer(item: currentItem!, holderView: bigTrailerView)
+                }
             }
             
         } else {
@@ -471,13 +483,17 @@ extension BaseViewController: BaseTableViewCellDelegate {
             self.timerToSetImage = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {[weak self] (timer) in
                 guard let self = self else {return}
             
+                
                 UIView.transition(with: self.customHeaderView!.imageViewForHeader ,
                                   duration:0.4,
                                   options: .transitionCrossDissolve,
                                   animations: {
                                     self.customHeaderView?.imageViewForHeader.sd_setImage(with: url)
-                },
-                                  completion: nil)
+                }, completion: { (complete) in
+                    if self.baseViewModel.vcType == (AppManager.shared.sideNavigationVC?.selectedVC as? BaseViewController)?.baseViewModel.vcType {
+                        TrailerManager.shared.initialiseViewModelForTrailer(item: currentItem!, holderView: (self.customHeaderView?.smallTrailerPlayerView!)!)
+                    }
+                })
             }
         }
 

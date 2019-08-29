@@ -9,6 +9,7 @@
 import Foundation
 import Reachability
 
+
 class Utility {
     static let sharedInstance = Utility()
     var reachability: Reachability?

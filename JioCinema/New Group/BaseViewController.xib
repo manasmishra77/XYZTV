@@ -20,6 +20,7 @@
                 <outlet property="baseTableLeadingConstraint" destination="I4A-6S-zTh" id="PmE-KS-03v"/>
                 <outlet property="baseTableView" destination="9De-59-Cbg" id="kdo-Pg-aQm"/>
                 <outlet property="baseTableViewHeight" destination="pCY-DL-PCB" id="b8p-f4-WHO"/>
+                <outlet property="bigTrailerView" destination="b4s-YH-ztu" id="Slt-xR-AVw"/>
                 <outlet property="customHeaderHolderView" destination="iOo-eg-EFV" id="uSF-7v-gMg"/>
                 <outlet property="retryView" destination="W55-RN-ojN" id="ieR-kc-Nm5"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Eym-vH-oyN"/>
@@ -37,9 +38,17 @@
                             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b4s-YH-ztu">
+                            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="b4s-YH-ztu" firstAttribute="leading" secondItem="ufO-mS-GFA" secondAttribute="leading" id="6OO-K2-yQj"/>
+                        <constraint firstAttribute="bottom" secondItem="b4s-YH-ztu" secondAttribute="bottom" id="KP4-XN-PEu"/>
+                        <constraint firstItem="b4s-YH-ztu" firstAttribute="top" secondItem="ufO-mS-GFA" secondAttribute="top" id="RYZ-gz-TMH"/>
+                        <constraint firstAttribute="trailing" secondItem="b4s-YH-ztu" secondAttribute="trailing" id="Tya-rf-37i"/>
                         <constraint firstAttribute="bottom" secondItem="Uto-Hb-5Bi" secondAttribute="bottom" id="XG8-KO-GQR"/>
                         <constraint firstItem="Uto-Hb-5Bi" firstAttribute="top" secondItem="ufO-mS-GFA" secondAttribute="top" id="ZML-45-DNF"/>
                         <constraint firstAttribute="trailing" secondItem="Uto-Hb-5Bi" secondAttribute="trailing" id="wDh-hq-dyu"/>

@@ -27,7 +27,6 @@ class PlayerAssetManager: NSObject {
     var asset: AVURLAsset?
     weak var delegate: PlayerAssetManagerDelegate?
     var isFps = false
-    var playbackDataModel: PlaybackRightsModel?
 
     
     static let assetKeysRequiredToPlay = [
@@ -35,27 +34,11 @@ class PlayerAssetManager: NSObject {
         "hasProtectedContent"
     ]
     
-    init(playBackModel: PlaybackRightsModel, isFps: Bool, listener: NSObject, activeUrl: String) {
+    init(isFps: Bool, listener: NSObject, activeUrl: String) {
         super.init()
         delegate = listener as? PlayerAssetManagerDelegate
         self.isFps = isFps
-        
         initAsset(activeUrl: activeUrl)
-//        if (isFps) {
-//        asset = AVURLAsset(url: URL(string: activeUrl)!)
-//            asset?.resourceLoader.setDelegate(self, queue: globalNotificationQueue())
-//            let requestedKeys: [Any] = [PLAYABLE_KEY]
-//            // Tells the asset to load the values of any of the specified keys that are not already loaded.
-//            asset?.loadValuesAsynchronously(forKeys: requestedKeys as? [String] ?? [String](), completionHandler: {() -> Void in
-//                DispatchQueue.main.async(execute: {() -> Void in
-//                    /* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
-//                    self.prepare(toPlay: self.asset!, withKeys: PlayerAssetManager.assetKeysRequiredToPlay)
-//                })
-//            })
-//        }
-//        else {
-//            handleAESStreamingUrl(videoUrl: activeUrl)
-//        }
     }
     
     
@@ -87,7 +70,7 @@ class PlayerAssetManager: NSObject {
                 let videoUrl = URL(string: videoUrl)
                 if let absoluteUrlString = videoUrl?.absoluteString {
                     let changedUrl = absoluteUrlString.replacingOccurrences(of: (videoUrl?.scheme ?? ""), with: "fakeHttp")
-                    let headerValues = ["ssotoken" : JCAppUser.shared.ssoToken]
+                    let headerValues = ["ssotoken" : "unknownssotoken"] //JCAppUser.shared.ssoToken]
                     let header = ["AVURLAssetHTTPHeaderFieldsKey": headerValues]
                     guard let assetUrl = URL(string: absoluteUrlString) else {
                         return
@@ -199,11 +182,7 @@ extension PlayerAssetManager: AVAssetResourceLoaderDelegate {
         
         let session = URLSession.shared
         let task = session.dataTask(with: req as URLRequest, completionHandler: {data, response, error -> Void in
-            //print("error: \(error!)")
             if error != nil {
-                //                DispatchQueue.main.async {
-                //                    weakSelf?.handleAPIFailure("Unable to show content!")
-                //                }
                 return
             }
             if (data != nil), let decodedData = Data(base64Encoded: data!, options: []) {

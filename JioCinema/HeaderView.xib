@@ -34,6 +34,10 @@
                         <constraint firstAttribute="width" constant="1280" id="gUe-x6-nC4"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfO-my-AsX">
+                    <rect key="frame" x="640" y="0.0" width="1280" height="720"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="36" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
                     <rect key="frame" x="73" y="148" width="967" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="72"/>
@@ -120,12 +124,16 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="7gk-gj-dB8"/>
                 <constraint firstItem="J2Z-fe-Pzd" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="DMA-TG-OTB"/>
+                <constraint firstItem="BfO-my-AsX" firstAttribute="height" secondItem="WDK-Fb-m3U" secondAttribute="height" id="MDr-ba-XUu"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="leading" id="NMR-PX-fRa"/>
                 <constraint firstItem="pCW-Pa-SDi" firstAttribute="centerY" secondItem="J2Z-fe-Pzd" secondAttribute="centerY" id="NY2-TM-j85"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="119" id="Pd1-Cb-CRq"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="16" id="RG0-V4-tbL"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
+                <constraint firstItem="BfO-my-AsX" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="aUg-FX-apK"/>
+                <constraint firstItem="BfO-my-AsX" firstAttribute="width" secondItem="WDK-Fb-m3U" secondAttribute="width" id="cMm-3R-2U5"/>
                 <constraint firstItem="WDK-Fb-m3U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eyM-9Y-inx"/>
+                <constraint firstItem="BfO-my-AsX" firstAttribute="top" secondItem="WDK-Fb-m3U" secondAttribute="top" id="g1Y-xt-AF3"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="trailing" constant="42" id="h2h-0X-RyU"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="leading" constant="400" id="mKj-QI-ovZ"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
@@ -143,6 +151,7 @@
                 <outlet property="maturityRating" destination="pCW-Pa-SDi" id="9W6-bZ-Z5s"/>
                 <outlet property="moreInfoButton" destination="P8K-gf-ISa" id="Mhl-uL-HEw"/>
                 <outlet property="playButton" destination="QDh-jJ-t5x" id="JvI-VP-0Hq"/>
+                <outlet property="smallTrailerPlayerView" destination="BfO-my-AsX" id="Aq2-fe-sY4"/>
                 <outlet property="subtitleLabel" destination="J2Z-fe-Pzd" id="8su-Hh-Msh"/>
                 <outlet property="titleLabel" destination="Y9K-O4-uTI" id="HWd-xa-SMl"/>
                 <outlet property="topConstraintOfDescription" destination="Pd1-Cb-CRq" id="DH8-C5-Ggs"/>

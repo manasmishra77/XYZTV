@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 class AppManager: NSObject {
     static let shared = AppManager()
