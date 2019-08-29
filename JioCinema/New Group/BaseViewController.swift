@@ -156,6 +156,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if self.baseViewModel.isToReloadTableViewAfterLoginStatusChange {
             self.baseViewModel.reloadTableView()
         }
+        
+        
+        
+       
+        if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0], lastFocusableItem is HeaderButtons && self.baseViewModel.vcType == (AppManager.shared.sideNavigationVC?.selectedVC as? BaseViewController)?.baseViewModel.vcType  {
+            TrailerManager.shared.initialiseViewModelForTrailer(item: headerItem, holderView: bigTrailerView)
+        }
     }
     
     private func configureViews() {
@@ -380,7 +387,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: nil, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
+                            self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
@@ -441,9 +448,6 @@ extension BaseViewController: BaseTableViewCellDelegate {
     }
     
     func setHeaderValues(focusedItem: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
-        
-        TrailerManager.shared.resetPlayer()
-        
         lastFocusableItem = focusedItem
         var url : URL?
         if let urlString = urlString {

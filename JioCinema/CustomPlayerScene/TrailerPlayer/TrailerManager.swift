@@ -30,15 +30,15 @@ class TrailerManager: NSObject {
     
     func initialiseViewModelForTrailer(item: Item, holderView: UIView) {
         
-        self.timerForTrailer?.invalidate()
-        self.timerForTrailer = nil
+        resetPlayer()
         self.timerForTrailer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) {[weak self] (timer) in
-            guard let self = self else {return}
+            guard let self = self else {
+                return
+            }
             
             guard let url = item.trailer?.urls?.TV?.auto else {
                 return
             }
-            self.resetPlayer()
             self.trailerHolderView = holderView
             self.playerViewModel = nil
             self.playerViewModel = PlayerViewModel(item: item)
