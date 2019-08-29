@@ -231,13 +231,13 @@ class CustomPlayerView: UIView {
     }
     
     func addGradientView() {
-        if gradientView.layer.isHidden == true {
-            gradientView.layer.isHidden = false
-        } else {
+        if gradientView.layer.sublayers == nil {
             let colorLayer = CAGradientLayer()
             colorLayer.frame = gradientView.bounds
             colorLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.9).cgColor]
             self.gradientView.layer.insertSublayer(colorLayer, at:0)
+        } else {
+            gradientView.layer.isHidden = false
         }
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -769,9 +769,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             
             self.setCurrentPlayingOnMoreLike()
             
-            if self.audioLanguage != nil, self.audioLanguage?.name.lowercased() == "none" {
-                
-            }
             if let selectedLanguage = self.lastSelectedAudioLanguage {
                 self.playerAudioLanguage(selectedLanguage)
             } else {
@@ -780,10 +777,15 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 }
             }
             
-            if let subtitleArray = self.playbackRightModel?.displaySubtitles, subtitleArray.count > 1 {
-                self.playerSubTitleLanguage(subtitleArray[1])
-            }
+            if let selectedSubtitle = self.lastSelectedAudioSubtitle{
+                self.playerSubTitleLanguage(selectedSubtitle)
+            } else {
+                if let subtitleArray = self.playbackRightModel?.displaySubtitles, subtitleArray.count > 1 {
+                    self.playerSubTitleLanguage(subtitleArray[1])
+                }
             
+            }
+
             self.addPlayerNotificationObserver()
             
             self.player?.seek(to: CMTime(seconds: Double(self.playerViewModel?.currentDuration ?? 0), preferredTimescale: 1))
