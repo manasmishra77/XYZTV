@@ -469,8 +469,11 @@ class PlayerViewModel: NSObject {
     }
     
     func preparePlayer() {
-        guard let id = itemToBePlayed.id else {
+        guard var id = itemToBePlayed.id else {
             return
+        }
+        if let latestId = latestEpisodeId {
+            id = latestId
         }
         isMediaStartEventSent = false
         switch appType {

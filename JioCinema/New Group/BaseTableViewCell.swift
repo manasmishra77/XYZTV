@@ -11,11 +11,10 @@ import UIKit
 protocol BaseTableViewCellDelegate: NSObject {
     func didTapOnItemCell(_ baseCell: BaseTableViewCell?, _ item: Item)
     func didTapOnCharacterItem(_ baseCell: BaseTableViewCell?, _ charItem: DisneyCharacterItems)
-    func setHeaderValues(focusedItem: UIView?,urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?)
+    func setHeaderValues(focusedItem: UIView?,urlString: String?, title: String, subtitle: String?, maturityRating: String?, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?)
 }
 extension BaseTableViewCellDelegate {
-    func setHeaderValues(focusedItem: UIView?,urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
-        
+    func setHeaderValues(focusedItem: UIView?,urlString: String?, title: String, subtitle: String?, maturityRating: String?, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
     }
 }
 //To be used in place of TableCellItemsTuple Tuple
@@ -121,12 +120,12 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
             if context.nextFocusedItem is ItemCollectionViewCell {
-                delegate?.setHeaderValues(focusedItem: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", subtitle: newItem.subtitle, maturityRating: newItem.maturityRating ?? "", description: newItem.description ?? "", toFullScreen: false, mode: .scaleAspectFill, currentItem: newItem)
+                delegate?.setHeaderValues(focusedItem: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", subtitle: newItem.subtitle, maturityRating: newItem.maturityRating, description: newItem.description ?? "", toFullScreen: false, mode: .scaleAspectFill, currentItem: newItem)
             }
         } else if let charItem = cellItems.charItems {
             let newItem = charItem[context.nextFocusedIndexPath?.row ?? 0]
             if context.nextFocusedItem is ItemCollectionViewCell {
-                delegate?.setHeaderValues(focusedItem: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", subtitle: nil, maturityRating: "", description: "", toFullScreen: false, mode: .scaleAspectFit, currentItem: nil)
+                delegate?.setHeaderValues(focusedItem: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", subtitle: nil, maturityRating: nil, description: "", toFullScreen: false, mode: .scaleAspectFit, currentItem: nil)
             }
         }
     }

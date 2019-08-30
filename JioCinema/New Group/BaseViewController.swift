@@ -77,7 +77,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if let headerItem = baseViewModel.baseDataModel?.data?[0].items?[0]{
             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
             if customHeaderView?.titleLabel.text == "" {
-                setHeaderValues(focusedItem: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
+                setHeaderValues(focusedItem: lastFocusableItem, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: headerItem.maturityRating, description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
             }
         }
     }
@@ -231,9 +231,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             else if maturityRating == "" {
                 maturityRating = " NR "
             }
+            self.customHeaderView?.subtitleLabel.text?.append(" | ")
             customHeaderView?.maturityRating.text = " \(maturityRating) "
         } else {
-            customHeaderView?.maturityRating.text = " NR "
+            //black
         }
         
     }
@@ -387,7 +388,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                         
                         if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0] {
                             let title = headerItem.name == "" ? headerItem.showname : headerItem.name
-                            self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: "", description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
+
+                            self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: headerItem.maturityRating, description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
                         self.backgroundImageView.isHidden = false
@@ -447,7 +449,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
         
     }
     
-    func setHeaderValues(focusedItem: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
+    func setHeaderValues(focusedItem: UIView?, urlString: String?, title: String, subtitle: String?, maturityRating: String?, description: String, toFullScreen: Bool, mode: UIImageView.ContentMode, currentItem: Item?) {
         lastFocusableItem = focusedItem
         var url : URL?
         if let urlString = urlString {
@@ -457,7 +459,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
         self.customHeaderView?.imageViewForHeader.contentMode = mode
         self.customHeaderView?.titleLabel.text = title
         if let subtitle = subtitle , subtitle != ""{
-            self.customHeaderView?.subtitleLabel.text = "\(subtitle) | "
+            self.customHeaderView?.subtitleLabel.text = "\(subtitle)"
             appendMaturityRating(maturityRating: maturityRating)
         } else {
             self.customHeaderView?.subtitleLabel.text = ""
