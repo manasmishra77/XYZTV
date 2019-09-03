@@ -223,6 +223,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.maturityRating.text = " \(maturityRating) "
         } else {
             //black
+            customHeaderView?.maturityRating.layer.borderWidth = 0
+            customHeaderView?.maturityRating.borderColor = .clear
+            customHeaderView?.maturityRating.layer.cornerRadius = 5
+            customHeaderView?.maturityRating.textColor = .clear
+            customHeaderView?.maturityRating.text = ""
         }
         
     }
