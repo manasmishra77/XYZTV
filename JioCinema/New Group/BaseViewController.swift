@@ -33,7 +33,12 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
     
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
-    var lastFocusableItem: UIView?
+    var lastFocusableItem: UIView? {
+        didSet {
+            print("\n\n\n \tlastFocusableItem\t\(String(describing: self.lastFocusableItem))\n\n\n")
+        }
+    }
+    
     
     
     @IBOutlet weak var bigTrailerView: UIView!
@@ -156,11 +161,8 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         if self.baseViewModel.isToReloadTableViewAfterLoginStatusChange {
             self.baseViewModel.reloadTableView()
         }
-        
-        
-        
-       
-        if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0], lastFocusableItem is HeaderButtons && self.baseViewModel.vcType == (AppManager.shared.sideNavigationVC?.selectedVC as? BaseViewController)?.baseViewModel.vcType  {
+    
+        if let headerItem = self.baseViewModel.baseDataModel?.data?[0].items?[0], backgroundImageView.isHidden == false && self.baseViewModel.vcType == (AppManager.shared.sideNavigationVC?.selectedVC as? BaseViewController)?.baseViewModel.vcType  {
             TrailerManager.shared.initialiseViewModelForTrailer(item: headerItem, holderView: bigTrailerView)
         }
     }
