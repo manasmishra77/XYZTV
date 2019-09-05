@@ -38,6 +38,10 @@
                     <rect key="frame" x="640" y="0.0" width="1280" height="720"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="62V-r2-vRP">
+                    <rect key="frame" x="640" y="0.0" width="1280" height="720"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="36" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9K-O4-uTI">
                     <rect key="frame" x="73" y="148" width="967" height="0.0"/>
                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="72"/>
@@ -122,12 +126,15 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="62V-r2-vRP" firstAttribute="height" secondItem="BfO-my-AsX" secondAttribute="height" id="1Nu-id-8CW"/>
                 <constraint firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="7gk-gj-dB8"/>
+                <constraint firstItem="62V-r2-vRP" firstAttribute="width" secondItem="BfO-my-AsX" secondAttribute="width" id="BQA-Oc-9hp"/>
                 <constraint firstItem="J2Z-fe-Pzd" firstAttribute="leading" secondItem="Y9K-O4-uTI" secondAttribute="leading" id="DMA-TG-OTB"/>
                 <constraint firstItem="BfO-my-AsX" firstAttribute="height" secondItem="WDK-Fb-m3U" secondAttribute="height" id="MDr-ba-XUu"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="leading" secondItem="QDh-jJ-t5x" secondAttribute="leading" id="NMR-PX-fRa"/>
                 <constraint firstItem="pCW-Pa-SDi" firstAttribute="centerY" secondItem="J2Z-fe-Pzd" secondAttribute="centerY" id="NY2-TM-j85"/>
                 <constraint firstItem="WPv-6P-ZXH" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="119" id="Pd1-Cb-CRq"/>
+                <constraint firstItem="62V-r2-vRP" firstAttribute="top" secondItem="BfO-my-AsX" secondAttribute="top" id="QAP-6s-UrZ"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="top" secondItem="J2Z-fe-Pzd" secondAttribute="bottom" constant="16" id="RG0-V4-tbL"/>
                 <constraint firstItem="P8K-gf-ISa" firstAttribute="top" secondItem="QDh-jJ-t5x" secondAttribute="top" id="UHH-VP-v9x"/>
                 <constraint firstItem="BfO-my-AsX" firstAttribute="trailing" secondItem="WDK-Fb-m3U" secondAttribute="trailing" id="aUg-FX-apK"/>
@@ -139,6 +146,7 @@
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="width" secondItem="P8K-gf-ISa" secondAttribute="width" id="oTa-2q-qNn"/>
                 <constraint firstItem="pCW-Pa-SDi" firstAttribute="leading" secondItem="J2Z-fe-Pzd" secondAttribute="trailing" constant="10" id="phv-Fq-I91"/>
                 <constraint firstItem="QDh-jJ-t5x" firstAttribute="leading" secondItem="J2Z-fe-Pzd" secondAttribute="leading" id="qsD-yc-TSz"/>
+                <constraint firstItem="62V-r2-vRP" firstAttribute="leading" secondItem="BfO-my-AsX" secondAttribute="leading" id="qse-Yj-HIa"/>
                 <constraint firstItem="J2Z-fe-Pzd" firstAttribute="top" secondItem="Y9K-O4-uTI" secondAttribute="bottom" constant="10" id="r2C-DT-EiG"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="148" id="s0P-H3-ibe"/>
                 <constraint firstItem="Y9K-O4-uTI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="73" id="wiz-uC-oVL"/>
@@ -146,6 +154,7 @@
             </constraints>
             <connections>
                 <outlet property="descriptionLabel" destination="WPv-6P-ZXH" id="Nal-ne-92k"/>
+                <outlet property="gradientView" destination="62V-r2-vRP" id="EsB-gM-NLK"/>
                 <outlet property="heightOfMoreIfoButton" destination="tCw-tn-Xye" id="SME-Lw-Lzd"/>
                 <outlet property="imageViewForHeader" destination="WDK-Fb-m3U" id="XDk-TA-eaX"/>
                 <outlet property="maturityRating" destination="pCW-Pa-SDi" id="9W6-bZ-Z5s"/>

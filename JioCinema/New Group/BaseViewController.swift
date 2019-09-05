@@ -32,6 +32,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     @IBOutlet weak var baseTableLeadingConstraint: NSLayoutConstraint!
 
     
+    @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var baseTableViewHeight: NSLayoutConstraint!
     var lastFocusableItem: UIView? {
         didSet {
@@ -215,6 +216,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             self.customHeaderView?.layoutIfNeeded()
             customHeaderView?.addGradientToHeader(color: gradientColor)
             customHeaderView?.imageViewForHeader.isHidden = true
+            customHeaderView?.gradientView.isHidden = true
             addGradientView()
             customHeaderHolderView.addSubview(customHeaderView!)
             
@@ -237,10 +239,10 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
             customHeaderView?.maturityRating.text = " \(maturityRating) "
         } else {
             //black
-            customHeaderView?.maturityRating.layer.borderWidth = 0
-            customHeaderView?.maturityRating.borderColor = .clear
-            customHeaderView?.maturityRating.layer.cornerRadius = 5
-            customHeaderView?.maturityRating.textColor = .clear
+//            customHeaderView?.maturityRating.layer.borderWidth = 0
+//            customHeaderView?.maturityRating.borderColor = .clear
+//            customHeaderView?.maturityRating.layer.cornerRadius = 5
+//            customHeaderView?.maturityRating.textColor = .clear
             customHeaderView?.maturityRating.text = ""
         }
         
@@ -277,13 +279,13 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         var startPoint = CGPoint(x: 1.0, y: 0.0)
         var endPoint = CGPoint(x: 0.0, y: 0.0)
         var colorsArray = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor,gradientColor.withAlphaComponent(0.3).cgColor, gradientColor.withAlphaComponent(0.6).cgColor , gradientColor.cgColor]
-        Utility.applyGradient(backgroundImageView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray)
+        Utility.applyGradient(gradientView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray)
         
         
         startPoint = CGPoint(x: 0.0, y: 0.0)
         endPoint = CGPoint(x: 0.0, y: 1.0)
         colorsArray = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, gradientColor.withAlphaComponent(0.5).cgColor, gradientColor.cgColor]
-        Utility.applyGradient(backgroundImageView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray, atIndex: 1)
+        Utility.applyGradient(gradientView, startPoint: startPoint, endPoint: endPoint, colorArray: colorsArray, atIndex: 1)
     }
     
     func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -377,6 +379,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
         customHeaderView?.imageViewForHeader.isHidden = toFullScreen
         self.customHeaderView?.playButton.isHidden = !toFullScreen
         self.customHeaderView?.moreInfoButton.isHidden = !toFullScreen
+        self.customHeaderView?.gradientView.isHidden = toFullScreen
         let heightConstraint : CGFloat = toFullScreen ? rowHeightForLandscapeWithLabels * 1.1 : self.view.frame.height - rowHeightForLandscapeWithLabels * 1.25
         
         let topConstraintOfDesciption : CGFloat = toFullScreen ? 129 : 10
@@ -399,6 +402,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
                             self.setHeaderValues(focusedItem: self.customHeaderView?.playButton, urlString: headerItem.imageUrlOfTvStillImage, title: title ?? "", subtitle: headerItem.subtitle, maturityRating: headerItem.maturityRating, description: headerItem.description ?? "", toFullScreen: true, mode: .scaleAspectFill, currentItem: headerItem)
                         }
                         self.customHeaderView?.imageViewForHeader.isHidden = true
+                        self.customHeaderView?.gradientView.isHidden = true
                         self.backgroundImageView.isHidden = false
                         self.customHeaderView?.playButton.isHidden = false
                         self.customHeaderView?.moreInfoButton.isHidden = false
@@ -489,7 +493,7 @@ extension BaseViewController: BaseTableViewCellDelegate {
                 self.backgroundImageView.isHidden = true
                 self.customHeaderView?.moreInfoButton.isHidden = true
                 self.customHeaderView?.playButton.isHidden = true
-
+                customHeaderView?.gradientView.isHidden = false
             }
             self.timerToSetImage?.invalidate()
             self.timerToSetImage = nil

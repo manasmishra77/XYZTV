@@ -15,6 +15,7 @@ protocol HeaderViewDelegate: AnyObject {
 
 class HeaderView: UIView {
 
+    @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var maturityRating: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var topConstraintOfDescription: NSLayoutConstraint!
@@ -51,18 +52,17 @@ class HeaderView: UIView {
     }
     
     func addGradientToHeader(color: UIColor) {
-        let gradientLayer:CAGradientLayer = CAGradientLayer()
 
         var colors = [color.cgColor, color.withAlphaComponent(0.8).cgColor, color.withAlphaComponent(0.5).cgColor, color.withAlphaComponent(0.3).cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor]
         var startPoint = CGPoint(x: 0.0, y: 1.0)
         var endPoint = CGPoint(x: 1.0, y: 1.0)
-        Utility.applyGradient(imageViewForHeader, startPoint: startPoint, endPoint: endPoint, colorArray: colors, atIndex: 1)
+        Utility.applyGradient(gradientView, startPoint: startPoint, endPoint: endPoint, colorArray: colors, atIndex: 1)
         
 //        colors = [UIColor.clear.cgColor,UIColor.clear.cgColor,UIColor.clear.cgColor, color.withAlphaComponent(0.5).cgColor, color.cgColor]
         colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, color.cgColor ]
 //        startPoint = CGPoint(x: 0.0, y: 1.0)
 //        endPoint = CGPoint(x: 0.0, y: 0.0)
 
-        Utility.applyGradient(imageViewForHeader, colorArray: colors)
+        Utility.applyGradient(gradientView, colorArray: colors)
     }
 }
