@@ -728,14 +728,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addResumeWatchView() {
         self.updateIndicatorState(toStart: false)
-        print("hide indicator on add to resume watch")
-        self.popUpHolderView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
         resumeWatchView?.delegate = self
         self.addSubview(resumeWatchView!)
-        self.controlHolderView.isHidden = true
-        self.moreLikeHolderView.isHidden = true
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.myPreferredFocusView = nil
+            self.myPreferredFocusView = self.resumeWatchView
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
+        }
     }
     
     func setValuesForSubviewsOnPlayer() {
