@@ -92,7 +92,7 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-//        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+        //        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
         return (self.playerViewModel?.appType == .Music) ? ((-itemHeightForLandscapeForTitleAndSubtitle - 60) + 70) : ((-itemHeightForLandscapeForTitleOnly - 60) + 70)
         
     }
@@ -179,10 +179,10 @@ class CustomPlayerView: UIView {
             guard let moreLikeView = moreLikeView else {
                 return
             }
-//            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
+            //            heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Movie) ? itemHeightForPortrait + 20 : itemHeightForLandscape + 20
             heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Music) ? itemHeightForLandscapeForTitleAndSubtitle + 60: itemHeightForLandscapeForTitleOnly + 60
-    
-
+            
+            
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             self.layoutIfNeeded()
@@ -421,7 +421,7 @@ class CustomPlayerView: UIView {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
         }
-       
+        
     }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
@@ -628,9 +628,9 @@ extension CustomPlayerView: PlayerControlsDelegate {
         timerToHideControls.invalidate()
     }
     
-//    func resetTimerForHideControl() {
-//        self.resetTimertToHideControls()
-//    }
+    //    func resetTimerForHideControl() {
+    //        self.resetTimertToHideControls()
+    //    }
     
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
@@ -676,27 +676,27 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             firstTime = nil
         }
         
-//        if isValidTime && !(controlsView?.isHidden ?? false) {
-//            hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
-//            resetTimertToHideControls()
-////            controlsView?.skipIntroButton.isHidden = false
-//        } else {
-//            if isValidTime && (controlsView?.isHidden ?? false) {
-//                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-//                        hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
-//                        resetTimertToHideControls()
-////                    controlsView?.isHidden = false
-////                    controlsView?.skipIntroButton.isHidden = false
-//                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
-//                        hideUnhideControl(visibleControls: .All, toHide: true)
-////                    controlsView?.isHidden = true
-////                    controlsView?.skipIntroButton.isHidden = true
-//                }
-//
-//            } else {
-//                controlsView?.skipIntroButton.isHidden = true
-//            }
-//        }
+        //        if isValidTime && !(controlsView?.isHidden ?? false) {
+        //            hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
+        //            resetTimertToHideControls()
+        ////            controlsView?.skipIntroButton.isHidden = false
+        //        } else {
+        //            if isValidTime && (controlsView?.isHidden ?? false) {
+        //                if Int(starttime) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+        //                        hideUnhideControl(visibleControls: .SkipIntroOnly, toHide: false)
+        //                        resetTimertToHideControls()
+        ////                    controlsView?.isHidden = false
+        ////                    controlsView?.skipIntroButton.isHidden = false
+        //                } else if Int(starttime + 5) == Int(player?.currentItem?.currentTime().seconds ?? 0.0){
+        //                        hideUnhideControl(visibleControls: .All, toHide: true)
+        ////                    controlsView?.isHidden = true
+        ////                    controlsView?.skipIntroButton.isHidden = true
+        //                }
+        //
+        //            } else {
+        //                controlsView?.skipIntroButton.isHidden = true
+        //            }
+        //        }
     }
     
     func dismissPlayer() {
@@ -840,7 +840,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let subtitleArray = self.playbackRightModel?.displaySubtitles, subtitleArray.count > 1 {
                     self.playerSubTitleLanguage(subtitleArray[1])
                 }
-            
+                
             }
             
             
@@ -855,7 +855,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addPlayerNotificationObserver () {
         
-        if let timeObserverToken = self.playerTimeObserverToken {
+        if let _ = playerTimeObserverToken {
             self.removePlayerObserver()
         }
         NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
@@ -875,10 +875,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         }
         //sendMediaEndAnalyticsEvent()
         if (viewModel.appType == .Movie || viewModel.appType == .Episode || viewModel.appType == .TVShow), viewModel.isItemToBeAddedInResumeWatchList {
-        viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
+            viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         }
-        if let timeObserverToken = playerTimeObserverToken {
-             self.player?.removeTimeObserver(timeObserverToken)
+        if let _ = playerTimeObserverToken {
+            self.player?.removeTimeObserver(playerTimeObserverToken!)
+            playerTimeObserverToken = nil
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)
@@ -887,7 +888,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferFull), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
-        playerTimeObserverToken = nil
     }
     
     
@@ -925,9 +925,9 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 
             }
         }
-//                if playerItem?.appType == .Episode || playerItem?.appType == .Movie || playerItem?.appType == .TVShow{
-//                    playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
-//                }
+        //                if playerItem?.appType == .Episode || playerItem?.appType == .Movie || playerItem?.appType == .TVShow{
+        //                    playerViewModel?.updateResumeWatchList(audioLanguage: playerItem?.audioLanguage?.name ?? "")
+        //                }
         if !(playerViewModel?.isMediaEndAnalyticsEventSent ?? false){
             playerViewModel?.isMediaEndAnalyticsEventSent = true
             playerViewModel?.sendMediaEndAnalyticsEvent(timeSpent: timeSpent)
@@ -1044,7 +1044,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         let interval = CMTime(seconds: 1,
                               preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         let mainQueue = DispatchQueue.main
-        
+    
+        if playerTimeObserverToken != nil {
+            return
+        }
         // Add time observer
         playerTimeObserverToken =
             self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
@@ -1172,7 +1175,7 @@ extension CustomPlayerView {
             timerToHideControls = nil
         }
         timerToHideControls = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {[weak self] (timer) in
-//            self?.hideControlsView()
+            //            self?.hideControlsView()
             self?.hideUnhideControl(visibleControls: .allHide)
             self?.timerToHideControls.invalidate()
             self?.timerToHideControls = nil
@@ -1199,18 +1202,18 @@ extension CustomPlayerView {
             switch press.type{
             case .downArrow, .leftArrow, .upArrow, .rightArrow:
                 resetTimertToHideControls()
-//            case .menu:
-//                super.pressesBegan(presses, with: event)
-//                print("Menu")
-//                break
-//                //                if popUpHolderView.isHidden == true {
-//                //                    self.resetAndRemovePlayer()
-//                //                    self.delegate?.removePlayerController()
-//                //                } else {
-//                //                    resetTimer()
-//                //                    removeControlDetailview()
-//                //                    print("menu")
-//            //                }
+                //            case .menu:
+                //                super.pressesBegan(presses, with: event)
+                //                print("Menu")
+                //                break
+                //                //                if popUpHolderView.isHidden == true {
+                //                //                    self.resetAndRemovePlayer()
+                //                //                    self.delegate?.removePlayerController()
+                //                //                } else {
+                //                //                    resetTimer()
+                //                //                    removeControlDetailview()
+                //                //                    print("menu")
+            //            //                }
             case .playPause:
                 print("playPause")
                 if isPlayerPaused {
@@ -1257,7 +1260,7 @@ extension CustomPlayerView: playerMoreLikeDelegate{
             }
             self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
             if moreLikeView?.moreArray != nil  && isPlayList != true{
-//                playerViewModel?.callWebServiceForMoreLikeData()
+                //                playerViewModel?.callWebServiceForMoreLikeData()
             }
         }
     }
@@ -1305,7 +1308,7 @@ enum VisbleControls {
     case nextVideoOnlyVisible
     case allHide
     case allVisible
-//    case allVisibleExceptNext // Skip intro to be shown
+    //    case allVisibleExceptNext // Skip intro to be shown
     case allVisibleExceptSkipIntro
     case hideSkipIntro
     case hideNextVideo
