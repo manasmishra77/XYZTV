@@ -84,7 +84,10 @@ class SideNavigationVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let navView = sideNavigationView {
-            didSelectRowInNavigationTable(menuItem: navView.itemsList[navView.selectedIndex])
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.didSelectRowInNavigationTable(menuItem: navView.itemsList[navView.selectedIndex])
+            }
+
         }
     }
    
@@ -151,15 +154,9 @@ extension SideNavigationVC: SideNavigationTableProtocol {
                 })
             }
             else {
-                //                if let uiView = self.HolderView.subviews.first {
                 selectedVC?.willMove(toParent: nil)
                 selectedVC?.view.removeFromSuperview()
                 selectedVC?.removeFromParent()
-                //                    content.willMove(toParentViewController: nil)
-                //                    content.view.removeFromSuperview()
-                //                    content.removeFromParentViewController()
-                //                    uiView.removeFromSuperview()
-                //                }
                 self.addChild(vc)
                 self.HolderView.addSubview(vc.view)
                 vc.didMove(toParent: self)

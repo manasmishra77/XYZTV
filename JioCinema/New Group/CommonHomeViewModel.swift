@@ -37,10 +37,10 @@ class CommonHomeViewModel: BaseViewModel {
     }
     override func fetchData(isFromDeepLinking: Bool = false, completion: @escaping (Bool) -> ()) {
         if isFromDeepLinking {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.viewResponseBlock = completion
                 self.fetchAllHomeData()
-            }
+//            }
         } else {
             viewResponseBlock = completion
             fetchAllHomeData()

@@ -160,10 +160,10 @@ class BaseViewModel: NSObject  {
     @objc func fetchData(isFromDeepLinking: Bool = false, completion: @escaping (_ isSuccess: Bool) -> ()) {
         viewResponseBlock = completion
         if isFromDeepLinking {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 self.fetchBaseData()
                 self.getBaseWatchListData()
-            }
+//            }
         } else {
             fetchBaseData()
             getBaseWatchListData()

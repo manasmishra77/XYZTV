@@ -295,8 +295,8 @@ class RJILApiManager {
     
     func resetURLSessionTask(priority: TaskPriority) {
         //patch changes
-        highPrioritySession = URLSession.shared
-        return
+//        highPrioritySession = URLSession.shared
+//        return
         if priority == .high {
             highPrioritySession?.finishTasksAndInvalidate()
             highPrioritySession = nil
@@ -327,9 +327,9 @@ class RJILApiManager {
     
     func createDataTask(withRequest request: URLRequest, takPriority: TaskPriority, httpMethod method: String, completion: @escaping RequestCompletionBlock) -> URLSessionDataTask? {
         //Patch Changes -comment 2 lines
-//        guard takPriority == .low else {
-//            return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
-//        }
+        guard takPriority == .low else {
+            return createDataTaskForLessImportantServiceCalls(withRequest: request, httpMethod: method, completion: completion)
+        }
         var originalRequest = request
         originalRequest.httpMethod = method
         originalRequest.timeoutInterval = 30.0

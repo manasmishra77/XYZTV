@@ -92,7 +92,7 @@ class CustomPlayerView: UIView {
     
     
     var clearanceFromBottomForMoreLikeView: CGFloat {
-//        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
+        //        return (self.playerViewModel?.appType == .Movie) ? (-itemHeightForPortrait + 70) : (-itemHeightForLandscape + 70)
         return (self.playerViewModel?.appType == .Music) ? ((-itemHeightForLandscapeForTitleAndSubtitle - 60) + 70) : ((-itemHeightForLandscapeForTitleOnly - 60) + 70)
         
     }
@@ -178,8 +178,8 @@ class CustomPlayerView: UIView {
                 return
             }
             heightOfMoreLikeHolderView.constant = (playerViewModel?.appType == .Music) ? itemHeightForLandscapeForTitleAndSubtitle + 60: itemHeightForLandscapeForTitleOnly + 60
-    
-
+            
+            
             self.layoutIfNeeded()
             self.bottomSpaceOfMoreLikeInContainer.constant =  clearanceFromBottomForMoreLikeView
             self.layoutIfNeeded()
@@ -410,7 +410,7 @@ class CustomPlayerView: UIView {
                 _ = player?.currentItem?.select(type: .audio, name: language)
             }
         }
-       
+        
     }
     
     private func playerSubTitleLanguage(_ subtitleLanguage: String?) {
@@ -616,7 +616,6 @@ extension CustomPlayerView: PlayerControlsDelegate {
         }
         timerToHideControls.invalidate()
     }
-
     func setPlayerSeekTo(seekValue: CGFloat) {
         DispatchQueue.main.async {
             let seekToValue = Double(seekValue) * self.getPlayerDuration()
@@ -690,14 +689,18 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addResumeWatchView() {
         self.updateIndicatorState(toStart: false)
-        print("hide indicator on add to resume watch")
-        self.popUpHolderView.isHidden = true
         resumeWatchView = UINib(nibName: "ResumeWatchView", bundle: .main).instantiate(withOwner: nil, options: nil).first as? ResumeWatchView
         resumeWatchView?.frame = self.bounds
         resumeWatchView?.delegate = self
         self.addSubview(resumeWatchView!)
-        self.controlHolderView.isHidden = true
-        self.moreLikeHolderView.isHidden = true
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.myPreferredFocusView = nil
+            self.myPreferredFocusView = self.resumeWatchView
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
+        }
     }
     
     func setValuesForSubviewsOnPlayer() {
@@ -783,7 +786,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
                 if let subtitleArray = self.playbackRightModel?.displaySubtitles, subtitleArray.count > 1 {
                     self.playerSubTitleLanguage(subtitleArray[1])
                 }
-            
+                
             }
 
             self.addPlayerNotificationObserver()
@@ -795,7 +798,7 @@ extension CustomPlayerView: PlayerViewModelDelegate {
     
     func addPlayerNotificationObserver () {
         
-        if let timeObserverToken = self.playerTimeObserverToken {
+        if let _ = playerTimeObserverToken {
             self.removePlayerObserver()
         }
         NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
@@ -814,10 +817,11 @@ extension CustomPlayerView: PlayerViewModelDelegate {
             return
         }
         if (viewModel.appType == .Movie || viewModel.appType == .Episode || viewModel.appType == .TVShow), viewModel.isItemToBeAddedInResumeWatchList {
-        viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
+            viewModel.updateResumeWatchList(audioLanguage: lastSelectedAudioLanguage ?? (playerViewModel?.playbackRightsModel?.defaultLanguage ?? ""))
         }
-        if let timeObserverToken = playerTimeObserverToken {
-             self.player?.removeTimeObserver(timeObserverToken)
+        if let _ = playerTimeObserverToken {
+            self.player?.removeTimeObserver(playerTimeObserverToken!)
+            playerTimeObserverToken = nil
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.duration), context: &playerViewControllerKVOContext)
@@ -826,7 +830,6 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferFull), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackBufferEmpty), context: &playerViewControllerKVOContext)
         removeObserver(self, forKeyPath: #keyPath(player.currentItem.isPlaybackLikelyToKeepUp), context: &playerViewControllerKVOContext)
-        playerTimeObserverToken = nil
     }
     
     
@@ -956,7 +959,10 @@ extension CustomPlayerView: PlayerViewModelDelegate {
         let interval = CMTime(seconds: 1,
                               preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         let mainQueue = DispatchQueue.main
-        
+    
+        if playerTimeObserverToken != nil {
+            return
+        }
         // Add time observer
         playerTimeObserverToken =
             self.player?.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
@@ -1154,7 +1160,7 @@ extension CustomPlayerView: playerMoreLikeDelegate{
             }
             self.initialiseViewModelForItem(item: newItem, latestEpisodeId: nil)
             if moreLikeView?.moreArray != nil  && isPlayList != true{
-//                playerViewModel?.callWebServiceForMoreLikeData()
+                //                playerViewModel?.callWebServiceForMoreLikeData()
             }
         }
     }
