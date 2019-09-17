@@ -19,7 +19,7 @@ class JCYearCell: UICollectionViewCell {
         {
             self.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
             yearLabel.textColor = UIColor.white
-            self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            self.backgroundColor = ThemeManager.shared.selectionColor
         }
         else
         {

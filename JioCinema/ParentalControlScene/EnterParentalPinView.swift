@@ -26,8 +26,8 @@ class EnterParentalPinView: UIView {
     
     @IBOutlet var passwordLabelArray: [UILabel]!
     override func awakeFromNib() {
-        cancelButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
-        playButton.setTitleColor(#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1), for: .focused)
+        cancelButton.setTitleColor(ViewColor.selectionBarOnLeftNavigationColor/*#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)*/, for: .focused)
+        playButton.setTitleColor(ViewColor.selectionBarOnLeftNavigationColor/*#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)*/, for: .focused)
         myPreferdFocusedView = keyBoardView
         self.updateFocusIfNeeded()
         self.setNeedsFocusUpdate()
@@ -86,8 +86,8 @@ class EnterParentalPinView: UIView {
             }
             for i in 0..<pass.count{
                 passwordLabelArray[i].text = "●"
-                passwordLabelArray[i].textColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
-                passwordLabelArray[i].layer.borderColor = #colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
+                passwordLabelArray[i].textColor = ViewColor.selectionBarOnLeftNavigationColor//#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
+                passwordLabelArray[i].layer.borderColor = ViewColor.selectionBarOnLeftNavigationColor as! CGColor //#colorLiteral(red: 0.8509803922, green: 0, blue: 0.5529411765, alpha: 1)
             }
             if(pass.count == 4) {
                 playButton.isEnabled = true

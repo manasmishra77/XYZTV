@@ -26,7 +26,7 @@ class JCKeyboardButton: UIButton {
                 self.setImage(backImage, for: .focused)
             }
             self.backgroundColor = #colorLiteral(red: 0.8588235294, green: 0.8588235294, blue: 0.8588235294, alpha: 1)
-            self.setTitleColor(#colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1), for: .focused)
+            self.setTitleColor(ViewColor.selectionBarOnLeftNavigationColor, for: .focused)
             self.layer.cornerRadius = 10
             self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
         }

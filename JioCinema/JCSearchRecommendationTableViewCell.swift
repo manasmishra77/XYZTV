@@ -33,8 +33,7 @@ class JCSearchRecommendationTableViewCell: UITableViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self {
             self.backgroundColor = UIColor.white
-            self.textLabel?.textColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
-            //self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            self.textLabel?.textColor = ViewColor.selectionBarOnLeftNavigationColor
             self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
         } else {
             //self.backgroundColor = #colorLiteral(red: 0.4352941176, green: 0.4352941176, blue: 0.4352941176, alpha: 1)
