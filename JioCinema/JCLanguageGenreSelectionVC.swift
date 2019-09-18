@@ -70,7 +70,7 @@ class JCLanguageGenreSelectionPrototypeCell: UITableViewCell {
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if context.nextFocusedView == self {
             self.backgroundColor = UIColor.white
-            self.titleLabel.textColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            self.titleLabel.textColor = ViewColor.selectionBarOnLeftNavigationColor
             //self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
             self.layer.cornerRadius = 10
             self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)

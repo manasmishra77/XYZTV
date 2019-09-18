@@ -1024,18 +1024,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         self.setNeedsFocusUpdate()
         self.updateFocusIfNeeded()
         //Static labels height
-        if metadata?.directors?.count == 0 || metadata?.directors == nil{
-            headerCell.heightOFDirectorStatic.constant = 0
-            headerCell.directorLabel.text = ""
-        } else {
-            headerCell.heightOFDirectorStatic.constant = 38
-        }
-        if metadata?.artist?.count == 0 || metadata?.artist == nil{
-            headerCell.heightOfStarringStatic.constant = 0
-            headerCell.starringLabel.text = ""
-        } else {
-            headerCell.heightOfStarringStatic.constant = 38
-        }
+        setHeightForStaticLabels(heightOfLabel: headerCell.heightOFDirectorStatic, value: metadata?.directors)
+        setHeightForStaticLabels(heightOfLabel: headerCell.heightOfStarringStatic, value: metadata?.artist) 
         if metadata?.multipleAudio == "" || metadata?.multipleAudio == nil{
             headerCell.heightOfAudioStatic.constant = 0
             headerCell.multiAudioLanguge.text = ""
@@ -1053,8 +1043,8 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
             }
             headerCell.tvShowSubtitleLabel.isHidden = false
             headerCell.subtitleLabel.isHidden = true
-            headerCell.directorLabel.isHidden = true
-            headerCell.directorStaticLabel.isHidden = true
+//            headerCell.directorLabel.isHidden = true
+//            headerCell.directorStaticLabel.isHidden = true
             //            headerCell.sseparationBetweenDirectorStaticAndDescView.constant -= headerCell.directorStaticLabel.frame.height + 8
             headerCell.frame.size.height -= headerCell.directorStaticLabel.frame.height + 8
             
@@ -1078,6 +1068,15 @@ extension JCMetadataVC: UICollectionViewDelegate,UICollectionViewDataSource, UIC
         }
     }
     
+    func setHeightForStaticLabels(heightOfLabel: NSLayoutConstraint, value: [String]?) {
+        var height : CGFloat = 0
+        if value?.count == 0 || value == nil {
+            height = 0
+        } else {
+            height = 38
+        }
+        heightOfLabel.constant = height
+    }
     func prepareMetdataArtistLabel() {
         headerCell.starringLabel.text =  metadata?.artist?.joined(separator: ", ")
     }

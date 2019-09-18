@@ -217,7 +217,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
     private func setProgressbarForResumeWatchCell(_ cellItems: BaseItemCellModel) {
          heightConstraintForProgressBar.constant = 10
-        let progressColor: UIColor = ThemeManager.shared.selectionColor//(cellItems.cellType == .resumeWatch) ? #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1) : #colorLiteral(red: 0.05882352941, green: 0.4392156863, blue: 0.8431372549, alpha: 1)
+        let progressColor: UIColor = ThemeManager.shared.selectionColor
         let progressDefaultColor: UIColor = (cellItems.cellType == .resumeWatch) ? .gray : .white
         progressBar.isHidden = false
         progressBar.progressTintColor = ThemeManager.shared.selectionColor //progressColor

@@ -17,7 +17,7 @@ class JCMonthCell: UICollectionViewCell
         if (context.nextFocusedView == self)
         {
             self.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
-            self.backgroundColor = #colorLiteral(red: 0.9058823529, green: 0.1725490196, blue: 0.6039215686, alpha: 1)
+            self.backgroundColor = ThemeManager.shared.selectionColor
             monthLabel.textColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
         }
         else
