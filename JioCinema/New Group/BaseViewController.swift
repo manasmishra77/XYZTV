@@ -350,11 +350,11 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
 
     //new UI changes
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell || context.previouslyFocusedItem is JCDisneyButton) && context.nextFocusedItem is ItemCollectionViewCell {
+            if (context.previouslyFocusedItem is HeaderButtons || context.previouslyFocusedItem is SideNavigationTableCell || context.previouslyFocusedItem is JCDisneyButton) && context.nextFocusedItem is ItemCell/*ItemCollectionViewCell*/ {
                 updateUiAndFocus(toFullScreen: false, context: context)
             }
 
-        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCollectionViewCell  || context.previouslyFocusedView is HeaderButtons || context.previouslyFocusedView is JCDisneyButton){
+        if context.nextFocusedItem is SideNavigationTableCell && (context.previouslyFocusedView is ItemCell/*ItemCollectionViewCell*/  || context.previouslyFocusedView is HeaderButtons || context.previouslyFocusedView is JCDisneyButton){
             baseTableView.alpha = 0.2
             customHeaderView?.playButton.alpha = 0.2
             customHeaderView?.moreInfoButton.alpha = 0.2
@@ -392,7 +392,7 @@ class BaseViewController<T: BaseViewModel>: UIViewController, UITableViewDataSou
     
     @objc func onFocusFailed(_ notification:Notification) {
         if let contextDict = notification.userInfo as? [String: UIFocusUpdateContext], let context = contextDict["UIFocusUpdateContextKey"] {
-            if context.previouslyFocusedItem is ItemCollectionViewCell || context.previouslyFocusedItem is JCDisneyButton {
+            if context.previouslyFocusedItem is ItemCell/*ItemCollectionViewCell*/ || context.previouslyFocusedItem is JCDisneyButton {
                 if (context.focusHeading == .up) {
                     DispatchQueue.main.async {
                         

@@ -60,44 +60,7 @@ class MoreLikeView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
             return 0
         }
     }
-    
-//    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-//        super.pressesBegan(presses, with: event)
-//        for press in presses {
-//            switch press.type{
-//            case .downArrow, .leftArrow, .upArrow, .rightArrow:
-//                //resetTimer()
-//                print("Arrow")
-//            case .menu:
-//
-//                print("menu")
-//            case .playPause:
-//                print("playPause")
-//
-//            case .select:
-//                print("select")
-//            @unknown default:
-//                print("unknown")
-//            }
-//        }
-//    }
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//        for touch in touches{
-//            switch touch.type{
-//            case .direct:
-//                print("Direct")
-//            case .indirect:
-//                print("indirect")
-//            case .pencil:
-//                print("pencil")
-//            @unknown default:
-//                print("unknown")
-//            }
-//        }
-//    }
-//
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
         let cellData = getCellData(indexPath: indexPath)

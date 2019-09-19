@@ -64,6 +64,7 @@ class BaseTableViewCell: UITableViewCell {
     private func configureCell() {
         let cellNib = UINib(nibName: BaseItemCellNibIdentifier, bundle: nil)
         itemCollectionView.register(cellNib, forCellWithReuseIdentifier: BaseItemCellNibIdentifier)
+        itemCollectionView.register(UINib(nibName: "TvPosterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "posterCell")
         itemCollectionView.delegate = self
         itemCollectionView.dataSource = self
     }
@@ -98,11 +99,23 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
-        let baseItemCellModel : BaseItemCellModel = BaseItemCellModel(item: cellItems.items?[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layoutType, charactorItems: cellItems.charItems?[indexPath.row])
-        cell.configureView(baseItemCellModel)
-        return cell
-    }
+        if #available(tvOS 12.1, *) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "posterCell", for: indexPath) as! TvPosterCollectionViewCell
+            let baseItemCellModel : BaseItemCellModel = BaseItemCellModel(item: cellItems.items?[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layoutType, charactorItems: cellItems.charItems?[indexPath.row])
+            cell.configureCell(baseItemCellModel)
+            return cell
+        } else {
+            // Fallback on earlier versions
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
+            let baseItemCellModel : BaseItemCellModel = BaseItemCellModel(item: cellItems.items?[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layoutType, charactorItems: cellItems.charItems?[indexPath.row])
+            cell.configureView(baseItemCellModel)
+            return cell
+        }
+    }//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseItemCellNibIdentifier, for: indexPath) as! ItemCollectionViewCell
+    //        let baseItemCellModel : BaseItemCellModel = BaseItemCellModel(item: cellItems.items?[indexPath.row], cellType: cellItems.cellType, layoutType: cellItems.layoutType, charactorItems: cellItems.charItems?[indexPath.row])
+    //        cell.configureView(baseItemCellModel)
+    //        return cell
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let item = cellItems.items {
             var newItem = item[indexPath.row]
@@ -119,12 +132,12 @@ extension BaseTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         if let item = cellItems.items {
             let newItem = item[context.nextFocusedIndexPath?.row ?? 0]
-            if context.nextFocusedItem is ItemCollectionViewCell {
+            if context.nextFocusedItem is ItemCell/*ItemCollectionViewCell*/ {
                 delegate?.setHeaderValues(focusedItem: self, urlString: newItem.imageUrlOfTvStillImage, title: newItem.name ?? newItem.showname ?? "", subtitle: newItem.subtitle, maturityRating: newItem.maturityRating, description: newItem.description ?? "", toFullScreen: false, mode: .scaleAspectFill, currentItem: newItem)
             }
         } else if let charItem = cellItems.charItems {
             let newItem = charItem[context.nextFocusedIndexPath?.row ?? 0]
-            if context.nextFocusedItem is ItemCollectionViewCell {
+            if context.nextFocusedItem is ItemCell/*ItemCollectionViewCell*/ {
                 delegate?.setHeaderValues(focusedItem: self, urlString: newItem.LogoUrlForDisneyChar, title: newItem.name ?? "", subtitle: nil, maturityRating: nil, description: "", toFullScreen: false, mode: .scaleAspectFit, currentItem: nil)
             }
         }

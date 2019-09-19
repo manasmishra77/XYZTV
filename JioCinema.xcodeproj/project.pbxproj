@@ -141,6 +141,8 @@
 		847BC0552201D19A00FB5B2A /* JioType-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */; };
 		847BC0562201D19A00FB5B2A /* JioType-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */; };
 		847BC0572201D55500FB5B2A /* JioType-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847BC04C2201D19900FB5B2A /* JioType-Light.ttf */; };
+		84896357232BA25400B7BA83 /* TvPosterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84896355232BA25400B7BA83 /* TvPosterCollectionViewCell.xib */; };
+		84896358232BA25400B7BA83 /* TvPosterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896356232BA25400B7BA83 /* TvPosterCollectionViewCell.swift */; };
 		84AD021622F1D46A002599B4 /* SF-Pro-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 84AD01E922F1D46A002599B4 /* SF-Pro-Display-Thin.otf */; };
 		84AD021722F1D46A002599B4 /* SF-Pro-Display-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 84AD01EA22F1D46A002599B4 /* SF-Pro-Display-SemiboldItalic.otf */; };
 		84AD021822F1D46A002599B4 /* SF-Pro-Text-UltralightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 84AD01EB22F1D46A002599B4 /* SF-Pro-Text-UltralightItalic.otf */; };
@@ -387,6 +389,8 @@
 		847BC04E2201D19900FB5B2A /* JioType-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Bold.ttf"; sourceTree = "<group>"; };
 		847BC04F2201D19A00FB5B2A /* JioType-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-Black.ttf"; sourceTree = "<group>"; };
 		847BC0502201D19A00FB5B2A /* JioType-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JioType-LightItalic.ttf"; sourceTree = "<group>"; };
+		84896355232BA25400B7BA83 /* TvPosterCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TvPosterCollectionViewCell.xib; sourceTree = "<group>"; };
+		84896356232BA25400B7BA83 /* TvPosterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TvPosterCollectionViewCell.swift; sourceTree = "<group>"; };
 		84AD01E922F1D46A002599B4 /* SF-Pro-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Thin.otf"; sourceTree = "<group>"; };
 		84AD01EA22F1D46A002599B4 /* SF-Pro-Display-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		84AD01EB22F1D46A002599B4 /* SF-Pro-Text-UltralightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-UltralightItalic.otf"; sourceTree = "<group>"; };
@@ -531,6 +535,8 @@
 				53F16C50215AB25F0052BE0A /* BaseTableViewCell.xib */,
 				192A0151217DBE8000E5D08A /* DisneyHomeViewModel.swift */,
 				192A0153217DBEAE00E5D08A /* CommonHomeViewModel.swift */,
+				84896356232BA25400B7BA83 /* TvPosterCollectionViewCell.swift */,
+				84896355232BA25400B7BA83 /* TvPosterCollectionViewCell.xib */,
 			);
 			name = BaseScene;
 			path = "New Group";
@@ -1060,6 +1066,7 @@
 				9966543C21D3C0D70026CC8D /* DisneyButtons.xib in Resources */,
 				84AD022322F1D46A002599B4 /* SF-Pro-Text-Light.otf in Resources */,
 				2024C48B1F3C9C34003A08C3 /* ArrowPink.png in Resources */,
+				84896357232BA25400B7BA83 /* TvPosterCollectionViewCell.xib in Resources */,
 				7B78D7C91F13A91A00F319BF /* Assets.xcassets in Resources */,
 				2025F4591F3B51B700C3B609 /* Feedback.png in Resources */,
 				539618F32121A41F00B576BF /* EnterParentalPinView.xib in Resources */,
@@ -1247,6 +1254,7 @@
 				7BFEC4AB1F154C42001DFE6D /* JCSplashVC.swift in Sources */,
 				7BFEC4C31F174ACA001DFE6D /* JCButton.swift in Sources */,
 				1966AC5F213FC5B300A98404 /* APIManager+Search.swift in Sources */,
+				84896358232BA25400B7BA83 /* TvPosterCollectionViewCell.swift in Sources */,
 				99651170224C9BC600E81D0F /* PlayerPopupTableViewCell.swift in Sources */,
 				535E5A5521259A9200C375BD /* Utility+ActivityIndicator.swift in Sources */,
 				53599E292315541A00A50689 /* TrailerManager.swift in Sources */,

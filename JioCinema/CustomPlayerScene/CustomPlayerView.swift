@@ -247,7 +247,7 @@ class CustomPlayerView: UIView {
             isFocusViewChangedOnResetTimer = false
         }
         
-        if context.nextFocusedView is ItemCollectionViewCell {
+        if context.nextFocusedView is ItemCell/*ItemCollectionViewCell*/ {
             self.bottomSpaceOfMoreLikeInContainer.constant = 0
             UIView.animate(withDuration: 0.7) {
                 self.controlsView?.alpha = 0.0001
